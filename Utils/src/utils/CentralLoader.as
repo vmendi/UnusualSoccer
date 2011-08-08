@@ -8,7 +8,6 @@ package utils
 	import flash.system.Security;
 	import flash.utils.Dictionary;
 	
-	import mx.core.Application;
 	import mx.core.FlexGlobals;
 
 
@@ -144,10 +143,9 @@ package utils
 
 	import flash.errors.IOError;
 	import flash.events.IOErrorEvent;
-	import flash.profiler.showRedrawRegions;
-	import mx.controls.Alert;
 	import flash.net.URLStream;
-	
+	import flash.profiler.showRedrawRegions;
+		
 
 internal class CacheItem
 {
@@ -168,7 +166,7 @@ internal class CacheItem
 	
 	private function OnError(event:Event):void
 	{
-		Alert.show("Cache error", "Error", Alert.OK);
+		throw new Error("Cache error");
 	}
 	
 	private function OnComplete(event:Event):void
