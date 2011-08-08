@@ -1,0 +1,5 @@
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\Skills\bin\Release\Moserware.Skills.dll
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\Skills\bin\Release\Moserware.Skills.pdb
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\Skills\obj\Release\ResolveAssemblyReference.cache
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\Skills\obj\Release\Moserware.Skills.dll
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\Skills\obj\Release\Moserware.Skills.pdb

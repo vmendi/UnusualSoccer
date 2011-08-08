@@ -1,0 +1,17 @@
+F:\UnusualSVN\UnusualEngine\SoccerServerV1\SoccerServerV1\bin\App_Data\Backup.sql
+F:\UnusualSVN\UnusualEngine\SoccerServerV1\SoccerServerV1\bin\App_Data\SoccerV1.bak
+F:\UnusualSVN\UnusualEngine\SoccerServerV1\SoccerServerV1\bin\SoccerServerV1.dll
+F:\UnusualSVN\UnusualEngine\SoccerServerV1\SoccerServerV1\bin\SoccerServerV1.pdb
+F:\UnusualSVN\UnusualEngine\SoccerServerV1\SoccerServerV1\bin\Moserware.Skills.dll
+F:\UnusualSVN\UnusualEngine\SoccerServerV1\SoccerServerV1\bin\Moserware.Skills.pdb
+F:\UnusualSVN\UnusualEngine\SoccerServerV1\SoccerServerV1\obj\Debug\ResolveAssemblyReference.cache
+F:\UnusualSVN\UnusualEngine\SoccerServerV1\SoccerServerV1\obj\Debug\SoccerServerV1.dll
+F:\UnusualSVN\UnusualEngine\SoccerServerV1\SoccerServerV1\obj\Debug\SoccerServerV1.pdb
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\SoccerServerV1\bin\App_Data\Backup.sql
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\SoccerServerV1\bin\SoccerServerV1.dll
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\SoccerServerV1\bin\SoccerServerV1.pdb
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\SoccerServerV1\bin\Moserware.Skills.dll
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\SoccerServerV1\bin\Moserware.Skills.pdb
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\SoccerServerV1\obj\Debug\ResolveAssemblyReference.cache
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\SoccerServerV1\obj\Debug\SoccerServerV1.dll
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\SoccerServerV1\obj\Debug\SoccerServerV1.pdb

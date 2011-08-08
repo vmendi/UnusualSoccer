@@ -1,0 +1,420 @@
+[Thread-7] WEBORB EXCEPTION:6/7/2011 6:51 PM:Weborb.Protocols.UnknownRequestFormatException: cannot parse request. possible reasons: malformed request or protocol formatter is not registered 
+   at Weborb.Protocols.ProtocolRegistry.BuildMessage(String contentType, Stream requestStream, NameValueCollection headers)
+   at Weborb.ORBHttpHandler.HandleRequest(HttpContext context, HttpRequest request, HttpResponse response)
+[Thread-13] GLOBAL:6/7/2011 6:51 PM::******************* Initialization from Global.asax *******************
+[Thread-13] REALTIME:6/7/2011 6:51 PM:************************* Realtime Starting *************************
+[Thread-16] REALTIME DEBUG:6/7/2011 6:51 PM:************************* OnClientConnected  0 *************************
+[Thread-16] REALTIME DEBUG:6/7/2011 6:51 PM:0 0 logged in: PlayerName PlayerSurname, Team: TestTeam0
+[Thread-16] REALTIME DEBUG:6/7/2011 6:52 PM:************************* OnClientConnected  1 *************************
+[Thread-16] REALTIME DEBUG:6/7/2011 6:52 PM:1 1 logged in: PlayerName PlayerSurname, Team: TestTeam2
+[Thread-16] MATCH:6/7/2011 6:52 PM: M: 112569 Init Match: 112569 FirstPlayer: TestTeam0 SecondPlayer: TestTeam2 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 0 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:52 PM: M: 112569 Start Part: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 0 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:52 PM: M: 112569 OnRequestData: Player: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:52 PM: M: 112569 OnPlayerReady: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:52 PM: M: 112569 OnRequestData: Player: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:52 PM: M: 112569 OnPlayerReady: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:52 PM: M: 112569 OnServerShoot: 0 Cap ID: 6 dir: -51.2, -6.75 force: 0.5637389 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 294 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:52 PM: M: 112569 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 293 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:52 PM: M: 112569 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 293 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:52 PM: M: 112569 P: 0 RCS: 11 Pase: -1 CountTC: 0 FS: 45 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=476.3, y=230.85)][7:(x=298.2, y=355.3)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=532.9, y=268.5)][6:(x=495.95, y=160.65)][7:(x=461.75, y=355.3)] B:(x=380, y=264) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 293 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:52 PM: M: 112569 P: 1 RCS: 11 Pase: -1 CountTC: 0 FS: 45 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=476.3, y=230.85)][7:(x=298.2, y=355.3)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=532.9, y=268.5)][6:(x=495.95, y=160.65)][7:(x=461.75, y=355.3)] B:(x=380, y=264) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 293 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:52 PM: M: 112569 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 283 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:52 PM: M: 112569 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 271 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:52 PM: M: 112569 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 260 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:53 PM: M: 112569 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 249 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:53 PM: M: 112569 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 237 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:53 PM: M: 112569 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 226 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:53 PM: M: 112569 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 215 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:53 PM: M: 112569 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 203 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:54 PM: M: 112569 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 192 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:54 PM: M: 112569 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 181 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:54 PM: M: 112569 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 170 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:54 PM: M: 112569 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 158 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:54 PM: M: 112569 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 147 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:55 PM: M: 112569 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 136 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:55 PM: M: 112569 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 124 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:55 PM: M: 112569 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 113 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:55 PM: M: 112569 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 101 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:55 PM: M: 112569 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 90 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:55 PM: M: 112569 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 79 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:56 PM: M: 112569 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 68 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:56 PM: M: 112569 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 56 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:56 PM: M: 112569 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 45 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:56 PM: M: 112569 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 34 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:56 PM: M: 112569 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 22 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:57 PM: M: 112569 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 11 SC1=0 SC2=0
+[Thread-8] MATCH DEBUG:6/7/2011 6:57 PM: M: 112569 Start Part: 2 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 0 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:57 PM: M: 112569 OnPlayerReady: 1 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:57 PM: M: 112569 OnPlayerReady: 0 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:57 PM: M: 112569 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 288 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:57 PM: M: 112569 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 277 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:57 PM: M: 112569 OnAbort: Player: 0 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 277 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:57 PM: M: 112569 Match marked to finish:  <Vars>: SS: False CountPlayersES: 0 P: 2 T: 277 SC1=0 SC2=0
+[Thread-16] REALTIME DEBUG:6/7/2011 6:57 PM:1 1 logged in: PlayerName PlayerSurname, Team: TestTeam2
+[Thread-16] REALTIME DEBUG:6/7/2011 6:58 PM:************************* OnClientConnected  2 *************************
+[Thread-16] REALTIME DEBUG:6/7/2011 6:58 PM:0 2 logged in: PlayerName PlayerSurname, Team: TestTeam0
+[Thread-16] MATCH:6/7/2011 6:59 PM: M: 112570 Init Match: 112570 FirstPlayer: TestTeam2 SecondPlayer: TestTeam0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 0 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:59 PM: M: 112570 Start Part: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 0 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:59 PM: M: 112570 OnRequestData: Player: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:59 PM: M: 112570 OnRequestData: Player: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:59 PM: M: 112570 OnPlayerReady: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:59 PM: M: 112570 OnPlayerReady: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:59 PM: M: 112570 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 288 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:59 PM: M: 112570 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 277 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 6:59 PM: M: 112570 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 266 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:00 PM: M: 112570 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 254 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:00 PM: M: 112570 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 243 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:00 PM: M: 112570 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 232 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:00 PM: M: 112570 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 221 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:00 PM: M: 112570 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 209 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:01 PM: M: 112570 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 198 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:01 PM: M: 112570 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 187 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:01 PM: M: 112570 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 175 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:01 PM: M: 112570 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 164 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:01 PM: M: 112570 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 153 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:02 PM: M: 112570 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 141 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:02 PM: M: 112570 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 130 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:02 PM: M: 112570 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 119 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:02 PM: M: 112570 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 108 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:02 PM: M: 112570 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 96 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:03 PM: M: 112570 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 85 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:03 PM: M: 112570 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 74 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:03 PM: M: 112570 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 62 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:03 PM: M: 112570 OnServerShoot: 1 Cap ID: 6 dir: 75.66442, -3.229998 force: 0.934359 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 53 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:03 PM: M: 112570 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 53 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:03 PM: M: 112570 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 53 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:03 PM: M: 112570 P: 0 RCS: 2 Pase: -1 CountTC: 0 FS: 7 RTC: 3 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=118.5)][2:(x=148.3, y=217.7)][3:(x=148.3, y=319.35)][4:(x=148.3, y=421)][5:(x=227.05, y=268.5)][6:(x=288.45, y=180.1)][7:(x=298.2, y=355.3)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=144.55)][2:(x=611.65, y=268.5)][3:(x=611.65, y=392.5)][4:(x=532.9, y=212.75)][5:(x=532.9, y=324.3)][6:(x=401.3, y=210.5)][7:(x=461.75, y=355.3)] B:(x=380, y=264) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 52 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:03 PM: M: 112570 P: 1 RCS: 2 Pase: -1 CountTC: 0 FS: 7 RTC: 3 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=118.5)][2:(x=148.3, y=217.7)][3:(x=148.3, y=319.35)][4:(x=148.3, y=421)][5:(x=227.05, y=268.5)][6:(x=288.45, y=180.1)][7:(x=298.2, y=355.3)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=144.55)][2:(x=611.65, y=268.5)][3:(x=611.65, y=392.5)][4:(x=532.9, y=212.75)][5:(x=532.9, y=324.3)][6:(x=401.3, y=210.5)][7:(x=461.75, y=355.3)] B:(x=380, y=264) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 52 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:03 PM: M: 112570 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 40 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:03 PM: M: 112570 OnAbort: Player: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 36 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:03 PM: M: 112570 Match marked to finish:  <Vars>: SS: False CountPlayersES: 0 P: 1 T: 36 SC1=0 SC2=0
+[Thread-16] REALTIME DEBUG:6/7/2011 7:03 PM:1 1 logged in: PlayerName PlayerSurname, Team: TestTeam2
+[Thread-16] REALTIME DEBUG:6/7/2011 7:04 PM:************************* OnClientConnected  3 *************************
+[Thread-16] REALTIME DEBUG:6/7/2011 7:04 PM:0 3 logged in: PlayerName PlayerSurname, Team: TestTeam0
+[Thread-16] MATCH:6/7/2011 7:04 PM: M: 112571 Init Match: 112571 FirstPlayer: TestTeam0 SecondPlayer: TestTeam2 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 0 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:04 PM: M: 112571 Start Part: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 0 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:04 PM: M: 112571 OnRequestData: Player: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:04 PM: M: 112571 OnPlayerReady: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:04 PM: M: 112571 OnRequestData: Player: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:04 PM: M: 112571 OnPlayerReady: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:04 PM: M: 112571 OnServerShoot: 0 Cap ID: 6 dir: -79.49387, -8.984632 force: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 294 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:04 PM: M: 112571 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 294 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:04 PM: M: 112571 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 294 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:04 PM: M: 112571 P: 0 RCS: 2 Pase: -1 CountTC: 0 FS: 7 RTC: 3 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=403, y=247.7)][7:(x=298.2, y=355.3)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=532.9, y=268.5)][6:(x=472.05, y=176.55)][7:(x=461.75, y=355.3)] B:(x=380, y=264) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 294 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:04 PM: M: 112571 P: 1 RCS: 2 Pase: -1 CountTC: 0 FS: 7 RTC: 3 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=403, y=247.7)][7:(x=298.2, y=355.3)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=532.9, y=268.5)][6:(x=472.05, y=176.55)][7:(x=461.75, y=355.3)] B:(x=380, y=264) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 294 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:04 PM: M: 112571 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 281 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:04 PM: M: 112571 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 270 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:05 PM: M: 112571 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 258 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:05 PM: M: 112571 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 247 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:05 PM: M: 112571 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 236 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:05 PM: M: 112571 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 225 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:05 PM: M: 112571 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 213 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:06 PM: M: 112571 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 202 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:06 PM: M: 112571 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 191 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:06 PM: M: 112571 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 179 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:06 PM: M: 112571 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 168 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:06 PM: M: 112571 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 157 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:06 PM: M: 112571 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 145 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:07 PM: M: 112571 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 134 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:07 PM: M: 112571 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 123 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:07 PM: M: 112571 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 111 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:07 PM: M: 112571 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 100 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:07 PM: M: 112571 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 89 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:08 PM: M: 112571 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 77 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:08 PM: M: 112571 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 66 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:08 PM: M: 112571 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 55 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:08 PM: M: 112571 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 43 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:08 PM: M: 112571 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 32 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:09 PM: M: 112571 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 21 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:09 PM: M: 112571 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 9 SC1=0 SC2=0
+[Thread-7] MATCH DEBUG:6/7/2011 7:09 PM: M: 112571 Start Part: 2 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 0 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:09 PM: M: 112571 OnPlayerReady: 0 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:09 PM: M: 112571 OnPlayerReady: 1 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:09 PM: M: 112571 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 288 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:09 PM: M: 112571 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 277 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:10 PM: M: 112571 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 266 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:10 PM: M: 112571 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 254 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:10 PM: M: 112571 OnAbort: Player: 1 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 254 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:10 PM: M: 112571 Match marked to finish:  <Vars>: SS: False CountPlayersES: 0 P: 2 T: 254 SC1=0 SC2=0
+[Thread-16] REALTIME DEBUG:6/7/2011 7:10 PM:0 3 logged in: PlayerName PlayerSurname, Team: TestTeam0
+[Thread-16] REALTIME DEBUG:6/7/2011 7:26 PM:************************* OnClientConnected  4 *************************
+[Thread-16] REALTIME DEBUG:6/7/2011 7:26 PM:0 4 logged in: PlayerName PlayerSurname, Team: TestTeam0
+[Thread-16] REALTIME DEBUG:6/7/2011 7:26 PM:************************* OnClientConnected  5 *************************
+[Thread-16] REALTIME DEBUG:6/7/2011 7:26 PM:1 5 logged in: PlayerName PlayerSurname, Team: TestTeam2
+[Thread-16] MATCH:6/7/2011 7:26 PM: M: 112572 Init Match: 112572 FirstPlayer: TestTeam0 SecondPlayer: TestTeam2 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 0 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:26 PM: M: 112572 Start Part: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 0 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:26 PM: M: 112572 OnRequestData: Player: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:26 PM: M: 112572 OnRequestData: Player: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:26 PM: M: 112572 OnPlayerReady: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:26 PM: M: 112572 OnPlayerReady: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-6] CLIENT_ERROR:6/7/2011 7:26 PM:1 - UncaughtError: Error: No existe la formación solicitada null
+	at Caps::Team/GetFormation()[F:\UnusualSVN\UnusualEngine\trunk\Match\src\Caps\Team.as:260]
+	at Caps::Team/SetFormationPos()[F:\UnusualSVN\UnusualEngine\trunk\Match\src\Caps\Team.as:238]
+	at Caps::Team/ResetToCurrentFormation()[F:\UnusualSVN\UnusualEngine\trunk\Match\src\Caps\Team.as:210]
+	at Caps::Game/Run()[F:\UnusualSVN\UnusualEngine\trunk\Match\src\Caps\Game.as:394]
+	at Match/OnFrame()[F:\UnusualSVN\UnusualEngine\trunk\Match\src\Match.as:141]
+[Thread-10] CLIENT_ERROR:6/7/2011 7:26 PM:0 - UncaughtError: Error: No existe la formación solicitada null
+	at Caps::Team/GetFormation()[F:\UnusualSVN\UnusualEngine\trunk\Match\src\Caps\Team.as:260]
+	at Caps::Team/SetFormationPos()[F:\UnusualSVN\UnusualEngine\trunk\Match\src\Caps\Team.as:238]
+	at Caps::Team/ResetToCurrentFormation()[F:\UnusualSVN\UnusualEngine\trunk\Match\src\Caps\Team.as:210]
+	at Caps::Game/Run()[F:\UnusualSVN\UnusualEngine\trunk\Match\src\Caps\Game.as:394]
+	at Match/OnFrame()[F:\UnusualSVN\UnusualEngine\trunk\Match\src\Match.as:141]
+[Thread-16] MATCH DEBUG:6/7/2011 7:27 PM: M: 112572 OnAbort: Player: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 260 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:27 PM: M: 112572 Match marked to finish:  <Vars>: SS: False CountPlayersES: 0 P: 1 T: 260 SC1=0 SC2=0
+[Thread-16] REALTIME DEBUG:6/7/2011 7:27 PM:1 5 logged in: PlayerName PlayerSurname, Team: TestTeam2
+[Thread-16] REALTIME DEBUG:6/7/2011 7:27 PM:************************* OnClientConnected  6 *************************
+[Thread-16] REALTIME DEBUG:6/7/2011 7:27 PM:0 6 logged in: PlayerName PlayerSurname, Team: TestTeam0
+[Thread-16] REALTIME DEBUG:6/7/2011 7:27 PM:************************* OnClientConnected  7 *************************
+[Thread-16] REALTIME DEBUG:6/7/2011 7:27 PM:1 7 logged in: PlayerName PlayerSurname, Team: TestTeam2
+[Thread-16] MATCH:6/7/2011 7:27 PM: M: 112573 Init Match: 112573 FirstPlayer: TestTeam0 SecondPlayer: TestTeam2 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 0 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:27 PM: M: 112573 Start Part: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 0 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:27 PM: M: 112573 OnRequestData: Player: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:27 PM: M: 112573 OnRequestData: Player: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:27 PM: M: 112573 OnPlayerReady: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:27 PM: M: 112573 OnPlayerReady: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:27 PM: M: 112573 OnServerShoot: 0 Cap ID: 6 dir: -22.2, -19.75 force: 0.2263642 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 292 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:27 PM: M: 112573 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 290 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:27 PM: M: 112573 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 290 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:27 PM: M: 112573 P: 0 RCS: 11 Pase: -1 CountTC: 0 FS: 39 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=361.45, y=238)][7:(x=298.2, y=355.3)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=532.9, y=268.5)][6:(x=461.75, y=181.75)][7:(x=461.75, y=355.3)] B:(x=380, y=264) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 290 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:27 PM: M: 112573 P: 1 RCS: 11 Pase: -1 CountTC: 0 FS: 39 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=361.45, y=238)][7:(x=298.2, y=355.3)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=532.9, y=268.5)][6:(x=461.75, y=181.75)][7:(x=461.75, y=355.3)] B:(x=380, y=264) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 290 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnServerShoot: 0 Cap ID: 6 dir: -12.45, -15 force: 0.06913312 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 286 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 285 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 285 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 P: 0 RCS: 5 Pase: 6 CountTC: 2 FS: 38 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=377.5, y=257.35)][7:(x=298.2, y=355.3)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=532.9, y=268.5)][6:(x=461.75, y=181.75)][7:(x=461.75, y=355.3)] B:(x=399.45, y=289.55) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 285 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 P: 1 RCS: 5 Pase: 6 CountTC: 2 FS: 38 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=377.5, y=257.35)][7:(x=298.2, y=355.3)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=532.9, y=268.5)][6:(x=461.75, y=181.75)][7:(x=461.75, y=355.3)] B:(x=399.45, y=289.55) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 285 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnPlaceBall: 0 Cap ID: 6 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 283 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnTiroPuerta: Player: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 277 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnPosCap: 1 Cap ID: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 275 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnPosCap: 1 Cap ID: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 273 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnPosCap: 1 Cap ID: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 272 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnPosCap: 1 Cap ID: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 271 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnPosCap: 1 Cap ID: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 271 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnPosCap: 1 Cap ID: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 270 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 270 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnServerShoot: 0 Cap ID: 6 dir: -27.5, -0.35 force: 0.192342 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 265 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 263 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 263 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 P: 1 RCS: 10 Pase: -1 CountTC: 3 FS: 57 RTC: 9 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=446.7, y=258.15)][7:(x=298.2, y=355.3)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=533.65, y=268.6)][6:(x=461.75, y=181.75)][7:(x=461.75, y=355.3)] B:(x=496.1, y=261.7) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 263 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 P: 0 RCS: 10 Pase: -1 CountTC: 3 FS: 57 RTC: 9 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=446.7, y=258.15)][7:(x=298.2, y=355.3)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=533.65, y=268.6)][6:(x=461.75, y=181.75)][7:(x=461.75, y=355.3)] B:(x=496.1, y=261.7) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 263 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnPlaceBall: 1 Cap ID: 5 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 257 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnServerShoot: 1 Cap ID: 5 dir: 18.35, 19.4 force: 0.1800555 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 252 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 250 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 250 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 P: 0 RCS: 4 Pase: 5 CountTC: 3 FS: 45 RTC: 2 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=446.7, y=258.15)][7:(x=298.2, y=355.3)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.75, y=355.3)] B:(x=455.4, y=230.95) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 250 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 P: 1 RCS: 4 Pase: 5 CountTC: 3 FS: 45 RTC: 2 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=446.7, y=258.15)][7:(x=298.2, y=355.3)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.75, y=355.3)] B:(x=455.4, y=230.95) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 250 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnPlaceBall: 0 Cap ID: 6 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 243 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnServerShoot: 0 Cap ID: 6 dir: -25.7, -29.15 force: 0.3670993 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 239 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 238 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 238 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 P: 1 RCS: 11 Pase: -1 CountTC: 2 FS: 54 RTC: 2 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=535.4, y=359.95)][7:(x=298.2, y=355.3)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.75, y=355.3)] B:(x=662.6, y=424.45) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 238 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 P: 0 RCS: 11 Pase: -1 CountTC: 2 FS: 54 RTC: 2 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=535.4, y=359.95)][7:(x=298.2, y=355.3)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.75, y=355.3)] B:(x=662.6, y=424.45) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 238 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 OnServerShoot: 0 Cap ID: 6 dir: -39.4, -11.95 force: 0.4026515 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 230 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 229 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 229 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 P: 1 RCS: 11 Pase: -1 CountTC: 0 FS: 46 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=682, y=404.4)][7:(x=298.2, y=355.3)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.75, y=355.3)] B:(x=662.6, y=424.45) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 229 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:28 PM: M: 112573 P: 0 RCS: 11 Pase: -1 CountTC: 0 FS: 46 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=682, y=404.4)][7:(x=298.2, y=355.3)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.75, y=355.3)] B:(x=662.6, y=424.45) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 229 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnServerShoot: 1 Cap ID: 4 dir: -53.18389, -3.989789 force: 0.5897436 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 226 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 225 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 225 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 0 RCS: 5 Pase: 4 CountTC: 5 FS: 41 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=647.1, y=366.2)][7:(x=298.2, y=355.3)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=664.15, y=408.95)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.75, y=355.3)] B:(x=688.05, y=435.75) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 225 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 1 RCS: 5 Pase: 4 CountTC: 5 FS: 41 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=647.1, y=366.2)][7:(x=298.2, y=355.3)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=664.15, y=408.95)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.75, y=355.3)] B:(x=688.05, y=435.75) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 225 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnPlaceBall: 1 Cap ID: 4 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 222 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnServerShoot: 1 Cap ID: 4 dir: 34.85, 6.05 force: 0.3134038 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 220 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 218 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 218 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 0 RCS: 11 Pase: -1 CountTC: 3 FS: 54 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=647.1, y=366.2)][7:(x=298.2, y=355.3)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=551.3, y=389.35)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=447.15, y=403.2) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 218 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 1 RCS: 11 Pase: -1 CountTC: 3 FS: 54 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=647.1, y=366.2)][7:(x=298.2, y=355.3)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=551.3, y=389.35)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=447.15, y=403.2) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 218 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnServerShoot: 0 Cap ID: 7 dir: -45.2, 15.7 force: 0.5053697 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 213 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 211 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 211 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 0 RCS: 11 Pase: -1 CountTC: 0 FS: 49 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=647.1, y=366.2)][7:(x=480.7, y=291.9)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=551.3, y=389.35)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=447.15, y=403.2) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 211 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 1 RCS: 11 Pase: -1 CountTC: 0 FS: 49 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=647.1, y=366.2)][7:(x=480.7, y=291.9)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=551.3, y=389.35)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=447.15, y=403.2) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 211 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnServerShoot: 0 Cap ID: 5 dir: -66.16864, 5.538162 force: 0.7907692 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 210 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 209 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 209 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 0 RCS: 11 Pase: -1 CountTC: 0 FS: 50 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=477.9, y=321.5)][6:(x=647.1, y=366.2)][7:(x=531.1, y=269.35)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=551.3, y=389.35)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=447.15, y=403.2) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 209 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 1 RCS: 11 Pase: -1 CountTC: 0 FS: 50 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=477.9, y=321.5)][6:(x=647.1, y=366.2)][7:(x=531.1, y=269.35)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=551.3, y=389.35)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=447.15, y=403.2) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 209 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnServerShoot: 1 Cap ID: 4 dir: 38.7, -5.35 force: 0.3702777 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 204 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 202 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 202 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 0 RCS: 11 Pase: -1 CountTC: 1 FS: 53 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=477.9, y=321.5)][6:(x=647.1, y=366.2)][7:(x=531.1, y=269.35)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=414.15, y=408.3)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=331.95, y=417.7) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 202 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 1 RCS: 11 Pase: -1 CountTC: 1 FS: 53 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=477.9, y=321.5)][6:(x=647.1, y=366.2)][7:(x=531.1, y=269.35)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=414.15, y=408.3)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=331.95, y=417.7) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 202 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnServerShoot: 1 Cap ID: 4 dir: 47.85, -4.3 force: 0.5083511 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 200 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 198 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 198 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 1 RCS: 11 Pase: -1 CountTC: 1 FS: 58 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=477.9, y=321.5)][6:(x=647.1, y=366.2)][7:(x=531.1, y=269.35)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=225.8, y=425.05)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=71.3, y=450.55) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 198 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 0 RCS: 11 Pase: -1 CountTC: 1 FS: 58 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=477.9, y=321.5)][6:(x=647.1, y=366.2)][7:(x=531.1, y=269.35)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=225.8, y=425.05)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=71.3, y=450.55) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 198 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnServerShoot: 0 Cap ID: 0 dir: -19, 7.5 force: 0.08348767 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 195 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 194 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 194 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 0 RCS: 11 Pase: -1 CountTC: 0 FS: 32 RTC: 0 T1: [0:(x=108.15, y=257.4)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=477.9, y=321.5)][6:(x=647.1, y=366.2)][7:(x=531.1, y=269.35)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=225.8, y=425.05)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=71.3, y=450.55) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 194 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 1 RCS: 11 Pase: -1 CountTC: 0 FS: 32 RTC: 0 T1: [0:(x=108.15, y=257.4)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=477.9, y=321.5)][6:(x=647.1, y=366.2)][7:(x=531.1, y=269.35)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=225.8, y=425.05)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=71.3, y=450.55) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 194 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnServerShoot: 0 Cap ID: 0 dir: 25.85, -1.4 force: 0.1675059 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 191 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 189 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 189 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 0 RCS: 11 Pase: -1 CountTC: 0 FS: 48 RTC: 0 T1: [0:(x=70.7, y=260.7)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=477.9, y=321.5)][6:(x=647.1, y=366.2)][7:(x=531.1, y=269.35)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=225.8, y=425.05)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=71.3, y=450.55) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 189 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 1 RCS: 11 Pase: -1 CountTC: 0 FS: 48 RTC: 0 T1: [0:(x=70.7, y=260.7)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=477.9, y=321.5)][6:(x=647.1, y=366.2)][7:(x=531.1, y=269.35)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=225.8, y=425.05)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=71.3, y=450.55) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 189 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnTiroPuerta: Player: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 186 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnPosCap: 0 Cap ID: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 183 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnPosCap: 0 Cap ID: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 183 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnPosCap: 0 Cap ID: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 182 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnPosCap: 0 Cap ID: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 182 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnPosCap: 0 Cap ID: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 181 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnPosCap: 0 Cap ID: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 181 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnPosCap: 0 Cap ID: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 180 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnPosCap: 0 Cap ID: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 180 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 179 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 OnServerShoot: 1 Cap ID: 4 dir: 47.2, -11.05 force: 0.5150185 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 172 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 170 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 170 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 0 RCS: 11 Pase: -1 CountTC: 6 FS: 69 RTC: 0 T1: [0:(x=66, y=291)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=477.9, y=321.5)][6:(x=647.1, y=366.2)][7:(x=531.1, y=269.35)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=61, y=421.2)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=73.9, y=444.55) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 170 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:29 PM: M: 112573 P: 1 RCS: 11 Pase: -1 CountTC: 6 FS: 69 RTC: 0 T1: [0:(x=66, y=291)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=477.9, y=321.5)][6:(x=647.1, y=366.2)][7:(x=531.1, y=269.35)]T2: [0:(x=694, y=269)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=61, y=421.2)][5:(x=489.45, y=221.7)][6:(x=461.2, y=180.5)][7:(x=461.25, y=354.6)] B:(x=73.9, y=444.55) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 170 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:30 PM: M: 112573 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 159 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:30 PM: M: 112573 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 147 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:30 PM: M: 112573 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 136 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:30 PM: M: 112573 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 125 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:30 PM: M: 112573 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 113 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:31 PM: M: 112573 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 102 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:31 PM: M: 112573 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 91 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:31 PM: M: 112573 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 79 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:31 PM: M: 112573 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 68 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:31 PM: M: 112573 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 57 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:32 PM: M: 112573 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 45 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:32 PM: M: 112573 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 34 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:32 PM: M: 112573 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 23 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:32 PM: M: 112573 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 11 SC1=0 SC2=0
+[Thread-7] MATCH DEBUG:6/7/2011 7:32 PM: M: 112573 Start Part: 2 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 0 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:32 PM: M: 112573 OnPlayerReady: 0 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:32 PM: M: 112573 OnPlayerReady: 1 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 300 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:33 PM: M: 112573 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 288 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:33 PM: M: 112573 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 277 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:33 PM: M: 112573 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 266 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:33 PM: M: 112573 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 254 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:33 PM: M: 112573 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 243 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:34 PM: M: 112573 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 232 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:34 PM: M: 112573 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 220 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:34 PM: M: 112573 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 209 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:34 PM: M: 112573 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 198 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:34 PM: M: 112573 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 186 SC1=0 SC2=0
+[Thread-10] GLOBAL:6/7/2011 7:34 PM:!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Application_End !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+[Thread-17] NETENGINE DEBUG:6/7/2011 7:34 PM:GhostCleanupThread interrupted
+[Thread-16] MATCH DEBUG:6/7/2011 7:34 PM: M: 112573 OnAbort: Player: 0 <Vars>: SS: False CountPlayersES: 0 P: 2 T: 177 SC1=0 SC2=0
+[Thread-16] MATCH DEBUG:6/7/2011 7:34 PM: M: 112573 Match marked to finish:  <Vars>: SS: False CountPlayersES: 0 P: 2 T: 177 SC1=0 SC2=0
+[Thread-16] REALTIME:6/7/2011 7:34 PM:************************* Realtime Stopping *************************
+[Thread-15] NETENGINE DEBUG:6/7/2011 7:34 PM:GhostCleanupThread interrupted
+[Thread-11] WEBORB EXCEPTION:6/7/2011 8:21 PM:Weborb.Protocols.UnknownRequestFormatException: cannot parse request. possible reasons: malformed request or protocol formatter is not registered 
+   at Weborb.Protocols.ProtocolRegistry.BuildMessage(String contentType, Stream requestStream, NameValueCollection headers)
+   at Weborb.ORBHttpHandler.HandleRequest(HttpContext context, HttpRequest request, HttpResponse response)
+[Thread-17] GLOBAL:6/7/2011 8:21 PM::******************* Initialization from Global.asax *******************
+[Thread-17] REALTIME:6/7/2011 8:21 PM:************************* Realtime Starting *************************
+[Thread-14] REALTIME DEBUG:6/7/2011 8:22 PM:************************* OnClientConnected  0 *************************
+[Thread-14] REALTIME DEBUG:6/7/2011 8:22 PM:0 0 logged in: PlayerName PlayerSurname, Team: TestTeam0
+[Thread-14] REALTIME DEBUG:6/7/2011 8:22 PM:************************* OnClientConnected  1 *************************
+[Thread-14] REALTIME DEBUG:6/7/2011 8:22 PM:1 1 logged in: PlayerName PlayerSurname, Team: TestTeam2
+[Thread-14] MATCH:6/7/2011 8:22 PM: M: 112574 Init Match: 112574 FirstPlayer: TestTeam0 SecondPlayer: TestTeam2 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 0 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 Start Part: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 0 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 OnRequestData: Player: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 OnPlayerReady: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 OnRequestData: Player: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 OnPlayerReady: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 300 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 OnServerShoot: 0 Cap ID: 7 dir: -67.2, 7.7 force: 0.8098416 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 297 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 297 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 297 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 P: 0 RCS: 2 Pase: -1 CountTC: 0 FS: 8 RTC: 3 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=374.05, y=290.7)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=532.9, y=268.5)][6:(x=461.75, y=181.75)][7:(x=463.8, y=356.35)] B:(x=380, y=264) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 297 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 P: 1 RCS: 2 Pase: -1 CountTC: 0 FS: 8 RTC: 3 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=374.05, y=290.7)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=532.9, y=268.5)][6:(x=461.75, y=181.75)][7:(x=463.8, y=356.35)] B:(x=380, y=264) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 297 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 OnPlaceBall: 1 Cap ID: 7 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 291 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 OnServerShoot: 1 Cap ID: 7 dir: 1.2, 35.65 force: 0.3180029 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 288 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 286 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 286 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 P: 1 RCS: 5 Pase: 6 CountTC: 7 FS: 83 RTC: 3 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=374.05, y=290.7)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=532.9, y=268.5)][6:(x=461.95, y=178.7)][7:(x=459.95, y=239.5)] B:(x=438.6, y=189.8) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 286 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 P: 0 RCS: 5 Pase: 6 CountTC: 7 FS: 83 RTC: 3 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=374.05, y=290.7)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=532.9, y=268.5)][6:(x=461.95, y=178.7)][7:(x=459.95, y=239.5)] B:(x=438.6, y=189.8) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 286 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 OnPlaceBall: 1 Cap ID: 6 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 282 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 OnServerShoot: 1 Cap ID: 6 dir: -22.95, -26.7 force: 0.31089 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 280 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 279 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 279 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 P: 1 RCS: 5 Pase: 5 CountTC: 10 FS: 45 RTC: 3 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=374.05, y=290.7)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=555.85, y=299.95)][6:(x=514.45, y=235.6)][7:(x=459.95, y=239.5)] B:(x=557.55, y=266.8) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 279 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 P: 0 RCS: 5 Pase: 5 CountTC: 10 FS: 45 RTC: 3 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=374.05, y=290.7)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=611.65, y=421)][5:(x=555.85, y=299.95)][6:(x=514.45, y=235.6)][7:(x=459.95, y=239.5)] B:(x=557.55, y=266.8) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 279 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 OnPlaceBall: 1 Cap ID: 5 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 277 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 OnServerShoot: 1 Cap ID: 5 dir: -20.85, -31.95 force: 0.3561745 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 276 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 274 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 274 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 P: 0 RCS: 11 Pase: -1 CountTC: 8 FS: 46 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=374.05, y=290.7)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=614.1, y=430.55)][5:(x=625.4, y=402.65)][6:(x=514.45, y=235.6)][7:(x=459.95, y=239.5)] B:(x=672, y=392.75) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 274 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 P: 1 RCS: 11 Pase: -1 CountTC: 8 FS: 46 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=374.05, y=290.7)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=611.65, y=319.35)][4:(x=614.1, y=430.55)][5:(x=625.4, y=402.65)][6:(x=514.45, y=235.6)][7:(x=459.95, y=239.5)] B:(x=672, y=392.75) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 274 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 OnServerShoot: 0 Cap ID: 7 dir: -79.77929, -5.938475 force: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 270 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 269 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 269 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 P: 0 RCS: 2 Pase: -1 CountTC: 0 FS: 11 RTC: 3 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=621.1, y=323.45)][4:(x=614.1, y=430.55)][5:(x=625.4, y=402.65)][6:(x=514.45, y=235.6)][7:(x=459.95, y=239.5)] B:(x=672, y=392.75) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 269 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 P: 1 RCS: 2 Pase: -1 CountTC: 0 FS: 11 RTC: 3 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=621.1, y=323.45)][4:(x=614.1, y=430.55)][5:(x=625.4, y=402.65)][6:(x=514.45, y=235.6)][7:(x=459.95, y=239.5)] B:(x=672, y=392.75) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 269 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:22 PM: M: 112574 OnPlaceBall: 1 Cap ID: 3 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 265 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 OnServerShoot: 1 Cap ID: 3 dir: 30.9, -5.45 force: 0.2519529 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 262 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 260 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 260 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 P: 0 RCS: 11 Pase: -1 CountTC: 1 FS: 49 RTC: 3 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=531.05, y=339.4)][4:(x=614.1, y=430.55)][5:(x=625.4, y=402.65)][6:(x=514.45, y=235.6)][7:(x=459.95, y=239.5)] B:(x=424.8, y=350.4) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 260 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 P: 1 RCS: 11 Pase: -1 CountTC: 1 FS: 49 RTC: 3 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=531.05, y=339.4)][4:(x=614.1, y=430.55)][5:(x=625.4, y=402.65)][6:(x=514.45, y=235.6)][7:(x=459.95, y=239.5)] B:(x=424.8, y=350.4) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 260 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 OnServerShoot: 1 Cap ID: 4 dir: 52.25606, 10.66531 force: 0.5897436 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 257 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 256 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 256 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 P: 0 RCS: 11 Pase: -1 CountTC: 0 FS: 50 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=531.05, y=339.4)][4:(x=392.95, y=385.4)][5:(x=625.4, y=402.65)][6:(x=514.45, y=235.6)][7:(x=459.95, y=239.5)] B:(x=424.8, y=350.4) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 256 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 P: 1 RCS: 11 Pase: -1 CountTC: 0 FS: 50 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=531.05, y=339.4)][4:(x=392.95, y=385.4)][5:(x=625.4, y=402.65)][6:(x=514.45, y=235.6)][7:(x=459.95, y=239.5)] B:(x=424.8, y=350.4) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 256 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 244 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 OnServerTimeout: 1 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 233 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 OnServerTimeout: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 222 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 OnServerShoot: 1 Cap ID: 4 dir: -15.95, 22.6 force: 0.1947934 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 217 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 216 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 216 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 P: 0 RCS: 11 Pase: -1 CountTC: 1 FS: 44 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=531.05, y=339.4)][4:(x=433.5, y=327.6)][5:(x=625.4, y=402.65)][6:(x=514.45, y=235.6)][7:(x=459.95, y=239.5)] B:(x=485.7, y=281.8) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 216 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 P: 1 RCS: 11 Pase: -1 CountTC: 1 FS: 44 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=531.05, y=339.4)][4:(x=433.5, y=327.6)][5:(x=625.4, y=402.65)][6:(x=514.45, y=235.6)][7:(x=459.95, y=239.5)] B:(x=485.7, y=281.8) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 216 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 OnServerShoot: 1 Cap ID: 6 dir: 15.55, -19.6 force: 0.1541422 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 213 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 212 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 212 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 P: 1 RCS: 5 Pase: 4 CountTC: 2 FS: 42 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=531.05, y=339.4)][4:(x=433.5, y=327.6)][5:(x=625.4, y=402.65)][6:(x=478.85, y=280.35)][7:(x=459.95, y=239.5)] B:(x=459.9, y=323.1) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 212 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 P: 0 RCS: 5 Pase: 4 CountTC: 2 FS: 42 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=531.05, y=339.4)][4:(x=433.5, y=327.6)][5:(x=625.4, y=402.65)][6:(x=478.85, y=280.35)][7:(x=459.95, y=239.5)] B:(x=459.9, y=323.1) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 212 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 OnPlaceBall: 1 Cap ID: 4 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 209 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 OnServerShoot: 1 Cap ID: 4 dir: -23.5, 0.4 force: 0.1308216 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 207 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 205 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 205 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 P: 1 RCS: 5 Pase: 3 CountTC: 6 FS: 67 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=532.45, y=339.6)][4:(x=481.7, y=326.55)][5:(x=625.4, y=402.65)][6:(x=478.85, y=280.35)][7:(x=459.95, y=239.5)] B:(x=506.15, y=329) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 205 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 P: 0 RCS: 5 Pase: 3 CountTC: 6 FS: 67 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=532.45, y=339.6)][4:(x=481.7, y=326.55)][5:(x=625.4, y=402.65)][6:(x=478.85, y=280.35)][7:(x=459.95, y=239.5)] B:(x=506.15, y=329) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 205 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:23 PM: M: 112574 OnPlaceBall: 1 Cap ID: 3 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 203 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 OnServerShoot: 1 Cap ID: 3 dir: -20.45, -7.6 force: 0.1048702 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 202 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 201 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 201 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 P: 0 RCS: 5 Pase: 5 CountTC: 2 FS: 37 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=568.05, y=352.7)][4:(x=481.7, y=326.55)][5:(x=625.4, y=402.65)][6:(x=478.85, y=280.35)][7:(x=459.95, y=239.5)] B:(x=606.05, y=381.55) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 201 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 P: 1 RCS: 5 Pase: 5 CountTC: 2 FS: 37 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148.3, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=568.05, y=352.7)][4:(x=481.7, y=326.55)][5:(x=625.4, y=402.65)][6:(x=478.85, y=280.35)][7:(x=459.95, y=239.5)] B:(x=606.05, y=381.55) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 201 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 OnPlaceBall: 1 Cap ID: 5 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 198 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 OnServerShoot: 1 Cap ID: 5 dir: 53.3267, 0.8410169 force: 0.5897436 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 196 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 193 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 193 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 P: 0 RCS: 10 Pase: -1 CountTC: 2 FS: 86 RTC: 9 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=568.05, y=352.7)][4:(x=481.7, y=326.55)][5:(x=407.6, y=399.25)][6:(x=478.85, y=280.35)][7:(x=459.95, y=239.5)] B:(x=178.05, y=391.75) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 193 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 P: 1 RCS: 10 Pase: -1 CountTC: 2 FS: 86 RTC: 9 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=148, y=392.5)][4:(x=227.05, y=212.75)][5:(x=227.05, y=324.3)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=568.05, y=352.7)][4:(x=481.7, y=326.55)][5:(x=407.6, y=399.25)][6:(x=478.85, y=280.35)][7:(x=459.95, y=239.5)] B:(x=178.05, y=391.75) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 193 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 OnPlaceBall: 0 Cap ID: 3 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 184 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 OnServerShoot: 0 Cap ID: 3 dir: -18, 19.5 force: 0.1775032 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 182 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 179 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 179 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 P: 1 RCS: 5 Pase: 5 CountTC: 13 FS: 89 RTC: 9 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=191.05, y=345.05)][4:(x=227.05, y=212.75)][5:(x=229.95, y=322.15)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=568.05, y=352.7)][4:(x=481.7, y=326.55)][5:(x=407.6, y=399.25)][6:(x=478.85, y=280.35)][7:(x=459.95, y=239.5)] B:(x=203.95, y=324.55) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 179 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 P: 0 RCS: 5 Pase: 5 CountTC: 13 FS: 89 RTC: 9 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=191.05, y=345.05)][4:(x=227.05, y=212.75)][5:(x=229.95, y=322.15)][6:(x=298.2, y=181.75)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=568.05, y=352.7)][4:(x=481.7, y=326.55)][5:(x=407.6, y=399.25)][6:(x=478.85, y=280.35)][7:(x=459.95, y=239.5)] B:(x=203.95, y=324.55) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 179 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 OnPlaceBall: 0 Cap ID: 5 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 178 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 OnServerShoot: 0 Cap ID: 5 dir: -10.95, 24.85 force: 0.1870088 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 176 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 175 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 175 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 P: 0 RCS: 5 Pase: 6 CountTC: 3 FS: 59 RTC: 9 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=191.05, y=345.05)][4:(x=227.05, y=212.75)][5:(x=257, y=260.5)][6:(x=298.45, y=181.15)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=568.05, y=352.7)][4:(x=481.7, y=326.55)][5:(x=407.6, y=399.25)][6:(x=478.85, y=280.35)][7:(x=459.95, y=239.5)] B:(x=289.7, y=215.65) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 174 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 P: 1 RCS: 5 Pase: 6 CountTC: 3 FS: 59 RTC: 9 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=191.05, y=345.05)][4:(x=227.05, y=212.75)][5:(x=257, y=260.5)][6:(x=298.45, y=181.15)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=611.65, y=217.7)][3:(x=568.05, y=352.7)][4:(x=481.7, y=326.55)][5:(x=407.6, y=399.25)][6:(x=478.85, y=280.35)][7:(x=459.95, y=239.5)] B:(x=289.7, y=215.65) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 174 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 OnPlaceBall: 0 Cap ID: 6 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 173 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 OnServerShoot: 0 Cap ID: 6 dir: -43.45, -12.15 force: 0.4633353 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 171 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 169 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 169 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 P: 1 RCS: 5 Pase: 7 CountTC: 3 FS: 78 RTC: 9 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=191.05, y=345.05)][4:(x=227.05, y=212.75)][5:(x=257, y=260.5)][6:(x=447.8, y=216.1)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=613.35, y=217.35)][3:(x=568.05, y=352.7)][4:(x=481.7, y=326.55)][5:(x=407.6, y=399.25)][6:(x=479.15, y=281.8)][7:(x=476.65, y=250.9)] B:(x=569.45, y=249.6) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 169 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 P: 0 RCS: 5 Pase: 7 CountTC: 3 FS: 78 RTC: 9 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=191.05, y=345.05)][4:(x=227.05, y=212.75)][5:(x=257, y=260.5)][6:(x=447.8, y=216.1)][7:(x=539, y=271.05)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=613.35, y=217.35)][3:(x=568.05, y=352.7)][4:(x=481.7, y=326.55)][5:(x=407.6, y=399.25)][6:(x=479.15, y=281.8)][7:(x=476.65, y=250.9)] B:(x=569.45, y=249.6) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 169 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 OnPlaceBall: 0 Cap ID: 7 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 167 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 OnServerShoot: 0 Cap ID: 7 dir: -26, -36.05 force: 0.4530423 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 166 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 ClientEndShoot: 1 <Vars>: SS: True CountPlayersES: 0 P: 1 T: 165 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 ClientEndShoot: 0 <Vars>: SS: True CountPlayersES: 1 P: 1 T: 165 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 P: 0 RCS: 11 Pase: -1 CountTC: 5 FS: 45 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=191.05, y=345.05)][4:(x=227.05, y=212.75)][5:(x=257, y=260.5)][6:(x=447.8, y=216.1)][7:(x=624.35, y=321.7)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=613.35, y=217.35)][3:(x=583.55, y=438.8)][4:(x=481.7, y=326.55)][5:(x=407.6, y=399.25)][6:(x=479.15, y=281.8)][7:(x=476.65, y=250.9)] B:(x=529.45, y=425.75) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 165 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 P: 1 RCS: 11 Pase: -1 CountTC: 5 FS: 45 RTC: 0 T1: [0:(x=80, y=268.5)][1:(x=148.3, y=144.55)][2:(x=148.3, y=268.5)][3:(x=191.05, y=345.05)][4:(x=227.05, y=212.75)][5:(x=257, y=260.5)][6:(x=447.8, y=216.1)][7:(x=624.35, y=321.7)]T2: [0:(x=679.95, y=268.5)][1:(x=611.65, y=118.5)][2:(x=613.35, y=217.35)][3:(x=583.55, y=438.8)][4:(x=481.7, y=326.55)][5:(x=407.6, y=399.25)][6:(x=479.15, y=281.8)][7:(x=476.65, y=250.9)] B:(x=529.45, y=425.75) <Vars>: SS: False CountPlayersES: 0 P: 1 T: 165 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 OnAbort: Player: 0 <Vars>: SS: False CountPlayersES: 0 P: 1 T: 163 SC1=0 SC2=0
+[Thread-14] MATCH DEBUG:6/7/2011 8:24 PM: M: 112574 Match marked to finish:  <Vars>: SS: False CountPlayersES: 0 P: 1 T: 163 SC1=0 SC2=0
+[Thread-14] REALTIME DEBUG:6/7/2011 8:24 PM:1 1 logged in: PlayerName PlayerSurname, Team: TestTeam2
+[Thread-5] GLOBAL:6/7/2011 8:25 PM:!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Application_End !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+[Thread-13] NETENGINE DEBUG:6/7/2011 8:25 PM:GhostCleanupThread interrupted
+[Thread-14] REALTIME:6/7/2011 8:25 PM:************************* Realtime Stopping *************************
+[Thread-15] NETENGINE DEBUG:6/7/2011 8:25 PM:GhostCleanupThread interrupted

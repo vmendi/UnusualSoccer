@@ -1,0 +1,13 @@
+[Thread-20] WEBORB EXCEPTION:6/8/2011 5:17 PM:Weborb.Protocols.UnknownRequestFormatException: cannot parse request. possible reasons: malformed request or protocol formatter is not registered 
+   at Weborb.Protocols.ProtocolRegistry.BuildMessage(String contentType, Stream requestStream, NameValueCollection headers)
+   at Weborb.ORBHttpHandler.HandleRequest(HttpContext context, HttpRequest request, HttpResponse response)
+[Thread-23] GLOBAL:6/8/2011 5:17 PM::******************* Initialization from Global.asax *******************
+[Thread-23] REALTIME:6/8/2011 5:17 PM:************************* Realtime Starting *************************
+[Thread-27] REALTIME DEBUG:6/8/2011 5:17 PM:************************* OnClientConnected  0 *************************
+[Thread-27] REALTIME DEBUG:6/8/2011 5:17 PM:0 0 logged in: PlayerName PlayerSurname, Team: TestTeam0
+[Thread-27] REALTIME DEBUG:6/8/2011 5:17 PM:************************* OnClientConnected  1 *************************
+[Thread-27] REALTIME DEBUG:6/8/2011 5:17 PM:1 1 logged in: PlayerName PlayerSurname, Team: TestTeam2
+[Thread-21] GLOBAL:6/8/2011 5:21 PM:!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Application_End !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+[Thread-28] NETENGINE DEBUG:6/8/2011 5:21 PM:GhostCleanupThread interrupted
+[Thread-27] REALTIME:6/8/2011 5:21 PM:************************* Realtime Stopping *************************
+[Thread-26] NETENGINE DEBUG:6/8/2011 5:21 PM:GhostCleanupThread interrupted

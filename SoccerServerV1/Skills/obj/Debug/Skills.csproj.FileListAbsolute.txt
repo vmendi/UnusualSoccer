@@ -1,0 +1,10 @@
+F:\UnusualSVN\UnusualEngine\SoccerServerV1\Skills\bin\Debug\Moserware.Skills.dll
+F:\UnusualSVN\UnusualEngine\SoccerServerV1\Skills\bin\Debug\Moserware.Skills.pdb
+F:\UnusualSVN\UnusualEngine\SoccerServerV1\Skills\obj\Debug\ResolveAssemblyReference.cache
+F:\UnusualSVN\UnusualEngine\SoccerServerV1\Skills\obj\Debug\Moserware.Skills.dll
+F:\UnusualSVN\UnusualEngine\SoccerServerV1\Skills\obj\Debug\Moserware.Skills.pdb
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\Skills\bin\Debug\Moserware.Skills.dll
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\Skills\bin\Debug\Moserware.Skills.pdb
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\Skills\obj\Debug\ResolveAssemblyReference.cache
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\Skills\obj\Debug\Moserware.Skills.dll
+F:\UnusualSVN\UnusualEngine\trunk\SoccerServerV1\Skills\obj\Debug\Moserware.Skills.pdb
