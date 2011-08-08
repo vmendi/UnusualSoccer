@@ -114,9 +114,9 @@
 			<GameView:OptionsSelector id="MyTurnLengthSelector" width="110" DataOptions="{MainGameModel.POSSIBLE_TURN_LENGTH_SECONDS}" />	
 		</s:Group>
 		
-		<GameView:PromptingTextInput left="0" right="0" top="60" 
-			skinClass="GameView.Skins.PromptingTextInputSkin" prompt="Escribe aquí un mensaje a tu oponente..."
-			id="MyChallengeMsgInput" text="" maxChars="50"/>
+		<s:TextInput left="0" right="0" top="60" 
+					 		  prompt="Escribe aquí un mensaje a tu oponente..."
+							  id="MyChallengeMsgInput" text="" maxChars="50"/>
 		
 		<s:Button left="65" right="65" top="95"
 				  skinClass="GameView.Skins.ButtonGreySkin" label="LANZAR RETO" click="LaunchChallenge_clickHandler(event)" />
