@@ -21,10 +21,7 @@ package Caps
 	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
 	import flash.net.SharedObject;
-	
-	import mx.controls.Alert;
-	import mx.events.IndexChangedEvent;
-	
+
 	import utils.GenericEvent;
 	
 	//

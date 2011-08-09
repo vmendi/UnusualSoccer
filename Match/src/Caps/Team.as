@@ -112,10 +112,10 @@ package Caps
 			UseSecondaryEquipment = useSecondaryEquipment;
 			
 			// Obtenemos el array de jugadores ( viene desde red como un mx.collections::ArrayCollection )
-			var soccers:Array = Collections.ToArray( descTeam.SoccerPlayers );
+			var soccers:Array = (descTeam.SoccerPlayers as Object).toArray();
 			
 			// Copiamos la lista de habilidades especiales, convirtiéndola a un array
-			LoadSkills( Collections.ToArray( descTeam.SpecialSkillsIDs ) );
+			LoadSkills( (descTeam.SpecialSkillsIDs as Object).toArray() );
 			
 			var descCap:Object = { 
 				Number: 13,

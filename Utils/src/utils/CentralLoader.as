@@ -141,10 +141,8 @@ package utils
 	}
 }
 
-	import flash.errors.IOError;
 	import flash.events.IOErrorEvent;
 	import flash.net.URLStream;
-	import flash.profiler.showRedrawRegions;
 		
 
 internal class CacheItem

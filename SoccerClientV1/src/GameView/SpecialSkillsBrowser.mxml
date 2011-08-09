@@ -49,7 +49,7 @@
 				if (mSpecialSkillIDs.contains(i))
 					(cloned.content as MovieClip).gotoAndStop("SpecialSkill" + i);
 				else
-					(cloned.content as MovieClip).gotoAndStop("Empty");
+					(cloned.content as MovieClip).gotoAndStop("empty");
 				
 				addElement(cloned);
 			}
