@@ -11,7 +11,7 @@
 <body style="margin:0px 0px 0px 0px;overflow:hidden;text-align:center;">
 	
 	<div style="margin-bottom:10px;">
-		<img src="SoccerClientV1/Imgs/MainHeader.jpg" alt="" width="760" height="74" style="display:block;border:0;"></img>
+		<img src="SoccerClient/Imgs/MainHeader.jpg" alt="" width="760" height="74" style="display:block;border:0;"></img>
 	</div>
 
 	<div id="fb-root"></div>

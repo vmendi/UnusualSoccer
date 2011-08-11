@@ -27,7 +27,7 @@ namespace SoccerServer
 			}
 
             // Lo hacemos en un IFrame para que la recarga sea darle a un boton
-            MyFrame.Attributes.Add("src", "SoccerClientV1/SoccerClientV1.html?" + Request.QueryString.ToString());
+            MyFrame.Attributes.Add("src", "SoccerClient/SoccerClient.html?" + Request.QueryString.ToString());
         }
     }
 }

@@ -75,7 +75,7 @@ namespace SoccerServer
 						queryStringToClient += "&liked=true";
 					
 					// Seria mejor hacer un transfer, pero no sabemos como librarnos de la exception, a pesar del catch parece que la relanza??
-					Response.Redirect("SoccerClientV1/SoccerClientV1.html?" + queryStringToClient, false);
+					Response.Redirect("SoccerClient/SoccerClient.html?" + queryStringToClient, false);
 				}
 				else
 				{
