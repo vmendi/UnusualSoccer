@@ -1,0 +1,16 @@
+<local:MainViewModel 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Invoker" 
+    SampleProperty="Sample Text Property Value">
+
+  <local:MainViewModel.Items>
+    <local:ItemViewModel MethodName="method one" Signature="methodOne() signature" />
+    <local:ItemViewModel MethodName="method two" Signature="methodTwo() signature" />
+    <local:ItemViewModel MethodName="method three" Signature="methodThree() signature" />
+    <local:ItemViewModel MethodName="method four" Signature="methodFour() signature" />
+    <local:ItemViewModel MethodName="method five" Signature="methodFive() signature" />
+    <local:ItemViewModel MethodName="method six" Signature="methodSix() signature" />
+  </local:MainViewModel.Items>
+
+</local:MainViewModel>

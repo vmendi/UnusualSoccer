@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" verticalGap="30" 
+	minWidth="500" minHeight="333"
+	paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10" 
+	initialize="onInitialize()">
+	
+	<mx:Script>
+		<![CDATA[
+			
+			[Bindable]
+			private var controller:ServerMethodCallController;
+			
+			private function onInitialize():void
+			{
+				controller = new ServerMethodCallController(this);
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Text htmlText="INSTRUCTIONS: This example requires special code on the server-side which will push data into the client code by invoking client-side functions. In order to deploy the server-side code, make sure that your application adapter either is or extends from Weborb.Examples.RTMPDemo.AppHandler. See the &lt;u&gt;&lt;b&gt;&lt;a href='http://www.themidnightcoders.com/rtmpdemosetup' target='_blank'&gt;product documentation&lt;/a&gt;&lt;/b&gt;&lt;/u&gt; for additional instructions." width="100%"/>
+	
+	<mx:Button id="btnConnection" width="150" 
+		label="{controller.model.conneted ? 'Disconnect' : 'Connect'}"
+		click="{controller.onConnect()}" />
+	
+	<mx:HRule width="100%" />
+	
+	<mx:VBox verticalGap="16" enabled="{controller.model.conneted}">
+		<mx:HBox>
+			<mx:Label text="Input value:" />
+			<mx:TextInput id="txtInputValue" maxChars="30" />
+		</mx:HBox>
+		<mx:HBox horizontalGap="10">
+			<mx:Button id="btnEchoStr" label="Echo String" width="150" click="{controller.onEchoString()}" />
+			<mx:Spacer width="10" />
+			<mx:Label text="Received result: {controller.model.echoString}" />
+		</mx:HBox>
+	</mx:VBox>
+	
+	<mx:HRule width="100%" />
+	
+	<mx:HBox horizontalGap="10" enabled="{controller.model.conneted}">
+		<mx:Button id="btnEchoArray" label="Echo ArrayCollection" width="150" click="{controller.onEchoArray()}" />
+		<mx:Spacer width="10" />
+		<mx:Label text="Received result: {controller.model.echoArrayAsString}" />
+	</mx:HBox>
+</mx:VBox>

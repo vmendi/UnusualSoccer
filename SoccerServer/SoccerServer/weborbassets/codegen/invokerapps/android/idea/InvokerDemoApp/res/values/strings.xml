@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">InvokerAppDemo</string>
+    <string name="method_view_title">Invoke Method</string>
+    <string name="invoke_button">Invoke</string>
+    <string name="set_button">Set</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="add_button">Add</string>
+    <string name="type_select_button">Set type</string>
+    <string name="string">String</string>
+    <string name="date_format">yyyy/MM/dd</string>
+    <string name="integer">Integer</string>
+    <string name="_long">Long</string>
+    <string name="_double">Double</string>
+    <string name="_float">Float</string>
+    <string name="no_input">&lt;Click to enter&gt;</string>
+    <string name="empty">&lt;Empty&gt;</string>
+    <string name="argument_title">Argument</string>
+    <string name="type_title">Type</string>
+    <string name="value_title">Value</string>
+    <string name="name_title">Name</string>
+    <string name="return_button">Return</string>
+    <string name="result_view_title">Invoke Result</string>
+
+    <color name="title_color">#5F53F2</color>
+
+    <string-array name="collapse_button_states">
+        <item>Collapse</item>
+        <item>Expand</item>
+    </string-array>
+
+    <string name="progress_dialog_collection_data">Collection data. Please wait...</string>
+    <string name="progress_dialog_invoking">Invoking. Please wait...</string>
+    <string name="error_dialog_title">Error!</string>
+    <string name="error_dialog_message">No all data entered. Please recheck and try again.</string>
+
+    <string name="connection_properties_button">Connection Properties</string>
+    <string name="url_title">Enter WebORB Endpoint URL:</string>
+    <string name="test_connection_button">Test Connection</string>
+    <string name="accept_button">Accept</string>
+
+    <string-array name="connection_dialog_titles">
+        <item>Success</item>
+        <item>Error Connection</item>
+    </string-array>
+    <string-array name="connection_dialog_messages">
+        <item>WebORB URL is valid.</item>
+        <item>Invalid WebORB URL</item>
+    </string-array>
+
+</resources>

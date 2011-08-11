@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+	verticalGap="30"
+	paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10"
+	initialize="onInitialize()">
+	
+	<mx:Script>
+		<![CDATA[
+			
+			[Bindable]
+			private var controller:RemoteSharedObjectController;
+			
+			private function onInitialize():void
+			{
+				controller = new RemoteSharedObjectController(this);
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Button id="btnConnect" width="150"
+		label="{controller.model.connected ? 'Disconnect' : 'Connect'}" 
+		click="{controller.onConnect()}" />
+	
+	<mx:HBox horizontalGap="30" enabled="{controller.model.connected}">
+		<mx:VBox height="100%" verticalGap="10" horizontalAlign="right">
+			<mx:Form paddingRight="0" paddingTop="0">
+				<mx:FormItem label="Key:">
+					<mx:TextInput id="txtKey" focusOut="{controller.validateKeyInput()}" />
+				</mx:FormItem>
+				<mx:FormItem label="Value:">
+					<mx:TextInput id="txtValue" focusOut="{controller.validateValueInput()}" />
+				</mx:FormItem>
+			</mx:Form>
+			<mx:Spacer height="100%"/>
+			<mx:Button id="btnUpdate" label="Update RSO" width="150" click="{controller.onUpdateRSO()}" />
+		</mx:VBox>
+		
+		<mx:VBox verticalGap="10" horizontalAlign="right">
+			<mx:DataGrid dataProvider="{controller.model.keyValuePairs}" width="300">
+				<mx:columns>
+					<mx:DataGridColumn headerText="Key" dataField="key" />
+					<mx:DataGridColumn headerText="Value" dataField="value" />
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:Button id="btnClear" label="Clear RSO values" width="150" click="{controller.onClearRSO()}" />
+		</mx:VBox>
+	</mx:HBox>
+	
+</mx:VBox>
