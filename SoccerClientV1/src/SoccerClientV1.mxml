@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
-			   xmlns:s="library://ns.adobe.com/flex/spark" 
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   xmlns:local="*"
-			   width="760" height="620"
-			   applicationComplete="ApplicationCompleteHandler(event)"
-			   preloader="ProgressPreloader"
-			   frameRate="30">
+			   width="760" height="620" applicationComplete="ApplicationCompleteHandler(event)"
+			   frameRate="30" preloader="ProgressPreloader">
 
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
@@ -35,9 +33,9 @@
 				if (!parameters.hasOwnProperty("FakeSessionKey"))
 					throw new Error("Si Remote, necesitas FakeSessionKey");
 				
-				ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri = "http://mahouligachapas.unusualwonder.com/weborb.aspx";
+				ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri = "http://" + AppConfig.HOST_SERVER_ADDRESS + "/weborb.aspx";
 				
-				RealtimeModel.SetDefaultURI("mahouligachapas.unusualwonder.com:2020");
+				RealtimeModel.SetDefaultURI(AppConfig.HOST_SERVER_ADDRESS + ":2020");
 			}
 			
 			if (parameters.hasOwnProperty("Test"))

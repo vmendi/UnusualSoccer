@@ -60,7 +60,7 @@ package
 				if (!parameters.hasOwnProperty("fb_sig_added"))
 				{
 					// No existe el parametro -> no accedidos desde facebook
-					navigateToURL(new URLRequest("http://apps.facebook.com/mahoudev"), "_top");
+					navigateToURL(new URLRequest(AppConfig.FACEBOOK_APP_URL), "_top");
 				}
 				else if (parameters.fb_sig_added == true)
 				{
