@@ -72,7 +72,7 @@
 
     private const string CheckInSql = @"
     <xsl:for-each select="xs:complexType/xs:attribute[concat('@',@name) = key('pk',$table)/@xpath]">
-      '<xsl:value-of select="$table"/>'.'<xsl:value-of select="@name" />' = ?CheckIn<xsl:value-of select="@name" /> <xsl:if test="position() != last()"> and </xsl:if>
+      `<xsl:value-of select="$table"/>`.`<xsl:value-of select="@name" />` = ?CheckIn<xsl:value-of select="@name" /> <xsl:if test="position() != last()"> and </xsl:if>
     </xsl:for-each>";
 
     protected override IDbCommand prepareCheckInCommand(DomainObject domainObject, string sqlQuery)

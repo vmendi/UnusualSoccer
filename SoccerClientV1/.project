@@ -21,12 +21,12 @@
 		<link>
 			<name>bin-debug</name>
 			<type>2</type>
-			<locationURI>DOCUMENTS/SoccerServerV1/SoccerServerV1/SoccerClientV1</locationURI>
+			<locationURI>DOCUMENTS/SoccerServer/SoccerServer/SoccerClientV1</locationURI>
 		</link>
 		<link>
 			<name>bin-release</name>
 			<type>2</type>
-			<locationURI>$%7BDOCUMENTS%7D/SoccerServerV1/SoccerServerV1/SoccerClientV1</locationURI>
+			<locationURI>$%7BDOCUMENTS%7D/SoccerServer/SoccerServer/SoccerClientV1</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

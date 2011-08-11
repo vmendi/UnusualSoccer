@@ -20,7 +20,7 @@
 	</fx:Declarations>
 
 	<fx:Script><![CDATA[
-		import SoccerServerV1.TransferModel.vo.SpecialTrainingDefinition;
+		import SoccerServer.TransferModel.vo.SpecialTrainingDefinition;
 		
 		import com.greensock.TweenLite;
 		

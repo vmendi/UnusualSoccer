@@ -182,6 +182,8 @@
     <xsl:if test="datatype">
       import <xsl:value-of select="@fullname" />.vo.*;</xsl:if>
     </xsl:for-each>
+      import mx.collections.ArrayCollection;
+    
       [Bindable]
       public class <xsl:value-of select="@name"/>Model
       {<xsl:for-each select="method"><xsl:if test="@type != 'void'">     

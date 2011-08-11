@@ -15,7 +15,7 @@
 		
 		import GameView.Skins.ButtonGreySkin;
 		
-		import SoccerServerV1.TransferModel.vo.SpecialTraining;
+		import SoccerServer.TransferModel.vo.SpecialTraining;
 		
 		import mx.binding.utils.BindingUtils;
 		

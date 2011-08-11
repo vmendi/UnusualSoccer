@@ -12,7 +12,7 @@
 		import GameView.Skins.DefaultListSkin;
 		import GameView.Skins.DefaultPanelSkin;
 		
-		import SoccerServerV1.TransferModel.vo.RankingTeam;
+		import SoccerServer.TransferModel.vo.RankingTeam;
 		
 		import mx.binding.utils.BindingUtils;
 		

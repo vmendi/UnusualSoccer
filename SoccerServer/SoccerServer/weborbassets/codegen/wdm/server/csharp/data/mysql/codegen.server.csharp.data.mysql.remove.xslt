@@ -32,10 +32,12 @@
     {
     <xsl:for-each select="key('dependent',current()/xs:key/@name)">
       <xsl:variable name="child-table-pk" select="xs:key/@name" />
+      <xsl:variable name="child-table" select="@name" />
       <xsl:for-each select="xs:keyref[@refer = $pk]">
         <xsl:variable name="fk" select="@name" />
         <xsl:for-each select="key('table',$child-table-pk)">
           <xsl:variable name="child-class-name" select="codegen:getClassName(@name)" />
+          <xsl:variable name="reverse-property" select="codegen:getParentProperty($child-table,$table,$fk,0)" />
 
           {
 
@@ -48,15 +50,15 @@
             </xsl:otherwise>
           </xsl:choose>
 
-          <xsl:value-of select="$child-class-name"/>DataMapper dataMapper
+          <xsl:value-of select="$child-class-name"/>DataMapper dataMapper<xsl:value-of select="$child-class-name"/>
           = new <xsl:value-of select="$child-class-name"/>DataMapper(Database);
 
-          List&lt;<xsl:value-of select="$child-class-name"/>&gt; items = dataMapper.findByRelated<xsl:value-of select="$class-name"/>(
+          List&lt;<xsl:value-of select="$child-class-name"/>&gt; items<xsl:value-of select="$child-class-name"/> = dataMapper<xsl:value-of select="$child-class-name"/>.findBy<xsl:value-of select="$reverse-property"/>(
           <xsl:text> </xsl:text><xsl:value-of select="$functionParam" />,
           new QueryOptions(false));
 
-          foreach(<xsl:value-of select="$child-class-name"/> item in items)
-          dataMapper.remove(item,true);
+          foreach(<xsl:value-of select="$child-class-name"/> item<xsl:value-of select="$child-class-name"/> in items<xsl:value-of select="$child-class-name"/>)
+          dataMapper<xsl:value-of select="$child-class-name"/>.remove(item<xsl:value-of select="$child-class-name"/>,true);
           }
         </xsl:for-each>
       </xsl:for-each>

@@ -1,8 +1,8 @@
 package GameModel
 {
-	import SoccerServerV1.MainService;
-	import SoccerServerV1.MainServiceModel;
-	import SoccerServerV1.TransferModel.vo.PredefinedTeam;
+	import SoccerServer.MainService;
+	import SoccerServer.MainServiceModel;
+	import SoccerServer.TransferModel.vo.PredefinedTeam;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

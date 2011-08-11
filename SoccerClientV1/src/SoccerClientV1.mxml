@@ -12,7 +12,7 @@
 		
 		import GameView.MainView;
 		
-		import SoccerServerV1.DataTypeInitializer;
+		import SoccerServer.DataTypeInitializer;
 		
 		import mx.events.FlexEvent;
 		import mx.messaging.config.ServerConfig;

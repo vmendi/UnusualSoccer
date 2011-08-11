@@ -14,8 +14,8 @@
 		import NetEngine.InvokeResponse;
 		import NetEngine.NetPlug;
 		
-		import SoccerServerV1.MainService;
-		import SoccerServerV1.TransferModel.vo.RankingPage;
+		import SoccerServer.MainService;
+		import SoccerServer.TransferModel.vo.RankingPage;
 		
 		import com.greensock.TweenLite;
 		import com.greensock.TweenNano;

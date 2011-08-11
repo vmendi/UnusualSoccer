@@ -1,6 +1,6 @@
 package GameModel
 {
-	import SoccerServerV1.MainService;
+	import SoccerServer.MainService;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

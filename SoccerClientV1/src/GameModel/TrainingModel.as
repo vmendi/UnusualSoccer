@@ -1,8 +1,8 @@
 package GameModel
 {
-	import SoccerServerV1.MainService;
-	import SoccerServerV1.MainServiceModel;
-	import SoccerServerV1.TransferModel.vo.PendingTraining;
+	import SoccerServer.MainService;
+	import SoccerServer.MainServiceModel;
+	import SoccerServer.TransferModel.vo.PendingTraining;
 	
 	import com.greensock.TweenNano;
 	

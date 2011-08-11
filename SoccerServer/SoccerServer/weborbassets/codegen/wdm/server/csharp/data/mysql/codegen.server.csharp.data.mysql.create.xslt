@@ -25,8 +25,8 @@
     <xsl:if test="key('dependent',current()/xs:key/@name)">[TransactionRequired]</xsl:if>
     public override <xsl:value-of select="$class-name" /> create( <xsl:value-of select="$class-name" /><xsl:text> </xsl:text><xsl:value-of select="$functionParam" /> )
     {
-    using( SynchronizationScope syncScope = new SynchronizationScope( Database ) )
-    {
+    StartSynchronization();
+    
     using (DatabaseConnectionMonitor monitor = new DatabaseConnectionMonitor(Database))
     {
     using(MySqlCommand sqlCommand = Database.CreateCommand( SqlCreate ))
@@ -97,9 +97,10 @@
     </xsl:for-each>
       
       raiseAffected(<xsl:value-of select="$functionParam" />,DataMapperOperation.create);
-      syncScope.Invoke();
-      }
-      return registerRecord(<xsl:value-of select="$functionParam" />);
+
+    InvokeSynchronization();
+    
+    return registerRecord(<xsl:value-of select="$functionParam" />);
     }
 
   </xsl:template>

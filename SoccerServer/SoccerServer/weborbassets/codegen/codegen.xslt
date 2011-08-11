@@ -116,9 +116,11 @@ public function onLoad():void
 <xsl:if test="$version=3">
 package <xsl:value-of select="../@fullname" />.vo
 {
-	import flash.utils.ByteArray;
-	import mx.collections.ArrayCollection;
+  import flash.utils.ByteArray;
+  import mx.collections.ArrayCollection;
 <xsl:call-template name="codegen.import.fieldtypes"/>        
+<xsl:if test="@parentName">  import <xsl:value-of select="@parentNamespace"/>.vo.<xsl:value-of select="@parentName"/>;
+</xsl:if>
 	[Bindable]
 	[RemoteClass(alias="<xsl:value-of select='@fullname'/>")]
 </xsl:if>

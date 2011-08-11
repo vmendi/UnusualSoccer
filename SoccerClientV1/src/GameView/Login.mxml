@@ -10,7 +10,7 @@
 			import GameModel.LoginModel;
 			import GameModel.MainGameModel;
 			
-			import SoccerServerV1.enum.VALID_NAME;
+			import SoccerServer.enum.VALID_NAME;
 			
 			import flash.net.sendToURL;
 			

@@ -1,8 +1,8 @@
 package GameModel
 {
-	import SoccerServerV1.MainService;
-	import SoccerServerV1.MainServiceModel;
-	import SoccerServerV1.enum.VALID_NAME;
+	import SoccerServer.MainService;
+	import SoccerServer.MainServiceModel;
+	import SoccerServer.enum.VALID_NAME;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

@@ -1,6 +1,6 @@
 package GameView.Team
 {
-	import SoccerServerV1.TransferModel.vo.SoccerPlayer;
+	import SoccerServer.TransferModel.vo.SoccerPlayer;
 	
 	import flash.events.EventDispatcher;
 

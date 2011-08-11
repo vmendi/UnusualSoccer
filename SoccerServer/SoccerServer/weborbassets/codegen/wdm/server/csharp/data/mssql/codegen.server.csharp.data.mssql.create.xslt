@@ -31,13 +31,13 @@
     <xsl:if test="key('dependent',current()/xs:key/@name)">[TransactionRequired]</xsl:if>
     public override <xsl:value-of select="$class-name" /> create( <xsl:value-of select="$class-name" /><xsl:text> </xsl:text><xsl:value-of select="$functionParam" /> )
     {
-      using( SynchronizationScope syncScope = new SynchronizationScope( Database ) )
-      {
-      using (DatabaseConnectionMonitor monitor = new DatabaseConnectionMonitor(Database))
-      {
-        using(SqlCommand sqlCommand = Database.CreateCommand( SqlCreate ))
-        {
-        <xsl:for-each select="xs:complexType/xs:attribute[not(@msdata:AutoIncrement='true') and codegen:IsEditable(@type)]">
+    StartSynchronization();
+    
+    using (DatabaseConnectionMonitor monitor = new DatabaseConnectionMonitor(Database))
+    {
+    using(SqlCommand sqlCommand = Database.CreateCommand( SqlCreate ))
+    {
+    <xsl:for-each select="xs:complexType/xs:attribute[not(@msdata:AutoIncrement='true') and codegen:IsEditable(@type)]">
           <xsl:variable name="property" select="codegen:getPropertyName($table,@name)" />
             <xsl:choose>
               <xsl:when test="@use  = 'optional'">
@@ -108,9 +108,10 @@
     </xsl:for-each>
       
       raiseAffected(<xsl:value-of select="$functionParam" />,DataMapperOperation.create);
-      syncScope.Invoke();
-      }
-      return registerRecord(<xsl:value-of select="$functionParam" />);
+
+    InvokeSynchronization();
+    
+    return registerRecord(<xsl:value-of select="$functionParam" />);
     }
 
   </xsl:template>

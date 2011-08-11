@@ -14,7 +14,7 @@
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
 		
-		import SoccerServerV1.TransferModel.vo.SoccerPlayer;
+		import SoccerServer.TransferModel.vo.SoccerPlayer;
 		
 		import mx.binding.utils.BindingUtils;
 		import mx.events.DragEvent;

@@ -5,7 +5,7 @@ package GameModel
 	import NetEngine.InvokeResponse;
 	import NetEngine.NetPlug;
 	
-	import SoccerServerV1.MainService;
+	import SoccerServer.MainService;
 	
 	import flash.display.DisplayObject;
 	import flash.events.Event;

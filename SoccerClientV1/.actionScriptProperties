@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <actionScriptProperties analytics="false" mainApplicationPath="SoccerClientV1.mxml" projectUUID="72263c27-3920-4315-9fb1-68d65d79c3ea" version="10">
-  <compiler additionalCompilerArguments="-services ${DOCUMENTS}\SoccerServerV1\SoccerServerV1\web-inf\flex\services-config.xml" autoRSLOrdering="true" copyDependentFiles="false" flex3CompatMode="false" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="false" htmlGenerate="true" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderLocation="${DOCUMENTS}/SoccerServerV1/SoccerServerV1/SoccerClientV1" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+  <compiler additionalCompilerArguments="-locale en_US -services ${DOCUMENTS}\SoccerServer\SoccerServer\web-inf\flex\services-config.xml" autoRSLOrdering="true" copyDependentFiles="false" flex3CompatMode="false" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="false" htmlGenerate="true" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderLocation="F:/UnusualGit/UnusualSoccer/SoccerServer/SoccerServer/SoccerClientV1" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
       <libraryPathEntry kind="3" linkType="1" path="/Utils/bin/Utils.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="${DOCUMENTS}/SoccerServerV1/SoccerServerV1/weborbassets/wdm/weborb.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="${DOCUMENTS}/SoccerServer/SoccerServer/weborbassets/wdm/weborb.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="src/Assets/Loading.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="4" path="">
         <excludedEntries>

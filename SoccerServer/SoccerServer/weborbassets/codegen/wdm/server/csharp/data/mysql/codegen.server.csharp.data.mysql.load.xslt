@@ -27,7 +27,7 @@
               <xsl:value-of select="$functionParam" />.<xsl:value-of select="$property"/> = ((sbyte)dataReader.GetValue(<xsl:value-of select="position()-1" />)) == 1;
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="$functionParam" />.<xsl:value-of select="$property"/> = (<xsl:value-of select="codegen:CSharpDataType(@type)" />)dataReader.GetValue(<xsl:value-of select="position()-1" />);
+              <xsl:value-of select="$functionParam" />.<xsl:value-of select="$property"/> = unchecked( (<xsl:value-of select="codegen:CSharpDataType(@type)" />)dataReader.GetValue(<xsl:value-of select="position()-1" />) );
             </xsl:otherwise>
           </xsl:choose>
         </xsl:when>
@@ -40,7 +40,7 @@
               <xsl:value-of select="$functionParam" />.<xsl:value-of select="$property"/> = ((sbyte)dataReader.GetValue(<xsl:value-of select="position()-1" />)) == 1;
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="$functionParam" />.<xsl:value-of select="$property"/> = ( <xsl:value-of select="codegen:CSharpDataType(@type)" />)dataReader.GetValue(<xsl:value-of select="position()-1" />);
+              <xsl:value-of select="$functionParam" />.<xsl:value-of select="$property"/> = unchecked( ( <xsl:value-of select="codegen:CSharpDataType(@type)" />)dataReader.GetValue(<xsl:value-of select="position()-1" />) );
             </xsl:otherwise>
           </xsl:choose>
         </xsl:otherwise>
@@ -66,7 +66,7 @@
           <xsl:value-of select="$functionParam" />.<xsl:value-of select="$property"/> = hashtable["<xsl:value-of select="$property"/>"] as <xsl:value-of select="codegen:CSharpDataType(@type)" />;
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="$functionParam" />.<xsl:value-of select="$property"/> = ( <xsl:value-of select="codegen:CSharpDataType(@type)" />)hashtable["<xsl:value-of select="$property"/>"];
+          <xsl:value-of select="$functionParam" />.<xsl:value-of select="$property"/> = unchecked( ( <xsl:value-of select="codegen:CSharpDataType(@type)" />)hashtable["<xsl:value-of select="$property"/>"] );
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
