@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- Los que empiezan con _ son los antiguos, antes de hacer limpieza para dejar sólo lo
-     que necesitamos
--->
+<!-- Esta es la que cargamos desde Flex -->
 
 <services-config>
     <services>

@@ -7,6 +7,9 @@
     
     <destination  channels="weborb-rtmp" id="MyTransientTopic">
         <properties>
+        	<server>
+							<hide-in-console>true</hide-in-console>
+					</server>        
             <!-- Full type name of the selector object associated with the destination.
                  If set, WebORB passes all outgoing messages to the selector. Message selector
                  can either change the outgoing message object or cancel message delivery. 
@@ -58,6 +61,9 @@
     
     <destination channels="weborb-rtmp" id="CounterReadings">
         <properties>
+        	<server>
+							<hide-in-console>true</hide-in-console>
+					</server>
           <msmq>
             <path>.\private$\WEBORB-[destinationName]</path>
             <deliverPastMessages>-1</deliverPastMessages>
@@ -75,7 +81,7 @@
         </channels>
     </destination>    
 
-    <destination channels="weborb-rtmp" id="ExampleDestination">
+    <destination channels="weborb-rtmp" id="MSMQDestination">
         <properties>
           <msmq>
             <path>.\private$\WEBORB-[destinationName]</path>
@@ -96,6 +102,9 @@
     
     <destination  channels="weborb-rtmp" id="mqpush">
         <properties>
+        	<server>
+							<hide-in-console>true</hide-in-console>
+					</server>        
           <msmq>
             <path>.\private$\WEBORB-[destinationName]</path>
             <deliverPastMessages>-1</deliverPastMessages>
@@ -116,6 +125,7 @@
     <destination id="DataService">
         <properties>
             <server>
+		        		<hide-in-console>true</hide-in-console>            
                 <durable>false</durable>
             </server>
             <message-service-handler>Weborb.Messaging.PubSub.Memory.MessagingServiceHandler</message-service-handler>
@@ -125,4 +135,31 @@
             <channel ref="my-polling-amf"/>
         </channels>         
     </destination>  
+    
+    <destination id="SamplePollingDestination">
+        <properties>
+            <server>
+                <durable>false</durable>
+            </server>
+            <message-service-handler>Weborb.Messaging.PubSub.Memory.MessagingServiceHandler</message-service-handler>
+            <message-storage-policy>Weborb.Messaging.PubSub.Memory.MemoryStoragePolicy</message-storage-policy>
+        </properties>
+        <channels>
+            <channel ref="my-polling-amf"/>
+        </channels>         
+    </destination>     
+    
+    
+    <destination id="SampleRTMPDestination">
+        <properties>
+            <server>
+                <durable>false</durable>
+            </server>
+            <message-service-handler>Weborb.Messaging.PubSub.Memory.MessagingServiceHandler</message-service-handler>
+            <message-storage-policy>Weborb.Messaging.PubSub.Memory.MemoryStoragePolicy</message-storage-policy>
+        </properties>
+        <channels>
+            <channel ref="weborb-rtmp"/>
+        </channels>         
+    </destination>     
 </service>
