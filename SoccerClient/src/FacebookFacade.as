@@ -1,12 +1,7 @@
 package
 {
 	import com.facebook.Facebook;
-	import com.facebook.commands.users.GetInfo;
-	import com.facebook.data.users.FacebookUser;
-	import com.facebook.data.users.GetInfoData;
-	import com.facebook.data.users.GetInfoFieldValues;
 	import com.facebook.events.FacebookEvent;
-	import com.facebook.net.FacebookCall;
 	import com.facebook.utils.FacebookSessionUtil;
 	
 	import flash.display.LoaderInfo;
@@ -17,11 +12,7 @@ package
 	import flash.net.URLRequestMethod;
 	import flash.net.navigateToURL;
 	
-	import mx.controls.Alert;
 	import mx.core.FlexGlobals;
-	import mx.messaging.Channel;
-	import mx.messaging.ChannelSet;
-	import mx.messaging.channels.AMFChannel;
 	import mx.messaging.config.ServerConfig;
 
 	public final class FacebookFacade extends EventDispatcher

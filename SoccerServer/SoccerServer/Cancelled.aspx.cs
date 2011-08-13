@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace SoccerServer
 {
-    public partial class NotLoggedInFacebook : System.Web.UI.Page
+    public partial class Cancelled : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

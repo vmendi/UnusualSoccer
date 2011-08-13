@@ -146,7 +146,7 @@ namespace SoccerServer
             (Application["NetEngineMain"] as NetEngineMain).Stop();
 		}
 
-        private const String GLOBAL = "GLOBAL";
+        public const String GLOBAL = "GLOBAL";
         private System.Timers.Timer mSecondsTimer;
 		private int mSeconds = 0;		
 	}

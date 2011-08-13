@@ -13,15 +13,15 @@ namespace SoccerServer
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string sessionID = "0";
+            string sessionKey = "0";
 			
 			if (Request.QueryString.AllKeys.Contains("FakeSessionKey"))
-				sessionID = Request.QueryString["FakeSessionKey"];
+				sessionKey = Request.QueryString["FakeSessionKey"];
 
 			using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
 			{
-				Player player = Default.EnsurePlayerIsCreated(theContext, sessionID, null);
-				Default.EnsureSessionIsCreated(theContext, player, sessionID);
+				Player player = Default.EnsurePlayerIsCreated(theContext, sessionKey, null);
+				Default.EnsureSessionIsCreated(theContext, player, sessionKey);
                                 
 				theContext.SubmitChanges();
 			}

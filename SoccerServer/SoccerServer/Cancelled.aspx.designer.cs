@@ -10,15 +10,15 @@
 namespace SoccerServer {
     
     
-    public partial class NotLoggedInFacebook {
+    public partial class Cancelled {
         
         /// <summary>
-        /// login control.
+        /// CancelledForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Facebook.Web.CanvasIFrameLoginControl login;
+        protected global::System.Web.UI.HtmlControls.HtmlForm CancelledForm;
     }
 }
