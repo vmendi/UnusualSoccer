@@ -1,8 +1,9 @@
 package
 {
-	import com.facebook.Facebook;
-	import com.facebook.events.FacebookEvent;
-	import com.facebook.utils.FacebookSessionUtil;
+	import com.adobe.serialization.json.JSON;
+	import com.facebook.graph.Facebook;
+	import com.facebook.graph.data.FacebookSession;
+	import com.facebook.graph.utils.FacebookDataUtils;
 	
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
@@ -14,7 +15,7 @@ package
 	
 	import mx.core.FlexGlobals;
 	import mx.messaging.config.ServerConfig;
-
+	
 	public final class FacebookFacade extends EventDispatcher
 	{		
 		public function Init(callback:Function, requestedFakeSessionKey : String = null) : void
@@ -48,22 +49,40 @@ package
 					mSuccessCallback();
 				}
 				else
-				if (!parameters.hasOwnProperty("fb_sig_added"))
+				if (!parameters.hasOwnProperty("SessionKey"))
 				{
 					// No existe el parametro -> no accedidos desde facebook
 					navigateToURL(new URLRequest(AppConfig.FACEBOOK_APP_URL), "_top");
 				}
-				else if (parameters.fb_sig_added == true)
+				else
 				{
-					mFBSession = new FacebookSessionUtil(parameters.fb_sig_api_key, null, loaderInf);
-					mFB = mFBSession.facebook;
-					mFBSession.addEventListener(FacebookEvent.CONNECT, OnFacebookConnect);
-					mFBSession.verifySession();
+					var theSessionKey : String = parameters.SessionKey;
+					
+					Facebook.init("191393844257355", OnFacebookInit, {
+																	  appId  : "191393844257355",
+																	  status : true, 	// check login status
+																	  cookie : true, 	// enable cookies to allow the server to access the session
+																	  xfbml  : true, 	// parse XFBML
+																	  oauth : true 		// enables OAuth 2.0
+																	 }, theSessionKey);
 				}
-				else if (parameters.fb_sig_added == false)
-				{
-					navigateToURL(new URLRequest("http://www.facebook.com/login.php?api_key="+parameters.fb_sig_api_key),"_top");
-				}
+			}
+		}
+		
+		private function OnFacebookInit(result:Object, fail:Object) : void
+		{
+			if(result != null)
+			{
+				mFBSession = result as FacebookSession;
+				
+				// La sesión esta OK => Ya tenemos SessionKey
+				SetWeborbSessionKey();
+				
+				mSuccessCallback();
+			}
+			else
+			{
+				ErrorMessages.FacebookConnectionError();
 			}
 		}
 		
@@ -117,8 +136,8 @@ package
 			if (mFakeSessionKey != null)
 				return mFakeSessionKey;
 			
-			if (mFB != null)
-				return mFB.session_key;
+			if (mFBSession != null)
+				return mFBSession.accessToken;
 			
 			return null;
 		}
@@ -128,35 +147,16 @@ package
 			if (mFakeSessionKey != null)
 				return mFakeSessionKey;
 			
-			if (mFB != null)
-				return mFB.uid;
+			if (Facebook.getSession() != null)
+				return Facebook.getSession().accessToken;
 			
 			return null;
 		}
-		
-		protected function OnFacebookConnect(event:FacebookEvent):void
-		{
-			mFBSession.removeEventListener(FacebookEvent.CONNECT, OnFacebookConnect);
 						
-			if(event.success)
-			{
-				// La sesión esta OK => Ya tenemos SessionKey
-				SetWeborbSessionKey();
-				
-				mSuccessCallback();
-			}
-			else
-			{
-				ErrorMessages.FacebookConnectionError();
-			}
-		}			
-
-				
 		private var mFakeSessionKey : String;
 		
 		private var mSuccessCallback : Function;
-		private var mFB:Facebook;
-		private var mFBSession:FacebookSessionUtil;
+		private var mFBSession:FacebookSession;
 						
 		private var mSessionKeyURLLoader : URLLoader;
 	}

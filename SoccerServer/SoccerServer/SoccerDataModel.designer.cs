@@ -20,7 +20,7 @@ namespace SoccerServer
 	using System.Linq.Expressions;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="SoccerV1")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="SoccerV2")]
 	public partial class SoccerDataModelDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -67,7 +67,7 @@ namespace SoccerServer
     #endregion
 		
 		public SoccerDataModelDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV1ConnectionString"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

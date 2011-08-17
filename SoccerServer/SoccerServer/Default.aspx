@@ -6,7 +6,7 @@
     <title></title>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="DefaultForm" runat="server">
     <div>
         <label id="MyCentralLabel" runat="server">
         </label>

@@ -4,8 +4,8 @@ require 'fileutils'
 BUILD_OUTPUT_DIR = 'build/'
 SRC_DIR = '../SoccerServer/SoccerServer/SoccerClient/'
 
-REMOTE_DIR = '/cygdrive/c/inetpub/wwwmahou/SoccerClient'
-REMOTE_HOST = 'mahouligachapas.unusualwonder.com'
+REMOTE_DIR = '/cygdrive/c/inetpub/wwwsoccerserverv2/SoccerClient'
+REMOTE_HOST = 'unusualsoccerdev.unusualwonder.com'
 
 REMOTE_USER = 'Administrator' 
 

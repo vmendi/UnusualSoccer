@@ -32,7 +32,7 @@ namespace SoccerServer
 			{
                 var fb = new FacebookWebClient();
 
-                // Esto es una llamada que se produce sincronamente, con todos los peligros de performance que conlleva
+                // llamada sincrona, con todos los peligros de performance que conlleva
                 dynamic result = fb.Get("me");
 
 				Player player = EnsurePlayerIsCreated(theContext, FacebookWebContext.Current.UserId.ToString(), result);
@@ -42,13 +42,13 @@ namespace SoccerServer
 				EnsureSessionIsCreated(theContext, player, sessionKey);
 				theContext.SubmitChanges();
 
-				string queryStringToClient = Request.Form.ToString();
+                sessionKey = "SessionKey=" + sessionKey;
 
 				if (player.Liked)
-					queryStringToClient += "&liked=true";
+					sessionKey += "&liked=true";
 					
 				// Seria mejor hacer un transfer, pero no sabemos como librarnos de la exception, a pesar del catch parece que la relanza??
-				Response.Redirect("SoccerClient/SoccerClient.html?" + queryStringToClient, false);
+                Response.Redirect("SoccerClient/SoccerClient.html?" + sessionKey, false);
 			}
 		}
 

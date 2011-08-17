@@ -4,6 +4,8 @@ package GameModel
 	import SoccerServer.TransferModel.vo.SpecialTraining;
 	import SoccerServer.TransferModel.vo.SpecialTrainingDefinition;
 	
+	import com.facebook.graph.Facebook;
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.external.ExternalInterface;
@@ -29,10 +31,11 @@ package GameModel
 			
 			BindingUtils.bindSetter(OnSpecialTrainingsChanged, mMainModel, ["TheTeamModel", "TheTeam", "SpecialTrainings"]);
 			
-			ExternalInterface.addCallback("OnLikeButtonPressed", OnLikeButtonPressed);
+			// Subscripcion al evento de cualquier Like. Si, se llama edge.create. El boton concreto vendra en el href
+			Facebook.addJSEventListener('edge.create', OnLikeButtonPressed);
 		}
-		
-		public function OnLikeButtonPressed() : void
+				
+		public function OnLikeButtonPressed(href : Object) : void
 		{
 			// Es posible que se pulse el boton Like antes de tener creado un equipo, por ejemplo durante la pantalla de Login.mxml
 			if (mMainModel.TheTeamModel.TheTeam != null)

@@ -1,9 +1,22 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">	
-    <head>
-        <title>Mahou Liga Chapas</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"
+	  xmlns:og="http://opengraphprotocol.org/schema/"
+      xmlns:fb="http://www.facebook.com/2008/fbml">
       	
+    <head>
+        <title>Unusual Soccer</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        
+        <meta property="og:title" content="Unusual Soccer"/>
+		<!--
+	    <meta property="og:url" content="http://localhost/SoccerClient/SoccerClient.html" />
+		-->
+	    <meta property="og:type" content="game" />    
+		<meta property="og:site_name" content="Unusual Soccer"/>
+		<meta property="og:description" content=""/>
+	    <meta property="og:image" content=""/>
+	    <meta property="fb:app_id" content="191393844257355"/>
+
 		<!-- Include CSS to eliminate any default margins/padding and set the height of the html element and 
 		     the body element to 100%, because Firefox, or any Gecko based browser, interprets percentage as 
 			 the percentage of the height of its parent container, which has to be set explicitly.  Initially, 
@@ -17,7 +30,7 @@
         <script type="text/javascript" src="swfobject.js"></script>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 		<script type="text/javascript" src="http://connect.facebook.net/es_ES/all.js"></script>
-		
+				
 		<script type="text/javascript">					
 			<!-- Funcionalidad para el raton -->
 			
@@ -158,19 +171,15 @@
     <body>
 		<div id="fb-root"></div>
 
-		<script type="text/javascript">					
+		<script type="text/javascript">
 			 $(document).ready(function()
 			 {
-			 	FB.init({appId: '129447350433277', status: true, cookie: true, xfbml: true});				
-				FB.Event.subscribe('edge.create', function(href, widget)
-				{
-					thisMovie("SoccerClient").OnLikeButtonPressed();
-				});
-				
+				/*
 				if (getQueryStringArray()['liked'] == 'true')
 					$('#likeDiv').hide();
+				*/
 			 });
-			
+			 			
 			<!-- http://developers.facebook.com/docs/guides/attachments -->
 			<!-- http://developers.facebook.com/docs/reference/javascript/FB.ui -->
 			function streamPublish(daUserEditableMessage, daName, daDescription, daImgSrc, daUserMessagePrompt)
@@ -221,13 +230,11 @@
 		</script>
 				
     	<div style="margin-bottom:10px;width:760px;height:74px;"><img src="Imgs/MainHeader.jpg" width="760" height="74" style="display:block;border:0;"></img></div>
-		
-		<!-- Banner y botón Like mecanismo "complejo" -->
+
+		<!-- Banner y botón Like mecanismo XFBML -->
 		<div id="likeDiv" style="width:760px; height:38px; background:url(Imgs/BannerMeGustaBg.png); margin-bottom:10px;">
-			<div style="float:left; padding-left:16px; padding-top:10px; width:150px;">
-				<fb:like layout="button_count" show_faces="false" ref="MahouLikeButton01"
-					     href="http://mahouligachapas.unusualwonder.com/SoccerClient/MahouLigaChapas.html">
-				</fb:like>
+			<div style="float:left; padding-left:32px; padding-top:10px; width:150px;">
+				<fb:like href="http://apps.facebook.com/unusualsoccerdev/" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
 			</div>
 		</div>
 

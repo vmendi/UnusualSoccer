@@ -48,6 +48,7 @@
     </PublishDatabaseSettings>
     <PackageAsSingleFile>true</PackageAsSingleFile>
     <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
+    <ExcludeApp_Data>false</ExcludeApp_Data>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging, Version=1.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e">
@@ -90,10 +91,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App_Data\Backup.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Content Include="App_Data\Backup.sql" />
     <Content Include="Cancelled.aspx" />
+    <Content Include="console\AC_OETags.js" />
+    <Content Include="console\configtrouble.htm" />
+    <Content Include="console\console.swf" />
+    <Content Include="console\examplesinstructions.htm" />
+    <Content Include="console\gettingstarted.htm" />
+    <Content Include="console\history.htm" />
+    <Content Include="console\history.js" />
+    <Content Include="console\history.swf" />
+    <Content Include="console\images\consolebar.jpg" />
+    <Content Include="console\images\examplesoverview.jpg" />
+    <Content Include="console\images\folder_closed.png" />
+    <Content Include="console\images\orboverview.jpg" />
+    <Content Include="console\images\runningwoee.jpg" />
+    <Content Include="console\images\services.png" />
+    <Content Include="console\images\testdrive.png" />
+    <Content Include="console\introduction.htm" />
+    <Content Include="console\playerProductInstall.swf" />
+    <Content Include="console\troubleshooting.htm" />
+    <Content Include="console\woeeoverview.htm" />
+    <Content Include="console\woeestandalone.htm" />
+    <Content Include="console\yesflex-yesdotnet.htm" />
+    <Content Include="crossdomain.xml" />
     <Content Include="Deauthorize.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
@@ -110,6 +131,12 @@
     <Content Include="TestCreateSession.aspx" />
     <Content Include="TestForm.aspx" />
     <Content Include="TrueSkillHelper.aspx" />
+    <Content Include="WEB-INF\flex\data-management-config.xml" />
+    <Content Include="WEB-INF\flex\dynamic-remoting-config.xml" />
+    <Content Include="WEB-INF\flex\messaging-config.xml" />
+    <Content Include="WEB-INF\flex\remoting-config.xml" />
+    <Content Include="WEB-INF\flex\services-config.xml" />
+    <Content Include="WEB-INF\flex\weborb-services-config.xml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -121,6 +148,7 @@
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="weborbconsole.html" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cancelled.aspx.cs">
@@ -243,12 +271,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <None Include="packages.config" />
     <None Include="SoccerDataModel.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>SoccerDataModel.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
+    <Content Include="weborb.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

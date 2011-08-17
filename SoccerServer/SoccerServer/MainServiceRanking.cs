@@ -94,14 +94,18 @@ namespace SoccerServer
             // Todas las participaciones tanto suyas como de su oponente, agrupadas de 2 en 2 (gracias al orderby) y traidas a memoria
             // BTW, los non-ended se contaran tb, y vendran con los goles a 0-0
             var participations = (from p in mContext.MatchParticipations
-                                  where p.Match.MatchParticipations.Any(l => l.TeamID == theTeam.TeamID)
+                                  where p.Match.MatchParticipations.Any(l => l.TeamID == theTeam.TeamID) &&
+                                        p.Match.MatchParticipations.Count == 2      // Cuando borramos un equipo a pelo...                                  
                                   orderby p.MatchID
                                   select p).ToList();
 
             int numParticipations = participations.Count();
 
             if (numParticipations % 2 != 0)
-                throw new Exception("WTF ad infinitum!");
+            {
+                // Esto ocurria cuando borrabamos un equipo a pelo
+                throw new Exception("WTF ad infinitum! : " + numParticipations.ToString() + " " + theTeam.TeamID);
+            }
 
             ret.NumMatches = numParticipations / 2;
 

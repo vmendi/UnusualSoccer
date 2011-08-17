@@ -23,6 +23,7 @@ namespace SoccerServer
                 Log.startLogging(MainService.CLIENT_ERROR);
         }
 
+        
         private SoccerDataModelDataContext CreateDataForRequest()
         {
             mContext = new SoccerDataModelDataContext();

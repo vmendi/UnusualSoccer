@@ -31,7 +31,7 @@ namespace SoccerServer
             Log.startLogging(REALTIME);
             Log.startLogging(REALTIME_DEBUG);
             Log.startLogging(RealtimeMatch.MATCHLOG);
-            Log.startLogging(RealtimeMatch.MATCHLOG_DEBUG);            
+            //Log.startLogging(RealtimeMatch.MATCHLOG_DEBUG);            
 
             Log.log(REALTIME, "************************* Realtime Starting *************************");
 
