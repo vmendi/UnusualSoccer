@@ -32,10 +32,8 @@ namespace SoccerServer
 			{
                 var fb = new FacebookWebClient();
                 
-                // llamada sincrona, con todos los peligros de performance que conlleva
-                dynamic result = fb.Get("me");
-
-				Player player = EnsurePlayerIsCreated(theContext, FacebookWebContext.Current.UserId.ToString(), result);
+                // Usamos un delegate para que solo se haga la llamada sincrona en caso necesario
+				Player player = EnsurePlayerIsCreated(theContext, FacebookWebContext.Current.UserId.ToString(), () => fb.Get("me"));
 
                 string sessionKey = FacebookWebContext.Current.AccessToken;
 
@@ -71,8 +69,9 @@ namespace SoccerServer
             return session;
 		}
 
+        public delegate dynamic GetFBUserDelegate();
 
-        static public Player EnsurePlayerIsCreated(SoccerDataModelDataContext theContext, string facebookUserID, dynamic theFBUserInfo)
+        static public Player EnsurePlayerIsCreated(SoccerDataModelDataContext theContext, string facebookUserID, GetFBUserDelegate theFBUserInfo)
 		{
 			var player = (from dbPlayer in theContext.Players
 						  where dbPlayer.FacebookID == facebookUserID
@@ -89,8 +88,11 @@ namespace SoccerServer
 
 				if (theFBUserInfo != null)
 				{
-                    player.Name = theFBUserInfo.first_name;
-                    player.Surname = theFBUserInfo.last_name;
+                    // Aqui es cuando realmente se hace la llamada al API
+                    dynamic result = theFBUserInfo();
+
+                    player.Name = result.first_name;
+                    player.Surname = result.last_name;
 				}
 				else
 				{

@@ -18,28 +18,8 @@ namespace SoccerServer
 	{		
 		protected void Application_Start(object sender, EventArgs e)
 		{
-            // Configuracion de Facebook en funcion de qué aplicacion seamos
-            FacebookConfigurationSection fbSettings = new FacebookConfigurationSection();
-            Application["FacebookSettings"] = fbSettings;
+            ConfigureFacebookSettings();
 
-            fbSettings.AppId = "191393844257355";
-            fbSettings.AppSecret = "a06a6bf1080247ed87ba203422dcbb30";
-            
-            /*
-            fbSettings.CanvasPage = "http://apps.facebook.com/unusualsoccerdev/";
-            fbSettings.CanvasUrl ="http://unusualsoccerdev.unusualwonder.com/";
-            fbSettings.SecureCanvasUrl ="https://unusualsoccerdev.unusualwonder.com/";
-            */
-            
-            fbSettings.CanvasPage = "http://apps.facebook.com/unusualsoccerdev/";
-            fbSettings.CanvasUrl = "http://localhost/";
-            fbSettings.SecureCanvasUrl = "https://localhost/";
-            
-
-            // La cancelUrlPath hemos detectado que es la direccion adonde nos manda tras un "Don't allow". 
-            // Puede que haya más cancelaciones. Si la dejas vacia, te manda a facebook.com
-            fbSettings.CancelUrlPath = "Cancelled.aspx";
-           
             // Inicializacion del motor de red
             var newEngine = new NetEngineMain(new Realtime());
             Application["NetEngineMain"] = newEngine;
@@ -49,12 +29,42 @@ namespace SoccerServer
             starterThread.Start();
 		}
 
+        // Configuracion de Facebook en funcion de qué aplicacion seamos
+        private void ConfigureFacebookSettings()
+        {            
+            FacebookConfigurationSection fbSettings = new FacebookConfigurationSection();
+            Application["FacebookSettings"] = fbSettings;
+
+            // La cancelUrlPath hemos detectado que es la direccion adonde nos manda tras un "Don't allow". 
+            // Puede que haya más cancelaciones. Si la dejas vacia, te manda a facebook.com
+            fbSettings.CancelUrlPath = "Cancelled.aspx";
+
+            if (this.Server.MachineName == "UNUSUALTWO")
+            {
+                fbSettings.AppId = "191393844257355";
+                fbSettings.AppSecret = "a06a6bf1080247ed87ba203422dcbb30";
+
+                fbSettings.CanvasPage = "http://apps.facebook.com/unusualsoccerdev/";
+                fbSettings.CanvasUrl = "http://unusualsoccerdev.unusualwonder.com/";
+                fbSettings.SecureCanvasUrl = "https://unusualsoccerdev.unusualwonder.com/";
+            }
+            else
+            {
+                fbSettings.AppId = "100203833418013";
+                fbSettings.AppSecret = "bec70c821551670c027317de43a5ceae";
+
+                fbSettings.CanvasPage = "http://apps.facebook.com/unusualsoccerlocal/";
+                fbSettings.CanvasUrl = "http://localhost/";
+                fbSettings.SecureCanvasUrl = "https://localhost/";
+            }
+        }
+
         public void StarterThread()
         {
             var forcedWeborbLogInit = Weborb.Config.ORBConfig.GetInstance();
                      
             Log.startLogging(GLOBAL);
-            Log.log(GLOBAL, "******************* Initialization from Global.asax *******************");
+            Log.log(GLOBAL, "******************* Initialization from " + this.Server.MachineName + " Global.asax *******************");
             
             (Application["NetEngineMain"] as NetEngineMain).Start();
             

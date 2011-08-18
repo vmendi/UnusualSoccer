@@ -95,18 +95,15 @@ namespace SoccerServer
             // BTW, los non-ended se contaran tb, y vendran con los goles a 0-0
             var participations = (from p in mContext.MatchParticipations
                                   where p.Match.MatchParticipations.Any(l => l.TeamID == theTeam.TeamID) &&
-                                        p.Match.MatchParticipations.Count == 2      // Cuando borramos un equipo a pelo...                                  
+                                        p.Match.MatchParticipations.Count == 2      // Cuando borramos un equipo habra partidos q se queden con solo 1                               
                                   orderby p.MatchID
                                   select p).ToList();
 
             int numParticipations = participations.Count();
 
             if (numParticipations % 2 != 0)
-            {
-                // Esto ocurria cuando borrabamos un equipo a pelo
                 throw new Exception("WTF ad infinitum! : " + numParticipations.ToString() + " " + theTeam.TeamID);
-            }
-
+            
             ret.NumMatches = numParticipations / 2;
 
             for (int c = 0; c < numParticipations; c += 2)

@@ -1,44 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
   <publishProfile publishUrl="ftp://unusualsoccerdev.unusualwonder.com/wwwsoccerserverv2" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="UnusualSoccerDev" publishMethod="FTP" replaceMatchingFiles="True" userName="ftpuser" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAUaT19xDBF0CD9+tWGYqiqgAAAAACAAAAAAAQZgAAAAEAACAAAACyogdM8ez0c7GkEaWMgB1gLnh0//5rdfXTTU4evYuAWAAAAAAOgAAAAAIAACAAAADh/m5K2/DG+EvzHh8PbBlKdsfsRFWpyG1g3Ivus9xHNDAAAACcwZMtcuvOak0xT5YeYydJbGE/xVs7JcAe6EJ2RdbRd1LIRoKF22bLQGVcbUnbWIZAAAAAj3t7fgCzmZaA1TAsbXIqiDo76vaCfkHPNxMZRDd6/ueufDv0r+WHVFSyHHHb/PhMKLsmiT9OeWO1b1I05cCuOw==" SelectedForPublish="True">
-    <file relUrl="bin/Facebook.xml" publishTime="08/12/2011 13:18:06" />
     <file relUrl="console/gettingstarted.htm" publishTime="04/01/2010 09:04:38" />
     <file relUrl="console/history.swf" publishTime="01/07/2010 14:56:46" />
-    <file relUrl="bin/Facebook.Web.dll" publishTime="08/12/2011 13:18:16" />
+    <file relUrl="WEB-INF/flex/dynamic-remoting-config.xml" publishTime="08/18/2011 14:17:26" />
     <file relUrl="bin/MySql.Data.dll" publishTime="06/08/2011 13:07:28" />
     <file relUrl="console/images/runningwoee.jpg" publishTime="04/01/2010 13:03:40" />
     <file relUrl="Global.asax" publishTime="08/11/2011 15:05:08" />
-    <file relUrl="bin/Spring.Core.dll" publishTime="05/03/2010 05:57:38" />
+    <file relUrl="bin/Common.Logging.dll" publishTime="05/03/2010 05:57:42" />
     <file relUrl="bin/weborb.dll" publishTime="08/11/2011 18:03:38" />
-    <file relUrl="console/troubleshooting.htm" publishTime="04/01/2010 09:04:38" />
     <file relUrl="WEB-INF/flex/data-management-config.xml" publishTime="03/25/2010 21:53:22" />
-    <file relUrl="console/configtrouble.htm" publishTime="04/01/2010 09:04:38" />
+    <file relUrl="ServerStatsMatchesControl.ascx" publishTime="08/11/2011 15:05:08" />
+    <file relUrl="Default.aspx" publishTime="08/14/2011 18:49:44" />
     <file relUrl="bin/Facebook.Web.xml" publishTime="08/12/2011 13:18:16" />
     <file relUrl="TrueSkillHelper.aspx" publishTime="08/11/2011 15:05:00" />
-    <file relUrl="ServerStatsGlobalMatches.aspx" publishTime="08/11/2011 15:05:08" />
+    <file relUrl="bin/Facebook.xml" publishTime="08/12/2011 13:18:06" />
     <file relUrl="ServerStatsDaily.aspx" publishTime="08/11/2011 15:05:08" />
     <file relUrl="Cancelled.aspx" publishTime="08/13/2011 00:34:14" />
-    <file relUrl="bin/Common.Logging.dll" publishTime="05/03/2010 05:57:42" />
+    <file relUrl="console/playerProductInstall.swf" publishTime="01/07/2010 14:56:46" />
+    <file relUrl="bin/Facebook.dll" publishTime="08/12/2011 13:18:06" />
     <file relUrl="console/examplesinstructions.htm" publishTime="04/01/2010 09:04:38" />
     <file relUrl="News.xml" publishTime="08/11/2011 15:16:36" />
     <file relUrl="ServerStatsProfile.aspx" publishTime="08/11/2011 15:05:08" />
     <file relUrl="TestForm.aspx" publishTime="08/11/2011 15:16:56" />
     <file relUrl="crossdomain.xml" publishTime="05/06/2011 15:58:00" />
-    <file relUrl="console/playerProductInstall.swf" publishTime="01/07/2010 14:56:46" />
+    <file relUrl="WEB-INF/flex/weborb-services-config.xml" publishTime="12/10/2010 15:48:06" />
     <file relUrl="console/images/testdrive.png" publishTime="05/05/2010 10:24:16" />
     <file relUrl="console/woeeoverview.htm" publishTime="04/01/2010 09:04:38" />
-    <file relUrl="console/yesflex-yesdotnet.htm" publishTime="11/09/2010 16:44:52" />
+    <file relUrl="console/images/consolebar.jpg" publishTime="04/08/2010 17:05:18" />
     <file relUrl="ServerStats.aspx" publishTime="08/11/2011 15:05:08" />
-    <file relUrl="bin/Moserware.Skills.dll" publishTime="08/11/2011 18:13:36" />
-    <file relUrl="ServerStatsMatchesControl.ascx" publishTime="08/11/2011 15:05:08" />
+    <file relUrl="bin/Moserware.Skills.dll" publishTime="08/18/2011 00:13:18" />
+    <file relUrl="ServerStatsGlobalMatches.aspx" publishTime="08/11/2011 15:05:08" />
     <file relUrl="console/images/examplesoverview.jpg" publishTime="04/08/2010 17:05:18" />
-    <file relUrl="weborb.config" publishTime="08/11/2011 19:01:34" />
-    <file relUrl="WEB-INF/flex/weborb-services-config.xml" publishTime="12/10/2010 15:48:06" />
-    <file relUrl="console/history.htm" publishTime="01/07/2010 14:56:46" />
+    <file relUrl="console/images/services.png" publishTime="05/05/2010 10:16:56" />
+    <file relUrl="console/troubleshooting.htm" publishTime="04/01/2010 09:04:38" />
     <file relUrl="bin/Mono.Security.dll" publishTime="03/25/2010 13:31:26" />
     <file relUrl="console/images/orboverview.jpg" publishTime="04/08/2010 17:05:18" />
-    <file relUrl="bin/SoccerServer.dll" publishTime="08/18/2011 01:34:40" />
-    <file relUrl="Default.aspx" publishTime="08/14/2011 18:49:44" />
+    <file relUrl="bin/SoccerServer.dll" publishTime="08/18/2011 14:31:22" />
+    <file relUrl="weborb.config" publishTime="08/11/2011 19:01:34" />
     <file relUrl="WEB-INF/flex/remoting-config.xml" publishTime="06/08/2011 12:15:32" />
     <file relUrl="console/console.swf" publishTime="06/17/2011 16:40:42" />
     <file relUrl="console/history.js" publishTime="01/07/2010 14:56:46" />
@@ -47,18 +46,19 @@
     <file relUrl="console/introduction.htm" publishTime="04/01/2010 09:04:38" />
     <file relUrl="App_Data/Backup.sql" publishTime="08/17/2011 16:06:20" />
     <file relUrl="bin/Npgsql.dll" publishTime="03/25/2010 13:31:26" />
-    <file relUrl="console/images/consolebar.jpg" publishTime="04/08/2010 17:05:18" />
-    <file relUrl="console/images/services.png" publishTime="05/05/2010 10:16:56" />
-    <file relUrl="Deauthorize.aspx" publishTime="08/11/2011 15:05:08" />
     <file relUrl="console/images/folder_closed.png" publishTime="04/01/2010 13:03:40" />
+    <file relUrl="console/yesflex-yesdotnet.htm" publishTime="11/09/2010 16:44:52" />
+    <file relUrl="Deauthorize.aspx" publishTime="08/11/2011 15:05:08" />
+    <file relUrl="console/history.htm" publishTime="01/07/2010 14:56:46" />
     <file relUrl="WEB-INF/flex/services-config.xml" publishTime="08/11/2011 19:06:14" />
-    <file relUrl="Web.config" publishTime="08/18/2011 01:32:36" />
+    <file relUrl="bin/Facebook.Web.dll" publishTime="08/12/2011 13:18:16" />
+    <file relUrl="bin/Spring.Core.dll" publishTime="05/03/2010 05:57:38" />
     <file relUrl="WEB-INF/flex/messaging-config.xml" publishTime="06/15/2011 21:58:06" />
     <file relUrl="TestCreateSession.aspx" publishTime="08/11/2011 15:05:08" />
-    <file relUrl="WEB-INF/flex/dynamic-remoting-config.xml" publishTime="08/18/2011 01:31:34" />
+    <file relUrl="console/configtrouble.htm" publishTime="04/01/2010 09:04:38" />
     <file relUrl="weborbconsole.html" publishTime="11/09/2010 16:44:52" />
     <file relUrl="InviteFriends.aspx" publishTime="08/11/2011 21:19:14" />
     <file relUrl="ServerStatsRanking.aspx" publishTime="08/11/2011 15:05:08" />
-    <file relUrl="bin/Facebook.dll" publishTime="08/12/2011 13:18:06" />
+    <file relUrl="Web.config" publishTime="08/18/2011 01:32:36" />
   </publishProfile>
 </publishData>
