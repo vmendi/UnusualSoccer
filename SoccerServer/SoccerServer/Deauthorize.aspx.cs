@@ -27,7 +27,7 @@ namespace SoccerServer
                     var player = (from p in theContext.Players
                                   where p.FacebookID == sig.UserId.ToString()
                                   select p).Single();
-
+                    //
                     // Al borrar el player se borraran todas sus MatchParticipations. Dejaremos por lo tanto Match(s) con 1 sola participacion
                     theContext.Players.DeleteOnSubmit(player);
                     theContext.SubmitChanges();
