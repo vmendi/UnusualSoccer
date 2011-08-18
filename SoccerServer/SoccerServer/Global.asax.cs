@@ -2,15 +2,15 @@
 using System.Linq;
 using SoccerServer.BDDModel;
 using Weborb.Util.Logging;
-using Weborb.Config;
-using Weborb.Messaging;
 using Weborb.Messaging.Server;
-using Weborb.Messaging.Api;
 using System.Data.Linq;
 using SoccerServer.NetEngine;
 using System.Threading;
 using System.Net;
 using System.Web;
+using System.Configuration;
+using Facebook;
+
 
 namespace SoccerServer
 {
@@ -18,6 +18,29 @@ namespace SoccerServer
 	{		
 		protected void Application_Start(object sender, EventArgs e)
 		{
+            // Configuracion de Facebook en funcion de qué aplicacion seamos
+            FacebookConfigurationSection fbSettings = new FacebookConfigurationSection();
+            Application["FacebookSettings"] = fbSettings;
+
+            fbSettings.AppId = "191393844257355";
+            fbSettings.AppSecret = "a06a6bf1080247ed87ba203422dcbb30";
+            
+            /*
+            fbSettings.CanvasPage = "http://apps.facebook.com/unusualsoccerdev/";
+            fbSettings.CanvasUrl ="http://unusualsoccerdev.unusualwonder.com/";
+            fbSettings.SecureCanvasUrl ="https://unusualsoccerdev.unusualwonder.com/";
+            */
+            
+            fbSettings.CanvasPage = "http://apps.facebook.com/unusualsoccerdev/";
+            fbSettings.CanvasUrl = "http://localhost/";
+            fbSettings.SecureCanvasUrl = "https://localhost/";
+            
+
+            // La cancelUrlPath hemos detectado que es la direccion adonde nos manda tras un "Don't allow". 
+            // Puede que haya más cancelaciones. Si la dejas vacia, te manda a facebook.com
+            fbSettings.CancelUrlPath = "Cancelled.aspx";
+           
+            // Inicializacion del motor de red
             var newEngine = new NetEngineMain(new Realtime());
             Application["NetEngineMain"] = newEngine;
 
@@ -28,13 +51,11 @@ namespace SoccerServer
 
         public void StarterThread()
         {
-            // Create a *blocking* request to weborb to make sure the logger is started. Dumps a benign exception (bad request... blah)
-            WebRequest theRequest = HttpWebRequest.Create("http://localhost" + HttpRuntime.AppDomainAppVirtualPath + "/weborb.aspx");
-            theRequest.GetResponse();
-         
+            var forcedWeborbLogInit = Weborb.Config.ORBConfig.GetInstance();
+                     
             Log.startLogging(GLOBAL);
-            Log.log(GLOBAL, ":******************* Initialization from Global.asax *******************");
-
+            Log.log(GLOBAL, "******************* Initialization from Global.asax *******************");
+            
             (Application["NetEngineMain"] as NetEngineMain).Start();
             
             mSecondsTimer = new System.Timers.Timer(1000);
@@ -47,7 +68,7 @@ namespace SoccerServer
 		{         
 			mSecondsTimer.Stop();
 			mSeconds++;
-            
+
 			try
 			{                
 				using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())

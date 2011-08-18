@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 
+using Facebook;
 using Facebook.Web;
-using System.Text;
 
 using SoccerServer.BDDModel;
-using Weborb.Util.Logging;
 
 namespace SoccerServer
 {
@@ -15,8 +13,10 @@ namespace SoccerServer
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //var auth = new CanvasAuthorizer { Permissions = new[] { "user_about_me" } };
-            var auth = new CanvasAuthorizer();
+            // Cargamos nuestros settings procedurales que nos deja ahi Global.asax
+            FacebookApplication.SetApplication(Application["FacebookSettings"] as IFacebookApplication);
+
+            var auth = new CanvasAuthorizer();  // new CanvasAuthorizer { Permissions = new[] { "user_about_me" } };
 
             // Si no estamos logeados o autorizados, nos redireccionara automaticamente a la pagina de login/autorizacion
             // En el web.config hay un handler de facebookredirect.axd, a traves de el se hacen las redirecciones
@@ -31,7 +31,7 @@ namespace SoccerServer
 			using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
 			{
                 var fb = new FacebookWebClient();
-
+                
                 // llamada sincrona, con todos los peligros de performance que conlleva
                 dynamic result = fb.Get("me");
 
@@ -47,7 +47,7 @@ namespace SoccerServer
 				if (player.Liked)
 					sessionKey += "&liked=true";
 					
-				// Seria mejor hacer un transfer, pero no sabemos como librarnos de la exception, a pesar del catch parece que la relanza??
+				// Seria mejor hacer un transfer, pero no funciona debido a los paths
                 Response.Redirect("SoccerClient/SoccerClient.html?" + sessionKey, false);
 			}
 		}
