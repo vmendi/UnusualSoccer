@@ -22,50 +22,26 @@ package
 		{
 			mSuccessCallback = callback;
 			
-			// Si no es la primera vez...
+			// Si no es la primera vez (estamos haciendo tests)...
 			if (SessionKey != null)
 			{
 				ResetFakeSessionKey(callback, requestedFakeSessionKey);
 			}
 			else
-			{		
-				var parameters : Object = FlexGlobals.topLevelApplication.parameters;
-				var loaderInf : LoaderInfo = FlexGlobals.topLevelApplication.loaderInfo;
+			if (AppConfig.FAKE_SESSION_KEY != null || requestedFakeSessionKey != null)
+			{
+				if (requestedFakeSessionKey != null)
+					mFakeSessionKey = requestedFakeSessionKey;
+				else
+					mFakeSessionKey = AppConfig.FAKE_SESSION_KEY;
+
+				SetWeborbSessionKey();
 				
-				if (IsFakeRequest() || requestedFakeSessionKey != null)
-				{
-					if (requestedFakeSessionKey == null)
-					{
-						if (parameters.hasOwnProperty("FakeSessionKey"))
-							mFakeSessionKey = parameters.FakeSessionKey;
-						else
-							mFakeSessionKey = "0";
-					}
-					else
-						mFakeSessionKey = requestedFakeSessionKey;
-					
-					SetWeborbSessionKey();
-					
-					mSuccessCallback();
-				}
-				else
-				if (!parameters.hasOwnProperty("SessionKey"))
-				{
-					// No existe el parametro -> no accedidos desde facebook
-					navigateToURL(new URLRequest(AppConfig.FACEBOOK_APP_URL), "_top");
-				}
-				else
-				{
-					var theSessionKey : String = parameters.SessionKey;
-					
-					Facebook.init("191393844257355", OnFacebookInit, {
-																	  appId  : "191393844257355",
-																	  status : true, 	// check login status
-																	  cookie : true, 	// enable cookies to allow the server to access the session
-																	  xfbml  : true, 	// parse XFBML
-																	  oauth : true 		// enables OAuth 2.0
-																	 }, theSessionKey);
-				}
+				mSuccessCallback();
+			}
+			else
+			{
+				Facebook.init(AppConfig.APP_ID, OnFacebookInit, { xfbml: true } );
 			}
 		}
 		
@@ -75,7 +51,7 @@ package
 			{
 				mFBSession = result as FacebookSession;
 				
-				// La sesión esta OK => Ya tenemos SessionKey
+				// La sesión esta OK => Ya tenemos SessionKey para weborb
 				SetWeborbSessionKey();
 				
 				mSuccessCallback();
@@ -120,17 +96,7 @@ package
 				onCompleted();	
 			}
 		}
-		
-		private function IsFakeRequest() : Boolean
-		{
-			return FlexGlobals.topLevelApplication.parameters.hasOwnProperty("FakeSessionKey") || IsRequestFromFile();
-		}
-		
-		private function IsRequestFromFile() : Boolean
-		{
-			return FlexGlobals.topLevelApplication.url.indexOf("file:") != -1;
-		}
-		
+				
 		public function get SessionKey() : String
 		{
 			if (mFakeSessionKey != null)
@@ -147,8 +113,8 @@ package
 			if (mFakeSessionKey != null)
 				return mFakeSessionKey;
 			
-			if (Facebook.getSession() != null)
-				return Facebook.getSession().accessToken;
+			if (mFBSession != null)
+				return mFBSession.uid;
 			
 			return null;
 		}

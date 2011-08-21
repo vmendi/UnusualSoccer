@@ -26,25 +26,28 @@
 			
 			ErrorMessages.OnCleaningShutdownSignal.addOnce(RemoveMainView);
 
+			AppConfig.Init(parameters);
+			
+			// Para que las estructuras creadas por weborb existan
 			var dataTypeInit : DataTypeInitializer = new DataTypeInitializer();
 			
-			if (parameters.hasOwnProperty("Remote") && parameters["Remote"] == "true")
+			if (AppConfig.REMOTE == "true")
 			{
-				if (!parameters.hasOwnProperty("FakeSessionKey"))
+				if (AppConfig.FAKE_SESSION_KEY == null)
 					throw new Error("Si Remote, necesitas FakeSessionKey");
 				
-				ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri = "http://" + AppConfig.HOST_SERVER_ADDRESS + "/weborb.aspx";
+				ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri = "http://" + AppConfig.CANVAS_SERVER + "/weborb.aspx";
 				
-				RealtimeModel.SetDefaultURI(AppConfig.HOST_SERVER_ADDRESS + ":2020");
+				RealtimeModel.SetDefaultURI(AppConfig.CANVAS_SERVER + ":2020");
 			}
 			
-			if (parameters.hasOwnProperty("Test"))
+			if (AppConfig.TEST_NAME != null)
 			{
 				mFacebookFacade = new FacebookFacade();
 				mMainGameModel = new MainGameModel();
 				
 				MyServerTests.visible = true;
-				MyServerTests.ExecuteTest(parameters["Test"]);
+				MyServerTests.ExecuteTest(AppConfig.TEST_NAME);
 			}
 			else
 			{
