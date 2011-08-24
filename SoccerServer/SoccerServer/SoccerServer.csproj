@@ -151,7 +151,6 @@
     <Content Include="ServerStatsProfile.aspx" />
     <Content Include="ServerStatsRanking.aspx" />
     <Content Include="TestCreateSession.aspx" />
-    <Content Include="TestForm.aspx" />
     <Content Include="TrueSkillHelper.aspx" />
     <Content Include="WEB-INF\flex\data-management-config.xml" />
     <Content Include="WEB-INF\flex\dynamic-remoting-config.xml" />
@@ -276,13 +275,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SoccerDataModel.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="TestForm.aspx.cs">
-      <DependentUpon>TestForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="TestForm.aspx.designer.cs">
-      <DependentUpon>TestForm.aspx</DependentUpon>
     </Compile>
     <Compile Include="TrueSkillHelper.aspx.cs">
       <DependentUpon>TrueSkillHelper.aspx</DependentUpon>

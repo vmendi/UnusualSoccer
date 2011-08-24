@@ -1,20 +1,19 @@
 package
 {
-	import com.adobe.serialization.json.JSON;
+	import GameModel.RealtimeModel;
+	
 	import com.facebook.graph.Facebook;
 	import com.facebook.graph.data.FacebookSession;
-	import com.facebook.graph.utils.FacebookDataUtils;
 	
-	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
-	import flash.net.navigateToURL;
 	
 	import mx.core.FlexGlobals;
 	import mx.messaging.config.ServerConfig;
+	import mx.utils.URLUtil;
 	
 	public final class FacebookFacade extends EventDispatcher
 	{		
@@ -22,10 +21,22 @@ package
 		{
 			mSuccessCallback = callback;
 			
-			// Si no es la primera vez (estamos haciendo tests)...
-			if (SessionKey != null)
+			if (AppConfig.REMOTE == "true")
 			{
-				ResetFakeSessionKey(callback, requestedFakeSessionKey);
+				if (AppConfig.FAKE_SESSION_KEY == null)
+					throw new Error("Si Remote, necesitas FakeSessionKey");
+				
+				ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri = "http://" + AppConfig.REMOTE_SERVER + "/weborb.aspx";
+				
+				RealtimeModel.SetDefaultURI(AppConfig.REMOTE_SERVER + ":2020");
+				
+				// Nos aseguramos de que la session esta creada en el servidor
+				SetFakeSessionKey(callback, AppConfig.FAKE_SESSION_KEY);
+			}
+			else
+			if (SessionKey != null)	// Si no es la primera vez (estamos haciendo tests)...
+			{
+				SetFakeSessionKey(callback, requestedFakeSessionKey);
 			}
 			else
 			if (AppConfig.FAKE_SESSION_KEY != null || requestedFakeSessionKey != null)
@@ -62,7 +73,7 @@ package
 			}
 		}
 		
-		private function ResetFakeSessionKey(callback:Function, requestedFakeSessionKey : String) : void
+		private function SetFakeSessionKey(callback:Function, requestedFakeSessionKey : String) : void
 		{
 			if (requestedFakeSessionKey == null)
 				throw "Invalid requested fake session key";
@@ -82,9 +93,10 @@ package
 		
 		private function EnsureSessionIsCreatedOnServer(sessionKey : String, onCompleted:Function) : void
 		{
-			var domainBase : String = new RegExp(".*(?=SoccerClient\/.*\.swf)", "g").exec(FlexGlobals.topLevelApplication.url);
+			var current : String = ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
+			var domainBase : String = URLUtil.getServerName(current);
 			
-			var request : URLRequest = new URLRequest(domainBase + "TestCreateSession.aspx?FakeSessionKey="+sessionKey);
+			var request : URLRequest = new URLRequest("http://" + domainBase + "/TestCreateSession.aspx?FakeSessionKey="+sessionKey);
 			request.method = URLRequestMethod.POST;
 			
 			mSessionKeyURLLoader = new URLLoader();

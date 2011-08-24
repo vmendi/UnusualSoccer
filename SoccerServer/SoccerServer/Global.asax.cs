@@ -6,10 +6,8 @@ using Weborb.Messaging.Server;
 using System.Data.Linq;
 using SoccerServer.NetEngine;
 using System.Threading;
-using System.Net;
-using System.Web;
-using System.Configuration;
 using Facebook;
+using System.Collections.Generic;
 
 
 namespace SoccerServer
@@ -18,7 +16,7 @@ namespace SoccerServer
 	{		
 		protected void Application_Start(object sender, EventArgs e)
 		{
-            ConfigureFacebookSettings();
+            ConfigureSettings();
 
             // Inicializacion del motor de red
             var newEngine = new NetEngineMain(new Realtime());
@@ -30,14 +28,30 @@ namespace SoccerServer
 		}
 
         // Configuracion de Facebook en funcion de qué aplicacion seamos
-        private void ConfigureFacebookSettings()
-        {            
+        private void ConfigureSettings()
+        {
+            Dictionary<string, string> unusualSoccerSettings = new Dictionary<string, string>();
+            Application["UnusualSoccerSettings"] = unusualSoccerSettings;
+
+            // Settings que pasaremos a flash
+            Dictionary<string, string> unusualSoccerClientSettings = new Dictionary<string, string>();
+            Application["UnusualSoccerClientSettings"] = unusualSoccerClientSettings;
+
             FacebookConfigurationSection fbSettings = new FacebookConfigurationSection();
             Application["FacebookSettings"] = fbSettings;
 
             // La cancelUrlPath hemos detectado que es la direccion adonde nos manda tras un "Don't allow". 
             // Puede que haya más cancelaciones. Si la dejas vacia, te manda a facebook.com
             fbSettings.CancelUrlPath = "Cancelled.aspx";
+
+            // De momento igual para todas las versiones
+            unusualSoccerSettings["Title"] = "Unusual Soccer";
+
+            // Tiene que ser absoluto pq va en los Meta de facebook
+            unusualSoccerSettings["ImageUrl"] = "http://unusualsoccerdev.unusualwonder.com/Imgs/Logo75x75.png";
+
+            // og:description
+            unusualSoccerSettings["Description"] = "Unusual Soccer Description";
 
             if (this.Server.MachineName == "UNUSUALTWO")
             {
@@ -56,6 +70,8 @@ namespace SoccerServer
                 fbSettings.CanvasPage = "http://apps.facebook.com/unusualsoccerlocal/";
                 fbSettings.CanvasUrl = "http://localhost/";
                 fbSettings.SecureCanvasUrl = "https://localhost/";
+
+                unusualSoccerClientSettings["RemoteServer"] = "unusualsoccerdev.unusualwonder.com";
             }
         }
 

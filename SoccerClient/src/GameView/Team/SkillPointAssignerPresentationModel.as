@@ -3,6 +3,7 @@ package GameView.Team
 	import SoccerServer.TransferModel.vo.SoccerPlayer;
 	
 	import flash.events.EventDispatcher;
+	import flash.events.Event;
 
 	public final class SkillPointAssignerPresentationModel extends EventDispatcher
 	{

@@ -30,17 +30,7 @@
 			
 			// Para que las estructuras creadas por weborb existan
 			var dataTypeInit : DataTypeInitializer = new DataTypeInitializer();
-			
-			if (AppConfig.REMOTE == "true")
-			{
-				if (AppConfig.FAKE_SESSION_KEY == null)
-					throw new Error("Si Remote, necesitas FakeSessionKey");
-				
-				ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri = "http://" + AppConfig.CANVAS_SERVER + "/weborb.aspx";
-				
-				RealtimeModel.SetDefaultURI(AppConfig.CANVAS_SERVER + ":2020");
-			}
-			
+						
 			if (AppConfig.TEST_NAME != null)
 			{
 				mFacebookFacade = new FacebookFacade();

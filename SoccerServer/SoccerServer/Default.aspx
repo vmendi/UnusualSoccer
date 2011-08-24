@@ -5,27 +5,22 @@
 	  xmlns:og="http://opengraphprotocol.org/schema/"
       xmlns:fb="http://www.facebook.com/2008/fbml">
 
-<head id="Head1" runat="server">
+<head id="TheHead">
     <title>${title}</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         
     <meta property="og:title" content="${title}"/>
-	<meta property="og:url" content="${facebookAppUrl}" />
+	<meta property="og:url" content="${facebookCanvasPage}" />
 	<meta property="og:type" content="game" />
 	<meta property="og:site_name" content="${siteName}"/>
 	<meta property="og:description" content="${description}"/>
-	<meta property="og:image" content=""/>
+	<meta property="og:image" content="${imageUrl}"/>
 	<meta property="fb:app_id" content="${facebookAppId}"/>
 
-	<!-- Include CSS to eliminate any default margins/padding and set the height of the html element and 
-		    the body element to 100%, because Firefox, or any Gecko based browser, interprets percentage as 
-			the percentage of the height of its parent container, which has to be set explicitly.  Initially, 
-			don't display flashContent div so it won't show if JavaScript disabled.
-	-->
     <style type="text/css" media="screen"> 
 		html, body	{ height:100%; }
-		body { margin:0; padding:0; overflow:auto; text-align:center; background-color: ${bgcolor}; }
+		body { margin:0; padding:0; overflow:auto; background-color: ${bgcolor}; }
 		#flashContent { display:none; }
     </style>
 
@@ -33,14 +28,12 @@
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 	<script type="text/javascript" src="http://connect.facebook.net/es_ES/all.js"></script>
 				
-	<script type="text/javascript">					
-		<!-- Funcionalidad para el raton -->
-			
+	<script type="text/javascript">							
 		// Nos regisramos a los eventos de raton para pasarselos al movie
 		function RegisterMouseEvents( )
 		{
-			<!-- alert(" Register JS llamado. Rellamando a AS"); -->
-			<!-- OnMouseMove( 0 ) -->;
+			// alert(" Register JS llamado. Rellamando a AS");
+			// OnMouseMove( 0 ) -->;
 				
 			document.onmousemove = OnMouseMove;
 			document.onmouseup = OnMouseUp;
@@ -49,7 +42,7 @@
 		// Nos desregisramos a los eventos de raton para pasarselos al movie
 		function UnregisterMouseEvents( )
 		{
-			<!-- alert("Unregister JS llamado. Rellamando a AS"); -->
+			// alert("Unregister JS llamado. Rellamando a AS");
 			document.onmousemove = null;
 			document.onmouseup = null;
 		}
@@ -61,7 +54,7 @@
 		function OnMouseMove( e )
 		{
 			if (!e) 
-				var e = window.event;
+				e = window.event;
 				
 			<!-- Llamamos al metodo correspondiente de ActionScript dentro de la Movie. -->
 			<!-- La función debe registrarse para poder ser invocada -->
@@ -75,19 +68,14 @@
 				var y = e.clientY - movie.offsetTop;
 					
 				// Invocamos al metodo de la pelicula (ActionScript 3)
-				// NOTE: La función debe haberse registrado para poderse llamar externamente
 				movie.OnMouseMoveFromJS( x, y );
 			}
-				
-			//writeData('clientX is ' + e.clientX);
-        	//writeData('clientY is ' + e.clientY);
-        	//writeData('type is ' + e.type);				
 		}
 			
 		function OnMouseUp( e )
 		{
 			if (!e) 
-				var e = window.event;
+				e = window.event;
 			
 			// Obtenemos la película a quien vamos a envíarle el evento
 			var movie = thisMovie("SoccerClient");
@@ -133,12 +121,12 @@
         attributes.id = "${application}";
         attributes.name = "${application}";
         attributes.align = "middle";
-			
+	    
         swfobject.embedSWF("${swf}.swf", "flashContent", 
                 			"${width}", "${height}", 
                 			swfVersionStr, "", 
                 			flashVars, params, attributes);
-                
+
 		/* JavaScript enabled so display the flashContent div in case it is not replaced with a swf object. */
 		swfobject.createCSS("#flashContent", "display:block;text-align:left;");
     </script>
@@ -152,7 +140,7 @@
 				    {
 				        "type": "image",
 				        "src": daImgSrc,
-				        "href": "${facebookAppUrl}"
+				        "href": "${facebookCanvasPage}"
 				    }
 			    ]
 
@@ -160,7 +148,7 @@
 			    {
 			        name: daName,
 			        description: daDescription,
-			        href: '${facebookAppUrl}',
+			        href: '${facebookCanvasPage}',
 			        media: daMedia
 			    }
 
@@ -192,7 +180,7 @@
 </head>
 	
 <body>
-    <form id="DefaultForm" runat="server" visible="false">
+    <asp:Panel id="DefaultForm" runat="server" visible="true">
 	    <div id="fb-root"></div>
 				
         <div style="margin-bottom:10px;width:760px;height:74px;"><img src="Imgs/MainHeader.jpg" width="760" height="74" style="display:block;border:0;"></img></div>
@@ -200,7 +188,7 @@
 	    <!-- Banner y botón Like mecanismo XFBML -->
 	    <asp:Panel id="LikePanel" style="width:760px; height:38px; background:url(Imgs/BannerMeGustaBg.png); margin-bottom:10px;" runat="server">
 		    <div style="float:left; padding-left:32px; padding-top:10px; width:150px;">
-			    <fb:like href="${facebookAppUrl}" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
+			    <fb:like href="${facebookCanvasPage}" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
 		    </div>
 	    </asp:Panel>
 
@@ -212,11 +200,6 @@
 		    <div style="float:left;"><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=app_2373072738" target="_parent"><img src="Imgs/NavIconForo.png" width="71" height="33" border="0"/></a></div>
 	    </div>
 		    	
-        <!-- 	
-		    SWFObject's dynamic embed method replaces this alternative HTML content with Flash content when enough 
-		    JavaScript and Flash plug-in support is available. The div is initially hidden so that it doesn't show
-		    when JavaScript is disabled.
-	    -->
         <div id="flashContent">
             <p>
 	            To view this page ensure that Adobe Flash Player version 
@@ -235,7 +218,7 @@
             </p>
 	    </noscript>	
 
-    </form>
-	    	
+    </asp:Panel>
+
 </body>
 </html>
