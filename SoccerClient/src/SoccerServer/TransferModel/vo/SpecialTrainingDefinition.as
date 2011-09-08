@@ -13,9 +13,9 @@
 
 package SoccerServer.TransferModel.vo
 {
-	import flash.utils.ByteArray;
-	import mx.collections.ArrayCollection;
-        
+  import flash.utils.ByteArray;
+  import mx.collections.ArrayCollection;
+
 	[Bindable]
 	[RemoteClass(alias="SoccerServer.TransferModel.SpecialTrainingDefinition")]
 	public class SpecialTrainingDefinition

@@ -13,9 +13,9 @@
 
 package SoccerServer.TransferModel.vo
 {
-	import flash.utils.ByteArray;
-	import mx.collections.ArrayCollection;
-        
+  import flash.utils.ByteArray;
+  import mx.collections.ArrayCollection;
+
 	[Bindable]
 	[RemoteClass(alias="SoccerServer.TransferModel.RankingTeam")]
 	public class RankingTeam
@@ -23,7 +23,7 @@ package SoccerServer.TransferModel.vo
 		public function RankingTeam(){}
 	
 		public var Name:String;
-		public var FacebookID:String;
+		public var FacebookID:Number;
 		public var PredefinedTeamName:String;
 		public var TrueSkill:int;
 	}

@@ -203,7 +203,7 @@ namespace SoccerServer
         }
 
         [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 60000)]
-        public TransferModel.TeamDetails RefreshTeamDetails(string facebookID)
+        public TransferModel.TeamDetails RefreshTeamDetails(long facebookID)
         {
             using (mContext = new SoccerDataModelDataContext())
             {

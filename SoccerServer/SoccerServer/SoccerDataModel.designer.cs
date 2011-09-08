@@ -28,12 +28,12 @@ namespace SoccerServer
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertMatch(SoccerServer.BDDModel.Match instance);
-    partial void UpdateMatch(SoccerServer.BDDModel.Match instance);
-    partial void DeleteMatch(SoccerServer.BDDModel.Match instance);
     partial void InsertTrainingDefinition(SoccerServer.BDDModel.TrainingDefinition instance);
     partial void UpdateTrainingDefinition(SoccerServer.BDDModel.TrainingDefinition instance);
     partial void DeleteTrainingDefinition(SoccerServer.BDDModel.TrainingDefinition instance);
+    partial void InsertMatch(SoccerServer.BDDModel.Match instance);
+    partial void UpdateMatch(SoccerServer.BDDModel.Match instance);
+    partial void DeleteMatch(SoccerServer.BDDModel.Match instance);
     partial void InsertMatchParticipation(SoccerServer.BDDModel.MatchParticipation instance);
     partial void UpdateMatchParticipation(SoccerServer.BDDModel.MatchParticipation instance);
     partial void DeleteMatchParticipation(SoccerServer.BDDModel.MatchParticipation instance);
@@ -49,6 +49,9 @@ namespace SoccerServer
     partial void InsertPredefinedTeam(SoccerServer.BDDModel.PredefinedTeam instance);
     partial void UpdatePredefinedTeam(SoccerServer.BDDModel.PredefinedTeam instance);
     partial void DeletePredefinedTeam(SoccerServer.BDDModel.PredefinedTeam instance);
+    partial void InsertPurchase(SoccerServer.BDDModel.Purchase instance);
+    partial void UpdatePurchase(SoccerServer.BDDModel.Purchase instance);
+    partial void DeletePurchase(SoccerServer.BDDModel.Purchase instance);
     partial void InsertSession(SoccerServer.BDDModel.Session instance);
     partial void UpdateSession(SoccerServer.BDDModel.Session instance);
     partial void DeleteSession(SoccerServer.BDDModel.Session instance);
@@ -96,19 +99,19 @@ namespace SoccerServer
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.Match> Matches
-		{
-			get
-			{
-				return this.GetTable<SoccerServer.BDDModel.Match>();
-			}
-		}
-		
 		public System.Data.Linq.Table<SoccerServer.BDDModel.TrainingDefinition> TrainingDefinitions
 		{
 			get
 			{
 				return this.GetTable<SoccerServer.BDDModel.TrainingDefinition>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SoccerServer.BDDModel.Match> Matches
+		{
+			get
+			{
+				return this.GetTable<SoccerServer.BDDModel.Match>();
 			}
 		}
 		
@@ -149,6 +152,14 @@ namespace SoccerServer
 			get
 			{
 				return this.GetTable<SoccerServer.BDDModel.PredefinedTeam>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SoccerServer.BDDModel.Purchase> Purchases
+		{
+			get
+			{
+				return this.GetTable<SoccerServer.BDDModel.Purchase>();
 			}
 		}
 		
@@ -200,6 +211,192 @@ namespace SoccerServer.BDDModel
 	using System.ComponentModel;
 	using System;
 	
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrainingDefinitions")]
+	public partial class TrainingDefinition : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TrainingDefinitionID;
+		
+		private string _Name;
+		
+		private string _Description;
+		
+		private int _FitnessDelta;
+		
+		private int _Time;
+		
+		private EntitySet<PendingTraining> _PendingTrainings;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTrainingDefinitionIDChanging(int value);
+    partial void OnTrainingDefinitionIDChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnFitnessDeltaChanging(int value);
+    partial void OnFitnessDeltaChanged();
+    partial void OnTimeChanging(int value);
+    partial void OnTimeChanged();
+    #endregion
+		
+		public TrainingDefinition()
+		{
+			this._PendingTrainings = new EntitySet<PendingTraining>(new Action<PendingTraining>(this.attach_PendingTrainings), new Action<PendingTraining>(this.detach_PendingTrainings));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrainingDefinitionID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int TrainingDefinitionID
+		{
+			get
+			{
+				return this._TrainingDefinitionID;
+			}
+			set
+			{
+				if ((this._TrainingDefinitionID != value))
+				{
+					this.OnTrainingDefinitionIDChanging(value);
+					this.SendPropertyChanging();
+					this._TrainingDefinitionID = value;
+					this.SendPropertyChanged("TrainingDefinitionID");
+					this.OnTrainingDefinitionIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(MAX)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FitnessDelta", DbType="Int NOT NULL")]
+		public int FitnessDelta
+		{
+			get
+			{
+				return this._FitnessDelta;
+			}
+			set
+			{
+				if ((this._FitnessDelta != value))
+				{
+					this.OnFitnessDeltaChanging(value);
+					this.SendPropertyChanging();
+					this._FitnessDelta = value;
+					this.SendPropertyChanged("FitnessDelta");
+					this.OnFitnessDeltaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Time", DbType="Int NOT NULL")]
+		public int Time
+		{
+			get
+			{
+				return this._Time;
+			}
+			set
+			{
+				if ((this._Time != value))
+				{
+					this.OnTimeChanging(value);
+					this.SendPropertyChanging();
+					this._Time = value;
+					this.SendPropertyChanged("Time");
+					this.OnTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrainingDefinition_PendingTraining", Storage="_PendingTrainings", ThisKey="TrainingDefinitionID", OtherKey="TrainingDefinitionID")]
+		public EntitySet<PendingTraining> PendingTrainings
+		{
+			get
+			{
+				return this._PendingTrainings;
+			}
+			set
+			{
+				this._PendingTrainings.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_PendingTrainings(PendingTraining entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrainingDefinition = this;
+		}
+		
+		private void detach_PendingTrainings(PendingTraining entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrainingDefinition = null;
+		}
+	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Matches")]
 	public partial class Match : INotifyPropertyChanging, INotifyPropertyChanged
@@ -432,192 +629,6 @@ namespace SoccerServer.BDDModel
 		{
 			this.SendPropertyChanging();
 			entity.Match = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrainingDefinitions")]
-	public partial class TrainingDefinition : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _TrainingDefinitionID;
-		
-		private string _Name;
-		
-		private string _Description;
-		
-		private int _FitnessDelta;
-		
-		private int _Time;
-		
-		private EntitySet<PendingTraining> _PendingTrainings;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnTrainingDefinitionIDChanging(int value);
-    partial void OnTrainingDefinitionIDChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnDescriptionChanging(string value);
-    partial void OnDescriptionChanged();
-    partial void OnFitnessDeltaChanging(int value);
-    partial void OnFitnessDeltaChanged();
-    partial void OnTimeChanging(int value);
-    partial void OnTimeChanged();
-    #endregion
-		
-		public TrainingDefinition()
-		{
-			this._PendingTrainings = new EntitySet<PendingTraining>(new Action<PendingTraining>(this.attach_PendingTrainings), new Action<PendingTraining>(this.detach_PendingTrainings));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrainingDefinitionID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int TrainingDefinitionID
-		{
-			get
-			{
-				return this._TrainingDefinitionID;
-			}
-			set
-			{
-				if ((this._TrainingDefinitionID != value))
-				{
-					this.OnTrainingDefinitionIDChanging(value);
-					this.SendPropertyChanging();
-					this._TrainingDefinitionID = value;
-					this.SendPropertyChanged("TrainingDefinitionID");
-					this.OnTrainingDefinitionIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(MAX)")]
-		public string Description
-		{
-			get
-			{
-				return this._Description;
-			}
-			set
-			{
-				if ((this._Description != value))
-				{
-					this.OnDescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._Description = value;
-					this.SendPropertyChanged("Description");
-					this.OnDescriptionChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FitnessDelta", DbType="Int NOT NULL")]
-		public int FitnessDelta
-		{
-			get
-			{
-				return this._FitnessDelta;
-			}
-			set
-			{
-				if ((this._FitnessDelta != value))
-				{
-					this.OnFitnessDeltaChanging(value);
-					this.SendPropertyChanging();
-					this._FitnessDelta = value;
-					this.SendPropertyChanged("FitnessDelta");
-					this.OnFitnessDeltaChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Time", DbType="Int NOT NULL")]
-		public int Time
-		{
-			get
-			{
-				return this._Time;
-			}
-			set
-			{
-				if ((this._Time != value))
-				{
-					this.OnTimeChanging(value);
-					this.SendPropertyChanging();
-					this._Time = value;
-					this.SendPropertyChanged("Time");
-					this.OnTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrainingDefinition_PendingTraining", Storage="_PendingTrainings", ThisKey="TrainingDefinitionID", OtherKey="TrainingDefinitionID")]
-		public EntitySet<PendingTraining> PendingTrainings
-		{
-			get
-			{
-				return this._PendingTrainings;
-			}
-			set
-			{
-				this._PendingTrainings.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_PendingTrainings(PendingTraining entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrainingDefinition = this;
-		}
-		
-		private void detach_PendingTrainings(PendingTraining entity)
-		{
-			this.SendPropertyChanging();
-			entity.TrainingDefinition = null;
 		}
 	}
 	
@@ -1113,7 +1124,7 @@ namespace SoccerServer.BDDModel
 		
 		private string _Surname;
 		
-		private string _FacebookID;
+		private long _FacebookID;
 		
 		private System.DateTime _CreationDate;
 		
@@ -1133,7 +1144,7 @@ namespace SoccerServer.BDDModel
     partial void OnNameChanged();
     partial void OnSurnameChanging(string value);
     partial void OnSurnameChanged();
-    partial void OnFacebookIDChanging(string value);
+    partial void OnFacebookIDChanging(long value);
     partial void OnFacebookIDChanged();
     partial void OnCreationDateChanging(System.DateTime value);
     partial void OnCreationDateChanged();
@@ -1208,8 +1219,8 @@ namespace SoccerServer.BDDModel
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FacebookID", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string FacebookID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FacebookID", DbType="BigInt NOT NULL")]
+		public long FacebookID
 		{
 			get
 			{
@@ -1705,6 +1716,236 @@ namespace SoccerServer.BDDModel
 		{
 			this.SendPropertyChanging();
 			entity.PredefinedTeam = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Purchases")]
+	public partial class Purchase : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PurchaseID;
+		
+		private string _ItemID;
+		
+		private int _Price;
+		
+		private long _FacebookBuyerID;
+		
+		private long _FacebookOrderID;
+		
+		private string _Status;
+		
+		private System.DateTime _StatusPlacedDate;
+		
+		private System.Nullable<System.DateTime> _StatusSettledDate;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPurchaseIDChanging(int value);
+    partial void OnPurchaseIDChanged();
+    partial void OnItemIDChanging(string value);
+    partial void OnItemIDChanged();
+    partial void OnPriceChanging(int value);
+    partial void OnPriceChanged();
+    partial void OnFacebookBuyerIDChanging(long value);
+    partial void OnFacebookBuyerIDChanged();
+    partial void OnFacebookOrderIDChanging(long value);
+    partial void OnFacebookOrderIDChanged();
+    partial void OnStatusChanging(string value);
+    partial void OnStatusChanged();
+    partial void OnStatusPlacedDateChanging(System.DateTime value);
+    partial void OnStatusPlacedDateChanged();
+    partial void OnStatusSettledDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnStatusSettledDateChanged();
+    #endregion
+		
+		public Purchase()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PurchaseID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int PurchaseID
+		{
+			get
+			{
+				return this._PurchaseID;
+			}
+			set
+			{
+				if ((this._PurchaseID != value))
+				{
+					this.OnPurchaseIDChanging(value);
+					this.SendPropertyChanging();
+					this._PurchaseID = value;
+					this.SendPropertyChanged("PurchaseID");
+					this.OnPurchaseIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ItemID", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string ItemID
+		{
+			get
+			{
+				return this._ItemID;
+			}
+			set
+			{
+				if ((this._ItemID != value))
+				{
+					this.OnItemIDChanging(value);
+					this.SendPropertyChanging();
+					this._ItemID = value;
+					this.SendPropertyChanged("ItemID");
+					this.OnItemIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Int NOT NULL")]
+		public int Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this.OnPriceChanging(value);
+					this.SendPropertyChanging();
+					this._Price = value;
+					this.SendPropertyChanged("Price");
+					this.OnPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FacebookBuyerID", DbType="BigInt NOT NULL")]
+		public long FacebookBuyerID
+		{
+			get
+			{
+				return this._FacebookBuyerID;
+			}
+			set
+			{
+				if ((this._FacebookBuyerID != value))
+				{
+					this.OnFacebookBuyerIDChanging(value);
+					this.SendPropertyChanging();
+					this._FacebookBuyerID = value;
+					this.SendPropertyChanged("FacebookBuyerID");
+					this.OnFacebookBuyerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FacebookOrderID", DbType="BigInt NOT NULL")]
+		public long FacebookOrderID
+		{
+			get
+			{
+				return this._FacebookOrderID;
+			}
+			set
+			{
+				if ((this._FacebookOrderID != value))
+				{
+					this.OnFacebookOrderIDChanging(value);
+					this.SendPropertyChanging();
+					this._FacebookOrderID = value;
+					this.SendPropertyChanged("FacebookOrderID");
+					this.OnFacebookOrderIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="VarChar(25) NOT NULL", CanBeNull=false)]
+		public string Status
+		{
+			get
+			{
+				return this._Status;
+			}
+			set
+			{
+				if ((this._Status != value))
+				{
+					this.OnStatusChanging(value);
+					this.SendPropertyChanging();
+					this._Status = value;
+					this.SendPropertyChanged("Status");
+					this.OnStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusPlacedDate", DbType="DateTime NOT NULL")]
+		public System.DateTime StatusPlacedDate
+		{
+			get
+			{
+				return this._StatusPlacedDate;
+			}
+			set
+			{
+				if ((this._StatusPlacedDate != value))
+				{
+					this.OnStatusPlacedDateChanging(value);
+					this.SendPropertyChanging();
+					this._StatusPlacedDate = value;
+					this.SendPropertyChanged("StatusPlacedDate");
+					this.OnStatusPlacedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusSettledDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> StatusSettledDate
+		{
+			get
+			{
+				return this._StatusSettledDate;
+			}
+			set
+			{
+				if ((this._StatusSettledDate != value))
+				{
+					this.OnStatusSettledDateChanging(value);
+					this.SendPropertyChanging();
+					this._StatusSettledDate = value;
+					this.SendPropertyChanged("StatusSettledDate");
+					this.OnStatusSettledDateChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	

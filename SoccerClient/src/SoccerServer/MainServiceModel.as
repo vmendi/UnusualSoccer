@@ -15,9 +15,8 @@
     package SoccerServer
     {    
       import SoccerServer.TransferModel.vo.*;
-      
       import mx.collections.ArrayCollection;
-
+    
       [Bindable]
       public class MainServiceModel
       {     

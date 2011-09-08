@@ -175,7 +175,7 @@
 
       }
     
-      public function RefreshMatchStatsForTeam(facebookID:String, responder:IResponder = null ):void
+      public function RefreshMatchStatsForTeam(facebookID:Number, responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.RefreshMatchStatsForTeam(facebookID);
         
@@ -238,7 +238,7 @@
 
       }
     
-      public function RefreshTeamDetails(facebookID:String, responder:IResponder = null ):void
+      public function RefreshTeamDetails(facebookID:Number, responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.RefreshTeamDetails(facebookID);
         

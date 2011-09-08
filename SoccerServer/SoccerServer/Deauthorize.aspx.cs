@@ -25,7 +25,7 @@ namespace SoccerServer
                 using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
                 {
                     var player = (from p in theContext.Players
-                                  where p.FacebookID == sig.UserId.ToString()
+                                  where p.FacebookID == sig.UserId
                                   select p).Single();
 
                     // Al borrar el player se borraran todas sus MatchParticipations. Dejaremos por lo tanto Match(s) con 1 sola participacion

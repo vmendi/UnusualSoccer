@@ -180,7 +180,7 @@
 </head>
 	
 <body>
-    <asp:Panel id="DefaultForm" runat="server" visible="true">
+    <asp:Panel id="DefaultForm" runat="server" visible="false">
 	    <div id="fb-root"></div>
 				
         <div style="margin-bottom:10px;width:760px;height:74px;"><img src="Imgs/MainHeader.jpg" width="760" height="74" style="display:block;border:0;"></img></div>

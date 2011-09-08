@@ -138,7 +138,7 @@ namespace SoccerServer.TransferModel
 	public class RankingTeam
 	{
 		public string Name;
-		public string FacebookID;
+		public long   FacebookID;
 		public string PredefinedTeamName;
 		public int TrueSkill;
 	}

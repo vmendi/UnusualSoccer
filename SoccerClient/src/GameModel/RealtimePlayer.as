@@ -10,7 +10,7 @@ package GameModel
 	public final class RealtimePlayer extends EventDispatcher
 	{
 		public var ClientID : int;
-		public var FacebookID : String;
+		public var FacebookID : Number;
 		public var Name : String;
 		public var PredefinedTeamName : String;
 		public var TrueSkill : Number;

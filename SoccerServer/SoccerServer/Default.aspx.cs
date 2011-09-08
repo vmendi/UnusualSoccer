@@ -37,12 +37,12 @@ namespace SoccerServer
 
         private void ShowFakeSessionKeyContent()
         {
-            string sessionKey = Request.QueryString["FakeSessionKey"];
+            long sessionKey = long.Parse(Request.QueryString["FakeSessionKey"]);
 
             using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
             {
                 Player thePlayer = EnsurePlayerIsCreated(theContext, sessionKey, null);
-                EnsureSessionIsCreated(theContext, thePlayer, sessionKey);
+                EnsureSessionIsCreated(theContext, thePlayer, sessionKey.ToString());
                 theContext.SubmitChanges();
             }
 
@@ -56,7 +56,7 @@ namespace SoccerServer
                 var fb = new FacebookWebClient();
                 
                 // Usamos un delegate para que solo se haga la llamada sincrona en caso necesario
-				Player player = EnsurePlayerIsCreated(theContext, FacebookWebContext.Current.UserId.ToString(), () => fb.Get("me"));
+				Player player = EnsurePlayerIsCreated(theContext, FacebookWebContext.Current.UserId, () => fb.Get("me"));
 
                 string sessionKey = FacebookWebContext.Current.AccessToken;
 
@@ -149,7 +149,7 @@ namespace SoccerServer
 
         public delegate dynamic GetFBUserDelegate();
 
-        static public Player EnsurePlayerIsCreated(SoccerDataModelDataContext theContext, string facebookUserID, GetFBUserDelegate theFBUserInfo)
+        static public Player EnsurePlayerIsCreated(SoccerDataModelDataContext theContext, long facebookUserID, GetFBUserDelegate theFBUserInfo)
 		{
 			var player = (from dbPlayer in theContext.Players
 						  where dbPlayer.FacebookID == facebookUserID

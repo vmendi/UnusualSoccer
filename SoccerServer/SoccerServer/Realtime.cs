@@ -693,8 +693,8 @@ namespace SoccerServer
         public int ClientID = -1;                       // El del NetEngine
 
         public String Name;
-        public String FacebookID;
         public String PredefinedTeamName;
+        public long   FacebookID;        
         public int    TrueSkill;
 
         [NonSerialized]

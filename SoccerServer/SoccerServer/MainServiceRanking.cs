@@ -72,7 +72,7 @@ namespace SoccerServer
 
 		// Nos basta con el facebookID y no nos hace falta el TeamID, porque ahora mismo hay una relacion 1:1
         [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 10000)]
-		public TransferModel.TeamMatchStats RefreshMatchStatsForTeam(string facebookID)
+		public TransferModel.TeamMatchStats RefreshMatchStatsForTeam(long facebookID)
 		{
             // Nos ahorramos pedir mSession y mPlayer, para esta query no son necesarios
             using (mContext = new SoccerDataModelDataContext())

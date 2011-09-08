@@ -19,7 +19,7 @@ namespace SoccerServer
 
 			using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
 			{
-				Player player = Default.EnsurePlayerIsCreated(theContext, sessionKey, null);
+				Player player = Default.EnsurePlayerIsCreated(theContext, long.Parse(sessionKey), null);
 				Default.EnsureSessionIsCreated(theContext, player, sessionKey);
 
 				theContext.SubmitChanges();

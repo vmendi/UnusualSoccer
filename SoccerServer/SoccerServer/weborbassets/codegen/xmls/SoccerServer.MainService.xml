@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<namespaces>
+  <runtime path="F:/UnusualGit/UnusualSoccer/SoccerServer/SoccerServer/" weborbRootURL="ENTER WEBORB URL HERE" />
+  <namespace name="SoccerServer" fullname="SoccerServer">
+    <enum name="VALID_NAME" fullname="SoccerServer.VALID_NAME" typeNamespace="SoccerServer">
+      <field name="VALID" type="String" fulltype="String" nativetype="String" />
+      <field name="DUPLICATED" type="String" fulltype="String" nativetype="String" />
+      <field name="INAPPROPIATE" type="String" fulltype="String" nativetype="String" />
+      <field name="TOO_SHORT" type="String" fulltype="String" nativetype="String" />
+      <field name="WHITE_SPACE_TRIM" type="String" fulltype="String" nativetype="String" />
+      <field name="TOO_MANY_WHITESPACES" type="String" fulltype="String" nativetype="String" />
+      <field name="EMPTY" type="String" fulltype="String" nativetype="String" />
+    </enum>
+    <namespace name="TransferModel" fullname="SoccerServer.TransferModel">
+      <datatype name="TeamMatchStats" fullname="SoccerServer.TransferModel.TeamMatchStats" typeNamespace="SoccerServer.TransferModel">
+        <field name="NumMatches" type="int" fulltype="int" nativetype="int" />
+        <field name="NumWonMatches" type="int" fulltype="int" nativetype="int" />
+        <field name="NumLostMatches" type="int" fulltype="int" nativetype="int" />
+        <field name="NumGoalsScored" type="int" fulltype="int" nativetype="int" />
+        <field name="NumGoalsReceived" type="int" fulltype="int" nativetype="int" />
+      </datatype>
+      <datatype name="PredefinedTeam" fullname="SoccerServer.TransferModel.PredefinedTeam" typeNamespace="SoccerServer.TransferModel">
+        <field name="PredefinedTeamID" type="int" fulltype="int" nativetype="int" />
+        <field name="Name" type="String" fulltype="String" nativetype="String" />
+      </datatype>
+      <datatype name="RankingPage" fullname="SoccerServer.TransferModel.RankingPage" typeNamespace="SoccerServer.TransferModel">
+        <field name="PageIndex" type="int" fulltype="int" nativetype="int" />
+        <field name="TotalPageCount" type="int" fulltype="int" nativetype="int" />
+        <field name="Teams" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;SoccerServer.TransferModel.RankingTeam&gt;" />
+        <field name="RANKING_TEAMS_PER_PAGE" type="int" fulltype="int" nativetype="int" />
+      </datatype>
+      <datatype name="RankingTeam" fullname="SoccerServer.TransferModel.RankingTeam" typeNamespace="SoccerServer.TransferModel">
+        <field name="Name" type="String" fulltype="String" nativetype="String" />
+        <field name="FacebookID" type="Number" fulltype="Number" nativetype="long" />
+        <field name="PredefinedTeamName" type="String" fulltype="String" nativetype="String" />
+        <field name="TrueSkill" type="int" fulltype="int" nativetype="int" />
+      </datatype>
+      <datatype name="TeamDetails" fullname="SoccerServer.TransferModel.TeamDetails" typeNamespace="SoccerServer.TransferModel">
+        <field name="AverageWeight" type="int" fulltype="int" nativetype="int" />
+        <field name="AverageSliding" type="int" fulltype="int" nativetype="int" />
+        <field name="AveragePower" type="int" fulltype="int" nativetype="int" />
+        <field name="Fitness" type="int" fulltype="int" nativetype="int" />
+        <field name="SpecialSkillsIDs" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;int&gt;" />
+      </datatype>
+      <datatype name="Team" fullname="SoccerServer.TransferModel.Team" typeNamespace="SoccerServer.TransferModel">
+        <field name="Name" type="String" fulltype="String" nativetype="String" />
+        <field name="PredefinedTeamID" type="int" fulltype="int" nativetype="int" />
+        <field name="Formation" type="String" fulltype="String" nativetype="String" />
+        <field name="TrueSkill" type="int" fulltype="int" nativetype="int" />
+        <field name="XP" type="int" fulltype="int" nativetype="int" />
+        <field name="SkillPoints" type="int" fulltype="int" nativetype="int" />
+        <field name="Energy" type="int" fulltype="int" nativetype="int" />
+        <field name="Fitness" type="int" fulltype="int" nativetype="int" />
+        <field name="PendingTraining" type="PendingTraining" fulltype="SoccerServer.TransferModel.PendingTraining" nativetype="SoccerServer.TransferModel.PendingTraining" typeNamespace="SoccerServer.TransferModel" />
+        <field name="SoccerPlayers" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;SoccerServer.TransferModel.SoccerPlayer&gt;" />
+        <field name="SpecialTrainings" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;SoccerServer.TransferModel.SpecialTraining&gt;" />
+      </datatype>
+      <datatype name="PendingTraining" fullname="SoccerServer.TransferModel.PendingTraining" typeNamespace="SoccerServer.TransferModel">
+        <field name="TrainingDefinition" type="TrainingDefinition" fulltype="SoccerServer.TransferModel.TrainingDefinition" nativetype="SoccerServer.TransferModel.TrainingDefinition" typeNamespace="SoccerServer.TransferModel" />
+        <field name="TimeStart" type="Date" fulltype="Date" nativetype="DateTime" />
+        <field name="TimeEnd" type="Date" fulltype="Date" nativetype="DateTime" />
+      </datatype>
+      <datatype name="TrainingDefinition" fullname="SoccerServer.TransferModel.TrainingDefinition" typeNamespace="SoccerServer.TransferModel">
+        <field name="TrainingDefinitionID" type="int" fulltype="int" nativetype="int" />
+        <field name="Name" type="String" fulltype="String" nativetype="String" />
+        <field name="Description" type="String" fulltype="String" nativetype="String" />
+        <field name="FitnessDelta" type="int" fulltype="int" nativetype="int" />
+        <field name="Time" type="int" fulltype="int" nativetype="int" />
+      </datatype>
+      <datatype name="SoccerPlayer" fullname="SoccerServer.TransferModel.SoccerPlayer" typeNamespace="SoccerServer.TransferModel">
+        <field name="SoccerPlayerID" type="int" fulltype="int" nativetype="int" />
+        <field name="Name" type="String" fulltype="String" nativetype="String" />
+        <field name="Number" type="int" fulltype="int" nativetype="int" />
+        <field name="Type" type="int" fulltype="int" nativetype="int" />
+        <field name="FieldPosition" type="int" fulltype="int" nativetype="int" />
+        <field name="Weight" type="int" fulltype="int" nativetype="int" />
+        <field name="Sliding" type="int" fulltype="int" nativetype="int" />
+        <field name="Power" type="int" fulltype="int" nativetype="int" />
+        <field name="IsInjured" type="Boolean" fulltype="Boolean" nativetype="bool" />
+      </datatype>
+      <datatype name="SpecialTraining" fullname="SoccerServer.TransferModel.SpecialTraining" typeNamespace="SoccerServer.TransferModel">
+        <field name="SpecialTrainingDefinition" type="SpecialTrainingDefinition" fulltype="SoccerServer.TransferModel.SpecialTrainingDefinition" nativetype="SoccerServer.TransferModel.SpecialTrainingDefinition" typeNamespace="SoccerServer.TransferModel" />
+        <field name="EnergyCurrent" type="int" fulltype="int" nativetype="int" />
+        <field name="IsCompleted" type="Boolean" fulltype="Boolean" nativetype="bool" />
+      </datatype>
+      <datatype name="SpecialTrainingDefinition" fullname="SoccerServer.TransferModel.SpecialTrainingDefinition" typeNamespace="SoccerServer.TransferModel">
+        <field name="SpecialTrainingDefinitionID" type="int" fulltype="int" nativetype="int" />
+        <field name="Name" type="String" fulltype="String" nativetype="String" />
+        <field name="Description" type="String" fulltype="String" nativetype="String" />
+        <field name="RequiredXP" type="int" fulltype="int" nativetype="int" />
+        <field name="EnergyStep" type="int" fulltype="int" nativetype="int" />
+        <field name="EnergyTotal" type="int" fulltype="int" nativetype="int" />
+      </datatype>
+    </namespace>
+    <service name="MainService" fullname="SoccerServer.MainService" namespace="SoccerServer" url="http://ENTER WEBORB URL HERE/weborb.aspx">
+      <method name="AssignSkillPoints" type="void" nativetype="Void" containsvalues="0">
+        <arg name="soccerPlayerID" type="int" nativetype="int" />
+        <arg name="weight" type="int" nativetype="int" />
+        <arg name="sliding" type="int" nativetype="int" />
+        <arg name="power" type="int" nativetype="int" />
+      </method>
+      <method name="ChangeFormation" type="void" nativetype="Void" containsvalues="0">
+        <arg name="newFormationName" type="String" nativetype="String" />
+      </method>
+      <method name="CreateTeam" type="Boolean" nativetype="bool" containsvalues="0">
+        <arg name="name" type="String" nativetype="String" />
+        <arg name="predefinedTeamID" type="int" nativetype="int" />
+      </method>
+      <method name="HasTeam" type="Boolean" nativetype="bool" containsvalues="0" />
+      <method name="IsNameValid" type="String" nativetype="SoccerServer.VALID_NAME" containsvalues="0">
+        <arg name="name" type="String" nativetype="String" />
+      </method>
+      <method name="OnError" type="void" nativetype="Void" containsvalues="0">
+        <arg name="msg" type="String" nativetype="String" />
+      </method>
+      <method name="OnLiked" type="int" nativetype="int" containsvalues="0" />
+      <method name="RefreshMatchStatsForTeam" type="TeamMatchStats" nativetype="SoccerServer.TransferModel.TeamMatchStats" containsvalues="0">
+        <arg name="facebookID" type="Number" nativetype="long" />
+      </method>
+      <method name="RefreshPredefinedTeams" type="ArrayCollection" nativetype="List&lt;SoccerServer.TransferModel.PredefinedTeam&gt;" containsvalues="0" />
+      <method name="RefreshRankingPage" type="RankingPage" nativetype="SoccerServer.TransferModel.RankingPage" containsvalues="0">
+        <arg name="pageIndex" type="int" nativetype="int" />
+      </method>
+      <method name="RefreshRemainingSecondsForPendingTraining" type="int" nativetype="int" containsvalues="0" />
+      <method name="RefreshSelfRankingPage" type="RankingPage" nativetype="SoccerServer.TransferModel.RankingPage" containsvalues="0" />
+      <method name="RefreshSelfTeamDetails" type="TeamDetails" nativetype="SoccerServer.TransferModel.TeamDetails" containsvalues="0" />
+      <method name="RefreshTeam" type="Team" nativetype="SoccerServer.TransferModel.Team" containsvalues="0" />
+      <method name="RefreshTeamDetails" type="TeamDetails" nativetype="SoccerServer.TransferModel.TeamDetails" containsvalues="0">
+        <arg name="facebookID" type="Number" nativetype="long" />
+      </method>
+      <method name="RefreshTrainingDefinitions" type="ArrayCollection" nativetype="List&lt;SoccerServer.TransferModel.TrainingDefinition&gt;" containsvalues="0" />
+      <method name="SwapFormationPosition" type="void" nativetype="Void" containsvalues="0">
+        <arg name="firstSoccerPlayerID" type="int" nativetype="int" />
+        <arg name="secondSoccerPlayerID" type="int" nativetype="int" />
+      </method>
+      <method name="Train" type="PendingTraining" nativetype="SoccerServer.TransferModel.PendingTraining" containsvalues="0">
+        <arg name="trainingName" type="String" nativetype="String" />
+      </method>
+      <method name="TrainSpecial" type="void" nativetype="Void" containsvalues="0">
+        <arg name="specialTrainingDefinitionID" type="int" nativetype="int" />
+      </method>
+    </service>
+  </namespace>
+</namespaces>

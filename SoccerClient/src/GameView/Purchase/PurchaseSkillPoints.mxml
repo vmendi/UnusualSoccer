@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="356" height="212">
+	
+	<fx:Style source="../styles.css"/>
+	
+	<s:states>
+		<s:State name="ChoosingItem"/>
+		<s:State name="Success"/>
+		<s:State name="Failure"/>
+		<s:State name="Canceled"/>
+	</s:states>
+	
+	<fx:Script><![CDATA[
+		import com.facebook.graph.Facebook;
+		
+		import mx.core.FlexGlobals;
+		import mx.core.IFlexModule;
+		import mx.managers.PopUpManager;
+				
+		public static function Show() : void
+		{
+			var inst : PurchaseSkillPoints = new PurchaseSkillPoints();
+			var parent : Sprite = FlexGlobals.topLevelApplication as Sprite;
+			
+			inst.moduleFactory = IFlexModule(parent).moduleFactory;
+			
+			PopUpManager.addPopUp(inst, parent, true, null);
+			PopUpManager.centerPopUp(inst);
+		}
+		
+		protected function CloseClickHandler(event:MouseEvent):void
+		{
+			PopUpManager.removePopUp(this);	
+		}
+	
+		protected function MySelectSkillPointsButton_clickHandler(event:MouseEvent):void
+		{
+			// El ID del button es directamente lo que espera el servidor que le mandemos
+			var orderInfo : String = (event.currentTarget as Button).id;
+			
+			var obj : Object = {
+				order_info: orderInfo,
+				purchase_type: 'item',
+				dev_purchase_params: {'oscif': true}		 // JSON Object
+			};
+			
+			Facebook.ui("pay", obj, PurchaseSkillPointsCallback);
+		}
+		
+		private function PurchaseSkillPointsCallback(ret : Object) : Boolean
+		{
+			var bRet : Boolean = false;
+			
+			if (ret['order_id']) 
+			{
+				SoccerClient.GetMainGameModel().TheTeamModel.RefreshTeam(OnTeamRefreshedSuccessfulPurchase);
+				currentState = "Success";
+				
+				bRet = true;
+			}
+			else
+			{
+				if (ret["error_code"] == "1383010")
+					currentState = "Canceled";
+				else
+					currentState = "Failure";
+			}
+			
+			return bRet;
+		}
+		
+		private function OnTeamRefreshedSuccessfulPurchase() : void
+		{
+		}
+		
+	]]></fx:Script>
+
+	<s:BitmapImage x="0" y="0" fillMode="clip"
+				   source="@Embed(source='/Assets/General.swf', symbol='PopupDialogBg')"/>
+	
+	<s:Group includeIn="ChoosingItem" horizontalCenter="0" verticalCenter="0">
+		<s:layout><s:HorizontalLayout gap="20" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+		<s:Group>
+			<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+			<s:Label id="SkillPoints100Label" styleName="whiteBoldBig" text="100 Skill Points"></s:Label>			
+			<s:Button id="SkillPoints100" label="Select"
+					  click="MySelectSkillPointsButton_clickHandler(event)"></s:Button>
+		</s:Group>
+		<s:Group>
+			<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+			<s:Label id="SkillPoints300Label" styleName="whiteBoldBig" text="300 Skill Points"></s:Label>			
+			<s:Button id="SkillPoints300" label="Select"
+					  click="MySelectSkillPointsButton_clickHandler(event)"></s:Button>
+		</s:Group>
+		<s:Group>
+			<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+			<s:Label id="SkillPoints500Label" styleName="whiteBoldBig" text="500 Skill Points"></s:Label>			
+			<s:Button id="SkillPoints500" label="Select"
+					  click="MySelectSkillPointsButton_clickHandler(event)"></s:Button>
+		</s:Group>
+	</s:Group>
+		
+	<s:Group includeIn="Success" horizontalCenter="0" verticalCenter="0">
+		<s:Label id="MySuccessLabel" styleName="whiteBoldBig" text="TODO: Successful purchase"/>
+	</s:Group>
+		
+	<s:Group includeIn="Failure, Canceled" horizontalCenter="0" verticalCenter="-10">
+		<s:Label id="MyFailureLabel" maxDisplayedLines="3" styleName="whiteBoldBig" width="300" textAlign="center"
+				 text.Failure="Failed purchase. If your account has been charged, please use the Report button below and submit a Dispute. We will promptly respond to it."
+				 text.Canceled="Order correctly Canceled"
+				 />
+				
+	</s:Group>
+
+	<s:Button id="MyCloseButton" label.ChoosingItem="Cancel" label="Close" click="CloseClickHandler(event)" minWidth="80" x="138" y="170" 
+			  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+	
+</s:Group>
