@@ -19,6 +19,7 @@ namespace SoccerServer.TransferModel
 		public int SkillPoints;
 		public int Energy;
 		public int Fitness;
+        public Ticket Ticket;
 		
 		public PendingTraining PendingTraining;
 		public List<SoccerPlayer> SoccerPlayers = new List<SoccerPlayer>();
@@ -34,7 +35,7 @@ namespace SoccerServer.TransferModel
 			SkillPoints = from.SkillPoints;
 			Energy = from.Energy;
 			Fitness = from.Fitness;
-			
+            			
 			if (from.PendingTraining != null)
 				PendingTraining = new PendingTraining(from.PendingTraining);
 
@@ -43,8 +44,20 @@ namespace SoccerServer.TransferModel
 
 			foreach (BDDModel.SpecialTraining sp in from.SpecialTrainings)
 				SpecialTrainings.Add(new SpecialTraining(sp));
+
+            Ticket = new Ticket(from.Ticket);
 		}
 	}
+
+    public class Ticket
+    {
+        public int RemainingMatches;
+        public int TicketKind;
+        public DateTime TicketPurchaseDate;
+        public DateTime TicketExpiryDate;
+
+        public Ticket(BDDModel.Ticket from) { CopyHelper.Copy(from, this); }
+    }
 
 	public class SoccerPlayer
 	{
@@ -102,7 +115,7 @@ namespace SoccerServer.TransferModel
 	{
 		public TrainingDefinition TrainingDefinition;
 		public DateTime TimeStart;
-		public DateTime TimeEnd;
+		public DateTime TimeEnd;        // No las transferimos en UTC pq lo unico q nos interesa es la diferencia
 
 		public PendingTraining(BDDModel.PendingTraining from) 
 		{

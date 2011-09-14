@@ -20,10 +20,31 @@ namespace SoccerServer
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            mTeamID =  int.Parse(Request.QueryString["TeamID"]);
+            if (Request.QueryString["TeamID"] != null)
+            {
+                mTeamID = int.Parse(Request.QueryString["TeamID"]);
+            }
+            else if (Request.QueryString["FacebookID"] != null)
+            {
+                long fbID = long.Parse(Request.QueryString["FacebookID"]);
+
+                mTeamID = (from s in mDC.Teams
+                           where s.Player.FacebookID == fbID
+                           select s.TeamID).First();
+            }
+            else
+                throw new Exception("Tienes que pasar un TeamID o un FacebookID");
+                        
             mPlayer = (from p in mDC.Players where p.Team.TeamID == mTeamID select p).First();
 
             FillProfile();
+            FillPurchases();
+        }
+
+        protected override void OnUnload(EventArgs e)
+        {
+            base.OnUnload(e);            
+            mDC.Dispose();
         }
 
         public void FillProfile()
@@ -53,6 +74,26 @@ namespace SoccerServer
             MySpecialTrainings.Text = "SpecialTrainings: " + specialTrainings.TrimEnd('/');
         }
 
+        private void FillPurchases()
+        {
+            MyNumPurchases.Text = "Num purchases: " + GetNumPurchases().ToString();
+            MyCurrentTicket.Text = "Ticket: " + GetTicketString();
+        }
+
+        private string GetTicketString()
+        {
+            return mPlayer.Team.Ticket.TicketKind.ToString() + "         Purchase Date: " + mPlayer.Team.Ticket.TicketPurchaseDate +
+                   "         Expiry Date: " + mPlayer.Team.Ticket.TicketExpiryDate;
+        }
+
+        private int GetNumPurchases()
+        {
+            return (from p in mDC.Purchases
+                    where p.FacebookBuyerID == mPlayer.FacebookID &&
+                          p.Status == "Settled"
+                    select p).Count();
+        }
+
         public int GetNumSessions()
         {
             return (from s in mDC.Sessions
@@ -61,7 +102,18 @@ namespace SoccerServer
 
         public int GetTrueSkill()
         {
-            return (int)(mPlayer.Team.Mean - 3 * mPlayer.Team.StandardDeviation); 
+            return (int)TrueSkillHelper.MyConservativeTrueSkill(new Moserware.Skills.Rating(mPlayer.Team.Mean, mPlayer.Team.StandardDeviation));
+        }
+
+        protected void MyResetTicketButton_Click(object sender, EventArgs e)
+        {
+            mPlayer.Team.Ticket.TicketKind = -1;
+            mPlayer.Team.Ticket.TicketPurchaseDate = DateTime.Now;
+            mPlayer.Team.Ticket.TicketExpiryDate = mPlayer.Team.Ticket.TicketPurchaseDate;
+            mPlayer.Team.Ticket.RemainingMatches = 0;
+            mDC.SubmitChanges();
+
+            FillPurchases();
         }
 
     }

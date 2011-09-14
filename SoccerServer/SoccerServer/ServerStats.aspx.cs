@@ -36,6 +36,11 @@ namespace SoccerServer
 			}
 		}
 
+        protected override void OnUnload(EventArgs e)
+        {
+            base.OnUnload(e);
+            mDC.Dispose();
+        }
 
         private int GetTotalPlayers()
         {
@@ -132,7 +137,7 @@ namespace SoccerServer
             foreach (Team theTeam in mDC.Teams)
             {
                 var rating = new Moserware.Skills.Rating(theTeam.Mean, theTeam.StandardDeviation);
-                theTeam.TrueSkill = (int)(TrueSkillHelper.MyConservative(rating) * TrueSkillHelper.MULTIPLIER);
+                theTeam.TrueSkill = (int)(TrueSkillHelper.MyConservativeTrueSkill(rating) * TrueSkillHelper.MULTIPLIER);
             }
 
             mDC.SubmitChanges();

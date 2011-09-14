@@ -22,6 +22,12 @@ namespace SoccerServer
             FillMatchesCount();
         }
 
+        protected override void OnUnload(EventArgs e)
+        {
+            base.OnUnload(e);
+            mDC.Dispose();
+        }
+
         public void FillGlobalMatches()
         {
             MyGlobalMatches.DataSource = MyMatchesLinQDataSource;

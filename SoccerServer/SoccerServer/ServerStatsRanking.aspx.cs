@@ -23,6 +23,12 @@ namespace SoccerServer
         {
         }
 
+        protected override void OnUnload(EventArgs e)
+        {
+            base.OnUnload(e);
+            mDC.Dispose();
+        }
+
         public string GetFacebookUserName(BDDModel.Team team)
         {
             return team.Player.Name + " " + team.Player.Surname;
@@ -73,7 +79,7 @@ namespace SoccerServer
         public int GetTotalGoalsReceived(BDDModel.Team team)
         {
             return (from p in mDC.MatchParticipations
-                    where p.TeamID == team.TeamID
+                    where p.TeamID == team.TeamID && p.Match.MatchParticipations.Count > 1
                     select p.Match.MatchParticipations.Single(o => o != p).Goals).ToArray().Sum();
         }
 

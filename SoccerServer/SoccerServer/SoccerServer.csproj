@@ -149,6 +149,7 @@
     <Content Include="ServerStatsGlobalMatches.aspx" />
     <Content Include="ServerStatsMatchesControl.ascx" />
     <Content Include="ServerStatsProfile.aspx" />
+    <Content Include="ServerStatsPurchases.aspx" />
     <Content Include="ServerStatsRanking.aspx" />
     <Content Include="TestCreateSession.aspx" />
     <Content Include="TrueSkillHelper.aspx" />
@@ -257,6 +258,13 @@
     </Compile>
     <Compile Include="ServerStatsProfile.aspx.designer.cs">
       <DependentUpon>ServerStatsProfile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerStatsPurchases.aspx.cs">
+      <DependentUpon>ServerStatsPurchases.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerStatsPurchases.aspx.designer.cs">
+      <DependentUpon>ServerStatsPurchases.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServerStatsRanking.aspx.cs">
       <DependentUpon>ServerStatsRanking.aspx</DependentUpon>

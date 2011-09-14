@@ -83,8 +83,8 @@ namespace SoccerServer
             Response.Write(ratingPlayer1.ToString() + "<br/>");
             Response.Write(ratingPlayer2.ToString() + "<br/>");
 
-            Response.Write(Math.Round(MyConservative(ratingPlayer1)).ToString() + "<br/>");
-            Response.Write(Math.Round(MyConservative(ratingPlayer2)).ToString() + "<br/>");
+            Response.Write(Math.Round(MyConservativeTrueSkill(ratingPlayer1)).ToString() + "<br/>");
+            Response.Write(Math.Round(MyConservativeTrueSkill(ratingPlayer2)).ToString() + "<br/>");
 
             Response.Write("---------------------------------<br/>");
         }
@@ -95,20 +95,20 @@ namespace SoccerServer
 
             if (goalsPlayer1 > goalsPlayer2)
             {
-                if (MyConservative(ratingPlayer1) - MyConservative(ratingPlayer2) > CUTOFF)
+                if (MyConservativeTrueSkill(ratingPlayer1) - MyConservativeTrueSkill(ratingPlayer2) > CUTOFF)
                     bRet = false;
             }
             else
             if (goalsPlayer1 < goalsPlayer2)
             {
-                if (MyConservative(ratingPlayer2) - MyConservative(ratingPlayer1) > CUTOFF)
+                if (MyConservativeTrueSkill(ratingPlayer2) - MyConservativeTrueSkill(ratingPlayer1) > CUTOFF)
                     bRet = false;
             }
 
             return bRet;
         }
 
-        static public double MyConservative(Rating player)
+        static public double MyConservativeTrueSkill(Rating player)
         {
             return player.Mean - (CONSERVATIVE_FACTOR * player.StandardDeviation);
         }
@@ -144,10 +144,10 @@ namespace SoccerServer
             ratingPlayer1 = newRatings[player1];
             ratingPlayer2 = newRatings[player2];
 
-            if (MyConservative(ratingPlayer1) < 0)
+            if (MyConservativeTrueSkill(ratingPlayer1) < 0)
                 ratingPlayer1 = new Rating(ratingPlayer1.StandardDeviation * CONSERVATIVE_FACTOR, ratingPlayer1.StandardDeviation);
 
-            if (MyConservative(ratingPlayer2) < 0)
+            if (MyConservativeTrueSkill(ratingPlayer2) < 0)
                 ratingPlayer2 = new Rating(ratingPlayer2.StandardDeviation * CONSERVATIVE_FACTOR, ratingPlayer2.StandardDeviation);
         }
     }

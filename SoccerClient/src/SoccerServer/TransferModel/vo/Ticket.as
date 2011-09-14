@@ -1,5 +1,5 @@
 /*******************************************************************
-* Team.as
+* Ticket.as
 * Copyright (C) 2006-2010 Midnight Coders, Inc.
 *
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -15,24 +15,16 @@ package SoccerServer.TransferModel.vo
 {
   import flash.utils.ByteArray;
   import mx.collections.ArrayCollection;
-import SoccerServer.TransferModel.vo.Ticket;import SoccerServer.TransferModel.vo.PendingTraining;
+
 	[Bindable]
-	[RemoteClass(alias="SoccerServer.TransferModel.Team")]
-	public class Team
+	[RemoteClass(alias="SoccerServer.TransferModel.Ticket")]
+	public class Ticket
 	{
-		public function Team(){}
+		public function Ticket(){}
 	
-		public var Name:String;
-		public var PredefinedTeamID:int;
-		public var Formation:String;
-		public var TrueSkill:int;
-		public var XP:int;
-		public var SkillPoints:int;
-		public var Energy:int;
-		public var Fitness:int;
-		public var Ticket:SoccerServer.TransferModel.vo.Ticket;
-		public var PendingTraining:SoccerServer.TransferModel.vo.PendingTraining;
-		public var SoccerPlayers:ArrayCollection;
-		public var SpecialTrainings:ArrayCollection;
+		public var RemainingMatches:int;
+		public var TicketKind:int;
+		public var TicketPurchaseDate:Date;
+		public var TicketExpiryDate:Date;
 	}
 }

@@ -166,9 +166,45 @@ namespace SoccerServer
             {
                 theTeam.SkillPoints += 500;
             }
+            else if (thePurchase.ItemID == "BronzeTicket")
+            {
+                AwardTicketTime(theTeam.Ticket, 0, new TimeSpan(1, 0, 0, 0));
+            } 
+            else if (thePurchase.ItemID == "SilverTicket")
+            {
+                AwardTicketTime(theTeam.Ticket, 1, new TimeSpan(7, 0, 0, 0));                
+            }
+            else if (thePurchase.ItemID == "GoldTicket")
+            {
+                AwardTicketTime(theTeam.Ticket, 2, new TimeSpan(31, 0, 0, 0));
+            }
             else
             {
                 throw new Exception("Unknown thePurchase.ItemID: " + thePurchase.ItemID);
+            }
+        }
+
+        static private void AwardTicketTime(BDDModel.Ticket theTicket, int ticketKind, TimeSpan time)
+        {
+            // A la expiracion del ticket, estara bien
+            theTicket.RemainingMatches = 5;
+
+            // Siempre marca la fecha del ultimo ticket comprado
+            theTicket.TicketPurchaseDate = DateTime.Now;
+
+            if (theTicket.TicketExpiryDate > DateTime.Now)
+            {
+                // Si todavia no ha expirado, hay que sumar
+                theTicket.TicketExpiryDate += time;
+
+                // Siempre le saldra el mayor ticket q haya comprado (p. ejemplo, si es gold, dejamos gold cuando añade un silver)
+                if (theTicket.TicketKind < ticketKind)
+                    theTicket.TicketKind = ticketKind;
+            }
+            else
+            {
+                theTicket.TicketExpiryDate = theTicket.TicketPurchaseDate + time;
+                theTicket.TicketKind = ticketKind;
             }
         }
 
@@ -260,8 +296,7 @@ namespace SoccerServer
                         product_url = "http://www.facebook.com/images/gifts/20.png",
                         image_url = "http://www.facebook.com/images/gifts/20.png",
                         data = ""
-                    }
-                ,
+                    },
                 new ItemForSale()
                     {
                         item_id = "SkillPoints300",
@@ -271,14 +306,43 @@ namespace SoccerServer
                         product_url = "http://www.facebook.com/images/gifts/21.png",
                         image_url = "http://www.facebook.com/images/gifts/21.png",
                         data = ""
-                    }
-                ,
+                    },
                 new ItemForSale()
                     {
                         item_id = "SkillPoints500",
                         description = "A package of 500 Skill points",
                         price = 30,
                         title = "500 Skill Points",
+                        product_url = "http://www.facebook.com/images/gifts/22.png",
+                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        data = ""
+                    },
+                new ItemForSale()
+                    {
+                        item_id = "BronzeTicket",
+                        description = "Unlimited matches during XXX days",
+                        price = 10,
+                        title = "Unlimited matches during XXX days",
+                        product_url = "http://www.facebook.com/images/gifts/22.png",
+                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        data = ""
+                    },
+                new ItemForSale()
+                    {
+                        item_id = "SilverTicket",
+                        description = "Unlimited matches during XXX days",
+                        price = 20,
+                        title = "Unlimited matches during XXX days",
+                        product_url = "http://www.facebook.com/images/gifts/22.png",
+                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        data = ""
+                    },
+                new ItemForSale()
+                    {
+                        item_id = "GoldTicket",
+                        description = "Unlimited matches during XXX days",
+                        price = 30,
+                        title = "Unlimited matches during XXX days",
                         product_url = "http://www.facebook.com/images/gifts/22.png",
                         image_url = "http://www.facebook.com/images/gifts/22.png",
                         data = ""

@@ -56,6 +56,10 @@ namespace SoccerServer
                     theNewTeam.Player = mPlayer;
                     theNewTeam.Name = name;
 
+                    // Uno por equipo, siempre
+                    GenerateTicket(theNewTeam);
+
+                    // TODO: No está bien. Se deberían generar bajo demanda (al entrenar) y no desde el principio
                     GenerateSpecialTrainings(theNewTeam);
 
                     mContext.SubmitChanges();
@@ -69,6 +73,18 @@ namespace SoccerServer
                 return theNewTeam != null;
             }
 		}
+
+        private void GenerateTicket(Team team)
+        {
+            Ticket theTicket = new Ticket();
+            
+            theTicket.TicketID = team.TeamID;
+            theTicket.TicketKind = -1;
+            theTicket.TicketPurchaseDate = DateTime.Now;
+            theTicket.TicketExpiryDate = theTicket.TicketPurchaseDate;
+
+            mContext.Tickets.InsertOnSubmit(theTicket);
+        }
 
 		private void GenerateSpecialTrainings(Team team)
 		{

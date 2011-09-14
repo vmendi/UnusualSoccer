@@ -1,15 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SoccerV2" EntityNamespace="SoccerServer.BDDModel" Class="SoccerDataModelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=localhost;Initial Catalog=SoccerV2;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="SoccerV2ConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.TrainingDefinitions" Member="TrainingDefinitions">
-    <Type Name="TrainingDefinition">
-      <Column Name="TrainingDefinitionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="FitnessDelta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Time" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="TrainingDefinition_PendingTraining" Member="PendingTrainings" ThisKey="TrainingDefinitionID" OtherKey="TrainingDefinitionID" Type="PendingTraining" />
-    </Type>
-  </Table>
   <Table Name="dbo.Matches" Member="Matches">
     <Type Name="Match">
       <Column Name="MatchID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -20,6 +10,16 @@
       <Column Name="WasAbandoned" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="WasAbandonedSameIP" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="Match_MatchParticipation" Member="MatchParticipations" ThisKey="MatchID" OtherKey="MatchID" Type="MatchParticipation" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TrainingDefinitions" Member="TrainingDefinitions">
+    <Type Name="TrainingDefinition">
+      <Column Name="TrainingDefinitionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FitnessDelta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Time" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="TrainingDefinition_PendingTraining" Member="PendingTrainings" ThisKey="TrainingDefinitionID" OtherKey="TrainingDefinitionID" Type="PendingTraining" />
     </Type>
   </Table>
   <Table Name="dbo.MatchParticipations" Member="MatchParticipations">
@@ -150,8 +150,19 @@
       <Association Name="Team_PendingTraining" Member="PendingTraining" ThisKey="TeamID" OtherKey="TeamID" Type="PendingTraining" Cardinality="One" />
       <Association Name="Team_SoccerPlayer" Member="SoccerPlayers" ThisKey="TeamID" OtherKey="TeamID" Type="SoccerPlayer" />
       <Association Name="Team_SpecialTraining" Member="SpecialTrainings" ThisKey="TeamID" OtherKey="TeamID" Type="SpecialTraining" />
+      <Association Name="Team_Ticket" Member="Ticket" ThisKey="TeamID" OtherKey="TicketID" Type="Ticket" Cardinality="One" />
       <Association Name="Player_Team" Member="Player" ThisKey="TeamID" OtherKey="PlayerID" Type="Player" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="PredefinedTeam_Team" Member="PredefinedTeam" ThisKey="PredefinedTeamID" OtherKey="PredefinedTeamID" Type="PredefinedTeam" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Tickets" Member="Tickets">
+    <Type Name="Ticket">
+      <Column Name="TicketID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RemainingMatches" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TicketKind" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TicketPurchaseDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TicketExpiryDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Team_Ticket" Member="Team" ThisKey="TicketID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
 </Database>

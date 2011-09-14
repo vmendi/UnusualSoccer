@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.facebook.graph.Facebook;
+			
+			import mx.core.FlexGlobals;
+			import mx.core.IFlexModule;
+			import mx.managers.PopUpManager;
+			
+			import spark.components.Group;
+			
+			public static function ShowPurchase(theClass : Class) : void
+			{
+				/* Las "usamos" aqui para que linke */
+				new PurchaseSkillPoints();
+				new PurchaseTicket();
+				
+				var inst : Group = new theClass() as Group;
+				var parent : Sprite = FlexGlobals.topLevelApplication as Sprite;
+				
+				inst.moduleFactory = IFlexModule(parent).moduleFactory;
+				
+				PopUpManager.addPopUp(inst, parent, true, null);
+				PopUpManager.centerPopUp(inst);
+			}
+			
+			protected function CloseClickHandler(event:MouseEvent):void
+			{
+				PopUpManager.removePopUp(this);
+			}
+			
+			protected function ProcessPurchase(orderInfo : String) : void
+			{				
+				var obj : Object = {
+					order_info: orderInfo,
+					purchase_type: 'item',
+					dev_purchase_params: {'oscif': true}		 // JSON Object
+				};
+				
+				Facebook.ui("pay", obj, PurchaseCallback);
+			}
+						
+			private function PurchaseCallback(ret : Object) : Boolean
+			{
+				var bRet : Boolean = false;
+				
+				if (ret['order_id']) 
+				{
+					SoccerClient.GetMainGameModel().TheTeamModel.RefreshTeam(OnTeamRefreshedSuccessfulPurchase);
+					currentState = "Success";
+					
+					bRet = true;
+				}
+				else
+				{
+					if (ret["error_code"] == "1383010")
+						currentState = "Canceled";
+					else
+						currentState = "Failure";
+				}
+				
+				return bRet;
+			}
+			
+			private function OnTeamRefreshedSuccessfulPurchase() : void
+			{
+			}
+		]]>
+	</fx:Script>
+	
+</s:Group>

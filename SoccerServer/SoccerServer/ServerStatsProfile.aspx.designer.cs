@@ -112,6 +112,33 @@ namespace SoccerServer {
         protected global::System.Web.UI.WebControls.Label MySpecialTrainings;
         
         /// <summary>
+        /// MyNumPurchases control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label MyNumPurchases;
+        
+        /// <summary>
+        /// MyCurrentTicket control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label MyCurrentTicket;
+        
+        /// <summary>
+        /// MyResetTicketButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button MyResetTicketButton;
+        
+        /// <summary>
         /// MyProfileMatches control.
         /// </summary>
         /// <remarks>

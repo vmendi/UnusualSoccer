@@ -51,9 +51,16 @@
         <field name="SkillPoints" type="int" fulltype="int" nativetype="int" />
         <field name="Energy" type="int" fulltype="int" nativetype="int" />
         <field name="Fitness" type="int" fulltype="int" nativetype="int" />
+        <field name="Ticket" type="Ticket" fulltype="SoccerServer.TransferModel.Ticket" nativetype="SoccerServer.TransferModel.Ticket" typeNamespace="SoccerServer.TransferModel" />
         <field name="PendingTraining" type="PendingTraining" fulltype="SoccerServer.TransferModel.PendingTraining" nativetype="SoccerServer.TransferModel.PendingTraining" typeNamespace="SoccerServer.TransferModel" />
         <field name="SoccerPlayers" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;SoccerServer.TransferModel.SoccerPlayer&gt;" />
         <field name="SpecialTrainings" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;SoccerServer.TransferModel.SpecialTraining&gt;" />
+      </datatype>
+      <datatype name="Ticket" fullname="SoccerServer.TransferModel.Ticket" typeNamespace="SoccerServer.TransferModel">
+        <field name="RemainingMatches" type="int" fulltype="int" nativetype="int" />
+        <field name="TicketKind" type="int" fulltype="int" nativetype="int" />
+        <field name="TicketPurchaseDate" type="Date" fulltype="Date" nativetype="DateTime" />
+        <field name="TicketExpiryDate" type="Date" fulltype="Date" nativetype="DateTime" />
       </datatype>
       <datatype name="PendingTraining" fullname="SoccerServer.TransferModel.PendingTraining" typeNamespace="SoccerServer.TransferModel">
         <field name="TrainingDefinition" type="TrainingDefinition" fulltype="SoccerServer.TransferModel.TrainingDefinition" nativetype="SoccerServer.TransferModel.TrainingDefinition" typeNamespace="SoccerServer.TransferModel" />

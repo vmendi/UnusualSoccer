@@ -25,7 +25,6 @@ package GameModel
 			mMainModel = mainModel;
 			
 			// Un nuevo paradigma de exposición de datos directos desde el modelo interno hacia afuera
-			// vs el antiguo de guardarnos aqui nuestra propia variable: mPlayerTeam
 			BindingUtils.bindSetter(function (e:Object) : void { dispatchEvent(new Event("PlayerTeamDetailsChanged")); }, 
 									mMainService.GetModel(), "RefreshSelfTeamDetailsResult");
 		}
@@ -63,7 +62,7 @@ package GameModel
 			else
 				failed();
 		}
-				
+
 		private function OnRefreshTeamResponse(e:ResultEvent, callback : Function) : void
 		{
 			mPlayerTeam = e.result as Team;
@@ -110,7 +109,7 @@ package GameModel
 			dispatchEvent(new Event("FieldSoccerPlayersChanged"));
 			dispatchEvent(new Event("SubstituteSoccerPlayersChanged"));
 		}
-				
+
 		public function SwapFormationPosition(first : SoccerPlayer, second : SoccerPlayer) : void
 		{
 			mMainService.SwapFormationPosition(first.SoccerPlayerID, second.SoccerPlayerID, ErrorMessages.FaultResponder);

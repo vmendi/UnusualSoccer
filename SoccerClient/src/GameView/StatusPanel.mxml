@@ -10,7 +10,9 @@
 		import GameModel.MainGameModel;
 		import GameModel.TeamModel;
 		
-		import GameView.Purchase.PurchaseSkillPoints;
+		import GameView.Purchase.PurchaseBase;
+		
+		import flash.utils.getDefinitionByName;
 		
 		import mx.events.FlexEvent;
 
@@ -22,7 +24,7 @@
 		
 		protected function MyAddSkillPoints_clickHandler(event:MouseEvent):void
 		{
-			PurchaseSkillPoints.Show();
+			PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseSkillPoints") as Class);
 		}
 		
 		[Bindable] private var mMainGameModel : MainGameModel;
@@ -38,6 +40,14 @@
 	
 	<GameView:BadgeTeamBig x="10" y="10" TeamName="{mTeamModel.PredefinedTeamName}" />
 	<GameView:BadgeCategory x="354" y="25" TrueSkill="{mTeamModel.TheTeam.TrueSkill}" />
+	
+	<s:BorderContainer x="76" y="0" width="104" borderStyle="solid">
+		<s:backgroundFill><s:SolidColor color="red" alpha="0"/></s:backgroundFill>
+		<s:Label x="0" y="34" text="{mTeamModel.PredefinedTeamName}" styleName="whiteBoldVeryBig" id="MyPredefinedTeamLabel" filters="{txtGlowFilter}"/> 
+		<s:Label x="0" y="7" text="{mTeamModel.TheTeam.Name}" styleName="whiteBoldBig" id="MyTeamNameLabel" filters="{txtGlowFilter}"/>	
+	</s:BorderContainer>
+
+	<GameView:TicketsPanel x="170" y="0" />
 		
 	<s:Label x="432" y="34" text="{mTeamModel.TheTeam.TrueSkill}" width="60" height="20" id="MyTrueSkillLabel" styleName="whiteBoldVeryBig" textAlign="center" filters="{txtGlowFilter}"/>	
 	<s:Label x="503" y="34" text="{mTeamModel.TheTeam.XP}" width="44" height="20" id="MyXPLabel" styleName="whiteBoldVeryBig" textAlign="center" filters="{txtGlowFilter}"/>
@@ -52,7 +62,4 @@
 		<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="Add" />
 	</s:Group>
 	
-
-	<s:Label x="76" y="34" text="{mTeamModel.PredefinedTeamName}" width="204" styleName="whiteBoldVeryBig" id="MyPredefinedTeamLabel" filters="{txtGlowFilter}"/> 
-	<s:Label x="76" y="7" text="{mTeamModel.TheTeam.Name}" width="204" styleName="whiteBoldBig" id="MyTeamNameLabel" filters="{txtGlowFilter}"/>
 </s:Group>

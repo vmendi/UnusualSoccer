@@ -33,7 +33,7 @@
 			
 			// Para que las estructuras creadas por weborb existan
 			var dataTypeInit : DataTypeInitializer = new DataTypeInitializer();
-						
+
 			if (AppConfig.TEST_NAME != null)
 			{
 				mFacebookFacade = new FacebookFacade();

@@ -102,6 +102,8 @@ namespace SoccerServer
                 }
             }
 
+            dc.Dispose();
+
             return stats;
         }
 

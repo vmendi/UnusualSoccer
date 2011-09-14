@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Purchase:PurchaseBase xmlns:fx="http://ns.adobe.com/mxml/2009"
-		 			   xmlns:s="library://ns.adobe.com/flex/spark"
-		 			   xmlns:mx="library://ns.adobe.com/flex/mx"
-		 			   xmlns:Purchase="GameView.Purchase.*"
-		 			   width="356" height="212">
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   xmlns:Purchase="GameView.Purchase.*"
+					   width="356" height="212">
 	
 	<fx:Style source="../styles.css"/>
 	
@@ -31,24 +31,24 @@
 		<s:layout><s:HorizontalLayout gap="20" horizontalAlign="center" verticalAlign="middle"/></s:layout>
 		<s:Group>
 			<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-			<s:Label id="SkillPoints100Label" styleName="whiteBoldBig" text="100 Skill Points"></s:Label>			
-			<s:Button id="SkillPoints100" label="Select"
+			<s:Label id="BronzeTicketLabel" styleName="whiteBoldBig" text="Bronze ticket - XXX time"></s:Label>			
+			<s:Button id="BronzeTicket" label="Select"
 					  click="MySelectItemButton_clickHandler(event)"></s:Button>
 		</s:Group>
 		<s:Group>
 			<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-			<s:Label id="SkillPoints300Label" styleName="whiteBoldBig" text="300 Skill Points"></s:Label>			
-			<s:Button id="SkillPoints300" label="Select"
+			<s:Label id="SilverTicketLabel" styleName="whiteBoldBig" text="Silver Ticket - XXX time"></s:Label>			
+			<s:Button id="SilverTicket" label="Select"
 					  click="MySelectItemButton_clickHandler(event)"></s:Button>
 		</s:Group>
 		<s:Group>
 			<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-			<s:Label id="SkillPoints500Label" styleName="whiteBoldBig" text="500 Skill Points"></s:Label>			
-			<s:Button id="SkillPoints500" label="Select"
+			<s:Label id="GoldTicketLabel" styleName="whiteBoldBig" text="Gold Ticket - XXX time"></s:Label>			
+			<s:Button id="GoldTicket" label="Select"
 					  click="MySelectItemButton_clickHandler(event)"></s:Button>
-		</s:Group>			
+		</s:Group>
 	</s:Group>
-		
+	
 	<s:Group includeIn="Success" horizontalCenter="0" verticalCenter="0">
 		<s:Label id="MySuccessLabel" styleName="whiteBoldBig" text="TODO: Successful purchase"/>
 	</s:Group>

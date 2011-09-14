@@ -66,13 +66,19 @@
 		<br />
 		<br />
 		<br />		
-        <asp:HyperLink ID="HyperLink1" runat="server" Text="Ir a estadísticas de partidos" NavigateUrl="~/ServerStatsGlobalMatches.aspx" />        
+        <asp:HyperLink ID="HyperLink1" runat="server" Text="Matches" NavigateUrl="~/ServerStatsGlobalMatches.aspx" />
+        <br />
+		<br />
+        <asp:HyperLink ID="HyperLink3" runat="server" Text="Purchases" NavigateUrl="~/ServerStatsPurchases.aspx" />
+        <br />
+		<br />
+        <asp:HyperLink ID="HyperLink2" runat="server" Text="Ranking" NavigateUrl="~/ServerStatsRanking.aspx" />
         <br />
 		<br />
 
         <!--
         <asp:Button ID="RefreshTrueskillButton" runat="server" Text="Refresh Trueskill" OnClick="RefreshTrueskill_Click" />        
-        <asp:HyperLink ID="HyperLink2" runat="server" Text="Ir a ranking" NavigateUrl="~/ServerStatsRanking.aspx" />
+        
         -->
 					
 	</form>

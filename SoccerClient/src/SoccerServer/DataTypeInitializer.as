@@ -16,6 +16,7 @@ package SoccerServer
 	import SoccerServer.TransferModel.vo.RankingTeam;
 	import SoccerServer.TransferModel.vo.TeamDetails;
 	import SoccerServer.TransferModel.vo.Team;
+	import SoccerServer.TransferModel.vo.Ticket;
 	import SoccerServer.TransferModel.vo.PendingTraining;
 	import SoccerServer.TransferModel.vo.TrainingDefinition;
 	import SoccerServer.TransferModel.vo.SoccerPlayer;
@@ -32,6 +33,7 @@ package SoccerServer
 			new SoccerServer.TransferModel.vo.RankingTeam();	
 			new SoccerServer.TransferModel.vo.TeamDetails();	
 			new SoccerServer.TransferModel.vo.Team();	
+			new SoccerServer.TransferModel.vo.Ticket();	
 			new SoccerServer.TransferModel.vo.PendingTraining();	
 			new SoccerServer.TransferModel.vo.TrainingDefinition();	
 			new SoccerServer.TransferModel.vo.SoccerPlayer();	

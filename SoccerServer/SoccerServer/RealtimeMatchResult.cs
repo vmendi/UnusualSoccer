@@ -108,11 +108,11 @@ namespace SoccerServer
 
             mBDDPlayer1.Team.Mean = ratingPlayer1.Mean;
             mBDDPlayer1.Team.StandardDeviation = ratingPlayer1.StandardDeviation;
-            mBDDPlayer1.Team.TrueSkill = (int)(TrueSkillHelper.MyConservative(ratingPlayer1)*TrueSkillHelper.MULTIPLIER);
+            mBDDPlayer1.Team.TrueSkill = (int)(TrueSkillHelper.MyConservativeTrueSkill(ratingPlayer1)*TrueSkillHelper.MULTIPLIER);
 
             mBDDPlayer2.Team.Mean = ratingPlayer2.Mean;
             mBDDPlayer2.Team.StandardDeviation = ratingPlayer2.StandardDeviation;
-            mBDDPlayer2.Team.TrueSkill = (int)(TrueSkillHelper.MyConservative(ratingPlayer2)*TrueSkillHelper.MULTIPLIER);
+            mBDDPlayer2.Team.TrueSkill = (int)(TrueSkillHelper.MyConservativeTrueSkill(ratingPlayer2)*TrueSkillHelper.MULTIPLIER);
 
             ResultPlayer1.DiffTrueSkill = mBDDPlayer1.Team.TrueSkill - oldTrueSkillPlayer1;
             ResultPlayer2.DiffTrueSkill = mBDDPlayer2.Team.TrueSkill - oldTrueSkillPlayer2;

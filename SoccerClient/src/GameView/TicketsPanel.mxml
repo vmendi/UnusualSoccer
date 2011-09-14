@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 creationComplete="CreationCompleteHandler(event)" 
+		 width="200" height="60">
+	
+	<fx:Style source="styles.css"/>
+	
+	<s:states>
+		<s:State name="NotPurchased"/>
+		<s:State name="Purchased"/>
+	</s:states>
+	
+	<fx:Script>
+		<![CDATA[
+			import GameModel.MainGameModel;
+			import GameModel.TeamModel;
+			
+			import GameView.Purchase.PurchaseBase;
+			
+			import mx.binding.utils.BindingUtils;
+			import mx.events.FlexEvent;
+			
+			protected function CreationCompleteHandler(event:FlexEvent):void
+			{
+				mMainGameModel = SoccerClient.GetMainGameModel();
+				mTeamModel = mMainGameModel.TheTeamModel;
+				
+				BindingUtils.bindSetter(OnTicketExpiryDateChanged, mTeamModel, ["TheTeam", "Ticket", "TicketExpiryDate"]);
+				BindingUtils.bindSetter(OnTicketRemainingMatchesChanged, mTeamModel, ["TheTeam", "Ticket", "RemainingMatches"]);
+			}
+			
+			private function OnTicketRemainingMatchesChanged(newVal : int) : void
+			{
+				if (newVal == 0)
+					MyZeroRemaining.visible = true;
+				else
+					MyZeroRemaining.visible = false;
+			}
+			
+			private function OnTicketExpiryDateChanged(newVal : Date) : void
+			{
+				if (newVal > new Date())
+					currentState = "Purchased";
+				else
+					currentState = "NotPurchased";
+			}
+			
+			protected function MyBuyTicketsButton_clickHandler(event:MouseEvent):void
+			{
+				PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseTicket") as Class);
+			}
+			
+			[Bindable] private var mMainGameModel : MainGameModel;
+			[Bindable] private var mTeamModel : TeamModel;
+		]]>
+	</fx:Script>
+	
+	<s:Group includeIn="NotPurchased">
+		<s:Label text="Remaining matches today: " styleName="whiteBoldBig" x="0" y="0" />
+		<s:Label id="MyRemainingMatches" text="{mTeamModel.TheTeam.Ticket.RemainingMatches}" styleName="whiteBoldBig" x="160" y="0" />
+		<s:Label id="MyZeroRemaining" text="You don't have any more remaining matches for today. Please, purchase a ticket or come back tomorrow!" styleName="whiteBoldBig" 
+				 width="200" x="0" y="15" />
+	</s:Group>
+	
+	<s:Group includeIn="Purchased">
+		<s:Label id="MyTicketKind" text="Ticket Kind: {mTeamModel.TheTeam.Ticket.TicketKind}" styleName="whiteBoldBig" x="0" y="0" />
+		<s:Label id="MyTicketExpiryDate" text="Valid until: {mTeamModel.TheTeam.Ticket.TicketExpiryDate.toLocaleString()}" styleName="whiteBoldBig" x="0" y="30" />
+	</s:Group>
+	
+	<s:Button id="MyBuyTicketsButton" label.NotPurchased="Buy a ticket (a pass?)!"
+			  						  label.Purchased="Buy another ticket"
+			  						  click="MyBuyTicketsButton_clickHandler(event)" x="0" y="45"  />
+
+</s:Group>

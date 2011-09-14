@@ -30,6 +30,12 @@
         <asp:Label ID="MySpecialTrainings" runat="server" />        
         <br />
         <br />
+
+        <asp:Label ID="MyNumPurchases" runat="server" /><br />
+        <asp:Label ID="MyCurrentTicket" runat="server" /><br />
+        <asp:Button ID="MyResetTicketButton" runat="server" Text="Delete Ticket" onclick="MyResetTicketButton_Click" /><br />
+        <br />
+        <br />
         
         <local:MatchesControl runat="server" id="MyProfileMatches" />
 
