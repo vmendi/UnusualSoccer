@@ -31,7 +31,7 @@
 					trItem.TheTrainingDefinition = mTrainingModel.TrainingDefinitions[c];
 			}
 			
-			BindingUtils.bindSetter(RefreshItemsState, mTrainingModel, "CurrentPendingTraining");
+			BindingUtils.bindSetter(RefreshItemsState, mMainGameModel.TheTeamModel, ["TheTeam", "PendingTraining"]);
 		}
 		
 		protected function Trainingitem_clickHandler(event:MouseEvent):void

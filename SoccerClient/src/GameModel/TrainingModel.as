@@ -30,15 +30,14 @@ package GameModel
 			BindingUtils.bindSetter(OnPendingTrainingChanged, mMainServiceModel, "TrainResult");
 			BindingUtils.bindSetter(OnPendingTrainingChanged, mMainModel, ["TheTeamModel", "TheTeam", "PendingTraining"]);
 			
-			// Comentado por test "SessionKey is missing"
+			// Esto estaría mejor dandonos el servidor cuanto falta para el siguiente refresh, y ese es el momento en el q refrescamos
 			//TweenNano.delayedCall(600, OnFitnessUpdateDelayedCall);
 		}
 		
 		public function CleaningShutdown() : void
 		{
 			TweenNano.killTweensOf(OnFitnessUpdateDelayedCall);
-			TweenNano.killTweensOf(mMainService.RefreshRemainingSecondsForPendingTraining);
-			
+						
 			if (mPendingTrainingTimer != null)
 			{
 				mPendingTrainingTimer.stop();
@@ -62,8 +61,7 @@ package GameModel
 		{
 			if (callback != null)
 				callback();	
-		}
-		
+		}		
 		
 		public function InitialRefresh(response : Function) : void
 		{
@@ -87,87 +85,48 @@ package GameModel
 			
 			mTeamModel.TheTeam.PendingTraining = newOne;
 			
-			if (mCurrentPendingTraining != null && newOne == null)
-				StopPendingTraining();
+			if (mTeamModel.TheTeam.PendingTraining != null)
+				StartPendingTrainingTimer();			
 			else
-			if (mCurrentPendingTraining == null && newOne != null)
-				StartPendingTraining();
-			else
-			if (!ArePendingTrainingsEqual(mCurrentPendingTraining, newOne))
-				throw "Hemos cambiado de training sin pasar por null";
-			
-			mCurrentPendingTraining = newOne;
-			
-			dispatchEvent(new Event("CurrentPendingTrainingChanged"));
+				StopPendingTrainingTimer();
 		}
 		
-		private function ArePendingTrainingsEqual(a : PendingTraining, b : PendingTraining) : Boolean
-		{
-			if (a == null && b == null)
-				return true;
-			else if (a != null && b != null)
-				return a.TimeStart.toString() == b.TimeStart.toString() && a.TimeEnd.toString() == b.TimeEnd.toString();
-			
-			return false;
-		}
-		
-		private function StopPendingTraining() : void
+		private function StopPendingTrainingTimer() : void
 		{
 			if (mPendingTrainingTimer != null)
 			{
-				trace("Se acabo");
 				mPendingTrainingTimer.stop();
 				mPendingTrainingTimer = null;
+				
+				dispatchEvent(new Event("RemainingSecondsChanged"));
 			}
-			
-			dispatchEvent(new Event("RemainingSecondsChanged"));
 		}
 		
-		private function StartPendingTraining():void
-		{			
-			if (mPendingTrainingTimer != null ||  mTeamModel.TheTeam.PendingTraining == null)
-				throw "Analizame";
-			
-			trace("StartPendingTraining");
-			
-			mMainService.RefreshRemainingSecondsForPendingTraining(new Responder(OnRemainigSecondsResponse, ErrorMessages.Fault));
+		private function StartPendingTrainingTimer():void
+		{
+			StopPendingTrainingTimer();
+
+			mPendingTrainingTimer = new Timer(1000);
+			mPendingTrainingTimer.addEventListener(TimerEvent.TIMER, OnPendingTrainingTimer);
+			mPendingTrainingTimer.start();
 		}
-		
+				
 		private function OnPendingTrainingTimer(e:Event):void
-		{
-			dispatchEvent(new Event("RemainingSecondsChanged"));
-		}
-		
-		private function OnRemainigSecondsResponse(e:ResultEvent):void
-		{
-			var numSeconds : int = e.result as int;
-			
-			trace("Quedan: " + numSeconds);
-			
-			if (numSeconds > 0)
+		{			
+			if (RemainingSeconds > 1) 
 			{
-				mPendingTrainingTimer = new Timer(1000, numSeconds);
-				mPendingTrainingTimer.addEventListener(TimerEvent.TIMER, OnPendingTrainingTimer);
-				mPendingTrainingTimer.addEventListener(TimerEvent.TIMER_COMPLETE, OnPendingTrainingTimerComplete);
 				mPendingTrainingTimer.start();
 			}
 			else
-			{
-				mMainModel.TheTeamModel.RefreshTeam(null);
+			{	
+				if (mTeamModel.TheTeam.PendingTraining != null)
+				{
+					mTeamModel.TheTeam.Fitness += mTeamModel.TheTeam.PendingTraining.TrainingDefinition.FitnessDelta;
+					mTeamModel.TheTeam.PendingTraining = null;
+				}
 			}
 			
 			dispatchEvent(new Event("RemainingSecondsChanged"));
-		}
-		
-		private function OnPendingTrainingTimerComplete(e:Event):void
-		{
-			trace("Tiempo completed");
-			
-			if (mTeamModel.TheTeam.PendingTraining == null)
-				throw "Deberian habernos stopado en el refresco del PendingTraining";
-			
-			TweenNano.delayedCall(1, mMainService.RefreshRemainingSecondsForPendingTraining, 
-								  [new Responder(OnRemainigSecondsResponse, ErrorMessages.Fault)]);
 		}
 		
 		[Bindable(event="RemainingSecondsChanged")]
@@ -175,13 +134,11 @@ package GameModel
 		{
 			var ret : int = -1;
 			
-			if (mPendingTrainingTimer != null)
-				ret = mPendingTrainingTimer.repeatCount - mPendingTrainingTimer.currentCount;
-			else
-			// Hasta que nos retornen el RemainingSeconds, devolvemos el tiempo total por definicion
-			if (mCurrentPendingTraining != null)
-				ret = mCurrentPendingTraining.TrainingDefinition.Time;
-					
+			if (mTeamModel.TheTeam.PendingTraining != null)
+			{
+				ret = (mTeamModel.TheTeam.PendingTraining.TimeEnd.time - new Date().time) / 1000;
+			}
+								
 			return ret;
 		}
 		
@@ -191,16 +148,12 @@ package GameModel
 		[Bindable(event="TrainingDefinitionsChanged")]
 		public function get TrainingDefinitions() : ArrayCollection { return mTrainingDefinitions; }
 		
-		[Bindable(event="CurrentPendingTrainingChanged")]
-		public function get CurrentPendingTraining() : PendingTraining { return mCurrentPendingTraining; }
-		
 		private var mMainService : MainService;
 		private var mMainServiceModel : MainServiceModel;
 		private var mMainModel : MainGameModel;
 		private var mTeamModel : TeamModel;
 		
 		private var mPendingTrainingTimer : Timer;
-		private var mCurrentPendingTraining : PendingTraining = null;
 		
 		private var mTrainingDefinitions : ArrayCollection;
 	}

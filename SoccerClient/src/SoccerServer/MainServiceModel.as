@@ -27,7 +27,6 @@
         public var RefreshMatchStatsForTeamResult:TeamMatchStats;     
         public var RefreshPredefinedTeamsResult:ArrayCollection;     
         public var RefreshRankingPageResult:RankingPage;     
-        public var RefreshRemainingSecondsForPendingTrainingResult:int;     
         public var RefreshSelfRankingPageResult:RankingPage;     
         public var RefreshSelfTeamDetailsResult:TeamDetails;     
         public var RefreshTeamResult:Team;     

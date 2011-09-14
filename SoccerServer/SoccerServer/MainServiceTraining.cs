@@ -26,29 +26,6 @@ namespace SoccerServer
             }
 		}
 
-		public int RefreshRemainingSecondsForPendingTraining()
-		{
-            using (CreateDataForRequest())
-            {
-                int ret = 0;
-                Team theTeam = mPlayer.Team;
-                PendingTraining theTraining = theTeam.PendingTraining;
-
-                if (theTraining != null)
-                {
-                    ret = (int)Math.Ceiling(theTraining.TimeEnd.Subtract(DateTime.Now).TotalSeconds);
-
-                    // Jamas devolvemos < 0. Sera que el thread no ha pasado todavia.
-                    if (ret <= 0)
-                    {
-                        ret = 1;
-                    }
-                }
-
-                return ret;
-            }
-		}
-
 		public TransferModel.PendingTraining Train(string trainingName)
 		{
             using (CreateDataForRequest())

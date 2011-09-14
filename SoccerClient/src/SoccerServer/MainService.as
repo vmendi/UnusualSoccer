@@ -73,8 +73,6 @@
         
         remoteObject.RefreshRankingPage.addEventListener("result",RefreshRankingPageHandler);
         
-        remoteObject.RefreshRemainingSecondsForPendingTraining.addEventListener("result",RefreshRemainingSecondsForPendingTrainingHandler);
-        
         remoteObject.RefreshSelfRankingPage.addEventListener("result",RefreshSelfRankingPageHandler);
         
         remoteObject.RefreshSelfTeamDetails.addEventListener("result",RefreshSelfTeamDetailsHandler);
@@ -196,15 +194,6 @@
       public function RefreshRankingPage(pageIndex:int, responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.RefreshRankingPage(pageIndex);
-        
-        if( responder != null )
-            asyncToken.addResponder( responder );
-
-      }
-    
-      public function RefreshRemainingSecondsForPendingTraining( responder:IResponder = null ):void
-      {
-        var asyncToken:AsyncToken = remoteObject.RefreshRemainingSecondsForPendingTraining();
         
         if( responder != null )
             asyncToken.addResponder( responder );
@@ -351,14 +340,6 @@
         
           var returnValue:RankingPage = event.result as RankingPage;
           model.RefreshRankingPageResult = returnValue;
-        
-      }
-         
-      public virtual function RefreshRemainingSecondsForPendingTrainingHandler(event:ResultEvent):void
-      {
-        
-          var returnValue:int = event.result as int;
-          model.RefreshRemainingSecondsForPendingTrainingResult = returnValue;
         
       }
          

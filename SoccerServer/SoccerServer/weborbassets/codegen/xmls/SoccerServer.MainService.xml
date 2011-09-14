@@ -128,7 +128,6 @@
       <method name="RefreshRankingPage" type="RankingPage" nativetype="SoccerServer.TransferModel.RankingPage" containsvalues="0">
         <arg name="pageIndex" type="int" nativetype="int" />
       </method>
-      <method name="RefreshRemainingSecondsForPendingTraining" type="int" nativetype="int" containsvalues="0" />
       <method name="RefreshSelfRankingPage" type="RankingPage" nativetype="SoccerServer.TransferModel.RankingPage" containsvalues="0" />
       <method name="RefreshSelfTeamDetails" type="TeamDetails" nativetype="SoccerServer.TransferModel.TeamDetails" containsvalues="0" />
       <method name="RefreshTeam" type="Team" nativetype="SoccerServer.TransferModel.Team" containsvalues="0" />
