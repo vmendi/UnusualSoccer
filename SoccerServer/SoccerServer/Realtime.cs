@@ -225,11 +225,15 @@ namespace SoccerServer
             }
         }
 
+        //
+        // Devolvemos el clientID en caso de exito para ayudar al cliente
+        //
         public int Challenge(NetPlug from, int clientID, string msg, int matchLengthSeconds, int turnLengthSeconds)
         {
             lock (mGlobalLock)
             {
-                int ret = -1;	// Devolvemos el clientID en caso de exito para ayudar al cliente
+                // Codigo de error, el challenge ya no es valido
+                int ret = -1;
 
                 if (!MATCH_DURATION_SECONDS.Contains(matchLengthSeconds))
                     throw new Exception("Nice try");
@@ -242,37 +246,55 @@ namespace SoccerServer
                 // Es posible que nos llegue un challenge cuando ya nos han aceptado otro de los nuestros
                 if (self.Room != null)
                 {
-                    RealtimePlayer other = null;
-
-                    for (int c = 0; c < self.Room.Players.Count; c++)
-                    {
-                        if (self.Room.Players[c].ClientID == clientID)
-                        {
-                            other = self.Room.Players[c];
-                            break;
-                        }
-                    }
+                    RealtimePlayer other = FindRealtimePlayerInRoom(self.Room, clientID);                    
 
                     if (other != null && !HasChallenge(self, other))
                     {
-                        Challenge newChallenge = new Challenge();
-                        newChallenge.SourcePlayer = self;
-                        newChallenge.TargetPlayer = other;
-                        newChallenge.Message = msg;
-                        newChallenge.MatchLengthSeconds = matchLengthSeconds;
-                        newChallenge.TurnLengthSeconds = turnLengthSeconds;
+                        using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
+                        {
+                            var theTicket = (from player in theContext.Players
+                                             where player.PlayerID == self.PlayerID
+                                             select player).First().Team.Ticket;
 
-                        self.Challenges.Add(newChallenge);
-                        other.Challenges.Add(newChallenge);
+                            if (theTicket.TicketExpiryDate > DateTime.Now ||
+                                theTicket.RemainingMatches > 0)
+                            {
+                                Challenge newChallenge = new Challenge();
+                                newChallenge.SourcePlayer = self;
+                                newChallenge.TargetPlayer = other;
+                                newChallenge.Message = msg;
+                                newChallenge.MatchLengthSeconds = matchLengthSeconds;
+                                newChallenge.TurnLengthSeconds = turnLengthSeconds;
 
-                        ret = clientID;
+                                self.Challenges.Add(newChallenge);
+                                other.Challenges.Add(newChallenge);
 
-                        other.TheConnection.Invoke("PushedNewChallenge", newChallenge);
+                                ret = clientID;
+
+                                other.TheConnection.Invoke("PushedNewChallenge", newChallenge);
+                            }
+                            else
+                            {
+                                // Codigo de error: Credito insuficiente
+                                ret = -2;
+                            }
+                        }
                     }
                 }
             
                 return ret;
             }
+        }
+
+        // La habitacion tiene que estar lockeada
+        static private RealtimePlayer FindRealtimePlayerInRoom(Room room, int clientID)
+        {
+            for (int c = 0; c < room.Players.Count; c++)
+            {
+                if (room.Players[c].ClientID == clientID)
+                    return room.Players[c];
+            }
+            return null;
         }
 
         public bool AcceptChallenge(NetPlug from, int opponentClientID)

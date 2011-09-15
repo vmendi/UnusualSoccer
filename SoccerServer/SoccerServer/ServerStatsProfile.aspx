@@ -31,9 +31,9 @@
         <br />
         <br />
 
-        <asp:Label ID="MyNumPurchases" runat="server" /><br />
-        <asp:Label ID="MyCurrentTicket" runat="server" /><br />
+        <asp:Label ID="MyPurchasesInfo" runat="server" /><br />
         <asp:Button ID="MyResetTicketButton" runat="server" Text="Delete Ticket" onclick="MyResetTicketButton_Click" /><br />
+        <asp:Button ID="MySet0RemainingMatchesButton" runat="server" Text="Delete & Set 0 remaining matches" onclick="MySet0RemainingMatchesButton_Click" /><br />
         <br />
         <br />
         

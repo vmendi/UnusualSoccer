@@ -4,6 +4,7 @@ package GameModel
 	import SoccerServer.TransferModel.vo.SoccerPlayer;
 	import SoccerServer.TransferModel.vo.Team;
 	import SoccerServer.TransferModel.vo.TeamDetails;
+	import SoccerServer.TransferModel.vo.Ticket;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -16,7 +17,7 @@ package GameModel
 	import mx.rpc.events.ResultEvent;
 	
 	import utils.Delegate;
- 	
+
 	public class TeamModel extends EventDispatcher
 	{
 		public function TeamModel(mainService : MainService, mainModel : MainGameModel)
@@ -27,8 +28,11 @@ package GameModel
 			// Un nuevo paradigma de exposición de datos directos desde el modelo interno hacia afuera
 			BindingUtils.bindSetter(function (e:Object) : void { dispatchEvent(new Event("PlayerTeamDetailsChanged")); }, 
 									mMainService.GetModel(), "RefreshSelfTeamDetailsResult");
+			
+			// Cada vez que cambia el ticket es posible que cambie el IsMatchPossible
+			BindingUtils.bindSetter(OnTicketChanged, this, [ "TheTeam", "Ticket" ] );
 		}
-
+		
 		public function HasTeam(response : Function):void
 		{
 			mMainService.HasTeam(new mx.rpc.Responder(Delegate.create(OnHasTeamResponse, response), ErrorMessages.Fault));
@@ -216,6 +220,17 @@ package GameModel
 			return oppName;
 		}
 				
+		private function OnTicketChanged(newTicket : Ticket) : void
+		{
+			// Aunque nosotros no podamos lanzar, si podremos jugar si es otra persona la que nos lanza
+			IsLaunchMatchPossible = (newTicket.TicketExpiryDate > new Date()) || newTicket.RemainingMatches > 0;
+		}
+				
+		[Bindable]
+		public function  get IsLaunchMatchPossible() : Boolean { return mIsLaunchMatchPossible; }
+		private function set IsLaunchMatchPossible(val : Boolean) : void { mIsLaunchMatchPossible = val; }
+		private var mIsLaunchMatchPossible : Boolean = true;
+		
 		private var mFieldSoccerPlayers : ArrayCollection;
 		private var mSubstituteSoccerPlayers : ArrayCollection;
 		private var mSelectedSoccerPlayer : SoccerPlayer;

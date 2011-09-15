@@ -137,7 +137,7 @@ package GameModel
 		
 		private function OnChallengeResponse(clientID : int) : void
 		{
-			if (clientID != -1)
+			if (clientID >= 0)
 			{
 				var other : RealtimePlayer = FindPlayerInRoomByID(clientID);
 				if (other != null)

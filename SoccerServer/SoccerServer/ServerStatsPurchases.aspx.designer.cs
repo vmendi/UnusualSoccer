@@ -22,21 +22,21 @@ namespace SoccerServer {
         protected global::System.Web.UI.HtmlControls.HtmlForm MainPurchasesForm;
         
         /// <summary>
-        /// MyTotalTicketPurchases control.
+        /// MyPurchasesInfo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyTotalTicketPurchases;
+        protected global::System.Web.UI.WebControls.Label MyPurchasesInfo;
         
         /// <summary>
-        /// MyNumNonExpiredTickets control.
+        /// MyTicketsInfo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyNumNonExpiredTickets;
+        protected global::System.Web.UI.WebControls.Label MyTicketsInfo;
     }
 }

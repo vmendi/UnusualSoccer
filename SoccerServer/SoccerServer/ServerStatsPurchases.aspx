@@ -9,8 +9,8 @@
 <body>
     <form id="MainPurchasesForm" runat="server">
     <div>
-        <asp:Label runat="server" id="MyTotalTicketPurchases"></asp:Label><br />
-        <asp:Label runat="server" id="MyNumNonExpiredTickets"></asp:Label><br />    
+        <asp:Label runat="server" id="MyPurchasesInfo"></asp:Label><br />
+        <asp:Label runat="server" id="MyTicketsInfo"></asp:Label><br />    
     </div>
     </form>
 </body>

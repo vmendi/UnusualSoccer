@@ -17,24 +17,46 @@ namespace SoccerServer
             {
                 if (!IsPostBack)
                 {
-                    MyTotalTicketPurchases.Text = "Total ticket purchases: " + GetTotalTicketPurchases().ToString();
-                    MyNumNonExpiredTickets.Text = "Non expired tickets: " + GetNumNonExpiredTickets().ToString();
+                    MyPurchasesInfo.Text = "Purchases in placed status: " + GetTotalPlaced().ToString() + "<br/>" +
+                                           "Purchases in settled status: " + GetTotalSettled().ToString() + "<br/>";
+                    MyTicketsInfo.Text = "Total sold tickets: " + GetNumSoldTickets().ToString() + "<br/>" +
+                                         "Non expired tickets: " + GetNumNonExpiredTickets().ToString() + "<br/>" +
+                                         "Expired tickets: " + GetNumExpiredTickets().ToString() + "<br/>";
                 }
             }
         }
 
-        private int GetTotalTicketPurchases()
+        private int GetTotalPlaced()
         {
             return (from p in mDC.Purchases
-                         where p.ItemID.Contains("Ticket") && p.Status == "Settled"
-                         select p).Count();
+                    where p.Status == "Placed"
+                    select p).Count();
+        }
+
+        private int GetTotalSettled()
+        {
+            return (from p in mDC.Purchases
+                    where p.Status == "Settled"
+                    select p).Count();
         }
 
         private int GetNumNonExpiredTickets()
         {
             return (from p in mDC.Tickets
-                    where p.TicketExpiryDate > DateTime.Now
+                    where p.TicketExpiryDate >= DateTime.Now
                     select p).Count();
+        }
+        
+        private int GetNumSoldTickets()
+        {
+            return (from p in mDC.Purchases
+                    where p.ItemID.Contains("Ticket") && p.Status == "Settled"
+                    select p).Count();
+        }
+
+        private int GetNumExpiredTickets()
+        {
+            return GetNumSoldTickets() - GetNumNonExpiredTickets();
         }
     }
 }
