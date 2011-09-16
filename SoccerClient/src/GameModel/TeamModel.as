@@ -25,6 +25,8 @@ package GameModel
 		{
 			mMainService = mainService;
 			mMainModel = mainModel;
+			
+			BindingUtils.bindSetter(function (v:Object) : void { UpdateTeamDetails(); }, mMainModel.TheSpecialTrainingModel, "CompletedSpecialTrainingIDs"); 	
 		}
 		
 		public function HasTeam(response : Function):void
@@ -68,12 +70,12 @@ package GameModel
 			UpdateFieldPositions();
 			UpdateTeamDetails();
 			UpdateTicket();
-									
+			UpdateSelectedSoccerPlayerQuality();
+
 			if (callback != null)
 				callback();
 			
 			dispatchEvent(new Event("PlayerTeamChanged")); 
-			dispatchEvent(new Event("SelectedSoccerPlayerQualityChanged"));
 		}
 		
 		private function IsSubstitute(player : SoccerPlayer) : Boolean
@@ -108,6 +110,17 @@ package GameModel
 			dispatchEvent(new Event("SubstituteSoccerPlayersChanged"));
 		}
 
+		internal function EndPendingTraining() : void
+		{
+			if (TheTeam.PendingTraining != null)
+			{
+				TheTeam.Fitness += TheTeam.PendingTraining.TrainingDefinition.FitnessDelta;
+				TheTeam.PendingTraining = null;
+				
+				UpdateTeamDetails();
+			}
+		}
+		
 		public function SwapFormationPosition(first : SoccerPlayer, second : SoccerPlayer) : void
 		{
 			mMainService.SwapFormationPosition(first.SoccerPlayerID, second.SoccerPlayerID, ErrorMessages.FaultResponder);
@@ -121,7 +134,9 @@ package GameModel
 		
 		static public function GetQualityFor(soccerPlayer : SoccerPlayer) : Number
 		{
-			return Math.round((soccerPlayer.Power + soccerPlayer.Sliding + soccerPlayer.Weight) / 3);
+			if (soccerPlayer != null)
+				return Math.round((soccerPlayer.Power + soccerPlayer.Sliding + soccerPlayer.Weight) / 3);
+			return -1;				
 		}
 		
 		public function AssignSkillPoints(weight : int, sliding : int, power : int) : void
@@ -137,7 +152,8 @@ package GameModel
 			
 			mPlayerTeam.SkillPoints -= weight + sliding + power;
 			
-			dispatchEvent(new Event("SelectedSoccerPlayerQualityChanged"));
+			UpdateTeamDetails();
+			UpdateSelectedSoccerPlayerQuality();
 		}
 		
 		[Bindable(event="PlayerTeamChanged")]
@@ -170,13 +186,19 @@ package GameModel
 		public function set SelectedSoccerPlayer(s : SoccerPlayer) : void 
 		{ 
 			mSelectedSoccerPlayer = s;
-			dispatchEvent(new Event("SelectedSoccerPlayerQualityChanged"));
+			UpdateSelectedSoccerPlayerQuality();
 		}
 		
 		// TODO: Si tuvieramos el SoccerPlayer nuestro y no el del servidor, podriamos ponerle un Quality bindable
-		[Bindable(event="SelectedSoccerPlayerQualityChanged")]
-		public function get SelectedSoccerPlayerQuality() : Number { return GetQualityFor(mSelectedSoccerPlayer); }
+		[Bindable]
+		public  function get SelectedSoccerPlayerQuality() : Number { return mSelectedSoccerPlayerQuality ; }
+		private function set SelectedSoccerPlayerQuality(v : Number) : void { mSelectedSoccerPlayerQuality = v; }
+		private var mSelectedSoccerPlayerQuality : Number;
 		
+		private function UpdateSelectedSoccerPlayerQuality() : void
+		{
+			SelectedSoccerPlayerQuality = GetQualityFor(SelectedSoccerPlayer);
+		}
 		
 		// El MatchResult entra desde el servidor MainRealtime
 		public function AmITheWinner(matchResult : Object) : Boolean
@@ -219,16 +241,15 @@ package GameModel
 			}
 			
 			teamDetails.AveragePower /= FieldSoccerPlayers.length;
+			teamDetails.AverageSliding /= FieldSoccerPlayers.length;
+			teamDetails.AverageWeight /= FieldSoccerPlayers.length;
 			
 			teamDetails.Fitness = mPlayerTeam.Fitness;
-			teamDetails.SpecialSkillsIDs = new ArrayCollection();
-				
-			for each(var specialTraining : SpecialTraining in mPlayerTeam.SpecialTrainings)
-			{
-				if (specialTraining.IsCompleted)
-					teamDetails.SpecialSkillsIDs.addItem(specialTraining.SpecialTrainingDefinition.SpecialTrainingDefinitionID);	
-			}			
+			teamDetails.SpecialSkillsIDs = mMainModel.TheSpecialTrainingModel.CompletedSpecialTrainingIDs;
+						
+			TheTeamDetails = teamDetails;
 		}
+					
 				
 		private function UpdateTicket() : void
 		{
@@ -236,17 +257,17 @@ package GameModel
 				IsOutOfCredit = (mPlayerTeam.Ticket.TicketExpiryDate > new Date()) || mPlayerTeam.Ticket.RemainingMatches > 0;
 		}
 		
+		[Bindable]
+		public  function  get IsOutOfCredit() : Boolean { return mIsOutOfCredit; }
+		private function set IsOutOfCredit(val : Boolean) : void { mIsOutOfCredit = val; }
+		private var mIsOutOfCredit : Boolean = false;
+		
 		// En realidad este TeamDetails es una variable de comodidad para mostrar el SelfTeam de forma simetrica a los demas
 		[Bindable]
-		public function get TheTeamDetails() : TeamDetails { return mTheTeamDetails; }
+		public  function get TheTeamDetails() : TeamDetails { return mTheTeamDetails; }
 		private function set TheTeamDetails(v : TeamDetails) : void { mTheTeamDetails = v; }
 		private var mTheTeamDetails : TeamDetails;
 
-		[Bindable]
-		public function  get IsOutOfCredit() : Boolean { return mIsOutOfCredit; }
-		private function set IsOutOfCredit(val : Boolean) : void { mIsOutOfCredit = val; }
-		private var mIsOutOfCredit : Boolean = true;
-		
 		private var mFieldSoccerPlayers : ArrayCollection;
 		private var mSubstituteSoccerPlayers : ArrayCollection;
 		private var mSelectedSoccerPlayer : SoccerPlayer;

@@ -119,11 +119,7 @@ package GameModel
 			}
 			else
 			{	
-				if (mTeamModel.TheTeam.PendingTraining != null)
-				{
-					mTeamModel.TheTeam.Fitness += mTeamModel.TheTeam.PendingTraining.TrainingDefinition.FitnessDelta;
-					mTeamModel.TheTeam.PendingTraining = null;
-				}
+				mTeamModel.EndPendingTraining();
 			}
 			
 			dispatchEvent(new Event("RemainingSecondsChanged"));

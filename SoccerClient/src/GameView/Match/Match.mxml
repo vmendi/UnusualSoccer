@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
 		 xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*"
 		 creationComplete="CreationCompleteHandler(event)"
-		 currentState="Empty"
+		 currentState="AvailableCredit"
 		 >
 	
 	<fx:Style source="../styles.css"/>
@@ -65,7 +65,7 @@
 		<s:Label text="TODO: Launch challenge not possible. 0 Remaining matches" styleName="whiteBoldBig" />
 	</s:Group>
 	
-	<s:Group left="0" right="0" top="0" includeIn="AvailableCredit">
+	<s:Group left="0" right="0" top="0" bottom="0" includeIn="AvailableCredit">
 		<Match:LookingForMatchPanel x="10" y="10" width="423" height="90" title="PARTIDO RÁPIDO" />
 		
 		<s:Panel id="MyPlayersInRoomPanel" skinClass="GameView.Skins.DefaultPanelSkin" title="JUGADORES ONLINE"
