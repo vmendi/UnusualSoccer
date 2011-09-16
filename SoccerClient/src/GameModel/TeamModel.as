@@ -218,6 +218,8 @@ package GameModel
 				teamDetails.AverageWeight += soccerPlayer.Weight;
 			}
 			
+			teamDetails.AveragePower /= FieldSoccerPlayers.length;
+			
 			teamDetails.Fitness = mPlayerTeam.Fitness;
 			teamDetails.SpecialSkillsIDs = new ArrayCollection();
 				
