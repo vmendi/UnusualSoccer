@@ -3,13 +3,12 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 skinClass="GameView.Skins.DefaultPanelSkin" xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*"
-		 currentState="LaunchChallengePossible"
+		 currentState="Empty"
 		 preinitialize="PreinitializeHandler(event)">
 	
 	<s:states>
 		<s:State name="Empty" />
 		<s:State name="LaunchChallengePossible" />
-		<s:State name="LaunchChallengeNotPossible" />
 		<s:State name="ChallengeSource" />
 		<s:State name="ChallengeTarget" />		
 	</s:states>
@@ -47,15 +46,6 @@
 			BindingUtils.bindSetter(OnSelectedChanged, mMainGameModel, [ "TheRealtimeModel", "TheRoomModel", "Selected" ] );
 			BindingUtils.bindSetter(OnIsSelectedChallengeTargetChanged, mMainGameModel, [ "TheRealtimeModel", "TheRoomModel", "Selected", "IsChallengeTarget"]);
 			BindingUtils.bindSetter(OnIsSelectedChallengeSourceChanged, mMainGameModel, [ "TheRealtimeModel", "TheRoomModel", "Selected", "IsChallengeSource"]);
-			
-			BindingUtils.bindSetter(OnIsLaunchMatchPossibleChanged, mMainGameModel, [ "TheTeamModel", "IsLaunchMatchPossible" ] );
-		}
-		
-		private function OnIsLaunchMatchPossibleChanged(possible:Boolean) : void
-		{
-			if (possible)
-			{
-			}
 		}
 		
 		protected function OnRoomModelChanged(theRoomModel : RoomModel) : void
@@ -77,21 +67,21 @@
 		
 		private function OnSelectedChanged(selected : RealtimePlayer) : void
 		{
+			if (mRoomModel == null)
+				return;
+			
+			var selected : RealtimePlayer = mRoomModel.Selected;
+			
 			if (selected == null)
 				currentState = "Empty";
-			else
-			if (selected.IsChallengeSource)
+			else if (selected.IsChallengeSource)
 				currentState = "ChallengeSource";
-			else
-			if (selected.IsChallengeTarget)
+			else if (selected.IsChallengeTarget)
 				currentState = "ChallengeTarget";
-			else
-			if (mMainGameModel.TheTeamModel.IsLaunchMatchPossible)
-				currentState = "LaunchChallengePossible";
-			else
-				currentState = "LaunchChallengeNotPossible";
+			else 
+				currentState = "LaunchChallengePossible";		// No es ni source ni target, podríamos lanzarle un reto		
 		}
-				
+		
 		protected function LaunchChallenge_clickHandler(event:MouseEvent):void
 		{
 			mRoomModel.Challenge(mRoomModel.Selected, MyChallengeMsgInput.text, 
@@ -135,10 +125,6 @@
 				  skinClass="GameView.Skins.ButtonGreySkin" label="LANZAR RETO" click="LaunchChallenge_clickHandler(event)" />
 	</s:Group>
 	
-	<s:Group left="25" right="25" top="310" includeIn="LaunchChallengeNotPossible">
-		<s:Label text="TODO: Launch challenge not possible. 0 Remaining matches" styleName="whiteBoldBig" />
-	</s:Group>
-
 	<s:Group left="20" right="20" top="310" includeIn="ChallengeSource">
 		<s:Group>
 			<s:layout><s:VerticalLayout horizontalAlign="center" /></s:layout>

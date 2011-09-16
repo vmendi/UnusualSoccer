@@ -2,6 +2,7 @@ package GameModel
 {	
 	import SoccerServer.MainService;
 	import SoccerServer.TransferModel.vo.SoccerPlayer;
+	import SoccerServer.TransferModel.vo.SpecialTraining;
 	import SoccerServer.TransferModel.vo.Team;
 	import SoccerServer.TransferModel.vo.TeamDetails;
 	import SoccerServer.TransferModel.vo.Ticket;
@@ -24,13 +25,6 @@ package GameModel
 		{
 			mMainService = mainService;
 			mMainModel = mainModel;
-			
-			// Un nuevo paradigma de exposición de datos directos desde el modelo interno hacia afuera
-			BindingUtils.bindSetter(function (e:Object) : void { dispatchEvent(new Event("PlayerTeamDetailsChanged")); }, 
-									mMainService.GetModel(), "RefreshSelfTeamDetailsResult");
-			
-			// Cada vez que cambia el ticket es posible que cambie el IsMatchPossible
-			BindingUtils.bindSetter(OnTicketChanged, this, [ "TheTeam", "Ticket" ] );
 		}
 		
 		public function HasTeam(response : Function):void
@@ -72,14 +66,14 @@ package GameModel
 			mPlayerTeam = e.result as Team;
 			
 			UpdateFieldPositions();
+			UpdateTeamDetails();
+			UpdateTicket();
 									
 			if (callback != null)
 				callback();
 			
 			dispatchEvent(new Event("PlayerTeamChanged")); 
 			dispatchEvent(new Event("SelectedSoccerPlayerQualityChanged"));
-			
-			RefreshTeamDetails();
 		}
 		
 		private function IsSubstitute(player : SoccerPlayer) : Boolean
@@ -146,17 +140,9 @@ package GameModel
 			dispatchEvent(new Event("SelectedSoccerPlayerQualityChanged"));
 		}
 		
-		public function RefreshTeamDetails() : void
-		{
-			mMainService.RefreshSelfTeamDetails(ErrorMessages.FaultResponder);	
-		}
-				
 		[Bindable(event="PlayerTeamChanged")]
 		public function get TheTeam() : Team { return mPlayerTeam; }
-		
-		[Bindable(event="PlayerTeamDetailsChanged")]
-		public function get TheTeamDetails() : TeamDetails { return mMainService.GetModel().RefreshSelfTeamDetailsResult; }
-		
+				
 		[Bindable(event="PlayerTeamChanged")]
 		public function get PredefinedTeamName() : String 
 		{
@@ -219,17 +205,45 @@ package GameModel
 			
 			return oppName;
 		}
-				
-		private function OnTicketChanged(newTicket : Ticket) : void
+		
+		// Se ha producido un cambio en el equipo -> Hay q reflejarlo en los SelfTeamDetails.
+		private function UpdateTeamDetails() : void
 		{
-			// Aunque nosotros no podamos lanzar, si podremos jugar si es otra persona la que nos lanza
-			IsLaunchMatchPossible = (newTicket.TicketExpiryDate > new Date()) || newTicket.RemainingMatches > 0;
+			var teamDetails : TeamDetails = new TeamDetails();
+			
+			for each(var soccerPlayer : SoccerPlayer in FieldSoccerPlayers)
+			{
+				teamDetails.AveragePower += soccerPlayer.Power;
+				teamDetails.AverageSliding += soccerPlayer.Sliding;
+				teamDetails.AverageWeight += soccerPlayer.Weight;
+			}
+			
+			teamDetails.Fitness = mPlayerTeam.Fitness;
+			teamDetails.SpecialSkillsIDs = new ArrayCollection();
+				
+			for each(var specialTraining : SpecialTraining in mPlayerTeam.SpecialTrainings)
+			{
+				if (specialTraining.IsCompleted)
+					teamDetails.SpecialSkillsIDs.addItem(specialTraining.SpecialTrainingDefinition.SpecialTrainingDefinitionID);	
+			}			
 		}
 				
+		private function UpdateTicket() : void
+		{
+			if (mPlayerTeam.Ticket != null)
+				IsOutOfCredit = (mPlayerTeam.Ticket.TicketExpiryDate > new Date()) || mPlayerTeam.Ticket.RemainingMatches > 0;
+		}
+		
+		// En realidad este TeamDetails es una variable de comodidad para mostrar el SelfTeam de forma simetrica a los demas
 		[Bindable]
-		public function  get IsLaunchMatchPossible() : Boolean { return mIsLaunchMatchPossible; }
-		private function set IsLaunchMatchPossible(val : Boolean) : void { mIsLaunchMatchPossible = val; }
-		private var mIsLaunchMatchPossible : Boolean = true;
+		public function get TheTeamDetails() : TeamDetails { return mTheTeamDetails; }
+		private function set TheTeamDetails(v : TeamDetails) : void { mTheTeamDetails = v; }
+		private var mTheTeamDetails : TeamDetails;
+
+		[Bindable]
+		public function  get IsOutOfCredit() : Boolean { return mIsOutOfCredit; }
+		private function set IsOutOfCredit(val : Boolean) : void { mIsOutOfCredit = val; }
+		private var mIsOutOfCredit : Boolean = true;
 		
 		private var mFieldSoccerPlayers : ArrayCollection;
 		private var mSubstituteSoccerPlayers : ArrayCollection;

@@ -210,14 +210,6 @@ namespace SoccerServer
             }
 		}
 
-        public TransferModel.TeamDetails RefreshSelfTeamDetails()
-        {
-            using (CreateDataForRequest())
-            {
-                return RefreshTeamDetailsInner(mPlayer.Team);
-            }
-        }
-
         [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 60000)]
         public TransferModel.TeamDetails RefreshTeamDetails(long facebookID)
         {

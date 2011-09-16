@@ -4,14 +4,20 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
 		 xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*"
 		 creationComplete="CreationCompleteHandler(event)"
-		 addedToStage="AddedToStageHandler(event)">
+		 currentState="Empty"
+		 >
 	
 	<fx:Style source="../styles.css"/>
+	
+	<s:states>
+		<s:State name="Empty" />
+		<s:State name="OutOfCredit" />
+		<s:State name="AvailableCredit" />
+	</s:states>
 	
 
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
-		import GameModel.RealtimeModel;
 		import GameModel.RoomModel;
 		
 		import GameView.Skins.DefaultPanelSkin;
@@ -21,12 +27,6 @@
 		
 		import spark.events.IndexChangeEvent;
 
-		protected function AddedToStageHandler(event:Event):void
-		{
-			// Sólo aquí se muestran estos Details, así que sólo aquí se refrescan desde la vista.
-			if (mMainGameModel != null)
-				mMainGameModel.TheTeamModel.RefreshTeamDetails();
-		}
 		
 		protected function CreationCompleteHandler(event:FlexEvent):void
 		{			
@@ -61,24 +61,31 @@
 
 	]]></fx:Script>
 
-	<Match:LookingForMatchPanel x="10" y="10" width="423" height="90" title="PARTIDO RÁPIDO" />
+	<s:Group left="0" right="0" top="0" includeIn="OutOfCredit">
+		<s:Label text="TODO: Launch challenge not possible. 0 Remaining matches" styleName="whiteBoldBig" />
+	</s:Group>
 	
-	<s:Panel id="MyPlayersInRoomPanel" skinClass="GameView.Skins.DefaultPanelSkin" title="JUGADORES ONLINE"
-			 width="423" height="237" left="10" top="110" controlBarVisible="true">
-		<s:List id="MyPlayersInRoomList" width="100%" height="100%" skinClass="GameView.Skins.DefaultListSkin"
-				dataProvider="{mRoomModel.PlayersInRoom}" itemRenderer="GameView.Match.RealtimePlayerItem" 
-				change="MyPlayersInRoomList_changeHandler(event)"/>
-		<s:controlBarContent>
-			<s:Button label="{mRoomModel.RoomName}" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />
-		</s:controlBarContent>
-	</s:Panel>
+	<s:Group left="0" right="0" top="0" includeIn="AvailableCredit">
+		<Match:LookingForMatchPanel x="10" y="10" width="423" height="90" title="PARTIDO RÁPIDO" />
+		
+		<s:Panel id="MyPlayersInRoomPanel" skinClass="GameView.Skins.DefaultPanelSkin" title="JUGADORES ONLINE"
+				 width="423" height="237" left="10" top="110" controlBarVisible="true">
+			<s:List id="MyPlayersInRoomList" width="100%" height="100%" skinClass="GameView.Skins.DefaultListSkin"
+					dataProvider="{mRoomModel.PlayersInRoom}" itemRenderer="GameView.Match.RealtimePlayerItem" 
+					change="MyPlayersInRoomList_changeHandler(event)"/>
+			<s:controlBarContent>
+				<s:Button label="{mRoomModel.RoomName}" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:controlBarContent>
+		</s:Panel>
+		
+		<s:Panel id="MyChallengesPanel" skinClass="GameView.Skins.DefaultPanelSkin" title="RETOS RECIBIDOS"
+				 width="423" height="132" left="10" bottom="10" controlBarVisible="false">
+			<s:List id="MyChallengesList" width="100%" height="100%" skinClass="GameView.Skins.DefaultListSkin"
+					dataProvider="{mRoomModel.ReceivedChallenges}" itemRenderer="GameView.Match.ChallengeItem" change="MyChallengesList_changeHandler(event)"/>
+		</s:Panel>
+		
+		<Match:MatchDefinitionPanel id="MyMatchDefitionPanel" right="10" top="10" width="306" bottom="10" 
+									title="CONFIGURACIÓN DEL PARTIDO"/>		
+	</s:Group>
 	
-	<s:Panel id="MyChallengesPanel" skinClass="GameView.Skins.DefaultPanelSkin" title="RETOS RECIBIDOS"
-			 width="423" height="132" left="10" bottom="10" controlBarVisible="false">
-		<s:List id="MyChallengesList" width="100%" height="100%" skinClass="GameView.Skins.DefaultListSkin"
-				dataProvider="{mRoomModel.ReceivedChallenges}" itemRenderer="GameView.Match.ChallengeItem" change="MyChallengesList_changeHandler(event)"/>
-	</s:Panel>
-	
-	<Match:MatchDefinitionPanel id="MyMatchDefitionPanel" right="10" top="10" width="306" bottom="10" 
-								title="CONFIGURACIÓN DEL PARTIDO"/>
 </s:Group>
