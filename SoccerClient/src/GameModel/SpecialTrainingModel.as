@@ -28,8 +28,11 @@ package GameModel
 		{
 			mMainService = mainService;
 			mMainModel = mainModel;
+			mTeamModel = mMainModel.TheTeamModel;
 			
-			BindingUtils.bindSetter(OnSpecialTrainingsChanged, mMainModel, ["TheTeamModel", "TheTeam", "SpecialTrainings"]);
+			// Nos aseguramos de estar siempre sincronizados con las copias maestras
+			BindingUtils.bindProperty(this, "SpecialTrainings", mMainModel, ["TheTeamModel", "TheTeam", "SpecialTrainings"]);
+			BindingUtils.bindProperty(this, "CompletedSpecialTrainingIDs", mMainModel, ["TheTeamModel", "TheTeamDetails", "SpecialSkillsIDs"]);
 			
 			// Subscripcion al evento de cualquier Like. Si, se llama edge.create. El boton concreto vendra en el href
 			Facebook.addJSEventListener('edge.create', OnLikeButtonPressed);
@@ -52,7 +55,7 @@ package GameModel
 		private function OnLikeButtonTeamRefreshed(specialTrainingDefinitionID : int) : void
 		{
 			// Ahora ya podemos señalar que se completo...
-			for each(var sp : SpecialTraining in mTrainings)
+			for each(var sp : SpecialTraining in SpecialTrainings)
 			{
 				if (sp.SpecialTrainingDefinition.SpecialTrainingDefinitionID == specialTrainingDefinitionID)
 				{
@@ -83,10 +86,9 @@ package GameModel
 					specTraining.IsCompleted = true;				
 					
 					// Es uno de los completados...
-					mCompletedTrainingIDs.addItem(specTraining.SpecialTrainingDefinition.SpecialTrainingDefinitionID);
-					dispatchEvent(new Event("CompletedSpecialTrainingIDsChanged"));
-				
-					// Señalamos que se completo uno nuevo
+					CompletedSpecialTrainingIDs.addItem(specTraining.SpecialTrainingDefinition.SpecialTrainingDefinitionID);
+										
+					// Señalamos que se completo uno nuevo (hay que hacerlo asi porq el Like puede ocurrir en cualquier momento, necesitamos un evento global)
 					SpecialTrainingCompleted.dispatch(specTraining.SpecialTrainingDefinition);
 				}
 				
@@ -98,39 +100,22 @@ package GameModel
 			if (callback != null)
 				callback(e.result);	
 		}
-		
-		private function OnSpecialTrainingsChanged(newVal : ArrayCollection) : void
-		{
-			mTrainings = newVal;
-			
-			mCompletedTrainingIDs = new ArrayCollection();
-			
-			for each(var sp : SpecialTraining in mTrainings)
-			{
-				if (sp.IsCompleted)
-					mCompletedTrainingIDs.addItem(sp.SpecialTrainingDefinition.SpecialTrainingDefinitionID);
-			}
-			
-			dispatchEvent(new Event("SpecialTrainingsChanged"));
-			dispatchEvent(new Event("CompletedSpecialTrainingIDsChanged"));
-		}
-		
+				
 		public function IsAvailableByRequiredXP(specialTraining : SpecialTraining) : Boolean
 		{
 			return specialTraining.SpecialTrainingDefinition.RequiredXP < mMainModel.TheTeamModel.TheTeam.XP;
 		}
 		
-		[Bindable(event="SpecialTrainingsChanged")]
-		public function get SpecialTrainings() : ArrayCollection { return mTrainings; }
+		[Bindable]
+		public  function get SpecialTrainings() : ArrayCollection { return (mTeamModel.TheTeam != null)? mTeamModel.TheTeam.SpecialTrainings : null; }
+		private function set SpecialTrainings(v : ArrayCollection) : void {}
 		
-		[Bindable(event="CompletedSpecialTrainingIDsChanged")]
-		public function get CompletedSpecialTrainingIDs() : ArrayCollection { return mCompletedTrainingIDs;	}
+		[Bindable]
+		public  function get CompletedSpecialTrainingIDs() : ArrayCollection { return (mTeamModel.TheTeamDetails != null)? mTeamModel.TheTeamDetails.SpecialSkillsIDs : null; }
+		private function set CompletedSpecialTrainingIDs(v:ArrayCollection) : void  {}
 		
-						
-		private var mTrainings : ArrayCollection;
-		private var mCompletedTrainingIDs : ArrayCollection;
-				
 		private var mMainModel : MainGameModel;
+		private var mTeamModel : TeamModel;
 		private var mMainService : MainService;
 	}
 }

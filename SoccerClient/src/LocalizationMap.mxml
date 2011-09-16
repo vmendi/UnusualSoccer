@@ -9,8 +9,8 @@
 	</fx:Metadata>
 	
 	<ResourceInjector target="{SoccerClient}" bundleName="main">
-		<ResourceSetter key="imageTest"   property="MyFindMatchButton.source" type="class" 	/>
-		<ResourceSetter key="veamos"  	  property="Prueba.text"  />
+		<ResourceSetter property="MyFindMatchButton.source" type="class" key="imageTest" />
+		<ResourceSetter property="Prueba.text"   key="veamos" />
 	</ResourceInjector>
 
 </LocaleMap>

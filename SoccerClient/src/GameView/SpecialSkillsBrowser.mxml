@@ -12,20 +12,30 @@
 			  source="@Embed(source='/Assets/General.swf', symbol='SpecialSkills')" scaleContent="false" />
 	
 	<fx:Script><![CDATA[
+		import mx.binding.utils.BindingUtils;
 		import mx.collections.ArrayCollection;
 		import mx.core.IVisualElement;
+		import mx.events.CollectionEvent;
 		import mx.events.FlexEvent;
 
 		protected function CreationCompleteHandler(event:FlexEvent):void
 		{
 			// Queremos aparecer vacios
-			mSpecialSkillIDs = new ArrayCollection();
-			Refresh();
+			SpecialSkillIDs = new ArrayCollection();
 		}
 		
 		public function set SpecialSkillIDs(value:ArrayCollection):void
+		{ 
+			mSpecialSkillIDs = value;
+			
+			Refresh();
+			
+			if (mSpecialSkillIDs != null)
+				mSpecialSkillIDs.addEventListener(CollectionEvent.COLLECTION_CHANGE, OnCollectionChange);
+		}
+		
+		private function OnCollectionChange(e:CollectionEvent) : void
 		{
-			mSpecialSkillIDs = value;			
 			Refresh();
 		}
 		
@@ -68,6 +78,7 @@
 			return cloned;
 		}
 
+		[Bindable]
 		private var mSpecialSkillIDs : ArrayCollection;
 	
 	]]></fx:Script>

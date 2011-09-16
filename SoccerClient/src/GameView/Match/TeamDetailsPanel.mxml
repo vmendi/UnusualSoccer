@@ -13,6 +13,8 @@
 		
 		import SoccerServer.TransferModel.vo.TeamDetails;
 		
+		import mx.binding.utils.BindingUtils;
+		
 		protected function AddedToStageHandler(event:Event):void
 		{
 			
@@ -21,7 +23,7 @@
 		[Bindable]
 		public function get TheRealtimePlayer() : RealtimePlayer { return mRealtimePlayer; }
 		public function set TheRealtimePlayer(v:RealtimePlayer) : void { mRealtimePlayer = v; }
-				
+						
 		private var mRealtimePlayer : RealtimePlayer;
 				
 	]]></fx:Script>

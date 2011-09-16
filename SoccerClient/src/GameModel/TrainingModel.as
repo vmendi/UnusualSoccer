@@ -112,14 +112,21 @@ package GameModel
 		}
 				
 		private function OnPendingTrainingTimer(e:Event):void
-		{			
+		{
 			if (RemainingSeconds > 1) 
 			{
 				mPendingTrainingTimer.start();
 			}
 			else
 			{	
-				mTeamModel.EndPendingTraining();
+				if (mTeamModel.TheTeam.PendingTraining != null)
+				{
+					mTeamModel.TheTeam.Fitness += mTeamModel.TheTeam.PendingTraining.TrainingDefinition.FitnessDelta;
+					mTeamModel.TheTeam.PendingTraining = null;
+					
+					// El TeamDetails tiene una copia del Fitness, estamos forzados a actualizarlo
+					mTeamModel.UpdateTeamDetails();
+				}
 			}
 			
 			dispatchEvent(new Event("RemainingSecondsChanged"));

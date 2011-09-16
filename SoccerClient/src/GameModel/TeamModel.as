@@ -25,8 +25,6 @@ package GameModel
 		{
 			mMainService = mainService;
 			mMainModel = mainModel;
-			
-			BindingUtils.bindSetter(function (v:Object) : void { UpdateTeamDetails(); }, mMainModel.TheSpecialTrainingModel, "CompletedSpecialTrainingIDs"); 	
 		}
 		
 		public function HasTeam(response : Function):void
@@ -109,18 +107,7 @@ package GameModel
 			dispatchEvent(new Event("FieldSoccerPlayersChanged"));
 			dispatchEvent(new Event("SubstituteSoccerPlayersChanged"));
 		}
-
-		internal function EndPendingTraining() : void
-		{
-			if (TheTeam.PendingTraining != null)
-			{
-				TheTeam.Fitness += TheTeam.PendingTraining.TrainingDefinition.FitnessDelta;
-				TheTeam.PendingTraining = null;
-				
-				UpdateTeamDetails();
-			}
-		}
-		
+	
 		public function SwapFormationPosition(first : SoccerPlayer, second : SoccerPlayer) : void
 		{
 			mMainService.SwapFormationPosition(first.SoccerPlayerID, second.SoccerPlayerID, ErrorMessages.FaultResponder);
@@ -189,7 +176,6 @@ package GameModel
 			UpdateSelectedSoccerPlayerQuality();
 		}
 		
-		// TODO: Si tuvieramos el SoccerPlayer nuestro y no el del servidor, podriamos ponerle un Quality bindable
 		[Bindable]
 		public  function get SelectedSoccerPlayerQuality() : Number { return mSelectedSoccerPlayerQuality ; }
 		private function set SelectedSoccerPlayerQuality(v : Number) : void { mSelectedSoccerPlayerQuality = v; }
@@ -228,8 +214,10 @@ package GameModel
 			return oppName;
 		}
 		
-		// Se ha producido un cambio en el equipo -> Hay q reflejarlo en los SelfTeamDetails.
-		private function UpdateTeamDetails() : void
+		// Aseguramos siempre que, aunque tenemos variables duplicados en Team y en TeamDetails, estan siempre sincronizados.
+		// Se ha producido un cambio en el equipo -> Hay q reflejarlo en los TeamDetails propios. Es internal para que la puede llamar por ejemplo
+		// el TrainingModel cuando completa un entrenamiento y toca el Fitness del TheTeam
+		internal function UpdateTeamDetails() : void
 		{
 			var teamDetails : TeamDetails = new TeamDetails();
 			
@@ -245,11 +233,16 @@ package GameModel
 			teamDetails.AverageWeight /= FieldSoccerPlayers.length;
 			
 			teamDetails.Fitness = mPlayerTeam.Fitness;
-			teamDetails.SpecialSkillsIDs = mMainModel.TheSpecialTrainingModel.CompletedSpecialTrainingIDs;
+			teamDetails.SpecialSkillsIDs = new ArrayCollection();
+			
+			for each(var sp : SpecialTraining in TheTeam.SpecialTrainings)
+			{
+				if (sp.IsCompleted)
+					teamDetails.SpecialSkillsIDs.addItem(sp.SpecialTrainingDefinition.SpecialTrainingDefinitionID);
+			}
 						
 			TheTeamDetails = teamDetails;
 		}
-					
 				
 		private function UpdateTicket() : void
 		{

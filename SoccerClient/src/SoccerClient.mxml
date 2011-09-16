@@ -100,14 +100,16 @@
 	<s:Label id="Prueba" text="{resourceManager.getString('main','veamos')}"/>
 	-->
 	
+	
+	<!--
 	<fx:Declarations>
 		<local:LocalizationMap />	
 	</fx:Declarations>
 	
-	<!--
 	<s:Image id="MyFindMatchButton" />
-	<s:Label id="Prueba" />
+	<s:Label id="Prueba" text="akdmaskldasd asdksla" />
 	-->
+	
 	
 	<local:ServerTests id="MyServerTests" visible="false" width="100%" height="100%"/>
 			
