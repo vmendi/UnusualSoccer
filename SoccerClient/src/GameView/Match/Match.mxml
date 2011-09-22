@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
 		 xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*"
 		 creationComplete="CreationCompleteHandler(event)"
-		 currentState="AvailableCredit"
+		 currentState="Empty"
 		 >
 	
 	<fx:Style source="../styles.css"/>
@@ -33,10 +33,22 @@
 			mMainGameModel = SoccerClient.GetMainGameModel();
 			
 			// La room puede ser null en distintas transciones
-			BindingUtils.bindSetter(OnRoomModelChanged, mMainGameModel, [ "TheRealtimeModel", "TheRoomModel" ]);
-
-			// Seleccionamos este como el mejor momento para hacer nuestra conexión inicial
-			mMainGameModel.TheRealtimeModel.InitialConnection(null);
+			BindingUtils.bindSetter(OnRoomModelChanged, mMainGameModel.TheRealtimeModel, [ "TheRoomModel" ]);
+			BindingUtils.bindSetter(OnHasCreditChanged, mMainGameModel.TheTicketModel, [ "HasCredit" ]);
+		}
+		
+		protected function OnHasCreditChanged(hasCredit : Boolean) : void
+		{
+			if (hasCredit)
+			{
+				currentState = "AvailableCredit";
+				mMainGameModel.TheRealtimeModel.InitialConnection(null);
+			}
+			else
+			{
+				currentState = "OutOfCredit";
+				mMainGameModel.TheRealtimeModel.Disconnect();
+			}
 		}
 		
 		protected function OnRoomModelChanged(theRoomModel : RoomModel) : void

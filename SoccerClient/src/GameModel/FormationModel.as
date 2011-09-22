@@ -139,7 +139,7 @@ package GameModel
 											  new Point(273, 90) ] 					
 									} );
 			
-			BindingUtils.bindSetter(OnFormationChanged, mMainModel, ["TheTeamModel", "TheTeam", "Formation"]);
+			BindingUtils.bindSetter(OnFormationChanged, mMainModel.TheTeamModel, ["TheTeam", "Formation"]);
 		}
 		
 		private function OnFormationChanged(e:String) : void

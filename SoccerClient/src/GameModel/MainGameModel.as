@@ -26,7 +26,8 @@ package GameModel
 			mLoginModel = new LoginModel(mMainService, this);
 			mFormationModel = new FormationModel(mMainService, this);
 			mSpecialTrainingModel = new SpecialTrainingModel(mMainService, this);
-			mPredefinedTeamsModel = new PredefinedTeamsModel(mMainService, this);	
+			mPredefinedTeamsModel = new PredefinedTeamsModel(mMainService, this);
+			mTicketModel = new TicketModel(mMainService, this);
 		}
 
 		public function InitialRefresh(callback : Function) : void
@@ -68,6 +69,9 @@ package GameModel
 		[Bindable(event="dummy")]
 		public function get ThePredefinedTeamsModel() : PredefinedTeamsModel { return mPredefinedTeamsModel; }
 		
+		[Bindable(event="dummy")]
+		public function get TheTicketModel() : TicketModel { return mTicketModel; }
+		
 		
 		private var mMainService : MainService;
 		
@@ -79,5 +83,6 @@ package GameModel
 		private var mRankingModel : RankingModel;
 		private var mPredefinedTeamsModel : PredefinedTeamsModel;
 		private var mRealtimeModel : RealtimeModel;
+		private var mTicketModel : TicketModel;
 	}
 }

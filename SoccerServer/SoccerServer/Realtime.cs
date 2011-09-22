@@ -232,9 +232,6 @@ namespace SoccerServer
         {
             lock (mGlobalLock)
             {
-                // Codigo de error, el challenge ya no es valido
-                int ret = -1;
-
                 if (!MATCH_DURATION_SECONDS.Contains(matchLengthSeconds))
                     throw new Exception("Nice try");
 
@@ -244,46 +241,41 @@ namespace SoccerServer
                 RealtimePlayer self = from.UserData as RealtimePlayer;
 
                 // Es posible que nos llegue un challenge cuando ya nos han aceptado otro de los nuestros
-                if (self.Room != null)
+                if (self.Room == null)
+                    return -1;          // Codigo de error, el challenge ya no es valido
+
+                RealtimePlayer other = FindRealtimePlayerInRoom(self.Room, clientID);
+
+                if (other == null || HasChallenge(self, other))
+                    return -1;
+
+                using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
                 {
-                    RealtimePlayer other = FindRealtimePlayerInRoom(self.Room, clientID);                    
+                    if (!CheckTicketValidity(theContext, self) || !CheckTicketValidity(theContext, other))
+                        return -2;  // Codigo de error, este partido no se puede disputar por falta de credito de alguna de las partes
+                    
+                    Challenge newChallenge = new Challenge();
+                    newChallenge.SourcePlayer = self;
+                    newChallenge.TargetPlayer = other;
+                    newChallenge.Message = msg;
+                    newChallenge.MatchLengthSeconds = matchLengthSeconds;
+                    newChallenge.TurnLengthSeconds = turnLengthSeconds;
 
-                    if (other != null && !HasChallenge(self, other))
-                    {
-                        using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
-                        {
-                            var theTicket = (from player in theContext.Players
-                                             where player.PlayerID == self.PlayerID
-                                             select player).First().Team.Ticket;
+                    self.Challenges.Add(newChallenge);
+                    other.Challenges.Add(newChallenge);
 
-                            if (theTicket.TicketExpiryDate > DateTime.Now ||
-                                theTicket.RemainingMatches > 0)
-                            {
-                                Challenge newChallenge = new Challenge();
-                                newChallenge.SourcePlayer = self;
-                                newChallenge.TargetPlayer = other;
-                                newChallenge.Message = msg;
-                                newChallenge.MatchLengthSeconds = matchLengthSeconds;
-                                newChallenge.TurnLengthSeconds = turnLengthSeconds;
-
-                                self.Challenges.Add(newChallenge);
-                                other.Challenges.Add(newChallenge);
-
-                                ret = clientID;
-
-                                other.TheConnection.Invoke("PushedNewChallenge", newChallenge);
-                            }
-                            else
-                            {
-                                // Codigo de error: Credito insuficiente
-                                ret = -2;
-                            }
-                        }
-                    }
+                    other.TheConnection.Invoke("PushedNewChallenge", newChallenge);
                 }
             
-                return ret;
+                return clientID;
             }
+        }
+
+        static private bool CheckTicketValidity(SoccerDataModelDataContext theContext, RealtimePlayer player)
+        {
+            var selfTicket =  RealtimeMatchCreator.GetPlayerForRealtimePlayer(theContext, player).Team.Ticket;
+
+            return selfTicket.TicketExpiryDate > DateTime.Now || selfTicket.RemainingMatches > 0;
         }
 
         // La habitacion tiene que estar lockeada
@@ -332,7 +324,22 @@ namespace SoccerServer
             lock (mGlobalLock)
             {
                 RealtimePlayer self = from.UserData as RealtimePlayer;
-                self.LookingForMatch = !self.LookingForMatch;
+
+                if (self.LookingForMatch)
+                {
+                    self.LookingForMatch = false;
+                }
+                else
+                {
+                    using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
+                    {
+                        // Podemos no llegar a hacer el Switch debido a que no sea valido el ticket
+                        if (CheckTicketValidity(theContext, self))
+                        {
+                            self.LookingForMatch = true;
+                        }
+                    }
+                }
 
                 bRet = self.LookingForMatch;
             }
@@ -348,14 +355,21 @@ namespace SoccerServer
 
             int matchID = -1;
 
-            // Generacion de los datos de inicializacion para el partido. No valen con los del RealtimePlayer, hay que refrescarlos.
+            // Creacion del partido en la BDD, descuento de tickets
             using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
             {
-                matchID = CreateDatabaseMatch(theContext, firstPlayer, secondPlayer);
-                FillRealtimePlayerData(theContext, firstPlayer);
-                FillRealtimePlayerData(theContext, secondPlayer);
+                var bddMatchCreator = new RealtimeMatchCreator(theContext, firstPlayer, secondPlayer);
+
+                matchID = bddMatchCreator.CreateDatabaseMatch();
+
+                // Generacion de los datos de inicializacion para el partido. No valen con los del RealtimePlayer, hay que refrescarlos.
+                bddMatchCreator.FillRealtimePlayerData();
+
+                // Es aqui donde se restan los partidos al ticket
+                bddMatchCreator.DiscountTickets();
             }
 
+            // Inicializacion del RealtimeMatch
             RealtimeMatch theNewMatch = new RealtimeMatch(matchID, firstPlayer, secondPlayer, matchLength, turnLength, this);
             mMatches.Add(theNewMatch);
 
@@ -417,87 +431,6 @@ namespace SoccerServer
             return closest;
         }
 
-        static private void FillRealtimePlayerData(SoccerDataModelDataContext theContext, RealtimePlayer rtPlayer)
-        {
-            RealtimePlayerData data = new RealtimePlayerData();
-            Player player = GetPlayerForRealtimePlayer(theContext, rtPlayer);
-
-            data.Name = player.Team.Name;
-            data.PredefinedTeamName = player.Team.PredefinedTeam.Name;
-            data.TrueSkill = player.Team.TrueSkill;
-            data.SpecialSkillsIDs = (from s in player.Team.SpecialTrainings
-                                     where s.IsCompleted
-                                     select s.SpecialTrainingDefinitionID).ToList();
-            data.Formation = player.Team.Formation;
-
-            var soccerPlayers = (from p in player.Team.SoccerPlayers
-                                 where p.FieldPosition < 100
-                                 orderby p.FieldPosition
-                                 select p);
-
-            // Multiplicamos por el fitness (entre 0 y 1)
-            float daFitness = player.Team.Fitness / 100.0f;
-
-            foreach (SoccerPlayer sp in soccerPlayers)
-            {
-                var spData = new RealtimePlayerData.SoccerPlayerData();
-
-                spData.Name = sp.Name;
-                spData.Number = sp.Number;
-
-                spData.Power = (int)Math.Round(sp.Power * daFitness);
-                spData.Control = (int)Math.Round(sp.Sliding * daFitness);
-                spData.Defense = (int)Math.Round(sp.Weight * daFitness);
-
-                data.SoccerPlayers.Add(spData);
-            }
-
-            rtPlayer.PlayerData = data;
-        }
-
-        static private int CreateDatabaseMatch(SoccerDataModelDataContext theContext, RealtimePlayer homeRT, RealtimePlayer awayRT)
-        {
-            BDDModel.Match theNewMatch = new BDDModel.Match();
-            theNewMatch.DateStarted = DateTime.Now;
-
-            BDDModel.MatchParticipation homePart = CreateMatchParticipation(theContext, homeRT, true);
-            BDDModel.MatchParticipation awayPart = CreateMatchParticipation(theContext, awayRT, false);
-
-            homePart.Match = theNewMatch;
-            awayPart.Match = theNewMatch;
-
-            theContext.MatchParticipations.InsertOnSubmit(homePart);
-            theContext.MatchParticipations.InsertOnSubmit(awayPart);
-
-            theContext.Matches.InsertOnSubmit(theNewMatch);
-            theContext.SubmitChanges();
-
-            homeRT.MatchParticipationID = homePart.MatchParticipationID;
-            awayRT.MatchParticipationID = awayPart.MatchParticipationID;
-
-            return theNewMatch.MatchID;
-        }
-
-        static private BDDModel.MatchParticipation CreateMatchParticipation(SoccerDataModelDataContext theContext, RealtimePlayer playerRT, bool asHome)
-        {
-            BDDModel.MatchParticipation part = new BDDModel.MatchParticipation();
-
-            part.AsHome = asHome;
-            part.Goals = 0;
-            part.TurnsPlayed = 0;
-            part.Team = GetPlayerForRealtimePlayer(theContext, playerRT).Team;
-
-            return part;
-        }
-
-        static private Player GetPlayerForRealtimePlayer(SoccerDataModelDataContext theContext, RealtimePlayer playerRT)
-        {
-            return (from s in theContext.Players
-                    where s.PlayerID == playerRT.PlayerID
-                    select s).FirstOrDefault();
-        }
-
-
         static private bool HasChallenge(RealtimePlayer first, RealtimePlayer second)
         {
             bool bRet = false;
@@ -535,8 +468,8 @@ namespace SoccerServer
 
             using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
             {
-                Player bddPlayer1 = GetPlayerForRealtimePlayer(theContext, player1);
-                Player bddPlayer2 = GetPlayerForRealtimePlayer(theContext, player2);
+                Player bddPlayer1 = RealtimeMatchCreator.GetPlayerForRealtimePlayer(theContext, player1);
+                Player bddPlayer2 = RealtimeMatchCreator.GetPlayerForRealtimePlayer(theContext, player2);
 
                 // Los BDDPlayers se actualizan dentro de la funcion (... old GiveMatchRewards)
                 matchResult = new RealtimeMatchResult(theContext, realtimeMatch, bddPlayer1, bddPlayer2);

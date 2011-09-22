@@ -99,7 +99,6 @@ package GameModel
 												 new mx.rpc.Responder(OnRefreshMatchStatsResponded, ErrorMessages.Fault));
 		}
 		
-		
 		private var mCurrentRankingPage : RankingPage;
 		private var mSelectedRankingTeam : RankingTeam;
 		private var mSelectedRankingTeamMatchStats : TeamMatchStats;

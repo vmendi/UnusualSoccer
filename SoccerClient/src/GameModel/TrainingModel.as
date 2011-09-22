@@ -28,7 +28,7 @@ package GameModel
 			mTeamModel = mMainModel.TheTeamModel;
 			
 			BindingUtils.bindSetter(OnPendingTrainingChanged, mMainServiceModel, "TrainResult");
-			BindingUtils.bindSetter(OnPendingTrainingChanged, mMainModel, ["TheTeamModel", "TheTeam", "PendingTraining"]);
+			BindingUtils.bindSetter(OnPendingTrainingChanged, mMainModel.TheTeamModel, ["TheTeam", "PendingTraining"]);
 			
 			// Esto estaría mejor dandonos el servidor cuanto falta para el siguiente refresh, y ese es el momento en el q refrescamos
 			//TweenNano.delayedCall(600, OnFitnessUpdateDelayedCall);

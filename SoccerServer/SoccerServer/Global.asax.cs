@@ -96,42 +96,14 @@ namespace SoccerServer
 			mSeconds++;
 
 			try
-			{                
+			{
 				using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
 				{
-					bool bSubmit = false;
+                    bool bSubmit = false;
 
-					// Procesamos los entrenamientos expirados
-					var expiredTrainings = from pendingTr in theContext.PendingTrainings
-										   where pendingTr.TimeEnd < DateTime.Now
-										   select pendingTr;
-
-					if (expiredTrainings.Count() != 0)
-					{
-						foreach (PendingTraining pendingTr in expiredTrainings)
-						{
-							pendingTr.Team.Fitness += pendingTr.TrainingDefinition.FitnessDelta;
-
-							if (pendingTr.Team.Fitness > 100)
-								pendingTr.Team.Fitness = 100;
-						}
-
-						theContext.PendingTrainings.DeleteAllOnSubmit(expiredTrainings);
-						bSubmit = true;
-					}
-
-					// 100 de fitness cada 24h
-					if (mSeconds % 864 == 0)
-					{
-                        var notZeroFitness = (from t in theContext.Teams
-                                              where t.Fitness > 0 && t.PendingTraining != null
-                                              select t);
-
-						foreach (var team in notZeroFitness)
-							team.Fitness -= 1;
-
-						bSubmit = true;
-					}
+                    bSubmit |= RunExpiredTrainingsProcess(theContext);
+                    bSubmit |= RunFitnessSubstractProcess(theContext);
+                    bSubmit |= Run24hProcess(theContext);
                     
 					if (bSubmit)
 					{
@@ -157,6 +129,72 @@ namespace SoccerServer
 			{
 				mSecondsTimer.Start();
 			}
+        }
+
+        private bool RunExpiredTrainingsProcess(SoccerDataModelDataContext theContext)
+        {
+            bool bSubmit = false;
+
+            var expiredTrainings = from pendingTr in theContext.PendingTrainings
+                                    where pendingTr.TimeEnd < DateTime.Now
+                                    select pendingTr;
+
+            if (expiredTrainings.Count() != 0)
+            {
+                Log.log(GLOBAL, "Running Expired Trainings: " + expiredTrainings.Count());
+
+                foreach (PendingTraining pendingTr in expiredTrainings)
+                {
+                    pendingTr.Team.Fitness += pendingTr.TrainingDefinition.FitnessDelta;
+
+                    if (pendingTr.Team.Fitness > 100)
+                        pendingTr.Team.Fitness = 100;
+                }
+
+                theContext.PendingTrainings.DeleteAllOnSubmit(expiredTrainings);
+                bSubmit = true;
+            }
+            
+            return bSubmit;
+        }
+
+        private bool RunFitnessSubstractProcess(SoccerDataModelDataContext theContext)
+        {
+            bool bSubmit = false;
+
+            // 100 de fitness cada 24h
+            if (mSeconds % 864 == 0)
+            {
+                Log.log(GLOBAL, "Running FitnessSubstract process");
+
+                var notZeroFitness = (from t in theContext.Teams
+                                      where t.PendingTraining != null && t.Fitness > 0
+                                      select t);
+
+                foreach (var team in notZeroFitness)
+                    team.Fitness -= 1;
+
+                bSubmit = true;
+            }        
+
+            return bSubmit;
+        }
+
+        // Proceso cada 24h, a las 00:00
+        private bool Run24hProcess(SoccerDataModelDataContext theContext)
+        {
+            bool bSubmit = false;
+            DateTime now = DateTime.Now;
+
+            if (now.Date != mLast24hProcessedDateTime.Date)
+            {
+                Log.log(GLOBAL, "Running 24h process");
+
+                mLast24hProcessedDateTime = now;
+                bSubmit = true;
+            }
+
+            return bSubmit;
         }
 
 		protected void Session_Start(object sender, EventArgs e)
@@ -195,6 +233,8 @@ namespace SoccerServer
 
         public const String GLOBAL = "GLOBAL";
         private System.Timers.Timer mSecondsTimer;
-		private int mSeconds = 0;		
+		private int mSeconds = 0;
+
+        private DateTime mLast24hProcessedDateTime = DateTime.Now;
 	}
 }

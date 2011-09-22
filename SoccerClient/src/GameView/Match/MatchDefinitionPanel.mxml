@@ -41,11 +41,11 @@
 			mMainGameModel = SoccerClient.GetMainGameModel();
 			mRealtimeModel = mMainGameModel.TheRealtimeModel;
 			
-			BindingUtils.bindSetter(OnRoomModelChanged, mMainGameModel, [ "TheRealtimeModel", "TheRoomModel" ]);
+			BindingUtils.bindSetter(OnRoomModelChanged, mMainGameModel.TheRealtimeModel, [ "TheRoomModel" ]);
 			
-			BindingUtils.bindSetter(OnSelectedChanged, mMainGameModel, [ "TheRealtimeModel", "TheRoomModel", "Selected" ] );
-			BindingUtils.bindSetter(OnIsSelectedChallengeTargetChanged, mMainGameModel, [ "TheRealtimeModel", "TheRoomModel", "Selected", "IsChallengeTarget"]);
-			BindingUtils.bindSetter(OnIsSelectedChallengeSourceChanged, mMainGameModel, [ "TheRealtimeModel", "TheRoomModel", "Selected", "IsChallengeSource"]);
+			BindingUtils.bindSetter(OnSelectedChanged, mMainGameModel.TheRealtimeModel, [ "TheRoomModel", "Selected" ] );
+			BindingUtils.bindSetter(OnIsSelectedChallengeTargetChanged, mMainGameModel.TheRealtimeModel, [ "TheRoomModel", "Selected", "IsChallengeTarget"]);
+			BindingUtils.bindSetter(OnIsSelectedChallengeSourceChanged, mMainGameModel.TheRealtimeModel, [ "TheRoomModel", "Selected", "IsChallengeSource"]);
 		}
 		
 		protected function OnRoomModelChanged(theRoomModel : RoomModel) : void

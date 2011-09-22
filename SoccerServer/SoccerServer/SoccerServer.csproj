@@ -51,10 +51,6 @@
     <ExcludeApp_Data>false</ExcludeApp_Data>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging, Version=1.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Common.Logging.dll</HintPath>
-    </Reference>
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.5.1.1.0\lib\net40-client\Facebook.dll</HintPath>
     </Reference>
@@ -221,6 +217,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Realtime.cs" />
     <Compile Include="RealtimeMatch.cs" />
+    <Compile Include="RealtimeMatchCreator.cs" />
     <Compile Include="RealtimeMatchResult.cs" />
     <Compile Include="RealtimeMatchBridge.cs" />
     <Compile Include="RealtimeTests.cs" />
