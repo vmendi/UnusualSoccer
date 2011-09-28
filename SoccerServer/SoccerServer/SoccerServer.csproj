@@ -201,6 +201,7 @@
       <DependentUpon>InviteFriends.aspx</DependentUpon>
     </Compile>
     <Compile Include="MainService.cs" />
+    <Compile Include="MainServiceCompetition.cs" />
     <Compile Include="MainServiceRanking.cs" />
     <Compile Include="MainServiceTeam.cs" />
     <Compile Include="MainServiceTraining.cs" />
@@ -284,6 +285,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SoccerDataModel.dbml</DependentUpon>
     </Compile>
+    <Compile Include="TransferModelCompetition.cs" />
     <Compile Include="TrueSkillHelper.aspx.cs">
       <DependentUpon>TrueSkillHelper.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

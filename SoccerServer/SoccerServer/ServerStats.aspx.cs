@@ -143,6 +143,16 @@ namespace SoccerServer
             mDC.SubmitChanges();
         }
 
+        protected void MisticalRefresh_Click(object sender, EventArgs e)
+        {
+            MainService.PreprocessAllTeams();
+        }
+
+        protected void MisticalRefresh02_Click(object sender, EventArgs e)
+        {
+            MainService.SeasonEnd();
+        }
+
         private void UpdateRealtimeData()
 		{
             NetEngineMain netEngineMain = Application["NetEngineMain"] as NetEngineMain;
