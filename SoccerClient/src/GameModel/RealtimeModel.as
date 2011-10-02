@@ -50,7 +50,18 @@ package GameModel
 			mMainModel = gameModel;
 			mMainService = mainService;
 			
-			mIsConnected = false;			
+			mIsConnected = false;
+			
+			// Basamos nuestra conexion/desconexion en la disponibilidad de credito
+			BindingUtils.bindSetter(OnHasCreditChanged, mMainModel, ["TheTicketModel", "HasCredit"]);
+		}
+		
+		private function OnHasCreditChanged(hasCredit:Boolean) : void
+		{
+			if (hasCredit)
+				InitialConnection(null);
+			else
+				Disconnect();
 		}
 		
 		public function InitialConnection(callback : Function) : void
@@ -103,7 +114,7 @@ package GameModel
 			localRealtimePlayer.Name = mMainModel.TheTeamModel.TheTeam.Name;
 			
 			// Los detalles del equipo local los tiene el TeamModel
-			BindingUtils.bindProperty(localRealtimePlayer, "TheTeamDetails", mMainModel.TheTeamModel, "TheTeamDetails");
+			BindingUtils.bindProperty(localRealtimePlayer, "TheTeamDetails", mMainModel, ["TheTeamModel", "TheTeamDetails"]);
 			
 			LocalRealtimePlayer = localRealtimePlayer;
 			IsConnected = true;

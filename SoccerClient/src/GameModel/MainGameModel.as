@@ -3,6 +3,7 @@ package GameModel
 	import SoccerServer.MainService;
 	import SoccerServer.MainServiceModel;
 	
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.external.ExternalInterface;
 	
@@ -19,7 +20,7 @@ package GameModel
 		{
 			mMainService = new MainServiceSoccer();
 			
-			mRealtimeModel = new RealtimeModel(mMainService, this);					
+			mRealtimeModel = new RealtimeModel(mMainService, this);
 			mRankingModel = new RankingModel(mMainService, this);
 			mTeamModel = new TeamModel(mMainService, this);
 			mTrainingModel = new TrainingModel(mMainService, this);
@@ -29,6 +30,9 @@ package GameModel
 			mPredefinedTeamsModel = new PredefinedTeamsModel(mMainService, this);
 			mTicketModel = new TicketModel(mMainService, this);
 			mCompetitionModel = new CompetitionModel(mMainService, this);
+			
+			// Los submodelos se bindean a sus hermanos sin orden definido, necesitamos generar un evento de cambio
+			dispatchEvent(new Event("dummy"));
 		}
 
 		public function InitialRefresh(callback : Function) : void

@@ -19,13 +19,13 @@ package GameModel
 		{
 			if (mTeamModel.TheTeam.Ticket != null)
 				HasCredit = (mTeamModel.TheTeam.Ticket.TicketExpiryDate > new Date()) || 
-								 mTeamModel.TheTeam.Ticket.RemainingMatches > 0;
+						     mTeamModel.TheTeam.Ticket.RemainingMatches > 0;
 		}
 		
 		[Bindable]
-		public  function  get HasCredit() : Boolean { return mHasCredit; }
+		public function get HasCredit() : Boolean { return mHasCredit; }
 		private function set HasCredit(val : Boolean) : void { mHasCredit = val; }
-		private var mHasCredit : Boolean = true;
+		private var mHasCredit : Boolean = false;
 		
 		
 		private var mMainService : MainService;

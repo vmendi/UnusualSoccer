@@ -4,22 +4,12 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*"
 		 currentState="alignToLeft" 
-		 addedToStage="AddedToStageHandler(event)"
 		 visible="{TheRealtimePlayer!=null}" width="150">
 	
 
 	<fx:Script><![CDATA[
 		import GameModel.RealtimePlayer;
 		
-		import SoccerServer.TransferModel.vo.TeamDetails;
-		
-		import mx.binding.utils.BindingUtils;
-		
-		protected function AddedToStageHandler(event:Event):void
-		{
-			
-		}
-	
 		[Bindable]
 		public function get TheRealtimePlayer() : RealtimePlayer { return mRealtimePlayer; }
 		public function set TheRealtimePlayer(v:RealtimePlayer) : void { mRealtimePlayer = v; }

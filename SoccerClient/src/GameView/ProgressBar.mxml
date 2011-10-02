@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:Team="GameView.Team.*" xmlns:GameView="GameView.*"
 		 minWidth="20" minHeight="9"
-		 preinitialize="PreinitializeHandler(event)">
+		 >
 	
 	<fx:Style source="styles.css"/>
 	
@@ -20,15 +20,8 @@
 	</fx:Declarations>
 	
 	<fx:Script><![CDATA[
-		import mx.effects.Tween;
 		import mx.events.FlexEvent;
-		
-		protected function PreinitializeHandler(event:FlexEvent):void
-		{
-			Percent = 0;
-			MaxPercent = 0;
-		}		
-		
+				
 		public function get AnimationEnabled() : Boolean { return mAnimationEnabled; }
 		public function set AnimationEnabled(v : Boolean) : void { mAnimationEnabled = v; }
 				

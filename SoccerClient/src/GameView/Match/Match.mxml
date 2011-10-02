@@ -40,15 +40,9 @@
 		protected function OnHasCreditChanged(hasCredit : Boolean) : void
 		{
 			if (hasCredit)
-			{
 				currentState = "AvailableCredit";
-				mMainGameModel.TheRealtimeModel.InitialConnection(null);
-			}
 			else
-			{
 				currentState = "OutOfCredit";
-				mMainGameModel.TheRealtimeModel.Disconnect();
-			}
 		}
 		
 		protected function OnRoomModelChanged(theRoomModel : RoomModel) : void

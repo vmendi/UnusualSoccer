@@ -102,7 +102,7 @@
 	
 	<Match:TeamDetailsPanel top="5" left="12"  TheRealtimePlayer="{mRealtimeModel.LocalRealtimePlayer}"/>
 	<Match:TeamDetailsPanel top="5" right="12" TheRealtimePlayer="{mRoomModel.Selected}" currentState="alignToRight" styleName="alignToRight"/>
-	
+			
 	<s:Label width="110" x="185" y="54" text="¡SELECCIONA UN CONTRINCANTE!" includeIn="Empty" styleName="whiteBoldMedium" textAlign="center" />
 			
 	<s:Group left="25" right="25" top="310" includeIn="LaunchChallengePossible">

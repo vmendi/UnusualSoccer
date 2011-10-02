@@ -46,12 +46,12 @@
 				change="MyCompetitionList_changeHandler(event)"/>
 	</s:Panel>
 	
-	<Competition:LookingForMatchPanel right="10" y="10" width="423" height="90" title="PARTIDO DE COMPETICION" />
+	<Competition:LookingForMatchPanel right="10" y="10" width="363" height="90" title="PARTIDO DE COMPETICION" />
 	
-	<s:Group right="10" top="100">
+	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="200" right="10" width="365" title="TU DIVISION">
 		<s:Label id="MyDivisionLabel" text="{mCompetitionModel.TheGroup.DivisionName}" top="10" styleName="whiteBoldMedium" />
 		<s:Label id="MyGroupNameLabel" text="{mCompetitionModel.TheGroup.GroupName}" top="40" styleName="whiteBoldMedium" />
 		<s:Label id="MyMinimunPointsLabel" text="{mCompetitionModel.TheGroup.MinimumPoints}" top="70" styleName="whiteBoldMedium" />
-	</s:Group>
+	</s:Panel>
 	
 </s:Group>

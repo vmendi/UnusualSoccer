@@ -2,7 +2,7 @@
 <s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
-		 skinClass="GameView.Skins.DefaultPanelSkin" xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*" xmlns:status="com.facebook.data.status.*"
+		 skinClass="GameView.Skins.DefaultPanelSkin" xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*"
 		 currentState="Disabled" 
 		 preinitialize="PreinitializeHandler(event)">
 	
@@ -32,11 +32,10 @@
 		{
 			if (!connected)
 				currentState = "Disabled";
+			else if (mRealtimeModel.LookingForMatch)
+				currentState = "LookingForMatch";
 			else
-				if (mRealtimeModel.LookingForMatch)
-					currentState = "LookingForMatch";
-				else
-					currentState = "Wait";
+				currentState = "Wait";
 		}
 		
 		private function OnLookingForMatchChanged(looking : Boolean) : void
@@ -53,7 +52,8 @@
 
 		protected function MyFindMatchButton_clickHandler(event:MouseEvent):void
 		{
-			mRealtimeModel.SwitchLookingForMatch();
+			if (currentState != "Disabled")
+				mRealtimeModel.SwitchLookingForMatch();
 		}
 		
 		[Bindable] 
@@ -64,7 +64,7 @@
 
 	]]></fx:Script>
 	
-	<s:Label width="312" x="12" y="10" text="Haz clic en “Buscar Partido” y te buscaremos contrincante de habilidad similar a la tuya." styleName="whiteBoldBig"
+	<s:Label width="312" x="12" y="10" text="Haz clic en “Buscar Partido” y blah blah." styleName="whiteBoldBig"
 			 includeIn="Wait" />
 	<s:Label width="300" x="61" y="22" textAlign="center" text="Estás desconectado del juego..." styleName="whiteBoldBig" includeIn="Disabled" />
 	<s:Label x="121" y="36" text="Buscando partido..." styleName="whiteBoldBig" includeIn="LookingForMatch" />
