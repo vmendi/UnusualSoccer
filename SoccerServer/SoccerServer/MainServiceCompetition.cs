@@ -151,7 +151,15 @@ namespace SoccerServer
             }
             
             // Unico submit en toda la secuencia
-            theContext.SubmitChanges();
+            // SubmitChanges starts a transaction and will roll back if an exception occurs while SubmitChanges is executing.
+            try
+            {
+                theContext.SubmitChanges(System.Data.Linq.ConflictMode.FailOnFirstConflict);
+            }
+            catch (Exception e)
+            {
+                Log.log(MAINSERVICE, "TODO: RESUELVEME " + e.ToString());
+            }
         }
 
         // La unica no finalizada. Tiene que haber 1 y solo 1. Si hubiera mas de una, violacion de invariante, exception aqui

@@ -1,8 +1,10 @@
 package GameModel
 {
 	import SoccerServer.MainService;
+	import SoccerServer.TransferModel.vo.Group;
 	
 	import mx.rpc.Responder;
+	import mx.rpc.events.ResultEvent;
 	
 	import utils.Delegate;
 
@@ -12,15 +14,25 @@ package GameModel
 		{
 			mMainService = mainService;
 			mMainModel = mainModel;
-			
-			mMainService.RefreshGroupForTeam(parseInt(SoccerClient.GetFacebookFacade().FacebookID), new Responder(Prueba, ErrorMessages.Fault));
 		}
 		
-		private function Prueba(v:Object):void
+		public function RefreshGroup() : void
 		{
-			var b = v;
+			mMainService.RefreshGroupForTeam(parseInt(SoccerClient.GetFacebookFacade().FacebookID), new Responder(OnGroupForTeamRefreshed, ErrorMessages.Fault));
+		}
+				
+		private function OnGroupForTeamRefreshed(e:ResultEvent):void
+		{
+			TheGroup = e.result as Group;
 		}
 		
+
+		[Bindable]
+		public function  get TheGroup() : Group       { return mGroup; }
+		private function set TheGroup(v:Group) : void { mGroup = v; }
+		
+
+		private var mGroup : Group;
 		
 		private var mMainService : MainService;
 		private var mMainModel : MainGameModel;

@@ -1605,6 +1605,12 @@ namespace SoccerServer.BDDModel
 		
 		private System.Nullable<bool> _WasAbandonedSameIP;
 		
+		private bool _IsFriendly;
+		
+		private int _MatchDuration;
+		
+		private int _TurnDuration;
+		
 		private EntitySet<MatchParticipation> _MatchParticipations;
 		
     #region Extensibility Method Definitions
@@ -1625,6 +1631,12 @@ namespace SoccerServer.BDDModel
     partial void OnWasAbandonedChanged();
     partial void OnWasAbandonedSameIPChanging(System.Nullable<bool> value);
     partial void OnWasAbandonedSameIPChanged();
+    partial void OnIsFriendlyChanging(bool value);
+    partial void OnIsFriendlyChanged();
+    partial void OnMatchDurationChanging(int value);
+    partial void OnMatchDurationChanged();
+    partial void OnTurnDurationChanging(int value);
+    partial void OnTurnDurationChanged();
     #endregion
 		
 		public Match()
@@ -1769,6 +1781,66 @@ namespace SoccerServer.BDDModel
 					this._WasAbandonedSameIP = value;
 					this.SendPropertyChanged("WasAbandonedSameIP");
 					this.OnWasAbandonedSameIPChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsFriendly", DbType="Bit NOT NULL")]
+		public bool IsFriendly
+		{
+			get
+			{
+				return this._IsFriendly;
+			}
+			set
+			{
+				if ((this._IsFriendly != value))
+				{
+					this.OnIsFriendlyChanging(value);
+					this.SendPropertyChanging();
+					this._IsFriendly = value;
+					this.SendPropertyChanged("IsFriendly");
+					this.OnIsFriendlyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MatchDuration", DbType="Int NOT NULL")]
+		public int MatchDuration
+		{
+			get
+			{
+				return this._MatchDuration;
+			}
+			set
+			{
+				if ((this._MatchDuration != value))
+				{
+					this.OnMatchDurationChanging(value);
+					this.SendPropertyChanging();
+					this._MatchDuration = value;
+					this.SendPropertyChanged("MatchDuration");
+					this.OnMatchDurationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TurnDuration", DbType="Int NOT NULL")]
+		public int TurnDuration
+		{
+			get
+			{
+				return this._TurnDuration;
+			}
+			set
+			{
+				if ((this._TurnDuration != value))
+				{
+					this.OnTurnDurationChanging(value);
+					this.SendPropertyChanging();
+					this._TurnDuration = value;
+					this.SendPropertyChanged("TurnDuration");
+					this.OnTurnDurationChanged();
 				}
 			}
 		}

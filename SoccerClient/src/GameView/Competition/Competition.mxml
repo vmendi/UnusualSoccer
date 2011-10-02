@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
+		 addedToStage="AddedToStageHandler(event)" 
+		 xmlns:GameView="GameView.*" xmlns:Match="GameView.Match.*" xmlns:Competition="GameView.Competition.*">
+	
+	<fx:Style source="../styles.css" />
+	
+	<fx:Script><![CDATA[
+		import GameModel.CompetitionModel;
+		import GameModel.MainGameModel;
+		
+		import GameView.Skins.DefaultListSkin;
+		import GameView.Skins.DefaultPanelSkin;
+		
+		import spark.events.IndexChangeEvent;
+		
+		protected function AddedToStageHandler(event:Event):void
+		{
+			//GameMetrics.ReportEvent(GameMetrics.VIEW_RANKING);
+			
+			mGameModel = SoccerClient.GetMainGameModel();
+			mCompetitionModel = mGameModel.TheCompetitionModel;
+						
+			mCompetitionModel.RefreshGroup();
+		}
+		
+		protected function MyCompetitionList_changeHandler(event:IndexChangeEvent):void
+		{
+			// TODO Auto-generated method stub
+		}
+		
+		[Bindable] 
+		private var mCompetitionModel : CompetitionModel;
+		private var mGameModel : MainGameModel;
+
+	]]></fx:Script>
+	
+
+	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" bottom="10" left="10" width="365" title="RANKING DE TU DIVISION">
+		<s:List id="MyCompetitionList" left="0" right="0" top="0" height="440"
+				dataProvider="{mCompetitionModel.TheGroup.GroupEntries}" 
+				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="false"
+				skinClass="GameView.Skins.DefaultListSkin" 
+				change="MyCompetitionList_changeHandler(event)"/>
+	</s:Panel>
+	
+	<Competition:LookingForMatchPanel right="10" y="10" width="423" height="90" title="PARTIDO DE COMPETICION" />
+	
+	<s:Group right="10" top="100">
+		<s:Label id="MyDivisionLabel" text="{mCompetitionModel.TheGroup.DivisionName}" top="10" styleName="whiteBoldMedium" />
+		<s:Label id="MyGroupNameLabel" text="{mCompetitionModel.TheGroup.GroupName}" top="40" styleName="whiteBoldMedium" />
+		<s:Label id="MyMinimunPointsLabel" text="{mCompetitionModel.TheGroup.MinimumPoints}" top="70" styleName="whiteBoldMedium" />
+	</s:Group>
+	
+</s:Group>

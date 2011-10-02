@@ -311,7 +311,7 @@ namespace SoccerServer
                 if (theChallenge != null)
                 {
                     bRet = true;
-                    StartMatch(self, opp, theChallenge.MatchLengthSeconds, theChallenge.TurnLengthSeconds);
+                    StartMatch(self, opp, theChallenge.MatchLengthSeconds, theChallenge.TurnLengthSeconds, true);
                 }
             }
             return bRet;
@@ -348,34 +348,23 @@ namespace SoccerServer
         }
 
 
-        private void StartMatch(RealtimePlayer firstPlayer, RealtimePlayer secondPlayer, int matchLength, int turnLength)
+        private void StartMatch(RealtimePlayer firstPlayer, RealtimePlayer secondPlayer, int matchLength, int turnLength, bool bFriendly)
         {
             LeaveRoom(firstPlayer);
             LeaveRoom(secondPlayer);
 
-            int matchID = -1;
-
             // Creacion del partido en la BDD, descuento de tickets
-            using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
-            {
-                var bddMatchCreator = new RealtimeMatchCreator(theContext, firstPlayer, secondPlayer);
-
-                matchID = bddMatchCreator.CreateDatabaseMatch();
-
-                // Generacion de los datos de inicializacion para el partido. No valen con los del RealtimePlayer, hay que refrescarlos.
-                bddMatchCreator.FillRealtimePlayerData();
-
-                // Es aqui donde se restan los partidos al ticket
-                bddMatchCreator.DiscountTickets();
-            }
-
+            var bddMatchCreator = new RealtimeMatchCreator(firstPlayer, secondPlayer, matchLength, turnLength, bFriendly);
+                
             // Inicializacion del RealtimeMatch
-            RealtimeMatch theNewMatch = new RealtimeMatch(matchID, firstPlayer, secondPlayer, matchLength, turnLength, this);
+            RealtimeMatch theNewMatch = new RealtimeMatch(bddMatchCreator.MatchID, firstPlayer, secondPlayer, 
+                                                          bddMatchCreator.FirstData, bddMatchCreator.SecondData,
+                                                          matchLength, turnLength, this);
             mMatches.Add(theNewMatch);
 
             firstPlayer.TheMatch = theNewMatch;
             secondPlayer.TheMatch = theNewMatch;
-
+            
             firstPlayer.TheConnection.Invoke("PushedStartMatch", firstPlayer.ClientID, secondPlayer.ClientID);
             secondPlayer.TheConnection.Invoke("PushedStartMatch", firstPlayer.ClientID, secondPlayer.ClientID);
         }
@@ -404,7 +393,7 @@ namespace SoccerServer
                     candidate.LookingForMatch = false;
                     opponent.LookingForMatch = false;
 
-                    StartMatch(candidate, opponent, MATCH_DURATION_SECONDS[1], TURN_DURATION_SECONDS[1]);
+                    StartMatch(candidate, opponent, MATCH_DURATION_SECONDS[1], TURN_DURATION_SECONDS[1], false);
                 }
             }
         }
@@ -461,46 +450,11 @@ namespace SoccerServer
 
         internal RealtimeMatchResult OnFinishMatch(RealtimeMatch realtimeMatch)
         {
-            RealtimeMatchResult matchResult = null;
+            RealtimeMatchResult matchResult = new RealtimeMatchResult(realtimeMatch);
 
             RealtimePlayer player1 = realtimeMatch.GetRealtimePlayer(RealtimeMatch.PLAYER_1);
             RealtimePlayer player2 = realtimeMatch.GetRealtimePlayer(RealtimeMatch.PLAYER_2);
 
-            using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
-            {
-                Player bddPlayer1 = RealtimeMatchCreator.GetPlayerForRealtimePlayer(theContext, player1);
-                Player bddPlayer2 = RealtimeMatchCreator.GetPlayerForRealtimePlayer(theContext, player2);
-
-                // Los BDDPlayers se actualizan dentro de la funcion (... old GiveMatchRewards)
-                matchResult = new RealtimeMatchResult(theContext, realtimeMatch, bddPlayer1, bddPlayer2);
-
-                // Actualizacion del BDDMatch...
-                BDDModel.Match theBDDMatch = (from m in theContext.Matches
-                                                where m.MatchID == realtimeMatch.MatchID
-                                                select m).FirstOrDefault();
-
-                theBDDMatch.DateEnded = DateTime.Now;
-                theBDDMatch.WasTooManyTimes = matchResult.WasTooManyTimes;
-                theBDDMatch.WasJust = matchResult.WasJust;
-                theBDDMatch.WasAbandoned = matchResult.WasAbandoned;
-                theBDDMatch.WasAbandonedSameIP = matchResult.WasAbandonedSameIP;
-
-                // ... y de las MatchParticipations de la BDD
-                (from p in theContext.MatchParticipations
-                    where p.MatchParticipationID == player1.MatchParticipationID
-                    select p).FirstOrDefault().Goals = matchResult.GetGoalsFor(player1);
-
-                (from p in theContext.MatchParticipations
-                    where p.MatchParticipationID == player2.MatchParticipationID
-                    select p).FirstOrDefault().Goals = matchResult.GetGoalsFor(player2);
-
-                theContext.SubmitChanges();
-            }
-
-            player1.PlayerData = null;
-            player2.PlayerData = null;
-            player1.MatchParticipationID = -1;
-            player2.MatchParticipationID = -1;
             player1.TheMatch = null;
             player2.TheMatch = null;
 
@@ -510,7 +464,7 @@ namespace SoccerServer
             return matchResult;
         }
 
-
+               
         public void OnSecondsTick()
         {
             lock (mGlobalLock)
@@ -659,16 +613,10 @@ namespace SoccerServer
         public RealtimeMatch TheMatch = null;
 
         [NonSerialized]
-        public int MatchParticipationID = -1;           // TODO: Per player, la deberia llevar el match
-
-        [NonSerialized]
-        public RealtimePlayerData PlayerData;			// Datos de inicializacion para el partido. TODO: Quitarlos de aqui!
+        public Room Room;
 
         [NonSerialized]
         public List<Challenge> Challenges = new List<Challenge>();
-
-        [NonSerialized]
-        public Room Room;
 
         [NonSerialized]
         public NetPlug TheConnection;

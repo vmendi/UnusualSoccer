@@ -8,41 +8,57 @@ namespace SoccerServer
 {
     public class RealtimeMatchCreator
     {
+        private int mMatchDuration;
+        private int mTurnDuration;
+        private bool mbFriendly;
+
         private Player mFirstPlayer;
         private Player mSecondPlayer;
 
         private RealtimePlayer mFirstRealtimePlayer;
         private RealtimePlayer mSecondRealtimePlayer;
 
-        SoccerDataModelDataContext mContext;
+        private RealtimePlayerData mFirstData;
+        private RealtimePlayerData mSecondData;
 
-        public RealtimeMatchCreator(SoccerDataModelDataContext theContext, RealtimePlayer firstPlayer, RealtimePlayer secondPlayer)
+        private SoccerDataModelDataContext mContext;
+
+        private int mMatchID;
+
+        public int MatchID { get { return mMatchID; } }
+
+        public RealtimePlayerData FirstData { get { return mFirstData; } }
+        public RealtimePlayerData SecondData { get { return mSecondData; } }
+
+
+        public RealtimeMatchCreator(RealtimePlayer firstPlayer, RealtimePlayer secondPlayer, int matchDuration, int turnDuration, bool bFriendly)
         {
-            mContext = theContext;
+            using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
+            {
+                mContext = theContext;
 
-            mFirstRealtimePlayer = firstPlayer;
-            mSecondRealtimePlayer = secondPlayer;
+                mMatchDuration = matchDuration;
+                mTurnDuration = turnDuration;
+                mbFriendly = bFriendly;
 
-            mFirstPlayer = GetPlayerForRealtimePlayer(theContext, mFirstRealtimePlayer);
-            mSecondPlayer = GetPlayerForRealtimePlayer(theContext, mSecondRealtimePlayer);
+                mFirstRealtimePlayer = firstPlayer;
+                mSecondRealtimePlayer = secondPlayer;
+
+                mFirstPlayer = GetPlayerForRealtimePlayer(theContext, mFirstRealtimePlayer);
+                mSecondPlayer = GetPlayerForRealtimePlayer(theContext, mSecondRealtimePlayer);
+
+                mMatchID = CreateDatabaseMatchInner(mContext);
+
+                // Generacion de los datos de inicializacion para el partido. No valen con los del RealtimePlayer, hay que refrescarlos.
+                mFirstData = GetRealtimePlayerData(mContext, mFirstPlayer);
+                mSecondData = GetRealtimePlayerData(mContext, mSecondPlayer);
+
+                // Es aqui donde se restan los partidos al ticket
+                DiscountTicketsInner(mContext, mFirstPlayer);
+                DiscountTicketsInner(mContext, mSecondPlayer);
+            }
         }
 
-        public int CreateDatabaseMatch()
-        {            
-            return CreateDatabaseMatchInner(mContext);
-        }
-
-        public void FillRealtimePlayerData()
-        {
-            FillRealtimePlayerDataInner(mContext, mFirstRealtimePlayer, mFirstPlayer);
-            FillRealtimePlayerDataInner(mContext, mSecondRealtimePlayer, mSecondPlayer);
-        }
-
-        public void DiscountTickets()
-        {
-            DiscountTicketsInner(mContext, mFirstPlayer);
-            DiscountTicketsInner(mContext, mSecondPlayer);
-        }
 
         static private void DiscountTicketsInner(SoccerDataModelDataContext theContext, Player thePlayer)
         {
@@ -66,7 +82,11 @@ namespace SoccerServer
         private int CreateDatabaseMatchInner(SoccerDataModelDataContext theContext)
         {
             BDDModel.Match theNewMatch = new BDDModel.Match();
+            
             theNewMatch.DateStarted = DateTime.Now;
+            theNewMatch.MatchDuration = mMatchDuration;
+            theNewMatch.TurnDuration = mTurnDuration;
+            theNewMatch.IsFriendly = mbFriendly;
 
             BDDModel.MatchParticipation homePart = CreateMatchParticipation(theContext, mFirstRealtimePlayer, mFirstPlayer, true);
             BDDModel.MatchParticipation awayPart = CreateMatchParticipation(theContext, mSecondRealtimePlayer, mSecondPlayer, false);
@@ -79,10 +99,7 @@ namespace SoccerServer
 
             theContext.Matches.InsertOnSubmit(theNewMatch);
             theContext.SubmitChanges();
-            
-            mFirstRealtimePlayer.MatchParticipationID = homePart.MatchParticipationID;
-            mSecondRealtimePlayer.MatchParticipationID = awayPart.MatchParticipationID;
-
+           
             return theNewMatch.MatchID;
         }
 
@@ -100,7 +117,7 @@ namespace SoccerServer
         }
 
 
-        static private void FillRealtimePlayerDataInner(SoccerDataModelDataContext theContext, RealtimePlayer rtPlayer, Player bddPlayer)
+        static private RealtimePlayerData GetRealtimePlayerData(SoccerDataModelDataContext theContext, Player bddPlayer)
         {
             RealtimePlayerData data = new RealtimePlayerData();
 
@@ -134,7 +151,7 @@ namespace SoccerServer
                 data.SoccerPlayers.Add(spData);
             }
 
-            rtPlayer.PlayerData = data;
+            return data;
         }
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************
-* Group.as
+* GroupEntry.as
 * Copyright (C) 2006-2010 Midnight Coders, Inc.
 *
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -17,14 +17,17 @@ package SoccerServer.TransferModel.vo
   import mx.collections.ArrayCollection;
 
 	[Bindable]
-	[RemoteClass(alias="SoccerServer.TransferModel.Group")]
-	public class Group
+	[RemoteClass(alias="SoccerServer.TransferModel.GroupEntry")]
+	public class GroupEntry
 	{
-		public function Group(){}
+		public function GroupEntry(){}
 	
-		public var GroupName:String;
-		public var DivisionName:String;
-		public var MinimumPoints:int;
-		public var GroupEntries:ArrayCollection;
+		public var Name:String;
+		public var FacebookID:Number;
+		public var PredefinedTeamName:String;
+		public var Points:int;
+		public var NumMatchesPlayed:int;
+		public var NumMatchesWon:int;
+		public var NumMatchesDraw:int;
 	}
 }

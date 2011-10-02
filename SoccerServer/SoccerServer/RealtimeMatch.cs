@@ -84,8 +84,9 @@ namespace SoccerServer
         private int Part = 1;                                   // Mitad de juego en la que nos encontramos
         private State CurState = State.WaittingPlayers;         // Estado actual del servidor de juego
 
-        RealtimePlayer[] Players = new RealtimePlayer[PlayerCount];           // Los jugadores en el manager
-        PlayerState[] PlayersState = new PlayerState[PlayerCount];            // Estado de los jugadores
+        RealtimePlayer[] Players = new RealtimePlayer[PlayerCount];             // Los jugadores en el manager
+        RealtimePlayerData[] PlayersData = new RealtimePlayerData[PlayerCount]; // Los jugadores en el manager
+        PlayerState[] PlayersState = new PlayerState[PlayerCount];              // Estado de los jugadores
 
         private int CountReadyPlayers = 0;                      // Contador de jugadores listos (No empezamos el partido hasta que estén listos todos)
         private float ServerTime = 0;		                    // Tiempo en segundos que lleva el servidor del partido funcionando
@@ -173,7 +174,8 @@ namespace SoccerServer
         // Inicializa el partido. 
         // NOTE : En este momento la conexión todavía no puede utilizarse, todavía el cliente simulador no ha tomado el control
         //
-        public RealtimeMatch(int matchID, RealtimePlayer firstPlayer, RealtimePlayer secondPlayer, int matchLength, int turnLength, Realtime mainRT)
+        public RealtimeMatch(int matchID, RealtimePlayer firstPlayer, RealtimePlayer secondPlayer, 
+                             RealtimePlayerData firstData, RealtimePlayerData secondData, int matchLength, int turnLength, Realtime mainRT)
         {
             mMatchID = matchID;
             MainRT = mainRT;
@@ -181,6 +183,9 @@ namespace SoccerServer
             // Añade los jugadores a la lista de jugadores
             Players[Player1] = firstPlayer;
             Players[Player2] = secondPlayer;
+
+            PlayersData[Player1] = firstData;
+            PlayersData[Player2] = secondData;
 
             // Creamos el estado de los jugados
             PlayersState[Player1] = new PlayerState();
@@ -503,7 +508,7 @@ namespace SoccerServer
             LogEx( "OnRequestData: Datos del partido solicitador por el Player: " + idPlayer + "Configuración partido: TotalTime: " + MatchLength + " TurnTime: "+ TurnLength );
 
             // Envía la configuración del partido al jugador, indicándole además a quien controlan  ellos (LocalUser)
-            Invoke(idPlayer, "InitMatch", this.mMatchID, Players[Player1].PlayerData, Players[Player2].PlayerData, idPlayer, MatchLength, TurnLength, MinClientVersion);
+            Invoke(idPlayer, "InitMatch", this.mMatchID, PlayersData[Player1], PlayersData[Player2], idPlayer, MatchLength, TurnLength, MinClientVersion);
         }
 
         //

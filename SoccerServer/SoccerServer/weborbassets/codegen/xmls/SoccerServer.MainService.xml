@@ -16,6 +16,16 @@
         <field name="GroupName" type="String" fulltype="String" nativetype="String" />
         <field name="DivisionName" type="String" fulltype="String" nativetype="String" />
         <field name="MinimumPoints" type="int" fulltype="int" nativetype="int" />
+        <field name="GroupEntries" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;SoccerServer.TransferModel.GroupEntry&gt;" />
+      </datatype>
+      <datatype name="GroupEntry" fullname="SoccerServer.TransferModel.GroupEntry" typeNamespace="SoccerServer.TransferModel">
+        <field name="Name" type="String" fulltype="String" nativetype="String" />
+        <field name="FacebookID" type="Number" fulltype="Number" nativetype="long" />
+        <field name="PredefinedTeamName" type="String" fulltype="String" nativetype="String" />
+        <field name="Points" type="int" fulltype="int" nativetype="int" />
+        <field name="NumMatchesPlayed" type="int" fulltype="int" nativetype="int" />
+        <field name="NumMatchesWon" type="int" fulltype="int" nativetype="int" />
+        <field name="NumMatchesDraw" type="int" fulltype="int" nativetype="int" />
       </datatype>
       <datatype name="TeamMatchStats" fullname="SoccerServer.TransferModel.TeamMatchStats" typeNamespace="SoccerServer.TransferModel">
         <field name="NumMatches" type="int" fulltype="int" nativetype="int" />
