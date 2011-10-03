@@ -7,10 +7,21 @@
 	<fx:Metadata>
 		[ResourceBundle("main")]
 	</fx:Metadata>
+	<fx:Script>
+		<![CDATA[
+			import GameView.MainView;
+		]]>
+	</fx:Script>
+	
+	<ResourceInjector target="{MainView}" bundleName="main">
+		<ResourceSetter property="Prueba.text"   key="veamos" />
+		<ResourceSetter property="MyBackGeneral.source" type="class" key="BackGeneral" />
+	</ResourceInjector>
 	
 	<ResourceInjector target="{SoccerClient}" bundleName="main">
 		<ResourceSetter property="MyFindMatchButton.source" type="class" key="imageTest" />
 		<ResourceSetter property="Prueba.text"   key="veamos" />
 	</ResourceInjector>
 
+	
 </LocaleMap>
