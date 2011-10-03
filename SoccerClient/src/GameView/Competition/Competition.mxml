@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
-		 addedToStage="AddedToStageHandler(event)" 
-		 xmlns:GameView="GameView.*" xmlns:Match="GameView.Match.*" xmlns:Competition="GameView.Competition.*">
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:Competition="GameView.Competition.*"
+		 width="100%" height="100%"
+		 addedToStage="AddedToStageHandler(event)"
+		 creationComplete="CreationCompleteHandler(event)"
+		 currentState="Empty">
 	
 	<fx:Style source="../styles.css" />
+	
+	<s:states>
+		<s:State name="Empty" />
+		<s:State name="OutOfCredit" />
+		<s:State name="AvailableCredit" />
+	</s:states>
 	
 	<fx:Script><![CDATA[
 		import GameModel.CompetitionModel;
@@ -14,18 +23,57 @@
 		import GameView.Skins.DefaultListSkin;
 		import GameView.Skins.DefaultPanelSkin;
 		
+		import mx.binding.utils.BindingUtils;
+		import mx.events.FlexEvent;
+		
 		import spark.events.IndexChangeEvent;
 		
 		protected function AddedToStageHandler(event:Event):void
 		{
 			//GameMetrics.ReportEvent(GameMetrics.VIEW_RANKING);
-			
-			mGameModel = SoccerClient.GetMainGameModel();
-			mCompetitionModel = mGameModel.TheCompetitionModel;
-						
-			mCompetitionModel.RefreshGroup();
+
+			// Se produce el AddedToStage antes q el CreationComplete (solo la primera vez, luego no se produce mas el CreationComplete, claro)
+			if (mCompetitionModel != null)
+				mCompetitionModel.RefreshGroup(OnGroupRefreshed);
 		}
 		
+		protected function CreationCompleteHandler(event:FlexEvent):void
+		{
+			mGameModel = SoccerClient.GetMainGameModel();
+			mCompetitionModel = mGameModel.TheCompetitionModel;
+			
+			BindingUtils.bindSetter(OnHasCreditChanged, mGameModel.TheTicketModel, ["HasCredit"]);
+			
+			mCompetitionModel.RefreshGroup(OnGroupRefreshed);
+		}
+		
+		private function OnHasCreditChanged(hasCredit : Boolean) : void
+		{
+			if (hasCredit)
+				currentState = "AvailableCredit";
+			else
+				currentState = "OutOfCredit";
+		}
+		
+		private function OnGroupRefreshed() : void
+		{
+			if (MyCompetitionList != null)
+			{
+				MyCompetitionList.selectedItem = mCompetitionModel.GetLocalGroupEntry();
+				MyCompetitionList.callLater(EnsureSelectedIsVisible);
+			}
+		}
+		
+		private function EnsureSelectedIsVisible() : void
+		{
+			var idx : int = MyCompetitionList.dataProvider.getItemIndex(mCompetitionModel.GetLocalGroupEntry());
+			
+			if (idx + 4 < MyCompetitionList.dataProvider.length)
+				idx += 4;
+			
+			MyCompetitionList.ensureIndexIsVisible(idx);
+		}
+				
 		protected function MyCompetitionList_changeHandler(event:IndexChangeEvent):void
 		{
 			// TODO Auto-generated method stub
@@ -40,13 +88,15 @@
 
 	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" bottom="10" left="10" width="365" title="RANKING DE TU DIVISION">
 		<s:List id="MyCompetitionList" left="0" right="0" top="0" height="440"
-				dataProvider="{mCompetitionModel.TheGroup.GroupEntries}" 
+				dataProvider="{mCompetitionModel.TheGroup.GroupEntries}"
 				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="false"
 				skinClass="GameView.Skins.DefaultListSkin" 
 				change="MyCompetitionList_changeHandler(event)"/>
 	</s:Panel>
 	
-	<Competition:LookingForMatchPanel right="10" y="10" width="363" height="90" title="PARTIDO DE COMPETICION" />
+	<Competition:LookingForMatchPanel right="10" y="10" width="363" height="90" title="PARTIDO DE COMPETICION" includeIn="AvailableCredit" />
+	
+	<s:Label id="MyOutOfCredit" right="10" y="20" text="OUT OF CREDIT BLAH BLAH" includeIn="OutOfCredit" styleName="whiteBoldMedium" />
 	
 	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="200" right="10" width="365" title="TU DIVISION">
 		<s:Label id="MyDivisionLabel" text="{mCompetitionModel.TheGroup.DivisionName}" top="10" styleName="whiteBoldMedium" />

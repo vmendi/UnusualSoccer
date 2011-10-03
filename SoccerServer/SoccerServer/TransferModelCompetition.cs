@@ -5,16 +5,16 @@ using System.Web;
 
 namespace SoccerServer.TransferModel
 {
-    public class Group
+    public class CompetitionGroup
     {
         public string GroupName;        // 1, 2, 3 ... (o alpha beta gamma)
         public string DivisionName;     // Segunda Division B
         public int    MinimumPoints;    // Zona de ascenso
 
-        public List<GroupEntry> GroupEntries = new List<GroupEntry>();
+        public List<CompetitionGroupEntry> GroupEntries = new List<CompetitionGroupEntry>();
     }
 
-    public class GroupEntry
+    public class CompetitionGroupEntry
     {
         public string   Name;
         public long     FacebookID;

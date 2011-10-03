@@ -401,7 +401,7 @@
 		}
 		
 		// We open lots of sockets and hope that the server closes them for inactivity
-		// DEPRECATED: The NetPlug by keeps-alive by default
+		// DEPRECATED: The NetPlug keeps-alive by default
 		private function Test09() : void
 		{
 			var sockets : Array = new Array();

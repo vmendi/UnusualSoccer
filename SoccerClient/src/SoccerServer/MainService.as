@@ -322,7 +322,7 @@
       public virtual function RefreshGroupForTeamHandler(event:ResultEvent):void
       {
         
-          var returnValue:Group = event.result as Group;
+          var returnValue:CompetitionGroup = event.result as CompetitionGroup;
           model.RefreshGroupForTeamResult = returnValue;
         
       }

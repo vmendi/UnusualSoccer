@@ -12,13 +12,13 @@
       <field name="EMPTY" type="String" fulltype="String" nativetype="String" />
     </enum>
     <namespace name="TransferModel" fullname="SoccerServer.TransferModel">
-      <datatype name="Group" fullname="SoccerServer.TransferModel.Group" typeNamespace="SoccerServer.TransferModel">
+      <datatype name="CompetitionGroup" fullname="SoccerServer.TransferModel.CompetitionGroup" typeNamespace="SoccerServer.TransferModel">
         <field name="GroupName" type="String" fulltype="String" nativetype="String" />
         <field name="DivisionName" type="String" fulltype="String" nativetype="String" />
         <field name="MinimumPoints" type="int" fulltype="int" nativetype="int" />
-        <field name="GroupEntries" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;SoccerServer.TransferModel.GroupEntry&gt;" />
+        <field name="GroupEntries" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;SoccerServer.TransferModel.CompetitionGroupEntry&gt;" />
       </datatype>
-      <datatype name="GroupEntry" fullname="SoccerServer.TransferModel.GroupEntry" typeNamespace="SoccerServer.TransferModel">
+      <datatype name="CompetitionGroupEntry" fullname="SoccerServer.TransferModel.CompetitionGroupEntry" typeNamespace="SoccerServer.TransferModel">
         <field name="Name" type="String" fulltype="String" nativetype="String" />
         <field name="FacebookID" type="Number" fulltype="Number" nativetype="long" />
         <field name="PredefinedTeamName" type="String" fulltype="String" nativetype="String" />
@@ -136,7 +136,7 @@
         <arg name="msg" type="String" nativetype="String" />
       </method>
       <method name="OnLiked" type="int" nativetype="int" containsvalues="0" />
-      <method name="RefreshGroupForTeam" type="Group" nativetype="SoccerServer.TransferModel.Group" containsvalues="0">
+      <method name="RefreshGroupForTeam" type="CompetitionGroup" nativetype="SoccerServer.TransferModel.CompetitionGroup" containsvalues="0">
         <arg name="facebookID" type="Number" nativetype="long" />
       </method>
       <method name="RefreshMatchStatsForTeam" type="TeamMatchStats" nativetype="SoccerServer.TransferModel.TeamMatchStats" containsvalues="0">

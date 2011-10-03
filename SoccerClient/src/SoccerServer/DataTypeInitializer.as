@@ -10,8 +10,8 @@
 
 package SoccerServer
 {
-	import SoccerServer.TransferModel.vo.Group;
-	import SoccerServer.TransferModel.vo.GroupEntry;
+	import SoccerServer.TransferModel.vo.CompetitionGroup;
+	import SoccerServer.TransferModel.vo.CompetitionGroupEntry;
 	import SoccerServer.TransferModel.vo.TeamMatchStats;
 	import SoccerServer.TransferModel.vo.PredefinedTeam;
 	import SoccerServer.TransferModel.vo.RankingPage;
@@ -29,8 +29,8 @@ package SoccerServer
 	{
 		public function DataTypeInitializer()
 		{
-			new SoccerServer.TransferModel.vo.Group();	
-			new SoccerServer.TransferModel.vo.GroupEntry();	
+			new SoccerServer.TransferModel.vo.CompetitionGroup();	
+			new SoccerServer.TransferModel.vo.CompetitionGroupEntry();	
 			new SoccerServer.TransferModel.vo.TeamMatchStats();	
 			new SoccerServer.TransferModel.vo.PredefinedTeam();	
 			new SoccerServer.TransferModel.vo.RankingPage();	
