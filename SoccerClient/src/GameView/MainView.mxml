@@ -24,7 +24,7 @@
 		<s:State name="Login" />
 		<s:State name="Competition" stateGroups="InGame"/>
 		<s:State name="Team" stateGroups="InGame"/>
-		<s:State name="Match" stateGroups="InGame"/>
+		<s:State name="Friendly" stateGroups="InGame"/>
 		<s:State name="Training" stateGroups="InGame"/>
 		<s:State name="TrainingSpecial" stateGroups="InGame"/>
 		<s:State name="OnRealtimeMatch" />
@@ -81,8 +81,16 @@
 			MatchEndDialog.Show(matchResult, mMainGameModel.TheTeamModel.AmITheWinner(matchResult),
 											 mMainGameModel.TheTeamModel.GetOpponentName(matchResult));
 				
-			currentState = "Match";
-			MainMenuButtonBar.selectedIndex = 1;
+			if (matchResult.WasCompetition)
+			{
+				currentState = "Competition";
+				MainMenuButtonBar.selectedIndex = 0;
+			}
+			else
+			{
+				currentState = "Friendly";
+				MainMenuButtonBar.selectedIndex = 1;
+			}
 		}
 
 		protected function ButtonbarChangeHandler(event:IndexChangeEvent):void
@@ -93,8 +101,8 @@
 			if (MainMenuButtonBar.selectedItem.menuId == "Team")
 				currentState = "Team";
 			else
-			if (MainMenuButtonBar.selectedItem.menuId == "Match")
-				currentState = "Match";
+			if (MainMenuButtonBar.selectedItem.menuId == "Friendly")
+				currentState = "Friendly";
 			else
 			if (MainMenuButtonBar.selectedItem.menuId == "Training")
 				currentState = "Training";
@@ -133,7 +141,7 @@
 			<s:dataProvider>
 				<s:ArrayList>
 					<fx:Object menuId="Competition" label="COMPETICION"/>
-					<fx:Object menuId="Match" label="AMISTOSO"/>
+					<fx:Object menuId="Friendly" label="AMISTOSO"/>
 					<fx:Object menuId="Team" label="EQUIPO"/>
 					<fx:Object menuId="Training" label="ENTRENAMIENTO"/>
 					<fx:Object menuId="TrainingSpecial" label="HABILIDADES"/>
@@ -148,7 +156,7 @@
 		
 		<Competition:Competition id="CompetitionView" includeIn="Competition" top="30" itemCreationPolicy="immediate"/>
 		<Team:Team id="TeamView" includeIn="Team" top="30" itemCreationPolicy="immediate"/>
-		<Match:Match id="MatchView" includeIn="Match" top="30" itemCreationPolicy="immediate"/>
+		<Match:Match id="FriendlyView" includeIn="Friendly" top="30" itemCreationPolicy="immediate"/>
 		<Training:Training id="TrainingView" includeIn="Training" top="30" itemCreationPolicy="immediate"/>
 		<Training:TrainingSpecial id="TrainingSpecialView" includeIn="TrainingSpecial" top="30" itemCreationPolicy="immediate"/>
 	</s:Group>

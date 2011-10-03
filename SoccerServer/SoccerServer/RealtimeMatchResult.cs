@@ -19,6 +19,7 @@ namespace SoccerServer
             public int DiffTrueSkill;
         }
 
+        public Boolean WasCompetition = false;
         public Boolean WasJust = true;
         public Boolean WasTooManyTimes = false;				// Se han jugado hoy mas de N partidos
         public Boolean WasAbandoned = false;
@@ -39,6 +40,10 @@ namespace SoccerServer
                 mBDDPlayer1 = RealtimeMatchCreator.GetPlayerForRealtimePlayer(mContext, mRealtimePlayer1);
                 mBDDPlayer2 = RealtimeMatchCreator.GetPlayerForRealtimePlayer(mContext, mRealtimePlayer2);
 
+                mBDDMatch = (from m in mContext.Matches
+                             where m.MatchID == realtimeMatch.MatchID
+                             select m).FirstOrDefault();
+
                 ResultPlayer1.Name = mRealtimePlayer1.Name;
                 ResultPlayer1.PredefinedTeamName = mRealtimePlayer1.PredefinedTeamName;
                 ResultPlayer1.Goals = mMatch.GetGoals(mRealtimePlayer1);
@@ -56,29 +61,25 @@ namespace SoccerServer
                 }
 
                 // Actualizacion del BDDMatch...
-                BDDModel.Match theBDDMatch = (from m in mContext.Matches
-                                              where m.MatchID == realtimeMatch.MatchID
-                                              select m).FirstOrDefault();
-
-                theBDDMatch.DateEnded = DateTime.Now;
-                theBDDMatch.WasTooManyTimes = WasTooManyTimes;
-                theBDDMatch.WasJust = WasJust;
-                theBDDMatch.WasAbandoned = WasAbandoned;
-                theBDDMatch.WasAbandonedSameIP = WasAbandonedSameIP;
+                mBDDMatch.DateEnded = DateTime.Now;
+                mBDDMatch.WasTooManyTimes = WasTooManyTimes;
+                mBDDMatch.WasJust = WasJust;
+                mBDDMatch.WasAbandoned = WasAbandoned;
+                mBDDMatch.WasAbandonedSameIP = WasAbandonedSameIP;
 
                 // ... y de las MatchParticipations de la BDD
                 mParticipation1 = (from p in mContext.MatchParticipations
-                          where p.MatchID == theBDDMatch.MatchID && p.TeamID == mBDDPlayer1.Team.TeamID
+                                   where p.MatchID == mBDDMatch.MatchID && p.TeamID == mBDDPlayer1.Team.TeamID
                           select p).First();
                 mParticipation1.Goals = ResultPlayer1.Goals;
 
                 mParticipation2 = (from p in mContext.MatchParticipations
-                          where p.MatchID == theBDDMatch.MatchID && p.TeamID == mBDDPlayer2.Team.TeamID
+                                   where p.MatchID == mBDDMatch.MatchID && p.TeamID == mBDDPlayer2.Team.TeamID
                           select p).First();
                 mParticipation2.Goals = ResultPlayer2.Goals;
 
                 // Competicion. Si abandonan en la misma IP, no cuenta para la competicion
-                if (!theBDDMatch.IsFriendly && !WasAbandonedSameIP)
+                if (!mBDDMatch.IsFriendly && !WasAbandonedSameIP)
                     ProcessCompetition();
                 
                 mContext.SubmitChanges();
@@ -87,6 +88,7 @@ namespace SoccerServer
             mContext = null;
             mMatch = null;
 
+            mBDDMatch = null;
             mBDDPlayer1 = null;
             mBDDPlayer2 = null;
             mRealtimePlayer1 = null;
@@ -200,26 +202,39 @@ namespace SoccerServer
 
         private void UpdateFlags()
         {
-            var ratingPlayer1 = new Moserware.Skills.Rating(mBDDPlayer1.Team.Mean, mBDDPlayer1.Team.StandardDeviation);
-            var ratingPlayer2 = new Moserware.Skills.Rating(mBDDPlayer2.Team.Mean, mBDDPlayer2.Team.StandardDeviation);
+            // Partido de competicion o amistoso?
+            WasCompetition = !mBDDMatch.IsFriendly;
 
-            // Han jugado demasiadas veces ya hoy?
-            WasTooManyTimes = GetTooManyTimes();
+            if (!WasCompetition)
+            {
+                // Han jugado demasiados amistosos?
+                WasTooManyTimes = GetTooManyTimes();
 
-            // Esto lo ponemos siempre a su valor independientemente de abandono
-            WasJust = TrueSkillHelper.IsJustResult(ratingPlayer1, ratingPlayer2, ResultPlayer1.Goals, ResultPlayer2.Goals);
+                var ratingPlayer1 = new Moserware.Skills.Rating(mBDDPlayer1.Team.Mean, mBDDPlayer1.Team.StandardDeviation);
+                var ratingPlayer2 = new Moserware.Skills.Rating(mBDDPlayer2.Team.Mean, mBDDPlayer2.Team.StandardDeviation);
 
-            // Veamos ahora todo lo relacionado con el abandono
+                // Esto lo ponemos siempre a su valor independientemente de abandono
+                WasJust = TrueSkillHelper.IsJustResult(ratingPlayer1, ratingPlayer2, ResultPlayer1.Goals, ResultPlayer2.Goals);
+            }
+            else
+            {
+                WasTooManyTimes = false;
+                WasJust = true;
+            }
+
+            // Veamos ahora todo lo relacionado con el abandono (independientemente de competicion o amistoso)
             if (mMatch.HasPlayerAbandoned(mRealtimePlayer1) || mMatch.HasPlayerAbandoned(mRealtimePlayer2))
             {
                 WasAbandoned = true;
 
+                /*
                 if (mRealtimePlayer1.TheConnection.RemoteAddress == mRealtimePlayer2.TheConnection.RemoteAddress)
                 {
                     // Si es un abandono en la misma IP, no tocamos los goles...
                     WasAbandonedSameIP = true;
                 }
                 else
+                */
                 {
                     if (mMatch.HasPlayerAbandoned(mRealtimePlayer1))
                     {
@@ -232,7 +247,7 @@ namespace SoccerServer
                         ResultPlayer1.Goals = ResultPlayer1.Goals < 3 ? 3 : ResultPlayer1.Goals;
                     }
                 }
-            }
+            }            
         }
 
         private bool GetTooManyTimes()
@@ -254,6 +269,8 @@ namespace SoccerServer
         public bool Draw       { get { return ResultPlayer1.Goals == ResultPlayer2.Goals; } }
 
         private SoccerDataModelDataContext mContext;
+
+        private BDDModel.Match mBDDMatch;
 
         private BDDModel.Player mBDDPlayer1;
         private BDDModel.Player mBDDPlayer2;
