@@ -1,6 +1,7 @@
 package GameModel
 {
 	import GameView.ImportantMessageDialog;
+	import GameView.Match.RealtimeMatch;
 	
 	import NetEngine.InvokeResponse;
 	import NetEngine.NetPlug;
@@ -49,7 +50,18 @@ package GameModel
 			mMainModel = gameModel;
 			mMainService = mainService;
 			
-			mIsConnected = false;			
+			mIsConnected = false;
+			
+			// Basamos nuestra conexion/desconexion en la disponibilidad de credito
+			BindingUtils.bindSetter(OnHasCreditChanged, mMainModel, ["TheTicketModel", "HasCredit"]);
+		}
+		
+		private function OnHasCreditChanged(hasCredit:Boolean) : void
+		{
+			if (hasCredit)
+				InitialConnection(null);
+			else
+				Disconnect();
 		}
 		
 		public function InitialConnection(callback : Function) : void
@@ -96,16 +108,15 @@ package GameModel
 			if (IsConnected)
 				throw new Error("WTF NetPlugConnected");
 			
-			mLocalRealtimePlayer = new RealtimePlayer(null);
-			mLocalRealtimePlayer.ClientID = -1;
-			mLocalRealtimePlayer.PredefinedTeamName = mMainModel.TheTeamModel.PredefinedTeamName;
-			mLocalRealtimePlayer.Name = mMainModel.TheTeamModel.TheTeam.Name;
+			var localRealtimePlayer : RealtimePlayer = new RealtimePlayer(null);
+			localRealtimePlayer.ClientID = -1;
+			localRealtimePlayer.PredefinedTeamName = mMainModel.TheTeamModel.PredefinedTeamName;
+			localRealtimePlayer.Name = mMainModel.TheTeamModel.TheTeam.Name;
 			
 			// Los detalles del equipo local los tiene el TeamModel
-			BindingUtils.bindProperty(mLocalRealtimePlayer, "TheTeamDetails", mMainModel.TheTeamModel, "TheTeamDetails");
+			BindingUtils.bindProperty(localRealtimePlayer, "TheTeamDetails", mMainModel, ["TheTeamModel", "TheTeamDetails"]);
 			
-			dispatchEvent(new Event("LocalRealtimePlayerChanged"));
-
+			LocalRealtimePlayer = localRealtimePlayer;
 			IsConnected = true;
 		}
 		
@@ -124,6 +135,12 @@ package GameModel
 		
 		public function Disconnect() : void
 		{
+			if (!IsConnected)
+				return;
+			
+			LocalRealtimePlayer = null;
+			TheRoomModel = null;
+			
 			mServerConnection.RemoveClient(this);
 			mServerConnection.Disconnect();	// Won't dispatch NetPlugClosed
 			mServerConnection = null;
@@ -153,7 +170,7 @@ package GameModel
 		
 		public function LogInToDefaultRoom(onSuccess : Function) : void
 		{
-			if (!IsConnected || mRoomModel != null)
+			if (!IsConnected || TheRoomModel != null)
 				throw new Error("LogInToDefaultRoom - WTF");
 			
 			TheRoomModel = new RoomModel(mServerConnection, mMainService, mMainModel);
@@ -196,8 +213,8 @@ package GameModel
 		// secondClientID será el que lanzó el challenge
 		public function PushedStartMatch(firstClientID : int, secondClientID : int) : void
 		{
-			mRoomModel.LogOff();
-			mRoomModel = null;
+			TheRoomModel.LogOff();
+			TheRoomModel = null;
 			
 			// Ya no estamos buscando
 			SwitchLookingForMatchResponded(false);
@@ -223,7 +240,7 @@ package GameModel
 			mMatch.loaderInfo.loader.unload();
 			mMatch = null;		
 			
-			// Shall I do it?
+			// Refresco de por ejemplo el Ticket
 			mMainModel.TheTeamModel.RefreshTeam(null);
 			
 			// De vuelta a nuestra habitación, el servidor nos deja en el limbo, como si acabáramos de conectar
@@ -249,19 +266,18 @@ package GameModel
 			ImportantMessageDialog.Show(msg, "¡Mensaje importante!", "center");
 		}
 		
-		[Bindable(Event="LocalRealtimePlayerChanged")]
 		public function get LocalRealtimePlayer() : RealtimePlayer { return mLocalRealtimePlayer; }
+		private function set LocalRealtimePlayer(v:RealtimePlayer) : void { mLocalRealtimePlayer = v; }
 						
 		public function  get TheRoomModel() : RoomModel { return mRoomModel; }
 		private function set TheRoomModel(v:RoomModel) : void { mRoomModel = v; }
 		
+		private var mMainModel : MainGameModel;
+		private var mMainService : MainService;
 
 		private var mServerConnection:NetPlug;
 		private var mURI : String;
 		private var mIsConnected : Boolean = false;
-		
-		private var mMainModel : MainGameModel;
-		private var mMainService : MainService;
 		
 		private var mMatch : DisplayObject;
 		private var mRoomModel : RoomModel;

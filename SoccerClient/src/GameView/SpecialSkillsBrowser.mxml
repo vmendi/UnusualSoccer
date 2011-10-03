@@ -20,10 +20,11 @@
 
 		protected function CreationCompleteHandler(event:FlexEvent):void
 		{
-			// Queremos aparecer vacios
-			SpecialSkillIDs = new ArrayCollection();
+			// Si no nos han bindeado todavia, queremos aparecer vacios
+			if (mSpecialSkillIDs == null)
+				SpecialSkillIDs = new ArrayCollection();
 		}
-		
+
 		public function set SpecialSkillIDs(value:ArrayCollection):void
 		{ 
 			mSpecialSkillIDs = value;
@@ -80,6 +81,6 @@
 
 		[Bindable]
 		private var mSpecialSkillIDs : ArrayCollection;
-	
+			
 	]]></fx:Script>
 </s:Group>

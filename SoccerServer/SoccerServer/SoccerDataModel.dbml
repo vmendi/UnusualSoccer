@@ -1,15 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SoccerV2" EntityNamespace="SoccerServer.BDDModel" Class="SoccerDataModelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=localhost;Initial Catalog=SoccerV2;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="SoccerV2ConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Matches" Member="Matches">
-    <Type Name="Match">
-      <Column Name="MatchID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="DateStarted" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="DateEnded" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="WasTooManyTimes" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="WasJust" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="WasAbandoned" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="WasAbandonedSameIP" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Association Name="Match_MatchParticipation" Member="MatchParticipations" ThisKey="MatchID" OtherKey="MatchID" Type="MatchParticipation" />
+  <Table Name="dbo.CompetitionDivisions" Member="CompetitionDivisions">
+    <Type Name="CompetitionDivision">
+      <Column Name="CompetitionDivisionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DivisionName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MinimumPoints" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentCompetitionDivisionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="CompetitionDivision_CompetitionDivision" Member="CompetitionDivisions" ThisKey="CompetitionDivisionID" OtherKey="ParentCompetitionDivisionID" Type="CompetitionDivision" />
+      <Association Name="CompetitionDivision_CompetitionGroup" Member="CompetitionGroups" ThisKey="CompetitionDivisionID" OtherKey="CompetitionDivisionID" Type="CompetitionGroup" />
+      <Association Name="CompetitionDivision_CompetitionDivision" Member="CompetitionDivision1" ThisKey="ParentCompetitionDivisionID" OtherKey="CompetitionDivisionID" Type="CompetitionDivision" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.TrainingDefinitions" Member="TrainingDefinitions">
@@ -22,6 +21,63 @@
       <Association Name="TrainingDefinition_PendingTraining" Member="PendingTrainings" ThisKey="TrainingDefinitionID" OtherKey="TrainingDefinitionID" Type="PendingTraining" />
     </Type>
   </Table>
+  <Table Name="dbo.CompetitionGroupEntries" Member="CompetitionGroupEntries">
+    <Type Name="CompetitionGroupEntry">
+      <Column Name="CompetitionGroupEntryID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CompetitionGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TeamID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumMatchesPlayed" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumMatchesWon" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumMatchesDraw" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Points" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="CompetitionGroup_CompetitionGroupEntry" Member="CompetitionGroup" ThisKey="CompetitionGroupID" OtherKey="CompetitionGroupID" Type="CompetitionGroup" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Team_CompetitionGroupEntry" Member="Team" ThisKey="TeamID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CompetitionGroups" Member="CompetitionGroups">
+    <Type Name="CompetitionGroup">
+      <Column Name="CompetitionGroupID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CompetitionDivisionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GroupName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CompetitionSeasonID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="CompetitionGroup_CompetitionGroupEntry" Member="CompetitionGroupEntries" ThisKey="CompetitionGroupID" OtherKey="CompetitionGroupID" Type="CompetitionGroupEntry" />
+      <Association Name="CompetitionGroup_CompetitionMatchParticipation" Member="CompetitionMatchParticipations" ThisKey="CompetitionGroupID" OtherKey="CompetitionGroupID" Type="CompetitionMatchParticipation" />
+      <Association Name="CompetitionDivision_CompetitionGroup" Member="CompetitionDivision" ThisKey="CompetitionDivisionID" OtherKey="CompetitionDivisionID" Type="CompetitionDivision" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="CompetitionSeason_CompetitionGroup" Member="CompetitionSeason" ThisKey="CompetitionSeasonID" OtherKey="CompetitionSeasonID" Type="CompetitionSeason" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CompetitionMatchParticipations" Member="CompetitionMatchParticipations">
+    <Type Name="CompetitionMatchParticipation">
+      <Column Name="MatchParticipationID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CompetitionGroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="CompetitionGroup_CompetitionMatchParticipation" Member="CompetitionGroup" ThisKey="CompetitionGroupID" OtherKey="CompetitionGroupID" Type="CompetitionGroup" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="MatchParticipation_CompetitionMatchParticipation" Member="MatchParticipation" ThisKey="MatchParticipationID" OtherKey="MatchParticipationID" Type="MatchParticipation" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CompetitionSeasons" Member="CompetitionSeasons">
+    <Type Name="CompetitionSeason">
+      <Column Name="CompetitionSeasonID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CreationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="CompetitionSeason_CompetitionGroup" Member="CompetitionGroups" ThisKey="CompetitionSeasonID" OtherKey="CompetitionSeasonID" Type="CompetitionGroup" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Matches" Member="Matches">
+    <Type Name="Match">
+      <Column Name="MatchID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DateStarted" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="DateEnded" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="WasTooManyTimes" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="WasJust" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="WasAbandoned" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="WasAbandonedSameIP" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsFriendly" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MatchDuration" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TurnDuration" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Match_MatchParticipation" Member="MatchParticipations" ThisKey="MatchID" OtherKey="MatchID" Type="MatchParticipation" />
+    </Type>
+  </Table>
   <Table Name="dbo.MatchParticipations" Member="MatchParticipations">
     <Type Name="MatchParticipation">
       <Column Name="MatchParticipationID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -30,6 +86,7 @@
       <Column Name="AsHome" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="Goals" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="TurnsPlayed" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="MatchParticipation_CompetitionMatchParticipation" Member="CompetitionMatchParticipation" ThisKey="MatchParticipationID" OtherKey="MatchParticipationID" Type="CompetitionMatchParticipation" Cardinality="One" />
       <Association Name="Match_MatchParticipation" Member="Match" ThisKey="MatchID" OtherKey="MatchID" Type="Match" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="Team_MatchParticipation" Member="Team" ThisKey="TeamID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
@@ -146,6 +203,7 @@
       <Column Name="Fitness" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Mean" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
       <Column Name="StandardDeviation" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Association Name="Team_CompetitionGroupEntry" Member="CompetitionGroupEntries" ThisKey="TeamID" OtherKey="TeamID" Type="CompetitionGroupEntry" />
       <Association Name="Team_MatchParticipation" Member="MatchParticipations" ThisKey="TeamID" OtherKey="TeamID" Type="MatchParticipation" />
       <Association Name="Team_PendingTraining" Member="PendingTraining" ThisKey="TeamID" OtherKey="TeamID" Type="PendingTraining" Cardinality="One" />
       <Association Name="Team_SoccerPlayer" Member="SoccerPlayers" ThisKey="TeamID" OtherKey="TeamID" Type="SoccerPlayer" />

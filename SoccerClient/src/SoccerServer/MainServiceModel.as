@@ -24,11 +24,11 @@
         public var HasTeamResult:Boolean;     
         public var IsNameValidResult:String;     
         public var OnLikedResult:int;     
+        public var RefreshGroupForTeamResult:Group;     
         public var RefreshMatchStatsForTeamResult:TeamMatchStats;     
         public var RefreshPredefinedTeamsResult:ArrayCollection;     
         public var RefreshRankingPageResult:RankingPage;     
         public var RefreshSelfRankingPageResult:RankingPage;     
-        public var RefreshSelfTeamDetailsResult:TeamDetails;     
         public var RefreshTeamResult:Team;     
         public var RefreshTeamDetailsResult:TeamDetails;     
         public var RefreshTrainingDefinitionsResult:ArrayCollection;     

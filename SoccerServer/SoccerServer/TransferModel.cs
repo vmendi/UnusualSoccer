@@ -115,7 +115,7 @@ namespace SoccerServer.TransferModel
 	{
 		public TrainingDefinition TrainingDefinition;
 		public DateTime TimeStart;
-		public DateTime TimeEnd;        // No las transferimos en UTC pq lo unico q nos interesa es la diferencia
+		public DateTime TimeEnd;       
 
 		public PendingTraining(BDDModel.PendingTraining from) 
 		{

@@ -67,6 +67,8 @@
         
         remoteObject.OnLiked.addEventListener("result",OnLikedHandler);
         
+        remoteObject.RefreshGroupForTeam.addEventListener("result",RefreshGroupForTeamHandler);
+        
         remoteObject.RefreshMatchStatsForTeam.addEventListener("result",RefreshMatchStatsForTeamHandler);
         
         remoteObject.RefreshPredefinedTeams.addEventListener("result",RefreshPredefinedTeamsHandler);
@@ -74,8 +76,6 @@
         remoteObject.RefreshRankingPage.addEventListener("result",RefreshRankingPageHandler);
         
         remoteObject.RefreshSelfRankingPage.addEventListener("result",RefreshSelfRankingPageHandler);
-        
-        remoteObject.RefreshSelfTeamDetails.addEventListener("result",RefreshSelfTeamDetailsHandler);
         
         remoteObject.RefreshTeam.addEventListener("result",RefreshTeamHandler);
         
@@ -173,6 +173,15 @@
 
       }
     
+      public function RefreshGroupForTeam(facebookID:Number, responder:IResponder = null ):void
+      {
+        var asyncToken:AsyncToken = remoteObject.RefreshGroupForTeam(facebookID);
+        
+        if( responder != null )
+            asyncToken.addResponder( responder );
+
+      }
+    
       public function RefreshMatchStatsForTeam(facebookID:Number, responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.RefreshMatchStatsForTeam(facebookID);
@@ -203,15 +212,6 @@
       public function RefreshSelfRankingPage( responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.RefreshSelfRankingPage();
-        
-        if( responder != null )
-            asyncToken.addResponder( responder );
-
-      }
-    
-      public function RefreshSelfTeamDetails( responder:IResponder = null ):void
-      {
-        var asyncToken:AsyncToken = remoteObject.RefreshSelfTeamDetails();
         
         if( responder != null )
             asyncToken.addResponder( responder );
@@ -319,6 +319,14 @@
         
       }
          
+      public virtual function RefreshGroupForTeamHandler(event:ResultEvent):void
+      {
+        
+          var returnValue:Group = event.result as Group;
+          model.RefreshGroupForTeamResult = returnValue;
+        
+      }
+         
       public virtual function RefreshMatchStatsForTeamHandler(event:ResultEvent):void
       {
         
@@ -348,14 +356,6 @@
         
           var returnValue:RankingPage = event.result as RankingPage;
           model.RefreshSelfRankingPageResult = returnValue;
-        
-      }
-         
-      public virtual function RefreshSelfTeamDetailsHandler(event:ResultEvent):void
-      {
-        
-          var returnValue:TeamDetails = event.result as TeamDetails;
-          model.RefreshSelfTeamDetailsResult = returnValue;
         
       }
          

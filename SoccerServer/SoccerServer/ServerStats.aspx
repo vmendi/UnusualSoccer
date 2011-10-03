@@ -76,10 +76,9 @@
         <br />
 		<br />
 
-        <!--
-        <asp:Button ID="RefreshTrueskillButton" runat="server" Text="Refresh Trueskill" OnClick="RefreshTrueskill_Click" />        
-        
-        -->
+        <asp:Button runat="server" Text="Mistical Refresh" OnClick="MisticalRefresh_Click" />        
+        <asp:Button runat="server" Text="Mistical Refresh 02" OnClick="MisticalRefresh02_Click" />        
+
 					
 	</form>
 

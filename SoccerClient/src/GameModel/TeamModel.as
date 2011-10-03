@@ -67,9 +67,9 @@ package GameModel
 			
 			UpdateFieldPositions();
 			UpdateTeamDetails();
-			UpdateTicket();
 			UpdateSelectedSoccerPlayerQuality();
-
+			mMainModel.TheTicketModel.UpdateTicket();	// Preferimos pushearlo en vez de que él lo lea mediante binding porque asi tenemos garantizado el "cuando"
+														// se actualiza su estado
 			if (callback != null)
 				callback();
 			
@@ -243,18 +243,7 @@ package GameModel
 						
 			TheTeamDetails = teamDetails;
 		}
-				
-		private function UpdateTicket() : void
-		{
-			if (mPlayerTeam.Ticket != null)
-				IsOutOfCredit = (mPlayerTeam.Ticket.TicketExpiryDate > new Date()) || mPlayerTeam.Ticket.RemainingMatches > 0;
-		}
-		
-		[Bindable]
-		public  function  get IsOutOfCredit() : Boolean { return mIsOutOfCredit; }
-		private function set IsOutOfCredit(val : Boolean) : void { mIsOutOfCredit = val; }
-		private var mIsOutOfCredit : Boolean = false;
-		
+						
 		// En realidad este TeamDetails es una variable de comodidad para mostrar el SelfTeam de forma simetrica a los demas
 		[Bindable]
 		public  function get TheTeamDetails() : TeamDetails { return mTheTeamDetails; }

@@ -16,7 +16,7 @@
 		{
 			mMainGameModel = SoccerClient.GetMainGameModel();
 			
-			BindingUtils.bindSetter(OnIsAnyFormationAvailableChanged, mMainGameModel, ["TheFormationModel", "IsAnyFormationAvailable"]);
+			BindingUtils.bindSetter(OnIsAnyFormationAvailableChanged, mMainGameModel.TheFormationModel, ["IsAnyFormationAvailable"]);
 		}
 		
 		private function OnIsAnyFormationAvailableChanged(newVal : Boolean) : void

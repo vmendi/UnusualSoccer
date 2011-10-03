@@ -12,6 +12,21 @@
       <field name="EMPTY" type="String" fulltype="String" nativetype="String" />
     </enum>
     <namespace name="TransferModel" fullname="SoccerServer.TransferModel">
+      <datatype name="Group" fullname="SoccerServer.TransferModel.Group" typeNamespace="SoccerServer.TransferModel">
+        <field name="GroupName" type="String" fulltype="String" nativetype="String" />
+        <field name="DivisionName" type="String" fulltype="String" nativetype="String" />
+        <field name="MinimumPoints" type="int" fulltype="int" nativetype="int" />
+        <field name="GroupEntries" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;SoccerServer.TransferModel.GroupEntry&gt;" />
+      </datatype>
+      <datatype name="GroupEntry" fullname="SoccerServer.TransferModel.GroupEntry" typeNamespace="SoccerServer.TransferModel">
+        <field name="Name" type="String" fulltype="String" nativetype="String" />
+        <field name="FacebookID" type="Number" fulltype="Number" nativetype="long" />
+        <field name="PredefinedTeamName" type="String" fulltype="String" nativetype="String" />
+        <field name="Points" type="int" fulltype="int" nativetype="int" />
+        <field name="NumMatchesPlayed" type="int" fulltype="int" nativetype="int" />
+        <field name="NumMatchesWon" type="int" fulltype="int" nativetype="int" />
+        <field name="NumMatchesDraw" type="int" fulltype="int" nativetype="int" />
+      </datatype>
       <datatype name="TeamMatchStats" fullname="SoccerServer.TransferModel.TeamMatchStats" typeNamespace="SoccerServer.TransferModel">
         <field name="NumMatches" type="int" fulltype="int" nativetype="int" />
         <field name="NumWonMatches" type="int" fulltype="int" nativetype="int" />
@@ -34,13 +49,6 @@
         <field name="FacebookID" type="Number" fulltype="Number" nativetype="long" />
         <field name="PredefinedTeamName" type="String" fulltype="String" nativetype="String" />
         <field name="TrueSkill" type="int" fulltype="int" nativetype="int" />
-      </datatype>
-      <datatype name="TeamDetails" fullname="SoccerServer.TransferModel.TeamDetails" typeNamespace="SoccerServer.TransferModel">
-        <field name="AverageWeight" type="int" fulltype="int" nativetype="int" />
-        <field name="AverageSliding" type="int" fulltype="int" nativetype="int" />
-        <field name="AveragePower" type="int" fulltype="int" nativetype="int" />
-        <field name="Fitness" type="int" fulltype="int" nativetype="int" />
-        <field name="SpecialSkillsIDs" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;int&gt;" />
       </datatype>
       <datatype name="Team" fullname="SoccerServer.TransferModel.Team" typeNamespace="SoccerServer.TransferModel">
         <field name="Name" type="String" fulltype="String" nativetype="String" />
@@ -98,6 +106,13 @@
         <field name="EnergyStep" type="int" fulltype="int" nativetype="int" />
         <field name="EnergyTotal" type="int" fulltype="int" nativetype="int" />
       </datatype>
+      <datatype name="TeamDetails" fullname="SoccerServer.TransferModel.TeamDetails" typeNamespace="SoccerServer.TransferModel">
+        <field name="AverageWeight" type="int" fulltype="int" nativetype="int" />
+        <field name="AverageSliding" type="int" fulltype="int" nativetype="int" />
+        <field name="AveragePower" type="int" fulltype="int" nativetype="int" />
+        <field name="Fitness" type="int" fulltype="int" nativetype="int" />
+        <field name="SpecialSkillsIDs" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;int&gt;" />
+      </datatype>
     </namespace>
     <service name="MainService" fullname="SoccerServer.MainService" namespace="SoccerServer" url="http://ENTER WEBORB URL HERE/weborb.aspx">
       <method name="AssignSkillPoints" type="void" nativetype="Void" containsvalues="0">
@@ -121,6 +136,9 @@
         <arg name="msg" type="String" nativetype="String" />
       </method>
       <method name="OnLiked" type="int" nativetype="int" containsvalues="0" />
+      <method name="RefreshGroupForTeam" type="Group" nativetype="SoccerServer.TransferModel.Group" containsvalues="0">
+        <arg name="facebookID" type="Number" nativetype="long" />
+      </method>
       <method name="RefreshMatchStatsForTeam" type="TeamMatchStats" nativetype="SoccerServer.TransferModel.TeamMatchStats" containsvalues="0">
         <arg name="facebookID" type="Number" nativetype="long" />
       </method>
@@ -129,7 +147,6 @@
         <arg name="pageIndex" type="int" nativetype="int" />
       </method>
       <method name="RefreshSelfRankingPage" type="RankingPage" nativetype="SoccerServer.TransferModel.RankingPage" containsvalues="0" />
-      <method name="RefreshSelfTeamDetails" type="TeamDetails" nativetype="SoccerServer.TransferModel.TeamDetails" containsvalues="0" />
       <method name="RefreshTeam" type="Team" nativetype="SoccerServer.TransferModel.Team" containsvalues="0" />
       <method name="RefreshTeamDetails" type="TeamDetails" nativetype="SoccerServer.TransferModel.TeamDetails" containsvalues="0">
         <arg name="facebookID" type="Number" nativetype="long" />

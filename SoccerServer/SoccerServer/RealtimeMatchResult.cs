@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using SoccerServer;
+using SoccerServer.BDDModel;
 
 namespace SoccerServer
 {
@@ -26,37 +27,116 @@ namespace SoccerServer
         public RealtimeMatchResultPlayer ResultPlayer1 = new RealtimeMatchResultPlayer();
         public RealtimeMatchResultPlayer ResultPlayer2 = new RealtimeMatchResultPlayer();
 
-
-        public RealtimeMatchResult(SoccerDataModelDataContext theContext,
-                                   RealtimeMatch theMatch, BDDModel.Player bddPlayer1, BDDModel.Player bddPlayer2)
+        public RealtimeMatchResult(RealtimeMatch realtimeMatch)
         {
-            mContext = theContext;
-            mMatch = theMatch;
-            mBDDPlayer1 = bddPlayer1;
-            mBDDPlayer2 = bddPlayer2;
-            mRealtimePlayer1 = mMatch.GetRealtimePlayer(RealtimeMatch.PLAYER_1);
-            mRealtimePlayer2 = mMatch.GetRealtimePlayer(RealtimeMatch.PLAYER_2);
-
-            ResultPlayer1.Name = mRealtimePlayer1.Name;
-            ResultPlayer1.PredefinedTeamName = mRealtimePlayer1.PredefinedTeamName;
-            ResultPlayer1.Goals = mMatch.GetGoals(mRealtimePlayer1);
-
-            ResultPlayer2.Name = mRealtimePlayer2.Name;
-            ResultPlayer2.PredefinedTeamName = mRealtimePlayer2.PredefinedTeamName;
-            ResultPlayer2.Goals = mMatch.GetGoals(mRealtimePlayer2);
-
-            UpdateFlags();
-
-            if (!WasAbandonedSameIP && !WasTooManyTimes && WasJust)
+            using (mContext = new SoccerDataModelDataContext())
             {
-                RecomputeRatings();
-                GiveRewards();
+                mMatch = realtimeMatch;
+
+                mRealtimePlayer1 = mMatch.GetRealtimePlayer(RealtimeMatch.PLAYER_1);
+                mRealtimePlayer2 = mMatch.GetRealtimePlayer(RealtimeMatch.PLAYER_2);
+
+                mBDDPlayer1 = RealtimeMatchCreator.GetPlayerForRealtimePlayer(mContext, mRealtimePlayer1);
+                mBDDPlayer2 = RealtimeMatchCreator.GetPlayerForRealtimePlayer(mContext, mRealtimePlayer2);
+
+                ResultPlayer1.Name = mRealtimePlayer1.Name;
+                ResultPlayer1.PredefinedTeamName = mRealtimePlayer1.PredefinedTeamName;
+                ResultPlayer1.Goals = mMatch.GetGoals(mRealtimePlayer1);
+
+                ResultPlayer2.Name = mRealtimePlayer2.Name;
+                ResultPlayer2.PredefinedTeamName = mRealtimePlayer2.PredefinedTeamName;
+                ResultPlayer2.Goals = mMatch.GetGoals(mRealtimePlayer2);
+
+                UpdateFlags();
+
+                if (!WasAbandonedSameIP && !WasTooManyTimes && WasJust)
+                {
+                    RecomputeRatings(); // Recalculo del TrueSkill
+                    GiveRewards();      // XP, SkillPoints, etc
+                }
+
+                // Actualizacion del BDDMatch...
+                BDDModel.Match theBDDMatch = (from m in mContext.Matches
+                                              where m.MatchID == realtimeMatch.MatchID
+                                              select m).FirstOrDefault();
+
+                theBDDMatch.DateEnded = DateTime.Now;
+                theBDDMatch.WasTooManyTimes = WasTooManyTimes;
+                theBDDMatch.WasJust = WasJust;
+                theBDDMatch.WasAbandoned = WasAbandoned;
+                theBDDMatch.WasAbandonedSameIP = WasAbandonedSameIP;
+
+                // ... y de las MatchParticipations de la BDD
+                mParticipation1 = (from p in mContext.MatchParticipations
+                          where p.MatchID == theBDDMatch.MatchID && p.TeamID == mBDDPlayer1.Team.TeamID
+                          select p).First();
+                mParticipation1.Goals = ResultPlayer1.Goals;
+
+                mParticipation2 = (from p in mContext.MatchParticipations
+                          where p.MatchID == theBDDMatch.MatchID && p.TeamID == mBDDPlayer2.Team.TeamID
+                          select p).First();
+                mParticipation2.Goals = ResultPlayer2.Goals;
+
+                // Competicion. Si abandonan en la misma IP, no cuenta para la competicion
+                if (!theBDDMatch.IsFriendly && !WasAbandonedSameIP)
+                    ProcessCompetition();
+                
+                mContext.SubmitChanges();
             }
 
             mContext = null;
+            mMatch = null;
+
             mBDDPlayer1 = null;
             mBDDPlayer2 = null;
-            mMatch = null;
+            mRealtimePlayer1 = null;
+            mRealtimePlayer2 = null;
+            mParticipation1 = null;
+            mParticipation2 = null;
+        }
+
+        private void ProcessCompetition()
+        {
+            var currentSeason = MainService.GetCurrentSeason(mContext);
+
+            var entryPlayer1 = mBDDPlayer1.Team.CompetitionGroupEntries.Single(entry => entry.CompetitionGroup.CompetitionSeason == currentSeason);
+            var entryPlayer2 = mBDDPlayer2.Team.CompetitionGroupEntries.Single(entry => entry.CompetitionGroup.CompetitionSeason == currentSeason);
+
+            // Procesamos estadisticas y puntos
+            entryPlayer1.NumMatchesPlayed++;
+            entryPlayer2.NumMatchesPlayed++;
+
+            if (WonPlayer1)
+            {
+                entryPlayer1.NumMatchesWon++;
+                entryPlayer1.Points += 3;
+            }
+            else if (WonPlayer2)
+            {
+                entryPlayer2.NumMatchesWon++;
+                entryPlayer2.Points += 3;
+            }
+            else
+            {
+                entryPlayer1.NumMatchesDraw++;
+                entryPlayer2.NumMatchesDraw++;
+
+                entryPlayer1.Points += 1;
+                entryPlayer2.Points += 1;
+            }
+
+            // Lo asociamos a la competicion actual
+            var competitionMatchParticipation1 = new CompetitionMatchParticipation();
+            var competitionMatchParticipation2 = new CompetitionMatchParticipation();
+
+            competitionMatchParticipation1.CompetitionGroupID = entryPlayer1.CompetitionGroupID;
+            competitionMatchParticipation2.CompetitionGroupID = entryPlayer2.CompetitionGroupID;
+
+            competitionMatchParticipation1.MatchParticipationID = mParticipation1.MatchParticipationID;
+            competitionMatchParticipation2.MatchParticipationID = mParticipation2.MatchParticipationID;
+
+            mContext.CompetitionMatchParticipations.InsertOnSubmit(competitionMatchParticipation1);
+            mContext.CompetitionMatchParticipations.InsertOnSubmit(competitionMatchParticipation2);
         }
 
         private void GiveRewards()
@@ -169,16 +249,9 @@ namespace SoccerServer
             return times >= 3;
         }
 
-        public int GetGoalsFor(RealtimePlayer player)
-        {
-            if (ResultPlayer1.Name == player.Name)
-                return ResultPlayer1.Goals;
-            else
-                if (ResultPlayer2.Name == player.Name)
-                    return ResultPlayer2.Goals;
-                else
-                    throw new Exception("WTF!");
-        }
+        public bool WonPlayer1 { get { return ResultPlayer1.Goals > ResultPlayer2.Goals; } }
+        public bool WonPlayer2 { get { return ResultPlayer1.Goals < ResultPlayer2.Goals; } }
+        public bool Draw       { get { return ResultPlayer1.Goals == ResultPlayer2.Goals; } }
 
         private SoccerDataModelDataContext mContext;
 
@@ -187,6 +260,9 @@ namespace SoccerServer
 
         private RealtimePlayer mRealtimePlayer1;
         private RealtimePlayer mRealtimePlayer2;
+
+        private MatchParticipation mParticipation1;
+        private MatchParticipation mParticipation2;
 
         private RealtimeMatch mMatch;
     }

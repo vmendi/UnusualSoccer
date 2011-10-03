@@ -82,7 +82,7 @@
 			
 			function OnTeamRefreshed() : void
 			{
-				BindingUtils.bindSetter(OnRankingRefreshed, mMainGameModel,  [ "TheRankingModel", "TheRankingPage" ]);
+				BindingUtils.bindSetter(OnRankingRefreshed, mMainGameModel.TheRankingModel, [ "TheRankingPage" ]);
 			}
 			
 			var counter : int = 0;

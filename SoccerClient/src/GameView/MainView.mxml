@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
 		 xmlns:local="*" xmlns:GameView="GameView.*" xmlns:Team="GameView.Team.*" xmlns:Training="GameView.Training.*"
 		 xmlns:Match="GameView.Match.*"
-		 creationComplete="CreationCompleteHandler(event)" currentState="Waiting" >
+		 creationComplete="CreationCompleteHandler(event)" currentState="Waiting" xmlns:Competition="GameView.Competition.*" >
 	
 	<!-- Todas las fuentes se embeben aquí -->
 	<fx:Style>
@@ -22,7 +22,7 @@
 	<s:states>
 		<s:State name="Waiting"/>
 		<s:State name="Login" />
-		<s:State name="Ranking" stateGroups="InGame"/>
+		<s:State name="Competition" stateGroups="InGame"/>
 		<s:State name="Team" stateGroups="InGame"/>
 		<s:State name="Match" stateGroups="InGame"/>
 		<s:State name="Training" stateGroups="InGame"/>
@@ -66,7 +66,7 @@
 		private function OnHasTeamResponse(hasTeam : Boolean):void
 		{
 			if (hasTeam)
-				currentState = "Ranking";
+				currentState = "Competition";
 			else
 				currentState = "Login";
 		}
@@ -87,8 +87,8 @@
 
 		protected function ButtonbarChangeHandler(event:IndexChangeEvent):void
 		{
-			if (MainMenuButtonBar.selectedItem.menuId == "Ranking")
-				currentState = "Ranking";
+			if (MainMenuButtonBar.selectedItem.menuId == "Competition")
+				currentState = "Competition";
 			else
 			if (MainMenuButtonBar.selectedItem.menuId == "Team")
 				currentState = "Team";
@@ -132,8 +132,8 @@
 					 horizontalCenter="0" verticalCenter="0" includeIn="InGame" creationComplete="MainMenuButtonBar.selectedIndex=0" labelField="label" >
 			<s:dataProvider>
 				<s:ArrayList>
-					<fx:Object menuId="Ranking" label="RANKING"/>
-					<fx:Object menuId="Match" label="PARTIDO"/>
+					<fx:Object menuId="Competition" label="COMPETICION"/>
+					<fx:Object menuId="Match" label="AMISTOSO"/>
 					<fx:Object menuId="Team" label="EQUIPO"/>
 					<fx:Object menuId="Training" label="ENTRENAMIENTO"/>
 					<fx:Object menuId="TrainingSpecial" label="HABILIDADES"/>
@@ -146,7 +146,7 @@
 		
 		<GameView:NewsMarquee x="15" y="8" left="0" right="0" />
 		
-		<GameView:Ranking id="RankingView" includeIn="Ranking" top="30" itemCreationPolicy="immediate"/>
+		<Competition:Competition id="CompetitionView" includeIn="Competition" top="30" itemCreationPolicy="immediate"/>
 		<Team:Team id="TeamView" includeIn="Team" top="30" itemCreationPolicy="immediate"/>
 		<Match:Match id="MatchView" includeIn="Match" top="30" itemCreationPolicy="immediate"/>
 		<Training:Training id="TrainingView" includeIn="Training" top="30" itemCreationPolicy="immediate"/>

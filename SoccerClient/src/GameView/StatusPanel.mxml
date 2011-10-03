@@ -38,7 +38,7 @@
 	
 	<s:Image source="@Embed(source='/Assets/General.swf', symbol='StatusPanelBackground')"/>
 	
-	<GameView:BadgeTeamBig x="10" y="10" TeamName="{mTeamModel.PredefinedTeamName}" />
+	<GameView:BadgeTeam x="10" y="10" TeamName="{mTeamModel.PredefinedTeamName}" BigMode="true" />
 	<GameView:BadgeCategory x="354" y="25" TrueSkill="{mTeamModel.TheTeam.TrueSkill}" />
 	
 	<s:BorderContainer x="76" y="0" width="104" borderStyle="solid">

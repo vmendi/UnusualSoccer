@@ -3,6 +3,7 @@ package GameModel
 	import SoccerServer.MainService;
 	import SoccerServer.MainServiceModel;
 	
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.external.ExternalInterface;
 	
@@ -19,14 +20,19 @@ package GameModel
 		{
 			mMainService = new MainServiceSoccer();
 			
-			mRealtimeModel = new RealtimeModel(mMainService, this);					
+			mRealtimeModel = new RealtimeModel(mMainService, this);
 			mRankingModel = new RankingModel(mMainService, this);
 			mTeamModel = new TeamModel(mMainService, this);
 			mTrainingModel = new TrainingModel(mMainService, this);
 			mLoginModel = new LoginModel(mMainService, this);
 			mFormationModel = new FormationModel(mMainService, this);
 			mSpecialTrainingModel = new SpecialTrainingModel(mMainService, this);
-			mPredefinedTeamsModel = new PredefinedTeamsModel(mMainService, this);	
+			mPredefinedTeamsModel = new PredefinedTeamsModel(mMainService, this);
+			mTicketModel = new TicketModel(mMainService, this);
+			mCompetitionModel = new CompetitionModel(mMainService, this);
+			
+			// Los submodelos se bindean a sus hermanos sin orden definido, necesitamos generar un evento de cambio
+			dispatchEvent(new Event("dummy"));
 		}
 
 		public function InitialRefresh(callback : Function) : void
@@ -68,6 +74,12 @@ package GameModel
 		[Bindable(event="dummy")]
 		public function get ThePredefinedTeamsModel() : PredefinedTeamsModel { return mPredefinedTeamsModel; }
 		
+		[Bindable(event="dummy")]
+		public function get TheTicketModel() : TicketModel { return mTicketModel; }
+		
+		[Bindable(event="dummy")]
+		public function get TheCompetitionModel() : CompetitionModel { return mCompetitionModel; }
+		
 		
 		private var mMainService : MainService;
 		
@@ -79,5 +91,7 @@ package GameModel
 		private var mRankingModel : RankingModel;
 		private var mPredefinedTeamsModel : PredefinedTeamsModel;
 		private var mRealtimeModel : RealtimeModel;
+		private var mTicketModel : TicketModel;
+		private var mCompetitionModel : CompetitionModel;
 	}
 }
