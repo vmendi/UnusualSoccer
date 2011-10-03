@@ -142,7 +142,7 @@
 		</s:ButtonBar>
 	</s:Group>
 	<s:Group includeIn="InGame">
-		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='BackGeneral')" fillMode="clip"/>
+		<s:BitmapImage source="{resourceManager.getClass('main','BackGeneral')}" fillMode="clip"/>
 		
 		<GameView:NewsMarquee x="15" y="8" left="0" right="0" />
 		
