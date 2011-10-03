@@ -44,9 +44,17 @@
 			<s:Label width="100%" text="{data.Name}" styleName="whiteBoldBig" maxDisplayedLines="1" toolTip="{data.Name}"/>
 			<s:Label text="{data.PredefinedTeamName}" styleName="greyBoldMedium"/>
 		</s:Group>
-				
-		<s:Label width="50" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
-				 text="Points {data.Points}"/>
+
+		<s:Label width="30" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
+				 text="{data.Points}"/>
+		<s:Label width="30" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
+				 text="{data.NumMatchesPlayed}"/>
+		<s:Label width="30" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
+				 text="{data.NumMatchesWon}"/>
+		<s:Label width="30" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
+				 text="{data.NumMatchesDraw}"/>
+		<s:Label width="30" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
+				 text="{data.NumMatchesPlayed - data.NumMatchesWon - data.NumMatchesDraw}"/>
 	</s:Group>
 	
 	<s:Graphic>

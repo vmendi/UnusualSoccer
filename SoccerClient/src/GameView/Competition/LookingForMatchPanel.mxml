@@ -78,7 +78,7 @@
 			  includeIn="LookingForMatch"
 			  click="MyFindMatchButton_clickHandler(event)"/>
 	
-	<mx:Image id="MyFindMatchButton" visible="true" x="334" y="-29"
+	<mx:Image id="MyFindMatchButton" visible="true" x="274" y="-29"
 			  alpha.Disabled="0.2" alpha.Wait="1"
 			  includeIn="Disabled, Wait"
 			  source="@Embed(source='/Assets/General.swf', symbol='BotonBuscarPartido')" scaleContent="false"

@@ -50,7 +50,7 @@
 		}
 		
 		private function OnFacebookInitSuccess():void
-		{				
+		{
 			mMainGameModel = new MainGameModel();
 			mMainGameModel.InitialRefresh(OnInitialRefreshSuccess);
 			
@@ -91,25 +91,16 @@
 	
 	]]></fx:Script>
 	
-	<!--
+	
 	<fx:Metadata>
 		[ResourceBundle("main")]
 	</fx:Metadata>
 	
+	<!--	
 	<s:Image id="MyFindMatchButton" source="{resourceManager.getClass('main','imageTest')}"/>
 	<s:Label id="Prueba" text="{resourceManager.getString('main','veamos')}"/>
 	-->
-	
-	<fx:Declarations>
-		<local:LocalizationMap />	
-	</fx:Declarations>
-	
-	<!--
-	<s:Image id="MyFindMatchButton" />
-	<s:Label id="Prueba" text="akdmaskldasd asdksla" />
-	-->
-	
-	
+		
 	<local:ServerTests id="MyServerTests" visible="false" width="100%" height="100%"/>
 			
 </s:Application>
