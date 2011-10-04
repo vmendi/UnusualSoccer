@@ -38,17 +38,17 @@
 	]]></fx:Script>
 	
 
-	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" bottom="10" left="10" width="365" title="RANKING DE TU DIVISION">
-		<s:List id="MyCompetitionList" left="0" right="0" top="0" height="440"
+	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="110" bottom="10" left="10" width="740" title="RANKING DE TU DIVISION">
+		<s:List id="MyCompetitionList" left="0" right="0" top="0" height="341"
 				dataProvider="{mCompetitionModel.TheGroup.GroupEntries}" 
 				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="false"
 				skinClass="GameView.Skins.DefaultListSkin" 
 				change="MyCompetitionList_changeHandler(event)"/>
 	</s:Panel>
 	
-	<Competition:LookingForMatchPanel right="10" y="10" width="363" height="90" title="PARTIDO DE COMPETICION" />
+	<Competition:LookingForMatchPanel right="10" y="10" width="365" height="90" title="PARTIDO DE COMPETICION" />
 	
-	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="200" right="10" width="365" title="TU DIVISION">
+	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" left="10" width="365" title="TU DIVISION">
 		<s:Label id="MyDivisionLabel" text="{mCompetitionModel.TheGroup.DivisionName}" top="10" styleName="whiteBoldMedium" />
 		<s:Label id="MyGroupNameLabel" text="{mCompetitionModel.TheGroup.GroupName}" top="40" styleName="whiteBoldMedium" />
 		<s:Label id="MyMinimunPointsLabel" text="{mCompetitionModel.TheGroup.MinimumPoints}" top="70" styleName="whiteBoldMedium" />
