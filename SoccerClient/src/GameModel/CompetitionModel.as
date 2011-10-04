@@ -1,10 +1,14 @@
 package GameModel
 {
 	import SoccerServer.MainService;
-	import SoccerServer.TransferModel.vo.Group;
+	import SoccerServer.TransferModel.vo.CompetitionGroup;
+	import SoccerServer.TransferModel.vo.CompetitionGroupEntry;
 	
 	import mx.rpc.Responder;
 	import mx.rpc.events.ResultEvent;
+	
+	import spark.collections.Sort;
+	import spark.collections.SortField;
 	
 	import utils.Delegate;
 
@@ -16,23 +20,45 @@ package GameModel
 			mMainModel = mainModel;
 		}
 		
-		public function RefreshGroup() : void
+		public function RefreshGroup(callback : Function) : void
 		{
-			mMainService.RefreshGroupForTeam(parseInt(SoccerClient.GetFacebookFacade().FacebookID), new Responder(OnGroupForTeamRefreshed, ErrorMessages.Fault));
+			mMainService.RefreshGroupForTeam(parseInt(SoccerClient.GetFacebookFacade().FacebookID), 
+											 new Responder(Delegate.create(OnGroupForTeamRefreshed, callback), ErrorMessages.Fault));
 		}
 				
-		private function OnGroupForTeamRefreshed(e:ResultEvent):void
+		private function OnGroupForTeamRefreshed(e:ResultEvent, callback : Function):void
 		{
-			TheGroup = e.result as Group;
+			TheGroup = e.result as CompetitionGroup;
+			
+			if (TheGroup != null)
+			{
+				var sorter : Sort = new Sort();
+				sorter.fields =  [new SortField("Points", true)];
+				
+				TheGroup.GroupEntries.sort = sorter;
+				TheGroup.GroupEntries.refresh();
+			}
+			
+			if (callback != null)
+				callback();
 		}
-		
+
+		public function GetLocalGroupEntry() : CompetitionGroupEntry
+		{			
+			for each (var entry : CompetitionGroupEntry in mGroup.GroupEntries)
+			{
+				if (entry.FacebookID.toString() == SoccerClient.GetFacebookFacade().FacebookID)
+					return entry;
+			}
+			return null;
+		}
 
 		[Bindable]
-		public function  get TheGroup() : Group       { return mGroup; }
-		private function set TheGroup(v:Group) : void { mGroup = v; }
+		public function  get TheGroup() : CompetitionGroup       { return mGroup; }
+		private function set TheGroup(v:CompetitionGroup) : void { mGroup = v; }
 		
 
-		private var mGroup : Group;
+		private var mGroup : CompetitionGroup;
 		
 		private var mMainService : MainService;
 		private var mMainModel : MainGameModel;

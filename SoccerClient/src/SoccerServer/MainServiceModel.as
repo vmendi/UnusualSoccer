@@ -24,7 +24,7 @@
         public var HasTeamResult:Boolean;     
         public var IsNameValidResult:String;     
         public var OnLikedResult:int;     
-        public var RefreshGroupForTeamResult:Group;     
+        public var RefreshGroupForTeamResult:CompetitionGroup;     
         public var RefreshMatchStatsForTeamResult:TeamMatchStats;     
         public var RefreshPredefinedTeamsResult:ArrayCollection;     
         public var RefreshRankingPageResult:RankingPage;     

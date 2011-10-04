@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using SoccerServer.TransferModel;
 using SoccerServer.BDDModel;
 using Weborb.Util.Logging;
 
@@ -12,9 +11,9 @@ namespace SoccerServer
     {
         // Nos basta con el facebookID y no nos hace falta el TeamID, porque ahora mismo hay una relacion 1:1. Asi nos ahorramos
         // enviar al cliente (en el TransferModel) el TeamID cuando ya tenemos el facebookID
-        public TransferModel.Group RefreshGroupForTeam(long facebookID)
+        public TransferModel.CompetitionGroup RefreshGroupForTeam(long facebookID)
         {
-            var ret = new TransferModel.Group();
+            var ret = new TransferModel.CompetitionGroup();
 
             try
             {
@@ -35,7 +34,7 @@ namespace SoccerServer
 
                     foreach (var entry in theGroup.CompetitionGroupEntries)
                     {
-                        TransferModel.GroupEntry retEntry = new GroupEntry();
+                        TransferModel.CompetitionGroupEntry retEntry = new TransferModel.CompetitionGroupEntry();
 
                         retEntry.Name = entry.Team.Name;
                         retEntry.FacebookID = entry.Team.Player.FacebookID;
