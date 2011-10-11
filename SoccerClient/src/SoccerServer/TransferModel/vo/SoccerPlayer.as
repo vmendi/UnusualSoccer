@@ -24,8 +24,8 @@ package SoccerServer.TransferModel.vo
 	
 		public var SoccerPlayerID:int;
 		public var Name:String;
-		public var Number:int;
-		public var Type:int;
+		public var DorsalNumber:int;
+		public var FacebookID:Number;
 		public var FieldPosition:int;
 		public var Weight:int;
 		public var Sliding:int;

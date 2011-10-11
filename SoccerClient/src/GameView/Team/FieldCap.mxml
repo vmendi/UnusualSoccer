@@ -8,7 +8,7 @@
 	<fx:Style source="../styles.css" />
 	
 	<fx:Declarations>
-		<s:GlowFilter id="NumberStrokeFilter" blurX="2" blurY="2" strength="10" quality="3" color="0x000000" />
+		<s:GlowFilter id="DorsalNumberStrokeFilter" blurX="2" blurY="2" strength="10" quality="3" color="0x000000" />
 		<s:Linear id="MyLinearEasing"/>
 		<!--
 		<s:Animate id="MyAnimateEffect"
@@ -33,7 +33,7 @@
 					  source="@Embed(source='/Assets/General.swf', symbol='CapBase')"/>
 	</s:Group>
 	
-	<s:Label id="MyBackNumberLabel" text="{data.Number}" horizontalCenter="0" top="10" styleName="whiteBoldMedium" textAlign="center" filters="{NumberStrokeFilter}"/>
+	<s:Label id="MyBackNumberLabel" text="{data.DorsalNumber}" horizontalCenter="0" top="10" styleName="whiteBoldMedium" textAlign="center" filters="{DorsalNumberStrokeFilter}"/>
 	
 	<!--
 	<s:Group horizontalCenter="0" top="70" width="70" height="19" id="MyNameGroup">
@@ -143,7 +143,7 @@
 				mTeamModel.SwapFormationPosition(data as SoccerPlayer, initiator.data as SoccerPlayer);
 				
 				mTeamModel.SelectedSoccerPlayer = temp;
-			}			
+			}
 		}
 		
 		private var mTeamModel : TeamModel;

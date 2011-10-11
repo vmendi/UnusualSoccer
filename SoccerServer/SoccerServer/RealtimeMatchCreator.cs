@@ -142,7 +142,7 @@ namespace SoccerServer
                 var spData = new RealtimePlayerData.SoccerPlayerData();
 
                 spData.Name = sp.Name;
-                spData.Number = sp.Number;
+                spData.DorsalNumber = sp.DorsalNumber;
 
                 spData.Power = (int)Math.Round(sp.Power * daFitness);
                 spData.Control = (int)Math.Round(sp.Sliding * daFitness);

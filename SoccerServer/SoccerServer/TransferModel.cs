@@ -63,8 +63,8 @@ namespace SoccerServer.TransferModel
 	{
 		public int SoccerPlayerID;
 		public string Name;
-		public int Number;
-		public int Type;
+		public int DorsalNumber;
+        public long FacebookID;
 		public int FieldPosition;
 		public int Weight;
 		public int Sliding;

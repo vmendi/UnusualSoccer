@@ -464,7 +464,7 @@ namespace SoccerServer
             return matchResult;
         }
 
-               
+
         public void OnSecondsTick()
         {
             lock (mGlobalLock)
@@ -629,7 +629,7 @@ namespace SoccerServer
     {
         public class SoccerPlayerData
         {
-            public int Number;		// Dorsal
+            public int DorsalNumber;
             public String Name;
             public int Power;
             public int Control;

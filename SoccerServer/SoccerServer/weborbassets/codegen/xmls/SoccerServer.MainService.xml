@@ -85,8 +85,8 @@
       <datatype name="SoccerPlayer" fullname="SoccerServer.TransferModel.SoccerPlayer" typeNamespace="SoccerServer.TransferModel">
         <field name="SoccerPlayerID" type="int" fulltype="int" nativetype="int" />
         <field name="Name" type="String" fulltype="String" nativetype="String" />
-        <field name="Number" type="int" fulltype="int" nativetype="int" />
-        <field name="Type" type="int" fulltype="int" nativetype="int" />
+        <field name="DorsalNumber" type="int" fulltype="int" nativetype="int" />
+        <field name="FacebookID" type="Number" fulltype="Number" nativetype="long" />
         <field name="FieldPosition" type="int" fulltype="int" nativetype="int" />
         <field name="Weight" type="int" fulltype="int" nativetype="int" />
         <field name="Sliding" type="int" fulltype="int" nativetype="int" />

@@ -118,7 +118,7 @@ package Caps
 			LoadSkills( (descTeam.SpecialSkillsIDs as Object).toArray() );
 			
 			var descCap:Object = { 
-				Number: 13,
+				DorsalNumber: 13,
 				Name: "Cap Name",
 				Power: 0,
 				Control: 0,

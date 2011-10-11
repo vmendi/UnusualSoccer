@@ -5,12 +5,10 @@ package GameModel
 	import SoccerServer.TransferModel.vo.SpecialTraining;
 	import SoccerServer.TransferModel.vo.Team;
 	import SoccerServer.TransferModel.vo.TeamDetails;
-	import SoccerServer.TransferModel.vo.Ticket;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
-	import mx.binding.utils.BindingUtils;
 	import mx.collections.ArrayCollection;
 	import mx.collections.Sort;
 	import mx.collections.SortField;
@@ -69,7 +67,7 @@ package GameModel
 			UpdateTeamDetails();
 			UpdateSelectedSoccerPlayerQuality();
 			mMainModel.TheTicketModel.UpdateTicket();	// Preferimos pushearlo en vez de que él lo lea mediante binding porque asi tenemos garantizado el "cuando"
-														// se actualiza su estado
+														// se actualiza su estado (antes del callback por ejemplo)
 			if (callback != null)
 				callback();
 			
@@ -243,7 +241,7 @@ package GameModel
 						
 			TheTeamDetails = teamDetails;
 		}
-						
+
 		// En realidad este TeamDetails es una variable de comodidad para mostrar el SelfTeam de forma simetrica a los demas
 		[Bindable]
 		public  function get TheTeamDetails() : TeamDetails { return mTheTeamDetails; }

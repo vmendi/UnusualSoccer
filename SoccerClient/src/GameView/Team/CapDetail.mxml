@@ -53,7 +53,7 @@
 	]]></fx:Script>
 	
 	<fx:Declarations>
-		<s:GlowFilter id="NumberStrokeFilter" blurX="2" blurY="2" strength="10" quality="3" color="0x000000" />
+		<s:GlowFilter id="DorsalNumberStrokeFilter" blurX="2" blurY="2" strength="10" quality="3" color="0x000000" />
 	</fx:Declarations>	
 
 	<s:Graphic>
@@ -63,7 +63,7 @@
 	<s:Group left="10" top="10" width="59" height="59">
 		<mx:Image top="29" left="29" id="MyCapMC" scaleContent="false"
 						  source="@Embed(source='/Assets/General.swf', symbol='CapDetail')" />
-		<s:Label text="{TheSoccerPlayer.Number.toString()}" horizontalCenter="0" top="18" styleName="whiteBoldBig" textAlign="center" filters="{NumberStrokeFilter}"/>
+		<s:Label text="{TheSoccerPlayer.DorsalNumber.toString()}" horizontalCenter="0" top="18" styleName="whiteBoldBig" textAlign="center" filters="{DorsalNumberStrokeFilter}"/>
 	</s:Group>
 	
 	<!-- <s:Label text="{TheSoccerPlayer.Name}" left="75" top="23" styleName="whiteBoldMedium" /> //-->

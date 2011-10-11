@@ -122,7 +122,7 @@
 			
 			private function OnTeamCreatedResponse():void
 			{
-				(HierarchyUtils.FindParentOfType(this, getQualifiedClassName(MainView)) as MainView).currentState = "Ranking";
+				(HierarchyUtils.FindParentOfType(this, getQualifiedClassName(MainView)) as MainView).currentState = "Competition";
 			}
 			
 			[Bindable] private var mMainGameModel : MainGameModel;

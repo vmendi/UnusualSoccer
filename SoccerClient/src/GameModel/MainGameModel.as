@@ -30,6 +30,7 @@ package GameModel
 			mPredefinedTeamsModel = new PredefinedTeamsModel(mMainService, this);
 			mTicketModel = new TicketModel(mMainService, this);
 			mCompetitionModel = new CompetitionModel(mMainService, this);
+			mFriendsModel = new FriendsModel(mMainService, this);
 			
 			// Los submodelos se bindean a sus hermanos sin orden definido, necesitamos generar un evento de cambio
 			dispatchEvent(new Event("dummy"));
@@ -45,6 +46,9 @@ package GameModel
 			mTrainingModel.InitialRefresh(callback);
 		}
 		
+		//
+		// No queremos que se nos queden timers
+		//
 		public function OnCleaningShutdown() : void
 		{
 			mTrainingModel.CleaningShutdown();	
@@ -80,6 +84,9 @@ package GameModel
 		[Bindable(event="dummy")]
 		public function get TheCompetitionModel() : CompetitionModel { return mCompetitionModel; }
 		
+		[Bindable(event="dummy")]
+		public function get TheFriendsModel() : FriendsModel { return mFriendsModel; }
+		
 		
 		private var mMainService : MainService;
 		
@@ -93,5 +100,6 @@ package GameModel
 		private var mRealtimeModel : RealtimeModel;
 		private var mTicketModel : TicketModel;
 		private var mCompetitionModel : CompetitionModel;
+		private var mFriendsModel : FriendsModel;
 	}
 }
