@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using SoccerServer.BDDModel;
 using Weborb.Util.Logging;
+using Weborb.Service;
+using System.Data.Linq;
 
 namespace SoccerServer
 {
@@ -11,6 +13,7 @@ namespace SoccerServer
     {
         // Nos basta con el facebookID y no nos hace falta el TeamID, porque ahora mismo hay una relacion 1:1. Asi nos ahorramos
         // enviar al cliente (en el TransferModel) el TeamID cuando ya tenemos el facebookID
+        [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 10000)]
         public TransferModel.CompetitionGroup RefreshGroupForTeam(long facebookID)
         {
             var ret = new TransferModel.CompetitionGroup();
@@ -56,6 +59,7 @@ namespace SoccerServer
             return ret;
         }
 
+        /*
         internal static void PreprocessAllTeams()
         {
             using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
@@ -77,6 +81,7 @@ namespace SoccerServer
                 theContext.SubmitChanges();
             }
         }
+         */
 
         internal static void SeasonEnd()
         {
@@ -195,40 +200,51 @@ namespace SoccerServer
             if (theTeam.CompetitionGroupEntries.Count != 0)
                 throw new Exception("WTF!");
 
-            CompetitionGroup theMostAdequateGroup = GetMostAdequateGroup(theContext);
+            int theMostAdequateGroupID = GetMostAdequateGroupID(theContext);
 
-            // Si no hay ninguno adecuado, lo creamos
-            // Nuevo approach: Nunca consideramos lleno, crecemos y crecemos, ya se reequilibra al acabar la temporada
             /*
+               Nuevo approach: Nunca consideramos lleno, crecemos y crecemos, ya se reequilibra al acabar la temporada
             if (theMostAdequateGroup == null)
                 theMostAdequateGroup = CreateGroupCurrentSeason(theContext, GetLowestDivision(theContext));
-             */
+            */
+
+            if (theMostAdequateGroupID == -1)
+                throw new Exception("WTF");
 
             CompetitionGroupEntry newGroupEntry = new CompetitionGroupEntry();
 
-            newGroupEntry.CompetitionGroup = theMostAdequateGroup;
+            newGroupEntry.CompetitionGroupID = theMostAdequateGroupID;
             newGroupEntry.Team = theTeam;
             
             theContext.CompetitionGroupEntries.InsertOnSubmit(newGroupEntry);
         }
 
-        internal static CompetitionGroup GetMostAdequateGroup(SoccerDataModelDataContext theContext)
+        internal static int GetMostAdequateGroupID(SoccerDataModelDataContext theContext)
         {
-            var currentSeason = GetCurrentSeason(theContext);
-            var lowestDivision = GetLowestDivision(theContext);
+            var currentSeasonID = GetCurrentSeason(theContext).CompetitionSeasonID;
+            var lowestDivisionID = GetLowestDivision(theContext).CompetitionDivisionID;
 
-            var lowestGroups = currentSeason.CompetitionGroups.Where(group => group.CompetitionDivisionID == lowestDivision.CompetitionDivisionID);
+            var daPack = (from g in theContext.CompetitionGroups
+                          where g.CompetitionSeasonID == currentSeasonID &&
+                          g.CompetitionDivisionID == lowestDivisionID
+                          select new { g.CompetitionGroupID, g.CompetitionGroupEntries.Count });
+
+            var daPackArray = daPack.ToArray();
+
+            int minID = -1;
+            int minCount = int.MaxValue;
 
             // Cogemos el de menos jugadores
-            var minEntriesGroup = lowestGroups.OrderBy(gr => gr.CompetitionGroupEntries.Count).First();
-                        
-            // Esta ya lleno? (se encargaran de crearlo y balancear por fuera)
-            /*
-            if (minEntriesGroup.CompetitionGroupEntries.Count > COMPETITION_GROUP_MAX_ENTRIES)
-                minEntriesGroup = null;
-            */
-
-            return minEntriesGroup;
+            for (int c = 0; c < daPackArray.Count(); ++c)
+            {
+                if (daPackArray[c].Count < minCount)
+                {
+                    minID = daPackArray[c].CompetitionGroupID;
+                    minCount = daPackArray[c].Count;
+                }
+            }
+                                        
+            return minID;
         }
 
         // La unica division que no tiene hijos

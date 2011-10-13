@@ -1,5 +1,7 @@
 package
 {
+	import mx.collections.ArrayCollection;
+	import mx.resources.ResourceManager;
 	import mx.utils.URLUtil;
 
 	public final class AppConfig
@@ -7,13 +9,18 @@ package
 		static public var CANVAS_PAGE : String = null; 				// "http://apps.facebook.com/unusualsoccerdev";
 		static public var CANVAS_URL : String = null; 				// "http://mahouligachapas.unusualwonder.com";
 		static public var APP_ID : String = null;
-		static public var REMOTE : String = null;
+		static public var REMOTE : String = null;					// true/false
 		static public var REMOTE_SERVER : String = null;			// "mahouligachapas.unusualwonder.com"; (CANVAS_URL puede ser localhost)
 		static public var FAKE_SESSION_KEY : String = null;
 		static public var TEST_NAME : String = null;
 		
+		static public var REQUEST_IDS : ArrayCollection = null;
+		
 		static public function Init(parameters : Object) : void
 		{
+			// Seleccion de idioma
+			ResourceManager.getInstance().localeChain = ["es_ES", "en_US"];
+			
 			if (parameters.hasOwnProperty("CanvasPage"))
 				CANVAS_PAGE = parameters["CanvasPage"];
 			
@@ -34,6 +41,9 @@ package
 			
 			if (parameters.hasOwnProperty("TestName"))
 				TEST_NAME = parameters["TestName"];
+			
+			if (parameters.hasOwnProperty("request_ids"))
+				REQUEST_IDS = new ArrayCollection(parameters["request_ids"].split(","));
 		}
 	}
 }

@@ -52,7 +52,7 @@ package
 			}
 			else
 			{
-				Facebook.init(AppConfig.APP_ID, OnFacebookInit, { xfbml: true } );
+				Facebook.init(AppConfig.APP_ID, OnFacebookInit, { xfbml: true, frictionlessRequests:true } );
 			}
 		}
 		

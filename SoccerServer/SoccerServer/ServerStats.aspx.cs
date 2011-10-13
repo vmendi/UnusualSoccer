@@ -145,7 +145,7 @@ namespace SoccerServer
 
         protected void MisticalRefresh_Click(object sender, EventArgs e)
         {
-            MainService.PreprocessAllTeams();
+            //MainService.PreprocessAllTeams();
         }
 
         protected void MisticalRefresh02_Click(object sender, EventArgs e)

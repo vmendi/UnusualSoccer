@@ -110,7 +110,7 @@ package Caps
 			_Visual.gotoAndStop( team.Name );
 			
 			_Name = descCap.Name;
-			_Dorsal = descCap.Number;
+			_Dorsal = descCap.DorsalNumber;
 			_Power = descCap.Power;
 			_Control = descCap.Control;
 			_Defense = descCap.Defense;

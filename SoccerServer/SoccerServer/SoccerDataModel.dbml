@@ -113,22 +113,10 @@
       <Association Name="Player_Team" Member="Team" ThisKey="PlayerID" OtherKey="TeamID" Type="Team" Cardinality="One" />
     </Type>
   </Table>
-  <Table Name="dbo.PredefinedSoccerPlayers" Member="PredefinedSoccerPlayers">
-    <Type Name="PredefinedSoccerPlayer">
-      <Column Name="PredefinedSoccerPlayerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="PredefinedTeamID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="IsSubstitute" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="Number" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="PredefinedTeam_PredefinedSoccerPlayer" Member="PredefinedTeam" ThisKey="PredefinedTeamID" OtherKey="PredefinedTeamID" Type="PredefinedTeam" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.PredefinedTeams" Member="PredefinedTeams">
     <Type Name="PredefinedTeam">
       <Column Name="PredefinedTeamID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Association Name="PredefinedTeam_PredefinedSoccerPlayer" Member="PredefinedSoccerPlayers" ThisKey="PredefinedTeamID" OtherKey="PredefinedTeamID" Type="PredefinedSoccerPlayer" />
       <Association Name="PredefinedTeam_Team" Member="Teams" ThisKey="PredefinedTeamID" OtherKey="PredefinedTeamID" Type="Team" />
     </Type>
   </Table>
@@ -142,6 +130,18 @@
       <Column Name="Status" Type="System.String" DbType="VarChar(25) NOT NULL" CanBeNull="false" />
       <Column Name="StatusPlacedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="StatusSettledDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Requests" Member="Requests">
+    <Type Name="Request">
+      <Column Name="RequestID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RequestType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="AnswerDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FacebookRequestID" Type="System.String" DbType="VarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="SourceTeamID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TargetFacebookID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Association Name="Team_Request" Member="Team" ThisKey="SourceTeamID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.Sessions" Member="Sessions">
@@ -158,8 +158,8 @@
       <Column Name="SoccerPlayerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="TeamID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Number" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DorsalNumber" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FacebookID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
       <Column Name="FieldPosition" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Weight" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Sliding" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -206,6 +206,7 @@
       <Association Name="Team_CompetitionGroupEntry" Member="CompetitionGroupEntries" ThisKey="TeamID" OtherKey="TeamID" Type="CompetitionGroupEntry" />
       <Association Name="Team_MatchParticipation" Member="MatchParticipations" ThisKey="TeamID" OtherKey="TeamID" Type="MatchParticipation" />
       <Association Name="Team_PendingTraining" Member="PendingTraining" ThisKey="TeamID" OtherKey="TeamID" Type="PendingTraining" Cardinality="One" />
+      <Association Name="Team_Request" Member="Requests" ThisKey="TeamID" OtherKey="SourceTeamID" Type="Request" />
       <Association Name="Team_SoccerPlayer" Member="SoccerPlayers" ThisKey="TeamID" OtherKey="TeamID" Type="SoccerPlayer" />
       <Association Name="Team_SpecialTraining" Member="SpecialTrainings" ThisKey="TeamID" OtherKey="TeamID" Type="SpecialTraining" />
       <Association Name="Team_Ticket" Member="Ticket" ThisKey="TeamID" OtherKey="TicketID" Type="Ticket" Cardinality="One" />

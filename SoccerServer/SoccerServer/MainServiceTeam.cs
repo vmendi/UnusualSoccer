@@ -62,6 +62,9 @@ namespace SoccerServer
                     // TODO: No está bien. Se deberían generar bajo demanda (al entrenar) y no desde el principio
                     GenerateSpecialTrainings(theNewTeam);
 
+                    // Lo añadimos al mejor grupo posible (el de menos players, por ejemplo), desde la division mas baja
+                    AddTeamToLowestMostAdequateGroup(mContext, theNewTeam);
+
                     mContext.SubmitChanges();
                 }
                 catch (Exception e)
@@ -82,6 +85,7 @@ namespace SoccerServer
             theTicket.TicketKind = -1;
             theTicket.TicketPurchaseDate = DateTime.Now;
             theTicket.TicketExpiryDate = theTicket.TicketPurchaseDate;
+            theTicket.RemainingMatches = 5;
 
             mContext.Tickets.InsertOnSubmit(theTicket);
         }
@@ -112,60 +116,30 @@ namespace SoccerServer
 
 			Team ret = new Team();
 
-			var predefinedSoccerPlayers = from prSP in mContext.PredefinedSoccerPlayers
-										  where prSP.PredefinedTeamID == predefinedTeamID
-										  select prSP;
-			int defPos = 1;
-			int medPos = 4;
-			int delPos = 6;
-			int subsPos = 100;
+            for (int c = 0; c < 8; c++)
+            {
+                SoccerPlayer newSoccerPlayer = new SoccerPlayer();
+                newSoccerPlayer.Team = ret;
+                newSoccerPlayer.Name = "";              // Se inicializara cuando sea una amigo requesteado
+                newSoccerPlayer.DorsalNumber = c + 1;
+                newSoccerPlayer.FacebookID = -1;        // Indica que no es un futbolista requesteado (los iniciales)
 
-			foreach (PredefinedSoccerPlayer prSoccerPlayer in predefinedSoccerPlayers)
-			{
-				SoccerPlayer newSoccerPlayer = new SoccerPlayer();
-				newSoccerPlayer.Team = ret;
-				newSoccerPlayer.Name = prSoccerPlayer.Name;
-				newSoccerPlayer.Type = prSoccerPlayer.Type;
+                newSoccerPlayer.FieldPosition = c;
 
-				if (prSoccerPlayer.IsSubstitute)
-					newSoccerPlayer.FieldPosition = subsPos++;
-				else
-				{
-					if (prSoccerPlayer.Type == 0)
-						newSoccerPlayer.FieldPosition = 0;
-					else
-					if (prSoccerPlayer.Type == 1)
-						newSoccerPlayer.FieldPosition = defPos++;
-					else
-					if (prSoccerPlayer.Type == 2)
-						newSoccerPlayer.FieldPosition = medPos++;
-					else
-					if (prSoccerPlayer.Type == 3)
-						newSoccerPlayer.FieldPosition = delPos++;
-				}
+                newSoccerPlayer.Power = 0;
+                newSoccerPlayer.Sliding = 0;
+                newSoccerPlayer.Weight = 0;
+                newSoccerPlayer.IsInjured = false;
 
-				newSoccerPlayer.Number = prSoccerPlayer.Number;
-
-				newSoccerPlayer.Power = 0;
-				newSoccerPlayer.Sliding = 0;
-				newSoccerPlayer.Weight = 0;
-
-				mContext.SoccerPlayers.InsertOnSubmit(newSoccerPlayer);
-			}
-
-			if (defPos != 4)
-				Log.log(MAINSERVICE, "Fallo en la defensa, generando equipo: " + predefinedTeam.Name);
-			if (medPos != 6)
-				Log.log(MAINSERVICE, "Fallo en el medio, generando equipo: " + predefinedTeam.Name);
-			if (delPos != 8)
-				Log.log(MAINSERVICE, "Fallo en la delantera, generando equipo: " + predefinedTeam.Name);
+                mContext.SoccerPlayers.InsertOnSubmit(newSoccerPlayer);
+            }
 
 			ret.Formation = "3-2-2";
 			ret.XP = 0;
 			ret.TrueSkill = 0;
 			ret.Mean = DEFAULT_INITIAL_MEAN;
 			ret.StandardDeviation = DEFAULT_INITIAL_STANDARD_DEVIATION;
-			ret.SkillPoints = 500;
+			ret.SkillPoints = 200;
 			ret.Energy = 100;
 			ret.Fitness = 50;
 			

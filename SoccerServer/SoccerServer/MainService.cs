@@ -5,7 +5,6 @@ using System.Web;
 using Weborb.Util.Logging;
 
 using SoccerServer.BDDModel;
-using System.IO;
 
 namespace SoccerServer
 {

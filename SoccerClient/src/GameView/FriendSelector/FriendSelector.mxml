@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 width="600" height="500"
+		 creationComplete="CreationCompleteHandler(event)"
+		 currentState="Selecting">
+	
+	<fx:Style source="../styles.css"/>
+	
+	<s:states>
+		<s:State name="Waiting" />
+		<s:State name="Selecting" />
+	</s:states>
+	
+	<fx:Script><![CDATA[
+		import GameModel.Friend;
+		import GameModel.FriendsModel;
+		import GameModel.MainGameModel;
+		
+		import GameView.ImportantMessageDialog;
+		
+		import com.facebook.graph.Facebook;
+		
+		import mx.collections.ArrayCollection;
+		import mx.core.FlexGlobals;
+		import mx.core.IFlexModule;
+		import mx.events.FlexEvent;
+		import mx.managers.PopUpManager;
+		
+		import spark.events.IndexChangeEvent;
+		import spark.events.TextOperationEvent;
+		
+		public static function Show() : void
+		{
+			var dlg : FriendSelector = new FriendSelector();
+			var parent : Sprite = FlexGlobals.topLevelApplication as Sprite;
+
+			dlg.moduleFactory = IFlexModule(parent).moduleFactory;
+			
+			PopUpManager.addPopUp(dlg, parent, true, null);
+			PopUpManager.centerPopUp(dlg);
+		}
+		
+		protected function CloseClickHandler(event:MouseEvent):void
+		{
+			PopUpManager.removePopUp(this);
+		}
+		
+		protected function SendClickHandler(event:MouseEvent):void
+		{
+			SendRequests();	
+		}
+		
+		protected function CreationCompleteHandler(event:FlexEvent):void
+		{
+			mMainModel = SoccerClient.GetMainGameModel();
+			mFriendsModel = mMainModel.TheFriendsModel;
+			
+			mSelectableFriends = CalcSelectableFriends();
+		}
+		
+		private function CalcSelectableFriends() : ArrayCollection
+		{
+			var ret : ArrayCollection = new ArrayCollection();
+			var allFriends : ArrayCollection = mFriendsModel.Friends;
+			var soccerPlayerFriends : ArrayCollection = mFriendsModel.SoccerPlayerFriends;
+				
+			for each(var friend : Friend in allFriends)
+			{
+				var bFound : Boolean = false;
+				
+				// Si no esta ya entre los futbolistas, es seleccionable
+				for each(var soccerPlayerFriend : Friend in soccerPlayerFriends)
+				{
+					if (soccerPlayerFriend.FacebookID == friend.FacebookID)
+					{
+						bFound = true;
+						break;
+					}
+				}
+				
+				if (!bFound)
+					ret.addItem(friend);
+			}
+			
+			return ret;
+		}
+		
+		protected function MySearchInputChange(event:TextOperationEvent):void
+		{
+			(MyFriendsList.dataProvider as ArrayCollection).filterFunction = FilterFunction;
+			(MyFriendsList.dataProvider as ArrayCollection).refresh();
+		}
+		
+		private function FilterFunction(obj : Object) : Boolean
+		{
+			return (obj as Friend).Name.toLowerCase().indexOf(MySearchInput.text.toLowerCase()) != -1;
+		}
+		
+		private function SendRequests() : void
+		{
+			currentState = "Waiting";
+			
+			var user_ids : Array = [];
+			
+			if (mSelectedFriends.length > 0)
+			{
+				for each(var friend : Friend in mSelectedFriends)
+					user_ids.push(friend.FacebookID.toString());
+				
+				var data : Object =	{ 
+									message: "TO-DO TO-DO TO-DO TO-DO",
+									to: user_ids
+									};
+	
+				Facebook.ui("apprequests", data, OnSendRequestsCallback);
+			}
+			else
+			{
+				// Como si cancelaran...
+				OnSendRequestsCallback(null);
+			}
+		}
+		
+		private function OnSendRequestsCallback(response:Object) : Boolean
+		{	
+			PopUpManager.removePopUp(this);
+			
+			if (response != null)
+			{
+				// Los mandamos a crear al servidor
+				mMainModel.TheTeamModel.CreateRequests(response.request, response.to);
+				
+				// Mensaje de exito
+				ImportantMessageDialog.Show("Requests exitosos. TO-DO TO-DO TO-DO", "Blah blah", "center");
+			}
+			
+			return true;
+		}
+				
+		private function OnMyFriendListChangeHandler(e:IndexChangeEvent):void
+		{			
+			mSelectedFriends.addItem(mSelectableFriends[e.newIndex])
+			mSelectableFriends.removeItemAt(e.newIndex);
+		}
+		
+		protected function OnMySelectedListChangeHandler(e:IndexChangeEvent):void
+		{
+			mSelectableFriends.addItem(mSelectedFriends[e.newIndex])
+			mSelectedFriends.removeItemAt(e.newIndex);
+		}
+				
+		[Bindable] private var mMainModel : MainGameModel;
+		[Bindable] private var mFriendsModel : FriendsModel;
+		
+		// Presentation model
+		[Bindable] private var mSelectableFriends : ArrayCollection;
+		[Bindable] private var mSelectedFriends : ArrayCollection = new ArrayCollection();
+		
+	]]></fx:Script>
+	
+	<s:BitmapImage x="0" y="0" source="@Embed(source='/Assets/General.swf', symbol='PopupDialogBg')" fillMode="scale" width="600" height="500" />
+	
+	<s:Group includeIn="Waiting" width="600" height="500">
+		<s:Label horizontalCenter="0" verticalCenter="0" text="Waiting... TO-DO TO-DO TO-DO" styleName="whiteBoldBig"/>
+	</s:Group>
+	
+	<s:Group includeIn="Selecting" width="600" height="500">
+		<s:TextInput id="MySearchInput" width="150" right="20" bottom="10" prompt="Buscar amigo" maxChars="50" change="MySearchInputChange(event)"/>
+		
+		<s:Button label="CERRAR" click="CloseClickHandler(event)" minWidth="80" horizontalCenter="-50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+		<s:Button label="Enviar" click="SendClickHandler(event)" minWidth="80" horizontalCenter="50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+		
+		<s:Scroller horizontalScrollPolicy="off" left="20" right="20" top="20" bottom="200">
+			<s:Group>
+				<s:List id="MyFriendsList" dataProvider="{mSelectableFriends}" left="0" right="0" height="100%" 
+						itemRenderer="GameView.FriendSelector.FriendItem" useVirtualLayout="true" 
+						change="OnMyFriendListChangeHandler(event)">
+					<s:layout><s:TileLayout columnWidth="125" rowHeight="125" /></s:layout>
+				</s:List>
+			</s:Group>
+		</s:Scroller>
+		
+		<s:Scroller horizontalScrollPolicy="on" verticalScrollPolicy="off" left="20" right="20" bottom="30" height="160">
+			<s:Group>
+				<s:List id="MySelectedList" dataProvider="{mSelectedFriends}" left="0" right="0" height="100%" 
+						itemRenderer="GameView.FriendSelector.FriendItem" useVirtualLayout="true"
+						change="OnMySelectedListChangeHandler(event)">
+					<s:layout><s:HorizontalLayout gap="20" /></s:layout>
+				</s:List>
+			</s:Group>
+		</s:Scroller>
+	</s:Group>
+	
+</s:Group>

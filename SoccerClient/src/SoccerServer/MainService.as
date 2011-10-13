@@ -57,6 +57,8 @@
         
         remoteObject.ChangeFormation.addEventListener("result",ChangeFormationHandler);
         
+        remoteObject.CreateRequests.addEventListener("result",CreateRequestsHandler);
+        
         remoteObject.CreateTeam.addEventListener("result",CreateTeamHandler);
         
         remoteObject.HasTeam.addEventListener("result",HasTeamHandler);
@@ -84,6 +86,8 @@
         remoteObject.RefreshTrainingDefinitions.addEventListener("result",RefreshTrainingDefinitionsHandler);
         
         remoteObject.SwapFormationPosition.addEventListener("result",SwapFormationPositionHandler);
+        
+        remoteObject.TargetProcessedRequests.addEventListener("result",TargetProcessedRequestsHandler);
         
         remoteObject.Train.addEventListener("result",TrainHandler);
         
@@ -122,6 +126,15 @@
       public function ChangeFormation(newFormationName:String, responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.ChangeFormation(newFormationName);
+        
+        if( responder != null )
+            asyncToken.addResponder( responder );
+
+      }
+    
+      public function CreateRequests(requestID:String,targets:ArrayCollection, responder:IResponder = null ):void
+      {
+        var asyncToken:AsyncToken = remoteObject.CreateRequests(requestID,targets);
         
         if( responder != null )
             asyncToken.addResponder( responder );
@@ -254,6 +267,15 @@
 
       }
     
+      public function TargetProcessedRequests(request_ids:ArrayCollection, responder:IResponder = null ):void
+      {
+        var asyncToken:AsyncToken = remoteObject.TargetProcessedRequests(request_ids);
+        
+        if( responder != null )
+            asyncToken.addResponder( responder );
+
+      }
+    
       public function Train(trainingName:String, responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.Train(trainingName);
@@ -278,6 +300,11 @@
       }
          
       public virtual function ChangeFormationHandler(event:ResultEvent):void
+      {
+        
+      }
+         
+      public virtual function CreateRequestsHandler(event:ResultEvent):void
       {
         
       }
@@ -384,6 +411,11 @@
       }
          
       public virtual function SwapFormationPositionHandler(event:ResultEvent):void
+      {
+        
+      }
+         
+      public virtual function TargetProcessedRequestsHandler(event:ResultEvent):void
       {
         
       }

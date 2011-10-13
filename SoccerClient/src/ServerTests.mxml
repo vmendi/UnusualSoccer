@@ -8,7 +8,6 @@
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
 		import GameModel.RealtimePlayer;
-		import GameModel.ReceivedChallenge;
 		import GameModel.RoomModel;
 		
 		import NetEngine.InvokeResponse;
@@ -23,11 +22,9 @@
 		import mx.binding.utils.BindingUtils;
 		import mx.collections.ArrayCollection;
 		import mx.controls.Alert;
-		import mx.core.FlexGlobals;
 		import mx.rpc.Responder;
 		import mx.rpc.events.ResultEvent;
 		
-		import utils.CentralLoader;
 		import utils.Delegate;
 		import utils.RandUtils;
 		
