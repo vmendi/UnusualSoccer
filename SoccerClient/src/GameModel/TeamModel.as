@@ -6,6 +6,8 @@ package GameModel
 	import SoccerServer.TransferModel.vo.Team;
 	import SoccerServer.TransferModel.vo.TeamDetails;
 	
+	import com.facebook.graph.Facebook;
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
@@ -35,12 +37,12 @@ package GameModel
 			{
 				// Garantizamos que si tenemos equipo, estamos refrescados
 				if (e.result as Boolean)
-					RefreshTeam(function () : void { callback(true); });
+					InitialRefreshTeam(function () : void { callback(true); });
 				else
 					callback(false);
 			}
 		}
-		
+				
 		public function RefreshTeam(callback : Function) : void
 		{
 			mMainService.RefreshTeam(new Responder(Delegate.create(OnRefreshTeamResponse, callback), ErrorMessages.Fault));
@@ -54,9 +56,54 @@ package GameModel
 		private function OnTeamCreatedResponse(e:ResultEvent, success:Function, failed:Function):void
 		{
 			if (e.result)
-				RefreshTeam(success);
+				InitialRefreshTeam(success);
 			else
 				failed();
+		}
+		
+		// Cuando es el primer RefreshTeam de la aplicacion, queremos tener control especial para procesar los requests
+		private function InitialRefreshTeam(callback : Function) : void
+		{
+			if (AppConfig.REQUEST_IDS != null)
+			{	
+				mMainService.TargetProcessedRequests(AppConfig.REQUEST_IDS, 
+										 		     new Responder(Delegate.create(OnTargetProcessedRequestsResponse, finalCallback), ErrorMessages.Fault));
+			}
+			else
+			{
+				finalCallback();
+			}
+		
+			// Una vez procesados los requests, continuamos por la respuesta habitual... a veces adoro as3...
+			function finalCallback() : void
+			{
+				mMainService.RefreshTeam(new Responder(Delegate.create(OnRefreshTeamResponse, callback), ErrorMessages.Fault));
+			}
+		}
+		
+		private function OnTargetProcessedRequestsResponse(e:ResultEvent, callback : Function) : void
+		{
+			// Mandamos a FB a borrar los requests
+			for each(var request_id : String in AppConfig.REQUEST_IDS)
+			{
+				// Hay que concatenar... http://developers.facebook.com/docs/reference/dialogs/requests/
+				// DELETE https://graph.facebook,.com/[<request_id>_<user_id>]?access_token=[USER or APP ACCESS TOKEN]
+				Facebook.deleteObject(request_id + "_" + SoccerClient.GetFacebookFacade().FacebookID);
+			}
+			
+			// Aqui se llamara a RefreshTeam
+			if (callback != null)
+				callback();
+		}
+		
+		public function CreateRequests(request_id : String, target_facebook_IDs : Array) : void
+		{
+			// Tiene que ser asi porque construyendolo con el Array weborb no lo adapta bien
+			var toArrayCollection : ArrayCollection = new ArrayCollection();
+			for each(var str : String in target_facebook_IDs)
+				toArrayCollection.addItem(str);
+
+			mMainService.CreateRequests(request_id, toArrayCollection);
 		}
 
 		private function OnRefreshTeamResponse(e:ResultEvent, callback : Function) : void
@@ -65,7 +112,6 @@ package GameModel
 			
 			UpdateFieldPositions();
 			UpdateTeamDetails();
-			UpdateSelectedSoccerPlayerQuality();
 			mMainModel.TheTicketModel.UpdateTicket();	// Preferimos pushearlo en vez de que él lo lea mediante binding porque asi tenemos garantizado el "cuando"
 														// se actualiza su estado (antes del callback por ejemplo)
 			if (callback != null)
@@ -116,14 +162,7 @@ package GameModel
 			
 			UpdateFieldPositions();
 		}
-		
-		static public function GetQualityFor(soccerPlayer : SoccerPlayer) : Number
-		{
-			if (soccerPlayer != null)
-				return Math.round((soccerPlayer.Power + soccerPlayer.Sliding + soccerPlayer.Weight) / 3);
-			return -1;				
-		}
-		
+				
 		public function AssignSkillPoints(weight : int, sliding : int, power : int) : void
 		{
 			if (SelectedSoccerPlayer == null)
@@ -138,7 +177,6 @@ package GameModel
 			mPlayerTeam.SkillPoints -= weight + sliding + power;
 			
 			UpdateTeamDetails();
-			UpdateSelectedSoccerPlayerQuality();
 		}
 		
 		[Bindable(event="PlayerTeamChanged")]
@@ -168,22 +206,8 @@ package GameModel
 		
 		[Bindable]
 		public function get SelectedSoccerPlayer() : SoccerPlayer { return mSelectedSoccerPlayer; }
-		public function set SelectedSoccerPlayer(s : SoccerPlayer) : void 
-		{ 
-			mSelectedSoccerPlayer = s;
-			UpdateSelectedSoccerPlayerQuality();
-		}
-		
-		[Bindable]
-		public  function get SelectedSoccerPlayerQuality() : Number { return mSelectedSoccerPlayerQuality ; }
-		private function set SelectedSoccerPlayerQuality(v : Number) : void { mSelectedSoccerPlayerQuality = v; }
-		private var mSelectedSoccerPlayerQuality : Number;
-		
-		private function UpdateSelectedSoccerPlayerQuality() : void
-		{
-			SelectedSoccerPlayerQuality = GetQualityFor(SelectedSoccerPlayer);
-		}
-		
+		public function set SelectedSoccerPlayer(s : SoccerPlayer) : void { mSelectedSoccerPlayer = s; }
+				
 		// El MatchResult entra desde el servidor MainRealtime
 		public function AmITheWinner(matchResult : Object) : Boolean
 		{
@@ -242,7 +266,7 @@ package GameModel
 			TheTeamDetails = teamDetails;
 		}
 
-		// En realidad este TeamDetails es una variable de comodidad para mostrar el SelfTeam de forma simetrica a los demas
+		// En realidad esta instancia de TeamDetails es una comodidad para mostrar el SelfTeam de forma simetrica a los demas
 		[Bindable]
 		public  function get TheTeamDetails() : TeamDetails { return mTheTeamDetails; }
 		private function set TheTeamDetails(v : TeamDetails) : void { mTheTeamDetails = v; }

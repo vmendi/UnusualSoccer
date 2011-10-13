@@ -6,10 +6,12 @@
 	<fx:Style source="../styles.css" />
 	
 	<fx:Script><![CDATA[
+		import GameModel.SoccerPlayerQuality;
 		import GameModel.TeamModel;
 		
 		import SoccerServer.TransferModel.vo.SoccerPlayer;
 		
+		import mx.binding.utils.BindingUtils;
 		import mx.events.FlexEvent;
 		
 		[Bindable]
@@ -17,39 +19,32 @@
 		public function set TheSoccerPlayer(v:SoccerPlayer) : void 
 		{ 
 			mSoccerPlayer = v;
-			RefreshSoccerPlayer();
+			TheSoccerPlayerQuality = new SoccerPlayerQuality(mSoccerPlayer);
 		}
-		
-		private function RefreshSoccerPlayer():void
-		{
-			if (mSoccerPlayer != null)
-			{
-				// De momento solo podriamos mostrar soccerplayers de nuestro equipo, no hay forma de obtener el
-				// PredefinedTeam de un SoccerPlayer arbitrario
-				(MyCapMC.content as MovieClip).gotoAndStop(mTeamModel.PredefinedTeamName);
 				
-				var qual : int = TeamModel.GetQualityFor(mSoccerPlayer);
-				var mc : MovieClip = MyCapStars.content["mcStars"] as MovieClip; 
-				mc.gotoAndStop(qual+1);
-			}
-			
+		protected function CreationCompleteHandler(event:FlexEvent):void
+		{			
+			BindingUtils.bindSetter(OnQualityRefreshed, this, [ "TheSoccerPlayerQuality", "Quality"]);
 		}
 		
-		protected function CreationCompleteHandler(event:FlexEvent):void
+		private function OnQualityRefreshed(v:Number) : void
 		{
-			mTeamModel = SoccerClient.GetMainGameModel().TheTeamModel;
+			// De momento solo podriamos mostrar soccerplayers de nuestro equipo, no hay forma de obtener el
+			// PredefinedTeam de un SoccerPlayer arbitrario
+			(MyCapMC.content as MovieClip).gotoAndStop(SoccerClient.GetMainGameModel().TheTeamModel.PredefinedTeamName);
 			
-			// Parece que al tener mx:images por dentro (da igual con swfLoaders), el creationComplete tarda
-			// más en llegar y llega despues de que se haya hecho el binding. Tenemos entonces que
-			// volver a refrescar aqui
-			var prevSoccerPlayer : SoccerPlayer = TheSoccerPlayer;
-			mSoccerPlayer = null;
-			TheSoccerPlayer = prevSoccerPlayer;					
+			var qual : int = TheSoccerPlayerQuality.Quality;
+			var mc : MovieClip = MyCapStars.content["mcStars"] as MovieClip; 
+			mc.gotoAndStop(qual+1);
 		}
 	
-		[Bindable] private var mTeamModel : TeamModel;
 		private var mSoccerPlayer : SoccerPlayer;
 		
+		[Bindable] 
+		public function  get TheSoccerPlayerQuality() : SoccerPlayerQuality { return mSoccerPlayerQuality; }
+		private function set TheSoccerPlayerQuality(v:SoccerPlayerQuality) : void { mSoccerPlayerQuality = v; }
+		private var mSoccerPlayerQuality : SoccerPlayerQuality;
+
 	]]></fx:Script>
 	
 	<fx:Declarations>
@@ -71,6 +66,6 @@
 	<mx:Image left="74" top="26" id="MyCapStars" scaleContent="false"
 			  source="@Embed(source='/Assets/General.swf', symbol='CapDetailsStars')"/>
 	
-	<s:Label text="{mTeamModel.SelectedSoccerPlayerQuality}" left="164" top="26" styleName="whiteBoldMedium" />
+	<s:Label text="{TheSoccerPlayerQuality.Quality}" left="164" top="26" styleName="whiteBoldMedium" />
 	
 </s:Group>

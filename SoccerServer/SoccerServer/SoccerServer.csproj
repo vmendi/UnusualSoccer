@@ -26,6 +26,7 @@
     <WarningLevel>4</WarningLevel>
     <PackageAsSingleFile>true</PackageAsSingleFile>
     <DesktopBuildPackageLocation>Deploy\Debug\SoccerServerV1.zip</DesktopBuildPackageLocation>
+    <ExcludeGeneratedDebugSymbol>false</ExcludeGeneratedDebugSymbol>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,9 +38,9 @@
     <DesktopBuildPackageLocation>Deploy\Release\SoccerServerV1.zip</DesktopBuildPackageLocation>
     <PublishDatabaseSettings>
       <Objects>
-        <ObjectGroup Name="SoccerV1ConnectionString-Deployment" Order="1">
+        <ObjectGroup Name="SoccerV1ConnectionString-Deployment" Order="1" Enabled="True">
           <Destination Path="" />
-          <Object Type="dbFullSql">
+          <Object Type="dbFullSql" Enabled="True">
             <PreSource Path="Data Source=localhost%3bInitial Catalog=SoccerV1%3bIntegrated Security=True" ScriptSchema="True" ScriptData="True" CopyAllFullTextCatalogs="False" />
             <Source Path="obj\Release\AutoScripts\SoccerV1ConnectionString-Deployment_SchemaAndData.sql" Transacted="True" />
           </Object>
@@ -49,6 +50,7 @@
     <PackageAsSingleFile>true</PackageAsSingleFile>
     <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
     <ExcludeApp_Data>false</ExcludeApp_Data>
+    <PublishDatabases>false</PublishDatabases>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Facebook">
@@ -203,6 +205,7 @@
     <Compile Include="MainService.cs" />
     <Compile Include="MainServiceCompetition.cs" />
     <Compile Include="MainServiceRanking.cs" />
+    <Compile Include="MainServiceRequests.cs" />
     <Compile Include="MainServiceTeam.cs" />
     <Compile Include="MainServiceTraining.cs" />
     <Compile Include="NetEngine\BufferManager.cs" />

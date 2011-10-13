@@ -120,14 +120,16 @@ namespace SoccerServer
             {
                 SoccerPlayer newSoccerPlayer = new SoccerPlayer();
                 newSoccerPlayer.Team = ret;
-                newSoccerPlayer.Name = "";
+                newSoccerPlayer.Name = "";              // Se inicializara cuando sea una amigo requesteado
                 newSoccerPlayer.DorsalNumber = c + 1;
+                newSoccerPlayer.FacebookID = -1;        // Indica que no es un futbolista requesteado (los iniciales)
 
                 newSoccerPlayer.FieldPosition = c;
 
                 newSoccerPlayer.Power = 0;
                 newSoccerPlayer.Sliding = 0;
                 newSoccerPlayer.Weight = 0;
+                newSoccerPlayer.IsInjured = false;
 
                 mContext.SoccerPlayers.InsertOnSubmit(newSoccerPlayer);
             }

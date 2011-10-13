@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
-		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
+<s:Group width="100%" height="100%"
+		 xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:local="*" xmlns:GameView="GameView.*" xmlns:Team="GameView.Team.*" xmlns:Training="GameView.Training.*"
-		 xmlns:Match="GameView.Match.*"
-		 creationComplete="CreationCompleteHandler(event)" currentState="Waiting" xmlns:Competition="GameView.Competition.*" xmlns:Friendly="GameView.Friendly.*" >
+		 xmlns:Competition="GameView.Competition.*" xmlns:Friendly="GameView.Friendly.*" xmlns:Match="GameView.Match.*"
+		 creationComplete="CreationCompleteHandler(event)" currentState="Waiting" >
 	
 	<!-- Todas las fuentes se embeben aquí -->
 	<fx:Style>
@@ -21,13 +20,13 @@
 	
 	<s:states>
 		<s:State name="Waiting"/>
-		<s:State name="Login" />
+		<s:State name="Login"/>
 		<s:State name="Competition" stateGroups="InGame"/>
 		<s:State name="Team" stateGroups="InGame"/>
 		<s:State name="Friendly" stateGroups="InGame"/>
 		<s:State name="Training" stateGroups="InGame"/>
 		<s:State name="TrainingSpecial" stateGroups="InGame"/>
-		<s:State name="OnRealtimeMatch" />
+		<s:State name="OnRealtimeMatch"/>
 	</s:states>
 
 	<fx:Script><![CDATA[
@@ -49,8 +48,7 @@
 			// Si tenemos equipo, estara ya refrescado en el callback
 			mMainGameModel.TheTeamModel.HasTeam(OnHasTeamResponse);
 			
-			// Cuando nos llega un partido aceptado, lo aceptamos nosotros o el partido se acaba,
-			// cambiamos de estado en el UI directamente desde aquí
+			// Al inicio o fin del partido, cambiamos de estado en el UI directamente desde aquí
 			mMainGameModel.TheRealtimeModel.MatchStarted.add(OnMatchStarted);
 			mMainGameModel.TheRealtimeModel.MatchEnded.add(OnMatchEnded);
 			

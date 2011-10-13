@@ -8,9 +8,9 @@ package GameModel
 		public var Name : String;
 		public var FacebookID : Number;
 		
-		public function Friend(n:String, f:Number)
+		public function Friend(name:String, facebookID:Number)
 		{
-			Name = n; FacebookID = f;
+			Name = name; FacebookID = facebookID;
 		}
 	}
 }

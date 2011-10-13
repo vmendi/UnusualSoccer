@@ -64,6 +64,9 @@ namespace SoccerServer
     partial void InsertPurchase(SoccerServer.BDDModel.Purchase instance);
     partial void UpdatePurchase(SoccerServer.BDDModel.Purchase instance);
     partial void DeletePurchase(SoccerServer.BDDModel.Purchase instance);
+    partial void InsertRequest(SoccerServer.BDDModel.Request instance);
+    partial void UpdateRequest(SoccerServer.BDDModel.Request instance);
+    partial void DeleteRequest(SoccerServer.BDDModel.Request instance);
     partial void InsertSession(SoccerServer.BDDModel.Session instance);
     partial void UpdateSession(SoccerServer.BDDModel.Session instance);
     partial void DeleteSession(SoccerServer.BDDModel.Session instance);
@@ -207,6 +210,14 @@ namespace SoccerServer
 			get
 			{
 				return this.GetTable<SoccerServer.BDDModel.Purchase>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SoccerServer.BDDModel.Request> Requests
+		{
+			get
+			{
+				return this.GetTable<SoccerServer.BDDModel.Request>();
 			}
 		}
 		
@@ -2978,6 +2989,253 @@ namespace SoccerServer.BDDModel
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Requests")]
+	public partial class Request : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _RequestID;
+		
+		private int _RequestType;
+		
+		private System.DateTime _CreationDate;
+		
+		private System.Nullable<System.DateTime> _AnswerDate;
+		
+		private string _FacebookRequestID;
+		
+		private int _SourceTeamID;
+		
+		private long _TargetFacebookID;
+		
+		private EntityRef<Team> _Team;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnRequestIDChanging(int value);
+    partial void OnRequestIDChanged();
+    partial void OnRequestTypeChanging(int value);
+    partial void OnRequestTypeChanged();
+    partial void OnCreationDateChanging(System.DateTime value);
+    partial void OnCreationDateChanged();
+    partial void OnAnswerDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnAnswerDateChanged();
+    partial void OnFacebookRequestIDChanging(string value);
+    partial void OnFacebookRequestIDChanged();
+    partial void OnSourceTeamIDChanging(int value);
+    partial void OnSourceTeamIDChanged();
+    partial void OnTargetFacebookIDChanging(long value);
+    partial void OnTargetFacebookIDChanged();
+    #endregion
+		
+		public Request()
+		{
+			this._Team = default(EntityRef<Team>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int RequestID
+		{
+			get
+			{
+				return this._RequestID;
+			}
+			set
+			{
+				if ((this._RequestID != value))
+				{
+					this.OnRequestIDChanging(value);
+					this.SendPropertyChanging();
+					this._RequestID = value;
+					this.SendPropertyChanged("RequestID");
+					this.OnRequestIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RequestType", DbType="Int NOT NULL")]
+		public int RequestType
+		{
+			get
+			{
+				return this._RequestType;
+			}
+			set
+			{
+				if ((this._RequestType != value))
+				{
+					this.OnRequestTypeChanging(value);
+					this.SendPropertyChanging();
+					this._RequestType = value;
+					this.SendPropertyChanged("RequestType");
+					this.OnRequestTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreationDate", DbType="DateTime NOT NULL")]
+		public System.DateTime CreationDate
+		{
+			get
+			{
+				return this._CreationDate;
+			}
+			set
+			{
+				if ((this._CreationDate != value))
+				{
+					this.OnCreationDateChanging(value);
+					this.SendPropertyChanging();
+					this._CreationDate = value;
+					this.SendPropertyChanged("CreationDate");
+					this.OnCreationDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AnswerDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> AnswerDate
+		{
+			get
+			{
+				return this._AnswerDate;
+			}
+			set
+			{
+				if ((this._AnswerDate != value))
+				{
+					this.OnAnswerDateChanging(value);
+					this.SendPropertyChanging();
+					this._AnswerDate = value;
+					this.SendPropertyChanged("AnswerDate");
+					this.OnAnswerDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FacebookRequestID", DbType="VarChar(256) NOT NULL", CanBeNull=false)]
+		public string FacebookRequestID
+		{
+			get
+			{
+				return this._FacebookRequestID;
+			}
+			set
+			{
+				if ((this._FacebookRequestID != value))
+				{
+					this.OnFacebookRequestIDChanging(value);
+					this.SendPropertyChanging();
+					this._FacebookRequestID = value;
+					this.SendPropertyChanged("FacebookRequestID");
+					this.OnFacebookRequestIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SourceTeamID", DbType="Int NOT NULL")]
+		public int SourceTeamID
+		{
+			get
+			{
+				return this._SourceTeamID;
+			}
+			set
+			{
+				if ((this._SourceTeamID != value))
+				{
+					if (this._Team.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSourceTeamIDChanging(value);
+					this.SendPropertyChanging();
+					this._SourceTeamID = value;
+					this.SendPropertyChanged("SourceTeamID");
+					this.OnSourceTeamIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TargetFacebookID", DbType="BigInt NOT NULL")]
+		public long TargetFacebookID
+		{
+			get
+			{
+				return this._TargetFacebookID;
+			}
+			set
+			{
+				if ((this._TargetFacebookID != value))
+				{
+					this.OnTargetFacebookIDChanging(value);
+					this.SendPropertyChanging();
+					this._TargetFacebookID = value;
+					this.SendPropertyChanged("TargetFacebookID");
+					this.OnTargetFacebookIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Request", Storage="_Team", ThisKey="SourceTeamID", OtherKey="TeamID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Team Team
+		{
+			get
+			{
+				return this._Team.Entity;
+			}
+			set
+			{
+				Team previousValue = this._Team.Entity;
+				if (((previousValue != value) 
+							|| (this._Team.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Team.Entity = null;
+						previousValue.Requests.Remove(this);
+					}
+					this._Team.Entity = value;
+					if ((value != null))
+					{
+						value.Requests.Add(this);
+						this._SourceTeamID = value.TeamID;
+					}
+					else
+					{
+						this._SourceTeamID = default(int);
+					}
+					this.SendPropertyChanged("Team");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Sessions")]
 	public partial class Session : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -3956,6 +4214,8 @@ namespace SoccerServer.BDDModel
 		
 		private EntityRef<PendingTraining> _PendingTraining;
 		
+		private EntitySet<Request> _Requests;
+		
 		private EntitySet<SoccerPlayer> _SoccerPlayers;
 		
 		private EntitySet<SpecialTraining> _SpecialTrainings;
@@ -3999,6 +4259,7 @@ namespace SoccerServer.BDDModel
 			this._CompetitionGroupEntries = new EntitySet<CompetitionGroupEntry>(new Action<CompetitionGroupEntry>(this.attach_CompetitionGroupEntries), new Action<CompetitionGroupEntry>(this.detach_CompetitionGroupEntries));
 			this._MatchParticipations = new EntitySet<MatchParticipation>(new Action<MatchParticipation>(this.attach_MatchParticipations), new Action<MatchParticipation>(this.detach_MatchParticipations));
 			this._PendingTraining = default(EntityRef<PendingTraining>);
+			this._Requests = new EntitySet<Request>(new Action<Request>(this.attach_Requests), new Action<Request>(this.detach_Requests));
 			this._SoccerPlayers = new EntitySet<SoccerPlayer>(new Action<SoccerPlayer>(this.attach_SoccerPlayers), new Action<SoccerPlayer>(this.detach_SoccerPlayers));
 			this._SpecialTrainings = new EntitySet<SpecialTraining>(new Action<SpecialTraining>(this.attach_SpecialTrainings), new Action<SpecialTraining>(this.detach_SpecialTrainings));
 			this._Ticket = default(EntityRef<Ticket>);
@@ -4290,6 +4551,19 @@ namespace SoccerServer.BDDModel
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Request", Storage="_Requests", ThisKey="TeamID", OtherKey="SourceTeamID")]
+		public EntitySet<Request> Requests
+		{
+			get
+			{
+				return this._Requests;
+			}
+			set
+			{
+				this._Requests.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_SoccerPlayer", Storage="_SoccerPlayers", ThisKey="TeamID", OtherKey="TeamID")]
 		public EntitySet<SoccerPlayer> SoccerPlayers
 		{
@@ -4452,6 +4726,18 @@ namespace SoccerServer.BDDModel
 		}
 		
 		private void detach_MatchParticipations(MatchParticipation entity)
+		{
+			this.SendPropertyChanging();
+			entity.Team = null;
+		}
+		
+		private void attach_Requests(Request entity)
+		{
+			this.SendPropertyChanging();
+			entity.Team = this;
+		}
+		
+		private void detach_Requests(Request entity)
 		{
 			this.SendPropertyChanging();
 			entity.Team = null;

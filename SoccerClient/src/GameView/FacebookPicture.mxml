@@ -28,6 +28,10 @@
 		{
 			removeAllElements();
 			
+			// Contamos con que FacebookID == -1 en caso de que una chapa no tenga amigo asignado
+			if (userID.indexOf("-") != -1)
+				return;
+			
 			if (mImagesCache.hasOwnProperty(userID + Size))
 			{				
 				mImage = mImagesCache[userID+Size];
@@ -43,13 +47,16 @@
 				// dependiendo del CDN que toque parece un movidon/error.
 				// Un tio al que le paso lo mismo:
 				// http://jessewarden.com/2009/03/handling-crossdomainxml-and-302-redirects-using-netstream.html
+				//
+				// Esto funciona mal. Por ejemplo con las FieldCaps, durante el Drag & Drop, no salta el cache
+				//				
 				if (mImage.parent != null && mImage.parent.stage != null)
 				{
 					var cachedSource : Object = mImage.source;
 					
 					mImage = new BitmapImage();
 					mImage.source = cachedSource;
-				}				
+				}
 			}
 			else
 			{

@@ -26,7 +26,7 @@ namespace SoccerServer
             }
             else
             {
-                var auth = new CanvasAuthorizer();  // new CanvasAuthorizer { Permissions = new[] { "user_about_me" } };
+                var auth = new CanvasAuthorizer(); 
 
                 // Si no estamos logeados o autorizados, nos redireccionara automaticamente a la pagina de login/autorizacion
                 // En el web.config hay un handler de facebookredirect.axd, a traves de el se hacen las redirecciones
