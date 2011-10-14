@@ -34,7 +34,7 @@
 	<GameView:FacebookPicture FacebookID="{data.FacebookID}" scaleX="0.5" scaleY="0.5"/>
 	<s:Label id="MyBackNumberLabel" text="{data.DorsalNumber}" horizontalCenter="0" top="10" styleName="whiteBoldMedium" textAlign="center" filters="{DorsalNumberStrokeFilter}"/>
 	
-	<s:Group horizontalCenter="0" top="70" width="70" height="19" id="MyNameGroup" visible="{data.Name.length != 0}">
+	<s:Group horizontalCenter="0" top="70" width="70" height="19" id="MyNameGroup" visible="{IsVisibleName(data)}">
 		<s:BitmapImage horizontalCenter="0" source="@Embed(source='/Assets/General.swf', symbol='CapName')" fillMode="clip" />
 		<s:Label id="MyNameLabel" mask="{MyMask}" text="{data.Name}" horizontalCenter="0" top="3" styleName="whiteBoldArial"/>
 
@@ -69,6 +69,13 @@
 		
 		[Bindable]
 		private var mHorizDisp : Number = 0;
+		
+		private function IsVisibleName(soccerPlayer:Object) : Boolean
+		{
+			if (soccerPlayer != null && soccerPlayer.Name.length > 0)
+				return true;
+			return false;
+		}
 
 		protected function CreationCompleteHandler(event:FlexEvent):void
 		{

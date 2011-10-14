@@ -13,10 +13,8 @@
 		import GameModel.SpecialTrainingModel;
 		import GameModel.TeamModel;
 		
-		import GameView.FriendSelector.FriendSelector;
 		import GameView.HierarchyUtils;
 		import GameView.MainView;
-		import GameView.Skins.ButtonDarkGreySkin;
 		import GameView.Skins.ButtonGreySkin;
 		
 		import mx.events.FlexEvent;
@@ -32,10 +30,6 @@
 			(HierarchyUtils.FindParentOfType(this, "GameView::MainView") as MainView).ChangeStateToSpecialTrainings();
 		}
 		
-		protected function FriendsSelectHandler(event:MouseEvent):void
-		{
-			FriendSelector.Show();
-		}
 		
 		[Bindable]
 		private var mTeamModel : TeamModel;
@@ -71,11 +65,9 @@
 		</s:Panel>
 	</s:Group>	
 
-	<Team:Field top="0" horizontalCenter="0" dataProvider="{mTeamModel.FieldSoccerPlayers}"/> 
-	<Team:Substitutes top="364" horizontalCenter="0" dataProvider="{mTeamModel.SubstituteSoccerPlayers}"/>
+	<Team:Field top="0" horizontalCenter="0" /> 
+	<Team:Substitutes top="364" horizontalCenter="0" />
 	
-	<s:Button top="364" horizontalCenter="100" label="Amigos" click="FriendsSelectHandler(event)" />
-
 	<Team:CapPanel width="188" right="10" top="10" bottom="10" title="JUGADOR"/>
 	
 </s:Group>

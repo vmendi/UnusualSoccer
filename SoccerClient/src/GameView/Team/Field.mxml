@@ -5,7 +5,8 @@
 		 xmlns:GameView="GameView.*"
 		 creationComplete="CreationCompleteHandler(event)"
 		 skinClass="GameView.Team.FieldSkin" xmlns:Team="GameView.Team.*"
-		 useVirtualLayout="false">
+		 useVirtualLayout="false"
+		 dataProvider="{mMainGameModel.TheTeamModel.FieldSoccerPlayers}">
 	
 	<s:layout>
 		<Team:FormationLayout FormationName="{mMainGameModel.TheFormationModel.Formation}"/> 
@@ -26,6 +27,8 @@
 		protected function CreationCompleteHandler(event:FlexEvent) : void
 		{
 			mMainGameModel = SoccerClient.GetMainGameModel();
+			
+			dataProvider = mMainGameModel.TheTeamModel.FieldSoccerPlayers;
 			
 			BindingUtils.bindSetter(OnSelectionChanged, mMainGameModel.TheTeamModel, "SelectedSoccerPlayer");
 			addEventListener(IndexChangeEvent.CHANGE, OnMySelectionChanged);

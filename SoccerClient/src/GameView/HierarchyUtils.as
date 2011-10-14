@@ -13,11 +13,12 @@ package GameView
 		{
 			var ret : DisplayObjectContainer = child.parent;
 			
+			// GameView.Team::FieldCapAddFriend			
 			while (ret != null && getQualifiedClassName(ret) != type)
 			{
 				ret = ret.parent;
 			}
-						
+
 			return ret;
 		}
 	}
