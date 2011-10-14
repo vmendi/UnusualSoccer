@@ -18,9 +18,7 @@
 		import SoccerServer.TransferModel.vo.SoccerPlayer;
 		
 		import mx.binding.utils.BindingUtils;
-		import mx.events.DragEvent;
 		import mx.events.FlexEvent;
-		import mx.messaging.events.ChannelEvent;
 		
 		import spark.events.IndexChangeEvent;
 		

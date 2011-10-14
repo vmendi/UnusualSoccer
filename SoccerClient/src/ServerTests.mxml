@@ -87,7 +87,7 @@
 			{
 				counter++;
 				
-				mMainGameModel.TheRankingModel.RefreshAndSelectSelf();
+				mMainGameModel.TheRankingModel.RefreshFirstPage();
 				SetLine(1, "Refresco ranking " + counter.toString());
 			}
 		}

@@ -30,6 +30,11 @@
 		[Bindable] private var mMainGameModel : MainGameModel;
 		[Bindable] private var mTeamModel : TeamModel;
 		
+		protected function OnHallOfFameClickHandler(event:MouseEvent):void
+		{
+			(HierarchyUtils.FindParentOfType(this, "GameView::MainView") as MainView).ChangeStateToRanking();			
+		}
+		
 	]]></fx:Script>
 	
 	<fx:Declarations>
@@ -48,6 +53,8 @@
 	</s:BorderContainer>
 
 	<GameView:TicketsPanel x="170" y="0" />
+	
+	<s:Button id="MyHallOfFameButton" label="Hall of Fame" x="190" y="0" click="OnHallOfFameClickHandler(event)" />
 		
 	<s:Label x="432" y="34" text="{mTeamModel.TheTeam.TrueSkill}" width="60" height="20" id="MyTrueSkillLabel" styleName="whiteBoldVeryBig" textAlign="center" filters="{txtGlowFilter}"/>	
 	<s:Label x="503" y="34" text="{mTeamModel.TheTeam.XP}" width="44" height="20" id="MyXPLabel" styleName="whiteBoldVeryBig" textAlign="center" filters="{txtGlowFilter}"/>

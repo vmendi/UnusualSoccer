@@ -8,7 +8,6 @@
 		import GameModel.MainGameModel;
 		import GameModel.RankingModel;
 		
-		import GameView.Skins.ButtonFirstOneSkin;
 		import GameView.Skins.DefaultListSkin;
 		import GameView.Skins.DefaultPanelSkin;
 		
@@ -29,7 +28,7 @@
 			
 			BindingUtils.bindSetter(OnSelectedRankingTeamChanged, mRankingModel, "SelectedRankingTeam");
 			
-			mRankingModel.RefreshAndSelectSelf();
+			mRankingModel.RefreshFirstPage();
 		}
 		
 		private function OnSelectedRankingTeamChanged(newSelectedRankingTeam : RankingTeam) : void
@@ -38,23 +37,9 @@
 			if (MyRankingList != null)
 			{
 				MyRankingList.selectedItem = newSelectedRankingTeam;
-				
-				// Ahora mismo la lista no está disponible, ensureIndexIsVisible revienta
-				if (newSelectedRankingTeam != null && newSelectedRankingTeam.Name == mGameModel.TheTeamModel.TheTeam.Name)
-					MyRankingList.callLater(EnsureSelectedIsVisible);
 			}
 		}
-		
-		private function EnsureSelectedIsVisible() : void
-		{
-			var idx : int = MyRankingList.dataProvider.getItemIndex(mRankingModel.SelectedRankingTeam);
-			
-			if (idx + 4 < MyRankingList.dataProvider.length)
-				idx += 4;
-			
-			MyRankingList.ensureIndexIsVisible(idx);
-		}
-		
+				
 		protected function MyRankingList_changeHandler(event:IndexChangeEvent):void
 		{		
 			// La vista cambia el seleccionado
@@ -68,7 +53,7 @@
 		
 		protected function MyBackButton_clickHandler(event:MouseEvent):void
 		{
-			mRankingModel.RefreshAndSelectSelf();
+			mRankingModel.RefreshFirstPage();
 			MyBackButton.visible = false;
 		}
 		
@@ -81,22 +66,11 @@
 	<fx:Style source="styles.css" />
 
 	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" bottom="10" left="10" width="365" title="RANKING DE JUGADORES">
-		<s:List id="MyRankingList" left="0" right="0" top="0" height="407"
+		<s:List id="MyRankingList" left="0" right="0" top="0" height="442"
 				dataProvider="{mRankingModel.TheRankingPage.Teams}" 
 				itemRenderer="GameView.RankingTeamItem" useVirtualLayout="false"
 				skinClass="GameView.Skins.DefaultListSkin" 
 				change="MyRankingList_changeHandler(event)"/>
-
-		<s:Group x="0" bottom="0">
-			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='RankingPagesNavBg')" fillMode="clip" />
-			<s:Button skinClass="GameView.Skins.ButtonFirstOneSkin" x="64" y="3" click="mRankingModel.FirstPage()" />
-			<s:Button skinClass="GameView.Skins.ButtonPrevSkin" x="96" y="3" click="mRankingModel.PrevRankingPage()" />
-			<s:Button skinClass="GameView.Skins.ButtonNextSkin" x="243" y="3" click="mRankingModel.NextRankingPage()" />
-			<s:Button skinClass="GameView.Skins.ButtonLastOneSkin" x="273" y="3" click="mRankingModel.LastPage()"/>
-			<s:Label x="132" y="9" width="100" textAlign="center"
-					 text="{mRankingModel.TheRankingPage.PageIndex+1} / {mRankingModel.TheRankingPage.TotalPageCount}"
-					 styleName="blackBoldMediumHN"/>
-		</s:Group>
 	</s:Panel>
 	
 	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" right="10" bottom="10" width="365" title="ESTADÍSTICAS">
