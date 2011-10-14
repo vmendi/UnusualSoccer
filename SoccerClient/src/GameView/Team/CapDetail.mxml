@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="CreationCompleteHandler(event)">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="CreationCompleteHandler(event)" xmlns:GameView="GameView.*">
 	
 	<fx:Style source="../styles.css" />
 	
@@ -61,8 +61,9 @@
 		<s:Label text="{TheSoccerPlayer.DorsalNumber.toString()}" horizontalCenter="0" top="18" styleName="whiteBoldBig" textAlign="center" filters="{DorsalNumberStrokeFilter}"/>
 	</s:Group>
 	
-	<!-- <s:Label text="{TheSoccerPlayer.Name}" left="75" top="23" styleName="whiteBoldMedium" /> //-->
-	
+	<GameView:FacebookPicture FacebookID="{TheSoccerPlayer.FacebookID}" />
+	<s:Label text="{TheSoccerPlayer.Name}" left="75" top="23" styleName="whiteBoldMedium" />
+		
 	<mx:Image left="74" top="26" id="MyCapStars" scaleContent="false"
 			  source="@Embed(source='/Assets/General.swf', symbol='CapDetailsStars')"/>
 	

@@ -17,11 +17,9 @@
     <s:Scroller width="272" top="12" height="93" left="37" id="scroller" hasFocusableChildren="false" skinClass="GameView.Skins.DefaultScrollerSkin" >
 		<s:DataGroup id="dataGroup"
 					 left="0" top="0" right="0" bottom="0" 
-					 hasFocusableChildren="false"
-					 itemRenderer="GameView.Team.FieldCap">
+					 hasFocusableChildren="false">
 			<s:layout>
-				 <s:HorizontalLayout gap="30" verticalAlign="middle"/>
-				 
+				 <s:HorizontalLayout gap="15" verticalAlign="middle"/>				 
 			 </s:layout>
 		</s:DataGroup>
     </s:Scroller>

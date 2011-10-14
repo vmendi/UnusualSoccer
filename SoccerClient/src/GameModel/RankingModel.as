@@ -22,49 +22,28 @@ package GameModel
 			mMainGameModel = mainModel;
 		}
 		
-		public function RefreshAndSelectSelf() : void
-		{			
-			mMainService.RefreshSelfRankingPage(new mx.rpc.Responder(OnRefreshRankingPageRespondedSelectSelf, ErrorMessages.Fault));
-		}
+		public function RefreshFirstPage() : void
+		{
+			mSelfRankingTeam = new RankingTeam();
 		
+			// Los dejamos de momento sin bindear. Si luego el TrueSkill se muestra a traves de este RankingTeam, 
+			// hay q refrescarlo mediante bindeo. Los demas campos son estaticos y no cambian durante el juego
+			mSelfRankingTeam.Name = mMainGameModel.TheTeamModel.TheTeam.Name;
+			mSelfRankingTeam.FacebookID = parseFloat(SoccerClient.GetFacebookFacade().FacebookID);
+			mSelfRankingTeam.PredefinedTeamName = mMainGameModel.TheTeamModel.PredefinedTeamName;
+			mSelfRankingTeam.TrueSkill = mMainGameModel.TheTeamModel.TheTeam.TrueSkill;
+			
+			// Primero mandamos a refrescar toda la primera pagina
+			mMainService.RefreshRankingPage(0, new mx.rpc.Responder(OnRefreshRankingPageResponded, ErrorMessages.Fault));
+			
+			// Y luego sólo nuestras Stats
+			SelectedRankingTeam = mSelfRankingTeam;
+		}
+						
 		private function OnRefreshMatchStatsResponded(e:ResultEvent) : void
 		{
 			mSelectedRankingTeamMatchStats = e.result as TeamMatchStats;
 			dispatchEvent(new Event("SelectedRankingTeamMatchStatsChanged"));
-		}
-				
-		public function NextRankingPage() : void
-		{
-			if (mCurrentRankingPage.PageIndex < mCurrentRankingPage.TotalPageCount-1)
-			{
-				mMainService.RefreshRankingPage(mCurrentRankingPage.PageIndex+1, 
-												new mx.rpc.Responder(OnRefreshRankingPageResponded, ErrorMessages.Fault)); 
-			}
-		}
-		
-		public function PrevRankingPage() : void
-		{
-			if (mCurrentRankingPage.PageIndex > 0)
-			{
-				mMainService.RefreshRankingPage(mCurrentRankingPage.PageIndex-1, 
-												new mx.rpc.Responder(OnRefreshRankingPageResponded, ErrorMessages.Fault)); 
-			}
-		}
-		
-		private function OnRefreshRankingPageRespondedSelectSelf(e:ResultEvent) : void
-		{
-			OnRefreshRankingPageResponded(e);
-			
-			// Nosotros estamos seguro en esta pagina
-			for each(var rankingTeam : RankingTeam in mCurrentRankingPage.Teams)
-			{
-				if (rankingTeam.Name == mMainGameModel.TheTeamModel.TheTeam.Name)
-				{
-					// Esto provocara un refresco de las SelectedRankingTeamStats
-					SelectedRankingTeam = rankingTeam;
-					break;
-				}
-			}
 		}
 		
 		private function OnRefreshRankingPageResponded(e:ResultEvent) : void
@@ -72,18 +51,7 @@ package GameModel
 			mCurrentRankingPage = e.result as RankingPage;
 			dispatchEvent(new Event("RankingPageChanged"));
 		}
-		
-		public function FirstPage() : void
-		{
-			mMainService.RefreshRankingPage(0, new mx.rpc.Responder(OnRefreshRankingPageResponded, ErrorMessages.Fault));
-		}
-		
-		public function LastPage() : void
-		{
-			mMainService.RefreshRankingPage(mCurrentRankingPage.TotalPageCount-1, 
-					new mx.rpc.Responder(OnRefreshRankingPageResponded, ErrorMessages.Fault));
-		}
-		
+						
 		[Bindable(event="RankingPageChanged")]
 		public function get TheRankingPage() : RankingPage { return mCurrentRankingPage; }
 		
@@ -102,6 +70,8 @@ package GameModel
 		private var mCurrentRankingPage : RankingPage;
 		private var mSelectedRankingTeam : RankingTeam;
 		private var mSelectedRankingTeamMatchStats : TeamMatchStats;
+		
+		private var mSelfRankingTeam : RankingTeam;
 				
 		private var mMainService : MainService;
 		private var mMainGameModel : MainGameModel;
