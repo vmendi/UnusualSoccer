@@ -167,8 +167,6 @@
 	
 	<s:Label id="MyOutOfCredit" right="10" y="29" text="OUT OF CREDIT BLAH BLAH" includeIn="OutOfCredit" styleName="whiteBoldMedium" />
 	
-	<Team:FieldCapAddFriend x="20" y="20" />
-	
 	<!--
 	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="200" right="10" width="365" title="TU DIVISION">
 		<s:Label id="MyDivisionLabel" text="{mCompetitionModel.TheGroup.DivisionName}" top="10" styleName="whiteBoldMedium" />
