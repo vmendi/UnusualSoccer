@@ -21,7 +21,7 @@
 			//FPSCounter.Init(this.stage, new Point(0,0));
 			
 			// Excepciones globales capturadas
-			if(loaderInfo.hasOwnProperty("uncaughtErrorEvents"))
+			if (loaderInfo.hasOwnProperty("uncaughtErrorEvents"))
 				IEventDispatcher(loaderInfo["uncaughtErrorEvents"]).addEventListener("uncaughtError", ErrorMessages.UncaughtErrorHandler);
 			
 			// Si se dispara esta señal, la dispare quien la dispare, nos quedamos en blanco

@@ -94,6 +94,9 @@
 
 		protected function ButtonbarChangeHandler(event:IndexChangeEvent):void
 		{
+			if (MainMenuButtonBar.selectedItem == null)
+				return;
+			
 			if (MainMenuButtonBar.selectedItem.menuId == "Competition")
 				currentState = "Competition";
 			else

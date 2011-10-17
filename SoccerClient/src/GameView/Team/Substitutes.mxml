@@ -33,8 +33,11 @@
 			{
 				mSubstitutes.addAll(val);
 				
+				// Al menos siempre 1
+				mSubstitutes.addItemAt(new Object(), 0);
+				
 				// Creamos un objeto dummy por cada chapa FieldCapAddFriend que queramos insertar
-				while (mSubstitutes.length < 4)
+				while (mSubstitutes.length < 3)
 				{
 					mSubstitutes.addItemAt(new Object(), 0);
 				}
