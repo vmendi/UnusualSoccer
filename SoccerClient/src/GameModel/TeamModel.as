@@ -103,7 +103,7 @@ package GameModel
 			for each(var str : String in target_facebook_IDs)
 				toArrayCollection.addItem(str);
 
-			mMainService.CreateRequests(request_id, toArrayCollection);
+			mMainService.CreateRequests(request_id, toArrayCollection, ErrorMessages.FaultResponder);
 		}
 
 		private function OnRefreshTeamResponse(e:ResultEvent, callback : Function) : void

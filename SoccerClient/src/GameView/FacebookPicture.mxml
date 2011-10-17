@@ -4,6 +4,11 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="50" height="50">
 		
 	<fx:Script><![CDATA[
+		import com.greensock.TweenNano;
+		
+		import mx.messaging.messages.ErrorMessage;
+		
+		import spark.components.Image;
 		import spark.primitives.BitmapImage;
 		
 		[Bindable]
@@ -33,13 +38,17 @@
 				return;
 			
 			if (mImagesCache.hasOwnProperty(userID + Size))
-			{				
-				mImage = mImagesCache[userID+Size];
+			{
+				mImage = new BitmapImage();
+				mImage.source = (mImagesCache[userID+Size] as BitmapImage).source;
 				
-				// Usamos la condicion de no estar en la stage para determinar que es reusable. Es decir, si la imagen que esta
-				// en el cache esta siendo pintada, clonamos, provocando recarga desde la red.
-				// A veces no usa el cache cuando podría hacerlo por culpa del virtual layout, que no llega a remover elementos 
-				// de la stage, los deja "ahí" (no visibles) para reusarlos.
+				addElement(mImage);
+			}
+			else
+			{
+				load();
+				
+				// OLD OLD OLD
 				// Lo ideal sería poder hacer un clon rapido sin pasar por el mImage.source, que fuerza una recarga desde la red
 				// puesto que el source es un URLRequest. El problema es que el clon rapido implica el clonado del BitmapData, y
 				// el modelo de seguridad no lo permite a no ser que cargues un crossdomain.xml. Entonces, estas imagenes estan
@@ -47,28 +56,72 @@
 				// dependiendo del CDN que toque parece un movidon/error.
 				// Un tio al que le paso lo mismo:
 				// http://jessewarden.com/2009/03/handling-crossdomainxml-and-302-redirects-using-netstream.html
+				// OLD END
 				//
-				// Esto funciona mal. Por ejemplo con las FieldCaps, durante el Drag & Drop, no salta el cache
-				//				
-				if (mImage.parent != null && mImage.parent.stage != null)
+				// NEW: Finalmente hemos implementado el movidon. Atencion al timer!
+				//
+				function load() : void
+				{					
+					mLoader = new Loader();
+					mLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
+					mLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
+					mLoader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onError);
+					mLoader.load(new URLRequest("http://graph.facebook.com/"+userID+"/picture/?type="+mSize));
+				}
+				
+				function onError(e:Event):void
 				{
-					var cachedSource : Object = mImage.source;
+					// Poco podemos hacer...
+				}
+				
+				function onComplete(e:Event):void
+				{
+				 	var loaderInfo : LoaderInfo = e.target as LoaderInfo;
 					
-					mImage = new BitmapImage();
-					mImage.source = cachedSource;
+					// Por el useVirtualLayout de las listas, nos reusaran... entonces, llegara el onComplete de un loader ya obsoleto
+					if (loaderInfo.bytesTotal != 0 && loaderInfo.bytesLoaded == loaderInfo.bytesTotal && 
+						mLoader != null && loaderInfo == mLoader.contentLoaderInfo)
+					{
+						// Esto nos indica cuándo se ha cargado con redireccion
+						if (!mLoader.contentLoaderInfo.childAllowsParent)
+						{
+							if (mLoader.contentLoaderInfo.isURLInaccessible)
+							{
+								// oh my goodness...
+								Security.loadPolicyFile(mLoader.contentLoaderInfo.url + "crossdomain.xml");
+							
+								// Suponemos que 3 segundos es suficiente para que le de tiempo a cargar la policy.
+								// No, lamentablemente no hay forma de preguntarle de ninguna otra manera. En los docs sugieren hacer polling
+								// del childAllowsParent...
+								TweenNano.delayedCall(3, load);
+							}
+							else
+							{
+								// Este caso no nos lo hemos encontrado, parece que el CDN de FB esta configurado siempre para que NO nos devuelva la URL completa
+								// de las fotos. De momento lo dejamos sin implementar a ver si ocurre alguna vez
+								ErrorMessages.LogToServer("Error horrible, la URL deberia ser inaccesible");
+								throw new Error("DEBUG DEBUG DEBUG");
+							}
+						}
+						else
+						{
+							mImage = new BitmapImage();
+							mImagesCache[userID+Size] = mImage;
+							mImage.source = mLoader.content;	
+							
+							addElement(mImage);
+						}
+						
+						mLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onComplete);
+						mLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onError);
+						mLoader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, onError);
+						mLoader = null;
+					}
 				}
 			}
-			else
-			{
-				mImage = new BitmapImage();
-				mImagesCache[userID+Size] = mImage;
-
-				// El cache spark (ContentCache) no funciona por culpa de la redireccion que hace FB
-				mImage.source = new URLRequest("http://graph.facebook.com/"+userID+"/picture/?type="+mSize);
-			}
-			
-			addElement(mImage);
 		}
+		
+		private var mLoader : Loader;
 
 		private var mImage : BitmapImage;
 		private var mFacebookID : String;
