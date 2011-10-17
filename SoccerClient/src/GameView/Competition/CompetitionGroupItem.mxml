@@ -14,7 +14,7 @@
 	</s:states>
 	
 	<s:Graphic includeIn="hovered">
-		<s:Rect x="0" y="0" width="423" height="50">
+		<s:Rect x="0" y="0" width="740" height="50">
 			<s:fill>
 				<s:SolidColor color="#666666" alpha="0.3" />
 			</s:fill>
@@ -22,7 +22,7 @@
 	</s:Graphic>
 	
 	<s:Graphic includeIn="selected">
-		<s:Rect x="0" y="0" width="423" height="50">
+		<s:Rect x="0" y="0" width="740" height="50">
 			<s:fill>
 				<s:SolidColor color="#999999" alpha="0.3" />
 			</s:fill>
@@ -30,7 +30,10 @@
 	</s:Graphic>
 	
 	<s:Group width="100%" height="43">
-		<s:layout><s:HorizontalLayout/></s:layout>
+		<s:layout><s:HorizontalLayout gap="0"/></s:layout>
+		
+		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionDivisionUp')" fillMode="clip" />
+		<!-- <s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionDivisionStay')" fillMode="clip" /> -->
 		
 		<GameView:FacebookPicture FacebookID="{data.FacebookID}" />
 		
@@ -39,26 +42,26 @@
 			<GameView:BadgeTeam TeamName="{data.PredefinedTeamName}" />
 		</s:Group>
 		
-		<s:Group width="70%" height="50">
+		<s:Group width="306" height="50">
 			<s:layout><s:VerticalLayout paddingTop="7" gap="3"/></s:layout>
 			<s:Label width="100%" text="{data.Name}" styleName="whiteBoldBig" maxDisplayedLines="1" toolTip="{data.Name}"/>
 			<s:Label text="{data.PredefinedTeamName}" styleName="greyBoldMedium"/>
 		</s:Group>
 
-		<s:Label width="30" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
+		<s:Label width="60" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
 				 text="{data.Points}"/>
-		<s:Label width="30" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
+		<s:Label width="60" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
 				 text="{data.NumMatchesPlayed}"/>
-		<s:Label width="30" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
+		<s:Label width="60" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
 				 text="{data.NumMatchesWon}"/>
-		<s:Label width="30" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
+		<s:Label width="60" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
 				 text="{data.NumMatchesDraw}"/>
-		<s:Label width="30" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
+		<s:Label width="60" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"
 				 text="{data.NumMatchesPlayed - data.NumMatchesWon - data.NumMatchesDraw}"/>
 	</s:Group>
 	
 	<s:Graphic>
-		<s:Line xFrom="0" xTo="423" yFrom="50" yTo="50">
+		<s:Line xFrom="0" xTo="740" yFrom="50" yTo="50">
 			<s:stroke>
 				<s:SolidColorStroke color="0x000000" weight="1"/>
 			</s:stroke>

@@ -35,8 +35,10 @@
 			{
 				if (newVal == 0)
 					MyZeroRemaining.visible = true;
+					//MyRemainingMatches.visible = false;
 				else
 					MyZeroRemaining.visible = false;
+					//MyRemainingMatches.visible = true;
 			}
 			
 			private function OnTicketExpiryDateChanged(newVal : Date) : void
@@ -56,21 +58,39 @@
 			[Bindable] private var mTeamModel : TeamModel;
 		]]>
 	</fx:Script>
+
+	<s:Image source="@Embed(source='/Assets/General.swf', symbol='TicketBg')" alpha.NotPurchased="0.5" alpha.Purchased="1" />
 	
-	<s:Group includeIn="NotPurchased">
-		<s:Label text="Remaining matches today: " styleName="whiteBoldBig" x="0" y="0" />
-		<s:Label id="MyRemainingMatches" text="{mTeamModel.TheTeam.Ticket.RemainingMatches}" styleName="whiteBoldBig" x="160" y="0" />
-		<s:Label id="MyZeroRemaining" text="You don't have any more remaining matches for today. Please, purchase a ticket or come back tomorrow!" styleName="whiteBoldBig" 
-				 width="200" x="0" y="15" />
+	<s:Group height="40" x="0" horizontalCenter="0">
+		<s:layout>
+			<s:HorizontalLayout gap="4" verticalAlign="middle" />
+		</s:layout>
+		<s:Label id="MyRemainingMatches"  text="{mTeamModel.TheTeam.Ticket.RemainingMatches}" styleName="blackBoldHuge"
+				 x="35" y="0" />
+		<s:Label text="MATCHES TODAY" styleName="blackBoldBig"
+				 width="80" x="60" y="6" />
 	</s:Group>
+
+
+	<!--<s:Label text="You don't have any more matches for today." styleName="whiteBoldMedium" 
+			 width="124" x="32" y="7" 
+			 textAlign="center" />-->
+
+	<s:Label id="MyZeroRemaining" text="You don't have any more matches for today." styleName="whiteBoldMedium" 
+			 width="124" x="32" y="7"
+			 textAlign="center" />
+	
 	
 	<s:Group includeIn="Purchased">
 		<s:Label id="MyTicketKind" text="Ticket Kind: {mTeamModel.TheTeam.Ticket.TicketKind}" styleName="whiteBoldBig" x="0" y="0" />
 		<s:Label id="MyTicketExpiryDate" text="Valid until: {mTeamModel.TheTeam.Ticket.TicketExpiryDate.toLocaleString()}" styleName="whiteBoldBig" x="0" y="30" />
 	</s:Group>
 	
-	<s:Button id="MyBuyTicketsButton" label.NotPurchased="Buy a ticket (a pass?)!"
-			  						  label.Purchased="Buy another ticket"
-			  						  click="MyBuyTicketsButton_clickHandler(event)" x="0" y="45"  />
+	<s:Button id="MyBuyTicketsButton"
+			  label.NotPurchased="Buy game time"
+			  label.Purchased="Add game time"
+			  click="MyBuyTicketsButton_clickHandler(event)"
+			  skinClass="GameView.Skins.ButtonDarkGreySkin"
+			  width="110" height="18" x="40" y="41"/>
 
 </s:Group>

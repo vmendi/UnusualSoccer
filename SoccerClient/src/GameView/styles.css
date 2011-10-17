@@ -22,6 +22,13 @@
 	color:#FFFFFF;
 }
 
+.whiteBoldSmall {
+	font-family:MyFontHelveticaNeueLTBold;
+	font-size:10pt;
+	font-weight:bold;
+	color:#FFFFFF;
+}
+
 .whiteBoldMedium {
 	font-family:MyFontHelveticaNeueLTBold;
 	font-size:12pt;
@@ -32,6 +39,13 @@
 .whiteBoldBig {
 	font-family:MyFontHelveticaNeueLTBold;
 	font-size:14pt;
+	font-weight:bold;
+	color:#FFFFFF;
+}
+
+.whiteBoldVeryBig {
+	font-family:MyFontHelveticaNeueLTBold;
+	font-size:18pt;
 	font-weight:bold;
 	color:#FFFFFF;
 }
@@ -99,9 +113,23 @@
 	color:#000000;
 }
 
+.blackBoldBig {
+	font-family:MyFontHelveticaNeueLTBold;
+	font-size:14pt;
+	font-weight:bold;
+	color:#000000;
+}
+
 .blackBoldVeryBig {
 	font-family:MyFontHelveticaNeueLTBold;
 	font-size:20pt;
+	font-weight:bold;
+	color:#000000;
+}
+
+.blackBoldHuge {
+	font-family:MyFontHelveticaNeueLTBold;
+	font-size:36pt;
 	font-weight:bold;
 	color:#000000;
 }

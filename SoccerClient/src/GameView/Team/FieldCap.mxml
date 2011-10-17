@@ -26,30 +26,47 @@
 		<s:State name="hovered" />
 	</s:states>
 		
-	<s:Group width="34" height="35" horizontalCenter="0" verticalCenter="0">
-		<mx:SWFLoader top="18" left="17" id="MyCapMC" scaleContent="false"
-					  source="@Embed(source='/Assets/General.swf', symbol='CapBase')"/>
-	</s:Group>
-	
-	<GameView:FacebookPicture FacebookID="{data.FacebookID}" scaleX="0.5" scaleY="0.5"/>
-	<s:Label id="MyBackNumberLabel" text="{data.DorsalNumber}" horizontalCenter="0" top="10" styleName="whiteBoldMedium" textAlign="center" filters="{DorsalNumberStrokeFilter}"/>
-	
-	<s:Group horizontalCenter="0" top="70" width="70" height="19" id="MyNameGroup" visible="{IsVisibleName(data)}">
-		<s:BitmapImage horizontalCenter="0" source="@Embed(source='/Assets/General.swf', symbol='CapName')" fillMode="clip" />
-		<s:Label id="MyNameLabel" mask="{MyMask}" text="{data.Name}" horizontalCenter="0" top="3" styleName="whiteBoldArial"/>
-
-		<s:Group left="3" right="3" top="0" height="13" id="MyMask">
-			<s:Rect left="0" right="0" top="0" bottom="0" 
-					topLeftRadiusX="6" topLeftRadiusY="6"
-					topRightRadiusX="6" topRightRadiusY="6"
-					bottomLeftRadiusX="6" bottomLeftRadiusY="6" 
-					bottomRightRadiusX="6" bottomRightRadiusY="6">
-				<s:fill>
-					<s:SolidColor alpha="0" color="#FF0000"/>
-				</s:fill>
-			</s:Rect>
+	<s:Group>
+		<s:layout>
+			<s:VerticalLayout gap="3" horizontalAlign="center" />
+		</s:layout>
+		
+		<s:Group>
+			<mx:SWFLoader id="MyCapMC" scaleContent="false"
+						  source="@Embed(source='/Assets/General.swf', symbol='CapBase')"/>
+			<GameView:FacebookPicture FacebookID="{data.FacebookID}" maskType="alpha" scaleX="0.65" scaleY="0.65" left="8" top="7">
+				<GameView:mask>
+					<s:Group>
+						<s:Ellipse width="50" height="50">
+							<s:fill>
+								<s:SolidColor color="#000000" alpha="1" />
+							</s:fill>
+						</s:Ellipse>
+					</s:Group>
+				</GameView:mask>
+			</GameView:FacebookPicture>	
 		</s:Group>
+		
+		<s:Group horizontalCenter="0" top="65" width="70" height="19" id="MyNameGroup" visible="{IsVisibleName(data)}">
+			<s:BitmapImage horizontalCenter="0" source="@Embed(source='/Assets/General.swf', symbol='CapName')" fillMode="clip" />
+			<s:Label id="MyNameLabel" mask="{MyMask}" text="{data.Name}" horizontalCenter="0" top="3" styleName="whiteBoldArial"/>
+			
+			<s:Group left="3" right="3" top="0" height="13" id="MyMask">
+				<s:Rect left="0" right="0" top="0" bottom="0" 
+						topLeftRadiusX="6" topLeftRadiusY="6"
+						topRightRadiusX="6" topRightRadiusY="6"
+						bottomLeftRadiusX="6" bottomLeftRadiusY="6" 
+						bottomRightRadiusX="6" bottomRightRadiusY="6">
+					<s:fill>
+						<s:SolidColor alpha="0" color="#FF0000"/>
+					</s:fill>
+				</s:Rect>
+			</s:Group>
+		</s:Group>
+		
 	</s:Group>
+	
+	<!-- <s:Label id="MyBackNumberLabel" text="{data.DorsalNumber}" horizontalCenter="0" top="10" styleName="whiteBoldMedium" textAlign="center" filters="{DorsalNumberStrokeFilter}"/> -->
 		
 	<s:filters>
 		<s:DropShadowFilter distance="10" angle="124" blurX="8" blurY="8" includeIn="selected"/>
@@ -81,7 +98,11 @@
 		{
 			mTeamModel = SoccerClient.GetMainGameModel().TheTeamModel;
 			
-			(MyCapMC.content as MovieClip).gotoAndStop(mTeamModel.PredefinedTeamName);
+			// [Fran] Si la chapa tiene amigo asignado, no mostramos la equipación 
+			if (data.FacebookID == -1)
+				(MyCapMC.content as MovieClip).gotoAndStop(mTeamModel.PredefinedTeamName);
+			else
+				(MyCapMC.content as MovieClip).gotoAndStop("empty");
 			
 			addEventListener(MouseEvent.MOUSE_DOWN, FieldCapMouseDownHandler); 
 			addEventListener(DragEvent.DRAG_ENTER, FieldCapDragEnterHandler);

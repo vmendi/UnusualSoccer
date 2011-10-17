@@ -56,8 +56,10 @@
 		<s:layout>
 			<s:HorizontalLayout gap="6" />
 		</s:layout>
+		
 		<s:Group>
-			<GameView:BadgeCategory x="354" y="25" TrueSkill="{mTeamModel.TheTeam.TrueSkill}" />	
+			<s:Label width="64" top="5" text="DIVISIÓN" styleName="whiteBoldBig" textAlign="center" filters="{txtGlowFilter}"/>
+			<GameView:BadgeCategory width="64" height="43" top="25" TrueSkill="{mTeamModel.TheTeam.TrueSkill}" />	
 		</s:Group>
 
 		<s:Group x="500" y="0">
@@ -114,13 +116,16 @@
 			</s:Rect>
 		</s:Group>
 		
-		<s:Group width="102" height="6">
-			<s:layout>
-				<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
-			</s:layout>
-			<s:Image source="@Embed(source='/Assets/General.swf', symbol='IconMahouPoints')"/>
-			<s:Label x="701" y="34" text="{mTeamModel.TheTeam.SkillPoints}" id="MySkillPointsLabel" styleName="whiteBoldVeryBig" textAlign="left" filters="{txtGlowFilter}"/>
-			<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="Add" />
+		<s:Group top="0">
+			<s:Label top="5" width="100%" text="PUNTOS MAHOU" styleName="whiteBoldBig" textAlign="center" filters="{txtGlowFilter}"/>
+			<s:Group height="43" top="25">
+				<s:layout>
+					<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
+				</s:layout>
+				<s:Image source="@Embed(source='/Assets/General.swf', symbol='IconMahouPoints')"/>
+				<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MySkillPointsLabel" styleName="whiteBoldBig" textAlign="left" filters="{txtGlowFilter}"/>
+				<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="Add" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>
 		</s:Group>
 		
 		<GameView:TicketsPanel />

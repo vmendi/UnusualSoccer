@@ -31,7 +31,11 @@
 		{
 			// De momento solo podriamos mostrar soccerplayers de nuestro equipo, no hay forma de obtener el
 			// PredefinedTeam de un SoccerPlayer arbitrario
-			(MyCapMC.content as MovieClip).gotoAndStop(SoccerClient.GetMainGameModel().TheTeamModel.PredefinedTeamName);
+			// [Fran] Si la chapa tiene amigo asignado, no mostramos la equipación
+			if (TheSoccerPlayer.FacebookID == -1)
+				(MyCapMC.content as MovieClip).gotoAndStop(SoccerClient.GetMainGameModel().TheTeamModel.PredefinedTeamName);
+			else
+				(MyCapMC.content as MovieClip).gotoAndStop("empty");
 			
 			var qual : int = TheSoccerPlayerQuality.Quality;
 			var mc : MovieClip = MyCapStars.content["mcStars"] as MovieClip; 
@@ -61,12 +65,23 @@
 		<s:Label text="{TheSoccerPlayer.DorsalNumber.toString()}" horizontalCenter="0" top="18" styleName="whiteBoldBig" textAlign="center" filters="{DorsalNumberStrokeFilter}"/>
 	</s:Group>
 	
-	<GameView:FacebookPicture FacebookID="{TheSoccerPlayer.FacebookID}" />
-	<s:Label text="{TheSoccerPlayer.Name}" left="75" top="23" styleName="whiteBoldMedium" />
+	<GameView:FacebookPicture FacebookID="{TheSoccerPlayer.FacebookID}" maskType="alpha" scaleX="0.88" scaleY="0.88" top="17" left="17">
+		<GameView:mask>
+			<s:Group>
+				<s:Ellipse width="50" height="50">
+					<s:fill>
+						<s:SolidColor color="#000000" alpha="1" />
+					</s:fill>
+				</s:Ellipse>
+			</s:Group>
+		</GameView:mask>
+	</GameView:FacebookPicture>
+	
+	<s:Label text="{TheSoccerPlayer.Name}" left="75" top="21" styleName="whiteBoldMedium" />
 		
-	<mx:Image left="74" top="26" id="MyCapStars" scaleContent="false"
+	<mx:Image left="74" top="42" id="MyCapStars" scaleContent="false"
 			  source="@Embed(source='/Assets/General.swf', symbol='CapDetailsStars')"/>
 	
-	<s:Label text="{TheSoccerPlayerQuality.Quality}" left="164" top="26" styleName="whiteBoldMedium" />
+	<s:Label text="{TheSoccerPlayerQuality.Quality}" left="164" top="42" styleName="whiteBoldMedium" />
 	
 </s:Group>
