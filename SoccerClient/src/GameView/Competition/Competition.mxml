@@ -70,24 +70,19 @@
 			
 			if (idx + 4 < MyCompetitionList.dataProvider.length)
 				idx += 4;
+			else
+				idx = MyCompetitionList.dataProvider.length-1;
 			
 			MyCompetitionList.ensureIndexIsVisible(idx);
 		}
-				
-		protected function MyCompetitionList_changeHandler(event:IndexChangeEvent):void
-		{
-			// TODO Auto-generated method stub
-		}
-		
-		[Bindable] 
+
+		[Bindable]
 		private var mCompetitionModel : CompetitionModel;
 		private var mGameModel : MainGameModel;
 
 	]]></fx:Script>
 	
-
 	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" bottom="10" left="10" width="740" title="RANKING DE TU DIVISION">
-		
 		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraFondo')" fillMode="clip" />
 		
 		<s:Label width="147" x="0" y="9" text="DIVISIÓN" styleName="whiteBoldMedium" textAlign="center" />
@@ -95,85 +90,14 @@
 		<s:Label width="72" x="148" y="9" text="GRUPO" styleName="whiteBoldMedium" textAlign="center" />
 		<s:Label id="MyGroupNameLabel" text="{mCompetitionModel.TheGroup.GroupName}" width="72" x="148" y="41" styleName="whiteBoldVeryBig" textAlign="center" />
 		
-		<!-- <s:Label width="91" x="231" y="9" text="CORTE" styleName="whiteBoldMedium" textAlign="center" /> -->
 		<s:Label width="192" x="221" y="9" text="FIN DE TEMPORADA EN:" styleName="whiteBoldMedium" textAlign="center" />
-		<!-- <s:Label id="MyDivisionLabel" text="{mCompetitionModel.TheGroup.DivisionName}" top="10" styleName="whiteBoldMedium" /> -->
-		<!-- <s:Label id="MyMinimunPointsLabel" text="{mCompetitionModel.TheGroup.MinimumPoints}" width="91" x="231" y="30" styleName="whiteBoldVeryBig" textAlign="center" /> -->
-		
-		<s:Rect x="0" y="74" width="740" height="20">
-			<s:fill>
-				<s:LinearGradient rotation="90">
-					<s:GradientEntry alpha="1.0" color="#8F1203" ratio="0"/>
-					<s:GradientEntry alpha="1.0" color="#FE0001" ratio="1"/>
-				</s:LinearGradient>
-			</s:fill>
-		</s:Rect>
-		
-		<s:Line x="424" y="74" yTo="20">
-			<s:stroke>
-				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"
-									weight="1"/>
-			</s:stroke>
-		</s:Line>
-		<s:Label width="60" x="424" y="77" text="{resourceManager.getString('main','PPuntos')}" styleName="whiteBoldSmall" textAlign="center" />
-		
-		<s:Line x="484" y="74" yTo="20">
-			<s:stroke>
-				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"
-									weight="1"/>
-			</s:stroke>
-		</s:Line>
-		<s:Label width="60" x="484" y="77" text="{resourceManager.getString('main','PJugados')}" styleName="whiteBoldSmall" textAlign="center" />
-		
-		<s:Line x="544" y="74" yTo="20">
-			<s:stroke>
-				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"
-									weight="1"/>
-			</s:stroke>
-		</s:Line>
-		<s:Label width="60" x="544" y="77" text="{resourceManager.getString('main','PGanados')}" styleName="whiteBoldSmall" textAlign="center" />
-		
-		<s:Line x="604" y="74" yTo="20">
-			<s:stroke>
-				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"
-									weight="1"/>
-			</s:stroke>
-		</s:Line>
-		<s:Label width="60" x="604" y="77" text="{resourceManager.getString('main','PEmpatados')}" styleName="whiteBoldSmall" textAlign="center" />
-		
-		<s:Line x="664" y="74" yTo="20">
-			<s:stroke>
-				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"
-									weight="1"/>
-			</s:stroke>
-		</s:Line>
-		<s:Label width="60" x="664" y="77" text="{resourceManager.getString('main','PPerdidos')}" styleName="whiteBoldSmall" textAlign="center" />
-		
-		<s:Line x="724" y="74" yTo="20">
-			<s:stroke>
-				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"
-									weight="1"/>
-			</s:stroke>
-		</s:Line>
-		
-		<s:List id="MyCompetitionList" left="0" right="0" top="94" height="346"
-				dataProvider="{mCompetitionModel.TheGroup.GroupEntries}"
-				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="false"
-				skinClass="GameView.Skins.DefaultListSkin" 
-				change="MyCompetitionList_changeHandler(event)"/>
+				
+		<s:List id="MyCompetitionList" left="0" right="0" top="74" height="366"
+				dataProvider="{mCompetitionModel.TheGroup.GroupEntries}" skinClass="GameView.Competition.CompetitionListSkin"		
+				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="true"/>
 	</s:Panel>
 	
 	<Competition:LookingForMatchPanel x="424" y="49" includeIn="AvailableCredit" />
 	
 	<s:Label id="MyOutOfCredit" right="10" y="29" text="OUT OF CREDIT BLAH BLAH" includeIn="OutOfCredit" styleName="whiteBoldMedium" />
-	
-	<Team:FieldCapAddFriend x="20" y="20" />
-	
-	<!--
-	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="200" right="10" width="365" title="TU DIVISION">
-		<s:Label id="MyDivisionLabel" text="{mCompetitionModel.TheGroup.DivisionName}" top="10" styleName="whiteBoldMedium" />
-		<s:Label id="MyGroupNameLabel" text="{mCompetitionModel.TheGroup.GroupName}" top="40" styleName="whiteBoldMedium" />
-		<s:Label id="MyMinimunPointsLabel" text="{mCompetitionModel.TheGroup.MinimumPoints}" top="70" styleName="whiteBoldMedium" />
-	</s:Panel>
-	-->
 </s:Group>

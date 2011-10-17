@@ -126,7 +126,9 @@ namespace SoccerServer
                 int totalCreatedGroups = 0;
                 while (currDivisionTeams.Count > 0)
                 {
-                    var newGroup = CreateGroup(theContext, currentDivision, newSeason, "Group " + ++totalCreatedGroups);
+                    totalCreatedGroups++;
+
+                    var newGroup = CreateGroup(theContext, currentDivision, newSeason, totalCreatedGroups.ToString());
                                         
                     int bunchIndex = currDivisionTeams.Count - COMPETITION_GROUP_PREFERRED_ENTRIES;
                     int bunchCount = COMPETITION_GROUP_PREFERRED_ENTRIES;

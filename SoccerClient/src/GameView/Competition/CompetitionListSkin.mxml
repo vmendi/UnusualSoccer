@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+			 xmlns:fb="http://ns.adobe.com/flashbuilder/2009" minWidth="112"
+			 alpha.disabled="0.5" blendMode="normal"> 
+	
+	<fx:Metadata><![CDATA[ 
+		[HostComponent("spark.components.List")]
+	]]></fx:Metadata> 
+	
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="disabled" />
+	</s:states>
+	
+	<fx:Declarations>
+		<fx:Component id="dropIndicator">
+			<s:Group minWidth="3" minHeight="3" maxWidth="3" maxHeight="3">
+				<s:Rect left="0" right="0" top="0" bottom="0">
+					<s:fill>
+						<!--- Defines the color of the background. -->
+						<s:SolidColor color="0xBBBBBB" />
+					</s:fill>
+					<s:stroke>
+						<s:SolidColorStroke color="0x868686" weight="1"/>
+					</s:stroke>
+				</s:Rect>
+			</s:Group>
+		</fx:Component>
+	</fx:Declarations>	
+
+	
+	<s:Rect x="0" y="0" width="740" height="20">
+		<s:fill>
+			<s:LinearGradient rotation="90">
+				<s:GradientEntry alpha="1.0" color="#8F1203" ratio="0"/>
+				<s:GradientEntry alpha="1.0" color="#FE0001" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	
+	<s:Line x="424" y="0" yTo="20">
+		<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"	weight="1"/></s:stroke>
+	</s:Line>
+	<s:Label width="60" x="424" y="3" text="{resourceManager.getString('main','PPuntos')}" styleName="whiteBoldSmall" textAlign="center" />
+	
+	<s:Line x="484" y="0" yTo="20">
+		<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"	weight="1"/></s:stroke>
+	</s:Line>
+	<s:Label width="60" x="484" y="3" text="{resourceManager.getString('main','PJugados')}" styleName="whiteBoldSmall" textAlign="center" />
+	
+	<s:Line x="544" y="0" yTo="20">
+		<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"	weight="1"/>
+		</s:stroke>
+	</s:Line>
+	<s:Label width="60" x="544" y="3" text="{resourceManager.getString('main','PGanados')}" styleName="whiteBoldSmall" textAlign="center" />
+	
+	<s:Line x="604" y="0" yTo="20">
+		<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"	weight="1"/></s:stroke>
+	</s:Line>
+	<s:Label width="60" x="604" y="3" text="{resourceManager.getString('main','PEmpatados')}" styleName="whiteBoldSmall" textAlign="center" />
+	
+	<s:Line x="664" y="0" yTo="20">
+		<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"	weight="1"/></s:stroke>
+	</s:Line>
+	<s:Label width="60" x="664" y="3" text="{resourceManager.getString('main','PPerdidos')}" styleName="whiteBoldSmall" textAlign="center" />
+	
+	<s:Line x="724" y="0" yTo="20">
+		<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4" weight="1"/></s:stroke>
+	</s:Line>
+
+	<s:Scroller left="0" top="20" right="0" bottom="0" id="scroller" hasFocusableChildren="false"
+				skinClass="GameView.Skins.DefaultScrollerSkin" horizontalScrollPolicy="off">
+		<s:DataGroup id="dataGroup" itemRenderer="spark.skins.spark.DefaultItemRenderer" clipAndEnableScrolling="true">
+			<s:layout>
+				<!--- The default layout is vertical and measures at least for 5 rows.  
+				When switching to a different layout, HorizontalLayout for example,
+				make sure to adjust the minWidth, minHeihgt sizes of the skin -->
+				<s:VerticalLayout gap="0" horizontalAlign="contentJustify" requestedMinRowCount="5" />
+			</s:layout>
+		</s:DataGroup>
+	</s:Scroller>
+</s:SparkSkin>
