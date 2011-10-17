@@ -29,14 +29,12 @@
 		
 		private function OnQualityRefreshed(v:Number) : void
 		{
-			// De momento solo podriamos mostrar soccerplayers de nuestro equipo, no hay forma de obtener el
-			// PredefinedTeam de un SoccerPlayer arbitrario
 			// [Fran] Si la chapa tiene amigo asignado, no mostramos la equipación
-			if (TheSoccerPlayer.FacebookID == -1)
+			if (TheSoccerPlayer != null && TheSoccerPlayer.FacebookID < 0)
 				(MyCapMC.content as MovieClip).gotoAndStop(SoccerClient.GetMainGameModel().TheTeamModel.PredefinedTeamName);
 			else
 				(MyCapMC.content as MovieClip).gotoAndStop("empty");
-			
+						
 			var qual : int = TheSoccerPlayerQuality.Quality;
 			var mc : MovieClip = MyCapStars.content["mcStars"] as MovieClip; 
 			mc.gotoAndStop(qual+1);
