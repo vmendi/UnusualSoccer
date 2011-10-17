@@ -37,10 +37,20 @@
 			if (userID.indexOf("-") != -1)
 				return;
 			
-			if (mImagesCache.hasOwnProperty(userID + Size))
+			if (mLoadersCache.hasOwnProperty(userID + Size))
 			{
+				if (mLoader != null)
+				{
+					// Por el useVirtualLayout de las listas, nos reusaran... tenemos un loader en curso que hay que cerrar
+					try {
+						mLoader.close();	
+					}
+					catch (e:Error)	{}	// URLStream not closed
+					
+					mLoader = null;
+				}
 				mImage = new BitmapImage();
-				mImage.source = (mImagesCache[userID+Size] as BitmapImage).source;
+				mImage.source = mLoadersCache[userID+Size];
 				
 				addElement(mImage);
 			}
@@ -61,7 +71,15 @@
 				// NEW: Finalmente hemos implementado el movidon. Atencion al timer!
 				//
 				function load() : void
-				{					
+				{	
+					if (mLoader != null)
+					{						
+						try {
+							mLoader.close();	
+						}						
+						catch (e:Error)	{}
+					}
+
 					mLoader = new Loader();
 					mLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
 					mLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
@@ -78,7 +96,7 @@
 				{
 				 	var loaderInfo : LoaderInfo = e.target as LoaderInfo;
 					
-					// Por el useVirtualLayout de las listas, nos reusaran... entonces, llegara el onComplete de un loader ya obsoleto
+					// childAllowsParent puede no estar disponible. A pesar de los close(), se nos sigue llamando a onComplete
 					if (loaderInfo.bytesTotal != 0 && loaderInfo.bytesLoaded == loaderInfo.bytesTotal && 
 						mLoader != null && loaderInfo == mLoader.contentLoaderInfo)
 					{
@@ -105,9 +123,9 @@
 						}
 						else
 						{
-							mImage = new BitmapImage();
-							mImagesCache[userID+Size] = mImage;
-							mImage.source = mLoader.content;	
+							mLoadersCache[userID+Size] = mLoader;
+							mImage = new BitmapImage();							
+							mImage.source = mLoader.content;
 							
 							addElement(mImage);
 						}
@@ -127,8 +145,8 @@
 		private var mFacebookID : String;
 		private var mSize : String = "square";		
 		
-		// Este es el unico objeto que usamos para cargar imagenes de facebook, asi que este es el unico Cache
-		static private var mImagesCache : Object = new Object();
+		// Esta es la unica clase (FacebookPicture) que usamos para cargar imagenes de facebook, asi que este es el unico Cache del sistema
+		static private var mLoadersCache : Object = new Object();
 	]]></fx:Script>
 			
 </s:Group>
