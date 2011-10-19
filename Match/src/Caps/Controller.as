@@ -20,7 +20,7 @@ package Caps
 		protected var _IsStarted:Boolean = false;
 		
 		// Eventos		
-		public var OnStart:Signal = new Signal();					// Evento lanzado cuanto el controlador se arranca
+		public var OnStart:Signal = new Signal();			// Evento lanzado cuanto el controlador se arranca
 		public var OnStop:Signal = new Signal( int );		// Evento lanzado cuanto el controlador se detiene por cualquier razón
 		
 		//

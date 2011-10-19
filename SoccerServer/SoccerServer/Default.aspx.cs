@@ -26,7 +26,7 @@ namespace SoccerServer
             }
             else
             {
-                var auth = new CanvasAuthorizer(); 
+                var auth = new CanvasAuthorizer();
 
                 // Si no estamos logeados o autorizados, nos redireccionara automaticamente a la pagina de login/autorizacion
                 // En el web.config hay un handler de facebookredirect.axd, a traves de el se hacen las redirecciones
@@ -59,10 +59,10 @@ namespace SoccerServer
 				Player player = EnsurePlayerIsCreated(theContext, FacebookWebContext.Current.UserId, () => fb.Get("me"));
 
                 string sessionKey = FacebookWebContext.Current.AccessToken;
-
+                
 				EnsureSessionIsCreated(theContext, player, sessionKey);
 				theContext.SubmitChanges();
-                                 
+
                 // Ahora podemos hacer visible todo el contenido flash
                 DefaultForm.Visible = true;
 
@@ -121,7 +121,9 @@ namespace SoccerServer
 
             flashVars += "AppId: '" + theFBApp.AppId + "' ,";
             flashVars += "CanvasPage: '" + theFBApp.CanvasPage + "' ,";
-            flashVars += "CanvasUrl: '" + theFBApp.CanvasUrl + "'";
+            flashVars += "CanvasUrl: '" + theFBApp.CanvasUrl + "' ,";
+
+            flashVars += "SessionKey: '" + FacebookWebContext.Current.AccessToken + "'";
                                     
             flashVars += " } ";
             

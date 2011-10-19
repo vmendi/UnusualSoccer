@@ -9,7 +9,6 @@ package Caps
 	
 	import Framework.*;
 	
-	import Net.Server;
 	
 	import com.actionsnippet.qbox.QuickBox2D;
 	import com.actionsnippet.qbox.QuickContacts;
@@ -132,7 +131,7 @@ package Caps
 		{
 			public class SoccerPlayerData
 			{
-				public int	  Number;		// Dorsal
+				public int	  DorsalNumber; 
 				public String Name;			
 				public int    Power;
 				public int    Control;

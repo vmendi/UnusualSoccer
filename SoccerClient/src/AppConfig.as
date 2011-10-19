@@ -11,6 +11,7 @@ package
 		static public var APP_ID : String = null;
 		static public var REMOTE : String = null;					// true/false
 		static public var REMOTE_SERVER : String = null;			// "mahouligachapas.unusualwonder.com"; (CANVAS_URL puede ser localhost)
+		static public var SESSION_KEY : String = null;				
 		static public var FAKE_SESSION_KEY : String = null;
 		static public var TEST_NAME : String = null;
 		
@@ -35,6 +36,9 @@ package
 			
 			if (parameters.hasOwnProperty("RemoteServer"))
 				REMOTE_SERVER = parameters["RemoteServer"];
+			
+			if (parameters.hasOwnProperty("SessionKey"))
+				SESSION_KEY = parameters["SessionKey"];
 			
 			if (parameters.hasOwnProperty("FakeSessionKey"))
 				FAKE_SESSION_KEY = parameters["FakeSessionKey"];

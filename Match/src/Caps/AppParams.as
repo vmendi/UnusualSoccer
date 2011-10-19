@@ -60,10 +60,7 @@ package Caps
 		public static const VelFaultT1:Number = 5.0;				// Límite inferior de falta a un jugador (no portero) y límite inferior de tarjeta amarilla al portero
 		public static const VelFaultT2:Number = 11.0;				// Límite inferior de tarjeta amarilla a un jugador y límite inferior de tarjeta roja al portero 
 		public static const VelFaultT3:Number = 18.0;				// Límite inferior de tarjeta roja a un jugador
-		
-		// Parametros generados dentro de la aplicación
-		public static var SharingUserName:String = "";		// Nombre de usuario utilizado para el Sharing
-		
+				
 		//
 		// Conversión de unidades de pantalla (pixels) a unidades del motor de física (metros)
 		//

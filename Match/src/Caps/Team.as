@@ -4,7 +4,6 @@ package Caps
 	
 	import Framework.*;
 	
-	import Net.Server;
 	
 	import com.greensock.*;
 	

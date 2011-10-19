@@ -75,7 +75,7 @@
 		private function OnError(e:Event):void
 		{
 			// Poco podemos hacer... No merece la pena mandarlo al servidor, fallara mucho y no sabremos distinguir por qué
-			trace("OnError");
+			trace("FacebookPicture OnError " + mFacebookID);
 		}
 		
 		private function OnLoadComplete(e:Event):void

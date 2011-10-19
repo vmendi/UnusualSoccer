@@ -2,19 +2,14 @@ package Caps
 {
 	import Embedded.Assets;
 	
-	import Net.Server;
 	
 	import com.greensock.TweenMax;
-	import com.greensock.data.TweenMaxVars;
 	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.display.InteractiveObject;
-	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
-	import flash.text.Font;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
