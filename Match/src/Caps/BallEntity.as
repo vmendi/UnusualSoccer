@@ -52,7 +52,6 @@ package Caps
 		}
 		
 		//
-		// Se ejecuta a velocidad de pintado
 		// - Se encarga de copiar el objeto físico al objeto visual
 		//
 		public override function Draw( elapsed:Number ) : void
@@ -60,8 +59,6 @@ package Caps
 			// Obtenemos la velocidad del balón  
 			var vel:Number = PhyObject.body.GetLinearVelocity().LengthSquared();
 			
-			// TODO: Adaptamos la velocidad de reproducción la animación a la velocidad física del balón
-			// De momento solo hacemos un modelo de parado o en movimiento
 			if( IsMoving == false )
 				_Visual.stop();
 			else

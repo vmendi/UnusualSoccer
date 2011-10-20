@@ -4,7 +4,6 @@ package Caps
 	
 	import Framework.*;
 	
-	
 	import com.greensock.*;
 	
 	import flash.display.DisplayObject;
@@ -17,6 +16,7 @@ package Caps
 	import flash.media.SoundTransform;
 	import flash.net.SharedObject;
 	
+	import utils.Delegate;
 	import utils.TimeUtils;
 
 	//
@@ -68,10 +68,7 @@ package Caps
 			
 			// Sincroniza los valores de la lógica dentro del interface visual
 			Sync();
-			
-			// Nos registramos a los eventos de pulsación del interface
-			RegisterEvents();			
-			
+						
 			// Creamos un evento para cuando pulsen el botón de tirar a puerta
 			var Gui:* = Match.Ref.Game.GetField().Visual;
 			Gui.BotonTiroPuerta.addEventListener( MouseEvent.CLICK, OnTiroPuerta );
@@ -158,7 +155,6 @@ package Caps
 			Gui.Score.text = scoreText; 
 			
 			// Actualizamos la parte de juego en la que estamos "gui.Period"
-			
 			Gui.Period.text = Match.Ref.Game.Part.toString() + "T";
 			
 			// Marcamos que nadie tiene la posesion
@@ -168,15 +164,6 @@ package Caps
 			Update();
 		}
 		
-		//
-		// Nos registramos a los eventos del interface gráfico
-		//
-		public function RegisterEvents() : void
-		{
-			
-		}
-		
-
 		//
 		// Actualizamos los elementos visuales del Gui que están cambiando todo el tiempo
 		//   - Tiempo del partido
@@ -328,7 +315,7 @@ package Caps
 				else
 				{
 					if( usable )
-						item.addEventListener( MouseEvent.CLICK, Callback.Create( OnUseSkill, index ) ); 
+						item.addEventListener( MouseEvent.CLICK, Delegate.create( OnUseSkill, index ) ); 
 				}
 				item.mouseEnabled = usable;
 			}
@@ -487,7 +474,7 @@ package Caps
 			// Si no es válida la posición ignoramos simplemente			
 			if( result == Controller.Success && PosControl.IsValid() )
 			{
-				Server.Ref.Connection.Invoke( "OnPosCap", null, PosControl.Target.Id, PosControl.EndPos.x, PosControl.EndPos.y );
+				Match.Ref.Connection.Invoke( "OnPosCap", null, PosControl.Target.Id, PosControl.EndPos.x, PosControl.EndPos.y );
 			}
 		}
 		
@@ -507,7 +494,7 @@ package Caps
 			{
 				if( !AppParams.OfflineMode )
 				{
-					Server.Ref.Connection.Invoke( "OnServerShoot", null, Shoot.Target.Id, Shoot.Direction.x, Shoot.Direction.y, Shoot.Force );
+					Match.Ref.Connection.Invoke( "OnServerShoot", null, Shoot.Target.Id, Shoot.Direction.x, Shoot.Direction.y, Shoot.Force );
 					WaitResponse();
 				}
 				else
@@ -530,7 +517,7 @@ package Caps
 			
 			if( !AppParams.OfflineMode )
 			{
-				Server.Ref.Connection.Invoke( "OnPlaceBall", null, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y );
+				Match.Ref.Connection.Invoke( "OnPlaceBall", null, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y );
 				WaitResponse();
 			}
 			else
@@ -691,9 +678,9 @@ package Caps
 			{
 				// Notificamos al servidor para que lo propague en los usuarios
 				if( !AppParams.OfflineMode )
-					Server.Ref.Connection.Invoke( "OnUseSkill", null, idSkill );
+					Match.Ref.Connection.Invoke( "OnUseSkill", null, idSkill );
 				else
-					Match.Ref.Game.OnUseSkill( Server.Ref.IdLocalUser, idSkill );
+					Match.Ref.Game.OnUseSkill( Match.Ref.IdLocalUser, idSkill );
 			}
 		}
 		
@@ -703,7 +690,7 @@ package Caps
 		public function OnTiroPuerta( event:Object ) : void
 		{
 			// Propagamos al servidor
-			Server.Ref.Connection.Invoke( "OnTiroPuerta", null );
+			Match.Ref.Connection.Invoke( "OnTiroPuerta", null );
 			WaitResponse();
 		}
 
@@ -773,7 +760,7 @@ package Caps
 			
 			// Creamos la cutscene adecuada en función de si el turno del jugador local o el contrario y de la razón
 			// por la que hemos cambiado de turno			
-			if( idTeam == Server.Ref.IdLocalUser )	// Es el turno propio ( jugador local )
+			if( idTeam == Match.Ref.IdLocalUser )	// Es el turno propio ( jugador local )
 			{
 				if( reason == Enums.TurnByStolen  )
 				{
@@ -919,7 +906,7 @@ package Caps
 				var labelEnd:String = "EndAnim";
 				
 				if( Framework.Graphics.HasLabel( labelEnd, mc ) ) 
-					utils.MovieClipListener.AddFrameScript( mc, labelEnd, Framework.Callback.Create( OnEndCutScene, mc, removeToEnd, callback ) );
+					utils.MovieClipListener.AddFrameScript( mc, labelEnd, Delegate.create(OnEndCutScene, mc, removeToEnd, callback) );
 				else
 					trace( "El MovieClip " + mc.name + " no tiene la etiqueta " + labelEnd );
 			}
@@ -1172,15 +1159,15 @@ package Caps
 		
 		
 		// 
-		// Han pulsado en el botón de "Cerrar Aplicación"
+		// Han pulsado en el botón de "Cerrar Partido"
 		//
 		public function OnAbandonar( event:Object ) : void
 		{
 			trace( "OnAbandonar: Cerrando cliente ...." );
 			
 			// Notificamos al servidor para que lo propague en los usuarios
-			if( Server.Ref.Connection )
-				Server.Ref.Connection.Invoke( "OnAbort", null );
+			if( Match.Ref.Connection )
+				Match.Ref.Connection.Invoke( "OnAbort", null );
 			else
 				trace( "OnAbandonar: [warning] La conexión es nula. Ya se ha cerrado el cliente" );
 		}

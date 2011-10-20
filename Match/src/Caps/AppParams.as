@@ -13,7 +13,7 @@ package Caps
 		public static const DragPhysicObjects:Boolean = false;	// Indica si podemos arrastrar los objetos físicos con el ratón
 		
 		public static const Debug:Boolean = false;				// Indica que estamos en modo debug. Se habilitan trucos/trazas y similares
-		public static var   OfflineMode:Boolean = false;		// Indica si debemos simular un modo Offline (para propósitos de debug)
+		public static var   OfflineMode:Boolean = true;			// Indica si debemos simular un modo Offline (para propósitos de debug)
 		
 		// Configuración física
 		public static const PhyFPS:int = 30;					// La física se ejecuta 30 veces por segundo

@@ -4,7 +4,6 @@ package Caps
 	
 	import Framework.*;
 	
-	
 	import com.greensock.*;
 	
 	import flash.display.DisplayObject;
@@ -12,6 +11,8 @@ package Caps
 	import flash.geom.Point;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
+	
+	import utils.Delegate;
 
 	public class Team
 	{
@@ -53,8 +54,7 @@ package Caps
 					"Villarreal",
 				]
 			]
-		
-		
+				
 		public const CAPS_BY_TEAM:int = 8;						// Número de chapas que tiene cada equipo
 		
 		protected var _CapsList:Array = new Array();			// Lista de chapas
@@ -77,32 +77,7 @@ package Caps
 		//
 		// Inicializa el equipo
 		//
-		/*
-		//
-		// El Object "descTeam" es un objeto con la siguiente topología:
-		//
-		public class RealtimePlayerData
-		{
-		public class SoccerPlayerData
-		{
-		public int	  Number;		// Dorsal
-		public String Name;			
-		public int    Power;
-		public int    Control;
-		public int    Defense;
-		}
-		
-		public String Name;								// Nombre del equipo del player
-		public String PredefinedTeamName;				// El player tiene un equipo real asociado: "Getafe"
-		public int TrueSkill;							// ...Por si acaso hay que mostrarlo
-		public List<int> SpecialSkillsIDs;				// Del 1 al 9
-		public String Formation;						// Nombre de la formacion: "331", "322", etc..
-		
-		// Todos los futbolista, osrdenados según la posición/formacion. Primero siempre el portero.
-		public List<SoccerPlayerData> SoccerPlayers;	
-		}
-		*/
-		public function Init( descTeam:Object, teamId:int, useSecondaryEquipment:Boolean = false ) : void
+		public function Init(descTeam:Object, teamId:int, useSecondaryEquipment:Boolean = false) : void
 		{
 			Name = descTeam.PredefinedTeamName;
 			UserName = descTeam.Name;
@@ -110,36 +85,20 @@ package Caps
 			FormationName = descTeam.Formation;
 			UseSecondaryEquipment = useSecondaryEquipment;
 			
-			// Obtenemos el array de jugadores ( viene desde red como un mx.collections::ArrayCollection )
-			var soccers:Array = (descTeam.SoccerPlayers as Object).toArray();
-			
-			// Copiamos la lista de habilidades especiales, convirtiéndola a un array
-			LoadSkills( (descTeam.SpecialSkillsIDs as Object).toArray() );
-			
-			var descCap:Object = { 
-				DorsalNumber: 13,
-				Name: "Cap Name",
-				Power: 0,
-				Control: 0,
-				Defense: 0
-			} 
+			// Copiamos la lista de habilidades especiales
+			LoadSkills(descTeam.SpecialSkillsIDs);
 			
 			// Inicializamos cada una de las chapas 
-			for( var i:int = 0; i < CAPS_BY_TEAM; i++ )
+			for (var i:int = 0; i < CAPS_BY_TEAM; i++ )
 			{
 				// Creamos una chapa y la agregamos a la lista
 				var cap:Cap = new Cap();
-				CapsList.push( cap );
+				CapsList.push(cap);
 				
-				// Inicializamos la chapa
-				var capName:String = "Cap " + i.toString();
-				if( soccers )
-					descCap = soccers[i];
-				
-				cap.InitFromTeam( this, i, descCap );
+				cap.InitFromTeam(this, i, descTeam.SoccerPlayers[i]);
 				
 				// Añadimos la entidad al gestor de entidades 
-				EntityManager.Ref.AddTagged( cap, "Team"+(teamId+1).toString() + "_" + i.toString() );
+				Match.Ref.Game.TheEntityManager.AddTagged(cap, "Team"+(teamId+1).toString() + "_" + i.toString());
 			}
 			
 			// El equipo 1 empieza en el lado izquierdo y el 2 en el derecho
@@ -150,10 +109,7 @@ package Caps
 			
 			// Asignamos la posición inicial de cada chapa según la alineación y lado del campo en el que se encuentran
 			ResetToCurrentFormation();
-			
-			// Añadimos la entidad al gestor de entidades 
-			//EntityManager.Ref.AddTagged( cap, "Team"+(teamId+1).toString() + "_" + i.toString() );
-			
+						
 			// Creamos una imagen de chapa Ghost (la utilizaremos para indicar donde mover el portero)
 			Ghost = new ImageEntity();
 			Ghost.Init( Embedded.Assets.Goalkeeper, Match.Ref.Game.GameLayer ); 
@@ -309,7 +265,7 @@ package Caps
 		//
 		public function get IsLocalUser(  ) : Boolean
 		{
-			return( this.IdxTeam == Server.Ref.IdLocalUser ? true : false );
+			return( this.IdxTeam == Match.Ref.IdLocalUser ? true : false );
 		}
 		
 		
@@ -531,7 +487,7 @@ package Caps
 			cap.SetPos( pos );
 								
 			// Hacemos desvanecer el clon
-			TweenMax.to( cloned, 2, {alpha:0, onComplete: Callback.Create( OnFinishTween, cloned ) } );
+			TweenMax.to( cloned, 2, {alpha:0, onComplete: Delegate.create(OnFinishTween, cloned) } );
 		}
 		
 		private function GetRandomNotFiredCap() : Cap

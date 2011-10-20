@@ -76,10 +76,9 @@ package Framework
 			if( PhyObject != null )
 				PhyObject.destroy();
 			PhyObject = null;			
-		}
+		}		
 		
 		//
-		// Se ejecuta a velocidad de pintado
 		// - Se encarga de copiar el objeto físico al objeto visual
 		//
 		public override function Draw( elapsed:Number ) : void

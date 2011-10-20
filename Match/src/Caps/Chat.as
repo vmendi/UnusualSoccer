@@ -103,7 +103,7 @@ package Caps
 			if (msg != "")
 			{
 				msg = Match.Ref.Game.LocalUserTeam.UserName + "> " + msg;
-				Server.Ref.Connection.Invoke("OnMsgToChatAdded", null, msg);
+				Match.Ref.Connection.Invoke("OnMsgToChatAdded", null, msg);
 			}
 		}
 		

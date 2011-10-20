@@ -4,7 +4,6 @@ package Caps
 	
 	import Framework.EntityManager;
 	import Framework.ImageEntity;
-	import Framework.MathUtils;
 	
 	import com.actionsnippet.qbox.QuickBox2D;
 	import com.actionsnippet.qbox.QuickObject;
@@ -12,6 +11,8 @@ package Caps
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
+	
+	import utils.MathUtils;
 	
 	//
 	// El estadio 
@@ -76,12 +77,12 @@ package Caps
 			// Creamos las porterias
 			var goalLeft:ImageEntity = new ImageEntity();
 			goalLeft.Init( Embedded.Assets.GoalLeft, parent );
-			EntityManager.Ref.Add( goalLeft );
+			Match.Ref.Game.TheEntityManager.Add( goalLeft );
 			goalLeft.SetPos( new Point( X_GOAL_LEFT, Y_GOAL ) );
 			
 			var goalRight:ImageEntity = new ImageEntity();
 			goalRight.Init( Embedded.Assets.GoalRight, parent );
-			EntityManager.Ref.Add( goalRight );
+			Match.Ref.Game.TheEntityManager.Add( goalRight );
 			goalRight.SetPos( new Point( X_GOAL_RIGHT, Y_GOAL ) );
 		}
 		
@@ -186,11 +187,11 @@ package Caps
 			
 			if( side == Enums.Left_Side )
 			{
-				bInside = Framework.MathUtils.CircleInRect( pos, radius, new Point( AreaLeftX, AreaLeftY ), new Point( SizeAreaX, SizeAreaY ) );
+				bInside = MathUtils.CircleInRect( pos, radius, new Point( AreaLeftX, AreaLeftY ), new Point( SizeAreaX, SizeAreaY ) );
 			}
 			else if( side == Enums.Right_Side )
 			{
-				bInside = Framework.MathUtils.CircleInRect( pos, radius, new Point( AreaRightX, AreaRightY ), new Point( SizeAreaX, SizeAreaY ) );
+				bInside = MathUtils.CircleInRect( pos, radius, new Point( AreaRightX, AreaRightY ), new Point( SizeAreaX, SizeAreaY ) );
 			}
 			
 			return( bInside );
@@ -205,11 +206,11 @@ package Caps
 			
 			if( side == Enums.Left_Side )
 			{
-				bInside = Framework.MathUtils.CircleInRect( pos, radius, new Point( BigAreaLeftX, BigAreaLeftY ), new Point( SizeBigAreaX, SizeBigAreaY ) );
+				bInside = MathUtils.CircleInRect( pos, radius, new Point( BigAreaLeftX, BigAreaLeftY ), new Point( SizeBigAreaX, SizeBigAreaY ) );
 			}
 			else if( side == Enums.Right_Side )
 			{
-				bInside = Framework.MathUtils.CircleInRect( pos, radius, new Point( BigAreaRightX, BigAreaRightY ), new Point( SizeBigAreaX, SizeBigAreaY ) );
+				bInside = MathUtils.CircleInRect( pos, radius, new Point( BigAreaRightX, BigAreaRightY ), new Point( SizeBigAreaX, SizeBigAreaY ) );
 			}
 			
 			return( bInside );
@@ -229,7 +230,7 @@ package Caps
 		//
 		public function ValidatePos( pos:Point, radius:Number = 0 ) : Boolean
 		{
-			return ( Framework.MathUtils.CircleInRect( pos, radius, new Point( OffsetX, OffsetY ), new Point( SizeX, SizeY ) ) );
+			return ( MathUtils.CircleInRect( pos, radius, new Point( OffsetX, OffsetY ), new Point( SizeX, SizeY ) ) );
 		}
 		
 		//

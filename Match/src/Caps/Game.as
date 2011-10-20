@@ -1,6 +1,3 @@
-/**
- * 
- */
 package Caps
 {
 	import Box2D.Common.Math.b2Vec2;
@@ -9,7 +6,6 @@ package Caps
 	
 	import Framework.*;
 	
-	
 	import com.actionsnippet.qbox.QuickBox2D;
 	import com.actionsnippet.qbox.QuickContacts;
 	import com.greensock.*;
@@ -17,22 +13,18 @@ package Caps
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.geom.Point;
-	import flash.media.SoundMixer;
-	import flash.media.SoundTransform;
-	import flash.net.SharedObject;
-
-	import utils.GenericEvent;
 	
-	//
-	// Representa el contenedor principal del juego
-	//
-	public class Game extends Server
+	import utils.Delegate;
+	import utils.GenericEvent;
+
+	
+	public class Game
 	{
-		private var PhysicManager:QuickBox2D = null;			// Manager físico, controla la escena física
+		private var _PhysicManager:QuickBox2D = null;			// Manager físico, controla la escena física
 		private var _Interface:GameInterface = null;			// Interface de juego
-		private var Contacts : QuickContacts;					// Manager para controlar los contactos físicos entre objetos
+		private var _Contacts : QuickContacts;					// Manager para controlar los contactos físicos entre objetos
 		
-		private var TouchedCaps:Array = new Array();			// Lista de chapas en las que ha rebotado la pelota antes de detenerse 
+		private var _TouchedCaps:Array = new Array();			// Lista de chapas en las que ha rebotado la pelota antes de detenerse 
 				
 		// Capas de pintado
 		public var GameLayer:MovieClip = null;
@@ -46,13 +38,14 @@ package Caps
 		private var _Ball:BallEntity = null;					// Entidad balon
 		
 		// Estado lógico de la aplicación
-		private var IdxCurTeam:int = Enums.Team1;				// Idice del equipo actual que le toca jugar
-		private var State:int = GameState.Init;					// Estado inicial
-		private var TicksInCurState:int = 0;					// Ticks en el estado actual
+		private var _IdxCurTeam:int = Enums.Team1;				// Idice del equipo actual que le toca jugar
+		private var _State:int = GameState.Init;				// Estado inicial
+		private var _TicksInCurState:int = 0;					// Ticks en el estado actual
 		private var _Part:int = 0;								// El juego se divide en 2 partes. Parte en la que nos encontramos (1=1ª 2= 2ª)
-		private var RemainingHits:int = 0;						// Nº de golpes restantes permitidos antes de perder el turno
-		private var RemainingPasesAlPie : int = 0;				// No de pases al pie que quedan
-		private var TimeSecs:Number = 0;						// Tiempo en segundos que queda de la "mitad" actual del partido	
+		private var _RemainingHits:int = 0;						// Nº de golpes restantes permitidos antes de perder el turno
+		private var _RemainingPasesAlPie : int = 0;				// No de pases al pie que quedan
+		private var _TimeSecs:Number = 0;						// Tiempo en segundos que queda de la "mitad" actual del partido
+		
 		public var Timeout:Number = 0;							// Tiempo en segundos que queda para que ejecutes un disparo
 		public var TimeOutSent:Boolean = false;					// Controla si se ha envíado el timeout en el último ciclo de subturno
 		public var TimeOutPaused:Boolean = false;				// Controla si está pausado el timeout
@@ -60,24 +53,26 @@ package Caps
 		public var ReasonTurnChanged:int = (-1);				// Razón por la que hemos cambiado al turno actual
 		public var LastConflicto:Object = null;					// Último conflicto de robo que se produjo
 				 
-		private var IsPlaying:Boolean = false;					// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
-		private var CapShooting:Cap = null;						// Indica la chapa que está disparando, lo utilizamos para evitar el auto-pase
-		private var LastPosBallStopped:Point = new Point(0, 0);	// Posición de la pelota antes de disparar
+		private var _IsPlaying:Boolean = false;					// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
+		private var _CapShooting:Cap = null;					// Indica la chapa que está disparando, lo utilizamos para evitar el auto-pase
+		private var _LastPosBallStopped:Point = new Point(0, 0);// Posición de la pelota antes de disparar
 		
-		protected var PhySimulating:Boolean = false;			// Bandera que indica si se están moviendo objetos o no
-		protected var _SimulatingShoot:Boolean = false;			// Bandera que indica si estamos simulando un lanzamiento
-		protected var FramesSimulating:int = 0;					// Contador de frames simulando
-		protected var PlayersReady:Boolean = false;				// Bandera que indica cuando los jugadores están listos
-		protected var CallbackOnAllPlayersReady:Function = null // Llamar cuando todos los jugadores están listos
-		protected var Initialized:Boolean = false;				// Bandera que indica si hemos terminado de inicializar/cargar
-		protected var DetectedGoal:Boolean = false;				// Bandera que indica que se ha detectado un gol. Se utiliza para no continuar detectando
+		private var _PhySimulating:Boolean = false;				// Bandera que indica si se están moviendo objetos o no
+		private var _SimulatingShoot:Boolean = false;			// Bandera que indica si estamos simulando un lanzamiento
+		private var _FramesSimulating:int = 0;					// Contador de frames simulando
+		private var _PlayersReady:Boolean = false;				// Bandera que indica cuando los jugadores están listos
+		private var _CallbackOnAllPlayersReady:Function = null 	// Llamar cuando todos los jugadores están listos
+		private var _Initialized:Boolean = false;				// Bandera que indica si hemos terminado de inicializar/cargar
+		private var _DetectedGoal:Boolean = false;				// Bandera que indica que se ha detectado un gol. Se utiliza para no continuar detectando
 		public var DetectedFault:Object = null;					// Bandera que indica Falta detectada (además objeto que describe la falta)
+		public var FireCount:int = 0;							// Contador de jugadores expulsados durante el partido.
 		
-		protected var TimeCounter:Framework.Time = new Framework.Time();			// Contador de tiempo 
-
 		public var Config:MatchConfig = new MatchConfig();		// Configuración del partido (Parámetros recibidos del servidor)
+				
+		private var _TimeCounter:Framework.Time = new Framework.Time();
+		private var _Random:Framework.Random;
 		
-		public var FireCount:int = 0;							// Contador de jugadores expulsados durante el partido. 
+		public var TheEntityManager:EntityManager = new EntityManager();	// Instancia única
 
 		//
 		// Inicialización del juego. Llamado localmente al comenzar
@@ -98,7 +93,7 @@ package Caps
 			// Creamos el balón
 			_Ball = new BallEntity();
 			_Ball.Initialize(  );
-			EntityManager.Ref.AddTagged( _Ball, "Ball" );
+			TheEntityManager.AddTagged( _Ball, "Ball" );
 			
 			// Creamos las porterias al final para que se pinten por encima de todo
 			_Field.CreatePorterias( GameLayer );
@@ -109,17 +104,39 @@ package Caps
 			AudioManager.AddClass( "SoundCollisionWall", Assets.SoundCollisionWall );
 			AudioManager.AddClass( "SoundAmbience", Assets.SoundAmbience );
 			
-			// En modo offline : Inicializamos el partido
-			// De otra forma nos lo deberá indicar el servidor
+			// En modo offline : Inicializamos el partido. De otra forma nos lo deberá indicar el servidor
 			if( AppParams.OfflineMode )
 			{
 				var descTeam1:Object = { 
 					PredefinedTeamName: "Atlético",
-					SpecialSkillsIDs: [ 1, 4, 5, 6, 7, 8, 9 ]
+					SpecialSkillsIDs: [ 1, 4, 5, 6, 7, 8, 9 ],
+					SoccerPlayers: []
 				}
 				var descTeam2:Object = { 
 					PredefinedTeamName: "Sporting",
-					SpecialSkillsIDs: [ 7, 1, 3]
+					SpecialSkillsIDs: [7, 1, 3],
+					SoccerPlayers: []
+				}
+					
+				for (var c:int=0; c < 8; ++c)
+				{
+					var descCap1:Object = { 
+											DorsalNumber: c+1,
+											Name: "Cap Team01 " + c,
+											Power: 0,
+											Control: 0,
+											Defense: 0
+										  };						
+					descTeam1.SoccerPlayers.push(descCap1);
+					
+					var descCap2:Object = { 
+											DorsalNumber: c+1,
+										    Name: "Cap Team02 " + c,
+											Power: 0,
+											Control: 0,
+											Defense: 0
+					};						
+					descTeam2.SoccerPlayers.push(descCap2);					
 				}
 					
 				InitMatch( (-1), descTeam1, descTeam2, Enums.Team1, Config.PartTime * 2, Config.TurnTime, AppParams.ClientVersion  );
@@ -153,22 +170,25 @@ package Caps
 		public function InitMatch( matchId:int, descTeam1:Object, descTeam2:Object, idLocalPlayerTeam:int, matchTimeSecs:int, turnTimeSecs:int, minClientVersion:int ) : void
 		{
 			// Verificamos la versión mínima de cliente exigida por el servidor.
-			// Si no tenemos la versión correcta no podemos continuar
 			if( AppParams.ClientVersion < minClientVersion )
-			{
 				throw new Error("El cliente no es la última versión. Limpie la caché de su navegador. Client Version: " + AppParams.ClientVersion + " Min Client Version required: " + minClientVersion );  
+									
+			trace("InitMatch: " + matchId + " Teams: " + descTeam1.PredefinedTeamName + " vs. " + descTeam2.PredefinedTeamName + " LocalPlayer: " + idLocalPlayerTeam);
+			
+			// Convertimos las mx.Collections.ArrayCollection que vienen por red a Arrays
+			if (!AppParams.OfflineMode)
+			{
+				descTeam1.SoccerPlayers = (descTeam1.SoccerPlayers as Object).toArray();
+				descTeam2.SoccerPlayers = (descTeam2.SoccerPlayers as Object).toArray();
+			
+				descTeam1.SpecialSkillsIDs = (descTeam1.SpecialSkillsIDs as Object).toArray();
+				descTeam2.SpecialSkillsIDs = (descTeam2.SpecialSkillsIDs as Object).toArray();
 			}
 			
-			var name1:String = descTeam1.PredefinedTeamName;
-			var name2:String = descTeam2.PredefinedTeamName;
-			
-			trace( "InitMatch: " + matchId + " Teams: " + name1 + " vs. " + name2 + " LocalPlayer: " + idLocalPlayerTeam ); 
-			
-			// Inicializamos la semilla del generador de números pseudo-aleatorios, para asegurar el mismo resultado
-			// en los aleatorios de los jugadores
+			// Inicializamos la semilla del generador de números pseudo-aleatorios, para asegurar el mismo resultado en los aleatorios de los jugadores
 			// TODO: Deberiamos utilizar una semilla envíada desde el servidor!!!
-			Framework.Random.Global.SetSeed( 1234567 ); 
-						
+			_Random = new Random(1234567);
+												
 			// Asignamos los tiempos del partido y turno
 			Config.MatchId = matchId;
 			Config.PartTime = matchTimeSecs / 2;
@@ -180,7 +200,7 @@ package Caps
 			}
 			
 			// Asignamos el identificador del jugador local (a quien controlamos nosotros desde el cliente)
-			Server.Ref.IdLocalUser = idLocalPlayerTeam;
+			Match.Ref.IdLocalUser = idLocalPlayerTeam;
 						
 			// Determinamos la equipación a utilizar en cada equipo.
 			//   - Determinamos los grupos de equipación a los que pertenece cada equipo.
@@ -200,23 +220,21 @@ package Caps
 					useSecondaryEquipment1 = true;
 			}
 			
-			// Creamos los dos equipos (utilizando la equipación indicada)
-				
+			// Creamos los dos equipos (utilizando la equipación indicada)				
 			var team1:Team = CreateTeam();
 			team1.Init( descTeam1, Enums.Team1, useSecondaryEquipment1 );
 			var team2:Team = CreateTeam();
 			team2.Init( descTeam2, Enums.Team2, useSecondaryEquipment2 );
 			
-			// Inicializamos el interfaz de juego
-			// NOTE: Es necesario que estén construidos los equipos
+			// Inicializamos el interfaz de juego. NOTE: Es necesario que estén construidos los equipos
 			_Interface = new GameInterface();
 			Interface.Init();
 			
 			// Comienza la simulación física!!
-			PhysicManager.start();
+			_PhysicManager.start();
 			
 			// Indicamos que hemos terminado de cargar/inicializar
-			Initialized = true;
+			_Initialized = true;
 			
 			// Lanzamos el sonido ambiente, como música para que se detenga automaticamente al finalizar 
 			AudioManager.PlayMusic( "SoundAmbience", 0.3 );
@@ -241,7 +259,6 @@ package Caps
 			*/
 		}
 			
-			
 		//
 		// Inicializamos la parte física
 		//
@@ -250,18 +267,18 @@ package Caps
 			// FRIM: Frame Rate independent Motion
 			// True = Lla velocidad de la máquina y del stage no afecta al resultado, siempre dura lo mismo
 			// False = La velocidad de la máquina y del stage afecta al resultado ya que cada iteración simplemente se avanza un paso. Buena para sincronía de red
-			PhysicManager = new QuickBox2D( PhyLayer, { debug: AppParams.DebugPhysic, iterations: AppParams.PhyFPS, frim: false } );
-			PhysicManager.gravity = new b2Vec2( 0, 0 );
-			PhysicManager.createStageWalls( );
+			_PhysicManager = new QuickBox2D( PhyLayer, { debug: AppParams.DebugPhysic, iterations: AppParams.PhyFPS, frim: false } );
+			_PhysicManager.gravity = new b2Vec2( 0, 0 );
+			_PhysicManager.createStageWalls( );
 			
 			// Habilitamos la posibilidad de arrastrar los cuerpos con el ratón
 			if( AppParams.DragPhysicObjects == true )
-				PhysicManager.mouseDrag( );
+				_PhysicManager.mouseDrag( );
 			
 			// Nos registramos para sabes los contactos que se producen entre cuerpos
-			Contacts = PhysicManager.addContactListener( );
-			Contacts.addEventListener( QuickContacts.ADD, OnContact);
-			Contacts.addEventListener( QuickContacts.RESULT, OnContact);
+			_Contacts = _PhysicManager.addContactListener( );
+			_Contacts.addEventListener( QuickContacts.ADD, OnContact);
+			_Contacts.addEventListener( QuickContacts.RESULT, OnContact);
 		}
 		
 		//
@@ -281,17 +298,17 @@ package Caps
 				Teams[ Enums.Team2 ].Run( elapsed );
 			
 			// Calculamos el tiempo "real" que ha pasado, independiente del frame-rate
-			var realElapsed:Number = TimeCounter.GetElapsed();
+			var realElapsed:Number = _TimeCounter.GetElapsed();
 			realElapsed = realElapsed / 1000; 
 			
 			// Actualizamos el tiempo del partido (si estamos jugando)
 			if( Playing == true )
 			{
-				TimeSecs -= realElapsed;
+				_TimeSecs -= realElapsed;
 				
-				if( TimeSecs <= 0 )
+				if( _TimeSecs <= 0 )
 				{
-					TimeSecs = 0;
+					_TimeSecs = 0;
 					// En modo offline terminamos la parte si alcanzamos 0 de tiempo
 					if( AppParams.OfflineMode )
 						FinishPart( _Part, null );
@@ -314,7 +331,7 @@ package Caps
 						{
 							// Una vez envíado el tiemout no le permitimos al jugador local utilizar el interface
 							EnableUserInput( false );
-							Server.Ref.Connection.Invoke( "OnServerTimeout", null );
+							Match.Ref.Connection.Invoke( "OnServerTimeout", null );
 							TimeOutSent = true;		// Para que no volvamos a envíar el timeout!
 						}
 					}
@@ -324,19 +341,16 @@ package Caps
 				Interface.Update( ); 
 			}
 							
-			switch( State )
+			switch( _State )
 			{
-				//
-				// 
-				// 
 				case GameState.Init:
 				{
 					_Part = 1;
 					
-					Playing = false;				// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando 
+					Playing = false;	// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando 
 										
-					// Comenzamos la primera parte si los jugadores están listos
-					if( Initialized == true )
+					// Comenzamos la primera parte si se ha llamado ya a InitMatch
+					if( _Initialized == true )
 					{
 						ChangeState( GameState.NewPart );
 					}
@@ -349,14 +363,14 @@ package Caps
 				// 
 				case GameState.NewPart:
 				{
-					TimeSecs = Config.PartTime;		// Reseteamos el tiempo del partido
+					_TimeSecs = Config.PartTime;		// Reseteamos el tiempo del partido
 
 					// Dependiendo de en que parte estamos, saca un equipo u otro.
 					// NOTE: Solo asinamos la variable. No utilizamos la función pq no queremos mostrar el panel de turno todavía
 					if( Part == 1 )
-						IdxCurTeam = Enums.Team1; // SetTurn( Enums.Team1, false );
+						_IdxCurTeam = Enums.Team1; // SetTurn( Enums.Team1, false );
 					else if( Part == 2 ) 
-						IdxCurTeam = Enums.Team2; // SetTurn( Enums.Team2, false );
+						_IdxCurTeam = Enums.Team2; // SetTurn( Enums.Team2, false );
 					
 					// El interface comienza desactivado
 					Interface.UserInputEnabled = false;
@@ -386,7 +400,7 @@ package Caps
 					if( _SimulatingShoot == true )
 					{
 						// Contabilizamos el numero de frames que dura la simulación física del disparo
-						FramesSimulating ++;
+						_FramesSimulating ++;
 
 						// Si la física ha terminado de simular quiere decir que en nuestro cliente hemos terminado la simulación del disparo.
 						// Se lo notificamos al servidor y nos quedamos a la espera de la confirmación de ambos jugadores
@@ -394,7 +408,7 @@ package Caps
 						{
 							// Indicamos al servidor que hemos terminado la simulación del disparo
 							if( !AppParams.OfflineMode )
-								Server.Ref.Connection.Invoke( "ClientEndShoot", null );
+								Match.Ref.Connection.Invoke( "ClientEndShoot", null );
 															
 							// Hasta que todos los clientes no indiquen que han terminado la simulación, no tomaremos ninguna decisión
 							trace( "Finalizado nuestra simulacion de disparo, esperando al otro usuario" );
@@ -406,7 +420,7 @@ package Caps
 					
 					// Se encarga de mostrar los radios de influencias
 					ShowInfluences( );
-											
+
 					break;
 				}
 					
@@ -462,16 +476,18 @@ package Caps
 					break;
 				}
 				
-				//
-				// 
-				// 
 				case GameState.EndGame:
 				{
 					break;
 				}
 			}
 			
+			TheEntityManager.Run(elapsed);
+		}
 		
+		public function Draw( elapsed:Number ) : void
+		{
+			TheEntityManager.Draw(elapsed);
 		}
 		
 		//
@@ -520,13 +536,13 @@ package Caps
 		//
 		public function get Playing() : Boolean
 		{
-			return IsPlaying;
+			return _IsPlaying;
 		}
 		public function set Playing( value:Boolean ) : void
 		{
-			if( IsPlaying != value )
+			if( _IsPlaying != value )
 			{
-				IsPlaying = value;
+				_IsPlaying = value;
 			}
 		}
 		
@@ -575,15 +591,15 @@ package Caps
 		}
 		public function get Physic() : QuickBox2D
 		{
-			return PhysicManager;
+			return _PhysicManager;
 		}
 		public function get CurTeam() : Team
 		{
-			return( _Teams[ IdxCurTeam ] );
+			return( _Teams[ _IdxCurTeam ] );
 		}
 		public function get LocalUserTeam() : Team
 		{
-			return( _Teams[ Server.Ref.IdLocalUser ] );
+			return( _Teams[ Match.Ref.IdLocalUser ] );
 		}
 		
 		public function get Teams() : Array
@@ -602,7 +618,7 @@ package Caps
 		// Obtiene el tiempo trancurrido en el partido (en segundos) 
 		public function get Time() : Number
 		{
-			return( TimeSecs );
+			return( _TimeSecs );
 		}
 		public function get Ball() : BallEntity
 		{
@@ -616,10 +632,10 @@ package Caps
 		//
 		public function ChangeState( newState:int ) : void
 		{
-			if( State != newState )
+			if( _State != newState )
 			{
-				State = newState;
-				TicksInCurState = 0;		// Reseteamos los ticks dentro del estado actual
+				_State = newState;
+				_TicksInCurState = 0;		// Reseteamos los ticks dentro del estado actual
 			}
 		}
 		
@@ -632,7 +648,7 @@ package Caps
 		private function OnContact( e: Event ): void
 		{
 			// Si se ha detectado anteriormente gol, ignoramos los contactos
-			if( DetectedGoal || DetectedFault)
+			if( _DetectedGoal || DetectedFault)
 				return;
 				
 			if( e.type == QuickContacts.ADD )
@@ -640,11 +656,11 @@ package Caps
 				// Detectamos GOL: Para ello comprobamos si ha habido un contacto entre los sensores de las porterías y el balón
 				var sideGoal:int = (-1);
 				
-				if( Contacts.isCurrentContact( _Ball.PhyBody, _Field.GoalLeft ) )
+				if( _Contacts.isCurrentContact( _Ball.PhyBody, _Field.GoalLeft ) )
 				{
 					sideGoal = Enums.Left_Side;	
 				}
-				else if( Contacts.isCurrentContact( _Ball.PhyBody, _Field.GoalRight ) )
+				else if( _Contacts.isCurrentContact( _Ball.PhyBody, _Field.GoalRight ) )
 				{
 					sideGoal = Enums.Right_Side;	
 				}
@@ -653,7 +669,7 @@ package Caps
 				{
 					// Indicamos que hemos detectado gol, para evitar que se siga detectando y puntuemos más veces
 					// En el estado StartCenter se restaura este valor.
-					DetectedGoal = true;
+					_DetectedGoal = true;
 					// Cambiamos al estado esperando gol, para que no se pase turno al detenerse la pelota o similares
 					this.ChangeState( GameState.WaitingGoal );
 					
@@ -669,7 +685,7 @@ package Caps
 					// Si el gol ha sido en propia meta siempre es válido (no evaluamos tiro declarado, etc)
 					var validity : int = Enums.GoalValid;
 					
-					if( this.CapShooting != null && CapShooting.OwnerTeam == player )		
+					if( this._CapShooting != null && _CapShooting.OwnerTeam == player )		
 					{
 						if (!IsTeamPosValidToScore())
 							validity = Enums.GoalInvalidPropioCampo;				
@@ -682,7 +698,7 @@ package Caps
 					// de desactivar interface y pausar el time-out
 					if( !AppParams.OfflineMode )
 					{
-						Server.Ref.Connection.Invoke( "OnGoalScored", null, player.IdxTeam, validity );
+						Match.Ref.Connection.Invoke( "OnGoalScored", null, player.IdxTeam, validity );
 						Interface.WaitResponse();
 					}
 					else
@@ -698,8 +714,8 @@ package Caps
 			if( e.type == QuickContacts.RESULT )
 			{
 				// Obtenemos las entidades que han colisionado (están dentro del userData de las shapes)
-				var ent1:PhyEntity = Contacts.currentResult.shape1.m_userData as PhyEntity;
-				var ent2:PhyEntity = Contacts.currentResult.shape2.m_userData as PhyEntity;
+				var ent1:PhyEntity = _Contacts.currentResult.shape1.m_userData as PhyEntity;
+				var ent2:PhyEntity = _Contacts.currentResult.shape2.m_userData as PhyEntity;
 				
 				var ball:BallEntity = null;
 				var cap:Cap = null;
@@ -720,7 +736,7 @@ package Caps
 				// chapa en una lista para comprobar posibles "Pase al pie" a la misma
 				if( cap != null && ball != null )
 				{
-					TouchedCaps.push( cap );
+					_TouchedCaps.push( cap );
 					AudioManager.Play( "SoundCollisionCapBall" );
 				}
 				else
@@ -864,7 +880,7 @@ package Caps
 		{
 			var bSimulating:Boolean = false;
 			
-			for each( var entity:Entity in EntityManager.Ref.Items )
+			for each( var entity:Entity in TheEntityManager.Items )
 			{
 				if( entity is PhyEntity )
 				{
@@ -877,7 +893,7 @@ package Caps
 				}
 			}
 			
-			PhySimulating = bSimulating;
+			_PhySimulating = bSimulating;
 			
 			return( bSimulating );
 		}
@@ -887,7 +903,7 @@ package Caps
 		// 
 		private function StopSimulation() : void		
 		{
-			for each( var entity:Entity in EntityManager.Ref.Items )
+			for each( var entity:Entity in TheEntityManager.Items )
 			{
 				if( entity is PhyEntity )
 				{
@@ -908,7 +924,7 @@ package Caps
 		//
 		public function get IsPhysicSimulating() : Boolean
 		{
-			return PhySimulating;
+			return _PhySimulating;
 		}
 		
 		
@@ -937,7 +953,7 @@ package Caps
 			
 			// Indicamos que estamos simulando el disparo y guardamos la chapa que está disparando
 			SimulatingShoot = true;
-			CapShooting = cap;
+			_CapShooting = cap;
 			
 			// ... el turno de lanzamiento no se consume hasta que se detenga la pelota
 		}
@@ -960,20 +976,20 @@ package Caps
 				// (para detectar goles desde tu campo)  
 				//if( value == true )
 				{
-					LastPosBallStopped = Ball.GetPos();	
+					_LastPosBallStopped = Ball.GetPos();	
 				}
 					
 				_SimulatingShoot = value;
 			
 				// Cada vez que empieza un disparo, reseteamos el contador de frames que ha tardado la simulación del disparo
 				if( value == true )
-					FramesSimulating = 0;
+					_FramesSimulating = 0;
 			}
 			
-			TouchedCaps.length = 0;		// Vacíamos la lista de chapas tocadas
+			_TouchedCaps.length = 0;		// Vacíamos la lista de chapas tocadas
 			// Si hemos terminado la simulación, borramos la referencia a la chapa que está disparando 
 			if( value == false )
-				CapShooting = null;
+				_CapShooting = null;
 		}
 		
 		//
@@ -983,12 +999,12 @@ package Caps
 		public function OnShootSimulated( ) : void
 		{
 			// Si estamos esperando la recepción de un gol, simplemente ignoramos el final de la simulación
-			if( this.State == GameState.WaitingGoal )
+			if( this._State == GameState.WaitingGoal )
 				return;
 				
 			
 			// Confirmamos que estamos esperando la confirmación del server de finalización de simulación
-			if( this.State == GameState.WaittingClientsToEndShoot )
+			if( this._State == GameState.WaittingClientsToEndShoot )
 			{				
 				var result:int = 0;
 				
@@ -1064,8 +1080,7 @@ package Caps
 					if( stolenProduced )
 					{
 						result = 4;
-						
-						// TODO: Muchas cosas a la vez esto probablemente en arquitectura de red dará problemas
+
 						// Pasamos turno al otro jugador, pero SIN habilitarle el interface de entrada (indicamos que pasamos de turno por robo)
 						NextTurn( false, Enums.TurnByStolen );
 						if( stealer.OwnerTeam.IsLocalUser )
@@ -1079,8 +1094,8 @@ package Caps
 						result = 5;
 						
 						// Además si era el último sub-turno le damos un sub-turno EXTRA. Mientras hagas pase al pie puedes seguir tirando
-						if( RemainingHits == 1 )
-							RemainingHits++;
+						if( _RemainingHits == 1 )
+							_RemainingHits++;
 						
 						// Mostramos el cartel de pase al pie en los 2 clientes!
 						Interface.OnMsgPasePie( stealer ? true : false, LastConflicto );
@@ -1089,10 +1104,10 @@ package Caps
 						if( paseToCap.OwnerTeam.IsLocalUser )
 							Interface.ShowHandleBall( paseToCap );
 						
-						RemainingPasesAlPie--;
+						_RemainingPasesAlPie--;
 						
 						// Si este ha sido el último pase al pie, informamos al player
-						if (RemainingPasesAlPie == 0)
+						if (_RemainingPasesAlPie == 0)
 							Interface.OnLastPaseAlPie();
 					}
 				}
@@ -1125,11 +1140,11 @@ package Caps
 				var capListStr:String = "T1: "+GetString( this._Teams[0].CapsList );
 				capListStr += "T2: "+GetString( this._Teams[1].CapsList );
 				capListStr += " B:" + this.Ball.GetPos().toString();
-				var countTouchedCaps:int = TouchedCaps.length;
+				var countTouchedCaps:int = _TouchedCaps.length;
 				
 				if( !AppParams.OfflineMode )
-					Server.Ref.Connection.Invoke("OnResultShoot", null, result, 
-						countTouchedCaps, paseToCap != null ? paseToCap.Id : -1, FramesSimulating, 
+					Match.Ref.Connection.Invoke("OnResultShoot", null, result, 
+						countTouchedCaps, paseToCap != null ? paseToCap.Id : -1, _FramesSimulating, 
 						ReasonTurnChanged, capListStr);
 				
 				// Marcamos que hemos terminado la simulación del disparo y con ello además vacíamos la lista de impactos
@@ -1177,7 +1192,7 @@ package Caps
 		public function SetPosBall( pos:Point ) : void
 		{
 			Ball.SetPos( pos );
-			LastPosBallStopped = Ball.GetPos();
+			_LastPosBallStopped = Ball.GetPos();
 			Ball.StopMovement();
 		}	
 		
@@ -1199,7 +1214,7 @@ package Caps
 			team.UseSkill( idSkill );
 			
 			// Mostramos un mensaje animado de uso del skill (cuando el el otro jugador quien ha utilizado el skill)
-			if( idPlayer != Server.Ref.IdLocalUser )
+			if( idPlayer != Match.Ref.IdLocalUser )
 				Interface.ShowAniUseSkill( idSkill, null );
 			
 			// Algunos de los skills se aplican aquí ( son inmediatas ) otras no
@@ -1216,7 +1231,7 @@ package Caps
 			}
 			else if( idSkill == Enums.Turnoextra )		// Obtenemos un turno extra
 			{
-				RemainingHits ++;
+				_RemainingHits ++;
 				bInmediate = true;
 			}
 			
@@ -1299,8 +1314,8 @@ package Caps
 		public function OnGoalScored( idPlayer:int, validity:int) : void
 		{
 			// Verificamos coherencia de estado
-			if( this.State != GameState.WaitingGoal )
-				throw new Error( "CLIENT: Hemos recibido un gol cuando no estamos esperándolo. El estado debería ser 'GameState.WaitingGoal'. Curent State=" + this.State.toString() );
+			if( this._State != GameState.WaitingGoal )
+				throw new Error( "CLIENT: Hemos recibido un gol cuando no estamos esperándolo. El estado debería ser 'GameState.WaitingGoal'. Curent State=" + this._State.toString() );
 						
 			//valid = false;
 			trace( "Game: OnGoalScored: Confirmación del servidor de que han marcado GOL! Marcó el player: " + idPlayer );
@@ -1312,7 +1327,7 @@ package Caps
 			}
 						
 			// Lanzamos una cutscene y al terminar pasamos a  'FinishGoalCutScene'
-			Interface.OnGoalScored( validity, Callback.Create( FinishGoalCutScene, idPlayer, validity ) );
+			Interface.OnGoalScored( validity, Delegate.create( FinishGoalCutScene, idPlayer, validity ) );
 		}
 		
 		//
@@ -1337,7 +1352,7 @@ package Caps
 			{
 				// Tenemos que esperar a que todo el mundo esté listo antes de pasar al saque de puerta.
 				// Enviamos nuestro 'estamos listos' y pasamos a esperar por los demás
-				this.SendPlayerReady( Callback.Create( OnInvalidGoalAndPlayersReady, idPlayer ) );
+				this.SendPlayerReady( Delegate.create( OnInvalidGoalAndPlayersReady, idPlayer ) );
 					
 				// Cambiamos a un estado que no hace nada (estamos esperando a que todos los jugadores estén listos)
 				ChangeState( GameState.WaitGeneric );
@@ -1355,9 +1370,9 @@ package Caps
 			
 			// Reseteamos variables ...				
 			SimulatingShoot = false;		// Se indica que no estamos simulando ningún disparo
-			DetectedGoal = false;			// Reseteamos el detector de gol.
+			_DetectedGoal = false;			// Reseteamos el detector de gol.
 			Playing = true;					// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
-			PlayersReady = false;			// Realmente no es necesario, pero lo hacemos
+			_PlayersReady = false;			// Realmente no es necesario, pero lo hacemos
 			
 			// Cambiamos al estado a jugar de nuevo
 			this.ChangeState( GameState.Playing );
@@ -1376,7 +1391,7 @@ package Caps
 			// Colocamos el balón delante del portero que va a sacar de puerta
 			// Delante quiere decir mirando al centro del campo
 			Ball.SetPosInFrontOf( team.GoalKeeper );
-			LastPosBallStopped = Ball.GetPos();		// Actualizamos la última posición del balón
+			_LastPosBallStopped = Ball.GetPos();		// Actualizamos la última posición del balón
 			Ball.StopMovement();
 			
 			// Asignamos el turno al equipo que debe sacar de puerta
@@ -1445,12 +1460,12 @@ package Caps
 		// 
 		public function ConsumeTurn( ) : void
 		{
-			RemainingHits--;
+			_RemainingHits--;
 			ResetTimeout();		// Reseteamos el tiempo disponible para el subturno (time-out)
 			
 			// Si es el jugador local el activo mostramos los tiros que nos quedan en el interface
 			if( this.CurTeam.IsLocalUser  )
-				Interface.OnQuedanTurnos( RemainingHits );
+				Interface.OnQuedanTurnos( _RemainingHits );
 			
 			// Si has declarado tiro a puerta, el jugador contrario ha colocado el portero, nuestro indicador
 			// de que el turno ha sido cambiado por colocación de portero solo dura un sub-turno (Los restauramos a turno x turno).
@@ -1461,7 +1476,7 @@ package Caps
 			
 			// Comprobamos si hemos consumido todos los disparos
 			// Si es así cambiamos el turno al jugador siguiente y restauramos el nº de disparos disponibles
-			if( RemainingHits == 0 )
+			if( _RemainingHits == 0 )
 			{
 				NextTurn();
 			}
@@ -1482,9 +1497,9 @@ package Caps
 		//
 		public function NextTurn( enableUserInput:Boolean = true, reason:int = Enums.TurnByTurn  ) : void
 		{
-			if( IdxCurTeam == Enums.Team1 )
+			if( _IdxCurTeam == Enums.Team1 )
 				SetTurn( Enums.Team2, enableUserInput, reason );
-			else if( IdxCurTeam == Enums.Team2 )
+			else if( _IdxCurTeam == Enums.Team2 )
 				SetTurn( Enums.Team1, enableUserInput, reason );
 		}
 		//
@@ -1497,7 +1512,7 @@ package Caps
 		{
 			// DEBUG: En modo offline nos convertimos en el otro jugador, para poder testear!
 			if( AppParams.OfflineMode == true )
-				Server.Ref.IdLocalUser = idTeam;
+				Match.Ref.IdLocalUser = idTeam;
 				//this.LocalUserTeam = this.Teams[ idTeam ];
 			
 			// Guardamos la razón por la que hemos cambiado de turno
@@ -1511,9 +1526,9 @@ package Caps
 				// Reseteamos el nº de subtiros
 				// TODO: Salva cuando se cambia el turno para declaración de tiro a puerta, o porque se ha colocado el portero.
 				// En estos casos se mantiene el nº de tiros 
-				RemainingHits = AppParams.MaxHitsPerTurn;
-				RemainingPasesAlPie = AppParams.MaxNumPasesAlPie;
-				IdxCurTeam = idTeam;
+				_RemainingHits = AppParams.MaxHitsPerTurn;
+				_RemainingPasesAlPie = AppParams.MaxNumPasesAlPie;
+				_IdxCurTeam = idTeam;
 				
 				// Mostramos un mensaje animado de cambio de turno
 				Interface.OnTurn( idTeam, reason, null );
@@ -1528,19 +1543,19 @@ package Caps
 			// Para tirar a puerta solo se posee un tiro y se pierden todos los pases al pie
 			if( reason == Enums.TurnByGoalKeeperSet )
 			{
-				RemainingHits = 1;
-				RemainingPasesAlPie = 0
+				_RemainingHits = 1;
+				_RemainingPasesAlPie = 0
 			}
 			
 			// Si cambiamos el turno por robo, perdida o falta le damos un turno extra para la colocación del balón.
 			// De esta forma luego tendrá los mismos que un turno normal
 			if( reason == Enums.TurnByStolen || reason == Enums.TurnByFault || reason == Enums.TurnByLost)
-				RemainingHits ++;
+				_RemainingHits ++;
 			
 			// Habilitar la entrada del interface si es el usuario local!!
 			if( enableUserInput == true )
 			{
-				if( IdxCurTeam == Server.Ref.IdLocalUser )
+				if( _IdxCurTeam == Match.Ref.IdLocalUser )
 					Interface.UserInputEnabled = true;
 				else
 					Interface.UserInputEnabled = false;
@@ -1571,7 +1586,7 @@ package Caps
 				Interface.UserInputEnabled = false;
 			else
 			{
-				if( IdxCurTeam == Server.Ref.IdLocalUser )
+				if( _IdxCurTeam == Match.Ref.IdLocalUser )
 					Interface.UserInputEnabled = true;
 			}
 		}
@@ -1637,7 +1652,7 @@ package Caps
 		//
 		private function ResolveConflicto( conflicto:Object ) : Boolean
 		{
-			var bSteal:Boolean = Random.Global.Probability( conflicto.probabilidadRobo )
+			var bSteal:Boolean = _Random.Probability(conflicto.probabilidadRobo)
 			return( bSteal );
 		}
 		
@@ -1673,11 +1688,11 @@ package Caps
 		public function GetPaseAlPie() : Cap
 		{
 			// Si la chapa que hemos lanzado no ha tocado la pelota no puede haber pase al pie
-			if( !HasTouchedBall( CapShooting ) )
+			if( !HasTouchedBall( _CapShooting ) )
 				return null;
 			
 			// Si no nos queda ya ninguno más...
-			if (RemainingPasesAlPie == 0)
+			if (_RemainingPasesAlPie == 0)
 				return null;
 			
 			// La más cercana de todas las potenciales
@@ -1694,14 +1709,14 @@ package Caps
 			{
 				if( cap != null && cap.InsideCircle( _Ball.GetPos(), Cap.Radius + BallEntity.Radius + CurTeam.RadiusPase ) )
 				{
-					if (AppParams.AutoPasePermitido || cap != CapShooting)
+					if (AppParams.AutoPasePermitido || cap != _CapShooting)
 						potential.push(cap);
 				}
 			}
 			
 			// Si hay más de una chapa candidata evitamos hacer autopase, el jugador querrá pasar al resto de chapas
-			if (potential.length > 1 && potential.indexOf(CapShooting) != -1)
-				potential.splice(potential.indexOf(CapShooting), 1);
+			if (potential.length > 1 && potential.indexOf(_CapShooting) != -1)
+				potential.splice(potential.indexOf(_CapShooting), 1);
 			
 			return potential;
 		}
@@ -1715,7 +1730,7 @@ package Caps
 			if( this._SimulatingShoot == false )
 				trace( "No se puede llamar a HasTouchedBall cuando no se está simulando un disparo" );
 			
-			if( TouchedCaps.indexOf( cap ) != (-1) )
+			if( _TouchedCaps.indexOf( cap ) != (-1) )
 				return true;
 			return false;
 		}
@@ -1771,7 +1786,7 @@ package Caps
 			{
 				// Si los turnos o los pases al pie estan agotados, no mostramos ninguna influencia amiga.
 				// Además, el pase al pie sólo empieza a ser posible cuando la chapa que lanza ha tocado la pelota.
-				if (RemainingHits != 0 && RemainingPasesAlPie != 0 && this.HasTouchedBall( this.CapShooting ))
+				if (_RemainingHits != 0 && _RemainingPasesAlPie != 0 && this.HasTouchedBall( this._CapShooting ))
 				{
 					var potential:Array = GetPotentialPaseAlPie();
 					
@@ -1826,9 +1841,9 @@ package Caps
 			
 			if( !player.IsUsingSkill( Enums.Tiroagoldesdetupropiocampo ) )
 			{
-				if( player.Side == Enums.Right_Side && LastPosBallStopped.x >= Field.CenterX)
+				if( player.Side == Enums.Right_Side && _LastPosBallStopped.x >= Field.CenterX)
 					bValid = false;
-				else if( player.Side == Enums.Left_Side && LastPosBallStopped.x <= Field.CenterX)
+				else if( player.Side == Enums.Left_Side && _LastPosBallStopped.x <= Field.CenterX)
 					bValid = false;
 			}
 			
@@ -1871,9 +1886,9 @@ package Caps
 			// Lanzamos la cutscene de fin de tiempo, cuando termine pasamos realmente de parte
 			// o finalizamos el partido
 			if( part == 1 )
-				Interface.OnFinishPart( _Part, Callback.Create( ChangeState, GameState.EndPart ) );
+				Interface.OnFinishPart( _Part, Delegate.create( ChangeState, GameState.EndPart ) );
 			else if( part == 2 )
-				Interface.OnFinishPart( _Part, Callback.Create( Finish, result ) );
+				Interface.OnFinishPart( _Part, Delegate.create( Finish, result ) );
 		}
 		
 		//
@@ -1903,32 +1918,30 @@ package Caps
 			Playing = false;
 			EnableUserInput( false );
 			
-			Shutdown(result);
+			Match.Ref.Shutdown(result);
 		}
-		
-		// Unico punto de salida del Match
-		private function Shutdown(result : Object) : void
-		{
-			// Cerramos la conexión con el servidor
-			Server.Ref.Close();
-			
-			// Destruimos timers, ENTER_FRAMES, etc
-			Match.Ref.Shutdown();
-			
-			// ... y notificamos hacia afuera (al RealtimeModel)
-			Match.Ref.dispatchEvent(new utils.GenericEvent("OnMatchEnded", result));
-		}
-		
+				
 		//
 		// Comienza desde el centro del campo, sincronizando que los 2 jugadores estén listos
 		//
 		public function StartCenter( ) : void
 		{
-			// Enviamos al servidor nuestro estamos listos! cuando todos estén listos nos llamarán a StartCenterAllReady
-			SendPlayerReady( StartCenterAllReady );
-			
-			// Pasamos al estado de espera hasta que nos llegue la confirmación "OnAllPlayersReady" desde el servidor
-			ChangeState( GameState.WaittingPlayers );
+			if (!AppParams.OfflineMode)
+			{
+				// Enviamos al servidor nuestro estamos listos! cuando todos estén listos nos llamarán a StartCenterAllReady
+				SendPlayerReady( StartCenterAllReady );
+				
+				// Pasamos al estado de espera hasta que nos llegue la confirmación "OnAllPlayersReady" desde el servidor
+				ChangeState( GameState.WaittingPlayers );
+			}
+			else
+			{				
+				// Simulamos que nos llega desde el servidor
+				OnAllPlayersReady();
+				
+				// Y como el callback no esta configurado, lo llamamos nosotros
+				StartCenterAllReady();
+			}
 		}
 		
 		
@@ -1937,18 +1950,18 @@ package Caps
 		//
 		public function StartCenterAllReady( ) : void
 		{
-			PlayersReady = false;
+			_PlayersReady = false;
 			
 			// Reseteamos el número de disparos disponibles para el jugador que tiene el turno
-			RemainingHits = AppParams.MaxHitsPerTurn;
-			RemainingPasesAlPie = AppParams.MaxNumPasesAlPie;
+			_RemainingHits = AppParams.MaxHitsPerTurn;
+			_RemainingPasesAlPie = AppParams.MaxNumPasesAlPie;
 			
 			// Colocamos el balón en el centro y los jugadores en la alineación correspondiente, detenemos cualquier simulación física
 			StopSimulation();
 			_Teams[ Enums.Team1 ].ResetToCurrentFormation();
 			_Teams[ Enums.Team2 ].ResetToCurrentFormation();
 			_Ball.Reset();
-			LastPosBallStopped = Ball.GetPos();
+			_LastPosBallStopped = Ball.GetPos();
 			
 			// Sincronizamos el interface visual para asegurar que se actualicen los cambios
 			Interface.Sync();
@@ -1960,7 +1973,7 @@ package Caps
 			// Se indica que no estamos simulando ningún disparo
 			SimulatingShoot = false;
 			// Reseteamos el detector de gol y falta
-			DetectedGoal = false;
+			_DetectedGoal = false;
 			DetectedFault = null;				// Bandera que indica Falta detectada (objeto que describe la falta)
 			
 			// A jugar!
@@ -1981,17 +1994,13 @@ package Caps
 			
 			// Bajamos la bandera:
 			// Si nosotros todavía no hemos mandado nuestra notificación de que estamos listos, indicamos que no todos pueden estarlo 
-			PlayersReady = false;
+			_PlayersReady = false;
 			
 			// Función a llamar cuando todos los players estén listos
-			CallbackOnAllPlayersReady = callbackOnAllPlayersReady;
+			_CallbackOnAllPlayersReady = callbackOnAllPlayersReady;
 			
 			// Mandamos nuestro estamos listos
-			// En modo offline simulamos la confirmación del servidor 
-			if( !AppParams.OfflineMode )
-				Server.Ref.Connection.Invoke( "OnPlayerReady", null );
-			else
-				OnAllPlayersReady(); 
+			Match.Ref.Connection.Invoke( "OnPlayerReady", null );
 		}
 		
 		// 
@@ -2003,14 +2012,14 @@ package Caps
 			trace( "Recibida señal del servidor 'OnAllPlayersReady'" );
 			
 			// Indicamos que ya podemos continuar la espera que estuvieramos haciendo
-			PlayersReady = true;
+			_PlayersReady = true;
 			
 			// Además llamamos al callback de usuario para desencadenar la reacción del usuario y lo asignamos a null
-			if( CallbackOnAllPlayersReady != null )
+			if( _CallbackOnAllPlayersReady != null )
 			{
 				// Invocación segura (asignando 'null' antes de llamar = permitir retro-alimentación del sistema)
-				var callback:Function = CallbackOnAllPlayersReady;
-				CallbackOnAllPlayersReady = null;
+				var callback:Function = _CallbackOnAllPlayersReady;
+				_CallbackOnAllPlayersReady = null;
 				callback();
 			}
 		}
@@ -2020,7 +2029,7 @@ package Caps
 		//
 		public function SyncTime( remainingSecs:Number ) : void
 		{
-			this.TimeSecs = remainingSecs;
+			this._TimeSecs = remainingSecs;
 		}
 
 		//
@@ -2032,7 +2041,7 @@ package Caps
 			ChatLayer.AddLine(msg);
 		}
 		
-		private function get IDString() : String { return "MatchID: " + Config.MatchId + " LocalID: " + Server.Ref.IdLocalUser + " "; } 
+		private function get IDString() : String { return "MatchID: " + Config.MatchId + " LocalID: " + Match.Ref.IdLocalUser + " "; } 
 	}
 	
 }
