@@ -70,26 +70,21 @@ package Caps
 		}
 		
 		//
-		// Inicializa el estadio
+		//
 		// 
-		public function CreatePorterias( parent:MovieClip ) : void
+		public function CreatePorterias(parent:MovieClip) : void
 		{
-			// Creamos las porterias
-			var goalLeft:ImageEntity = new ImageEntity();
-			goalLeft.Init( Embedded.Assets.GoalLeft, parent );
+			var goalLeft:ImageEntity = new ImageEntity(Embedded.Assets.GoalLeft, parent);
 			Match.Ref.Game.TheEntityManager.Add( goalLeft );
 			goalLeft.SetPos( new Point( X_GOAL_LEFT, Y_GOAL ) );
 			
-			var goalRight:ImageEntity = new ImageEntity();
-			goalRight.Init( Embedded.Assets.GoalRight, parent );
+			var goalRight:ImageEntity = new ImageEntity(Embedded.Assets.GoalRight, parent);
 			Match.Ref.Game.TheEntityManager.Add( goalRight );
 			goalRight.SetPos( new Point( X_GOAL_RIGHT, Y_GOAL ) );
 		}
 		
-			
 		//
 		// Crea objetos físicos para gestionar el estadio
-		// Límites, porterias, sensores de goles, ...
 		//
 		protected function CreatePhysicWalls() : void
 		{
@@ -102,8 +97,7 @@ package Caps
 			// NOTE: La posición especificada tanto en cajas como círculos siempre es el centro
 			// Calculamos en coordenadas físicas:
 			// 	- Altura de la portería
-			//	- Las mitad de la altura del campo sin porterías
-			
+			//	- Las mitad de la altura del campo sin porterías			
 			var heightGoal:Number = AppParams.Screen2Physic( HeightGoal );
 			var halfHeightWithoutGoal:Number = AppParams.Screen2Physic( (SizeY - HeightGoal)/2 );
 			var hc1:Number = offsetY + (halfHeightWithoutGoal/2);

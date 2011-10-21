@@ -86,15 +86,13 @@ package Caps
 						
 			// Creamos el campo
 			_Field = new Field();
-			_Field.Initialize( GameLayer );
+			_Field.Initialize(GameLayer);
 			
 			// Creamos el balón
-			_Ball = new BallEntity();
-			_Ball.Initialize(  );
-			TheEntityManager.AddTagged( _Ball, "Ball" );
+			TheEntityManager.AddTagged(_Ball = new BallEntity(), "Ball");
 			
 			// Creamos las porterias al final para que se pinten por encima de todo
-			_Field.CreatePorterias( GameLayer );
+			_Field.CreatePorterias(GameLayer);
 			
 			// Registramos sonidos para lanzarlos luego 
 			AudioManager.AddClass( "SoundCollisionCapBall", Assets.SoundCollisionCapBall );			
@@ -102,69 +100,52 @@ package Caps
 			AudioManager.AddClass( "SoundCollisionWall", Assets.SoundCollisionWall );
 			AudioManager.AddClass( "SoundAmbience", Assets.SoundAmbience );
 			
-			// En modo offline : Inicializamos el partido. De otra forma nos lo deberá indicar el servidor
+			// En modo offline iniciamos directamente partido. De otra forma nos lo deberá indicar el servidor 
+			// llamando remotamente a InitMatch
 			if (AppParams.OfflineMode)
-			{
-				var descTeam1:Object = { 
-					PredefinedTeamName: "Atlético",
-					SpecialSkillsIDs: [ 1, 4, 5, 6, 7, 8, 9 ],
-					SoccerPlayers: []
-				}
-				var descTeam2:Object = { 
-					PredefinedTeamName: "Sporting",
-					SpecialSkillsIDs: [7, 1, 3],
-					SoccerPlayers: []
-				}
-					
-				for (var c:int=0; c < 8; ++c)
-				{
-					var descCap1:Object = { 
-											DorsalNumber: c+1,
-											Name: "Cap Team01 " + c,
-											Power: 0,
-											Control: 0,
-											Defense: 0
-										  };						
-					descTeam1.SoccerPlayers.push(descCap1);
-					
-					var descCap2:Object = { 
-											DorsalNumber: c+1,
-										    Name: "Cap Team02 " + c,
-											Power: 0,
-											Control: 0,
-											Defense: 0
-					};						
-					descTeam2.SoccerPlayers.push(descCap2);					
-				}
-					
-				InitMatch( (-1), descTeam1, descTeam2, Enums.Team1, Config.PartTime * 2, Config.TurnTime, AppParams.ClientVersion  );
-			}
+				InitOffline();
 		}
 		
-		/*
-		public class RealtimePlayerData
+		private function InitOffline() : void
 		{
-			public class SoccerPlayerData
-			{
-				public int	  DorsalNumber; 
-				public String Name;			
-				public int    Power;
-				public int    Control;
-				public int    Defense;
+			var descTeam1:Object = { 
+				PredefinedTeamName: "Atlético",
+				SpecialSkillsIDs: [ 1, 4, 5, 6, 7, 8, 9 ],
+				SoccerPlayers: []
+			}
+			var descTeam2:Object = { 
+				PredefinedTeamName: "Sporting",
+				SpecialSkillsIDs: [7, 1, 3],
+				SoccerPlayers: []
 			}
 			
-			public String Name;								// Nombre del equipo del player
-			public String PredefinedTeamName;				// El player tiene un equipo real asociado: "Getafe"
-			public int TrueSkill;							// ...Por si acaso hay que mostrarlo
-			public List<int> SpecialSkillsIDs;				// Del 1 al 9
-			public String Formation;						// Nombre de la formacion: "331", "322", etc..
+			for (var c:int=0; c < 8; ++c)
+			{
+				var descCap1:Object = { 
+					DorsalNumber: c+1,
+						Name: "Cap Team01 " + c,
+						Power: 0,
+						Control: 0,
+						Defense: 0
+				};						
+				descTeam1.SoccerPlayers.push(descCap1);
+				
+				var descCap2:Object = { 
+					DorsalNumber: c+1,
+						Name: "Cap Team02 " + c,
+						Power: 0,
+						Control: 0,
+						Defense: 0
+				};						
+				descTeam2.SoccerPlayers.push(descCap2);					
+			}
 			
-			// Todos los futbolistas, ordenados según la posición/formacion. Primero siempre el portero.
-			public List<SoccerPlayerData> SoccerPlayers;	
+			InitMatch( (-1), descTeam1, descTeam2, Enums.Team1, Config.PartTime * 2, Config.TurnTime, AppParams.ClientVersion  );
 		}
-		*/
-
-		// Inicialización de los datos del partido. Invocado desde el servidor cuando le envíamos la petición de datos
+		
+		//
+		// Inicialización de los datos del partido. Invocado desde el servidor
+		//
 		public function InitMatch( matchId:int, descTeam1:Object, descTeam2:Object, idLocalPlayerTeam:int, matchTimeSecs:int, turnTimeSecs:int, minClientVersion:int ) : void
 		{
 			// Verificamos la versión mínima de cliente exigida por el servidor.
@@ -538,7 +519,6 @@ package Caps
 		//
 		// Crea los layers de pintado (MovieClip) para el juego, interface gráfico de usuario y física
 		// De esta forma aseguramos el orden de pintado
-		// TODO: Esta función debería pertenecerle a la aplicación???
 		//
 		public function CreateLayers() : void
 		{

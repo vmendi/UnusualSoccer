@@ -12,25 +12,23 @@ package Caps
 	public class BallEntity extends PhyEntity
 	{
 		static public const Radius:Number = 9;
-		//
-		// Inicializa el balón de juego
-		//
-		public function Initialize(  ) : void
+		
+		public function BallEntity() : void
 		{
 			// Inicializamos la entidad
 			// NOTE: Inicializamos el objeto físico en el grupo (-1) para poder hacer que los obstáculos de las porterías no le afecten)
-			super.InitWithPhysic( Embedded.Assets.Ball, Match.Ref.Game.GameLayer, PhyEntity.Circle, {
-				mass: 0.04,
-				fixedRotation: true,		// If set to true the rigid body will not rotate.
-				isBullet: true, 			// UseCCD: Detección de colisión continua
-				groupIndex:-1, 
-				radius:AppParams.Screen2Physic( Radius ), 
-				isSleeping: true, 
-				allowSleep: true, 
-				linearDamping: 4 /*1*/, 
-				angularDamping: /*2*/4, 
-				friction:.2, 
-				restitution: .4 } );	// Fuerza que recupera en un choque
+			super(Embedded.Assets.Ball, Match.Ref.Game.GameLayer, PhyEntity.Circle, {
+				  mass: 0.04,
+				  fixedRotation: true,		// If set to true the rigid body will not rotate.
+				  isBullet: true, 			// UseCCD: Detección de colisión continua
+				  groupIndex:-1, 
+				  radius:AppParams.Screen2Physic( Radius ), 
+				  isSleeping: true, 
+				  allowSleep: true, 
+				  linearDamping: 4 /*1*/, 
+				  angularDamping: /*2*/4, 
+				  friction:.2, 
+				  restitution: .4 } );	// Fuerza que recupera en un choque
 			
 			// Reasignamos la escala del balón, ya que la física lo escala para que encaje con el radio físico asignado
 			this.Visual.scaleX = 1.0;
@@ -71,7 +69,7 @@ package Caps
 		// En frente quiere decir mirando a la dirección de la mitad del campo del oponente
 		// NOTE: No se valida la posición!
 		//
-		public function SetPosInFrontOf( cap:Cap ) : void
+		public function SetPosInFrontOf(cap:Cap) : void
 		{
 			var pos:Point = cap.GetPos();
 			

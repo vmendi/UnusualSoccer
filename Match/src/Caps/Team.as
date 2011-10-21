@@ -73,7 +73,6 @@ package Caps
 		
 		public var UseSecondaryEquipment:Boolean = false;		// Indica si utiliza la equipacion secundaria
 		
-		
 		//
 		// Inicializa el equipo
 		//
@@ -92,10 +91,8 @@ package Caps
 			for (var i:int = 0; i < CAPS_BY_TEAM; i++ )
 			{
 				// Creamos una chapa y la agregamos a la lista
-				var cap:Cap = new Cap();
+				var cap:Cap = new Cap(this, i, descTeam.SoccerPlayers[i]);
 				CapsList.push(cap);
-				
-				cap.InitFromTeam(this, i, descTeam.SoccerPlayers[i]);
 				
 				// Añadimos la entidad al gestor de entidades 
 				Match.Ref.Game.TheEntityManager.AddTagged(cap, "Team"+(teamId+1).toString() + "_" + i.toString());
@@ -111,8 +108,7 @@ package Caps
 			ResetToCurrentFormation();
 						
 			// Creamos una imagen de chapa Ghost (la utilizaremos para indicar donde mover el portero)
-			Ghost = new ImageEntity();
-			Ghost.Init( Embedded.Assets.Goalkeeper, Match.Ref.Game.GameLayer ); 
+			Ghost = new ImageEntity(Embedded.Assets.Goalkeeper, Match.Ref.Game.GameLayer );
 			Ghost.Visual.gotoAndStop( Name );
 			Ghost.Visual.alpha = 0.4;
 			Ghost.Visual.visible = false;
