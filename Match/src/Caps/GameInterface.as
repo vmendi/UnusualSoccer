@@ -482,23 +482,24 @@ package Caps
 		// Se produce cuando el usuario termina de utilizar el control de disparo.
 		// En ese momento se envíamos la acción de ejecutar disparo según el valor actual del controlador direccional de tiro
 		//
-		public function OnShoot( ) : void
+		public function OnShoot() : void
 		{
 			// Envíamos la acción al servidor para que la verifique y la devuelva a todos los clientes
-			// NOTE: [Debug] En modo Offline ejecuta directamente la acción en el cliente 
-			
-			// Si el disparo es válido (radio mayor que la chapa) notificamos al server que realice el disparo.
-			// En caso contrario habilitamos el interface
+			// Si el disparo es válido (radio mayor que la chapa por ejemplo) notificamos al server 
+			// que realice el disparo. En caso contrario habilitamos el interface.
 			//
-			if( Shoot.IsValid() )
+			if (Shoot.IsValid())
 			{
-				if( !AppParams.OfflineMode )
+				if (!AppParams.OfflineMode)
 				{
-					Match.Ref.Connection.Invoke( "OnServerShoot", null, Shoot.Target.Id, Shoot.Direction.x, Shoot.Direction.y, Shoot.Force );
+					Match.Ref.Connection.Invoke("OnServerShoot", null, Shoot.Target.Id, Shoot.Direction.x, Shoot.Direction.y, Shoot.Force);
 					WaitResponse();
 				}
 				else
-					Match.Ref.Game.OnShoot( Shoot.Target.OwnerTeam.IdxTeam, Shoot.Target.Id, Shoot.Direction.x, Shoot.Direction.y, Shoot.Force );
+				{
+					// Simulamos que el servidor nos ha devuelto el tiro
+					Match.Ref.Game.OnClientShoot(Shoot.Target.OwnerTeam.IdxTeam, Shoot.Target.Id, Shoot.Direction.x, Shoot.Direction.y, Shoot.Force);
+				}
 			}
 			else
 				UserInputEnabled = true;
@@ -678,7 +679,7 @@ package Caps
 			{
 				// Notificamos al servidor para que lo propague en los usuarios
 				if( !AppParams.OfflineMode )
-					Match.Ref.Connection.Invoke( "OnUseSkill", null, idSkill );
+					Match.Ref.Connection.Invoke("OnUseSkill", null, idSkill);
 				else
 					Match.Ref.Game.OnUseSkill( Match.Ref.IdLocalUser, idSkill );
 			}

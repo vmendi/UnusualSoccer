@@ -93,7 +93,7 @@ package Caps
 		// Botón del ratón presionado
 		//
 		public function MouseDown( e: MouseEvent ) :void
-		{			
+		{
 		}
 		
 		//

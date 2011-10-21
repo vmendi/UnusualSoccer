@@ -57,10 +57,8 @@ package Caps
 		private var _CapShooting:Cap = null;					// Indica la chapa que está disparando, lo utilizamos para evitar el auto-pase
 		private var _LastPosBallStopped:Point = new Point(0, 0);// Posición de la pelota antes de disparar
 		
-		private var _PhySimulating:Boolean = false;				// Bandera que indica si se están moviendo objetos o no
 		private var _SimulatingShoot:Boolean = false;			// Bandera que indica si estamos simulando un lanzamiento
 		private var _FramesSimulating:int = 0;					// Contador de frames simulando
-		private var _PlayersReady:Boolean = false;				// Bandera que indica cuando los jugadores están listos
 		private var _CallbackOnAllPlayersReady:Function = null 	// Llamar cuando todos los jugadores están listos
 		private var _Initialized:Boolean = false;				// Bandera que indica si hemos terminado de inicializar/cargar
 		private var _DetectedGoal:Boolean = false;				// Bandera que indica que se ha detectado un gol. Se utiliza para no continuar detectando
@@ -105,7 +103,7 @@ package Caps
 			AudioManager.AddClass( "SoundAmbience", Assets.SoundAmbience );
 			
 			// En modo offline : Inicializamos el partido. De otra forma nos lo deberá indicar el servidor
-			if( AppParams.OfflineMode )
+			if (AppParams.OfflineMode)
 			{
 				var descTeam1:Object = { 
 					PredefinedTeamName: "Atlético",
@@ -288,9 +286,6 @@ package Caps
 		//
 		public function Run( elapsed:Number ) : void
 		{
-			// Actualizamos el estado de si estamos o no simulando
-			CheckSimulating();
-			
 			// Ejecutamos los equipos
 			if( Teams[ Enums.Team1 ] != null ) 
 				Teams[ Enums.Team1 ].Run( elapsed );
@@ -316,7 +311,7 @@ package Caps
 				
 				// Mientras que se está realizando una simulación de un disparo o está ejecutando el cambio de turno, 
 				// o estamos pausados, no se resta el timeout
-				if( (!_SimulatingShoot) && (!this.TimeOutPaused) && (!Interface.CutSceneTurnRunning))
+				if( (!SimulatingShoot) && (!this.TimeOutPaused) && (!Interface.CutSceneTurnRunning))
 				{
 					Timeout -= realElapsed;
 					
@@ -331,7 +326,7 @@ package Caps
 						{
 							// Una vez envíado el tiemout no le permitimos al jugador local utilizar el interface
 							EnableUserInput( false );
-							Match.Ref.Connection.Invoke( "OnServerTimeout", null );
+							Match.Ref.Connection.Invoke("OnServerTimeout", null);
 							TimeOutSent = true;		// Para que no volvamos a envíar el timeout!
 						}
 					}
@@ -382,44 +377,38 @@ package Caps
 					
 				//
 				// Esperando confirmación de los jugadores para comenzar una mitad de partido (1ª o 2ª)
-				// Receibiremos una notificación del servidor PlayerReady, al tener las de todos los jugadoremos pasaremos a
-				// StartCenterAllReady
 				// 
 				case GameState.WaittingPlayers:
 				{
 					break;
 				}
 
-				//
-				// 
-				// 
 				case GameState.Playing:
 				{
-					// Detectamos cuando hemos disparado sobre una chapa y la simulación física ha terminado
-					// SimulatingShoot se activa al disparar, pero no se desactiva nada más que cuando pasamos por 'OnShootSimulated'
-					if( _SimulatingShoot == true )
+					// SimulatingShoot se activa al disparar, pero no se desactiva nada más que cuando pasamos por 'OnClientShootSimulated'
+					if (SimulatingShoot == true)
 					{
 						// Contabilizamos el numero de frames que dura la simulación física del disparo
-						_FramesSimulating ++;
+						_FramesSimulating++;
 
 						// Si la física ha terminado de simular quiere decir que en nuestro cliente hemos terminado la simulación del disparo.
 						// Se lo notificamos al servidor y nos quedamos a la espera de la confirmación de ambos jugadores
-						if( IsPhysicSimulating == false )
+						if (IsPhysicSimulating == false)
 						{
 							// Indicamos al servidor que hemos terminado la simulación del disparo
-							if( !AppParams.OfflineMode )
-								Match.Ref.Connection.Invoke( "ClientEndShoot", null );
-															
+							if (!AppParams.OfflineMode)
+								Match.Ref.Connection.Invoke("OnServerEndShoot", null);
+
 							// Hasta que todos los clientes no indiquen que han terminado la simulación, no tomaremos ninguna decisión
 							trace( "Finalizado nuestra simulacion de disparo, esperando al otro usuario" );
 							
 							// Nos ponemos en modo espera de respuesta
-							ChangeState( GameState.WaittingClientsToEndShoot );
+							ChangeState(GameState.WaittingClientsToEndShoot);
 						}
 					}
 					
 					// Se encarga de mostrar los radios de influencias
-					ShowInfluences( );
+					ShowInfluences();
 
 					break;
 				}
@@ -427,13 +416,13 @@ package Caps
 				//
 				// Nuestro disparo ya se ha simulado.
 				// Esperando a que TODOS los demás clientes indiquen que han terminado la simulación
-				// Recibiremos una notificacion desde el servidor "OnShootSimulated"
+				// Recibiremos una notificacion desde el servidor "OnClientShootSimulated"
 				//
 				case GameState.WaittingClientsToEndShoot:
 				{
 					// En modo offline simulamos que nos llega el mensaje de que todos los clientes ya han simulado
 					if( AppParams.OfflineMode )
-						OnShootSimulated();
+						OnClientShootSimulated();
 					break;
 				}
 					
@@ -872,32 +861,7 @@ package Caps
 			if( fault.Attacker.YellowCards >= 2 )
 				fault.RedCard = true;
 		}
-		
-		//
-		// Comprueba si el motor físico está simulando 
-		// Para saber esto iteramos por todas las entidades y comprobamos si se están moviendo 
-		private function CheckSimulating() : Boolean		
-		{
-			var bSimulating:Boolean = false;
-			
-			for each( var entity:Entity in TheEntityManager.Items )
-			{
-				if( entity is PhyEntity )
-				{
-					var phyEntity:PhyEntity = entity as PhyEntity;
-					if( phyEntity.IsMoving == true )
-					{						
-						bSimulating = true;
-						break;
-					}
-				}
-			}
-			
-			_PhySimulating = bSimulating;
-			
-			return( bSimulating );
-		}
-		
+				
 		//
 		// Detiene la simulación física de todas las entidades 
 		// 
@@ -908,31 +872,30 @@ package Caps
 				if( entity is PhyEntity )
 				{
 					var phyEntity:PhyEntity = entity as PhyEntity;
-					//if( phyEntity.IsMoving == true )
-					{						
-						phyEntity.StopMovement();
-					}
+					phyEntity.StopMovement();
 				}
 			}			
 		}
 		
 		//
-		// Retorna si estamos o no simulando la física
-		// NOTE: Para que el resultado sea correcto debe invocarse en cada ciclo
-		// el método CheckSimulating que actualiza el estado del valor devuelto en
-		// este método
+		// Retorna si esta ya todo quieto		
 		//
 		public function get IsPhysicSimulating() : Boolean
 		{
-			return _PhySimulating;
+			for each( var entity:Entity in TheEntityManager.Items )
+			{
+				if (entity is PhyEntity && (entity as PhyEntity).IsMoving == true)
+					return true;
+			}
+			
+			return false;
 		}
 		
 		
 		//
 		// Recibimos una "ORDEN" del servidor : "Disparar chapa" 
-		// Signature: int targetID, float dirX, float dirY, float force
 		//
-		public function OnShoot( playerId:int, capID:int, dirX:Number, dirY:Number, force:Number  ) : void
+		public function OnClientShoot(playerId:int, capID:int, dirX:Number, dirY:Number, force:Number) : void
 		{
 			// Reseteamos el tiempo de juego al efectuar un lanzamiento
 			ResetTimeout();
@@ -940,16 +903,14 @@ package Caps
 			// Obtenemos la chapa que dispara
 			var cap:Cap = GetCap( playerId, capID );
 			if( playerId != this.CurTeam.IdxTeam )
-				throw new Error(IDString + "Ha llegado un orden Shoot de un jugador que no es el actual: Shoot: Player: "+playerId + " Cap: " +capID + " RTC: " + ReasonTurnChanged );
+				throw new Error(IDString + "Ha llegado un orden OnClientShoot de un jugador que no es el actual: Player: "+playerId + " Cap: " +capID + " RTC: " + ReasonTurnChanged);
 			
 			// Aplicamos habilidad especial
-			if( cap.OwnerTeam.IsUsingSkill( Enums.Superpotencia ) )
-			{
+			if (cap.OwnerTeam.IsUsingSkill(Enums.Superpotencia))
 				force *= AppParams.PowerMultiplier;
-			}
-			
+						
 			// Ejecutamos el disparo en la dirección/fuerza recibida
-			cap.Shoot( new Point( dirX, dirY ), force );
+			cap.Shoot(new Point( dirX, dirY ), force);
 			
 			// Indicamos que estamos simulando el disparo y guardamos la chapa que está disparando
 			SimulatingShoot = true;
@@ -970,25 +931,24 @@ package Caps
 		public function set SimulatingShoot( value:Boolean ) : void
 		{
 			// Obviamos asignaciones redundantes
-			if( value != _SimulatingShoot )
+			if (value != _SimulatingShoot)
 			{
 				// Si comienza una simulación de disparo o se termina, guardamos la posición del balón 
 				// (para detectar goles desde tu campo)  
-				//if( value == true )
-				{
-					_LastPosBallStopped = Ball.GetPos();	
-				}
+				_LastPosBallStopped = Ball.GetPos();	
 					
 				_SimulatingShoot = value;
 			
 				// Cada vez que empieza un disparo, reseteamos el contador de frames que ha tardado la simulación del disparo
-				if( value == true )
+				if (value == true)
 					_FramesSimulating = 0;
 			}
 			
-			_TouchedCaps.length = 0;		// Vacíamos la lista de chapas tocadas
+			// Vacíamos la lista de chapas tocadas
+			_TouchedCaps.length = 0;
+			
 			// Si hemos terminado la simulación, borramos la referencia a la chapa que está disparando 
-			if( value == false )
+			if (value == false)
 				_CapShooting = null;
 		}
 		
@@ -996,170 +956,165 @@ package Caps
 		// El servidor nos indica que todos los clientes han terminado de simular el disparo! 
 		// Evaluamos el resultado producido: ( normal, pase al pie, robo, ...)	
 		//
-		public function OnShootSimulated( ) : void
+		public function OnClientShootSimulated() : void
 		{
 			// Si estamos esperando la recepción de un gol, simplemente ignoramos el final de la simulación
 			if( this._State == GameState.WaitingGoal )
 				return;
-				
 			
-			// Confirmamos que estamos esperando la confirmación del server de finalización de simulación
-			if( this._State == GameState.WaittingClientsToEndShoot )
-			{				
-				var result:int = 0;
-				
-				// Al acabar el tiro, movemos el portero a su posición de formación en caso de saque de puerta.
-				// Lo de olvidar el ReasonTurnChanged antes se hacia en OnShoot, pero como necesitamos recordar hasta el final
-				// del tiro que esto ha sido un saque de puerta, ahora lo hacemos aquí.
-				if ( ReasonTurnChanged == Enums.TurnBySaquePuerta || ReasonTurnChanged == Enums.TurnBySaquePuertaByFalta   )
-				{
-					this.CurTeam.ResetToCurrentFormationOnlyGoalKeeper();
-					ReasonTurnChanged = Enums.TurnByTurn;
-				}
-				
-				// Comprobamos si hay pase al pie:
-				//   - Cuando se ha efectuado un disparo de chapa y la simulación física ha terminado 
-				// 	 - La pelota debe quedarse dentro del radio de pase al pie del jugador
-				var paseToCap:Cap = GetPaseAlPie();
-				
-				// Si se ha producido UNA FALTA cambiamos el turno al siguiente jugador como si nos hubieran robado la pelota
-				// + caso saque de puerta  
-				if( DetectedFault != null )
-				{
-					var attacker:Cap = DetectedFault.Attacker;
-					var defender:Cap = DetectedFault.Defender;
-					
-					// Aplicamos expulsión del jugador si hubo tarjeta roja
-					if( DetectedFault.RedCard == true )
-					{
-						result = 1;
-						
-						// Destruimos la chapa del equipo!
-						attacker.OwnerTeam.FireCap( attacker );
-					}
-					else	// Hacemos retroceder al jugador que ha producido la falta
-					{
-						result = 2;
-						
-						// Calculamos el vector de dirección en el que haremos retroceder la chapa atacante
-						var dir:Point = attacker.GetPos().subtract( defender.GetPos() );
-						
-						// Movemos la chapa en una dirección una cantidad (probamos varios puntos intermedios si colisiona) 
-						Match.Ref.Game.GetField().MoveCapInDir( attacker, dir, 80, true, 4 );
-					}
-					
-					// Tenemos que sacar de puerta?
-					if( DetectedFault.SaquePuerta == true )
-					{
-						this.SaquePuerta( defender.OwnerTeam, true );							
-					}
-						// En caso contrario, Pasamos turno al otro jugador, pero SIN habilitarle el interface de entrada (indicamos que pasamos de turno por falta)
-					else
-					{	
-						NextTurn( false, Enums.TurnByFault );	 
-						if( defender.OwnerTeam.IsLocalUser )
-							Interface.ShowHandleBall( defender );
-					}
-					
-					// Reseteamos el objeto de falta
-					DetectedFault = null;
-				}
-					// Si se ha producido pase al pie, debemos comprobar si alguna chapa enemiga está en el radio de robo de pelota
-				else if( paseToCap != null )
-				{
-					// Comprobamos si alguien del equipo contrario puede robar el balón al jugador que le hemos pasado y obtenemos el conflicto
-					LastConflicto = new Object();
-					
-					var stealer:Cap = CheckConflictoSteal( paseToCap, LastConflicto );
-					var stolenProduced:Boolean = false;
-					
-					if( stealer != null )
-						stolenProduced = this.ResolveConflicto( LastConflicto );
-					
-					// Si se produce el robo, activamos el contralador de pelota al usuario que ha robado el pase y pasamos el turno
-					if( stolenProduced )
-					{
-						result = 4;
-
-						// Pasamos turno al otro jugador, pero SIN habilitarle el interface de entrada (indicamos que pasamos de turno por robo)
-						NextTurn( false, Enums.TurnByStolen );
-						if( stealer.OwnerTeam.IsLocalUser )
-							Interface.ShowHandleBall( stealer );
-					}
-					else
-					{
-						// Si nadie consiguió robar la pelota activamos el contralador de pelota al usuario que ha recibido el pase
-						// Además pintamos un mensaje de pase al pie adecuado (con conflicto o sin conflicto de intento de robo)
-						// NOTE: No consumimos el turno hasta que el usuario coloque la pelota!
-						result = 5;
-						
-						// Además si era el último sub-turno le damos un sub-turno EXTRA. Mientras hagas pase al pie puedes seguir tirando
-						if( _RemainingHits == 1 )
-							_RemainingHits++;
-						
-						// Mostramos el cartel de pase al pie en los 2 clientes!
-						Interface.OnMsgPasePie( stealer ? true : false, LastConflicto );
-						
-						// Si no somos el 'LocalUser', solo esperamos la respuesta del otro cliente
-						if( paseToCap.OwnerTeam.IsLocalUser )
-							Interface.ShowHandleBall( paseToCap );
-						
-						_RemainingPasesAlPie--;
-						
-						// Si este ha sido el último pase al pie, informamos al player
-						if (_RemainingPasesAlPie == 0)
-							Interface.OnLastPaseAlPie();
-					}
-				}
-				else	// No ha habido falta y no se ha producido pase al pie					
-				{	
-					// Cuando no hay pase al pie pero la chapa se queda cerca de un contrario, la perdemos directamente!
-					// (pero: unicamente cuando hayamos tocado la pelota con una de nuestras chapas, es decir, permitimos mover una 
-					// chapa SIN tocar el balón y que no por ello lo pierdas)
-					var potentialStealer : Cap = GetPotencialStealer(AgainstTeam(CurTeam));
-					
-					if (potentialStealer != null && HasTouchedBallAny(this.CurTeam))
-					{
-						result = 10;
-						
-						// Igual que en el robo con conflicto pero con una reason distinta para que el interfaz muestre un mensaje diferente
-						NextTurn( false, Enums.TurnByLost );
-						if( potentialStealer.OwnerTeam.IsLocalUser )
-							Interface.ShowHandleBall( potentialStealer );
-					}
-					else
-					{
-						// simplemente consumimos uno de los 3 turnos
-						result = 11;
-						ConsumeTurn();
-					}
-				}
-				
-				// Notificamos al servidor el resultado cálculado
-				//var listToSend:Array = GetListToSend( this._Teams[0]+ this._Teams[ 1 ] );
-				var capListStr:String = "T1: "+GetString( this._Teams[0].CapsList );
-				capListStr += "T2: "+GetString( this._Teams[1].CapsList );
-				capListStr += " B:" + this.Ball.GetPos().toString();
-				var countTouchedCaps:int = _TouchedCaps.length;
-				
-				if( !AppParams.OfflineMode )
-					Match.Ref.Connection.Invoke("OnResultShoot", null, result, 
-						countTouchedCaps, paseToCap != null ? paseToCap.Id : -1, _FramesSimulating, 
-						ReasonTurnChanged, capListStr);
-				
-				// Marcamos que hemos terminado la simulación del disparo y con ello además vacíamos la lista de impactos
-				SimulatingShoot = false;
-				
-				// Volvemos al estado de juego
-				ChangeState( GameState.Playing );
-			}
-			else
-			{
-				// TODO: Esto podría pasar si nos han cambiado el estado por un cambio de tiempo. Deberíamos controlarlo en el server! 
+			// Confirmamos que estamos en el estado correcto. El servidor no permite cambios de estado mientras estamos simulando
+			if (this._State != GameState.WaittingClientsToEndShoot)
 				throw new Error(IDString + "Hemos recibido una confirmación de que todos los jugadores han simulado el disparo cuando no estábamos esperándola" );
+			
+			var result:int = 0;
+			
+			// Al acabar el tiro, movemos el portero a su posición de formación en caso de saque de puerta.
+			// Lo de olvidar el ReasonTurnChanged antes se hacia en OnClientShoot, pero como necesitamos 
+			// recordar hasta el final del tiro que esto ha sido un saque de puerta, ahora lo hacemos aquí.
+			if (ReasonTurnChanged == Enums.TurnBySaquePuerta || ReasonTurnChanged == Enums.TurnBySaquePuertaByFalta)
+			{
+				this.CurTeam.ResetToCurrentFormationOnlyGoalKeeper();
+				ReasonTurnChanged = Enums.TurnByTurn;
 			}
-		}
+			
+			// Comprobamos si hay pase al pie:
+			//   - Cuando se ha efectuado un disparo de chapa y la simulación física ha terminado 
+			// 	 - La pelota debe quedarse dentro del radio de pase al pie del jugador
+			var paseToCap:Cap = GetPaseAlPie();
+			
+			// Si se ha producido UNA FALTA cambiamos el turno al siguiente jugador como si nos hubieran robado la pelota
+			// + caso saque de puerta  
+			if( DetectedFault != null )
+			{
+				var attacker:Cap = DetectedFault.Attacker;
+				var defender:Cap = DetectedFault.Defender;
 				
+				// Aplicamos expulsión del jugador si hubo tarjeta roja
+				if (DetectedFault.RedCard == true)
+				{
+					result = 1;
+					
+					// Destruimos la chapa del equipo!
+					attacker.OwnerTeam.FireCap( attacker );
+				}
+				else	// Hacemos retroceder al jugador que ha producido la falta
+				{
+					result = 2;
+					
+					// Calculamos el vector de dirección en el que haremos retroceder la chapa atacante
+					var dir:Point = attacker.GetPos().subtract( defender.GetPos() );
+					
+					// Movemos la chapa en una dirección una cantidad (probamos varios puntos intermedios si colisiona) 
+					Match.Ref.Game.GetField().MoveCapInDir( attacker, dir, 80, true, 4 );
+				}
+				
+				// Tenemos que sacar de puerta?
+				if( DetectedFault.SaquePuerta == true )
+				{
+					this.SaquePuerta( defender.OwnerTeam, true );							
+				}
+					// En caso contrario, Pasamos turno al otro jugador, pero SIN habilitarle el interface de entrada (indicamos que pasamos de turno por falta)
+				else
+				{	
+					YieldTurnToOpponent( false, Enums.TurnByFault );	 
+					if( defender.OwnerTeam.IsLocalUser )
+						Interface.ShowHandleBall( defender );
+				}
+				
+				// Reseteamos el objeto de falta
+				DetectedFault = null;
+			}
+			// Si se ha producido pase al pie, debemos comprobar si alguna chapa enemiga está en el radio de robo de pelota
+			else if( paseToCap != null )
+			{
+				// Comprobamos si alguien del equipo contrario puede robar el balón al jugador que le hemos pasado y obtenemos el conflicto
+				LastConflicto = new Object();
+				
+				var stealer:Cap = CheckConflictoSteal( paseToCap, LastConflicto );
+				var stolenProduced:Boolean = false;
+				
+				if( stealer != null )
+					stolenProduced = this.ResolveConflicto( LastConflicto );
+				
+				// Si se produce el robo, activamos el contralador de pelota al usuario que ha robado el pase y pasamos el turno
+				if( stolenProduced )
+				{
+					result = 4;
+
+					// Pasamos turno al otro jugador, pero SIN habilitarle el interface de entrada (indicamos que pasamos de turno por robo)
+					YieldTurnToOpponent( false, Enums.TurnByStolen );
+					if( stealer.OwnerTeam.IsLocalUser )
+						Interface.ShowHandleBall( stealer );
+				}
+				else
+				{
+					// Si nadie consiguió robar la pelota activamos el contralador de pelota al usuario que ha recibido el pase
+					// Además pintamos un mensaje de pase al pie adecuado (con conflicto o sin conflicto de intento de robo)
+					// NOTE: No consumimos el turno hasta que el usuario coloque la pelota!
+					result = 5;
+					
+					// Además si era el último sub-turno le damos un sub-turno EXTRA. Mientras hagas pase al pie puedes seguir tirando
+					if( _RemainingHits == 1 )
+						_RemainingHits++;
+					
+					// Mostramos el cartel de pase al pie en los 2 clientes!
+					Interface.OnMsgPasePie( stealer ? true : false, LastConflicto );
+					
+					// Si no somos el 'LocalUser', solo esperamos la respuesta del otro cliente
+					if( paseToCap.OwnerTeam.IsLocalUser )
+						Interface.ShowHandleBall( paseToCap );
+					
+					_RemainingPasesAlPie--;
+					
+					// Si este ha sido el último pase al pie, informamos al player
+					if (_RemainingPasesAlPie == 0)
+						Interface.OnLastPaseAlPie();
+				}
+			}
+			else	// No ha habido falta y no se ha producido pase al pie					
+			{	
+				// Cuando no hay pase al pie pero la chapa se queda cerca de un contrario, la perdemos directamente!
+				// (pero: unicamente cuando hayamos tocado la pelota con una de nuestras chapas, es decir, permitimos mover una 
+				// chapa SIN tocar el balón y que no por ello lo pierdas)
+				var potentialStealer : Cap = GetPotencialStealer(AgainstTeam(CurTeam));
+				
+				if (potentialStealer != null && HasTouchedBallAny(this.CurTeam))
+				{
+					result = 10;
+					
+					// Igual que en el robo con conflicto pero con una reason distinta para que el interfaz muestre un mensaje diferente
+					YieldTurnToOpponent( false, Enums.TurnByLost );
+					if( potentialStealer.OwnerTeam.IsLocalUser )
+						Interface.ShowHandleBall( potentialStealer );
+				}
+				else
+				{
+					// simplemente consumimos uno de los 3 turnos
+					result = 11;
+					ConsumeTurn();
+				}
+			}
+			
+			// Notificamos al servidor el resultado cálculado
+			//var listToSend:Array = GetListToSend( this._Teams[0]+ this._Teams[ 1 ] );
+			var capListStr:String = "T1: " + GetString( this._Teams[0].CapsList );
+			capListStr += "T2: " + GetString( this._Teams[1].CapsList );
+			capListStr += " B:" + this.Ball.GetPos().toString();
+			var countTouchedCaps:int = _TouchedCaps.length;
+			
+			if( !AppParams.OfflineMode )
+			{
+				Match.Ref.Connection.Invoke("OnResultShoot", null, result, 
+											countTouchedCaps, paseToCap != null ? paseToCap.Id : -1, _FramesSimulating, 
+											ReasonTurnChanged, capListStr);
+			}
+			
+			// Marcamos que hemos terminado la simulación del disparo y con ello además vacíamos la lista de impactos
+			SimulatingShoot = false;
+			
+			// Volvemos al estado de juego
+			ChangeState(GameState.Playing);
+		}
 
 		//
 		// Recibimos una "ORDEN" del servidor : "PlaceBall" 
@@ -1257,7 +1212,6 @@ package Caps
 			// cambiamos el turno al enemigo para que coloque el portero
 			// Puede moverlo múltiples veces HASTA que se consuma su turno 
 			
-			
 			// Una vez que se termine su TURNO por TimeOut se llamará a OnGoalKeeperSet  
 			if( _Field.IsCapInsideArea( enemy.GoalKeeper ) )
 			{
@@ -1303,7 +1257,6 @@ package Caps
 			trace( "Game: OnGoalKeeperSet: El jugador ha colocado su guardameta ! " + team.Name );
 									
 			// Cambiamos el turno al enemigo (quien declaró que iba a tirar a puerta) para que realice el disparo
-			
 			this.SetTurn( enemy.IdxTeam, true, Enums.TurnByGoalKeeperSet );
 		}
 		
@@ -1327,7 +1280,7 @@ package Caps
 			}
 						
 			// Lanzamos una cutscene y al terminar pasamos a  'FinishGoalCutScene'
-			Interface.OnGoalScored( validity, Delegate.create( FinishGoalCutScene, idPlayer, validity ) );
+			Interface.OnGoalScored(validity, Delegate.create(FinishGoalCutScene, idPlayer, validity));
 		}
 		
 		//
@@ -1352,7 +1305,7 @@ package Caps
 			{
 				// Tenemos que esperar a que todo el mundo esté listo antes de pasar al saque de puerta.
 				// Enviamos nuestro 'estamos listos' y pasamos a esperar por los demás
-				this.SendPlayerReady( Delegate.create( OnInvalidGoalAndPlayersReady, idPlayer ) );
+				this.SendPlayerReady(Delegate.create( OnInvalidGoalAndPlayersReady, idPlayer));
 					
 				// Cambiamos a un estado que no hace nada (estamos esperando a que todos los jugadores estén listos)
 				ChangeState( GameState.WaitGeneric );
@@ -1372,8 +1325,7 @@ package Caps
 			SimulatingShoot = false;		// Se indica que no estamos simulando ningún disparo
 			_DetectedGoal = false;			// Reseteamos el detector de gol.
 			Playing = true;					// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
-			_PlayersReady = false;			// Realmente no es necesario, pero lo hacemos
-			
+
 			// Cambiamos al estado a jugar de nuevo
 			this.ChangeState( GameState.Playing );
 		}
@@ -1413,13 +1365,13 @@ package Caps
 			{
 				// Si se acaba el tiempo, cuando cambiamos de turno por tiro a puerta : para colocar el portero
 				// Entonces damos por finalizada la colocación    
-				if( ReasonTurnChanged == Enums.TurnByTiroAPuerta )
+				if (ReasonTurnChanged == Enums.TurnByTiroAPuerta)
 				{
 					OnGoalKeeperSet( idPlayer );
 				}
 				// El caso normal cuando se acaba el tiempo simplemente pasamos el turno al jugador siguiente
 				else
-					NextTurn( true );	
+					YieldTurnToOpponent( true );	
 			}
 			else
 				throw new Error(IDString + "No puede llegar Timeout del jugador no actual" );
@@ -1478,8 +1430,9 @@ package Caps
 			// Si es así cambiamos el turno al jugador siguiente y restauramos el nº de disparos disponibles
 			if( _RemainingHits == 0 )
 			{
-				NextTurn();
+				YieldTurnToOpponent();
 			}
+			
 			// Al consumir un turno volvemos a habilitar la entrada del usuario para que pueda
 			// producir un nuevo disparo
 			EnableUserInput( true );
@@ -1495,7 +1448,7 @@ package Caps
 		// NOTE: Si se indicaca además se activará el interface de entrada de usuario 
 		// si es el turno del jugador local
 		//
-		public function NextTurn( enableUserInput:Boolean = true, reason:int = Enums.TurnByTurn  ) : void
+		public function YieldTurnToOpponent(enableUserInput:Boolean = true, reason:int = Enums.TurnByTurn) : void
 		{
 			if( _IdxCurTeam == Enums.Team1 )
 				SetTurn( Enums.Team2, enableUserInput, reason );
@@ -1511,7 +1464,7 @@ package Caps
 		public function SetTurn( idTeam:int, enableUserInput:Boolean = true, reason:int = Enums.TurnByTurn ) : void
 		{
 			// DEBUG: En modo offline nos convertimos en el otro jugador, para poder testear!
-			if( AppParams.OfflineMode == true )
+			if (AppParams.OfflineMode == true)
 				Match.Ref.IdLocalUser = idTeam;
 				//this.LocalUserTeam = this.Teams[ idTeam ];
 			
@@ -1727,7 +1680,7 @@ package Caps
 		//
 		public function HasTouchedBall( cap:Cap ) : Boolean
 		{
-			if( this._SimulatingShoot == false )
+			if( SimulatingShoot == false )
 				trace( "No se puede llamar a HasTouchedBall cuando no se está simulando un disparo" );
 			
 			if( _TouchedCaps.indexOf( cap ) != (-1) )
@@ -1778,11 +1731,11 @@ package Caps
 			
 			// Solo mostramos influencias cuando estamos simulando un disparo y el jugador que lanzó ha tocado la pelota,
 			// o mostrando todas las influencias (por uso de la habilidad especial)
-			if( bShowAllInfluences )
+			if (bShowAllInfluences)
 			{
 				ShowAllInfluences();
 			}
-			else if( this._SimulatingShoot )
+			else if (SimulatingShoot)
 			{
 				// Si los turnos o los pases al pie estan agotados, no mostramos ninguna influencia amiga.
 				// Además, el pase al pie sólo empieza a ser posible cuando la chapa que lanza ha tocado la pelota.
@@ -1924,34 +1877,23 @@ package Caps
 		//
 		// Comienza desde el centro del campo, sincronizando que los 2 jugadores estén listos
 		//
-		public function StartCenter( ) : void
+		public function StartCenter() : void
 		{
-			if (!AppParams.OfflineMode)
-			{
+			// Pasamos al estado de espera hasta que nos llegue la confirmación "OnAllPlayersReady" desde el servidor
+			ChangeState(GameState.WaittingPlayers);
+
 				// Enviamos al servidor nuestro estamos listos! cuando todos estén listos nos llamarán a StartCenterAllReady
-				SendPlayerReady( StartCenterAllReady );
-				
-				// Pasamos al estado de espera hasta que nos llegue la confirmación "OnAllPlayersReady" desde el servidor
-				ChangeState( GameState.WaittingPlayers );
-			}
+			if (!AppParams.OfflineMode)
+				SendPlayerReady(StartCenterAllReady);				
 			else
-			{				
-				// Simulamos que nos llega desde el servidor
-				OnAllPlayersReady();
-				
-				// Y como el callback no esta configurado, lo llamamos nosotros
 				StartCenterAllReady();
-			}
 		}
-		
-		
+
 		//
 		// Los 2 jugadores han comunicado que están listos para comenzar el saque de centro
 		//
 		public function StartCenterAllReady( ) : void
 		{
-			_PlayersReady = false;
-			
 			// Reseteamos el número de disparos disponibles para el jugador que tiene el turno
 			_RemainingHits = AppParams.MaxHitsPerTurn;
 			_RemainingPasesAlPie = AppParams.MaxNumPasesAlPie;
@@ -1968,7 +1910,7 @@ package Caps
 			
 			// Reasignamos el turno del jugador actual (para que se le habilite el interface). A veces
 			// pasamos por StartCenter sin que necesariamente haya sido un cambio de parte
-			SetTurn( CurTeam.IdxTeam, true );
+			SetTurn(CurTeam.IdxTeam, true);
 			
 			// Se indica que no estamos simulando ningún disparo
 			SimulatingShoot = false;
@@ -1976,11 +1918,11 @@ package Caps
 			_DetectedGoal = false;
 			DetectedFault = null;				// Bandera que indica Falta detectada (objeto que describe la falta)
 			
-			// A jugar!
-			Playing = true;		// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
-			ChangeState( GameState.Playing );
+			// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
+			Playing = true;		
+			
+			ChangeState(GameState.Playing);
 		}
-		
 		
 		//
 		// GENERICO: Envía nuestro indicador de que estamos listos
@@ -1988,31 +1930,24 @@ package Caps
 		// Cuando todos los jugadores estén listos, el servidor nos mandará un 'OnAllPlayersReady' que simplemente subirá la bandera
 		// 'PlayersReady'. Debemos esperar a la bandera para continuar!
 		//
-		public function SendPlayerReady( callbackOnAllPlayersReady:Function = null ) : void
+		public function SendPlayerReady(callbackOnAllPlayersReady:Function = null) : void
 		{
 			trace( "Enviado nuestro 'Player Ready'" );
-			
-			// Bajamos la bandera:
-			// Si nosotros todavía no hemos mandado nuestra notificación de que estamos listos, indicamos que no todos pueden estarlo 
-			_PlayersReady = false;
-			
+						
 			// Función a llamar cuando todos los players estén listos
 			_CallbackOnAllPlayersReady = callbackOnAllPlayersReady;
 			
 			// Mandamos nuestro estamos listos
-			Match.Ref.Connection.Invoke( "OnPlayerReady", null );
+			Match.Ref.Connection.Invoke("OnPlayerReady", null);
 		}
 		
 		// 
 		// GENERICO: Todos los jugadores están listos, simplemente ponemos el semáforo en verde 'PlayersReady' 
 		// e invocamos la función de usuario que hubiese configurado
 		//
-		public function OnAllPlayersReady( ) : void
+		public function OnAllPlayersReady() : void
 		{
 			trace( "Recibida señal del servidor 'OnAllPlayersReady'" );
-			
-			// Indicamos que ya podemos continuar la espera que estuvieramos haciendo
-			_PlayersReady = true;
 			
 			// Además llamamos al callback de usuario para desencadenar la reacción del usuario y lo asignamos a null
 			if( _CallbackOnAllPlayersReady != null )
@@ -2042,6 +1977,5 @@ package Caps
 		}
 		
 		private function get IDString() : String { return "MatchID: " + Config.MatchId + " LocalID: " + Match.Ref.IdLocalUser + " "; } 
-	}
-	
+	}	
 }

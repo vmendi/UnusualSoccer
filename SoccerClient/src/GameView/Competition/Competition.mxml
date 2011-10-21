@@ -67,13 +67,15 @@
 		private function EnsureSelectedIsVisible() : void
 		{
 			var idx : int = MyCompetitionList.dataProvider.getItemIndex(mCompetitionModel.GetLocalGroupEntry());
-			
+						
 			if (idx + 4 < MyCompetitionList.dataProvider.length)
 				idx += 4;
 			else
 				idx = MyCompetitionList.dataProvider.length-1;
 			
-			MyCompetitionList.ensureIndexIsVisible(idx);
+			try {			
+				MyCompetitionList.ensureIndexIsVisible(idx);
+			} catch(e:Error) {}
 		}
 
 		[Bindable]

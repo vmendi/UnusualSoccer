@@ -1,6 +1,7 @@
 package
 {
 	import Caps.AppParams;
+	import Caps.Cap;
 	import Caps.Game;
 	
 	import Framework.AudioManager;
@@ -47,8 +48,8 @@ package
 			// Añadimos la zona de información de debug (por delante de todo el interface)
 			addChild( DebugArea );
 						
-			// Inicializa el juego
-			InitGame();
+			// Nos quedamos a la espera del siguiente Frame. Quien aquí nos llama tiene tiempo entonces para llamar a Init
+			addEventListener(Event.ENTER_FRAME, OnFrame);
 		}
 
 		//
@@ -60,14 +61,16 @@ package
 		{
 			// No permitimos modo Offline si entramos inicializando una conexión, es decir, desde el manager
 			AppParams.OfflineMode = false;
-			
+			_Game = new Caps.Game();
+			_Game.Init();
+						
 			Formations = formations;
 			Connection = netConnection;
 			
 			Connection.AddClient(Game);
 						
 			// Indicamos al servidor que nuestro cliente necesita los datos del partido para continuar 
-			Connection.Invoke( "OnRequestData", null );
+			Connection.Invoke("OnRequestData", null);
 			
 			// Prueba de trackeo del mouse por la película
 			if( AppParams.Debug == true )
@@ -76,29 +79,29 @@ package
 		}
 		
 		//
-		// Inicialización del juego
-		//
-		public function InitGame( ): void
-		{
-			Game.Init();
-			
-			addEventListener(Event.ENTER_FRAME, OnFrame );
-		}
-				
-		//
 		// Bucle principal de la aplicación
 		//
 		private function OnFrame( event:Event ):void
 		{
-			if( stage != null && Game != null )
+			// Lo que primero ocurra, el OnFrame o el Init, creara el Game. Se hace asi para asegurar que no inicializamos en modo offline
+			// cuando realmente nos llaman desde el manager. Es decir, decidimos cual es el modo autentico sin hacer caso de la variable
+			// en AppParams
+			if (_Game == null)
+			{
+				AppParams.OfflineMode = true;
+				_Game = new Caps.Game();
+				_Game.Init();
+			}
+			
+			if (stage != null)
 			{
 				var elapsed:Number = 1.0 / stage.frameRate;
 			
 				Game.Run(elapsed);
 				Game.Draw(elapsed);
 			}
-		}			
-				
+		}
+		
 		//
 		// Destruimos todo!
 		//
@@ -137,6 +140,6 @@ package
 				Game.Interface.OnAbandonar( null );
 		}
 		
-		private var _Game:Caps.Game = new Caps.Game();
+		private var _Game:Caps.Game;
 	}
 }

@@ -263,7 +263,7 @@ namespace SoccerServer
 
                 SimulatingShoot = true;     // Indicamos que estamos simulando un disparo
                 CountPlayersEndShoot = 0;   // Reseteamos el contador de jugadores que indican que han terminado la simulación
-                Broadcast( "OnShoot", idPlayer, capID, dirX, dirY, force );
+                Broadcast("OnClientShoot", idPlayer, capID, dirX, dirY, force);
             }
         }
 
@@ -271,15 +271,13 @@ namespace SoccerServer
         // Un cliente ha terminado de simular un disparo
         // Cuando todos hayan terminado la simulación, lo notificamos a los clientes
         // 
-        public void ClientEndShoot(int idPlayer)
+        public void OnServerEndShoot(int idPlayer)
         {
-            LogEx("ClientEndShoot: " + idPlayer);
+            LogEx("OnServerEndShoot: " + idPlayer);
 
             if (SimulatingShoot == false)
-            {
                 throw new Exception("Match: " + MatchID + "Hemos recibido una finalización de disparo cuando no estamos simulando (SimulatingShoot = false)");
-            }
-
+            
             // Contabilizamos jugadores listos 
             CountPlayersEndShoot++;
 
@@ -289,7 +287,7 @@ namespace SoccerServer
             {
                 SimulatingShoot = false;            // Indicamos que hemos terminado la simulación
                 CountPlayersEndShoot = 0;
-                Broadcast("OnShootSimulated");
+                Broadcast("OnClientShootSimulated");
             }
         }
 
@@ -306,7 +304,6 @@ namespace SoccerServer
             {
                 // Buscamos el estado vacio para ese cliente (tiene que ser el primero vacio que encontremos, pq los mensajes vienen ordenados)
                 // NOTE: Esto lo hacemos porque con mucho lag se pueden tener 2 estados al mismo tiempo!
-
                 ClientState theState = null;
                 foreach ( ClientState clientState in TheClientState )
                 {
@@ -396,7 +393,6 @@ namespace SoccerServer
             if ( CheckActionsAllowed() )        // Estan las acciones permitidas?
                 Broadcast("OnTimeout", idPlayer);
         }
-
 
         #endregion
 
@@ -732,4 +728,3 @@ namespace SoccerServer
         }
     }
 }
-
