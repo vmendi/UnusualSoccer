@@ -66,7 +66,7 @@ namespace SoccerServer
             {
                 fbSettings.AppId = "100203833418013";
                 fbSettings.AppSecret = "bec70c821551670c027317de43a5ceae";
-
+                
                 fbSettings.CanvasPage = "http://apps.facebook.com/unusualsoccerlocal/";
                 fbSettings.CanvasUrl = "http://localhost/";
                 fbSettings.SecureCanvasUrl = "https://localhost/";

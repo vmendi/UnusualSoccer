@@ -13,7 +13,7 @@ package Caps
 		public static const DragPhysicObjects:Boolean = false;	// Indica si podemos arrastrar los objetos físicos con el ratón
 		
 		public static const Debug:Boolean = false;				// Indica que estamos en modo debug. Se habilitan trucos/trazas y similares
-		public static var   OfflineMode:Boolean = false;		// Indica si debemos simular un modo Offline (para propósitos de debug)
+		public static var   OfflineMode:Boolean = false;		// Arranque directo sin manager. No se hace caso a este valor, se detecta y se settea automaticamente.
 		
 		// Configuración física
 		public static const PhyFPS:int = 30;					// La física se ejecuta 30 veces por segundo
@@ -31,7 +31,7 @@ package Caps
 		
 		public static const DistToPutBallHandling:int = 10;		// Distancia a la chapa a la que colocamos la pelota cuando se recibe un pase al pie
 		
-		public static const AutoPasePermitido:Boolean = false;	// La chapa con la que se dispara puede recibir pase al pie despues de tocar el balon
+		public static const AutoPasePermitido:Boolean = true;	// La chapa con la que se dispara puede recibir pase al pie despues de tocar el balon
 
 		// Porcentaje de la skill restaurado por segundo para cada habilidad
 		// NOTE: Las skills van de 1 - 9, el primer valor del array en la linea anterior no se utiliza!
@@ -44,8 +44,7 @@ package Caps
 		// 7. 5 Estrellas
 		// 8. Ver áreas
 		// 9. Mano de dios
-		public static var PercentSkilLRestoredPerSec:Array = [ 0.0, 
-			2.0, 1.5, 1.5, 1.0, 0.2, 0.2, 0.5, 2.0, 0.01   ];
+		public static var PercentSkilLRestoredPerSec:Array = [ 0.0, 2.0, 1.5, 1.5, 1.0, 0.2, 0.2, 0.5, 2.0, 0.01   ];
 
 		public static const PowerMultiplier:Number = 2.0;			// Multiplicador de potencia cuando tienes la habilidad especial "superpotencia"
 		public static const ControlMultiplier:Number = 2.0;			// Multiplicador de control cuando tienes la habilidad especial
@@ -60,10 +59,7 @@ package Caps
 		public static const VelFaultT1:Number = 5.0;				// Límite inferior de falta a un jugador (no portero) y límite inferior de tarjeta amarilla al portero
 		public static const VelFaultT2:Number = 11.0;				// Límite inferior de tarjeta amarilla a un jugador y límite inferior de tarjeta roja al portero 
 		public static const VelFaultT3:Number = 18.0;				// Límite inferior de tarjeta roja a un jugador
-		
-		// Parametros generados dentro de la aplicación
-		public static var SharingUserName:String = "";		// Nombre de usuario utilizado para el Sharing
-		
+				
 		//
 		// Conversión de unidades de pantalla (pixels) a unidades del motor de física (metros)
 		//

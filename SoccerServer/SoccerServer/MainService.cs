@@ -33,7 +33,7 @@ namespace SoccerServer
                 throw new Exception("SessionKey is missing");
 
             string sessionKey = theCurrentHttp.Request.QueryString["SessionKey"];
-
+                        
             mSession = (from s in mContext.Sessions
                         where s.FacebookSession == sessionKey
                         select s).FirstOrDefault();

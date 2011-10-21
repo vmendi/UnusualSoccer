@@ -62,7 +62,7 @@ namespace SoccerServer
         // 
         // Un cliente notifica que terminado la simulación del disparo
         // 
-        public void ClientEndShoot(NetPlug plug)
+        public void OnServerEndShoot(NetPlug plug)
         {
             RealtimePlayer thePlayer = plug.UserData as RealtimePlayer;
 
@@ -71,7 +71,7 @@ namespace SoccerServer
                 if (thePlayer.TheMatch != null)
                 {
                     int idPlayer = thePlayer.TheMatch.GetIdPlayer(thePlayer);
-                    thePlayer.TheMatch.ClientEndShoot(idPlayer);
+                    thePlayer.TheMatch.OnServerEndShoot(idPlayer);
                 }
             }
         }

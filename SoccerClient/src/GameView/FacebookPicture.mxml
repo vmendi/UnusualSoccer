@@ -4,78 +4,147 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="50" height="50">
 		
 	<fx:Script><![CDATA[
-		import spark.primitives.BitmapImage;
+		import com.greensock.TweenNano;
 		
+		import spark.primitives.BitmapImage;
+				
 		[Bindable]
 		public function set FacebookID(id : String) : void
 		{
+			// Nos estan reusando con useVirtualLayout == true?
+			if (mFacebookID != null)
+				ResetPreviousLoad();
+			
 			mFacebookID = id;
 			
-			LoadPicture(mFacebookID);
+			LoadPicture();
 		}		
 		public function get FacebookID() : String
 		{
 			return mFacebookID;
 		}
-				
+
 		// square, small, large
 		[Bindable]
 		public function get Size() : String { return mSize; }
 		public function set Size(v:String) : void { mSize = v; }
 			
 		
-		private function LoadPicture(userID : String) : void
+		private function LoadPicture() : void
 		{
 			removeAllElements();
 			
 			// Contamos con que FacebookID == -1 en caso de que una chapa no tenga amigo asignado
-			if (userID.indexOf("-") != -1)
+			if (mFacebookID.indexOf("-") != -1)
 				return;
 			
-			if (mImagesCache.hasOwnProperty(userID + Size))
-			{				
-				mImage = mImagesCache[userID+Size];
+			if (mLoadersCache.hasOwnProperty(mFacebookID + Size))
+			{
+				var image : BitmapImage = new BitmapImage();
+				image.source = mLoadersCache[mFacebookID+Size];
 				
-				// Usamos la condicion de no estar en la stage para determinar que es reusable. Es decir, si la imagen que esta
-				// en el cache esta siendo pintada, clonamos, provocando recarga desde la red.
-				// A veces no usa el cache cuando podría hacerlo por culpa del virtual layout, que no llega a remover elementos 
-				// de la stage, los deja "ahí" (no visibles) para reusarlos.
-				// Lo ideal sería poder hacer un clon rapido sin pasar por el mImage.source, que fuerza una recarga desde la red
-				// puesto que el source es un URLRequest. El problema es que el clon rapido implica el clonado del BitmapData, y
-				// el modelo de seguridad no lo permite a no ser que cargues un crossdomain.xml. Entonces, estas imagenes estan
-				// cargadas mediante redireccion a CDN, y solo se carga el crossdomain.xml del principal. Cargar los posibles xmls
-				// dependiendo del CDN que toque parece un movidon/error.
-				// Un tio al que le paso lo mismo:
-				// http://jessewarden.com/2009/03/handling-crossdomainxml-and-302-redirects-using-netstream.html
-				//
-				// Esto funciona mal. Por ejemplo con las FieldCaps, durante el Drag & Drop, no salta el cache
-				//				
-				if (mImage.parent != null && mImage.parent.stage != null)
-				{
-					var cachedSource : Object = mImage.source;
-					
-					mImage = new BitmapImage();
-					mImage.source = cachedSource;
-				}
+				addElement(image);
 			}
 			else
 			{
-				mImage = new BitmapImage();
-				mImagesCache[userID+Size] = mImage;
-
-				// El cache spark (ContentCache) no funciona por culpa de la redireccion que hace FB
-				mImage.source = new URLRequest("http://graph.facebook.com/"+userID+"/picture/?type="+mSize);
+				InnerLoad();
 			}
-			
-			addElement(mImage);
 		}
+		
+		// OLD OLD OLD
+		// Lo ideal sería poder hacer un clon rapido sin pasar por el mImage.source, que fuerza una recarga desde la red
+		// puesto que el source es un URLRequest. El problema es que el clon rapido implica el clonado del BitmapData, y
+		// el modelo de seguridad no lo permite a no ser que cargues un crossdomain.xml. Entonces, estas imagenes estan
+		// cargadas mediante redireccion a CDN, y solo se carga el crossdomain.xml del principal. Cargar los posibles xmls
+		// dependiendo del CDN que toque parece un movidon/error.
+		// Un tio al que le paso lo mismo:
+		// http://jessewarden.com/2009/03/handling-crossdomainxml-and-302-redirects-using-netstream.html
+		// OLD END
+		//
+		// NEW: Finalmente hemos implementado el movidon. Atencion al timer!
+		//
+		private function InnerLoad() : void
+		{	
+			mLoader = new Loader();
+			mLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, OnLoadComplete);
+			mLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, OnError);
+			mLoader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, OnError);
+			mLoader.load(new URLRequest("http://graph.facebook.com/"+mFacebookID+"/picture/?type="+mSize));
+		}
+		
+		private function OnError(e:Event):void
+		{
+			// Poco podemos hacer... No merece la pena mandarlo al servidor, fallara mucho y no sabremos distinguir por qué
+			trace("FacebookPicture OnError " + mFacebookID);
+		}
+		
+		private function OnLoadComplete(e:Event):void
+		{
+			var loaderInfo : LoaderInfo = e.target as LoaderInfo;
+			
+			if (loaderInfo.bytesLoaded != 0 && loaderInfo.bytesLoaded == loaderInfo.bytesTotal &&
+				mLoader != null && mLoader.contentLoaderInfo == loaderInfo)
+			{
+				// Esto nos indica cuándo se ha cargado con redireccion
+				if (!mLoader.contentLoaderInfo.childAllowsParent)
+				{
+					if (mLoader.contentLoaderInfo.isURLInaccessible)
+					{
+						// oh my goodness...
+						Security.loadPolicyFile(mLoader.contentLoaderInfo.url + "crossdomain.xml");
+						
+						// Olvidamos este loader
+						ResetPreviousLoad();
+						
+						// Suponemos que 3 segundos es suficiente para que le de tiempo a cargar la policy.
+						// No, lamentablemente no hay forma de preguntarle de ninguna otra manera. En los docs sugieren hacer polling
+						// del childAllowsParent...
+						TweenNano.delayedCall(3, LoadPicture);					
+					}
+					else
+					{
+						// Este caso no nos lo hemos encontrado, parece que el CDN de FB esta configurado siempre para que NO nos devuelva la URL completa
+						// de las fotos. De momento lo dejamos sin implementar a ver si ocurre alguna vez
+						ErrorMessages.LogToServer("Error horrible, la URL deberia ser inaccesible");
+					}
+				}
+				else
+				{
+					mLoadersCache[mFacebookID+Size] = mLoader;
+					
+					var image : BitmapImage = new BitmapImage();					
+					image.source = mLoader.content;
+					
+					addElement(image);
+				}
+			}
+		}
+		
+		// Por el useVirtualLayout de las listas, nos reusaran... tenemos un loader en curso que hay que cerrar
+		private function ResetPreviousLoad() : void
+		{
+			if (mLoader != null)
+			{
+				mLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, OnLoadComplete);
+				mLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, OnError);
+				mLoader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, OnError);
+				
+				try {
+					mLoader.close();
+				}
+				catch (e:Error)	{}	// URLStream not closed
+				
+				mLoader = null;
+			}		
+		}
+		
+		private var mLoader : Loader;
 
-		private var mImage : BitmapImage;
-		private var mFacebookID : String;
+		private var mFacebookID : String = null;
 		private var mSize : String = "square";		
 		
-		// Este es el unico objeto que usamos para cargar imagenes de facebook, asi que este es el unico Cache
-		static private var mImagesCache : Object = new Object();
+		// Esta es la unica clase (FacebookPicture) que usamos para cargar imagenes de facebook, asi que este es el unico Cache del sistema
+		static private var mLoadersCache : Object = new Object();
 	]]></fx:Script>
 			
 </s:Group>

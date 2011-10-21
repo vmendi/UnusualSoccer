@@ -44,6 +44,8 @@
 				mPercent = v;
 				MyRedBar.percentWidth = mPercent;
 			}
+			
+			MyRedBar.visible = true;
 		}
 		
 		[Bindable]
@@ -52,11 +54,13 @@
 		{ 
 			mMaxPercent = v;
 			MyTransparentBar.percentWidth = mMaxPercent;
+			
+			MyTransparentBar.visible = true;
 		}
 
 		private var mAnimationEnabled : Boolean = true;
-		private var mPercent : Number = 100;
-		private var mMaxPercent : Number = 100;
+		private var mPercent : Number = -1;
+		private var mMaxPercent : Number = -1;
 		
 	]]></fx:Script>
 
@@ -76,13 +80,13 @@
 			</s:fill>
 		</s:Rect>
 		
-		<s:Rect id="MyTransparentBar" left="0" right="0" top="0" bottom="0" radiusX="4" radiusY="4">
+		<s:Rect id="MyTransparentBar" left="0" right="0" top="0" bottom="0" radiusX="4" radiusY="4" visible="false">
 			<s:stroke>
 				<s:SolidColorStroke caps="none" color="#BF0000" joints="miter" miterLimit="4" weight="1" pixelHinting="true"/>
 			</s:stroke>
 		</s:Rect>
 		
-		<s:Rect id="MyRedBar" left="0" right="0" top="0" bottom="0" radiusX="4" radiusY="4">
+		<s:Rect id="MyRedBar" left="0" right="0" top="0" bottom="0" radiusX="4" radiusY="4" visible="false">
 			<s:stroke>
 				<s:SolidColorStroke caps="none" color="#BF0000" joints="miter" miterLimit="4" weight="1" pixelHinting="true"/>
 			</s:stroke>

@@ -3,7 +3,11 @@ package
 	import GameModel.RealtimeModel;
 	
 	import com.facebook.graph.Facebook;
+	import com.facebook.graph.core.FacebookJSBridge;
+	import com.facebook.graph.core.FacebookURLDefaults;
+	import com.facebook.graph.data.FacebookAuthResponse;
 	import com.facebook.graph.data.FacebookSession;
+	import com.facebook.graph.utils.FacebookDataUtils;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -34,11 +38,6 @@ package
 				SetFakeSessionKey(callback, AppConfig.FAKE_SESSION_KEY);
 			}
 			else
-			if (SessionKey != null)	// Si no es la primera vez (estamos haciendo tests)...
-			{
-				SetFakeSessionKey(callback, requestedFakeSessionKey);
-			}
-			else
 			if (AppConfig.FAKE_SESSION_KEY != null || requestedFakeSessionKey != null)
 			{
 				if (requestedFakeSessionKey != null)
@@ -52,19 +51,21 @@ package
 			}
 			else
 			{
-				Facebook.init(AppConfig.APP_ID, OnFacebookInit, { xfbml: true, frictionlessRequests:true } );
+				// Cogemos la SessionKey del parametro que nos pasa el servidor por flashVars
+				SetWeborbSessionKey();
+				
+				// Esto generara una llamada a FB para conseguir un nuevo access_token, distinto al primero 
+				// que se le pasa por POST al servidor (dentro del signed_request)
+				Facebook.init(AppConfig.APP_ID, OnFacebookInit, { xfbml: true, oauth: true, cookie:true, frictionlessRequests:true } );
 			}
 		}
 		
 		private function OnFacebookInit(result:Object, fail:Object) : void
 		{
-			if(result != null)
+			if (result != null)
 			{
-				mFBSession = result as FacebookSession;
-				
-				// La sesión esta OK => Ya tenemos SessionKey para weborb
-				SetWeborbSessionKey();
-				
+				mFBAuthResponse = result as FacebookAuthResponse;
+
 				mSuccessCallback();
 			}
 			else
@@ -114,10 +115,8 @@ package
 			if (mFakeSessionKey != null)
 				return mFakeSessionKey;
 			
-			if (mFBSession != null)
-				return mFBSession.accessToken;
-			
-			return null;
+			// Lo que nos diga a traves de flashVars el servidor que es la SessionKey
+			return AppConfig.SESSION_KEY;
 		}
 		
 		public function get FacebookID() : String
@@ -125,8 +124,8 @@ package
 			if (mFakeSessionKey != null)
 				return mFakeSessionKey;
 			
-			if (mFBSession != null)
-				return mFBSession.uid;
+			if (mFBAuthResponse != null)
+				return mFBAuthResponse.uid;
 			
 			return null;
 		}
@@ -134,7 +133,7 @@ package
 		private var mFakeSessionKey : String;
 		
 		private var mSuccessCallback : Function;
-		private var mFBSession:FacebookSession;
+		private var mFBAuthResponse:FacebookAuthResponse;
 						
 		private var mSessionKeyURLLoader : URLLoader;
 	}

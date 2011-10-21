@@ -3,7 +3,7 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				xmlns:Match="GameView.Match.*"
-				autoDrawBackground="false" width="100%" height="51" xmlns:GameView="GameView.*" >
+				autoDrawBackground="false" width="100%" height="51" xmlns:GameView="GameView.*" cacheAsBitmap="true" cachePolicy="on">
 	
 	<fx:Style source="../styles.css" />
 	
@@ -12,6 +12,19 @@
 		<s:State name="selected"/>
 		<s:State name="hovered"/>
 	</s:states>
+	
+	<fx:Script>
+		<![CDATA[
+			import SoccerServer.TransferModel.vo.CompetitionGroupEntry;
+			
+			private function InPromotion(theItem : Object) : Boolean
+			{
+				var item : CompetitionGroupEntry = theItem as CompetitionGroupEntry;
+				
+				return SoccerClient.GetMainGameModel().TheCompetitionModel.TheGroup.MinimumPoints < item.Points;
+			}
+		]]>
+	</fx:Script>
 	
 	<s:Graphic includeIn="hovered">
 		<s:Rect x="0" y="0" width="740" height="50">
@@ -32,7 +45,7 @@
 	<s:Group width="100%" height="43">
 		<s:layout><s:HorizontalLayout gap="0"/></s:layout>
 		
-		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionDivisionUp')" fillMode="clip" />
+		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionDivisionUp')" fillMode="clip" visible="{InPromotion(data)}" />
 		<!-- <s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionDivisionStay')" fillMode="clip" /> -->
 		
 		<GameView:FacebookPicture FacebookID="{data.FacebookID}" />

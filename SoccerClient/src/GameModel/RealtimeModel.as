@@ -253,7 +253,7 @@ package GameModel
 		public function ForceMatchFinish() : void
 		{
 			if (mMatch != null)
-				(mMatch as Object).Finish();
+				(mMatch as Object).ForceMatchFinish();
 		}
 		
 		public function PushedMatchUnsync() : void
