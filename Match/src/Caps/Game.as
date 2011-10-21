@@ -273,7 +273,7 @@ package Caps
 			if( AppParams.DragPhysicObjects == true )
 				_PhysicManager.mouseDrag( );
 			
-			// Nos registramos para sabes los contactos que se producen entre cuerpos
+			// Nos registramos para saber los contactos que se producen entre cuerpos
 			_Contacts = _PhysicManager.addContactListener( );
 			_Contacts.addEventListener( QuickContacts.ADD, OnContact);
 			_Contacts.addEventListener( QuickContacts.RESULT, OnContact);
@@ -325,7 +325,7 @@ package Caps
 						else if( this.CurTeam.IsLocalUser )
 						{
 							// Una vez envíado el tiemout no le permitimos al jugador local utilizar el interface
-							EnableUserInput( false );
+							Interface.UserInputEnabled = false;
 							Match.Ref.Connection.Invoke("OnServerTimeout", null);
 							TimeOutSent = true;		// Para que no volvamos a envíar el timeout!
 						}
@@ -636,7 +636,7 @@ package Caps
 		//
 		private function OnContact( e: Event ): void
 		{
-			// Si se ha detectado anteriormente gol, ignoramos los contactos
+			// Si se ha detectado anteriormente gol o falta, ignoramos los contactos
 			if( _DetectedGoal || DetectedFault)
 				return;
 				
@@ -968,9 +968,7 @@ package Caps
 			
 			var result:int = 0;
 			
-			// Al acabar el tiro, movemos el portero a su posición de formación en caso de saque de puerta.
-			// Lo de olvidar el ReasonTurnChanged antes se hacia en OnClientShoot, pero como necesitamos 
-			// recordar hasta el final del tiro que esto ha sido un saque de puerta, ahora lo hacemos aquí.
+			// Al acabar el tiro, movemos el portero a su posición de formación en caso de la ultima accion fuera un saque de puerta
 			if (ReasonTurnChanged == Enums.TurnBySaquePuerta || ReasonTurnChanged == Enums.TurnBySaquePuertaByFalta)
 			{
 				this.CurTeam.ResetToCurrentFormationOnlyGoalKeeper();
@@ -1013,10 +1011,11 @@ package Caps
 				{
 					this.SaquePuerta( defender.OwnerTeam, true );							
 				}
-					// En caso contrario, Pasamos turno al otro jugador, pero SIN habilitarle el interface de entrada (indicamos que pasamos de turno por falta)
 				else
 				{	
-					YieldTurnToOpponent( false, Enums.TurnByFault );	 
+					// En caso contrario, pasamos turno al otro jugador, pero SIN habilitarle el interface de entrada (indicamos que pasamos de turno por falta)
+					YieldTurnToOpponent( false, Enums.TurnByFault );
+					
 					if( defender.OwnerTeam.IsLocalUser )
 						Interface.ShowHandleBall( defender );
 				}
@@ -1102,6 +1101,7 @@ package Caps
 			capListStr += " B:" + this.Ball.GetPos().toString();
 			var countTouchedCaps:int = _TouchedCaps.length;
 			
+			// Informamos al servidor para que compare entre los dos clientes
 			if( !AppParams.OfflineMode )
 			{
 				Match.Ref.Connection.Invoke("OnResultShoot", null, result, 
@@ -1162,10 +1162,8 @@ package Caps
 			trace( "Game: OnUseSkill: Player " + team.Name + " Utilizando habilidad " + idSkill.toString() );
 			
 			if( idPlayer != this.CurTeam.IdxTeam && idSkill != Enums.Catenaccio )
-			{
 				throw new Error(IDString + "Ha llegado una habilidad especial que no es Catenaccio de un jugador que no es el actual! Player="+team.Name+" Skill="+idSkill.toString());
-			}
-			
+						
 			team.UseSkill( idSkill );
 			
 			// Mostramos un mensaje animado de uso del skill (cuando el el otro jugador quien ha utilizado el skill)
@@ -1191,9 +1189,7 @@ package Caps
 			}
 			
 			if( bInmediate && idPlayer != this.CurTeam.IdxTeam )
-			{	
 				throw new Error(IDString + "Ha llegado una habilidad especial INMEDIATA de un jugador que no es el actual! Player="+team.Name+" Skill="+idSkill.toString());
-			}
 		}
 		
 		// 
@@ -1292,7 +1288,7 @@ package Caps
 			
 			var turnTeam:Team = AgainstTeam( Teams[ idPlayer ] );
 			
-			if( validity == Enums.GoalValid)
+			if (validity == Enums.GoalValid)
 			{
 				// Asignamos el turno al equipo contrario al que ha marcado gol, pero no le habilitamos el interface todavía
 				SetTurn( turnTeam.IdxTeam, false );
@@ -1305,7 +1301,7 @@ package Caps
 			{
 				// Tenemos que esperar a que todo el mundo esté listo antes de pasar al saque de puerta.
 				// Enviamos nuestro 'estamos listos' y pasamos a esperar por los demás
-				this.SendPlayerReady(Delegate.create( OnInvalidGoalAndPlayersReady, idPlayer));
+				this.SendPlayerReady(Delegate.create(OnInvalidGoalAndPlayersReady, idPlayer));
 					
 				// Cambiamos a un estado que no hace nada (estamos esperando a que todos los jugadores estén listos)
 				ChangeState( GameState.WaitGeneric );
@@ -1394,11 +1390,8 @@ package Caps
 		public function GetCap( teamId:int, capId:int ) : Cap
 		{
 			if( teamId != Enums.Team1 && teamId != Enums.Team2 )
-			{
 				throw new Error( "Identificador invalido" );
-				return null;
-			}
-				
+							
 			return( Teams[ teamId ].CapsList[ capId ] ); 
 		}
 		
@@ -1428,14 +1421,13 @@ package Caps
 			
 			// Comprobamos si hemos consumido todos los disparos
 			// Si es así cambiamos el turno al jugador siguiente y restauramos el nº de disparos disponibles
-			if( _RemainingHits == 0 )
+			if ( _RemainingHits == 0 )
 			{
 				YieldTurnToOpponent();
 			}
 			
-			// Al consumir un turno volvemos a habilitar la entrada del usuario para que pueda
-			// producir un nuevo disparo
-			EnableUserInput( true );
+			// Ya hemos cambiado el turno, _IdxLocalPlayer sera correcta, podemos activar su interfaz
+			EnableUserInputIfLocalPlayer();
 						
 			// Al consumir un turno deactivamos las skillls que estén siendo usadas
 			Teams[ Enums.Team1 ].DesactiveSkills();			
@@ -1530,18 +1522,12 @@ package Caps
 		}
 		
 		//
-		// Activa / Desactiva la entrada del usuario.
-		// NOTE: Si el jugador local no es el actual se ignorará un intento de activación de interface
+		// 
 		//
-		public function EnableUserInput( bEnable:Boolean = true ) : void
+		public function EnableUserInputIfLocalPlayer() : void
 		{
-			if( bEnable == false )
-				Interface.UserInputEnabled = false;
-			else
-			{
-				if( _IdxCurTeam == Match.Ref.IdLocalUser )
-					Interface.UserInputEnabled = true;
-			}
+			if( _IdxCurTeam == Match.Ref.IdLocalUser )
+				Interface.UserInputEnabled = true;
 		}
 				
 		//
@@ -1852,7 +1838,7 @@ package Caps
 		{
 			Finish(result);
 		}
-				
+
 		// 
 		// Finaliza INMEDIATAMENTE el partido. Para ello:
 		//   - Detiene interface de entrada/juego
@@ -1869,7 +1855,7 @@ package Caps
 			
 			// Pausamos el juego y no permitimos entrada de interface
 			Playing = false;
-			EnableUserInput( false );
+			Interface.UserInputEnabled = false;
 			
 			Match.Ref.Shutdown(result);
 		}

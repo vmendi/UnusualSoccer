@@ -179,7 +179,7 @@ package Caps
 			// Actualizamos el tiempo del sub-turno
 			// NOTE: Utilizamos el tiempo de turno que indica el interface, ya que se modifica cuando se utiliza la habilidad especial
 			// extra-time. Luego cada vez que se resetea el tiempo se coloca a la duración real del turno
-			var timeout:Number = Match.Ref.Game.Timeout / TurnTime; 
+			var timeout:Number = Match.Ref.Game.Timeout / TurnTime;
 			
 			// Clampeamos a 1.0, ya que si tenemos tiempo extra de turno podemos desbordarnos
 			if( timeout > 1.0 )
@@ -445,18 +445,17 @@ package Caps
 		//
 		// Activa el control de posicionamiento de chapa
 		//
-		public function ShowPosController( cap:Cap /* , callback:Function = null */ ) : void
+		public function ShowPosController( cap:Cap ) : void
 		{
 			trace( "GameInterface: ShowPosController: " + cap.OwnerTeam.Name );
 			// Comprobamos : 
 			// 	- Si la chapa es del equipo actual,
 			//  NOTE: No se comprueba si la entrada de usuario está permitida, ya que
-			//  no es una accioón decidida por el usuario, sino una consecuencia del pase al pie
+			//  no es una acción decidida por el usuario, sino una consecuencia del pase al pie
 			// si no ignoramos la acción
 			if( Match.Ref.Game.CurTeam == cap.OwnerTeam /* && UserInputEnabled == true */ )
 			{
 				PosControl.OnStop.removeAll();
-				//PosControl.OnStop.add( Framework.Callback.Create( FinishPosController, callback ) );
 				PosControl.OnStop.add( FinishPosController );
 				
 				PosControl.Start( cap );
@@ -468,7 +467,7 @@ package Caps
 		//
 		// Se ha terminado el controlador de posicionamiento de chapa (portero)
 		//
-		public function FinishPosController( result:int, callback:Function = null ) : void
+		public function FinishPosController( result:int ) : void
 		{
 			// Envíamos la información al servidor de colocar al portero en la coordenada indicada
 			// Si no es válida la posición ignoramos simplemente			
@@ -751,7 +750,6 @@ package Caps
 		
 		// 
 		// Reproduce una animación mostrando el turno del jugador
-		// dueToRob: Indica que el turno ha sido asignado por un robo de balón
 		//
 		public function OnTurn( idTeam:int, reason:int, callback:Function = null  ) : void
 		{
@@ -812,7 +810,7 @@ package Caps
 			}
 			
 			// Lanzamos la cutscene
-			if( cutScene != null )
+			if (cutScene != null)
 			{
 				LaunchCutScene( cutScene, true, callback );
 				CutSceneTurnRunning = cutScene;					// Almacenamos la cut-scene de turno que está ejecutandose hasta que termine
@@ -860,7 +858,6 @@ package Caps
 		
 		//
 		// Lanza una cutscene a partir de un asset embebido que se crea y dispara
-		//   - 
 		//
 		public function CreateGraphic( cutScene:Class, x:Number = 0, y:Number = 0, parent:DisplayObjectContainer = null ) : DisplayObject
 		{
@@ -1184,7 +1181,7 @@ package Caps
 			Match.Ref.Game.ResetTimeout();
 			// Deshabilitamos la entrada de interface y pausamos el timeout
 			UserInputEnabled = false;
-			// NOTE: Hacer depués del reset, ya que dentro se asigna a true
+			// NOTE: Hacer depués del ResetTimeout, ya que dentro se asigna a false
 			Match.Ref.Game.TimeOutPaused = true;
 		}
 		
