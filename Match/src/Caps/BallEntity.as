@@ -85,8 +85,5 @@ package Caps
 			// Detenemos el movimiento que pudiera tener la pelota
 			this.StopMovement();
 		}
-		
-		
-	
 	}
 }
