@@ -18,12 +18,13 @@ package Caps
 			// Inicializamos la entidad
 			// NOTE: Inicializamos el objeto físico en el grupo (-1) para poder hacer que los obstáculos de las porterías no le afecten)
 			super(Embedded.Assets.Ball, Match.Ref.Game.GameLayer, PhyEntity.Circle, {
+				  categoryBits:4,
+				  maskBits: 1 + 2 + 4,		// Choca con todo excepto con BackPorteria y SmallArea
 				  mass: 0.04,
 				  fixedRotation: true,		// If set to true the rigid body will not rotate.
 				  isBullet: true, 			// UseCCD: Detección de colisión continua
-				  groupIndex:-1, 
 				  radius:AppParams.Screen2Physic( Radius ), 
-				  isSleeping: true, 
+				  isSleeping: true,
 				  allowSleep: true, 
 				  linearDamping: 4 /*1*/, 
 				  angularDamping: /*2*/4, 

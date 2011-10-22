@@ -793,7 +793,7 @@ package Caps
 						
 						// Comprobamos si la falta ha sido al portero dentro de su area pequeña
 						if( defender == defender.OwnerTeam.GoalKeeper && 
-							Match.Ref.Game.GetField().IsCircleInsideArea( defender.GetPos(), 0, defender.OwnerTeam.Side) )
+							Match.Ref.Game.GetField().IsCircleInsideSmallArea( defender.GetPos(), 0, defender.OwnerTeam.Side) )
 						{
 							// Caso especial: Todo el mundo vuelve a su posición de alineación y se produce un saque de puerta.
 							fault.SaquePuerta = true;
@@ -1189,7 +1189,7 @@ package Caps
 			// Puede moverlo múltiples veces HASTA que se consuma su turno 
 			
 			// Una vez que se termine su TURNO por TimeOut se llamará a OnGoalKeeperSet  
-			if( _Field.IsCapInsideArea( enemy.GoalKeeper ) )
+			if( _Field.IsCapCenterInsideSmallArea( enemy.GoalKeeper ) )
 			{
 				this.SetTurn( enemy.IdxTeam, false, Enums.TurnByTiroAPuerta );
 			}

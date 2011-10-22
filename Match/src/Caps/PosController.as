@@ -57,7 +57,7 @@ package Caps
 		public override function IsValid( ) : Boolean
 		{
 			return( Match.Ref.Game.GetField().ValidatePosCap( EndPos, true, this.Target ) &&
-				Match.Ref.Game.GetField().IsCircleInsideArea( EndPos, 0, this.Target.OwnerTeam.Side)
+				Match.Ref.Game.GetField().IsCircleInsideSmallArea( EndPos, 0, this.Target.OwnerTeam.Side)
 			);
 		}
 		
