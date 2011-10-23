@@ -76,11 +76,11 @@ package Caps
 		//
 		// Inicializa el equipo
 		//
-		public function Init(descTeam:Object, teamId:int, useSecondaryEquipment:Boolean = false) : void
+		public function Init(descTeam:Object, idxTeam:int, useSecondaryEquipment:Boolean = false) : void
 		{
 			Name = descTeam.PredefinedTeamName;
 			UserName = descTeam.Name;
-			IdxTeam = teamId;
+			IdxTeam = idxTeam;
 			FormationName = descTeam.Formation;
 			UseSecondaryEquipment = useSecondaryEquipment;
 			
@@ -93,9 +93,6 @@ package Caps
 				// Creamos una chapa y la agregamos a la lista
 				var cap:Cap = new Cap(this, i, descTeam.SoccerPlayers[i]);
 				CapsList.push(cap);
-				
-				// Añadimos la entidad al gestor de entidades 
-				Match.Ref.Game.TheEntityManager.AddTagged(cap, "Team"+(teamId+1).toString() + "_" + i.toString());
 			}
 			
 			// El equipo 1 empieza en el lado izquierdo y el 2 en el derecho
@@ -108,10 +105,24 @@ package Caps
 			ResetToCurrentFormation();
 						
 			// Creamos una imagen de chapa Ghost (la utilizaremos para indicar donde mover el portero)
-			Ghost = new ImageEntity(Embedded.Assets.Goalkeeper, Match.Ref.Game.GameLayer );
+			Ghost = new ImageEntity(Embedded.Assets.Goalkeeper, Match.Ref.Game.GameLayer);
 			Ghost.Visual.gotoAndStop( Name );
 			Ghost.Visual.alpha = 0.4;
 			Ghost.Visual.visible = false;
+		}
+		
+		//
+		// Obtiene el equipo adversario a nosotros
+		//
+		public function AgainstTeam() : Team
+		{
+			if( this == Match.Ref.Game.TheTeams[ Enums.Team1 ] )
+				return Match.Ref.Game.TheTeams[ Enums.Team2 ];
+			
+			if( this == Match.Ref.Game.TheTeams[ Enums.Team2 ] )
+				return Match.Ref.Game.TheTeams[ Enums.Team1 ];
+			
+			throw new Error("WTF 27");
 		}
 		
 		//
@@ -174,7 +185,7 @@ package Caps
 				// Si hay algún obstaculo en esa posicion, no podemos resetear al portero, ignoramos la orden
 				var desiredPos : Point = ConvertFormationPosToFieldPos(currentFormation[0], Side);
 				
-				if (Match.Ref.Game.GetField().ValidatePosCap(desiredPos, true, GoalKeeper))
+				if (Match.Ref.Game.TheField.ValidatePosCap(desiredPos, true, GoalKeeper))
 					SetFormationPosForCap(GoalKeeper, currentFormation[0], Side);
 			}
 		}

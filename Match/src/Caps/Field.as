@@ -50,10 +50,8 @@ package Caps
 		
 		public var Visual:DisplayObjectContainer = null;					// Objeto visual del campo
 
-		//
-		// Inicializa el estadio
-		// 
-		public function Initialize(parent:MovieClip) : void
+		
+		public function Field(parent:MovieClip) : void
 		{
 			// Creamos el campo
 			Visual = new Embedded.Assets.Field();
@@ -117,7 +115,7 @@ package Caps
 			
 			var halfSizeSmallAreaX : Number = AppParams.Screen2Physic(SmallSizeAreaX / 2);
 
-			var phy:QuickBox2D = Match.Ref.Game.Physic;
+			var phy:QuickBox2D = Match.Ref.Game.TheGamePhysics.TheBox2D;
 			var fillColor:int = 0xFF0000;
 			var fillAlpha:Number = 0;
 			if( AppParams.Debug )
@@ -249,9 +247,9 @@ package Caps
 			if( bValid )
 			{
 				// Validamos contra las chapas
-				for each( var team:Team in Match.Ref.Game.Teams )
+				for each (var team:Team in Match.Ref.Game.TheTeams)
 				{
-					for each( var cap:Cap in team.CapsList )
+					for each (var cap:Cap in team.CapsList)
 					{
 						if( cap != null && cap != ignoreCap && cap.InsideCircle( pos, Cap.Radius+Cap.Radius) == true )
 							return( false );
@@ -260,7 +258,7 @@ package Caps
 			
 				// Comprobamos que no colisionemos con el balón
 				
-				if( checkAgainstBall && Match.Ref.Game.Ball.InsideCircle( pos, Cap.Radius+BallEntity.Radius) )
+				if (checkAgainstBall && Match.Ref.Game.TheBall.InsideCircle( pos, Cap.Radius+BallEntity.Radius))
 					bValid = false;
 			}
 			

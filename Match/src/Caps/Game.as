@@ -1,42 +1,31 @@
 package Caps
 {
-	import Box2D.Common.Math.b2Vec2;
-	
 	import Embedded.Assets;
 	
 	import Framework.*;
 	
-	import com.actionsnippet.qbox.QuickBox2D;
-	import com.actionsnippet.qbox.QuickContacts;
 	import com.greensock.*;
 	
 	import flash.display.MovieClip;
-	import flash.events.Event;
 	import flash.geom.Point;
 	
 	import utils.Delegate;
-	import utils.GenericEvent;
 
 	
 	public class Game
 	{
-		private var _PhysicManager:QuickBox2D = null;			// Manager físico, controla la escena física
-		private var _Interface:GameInterface = null;			// Interface de juego
-		private var _Contacts : QuickContacts;					// Manager para controlar los contactos físicos entre objetos
+		public var TheInterface:GameInterface = null;
+		public var TheGamePhysics:GamePhysics = null;
+		public var TheField:Field = null;					
+		public var TheTeams:Array = new Array();			
+		public var TheBall:BallEntity = null;
 		
-		private var _TouchedCaps:Array = new Array();			// Lista de chapas en las que ha rebotado la pelota antes de detenerse 
-				
 		// Capas de pintado
 		public var GameLayer:MovieClip = null;
 		public var GUILayer:MovieClip = null;
 		public var PhyLayer:MovieClip = null;
 		public var ChatLayer:Chat = null;						// Componente de chat
-		
-		// Obtejos Lógicos de GamePlay
-		private var _Field:Field = null;						// El campo
-		private var _Teams:Array = new Array();					// Lista de equipos (son siempre dos equipos)
-		private var _Ball:BallEntity = null;					// Entidad balon
-		
+				
 		// Estado lógico de la aplicación
 		private var _IdxCurTeam:int = Enums.Team1;				// Idice del equipo actual que le toca jugar
 		private var _State:int = GameState.Init;				// Estado inicial
@@ -54,15 +43,10 @@ package Caps
 		public var LastConflicto:Object = null;					// Último conflicto de robo que se produjo
 				 
 		private var _IsPlaying:Boolean = false;					// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
-		private var _CapShooting:Cap = null;					// Indica la chapa que está disparando, lo utilizamos para evitar el auto-pase
-		private var _LastPosBallStopped:Point = new Point(0, 0);// Posición de la pelota antes de disparar
-		
-		private var _SimulatingShoot:Boolean = false;			// Bandera que indica si estamos simulando un lanzamiento
-		private var _FramesSimulating:int = 0;					// Contador de frames simulando
+						
 		private var _CallbackOnAllPlayersReady:Function = null 	// Llamar cuando todos los jugadores están listos
 		private var _Initialized:Boolean = false;				// Bandera que indica si hemos terminado de inicializar/cargar
-		private var _DetectedGoal:Boolean = false;				// Bandera que indica que se ha detectado un gol. Se utiliza para no continuar detectando
-		public var DetectedFault:Object = null;					// Bandera que indica Falta detectada (además objeto que describe la falta)
+		
 		public var FireCount:int = 0;							// Contador de jugadores expulsados durante el partido.
 		
 		public var Config:MatchConfig = new MatchConfig();		// Configuración del partido (Parámetros recibidos del servidor)
@@ -78,21 +62,14 @@ package Caps
 		public function Init() : void
 		{
 			// Creamos las capas iniciales de pintado para asegurar un orden adecuado
-			// TODO: Tenemos que pasar los layers a los sistemas para que se inserten adecuadamente!!
 			CreateLayers();
 			
-			// Inicializamos física
-			InitPhysics()
-						
-			// Creamos el campo
-			_Field = new Field();
-			_Field.Initialize(GameLayer);
-			
-			// Creamos el balón
-			TheEntityManager.AddTagged(_Ball = new BallEntity(), "Ball");
+			TheGamePhysics = new GamePhysics(PhyLayer);
+			TheField = new Field(GameLayer);
+			TheBall = new BallEntity();
 			
 			// Creamos las porterias al final para que se pinten por encima de todo
-			_Field.CreatePorterias(GameLayer);
+			TheField.CreatePorterias(GameLayer);
 			
 			// Registramos sonidos para lanzarlos luego 
 			AudioManager.AddClass( "SoundCollisionCapBall", Assets.SoundCollisionCapBall );			
@@ -146,7 +123,7 @@ package Caps
 		//
 		// Inicialización de los datos del partido. Invocado desde el servidor
 		//
-		public function InitMatch( matchId:int, descTeam1:Object, descTeam2:Object, idLocalPlayerTeam:int, matchTimeSecs:int, turnTimeSecs:int, minClientVersion:int ) : void
+		public function InitMatch(matchId:int, descTeam1:Object, descTeam2:Object, idLocalPlayerTeam:int, matchTimeSecs:int, turnTimeSecs:int, minClientVersion:int) : void
 		{
 			// Verificamos la versión mínima de cliente exigida por el servidor.
 			if( AppParams.ClientVersion < minClientVersion )
@@ -206,12 +183,8 @@ package Caps
 			team2.Init( descTeam2, Enums.Team2, useSecondaryEquipment2 );
 			
 			// Inicializamos el interfaz de juego. NOTE: Es necesario que estén construidos los equipos
-			_Interface = new GameInterface();
-			Interface.Init();
-			
-			// Comienza la simulación física!!
-			_PhysicManager.start();
-			
+			TheInterface = new GameInterface();
+						
 			// Indicamos que hemos terminado de cargar/inicializar
 			_Initialized = true;
 			
@@ -232,34 +205,11 @@ package Caps
 				TweenMax.delayedCall (60.0, function():void 
 										   {
 												Initialized = true;
-											} );  
-
+											} ); 
 			}
 			*/
 		}
 			
-		//
-		// Inicializamos la parte física
-		//
-		public function InitPhysics() : void
-		{
-			// FRIM: Frame Rate independent Motion
-			// True = Lla velocidad de la máquina y del stage no afecta al resultado, siempre dura lo mismo
-			// False = La velocidad de la máquina y del stage afecta al resultado ya que cada iteración simplemente se avanza un paso. Buena para sincronía de red
-			_PhysicManager = new QuickBox2D( PhyLayer, { debug: AppParams.DebugPhysic, iterations: AppParams.PhyFPS, frim: false } );
-			_PhysicManager.gravity = new b2Vec2( 0, 0 );
-			_PhysicManager.createStageWalls( );
-			
-			// Habilitamos la posibilidad de arrastrar los cuerpos con el ratón
-			if( AppParams.DragPhysicObjects == true )
-				_PhysicManager.mouseDrag( );
-			
-			// Nos registramos para saber los contactos que se producen entre cuerpos
-			_Contacts = _PhysicManager.addContactListener( );
-			_Contacts.addEventListener( QuickContacts.ADD, OnContact);
-			_Contacts.addEventListener( QuickContacts.RESULT, OnContact);
-		}
-		
 		//
 		// Bucle principal de la aplicación. 
 		// Se invoca a frecuencia constante APP_LOGIC_FPS / Sec
@@ -267,22 +217,25 @@ package Caps
 		//
 		public function Run( elapsed:Number ) : void
 		{
-			// Ejecutamos los equipos
-			if( Teams[ Enums.Team1 ] != null ) 
-				Teams[ Enums.Team1 ].Run( elapsed );
-			if( Teams[ Enums.Team2 ] != null )
-				Teams[ Enums.Team2 ].Run( elapsed );
+			// Si todavia no hemos recibido datos desde el servidor...
+			if (!_Initialized)
+				return;
+			
+			TheTeams[Enums.Team1].Run(elapsed);
+			TheTeams[Enums.Team2].Run(elapsed);
+			
+			TheGamePhysics.Run();
 			
 			// Calculamos el tiempo "real" que ha pasado, independiente del frame-rate
 			var realElapsed:Number = _TimeCounter.GetElapsed();
 			realElapsed = realElapsed / 1000; 
 			
 			// Actualizamos el tiempo del partido (si estamos jugando)
-			if( Playing == true )
+			if (Playing == true)
 			{
 				_TimeSecs -= realElapsed;
 				
-				if( _TimeSecs <= 0 )
+				if (_TimeSecs <= 0)
 				{
 					_TimeSecs = 0;
 					// En modo offline terminamos la parte si alcanzamos 0 de tiempo
@@ -292,7 +245,7 @@ package Caps
 				
 				// Mientras que se está realizando una simulación de un disparo o está ejecutando el cambio de turno, 
 				// o estamos pausados, no se resta el timeout
-				if( (!SimulatingShoot) && (!this.TimeOutPaused) && (!Interface.CutSceneTurnRunning))
+				if( (!TheGamePhysics.IsSimulating) && (!this.TimeOutPaused) && (!TheInterface.CutSceneTurnRunning))
 				{
 					Timeout -= realElapsed;
 					
@@ -306,7 +259,7 @@ package Caps
 						else if( this.CurTeam.IsLocalUser )
 						{
 							// Una vez envíado el tiemout no le permitimos al jugador local utilizar el interface
-							Interface.UserInputEnabled = false;
+							TheInterface.UserInputEnabled = false;
 							Match.Ref.Connection.Invoke("OnServerTimeout", null);
 							TimeOutSent = true;		// Para que no volvamos a envíar el timeout!
 						}
@@ -314,7 +267,7 @@ package Caps
 				}
 
 				// Actualizamos el interface visual
-				Interface.Update( ); 
+				TheInterface.Update( ); 
 			}
 							
 			switch( _State )
@@ -322,20 +275,13 @@ package Caps
 				case GameState.Init:
 				{
 					_Part = 1;
-					
-					Playing = false;	// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando 
-										
-					// Comenzamos la primera parte si se ha llamado ya a InitMatch
-					if( _Initialized == true )
-					{
-						ChangeState( GameState.NewPart );
-					}
-					
+					TheGamePhysics.Start();					
+					ChangeState(GameState.NewPart);				
 					break;
 				}
 				
 				//
-				// Nueva parte del juego! (Se divide en 2  mitades) 
+				// Nueva parte del juego! (Se divide en 2  mitades)
 				// 
 				case GameState.NewPart:
 				{
@@ -349,7 +295,7 @@ package Caps
 						_IdxCurTeam = Enums.Team2; // SetTurn( Enums.Team2, false );
 					
 					// El interface comienza desactivado
-					Interface.UserInputEnabled = false;
+					TheInterface.UserInputEnabled = false;
 					
 					// Espera a los jugadores y comienza del centro 
 					StartCenter();
@@ -357,40 +303,72 @@ package Caps
 				}
 					
 				//
-				// Esperando confirmación de los jugadores para comenzar una mitad de partido (1ª o 2ª)
+				// Estado de espera generico
 				// 
-				case GameState.WaittingPlayers:
+				case GameState.WaitingPlayersAllReady:
+				{
+					break;
+				}
+				
+				case GameState.Playing:
 				{
 					break;
 				}
 
-				case GameState.Playing:
+				case GameState.Simulating:
 				{
-					// SimulatingShoot se activa al disparar, pero no se desactiva nada más que cuando pasamos por 'OnClientShootSimulated'
-					if (SimulatingShoot == true)
-					{
-						// Contabilizamos el numero de frames que dura la simulación física del disparo
-						_FramesSimulating++;
+					if (TheGamePhysics.IsGoal)
+					{													
+						// Comproba si ha metido un gol válido, para ello se debe cumplir lo siguiente:
+						//	 - El jugador debe haber declarado "Tiro a Puerta"
+						//   - El jugador que ha marcado ha lanzado la pelota desde el equipo contrario (no puedes meter gol desde tu campo) a no ser
+						//	   que tenga la habilidad especial de "Tiroagoldesdetupropiocampo"
+						var validity : int = Enums.GoalValid;
+						
+						if (!TheGamePhysics.IsSelfGoal())	// En propia meta siempre es gol		
+						{
+							if (!IsTeamPosValidToScore())
+								validity = Enums.GoalInvalidPropioCampo;				
+							else if (!TiroPuertaDeclarado())
+								validity = Enums.GoalInvalidNoDeclarado;
+						}
 
+						// Cambiamos al estado esperando gol. Asi, por ejemplo cuando pare la simulacion, no haremos nada. Esperamos a que haya saque de centro
+						// o de porteria despues de la cutscene
+						this.ChangeState(GameState.WaitingGoal);
+						
+						// Equipo que ha marcado el gol
+						var scorerTeam : Team = TheGamePhysics.ScorerTeam();
+						
+						// Envíamos la acción al servidor para que la propague a los 2 clientes y asignamos el modo de espera que se encarga
+						// de desactivar interface y pausar el time-out
+						if (!AppParams.OfflineMode)
+						{
+							Match.Ref.Connection.Invoke("OnGoalScored", null, scorerTeam.IdxTeam, validity);
+							TheInterface.WaitResponse();
+						}
+						else
+							Match.Ref.Game.OnGoalScored(scorerTeam.IdxTeam, validity);
+						
+						trace( "Gol detectado en cliente! Esperamos confirmación del servidor. Validity=" + validity.toString() );	
+					}
+					else
+					if (!TheGamePhysics.IsSimulating)
+					{
 						// Si la física ha terminado de simular quiere decir que en nuestro cliente hemos terminado la simulación del disparo.
 						// Se lo notificamos al servidor y nos quedamos a la espera de la confirmación de ambos jugadores
-						if (IsPhysicSimulating == false)
-						{
-							// Indicamos al servidor que hemos terminado la simulación del disparo
-							if (!AppParams.OfflineMode)
-								Match.Ref.Connection.Invoke("OnServerEndShoot", null);
-
-							// Hasta que todos los clientes no indiquen que han terminado la simulación, no tomaremos ninguna decisión
-							trace( "Finalizado nuestra simulacion de disparo, esperando al otro usuario" );
-							
-							// Nos ponemos en modo espera de respuesta
-							ChangeState(GameState.WaittingClientsToEndShoot);
-						}
+						ChangeState(GameState.WaitingClientsToEndShoot);
+						
+						if (!AppParams.OfflineMode)
+							Match.Ref.Connection.Invoke("OnServerEndShoot", null);
+						
+						// Hasta que todos los clientes no indiquen que han terminado la simulación, no tomaremos ninguna decisión
+						trace( "Finalizado nuestra simulacion de disparo, esperando al otro usuario" );
 					}
-					
-					// Se encarga de mostrar los radios de influencias
-					ShowInfluences();
-
+					else
+					{
+						InfluenceController.UpdateInfluences(_RemainingHits, _RemainingPasesAlPie);
+					}
 					break;
 				}
 					
@@ -399,10 +377,10 @@ package Caps
 				// Esperando a que TODOS los demás clientes indiquen que han terminado la simulación
 				// Recibiremos una notificacion desde el servidor "OnClientShootSimulated"
 				//
-				case GameState.WaittingClientsToEndShoot:
+				case GameState.WaitingClientsToEndShoot:
 				{
 					// En modo offline simulamos que nos llega el mensaje de que todos los clientes ya han simulado
-					if( AppParams.OfflineMode )
+					if (AppParams.OfflineMode)
 						OnClientShootSimulated();
 					break;
 				}
@@ -415,15 +393,7 @@ package Caps
 				{
 					break;
 				}
-					
-				//
-				// Estado de espera genérico (no hace nada, se usa para esperar un evento del server que desencadena un callback) 
-				// 
-				case GameState.WaitGeneric:
-				{
-					break;
-				}
-					
+
 				//
 				// NOTE: Solo se pasa por aquí al terminar la 1ª parte, al finalizar la segunda va directamente por Finish 
 				// 
@@ -432,17 +402,15 @@ package Caps
 					_Part++;	// Pasamos a la siguiente parte
 					
 					// Cambiamos a los equipos de lado de campo
-					Teams[ Enums.Team1 ].InvertedSide();
-					Teams[ Enums.Team2 ].InvertedSide();
+					TheTeams[ Enums.Team1 ].InvertedSide();
+					TheTeams[ Enums.Team2 ].InvertedSide();
 					
 					// Decidimos el siguiente estado en función de la mitad en la que nos encontramos 
 					if( Part == 2 )
 						ChangeState( GameState.NewPart );
 					else if( Part == 3 )
-					{
 						throw new Error (IDString + "No deberíamos pasar por EndPart en la segunda parte" );
-					}
-					
+										
 					break;
 				}
 				
@@ -498,24 +466,7 @@ package Caps
 			
 			return capListStr;
 		}
-		
-		
-		//
-		// Determina si estamos o no jugando.
-		// El partido se detiene en numerosos eventos (goles, cambio de partes, ...)
-		//
-		public function get Playing() : Boolean
-		{
-			return _IsPlaying;
-		}
-		public function set Playing( value:Boolean ) : void
-		{
-			if( _IsPlaying != value )
-			{
-				_IsPlaying = value;
-			}
-		}
-		
+	
 		//
 		// Crea los layers de pintado (MovieClip) para el juego, interface gráfico de usuario y física
 		// De esta forma aseguramos el orden de pintado
@@ -546,62 +497,43 @@ package Caps
 		{
 			// Creamos el equipo y lo agregamos a la lista
 			var team:Team = new Team();
-			_Teams.push( team );
+			TheTeams.push( team );
 			
 			return team;
 		}
 		
 		//
-		// Propiedades : Accesors
+		// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
+		// El partido se detiene en numerosos eventos (goles, cambio de partes, ...)		 
 		//
-		public function get Interface( ) : GameInterface
-		{
-			return _Interface;
-		}
-		public function get Physic() : QuickBox2D
-		{
-			return _PhysicManager;
-		}
+		public function get Playing() : Boolean { return _IsPlaying; }
+		public function set Playing(value:Boolean) : void {	_IsPlaying = value;	}
+		
 		public function get CurTeam() : Team
 		{
-			return( _Teams[ _IdxCurTeam ] );
+			return TheTeams[_IdxCurTeam];
 		}
 		public function get LocalUserTeam() : Team
 		{
-			return( _Teams[ Match.Ref.IdLocalUser ] );
-		}
-		
-		public function get Teams() : Array
-		{
-			return( _Teams );
+			return TheTeams[Match.Ref.IdLocalUser];
 		}
 		public function get Part() : int
 		{
-			return( _Part );
-		}
-		
-		public function GetField() : Field
-		{
-			return( _Field );
+			return _Part;
 		}
 		// Obtiene el tiempo trancurrido en el partido (en segundos) 
 		public function get Time() : Number
 		{
-			return( _TimeSecs );
+			return _TimeSecs;
 		}
-		public function get Ball() : BallEntity
-		{
-			return( _Ball );
-		}
-		
 		
 		//
 		// Cambiamos al estado indicado
 		// NOTE: Siempre utilizar este metodo para cambiar el estado
 		//
-		public function ChangeState( newState:int ) : void
+		public function ChangeState(newState:int) : void
 		{
-			if( _State != newState )
+			if (_State != newState)
 			{
 				_State = newState;
 				_TicksInCurState = 0;		// Reseteamos los ticks dentro del estado actual
@@ -609,327 +541,30 @@ package Caps
 		}
 		
 		//
-		// Se llama cada vez que 2 cuerpos físicos producen un contacto
-		// NOTE: - Lo utilizamos para detectar cuando se produce gol
-		//		 - Detectar faltas
-		//		 - Generamos un historial de contactos entre chapas, para despues determinar pase al pie
-		//
-		private function OnContact( e: Event ): void
-		{
-			// Si se ha detectado anteriormente gol o falta, ignoramos los contactos
-			if( _DetectedGoal || DetectedFault)
-				return;
-				
-			if( e.type == QuickContacts.ADD )
-			{
-				// Detectamos GOL: Para ello comprobamos si ha habido un contacto entre los sensores de las porterías y el balón
-				var sideGoal:int = (-1);
-				
-				if( _Contacts.isCurrentContact( _Ball.PhyBody, _Field.GoalLeft ) )
-				{
-					sideGoal = Enums.Left_Side;	
-				}
-				else if( _Contacts.isCurrentContact( _Ball.PhyBody, _Field.GoalRight ) )
-				{
-					sideGoal = Enums.Right_Side;	
-				}
-				
-				if( sideGoal != (-1) )
-				{
-					// Indicamos que hemos detectado gol, para evitar que se siga detectando y puntuemos más veces
-					// En el estado StartCenter se restaura este valor.
-					_DetectedGoal = true;
-					// Cambiamos al estado esperando gol, para que no se pase turno al detenerse la pelota o similares
-					this.ChangeState( GameState.WaitingGoal );
-					
-					// Determinamos que equipo ha marcado gol: El equipo que está en el lado contrario a la portería donde ha entrado la pelota 
-					var player:Team = TeamInSide( Enums.AgainstSide( sideGoal ) );
-					
-					// Comproba si ha metido un gol válido, para ello se debe cumplir lo siguiente:
-					//	 - El jugador debe haber declarado "Tiro a Puerta"
-					//   - El jugador que ha marcado ha lanzado la pelota desde el equipo contrario (no puedes meter gol desde tu campo) a no ser
-					//	   que tenga la habilidad especial de "Tiroagoldesdetupropiocampo"
-					//	   > También es válido si es en gol en propia meta
-					//
-					// Si el gol ha sido en propia meta siempre es válido (no evaluamos tiro declarado, etc)
-					var validity : int = Enums.GoalValid;
-					
-					if( this._CapShooting != null && _CapShooting.OwnerTeam == player )		
-					{
-						if (!IsTeamPosValidToScore())
-							validity = Enums.GoalInvalidPropioCampo;				
-						else
-						if (!TiroPuertaDeclarado())
-							validity = Enums.GoalInvalidNoDeclarado;
-					}
-					
-					// Envíamos la acción al servidor para que la propague a los 2 clientes y asignamos el modo de espera que se encarga
-					// de desactivar interface y pausar el time-out
-					if( !AppParams.OfflineMode )
-					{
-						Match.Ref.Connection.Invoke( "OnGoalScored", null, player.IdxTeam, validity );
-						Interface.WaitResponse();
-					}
-					else
-						Match.Ref.Game.OnGoalScored( player.IdxTeam, validity );
-					
-					trace( "Gol detectado en cliente! Esperamos confirmación del servidor. Validity=" + validity.toString() );
-				}
-			}
-			
-			// ------------------------------------------------------------------------------------------
-			// Generamos un historial de contactos entre chapas, para despues determinar pase al pie
-			// ------------------------------------------------------------------------------------------			
-			if( e.type == QuickContacts.RESULT )
-			{
-				// Obtenemos las entidades que han colisionado (están dentro del userData de las shapes)
-				var ent1:PhyEntity = _Contacts.currentResult.shape1.m_userData as PhyEntity;
-				var ent2:PhyEntity = _Contacts.currentResult.shape2.m_userData as PhyEntity;
-				
-				var ball:BallEntity = null;
-				var cap:Cap = null;
-								
-				// Determinamos si una de las entidades colisionadas es el balón
-				if( ent1 is BallEntity )
-					ball = ent1 as BallEntity;
-				if( ent2 is BallEntity )
-					ball = ent2 as BallEntity;
-				
-				// Determinamos si una de las entidades colisionadas es una chapa
-				if( ent1 is Cap )
-					cap = ent1 as Cap;
-				if( ent2 is Cap )
-					cap = ent2 as Cap;
-				
-				// Tenemos una colisión entre una chapa y el balón? Si es así guardamos la
-				// chapa en una lista para comprobar posibles "Pase al pie" a la misma
-				if( cap != null && ball != null )
-				{
-					_TouchedCaps.push( cap );
-					AudioManager.Play( "SoundCollisionCapBall" );
-				}
-				else
-				{
-					// chapa / chapa
-					if( ent1 is Cap && ent2 is Cap )
-						AudioManager.Play( "SoundCollisionCapCap" );
-					// chapa / muro 
-					else if( cap != null && ( ent1 == null || ent2 == null ) ) 
-						AudioManager.Play( "SoundCollisionWall" );
-					// balón / muro 
-					else if( ball != null && ( ent1 == null || ent2 == null ) )
-						AudioManager.Play( "SoundCollisionWall" );
-				}
-				
-				//-----------------------------------------------------------
-				// Colsisión entre 2 chapas: EVALUAMOS POSIBLE FALTA
-				//-----------------------------------------------------------
-				
-				if( ent1 is Cap && ent2 is Cap )
-				{
-					DetectedFault = DetectFault( Cap(ent1), Cap(ent2) );
-					if( DetectedFault != null )
-					{
-						// Detenemos la simulación física y creamos un descriptor de falta 
-						// NOTE: Al denener la simulación se detectará en el próximo tick que se ha terminado el disparo y se procesará la respuesta
-						StopSimulation();
-					}
-				}
-			}
-		}
-		
-		//
-		// Detecta una falta entre las dos chapas y retorno un objeto de falta que describe lo ocurrido
-		// Además contabiliza las tarjetas amarillas
-		//
-		// ( Conflicto de jugadores, tarjetas, ... )
-		//
-		private function DetectFault( cap1:Cap, cap2:Cap ) : Object		
-		{
-			var fault:Object = null;
-			
-			// Las 2 chapas son del mismo equipo? Entonces ignoramos, no puede haber falta. 
-			if( cap1.OwnerTeam != cap2.OwnerTeam )
-			{
-				// La chapa del equipo que tiene el turno es el ATACANTE, quien puede provocar faltas.
-				// Detectamos que chapa es de las dos
-				var attacker:Cap = null;
-				var defender:Cap = null;
-				if( cap1.OwnerTeam == CurTeam )
-				{
-					attacker = cap1;
-					defender = cap2;
-				}
-				else if( cap2.OwnerTeam == CurTeam )
-				{
-					attacker = cap2;
-					defender = cap1;
-				}
-				
-				// Calculamos la velocidad con la que ha impactado 
-				var vVel:b2Vec2 = attacker.PhyBody.body.GetLinearVelocity()
-								
-				// Calculamos la velocidad proyectando sobre el vector diferencial de las 2 chapas, de esta
-				// forma calculamos el coeficiente de impacto real y excluye rozamientos
-				var vecDiff:Point = defender.GetPos().subtract( attacker.GetPos() );
-				vecDiff.normalize( 1.0 );
-				var vel:Number = vVel.x * vecDiff.x + vVel.y * vecDiff.y;
-				
-				// Si excedemos la velocidad de 'falta' determinamos el tipo de falta
-				if( vel >= AppParams.VelPossibleFault )
-				{
-					// Se considera falta sólo si el jugador ATACANTE no ha tocado previamente la pelota
-					if( !HasTouchedBall( attacker ) )
-					{
-						// Creamos el objeto que describe la 'falta'
-						fault = new Object();
-						fault.Attacker = attacker;
-						fault.Defender = defender;
-						fault.YellowCard = false;
-						fault.RedCard = false;
-						fault.SaquePuerta = false;
-
-						trace( "DETECTADA POSIBLE FALTA ENTRE 2 JUGADORES" );
-						
-						// Comprobamos si la falta ha sido al portero dentro de su area pequeña
-						if( defender == defender.OwnerTeam.GoalKeeper && 
-							Match.Ref.Game.GetField().IsCircleInsideSmallArea( defender.GetPos(), 0, defender.OwnerTeam.Side) )
-						{
-							// Caso especial: Todo el mundo vuelve a su posición de alineación y se produce un saque de puerta.
-							fault.SaquePuerta = true;
-							
-							// Evaluamos la gravedad de la falta. Para el portero la evaluación de tarjetas es más sensible!
-							if( vel < AppParams.VelFaultT1 )	// falta normal. es el valor por defecto
-								trace ( "Resultado: falta normal" )
-							else if( vel < AppParams.VelFaultT2 )
-								AddYellowCard( fault );	// Sacamos tarjeta amarilla (y roja si acumula 2)
-							else
-								fault.RedCard = true;	// Marcamos tarjeta roja
-						}
-						/*
-						// Comprobamos caso de penalti : Falta a cualquier chapa en el area grande contrario
-						else if( Match.Ref.Game.GetField().IsCircleInsideBigArea( defender.GetPos(), 0, attacker.OwnerTeam.Side) )
-						{
-							// TODO: PENALTIE!!!
-							throw new Error( "Implementar penaltie" );
-						}
-						*/
-						else
-						{
-							if( vel < AppParams.VelFaultT1 )		// La falta más leve en el caso general no es falta 
-								fault = null;
-							else if( vel < AppParams.VelFaultT2 )	// falta normal. es el valor por defecto
-							{
-								trace ( "Resultado: falta normal" )
-							}
-							else if( vel < AppParams.VelFaultT3 )	// Sacamos tarjeta amarilla (y roja si acumula 2)
-								AddYellowCard( fault );
-							else									// // Sacamos tarjeta roja (Caso de máxima fuerza) 
-								fault.RedCard = true;	// Marcamos tarjeta roja	
-						}
-					}
-				}
-			} 
-			
-			return fault;
-		}
-		private function AddYellowCard( fault:Object ) : void		
-		{
-			// Marcamos tarjeta amarilla, la contabilizamos y si llevamos 2 marcamos roja
-			fault.YellowCard = true;
-			fault.Attacker.YellowCards ++;
-			if( fault.Attacker.YellowCards >= 2 )
-				fault.RedCard = true;
-		}
-				
-		//
-		// Detiene la simulación física de todas las entidades 
-		// 
-		private function StopSimulation() : void		
-		{
-			for each( var entity:Entity in TheEntityManager.Items )
-			{
-				if( entity is PhyEntity )
-				{
-					var phyEntity:PhyEntity = entity as PhyEntity;
-					phyEntity.StopMovement();
-				}
-			}			
-		}
-		
-		//
-		// Retorna si esta ya todo quieto		
-		//
-		public function get IsPhysicSimulating() : Boolean
-		{
-			for each( var entity:Entity in TheEntityManager.Items )
-			{
-				if (entity is PhyEntity && (entity as PhyEntity).IsMoving == true)
-					return true;
-			}
-			
-			return false;
-		}
-		
-		
-		//
 		// Recibimos una "ORDEN" del servidor : "Disparar chapa" 
 		//
 		public function OnClientShoot(playerId:int, capID:int, dirX:Number, dirY:Number, force:Number) : void
 		{
+			if (playerId != this.CurTeam.IdxTeam)
+				throw new Error(IDString + "Ha llegado un orden OnClientShoot de un jugador que no es el actual: Player: "+playerId + " Cap: " +capID + " RTC: " + ReasonTurnChanged);
+			
 			// Reseteamos el tiempo de juego al efectuar un lanzamiento
 			ResetTimeout();
 			
 			// Obtenemos la chapa que dispara
-			var cap:Cap = GetCap( playerId, capID );
-			if( playerId != this.CurTeam.IdxTeam )
-				throw new Error(IDString + "Ha llegado un orden OnClientShoot de un jugador que no es el actual: Player: "+playerId + " Cap: " +capID + " RTC: " + ReasonTurnChanged);
+			var cap:Cap = GetCap(playerId, capID);
 			
 			// Aplicamos habilidad especial
 			if (cap.OwnerTeam.IsUsingSkill(Enums.Superpotencia))
 				force *= AppParams.PowerMultiplier;
-						
-			// Ejecutamos el disparo en la dirección/fuerza recibida
-			cap.Shoot(new Point( dirX, dirY ), force);
+
+			// Comienza la simulacion
+			ChangeState(GameState.Simulating);
 			
-			// Indicamos que estamos simulando el disparo y guardamos la chapa que está disparando
-			SimulatingShoot = true;
-			_CapShooting = cap;
+			// Ejecutamos el disparo en la dirección/fuerza recibida
+			TheGamePhysics.Shoot(cap, new Point(dirX, dirY), force);
 			
 			// ... el turno de lanzamiento no se consume hasta que se detenga la pelota
-		}
-		
-		public function get SimulatingShoot( ) : Boolean
-		{
-			return _SimulatingShoot;
-		}
-		
-		//
-		// Indica que se ha comenzado o terminado de simular un disparo
-		// NOTE: Siempre que se asigna este valor se restaura la lista de chapas tocadas
-		//
-		public function set SimulatingShoot( value:Boolean ) : void
-		{
-			// Obviamos asignaciones redundantes
-			if (value != _SimulatingShoot)
-			{
-				// Si comienza una simulación de disparo o se termina, guardamos la posición del balón 
-				// (para detectar goles desde tu campo)  
-				_LastPosBallStopped = Ball.GetPos();	
-					
-				_SimulatingShoot = value;
-			
-				// Cada vez que empieza un disparo, reseteamos el contador de frames que ha tardado la simulación del disparo
-				if (value == true)
-					_FramesSimulating = 0;
-			}
-			
-			// Vacíamos la lista de chapas tocadas
-			_TouchedCaps.length = 0;
-			
-			// Si hemos terminado la simulación, borramos la referencia a la chapa que está disparando 
-			if (value == false)
-				_CapShooting = null;
 		}
 		
 		//
@@ -938,12 +573,8 @@ package Caps
 		//
 		public function OnClientShootSimulated() : void
 		{
-			// Si estamos esperando la recepción de un gol, simplemente ignoramos el final de la simulación
-			if( this._State == GameState.WaitingGoal )
-				return;
-			
 			// Confirmamos que estamos en el estado correcto. El servidor no permite cambios de estado mientras estamos simulando
-			if (this._State != GameState.WaittingClientsToEndShoot)
+			if (this._State != GameState.WaitingClientsToEndShoot)
 				throw new Error(IDString + "Hemos recibido una confirmación de que todos los jugadores han simulado el disparo cuando no estábamos esperándola" );
 			
 			var result:int = 0;
@@ -960,9 +591,10 @@ package Caps
 			// 	 - La pelota debe quedarse dentro del radio de pase al pie del jugador
 			var paseToCap:Cap = GetPaseAlPie();
 			
-			// Si se ha producido UNA FALTA cambiamos el turno al siguiente jugador como si nos hubieran robado la pelota
-			// + caso saque de puerta  
-			if( DetectedFault != null )
+			// Si se ha producido UNA FALTA cambiamos el turno al siguiente jugador como si nos hubieran robado la pelota + caso saque de puerta
+			var DetectedFault : Object = TheGamePhysics.Fault;
+			
+			if (DetectedFault != null)
 			{
 				var attacker:Cap = DetectedFault.Attacker;
 				var defender:Cap = DetectedFault.Defender;
@@ -983,13 +615,13 @@ package Caps
 					var dir:Point = attacker.GetPos().subtract( defender.GetPos() );
 					
 					// Movemos la chapa en una dirección una cantidad (probamos varios puntos intermedios si colisiona) 
-					Match.Ref.Game.GetField().MoveCapInDir( attacker, dir, 80, true, 4 );
+					TheField.MoveCapInDir( attacker, dir, 80, true, 4 );
 				}
 				
 				// Tenemos que sacar de puerta?
-				if( DetectedFault.SaquePuerta == true )
+				if (DetectedFault.SaquePuerta == true)
 				{
-					this.SaquePuerta( defender.OwnerTeam, true );							
+					this.SaquePuerta(defender.OwnerTeam, true);							
 				}
 				else
 				{	
@@ -997,11 +629,8 @@ package Caps
 					YieldTurnToOpponent( false, Enums.TurnByFault );
 					
 					if( defender.OwnerTeam.IsLocalUser )
-						Interface.ShowHandleBall( defender );
+						TheInterface.ShowHandleBall( defender );
 				}
-				
-				// Reseteamos el objeto de falta
-				DetectedFault = null;
 			}
 			// Si se ha producido pase al pie, debemos comprobar si alguna chapa enemiga está en el radio de robo de pelota
 			else if( paseToCap != null )
@@ -1023,7 +652,7 @@ package Caps
 					// Pasamos turno al otro jugador, pero SIN habilitarle el interface de entrada (indicamos que pasamos de turno por robo)
 					YieldTurnToOpponent( false, Enums.TurnByStolen );
 					if( stealer.OwnerTeam.IsLocalUser )
-						Interface.ShowHandleBall( stealer );
+						TheInterface.ShowHandleBall( stealer );
 				}
 				else
 				{
@@ -1037,17 +666,17 @@ package Caps
 						_RemainingHits++;
 					
 					// Mostramos el cartel de pase al pie en los 2 clientes!
-					Interface.OnMsgPasePie( stealer ? true : false, LastConflicto );
+					TheInterface.OnMsgPasePie( stealer ? true : false, LastConflicto );
 					
 					// Si no somos el 'LocalUser', solo esperamos la respuesta del otro cliente
 					if( paseToCap.OwnerTeam.IsLocalUser )
-						Interface.ShowHandleBall( paseToCap );
+						TheInterface.ShowHandleBall( paseToCap );
 					
 					_RemainingPasesAlPie--;
 					
 					// Si este ha sido el último pase al pie, informamos al player
 					if (_RemainingPasesAlPie == 0)
-						Interface.OnLastPaseAlPie();
+						TheInterface.OnLastPaseAlPie();
 				}
 			}
 			else	// No ha habido falta y no se ha producido pase al pie					
@@ -1055,16 +684,16 @@ package Caps
 				// Cuando no hay pase al pie pero la chapa se queda cerca de un contrario, la perdemos directamente!
 				// (pero: unicamente cuando hayamos tocado la pelota con una de nuestras chapas, es decir, permitimos mover una 
 				// chapa SIN tocar el balón y que no por ello lo pierdas)
-				var potentialStealer : Cap = GetPotencialStealer(AgainstTeam(CurTeam));
+				var potentialStealer : Cap = GetPotencialStealer(CurTeam.AgainstTeam());
 				
-				if (potentialStealer != null && HasTouchedBallAny(this.CurTeam))
+				if (potentialStealer != null && TheGamePhysics.HasTouchedBallAny(this.CurTeam))
 				{
 					result = 10;
 					
 					// Igual que en el robo con conflicto pero con una reason distinta para que el interfaz muestre un mensaje diferente
 					YieldTurnToOpponent( false, Enums.TurnByLost );
 					if( potentialStealer.OwnerTeam.IsLocalUser )
-						Interface.ShowHandleBall( potentialStealer );
+						TheInterface.ShowHandleBall( potentialStealer );
 				}
 				else
 				{
@@ -1075,23 +704,19 @@ package Caps
 			}
 			
 			// Notificamos al servidor el resultado cálculado
-			//var listToSend:Array = GetListToSend( this._Teams[0]+ this._Teams[ 1 ] );
-			var capListStr:String = "T1: " + GetString( this._Teams[0].CapsList );
-			capListStr += "T2: " + GetString( this._Teams[1].CapsList );
-			capListStr += " B:" + this.Ball.GetPos().toString();
-			var countTouchedCaps:int = _TouchedCaps.length;
+			//var listToSend:Array = GetListToSend( this.Teams[0]+ this.Teams[ 1 ] );
+			var capListStr:String = "T1: " + GetString( TheTeams[0].CapsList );
+			capListStr += "T2: " + GetString( TheTeams[1].CapsList );
+			capListStr += " B:" + TheBall.GetPos().toString();
 			
 			// Informamos al servidor para que compare entre los dos clientes
 			if( !AppParams.OfflineMode )
 			{
 				Match.Ref.Connection.Invoke("OnResultShoot", null, result, 
-											countTouchedCaps, paseToCap != null ? paseToCap.Id : -1, _FramesSimulating, 
+											TheGamePhysics.NumTouchedCaps, paseToCap != null ? paseToCap.Id : -1, TheGamePhysics.NumFramesSimulated, 
 											ReasonTurnChanged, capListStr);
 			}
-			
-			// Marcamos que hemos terminado la simulación del disparo y con ello además vacíamos la lista de impactos
-			SimulatingShoot = false;
-			
+
 			// Volvemos al estado de juego
 			ChangeState(GameState.Playing);
 		}
@@ -1102,8 +727,8 @@ package Caps
 		//	
 		public function OnPlaceBall( playerId:int, capID:int, dirX:Number, dirY:Number ) : void
 		{
-			if( this.SimulatingShoot == true )
-				throw new Error(IDString + "Ha llegado un orden PlaceBall mientras estamos en el cliente realizando una simulación de disparo. Player: "+playerId + " Cap: "  +capID + " RTC: " + ReasonTurnChanged );				
+			if (_State != GameState.Playing)
+				throw new Error(IDString + "OnPlaceBall en estado: " + _State +  " Player: "+playerId+" Cap: "+capID+" RTC: "+ReasonTurnChanged);
 			
 			// Obtenemos la chapa en la que vamos a colocar la pelota
 			var cap:Cap = GetCap( playerId, capID );
@@ -1113,30 +738,22 @@ package Caps
 			// Posicionamos la pelota
 			var dir:Point = new Point( dirX, dirY );  
 			dir.normalize( Cap.Radius + BallEntity.Radius + AppParams.DistToPutBallHandling );
-			var newPos:Point = cap.GetPos().add( dir );
-			SetPosBall( newPos );
+						
+			TheBall.SetPosAndStop(cap.GetPos().add(dir));
 			
 			// Consumimos un turno de lanzamiento, esto además habilita el interface
 			ConsumeTurn();
 		}
-		
-		//
-		// Asigna la posición del balón y su última posición en la que estuvo parado
-		// Siempre que se cambia "forzadamente" la posición del balón, utilizar esta función
-		//
-		public function SetPosBall( pos:Point ) : void
-		{
-			Ball.SetPos( pos );
-			_LastPosBallStopped = Ball.GetPos();
-			Ball.StopMovement();
-		}	
 		
 		// 
 		// Un jugador ha utilizado una skill
 		//
 		public function OnUseSkill( idPlayer:int, idSkill:int ) : void
 		{
-			var team:Team = Teams[ idPlayer ];
+			if (_State != GameState.Playing)
+				throw new Error(IDString + "OnUseSkill en estado: " + _State +  " Player: "+idPlayer+" Skill: "+idSkill+" RTC: "+ReasonTurnChanged);
+						
+			var team:Team = TheTeams[ idPlayer ];
 
 			// Activamos la skill en el equipo
 			trace( "Game: OnUseSkill: Player " + team.Name + " Utilizando habilidad " + idSkill.toString() );
@@ -1148,18 +765,17 @@ package Caps
 			
 			// Mostramos un mensaje animado de uso del skill (cuando el el otro jugador quien ha utilizado el skill)
 			if( idPlayer != Match.Ref.IdLocalUser )
-				Interface.ShowAniUseSkill( idSkill, null );
+				TheInterface.ShowAniUseSkill( idSkill, null );
 			
 			// Algunos de los skills se aplican aquí ( son inmediatas ) otras no
 			// Las habilidades inmediatas que llegan tienen que ser del jugador activo
-			
 			var bInmediate:Boolean = false;
 			if( idSkill == Enums.Tiempoextraturno )		// Obtenemos tiempo extra de turno
 			{				
 				// NOTE: Ademas modificamos lo que representa el quesito del interface, para que se adapte al tiempo que tenemos ahora,
 				// que puede ser superior al tiempo de turno del partido! Este valor se restaura al resetear el timeout
 				Timeout += AppParams.ExtraTimeTurno;
-				Interface.TurnTime = Timeout;
+				TheInterface.TurnTime = Timeout;
 				bInmediate = true;
 			}
 			else if( idSkill == Enums.Turnoextra )		// Obtenemos un turno extra
@@ -1175,12 +791,14 @@ package Caps
 		// 
 		// Un jugador ha declarado tiro a puerta
 		//
-		public function OnTiroPuerta( idPlayer:int ) : void
+		public function OnTiroPuerta(idPlayer:int) : void
 		{
-			// Mostramos el interface de colocación de portero al jugador contrario
+			if (_State != GameState.Playing)
+				throw new Error(IDString + "OnTiroPuerta en estado: " + _State + " Player: "+idPlayer);
 			
-			var team:Team = Teams[ idPlayer ] ;
-			var enemy:Team = this.AgainstTeam( team );
+			// Mostramos el interface de colocación de portero al jugador contrario
+			var team:Team = TheTeams[ idPlayer ] ;
+			var enemy:Team = team.AgainstTeam();
 
 			trace( "Game: OnTiroPuerta: Un jugador ha declarado tiro a puerta!" + team.Name );
 
@@ -1189,9 +807,9 @@ package Caps
 			// Puede moverlo múltiples veces HASTA que se consuma su turno 
 			
 			// Una vez que se termine su TURNO por TimeOut se llamará a OnGoalKeeperSet  
-			if( _Field.IsCapCenterInsideSmallArea( enemy.GoalKeeper ) )
+			if (TheField.IsCapCenterInsideSmallArea( enemy.GoalKeeper ))
 			{
-				this.SetTurn( enemy.IdxTeam, false, Enums.TurnByTiroAPuerta );
+				this.SetTurn(enemy.IdxTeam, false, Enums.TurnByTiroAPuerta);
 			}
 			else
 			{
@@ -1206,9 +824,10 @@ package Caps
 		//
 		public function OnPosCap( idPlayer:int, capId:int, posX:Number, posY:Number ) : void
 		{
-			// Si la chapa posicionada es el portero ejecutamos el OnGoalKeeperSet
-			// NOTE: Solo se puede posicionar el portero!
-			if( capId == 0 )
+			if (_State != GameState.Playing)
+				throw new Error(IDString + "OnPosCap en estado: " + _State + " Player: "+idPlayer);
+
+			if (capId == 0)
 			{
 				// Asignamos la posición de la chapa
 				var cap:Cap = this.GetCap( idPlayer, capId );
@@ -1216,27 +835,24 @@ package Caps
 			}
 			else
 				throw new Error(IDString + "Alguien ha posicionado una chapa que no es el portero! Alguien está haciendo trampas? " );
-		}
-		
+		}		
 		
 		// 
 		// Un jugador ha terminado la colocación de su portero
 		// NOTE: Volvemos al turno del otro jugador para que efectúe su lanzamiento
 		//
-		public function OnGoalKeeperSet( idPlayer:int ) : void
+		public function OnGoalKeeperSet(idPlayer:int ) : void
 		{
 			// Mostramos el interface de colocación de portero al jugador contrario
-			
-			var team:Team = Teams[ idPlayer ] ;
-			var enemy:Team = this.AgainstTeam( team );
+			var team:Team = TheTeams[ idPlayer ] ;
+			var enemy:Team = team.AgainstTeam();
 			
 			trace( "Game: OnGoalKeeperSet: El jugador ha colocado su guardameta ! " + team.Name );
 									
 			// Cambiamos el turno al enemigo (quien declaró que iba a tirar a puerta) para que realice el disparo
 			this.SetTurn( enemy.IdxTeam, true, Enums.TurnByGoalKeeperSet );
 		}
-		
-		
+				
 		// 
 		// Un jugador ha marcado gol!!! Reproducimos una cut-scene y cuando termine pasamos al estado "GoalScored"
 		//
@@ -1245,18 +861,17 @@ package Caps
 			// Verificamos coherencia de estado
 			if( this._State != GameState.WaitingGoal )
 				throw new Error( "CLIENT: Hemos recibido un gol cuando no estamos esperándolo. El estado debería ser 'GameState.WaitingGoal'. Curent State=" + this._State.toString() );
-						
-			//valid = false;
+
 			trace( "Game: OnGoalScored: Confirmación del servidor de que han marcado GOL! Marcó el player: " + idPlayer );
 
-			Playing = false;					// Pausamos el partido
+			Playing = false;						// Pausamos el partido
+			
+			// Contabilizamos el gol
 			if( validity == Enums.GoalValid )
-			{
-				Teams[ idPlayer ].Goals ++;		// Contabilizamos el gol
-			}
-						
-			// Lanzamos una cutscene y al terminar pasamos a  'FinishGoalCutScene'
-			Interface.OnGoalScored(validity, Delegate.create(FinishGoalCutScene, idPlayer, validity));
+				TheTeams[ idPlayer ].Goals ++;
+									
+			// Lanzamos una cutscene y al terminar pasamos a 'FinishGoalCutScene'
+			TheInterface.OnGoalScored(validity, Delegate.create(FinishGoalCutScene, idPlayer, validity));
 		}
 		
 		//
@@ -1266,76 +881,109 @@ package Caps
 		{
 			trace( "Game: Finalizada Cut-Scene de gol!" );
 			
-			var turnTeam:Team = AgainstTeam( Teams[ idPlayer ] );
+			var turnTeam:Team = TheTeams[idPlayer].AgainstTeam();
 			
 			if (validity == Enums.GoalValid)
 			{
 				// Asignamos el turno al equipo contrario al que ha marcado gol, pero no le habilitamos el interface todavía
-				SetTurn( turnTeam.IdxTeam, false );
+				SetTurn(turnTeam.IdxTeam, false);
 				
 				// Espera a los jugadores y comienza del centro 
 				StartCenter();
 			}
-			// GOL INVÁLIDO:
 			else
-			{
-				// Tenemos que esperar a que todo el mundo esté listo antes de pasar al saque de puerta.
-				// Enviamos nuestro 'estamos listos' y pasamos a esperar por los demás
-				this.SendPlayerReady(Delegate.create(OnInvalidGoalAndPlayersReady, idPlayer));
-					
-				// Cambiamos a un estado que no hace nada (estamos esperando a que todos los jugadores estén listos)
-				ChangeState( GameState.WaitGeneric );
+			{				
+				// Ponemos en estado de saque de puerta (indicando que no se debe a una falta)
+				SaquePuerta(turnTeam, false);
 			}
-		}
-		
-		// Ocurrió un gol inválido, además todos los usuarios han indicado que están listos para continuar.
-		// Pasamos al saque de puerta!
-		protected function OnInvalidGoalAndPlayersReady( idPlayer:int ) : void
-		{
-			var turnTeam:Team = AgainstTeam( Teams[ idPlayer ] );
-			
-			// Ponemos en estado de saque de puerta (indicando que no se debe a una falta) (alineación, balón, turno, ... )
-			SaquePuerta( turnTeam, false );
-			
-			// Reseteamos variables ...				
-			SimulatingShoot = false;		// Se indica que no estamos simulando ningún disparo
-			_DetectedGoal = false;			// Reseteamos el detector de gol.
-			Playing = true;					// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
-
-			// Cambiamos al estado a jugar de nuevo
-			this.ChangeState( GameState.Playing );
 		}
 		
 		//
 		// Saque de puerta para un equipo. 
 		// Ponemos en estado de saque de puerta (alineación, balón, turno, ... )
 		//
-		public function SaquePuerta( team:Team, dueToFault:Boolean ) : void
+		public function SaquePuerta(team:Team, dueToFault:Boolean) : void
 		{
+			if (!AppParams.OfflineMode)
+				this.SendPlayerReady(Delegate.create(SaquePuertaAllReady, team, dueToFault));
+			else
+				SaquePuertaAllReady(team, dueToFault);
+		}
+		
+		private function SaquePuertaAllReady(team:Team, dueToFault:Boolean) : void
+		{
+			TheGamePhysics.StopSimulation();
+			
 			// Colocamos los jugadores en la alineación correspondiente
-			_Teams[ Enums.Team1 ].ResetToCurrentFormation();
-			_Teams[ Enums.Team2 ].ResetToCurrentFormation();
+			TheTeams[ Enums.Team1 ].ResetToCurrentFormation();
+			TheTeams[ Enums.Team2 ].ResetToCurrentFormation();
 			
 			// Colocamos el balón delante del portero que va a sacar de puerta
 			// Delante quiere decir mirando al centro del campo
-			Ball.SetPosInFrontOf( team.GoalKeeper );
-			_LastPosBallStopped = Ball.GetPos();		// Actualizamos la última posición del balón
-			Ball.StopMovement();
-			
+			TheBall.SetPosInFrontOf( team.GoalKeeper );
+
 			// Asignamos el turno al equipo que debe sacar de puerta
-			if( dueToFault == true )
+			if (dueToFault == true)
 				SetTurn( team.IdxTeam, true, Enums.TurnBySaquePuertaByFalta );
 			else
 				SetTurn( team.IdxTeam, true, Enums.TurnBySaquePuerta );
+			
+			// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
+			Playing = true;
+			
+			// Cambiamos al estado a jugar de nuevo
+			this.ChangeState(GameState.Playing);
+		}
+		
+		//
+		// Comienza desde el centro del campo, sincronizando que los 2 jugadores estén listos
+		//
+		public function StartCenter() : void
+		{
+			// Enviamos al servidor nuestro estamos listos! cuando todos estén listos nos llamarán a StartCenterAllReady
+			if (!AppParams.OfflineMode)
+				SendPlayerReady(StartCenterAllReady);				
+			else
+				StartCenterAllReady();
+		}
+		
+		//
+		// Los 2 jugadores han comunicado que están listos para comenzar el saque de centro
+		//
+		public function StartCenterAllReady( ) : void
+		{
+			TheGamePhysics.StopSimulation();
+			
+			// Reseteamos el número de disparos disponibles para el jugador que tiene el turno
+			_RemainingHits = AppParams.MaxHitsPerTurn;
+			_RemainingPasesAlPie = AppParams.MaxNumPasesAlPie;
+			
+			// Colocamos el balón en el centro y los jugadores en la alineación correspondiente, detenemos cualquier simulación física
+			TheTeams[ Enums.Team1 ].ResetToCurrentFormation();
+			TheTeams[ Enums.Team2 ].ResetToCurrentFormation();
+			
+			TheBall.SetCenterFieldPosAndStop();
+			
+			// Sincronizamos el interface visual para asegurar que se actualicen los cambios
+			TheInterface.Sync();
+			
+			// Reasignamos el turno del jugador actual (para que se le habilite el interface). A veces
+			// pasamos por StartCenter sin que necesariamente haya sido un cambio de parte
+			SetTurn(CurTeam.IdxTeam, true);
+			
+			// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
+			Playing = true;		
+			
+			ChangeState(GameState.Playing);
 		}
 		
 		// 
 		// Se ha terminado el tiempo del jugador
 		// Debemos cambiar el turno al siguiente jugador
 		//
-		public function OnTimeout( idPlayer:int ) : void
+		public function OnTimeout(idPlayer:int) : void
 		{
-			trace( "Game: OnTimeout del player " + Teams[ idPlayer ].Name );
+			trace( "Game: OnTimeout del player " + TheTeams[ idPlayer ].Name );
 			
 			if( idPlayer == CurTeam.IdxTeam )
 			{
@@ -1347,7 +995,7 @@ package Caps
 				}
 				// El caso normal cuando se acaba el tiempo simplemente pasamos el turno al jugador siguiente
 				else
-					YieldTurnToOpponent( true );	
+					YieldTurnToOpponent( true );
 			}
 			else
 				throw new Error(IDString + "No puede llegar Timeout del jugador no actual" );
@@ -1359,7 +1007,7 @@ package Caps
 		public function ResetTimeout(  ) : void
 		{
 			Timeout = Config.TurnTime;
-			Interface.TurnTime = Timeout;		// Asignamos el tiempo de turno que entiende el interface, ya que este valor se modifica cuando se obtiene extratime
+			TheInterface.TurnTime = Timeout;	// Asignamos el tiempo de turno que entiende el interface, ya que este valor se modifica cuando se obtiene extratime
 			TimeOutSent = false;				// Para controlar que no se mande múltiples veces el timeout
 			TimeOutPaused = false;				// Se elimina la pausa en el timeout
 		}
@@ -1372,7 +1020,7 @@ package Caps
 			if( teamId != Enums.Team1 && teamId != Enums.Team2 )
 				throw new Error( "Identificador invalido" );
 							
-			return( Teams[ teamId ].CapsList[ capId ] ); 
+			return TheTeams[ teamId ].CapsList[ capId ]; 
 		}
 		
 		//-----------------------------------------------------------------------------------------
@@ -1390,7 +1038,7 @@ package Caps
 			
 			// Si es el jugador local el activo mostramos los tiros que nos quedan en el interface
 			if( this.CurTeam.IsLocalUser  )
-				Interface.OnQuedanTurnos( _RemainingHits );
+				TheInterface.OnQuedanTurnos( _RemainingHits );
 			
 			// Si has declarado tiro a puerta, el jugador contrario ha colocado el portero, nuestro indicador
 			// de que el turno ha sido cambiado por colocación de portero solo dura un sub-turno (Los restauramos a turno x turno).
@@ -1410,8 +1058,8 @@ package Caps
 			EnableUserInputIfLocalPlayer();
 						
 			// Al consumir un turno deactivamos las skillls que estén siendo usadas
-			Teams[ Enums.Team1 ].DesactiveSkills();			
-			Teams[ Enums.Team2 ].DesactiveSkills();
+			TheTeams[ Enums.Team1 ].DesactiveSkills();			
+			TheTeams[ Enums.Team2 ].DesactiveSkills();
 		}
 		
 		//
@@ -1438,35 +1086,31 @@ package Caps
 			// DEBUG: En modo offline nos convertimos en el otro jugador, para poder testear!
 			if (AppParams.OfflineMode == true)
 				Match.Ref.IdLocalUser = idTeam;
-				//this.LocalUserTeam = this.Teams[ idTeam ];
-			
+
 			// Guardamos la razón por la que hemos cambiado de turno
 			// IMPORTANT: Hacemos esto al principio, porque cuando se activa/desactiva el interface de usuario
 			// se utiliza esta variable para determinar que se activa y que no! 
 			ReasonTurnChanged = reason;
 			
-			// Verificamos si es una asignación redundante
-			//if( IdxCurTeam != idTeam )
-			{
-				// Reseteamos el nº de subtiros
-				// TODO: Salva cuando se cambia el turno para declaración de tiro a puerta, o porque se ha colocado el portero.
-				// En estos casos se mantiene el nº de tiros 
-				_RemainingHits = AppParams.MaxHitsPerTurn;
-				_RemainingPasesAlPie = AppParams.MaxNumPasesAlPie;
-				_IdxCurTeam = idTeam;
-				
-				// Mostramos un mensaje animado de cambio de turno
-				Interface.OnTurn( idTeam, reason, null );
-			}
+			// Reseteamos el nº de subtiros
+			// TODO: Salva cuando se cambia el turno para declaración de tiro a puerta, o porque se ha colocado el portero.
+			// En estos casos se mantiene el nº de tiros 
+			_RemainingHits = AppParams.MaxHitsPerTurn;
+			_RemainingPasesAlPie = AppParams.MaxNumPasesAlPie;
+			_IdxCurTeam = idTeam;
 			
-			ResetTimeout();		// Reseteamos el tiempo disponible para el subturno (time-out)
+			// Mostramos un mensaje animado de cambio de turno
+			TheInterface.OnTurn( idTeam, reason, null );
+			
+			// Reseteamos el tiempo disponible para el subturno (time-out)
+			ResetTimeout();
 			
 			// Para colocar el portero solo se posee la mitad de tiempo!!
-			if( reason == Enums.TurnByTiroAPuerta )
+			if (reason == Enums.TurnByTiroAPuerta)
 				this.Timeout = this.Config.TimeToPlaceGoalkeeper;
 			
 			// Para tirar a puerta solo se posee un tiro y se pierden todos los pases al pie
-			if( reason == Enums.TurnByGoalKeeperSet )
+			if (reason == Enums.TurnByGoalKeeperSet)
 			{
 				_RemainingHits = 1;
 				_RemainingPasesAlPie = 0
@@ -1481,23 +1125,17 @@ package Caps
 			if( enableUserInput == true )
 			{
 				if( _IdxCurTeam == Match.Ref.IdLocalUser )
-					Interface.UserInputEnabled = true;
+					TheInterface.UserInputEnabled = true;
 				else
-					Interface.UserInputEnabled = false;
-				
-				// En modo offline permitimos controlar los 2 jugadores!
-				/*
-				if( AppParams.OfflineMode )
-				Interface.UserInputEnabled = true;
-				*/
+					TheInterface.UserInputEnabled = false;
 			}
 			
 			// Al cambiar el turno, también desactivamos las skills que se estuvieran utilizando
 			// Salvo cuando cambiamos el turno por declaración de tiro a puerta, o por que ha colocado el portero 
 			if( reason != Enums.TurnByTiroAPuerta && reason != Enums.TurnByGoalKeeperSet )
 			{
-				Teams[ Enums.Team1 ].DesactiveSkills();
-				Teams[ Enums.Team2 ].DesactiveSkills();
+				TheTeams[ Enums.Team1 ].DesactiveSkills();
+				TheTeams[ Enums.Team2 ].DesactiveSkills();
 			}
 		}
 		
@@ -1507,9 +1145,9 @@ package Caps
 		public function EnableUserInputIfLocalPlayer() : void
 		{
 			if( _IdxCurTeam == Match.Ref.IdLocalUser )
-				Interface.UserInputEnabled = true;
+				TheInterface.UserInputEnabled = true;
 		}
-				
+
 		//
 		// El enemigo más capaz de robarme el balon. De momento consideramos que es el más cercano.
 		//
@@ -1517,9 +1155,9 @@ package Caps
 		{
 			var enemy : Cap = null;
 			
-			var capList:Array = enemyTeam.InsideCircle( _Ball.GetPos(), Cap.Radius + BallEntity.Radius + enemyTeam.RadiusSteal );
+			var capList:Array = enemyTeam.InsideCircle(TheBall.GetPos(), Cap.Radius + BallEntity.Radius + enemyTeam.RadiusSteal );
 			if( capList.length >= 1 )
-				enemy = _Ball.NearestEntity( capList ) as Cap;
+				enemy = TheBall.NearestEntity( capList ) as Cap;
 			
 			return enemy;
 		}		
@@ -1532,7 +1170,7 @@ package Caps
 		private function CheckConflictoSteal( cap:Cap, conflicto:Object ) : Cap
 		{
 			// Cogemos el equipo contrario al de la chapa que evaluaremos
-			var enemyTeam:Team = AgainstTeam( cap.OwnerTeam );
+			var enemyTeam:Team = cap.OwnerTeam.AgainstTeam();
 			
 			// Comprobamos las chapas enemigas en el radio de robo
 			var stealer:Cap = GetPotencialStealer(enemyTeam);
@@ -1574,29 +1212,16 @@ package Caps
 			var bSteal:Boolean = _Random.Probability(conflicto.probabilidadRobo)
 			return( bSteal );
 		}
-		
-		//
-		// Obtiene el equipo adversario al especificado
-		//
-		public function AgainstTeam( team:Team ) : Team
-		{
-			if( team == _Teams[ Enums.Team1 ] )
-				return _Teams[ Enums.Team2 ];
-			if( team == _Teams[ Enums.Team2 ] )
-				return _Teams[ Enums.Team1 ];
-			
-			return null;
-		}
-		
+				
 		// 
 		// Obtiene el equipo que está en un lado del campo
 		//
-		public function TeamInSide( side:int) : Team
+		public function TeamInSide(side:int) : Team
 		{
-			if( side == _Teams[ Enums.Team1 ].Side )
-				return _Teams[ Enums.Team1 ];
-			if( side == _Teams[ Enums.Team2 ].Side )
-				return _Teams[ Enums.Team2 ];
+			if( side == TheTeams[ Enums.Team1 ].Side )
+				return TheTeams[ Enums.Team1 ];
+			if( side == TheTeams[ Enums.Team2 ].Side )
+				return TheTeams[ Enums.Team2 ];
 			
 			return null;
 		}
@@ -1607,7 +1232,7 @@ package Caps
 		public function GetPaseAlPie() : Cap
 		{
 			// Si la chapa que hemos lanzado no ha tocado la pelota no puede haber pase al pie
-			if( !HasTouchedBall( _CapShooting ) )
+			if(!TheGamePhysics.HasShooterCapTouchedBall())
 				return null;
 			
 			// Si no nos queda ya ninguno más...
@@ -1615,7 +1240,7 @@ package Caps
 				return null;
 			
 			// La más cercana de todas las potenciales
-			return _Ball.NearestEntity(GetPotentialPaseAlPie()) as Cap;
+			return TheBall.NearestEntity(GetPotentialPaseAlPie()) as Cap;
 		}
 		
 		public function GetPotentialPaseAlPie() : Array
@@ -1624,133 +1249,27 @@ package Caps
 			var potential : Array = new Array();
 			var capList:Array = CurTeam.CapsList;
 			
-			for each( var cap:Cap in capList )
+			for each (var cap:Cap in capList)
 			{
-				if( cap != null && cap.InsideCircle( _Ball.GetPos(), Cap.Radius + BallEntity.Radius + CurTeam.RadiusPase ) )
+				if (cap != null && cap.InsideCircle(TheBall.GetPos(), Cap.Radius + BallEntity.Radius + CurTeam.RadiusPase))
 				{
-					if (AppParams.AutoPasePermitido || cap != _CapShooting)
+					if (AppParams.AutoPasePermitido || cap != TheGamePhysics.ShooterCap)
 						potential.push(cap);
 				}
 			}
 			
 			// Si hay más de una chapa candidata evitamos hacer autopase, el jugador querrá pasar al resto de chapas
-			if (potential.length > 1 && potential.indexOf(_CapShooting) != -1)
-				potential.splice(potential.indexOf(_CapShooting), 1);
+			if (potential.length > 1 && potential.indexOf(TheGamePhysics.ShooterCap) != -1)
+				potential.splice(potential.indexOf(TheGamePhysics.ShooterCap), 1);
 			
 			return potential;
 		}
 		
 		//
-		// Comprueba si un jugador ha tocado la pelota, tanto por que ha disparado o porque le han empujado
-		// NOTE: si llamas a esta función cuando ha terminado la simulación de disparo siempre retorna false
-		//
-		public function HasTouchedBall( cap:Cap ) : Boolean
-		{
-			if( SimulatingShoot == false )
-				trace( "No se puede llamar a HasTouchedBall cuando no se está simulando un disparo" );
-			
-			if( _TouchedCaps.indexOf( cap ) != (-1) )
-				return true;
-			return false;
-		}
-		
-		// Ha tocado la pelota cualquiera de las chapas del equipo?
-		public function HasTouchedBallAny(team : Team) : Boolean
-		{
-			for each(var cap : Cap in team.CapsList)
-				if (HasTouchedBall(cap))
-					return true;
-			return false;
-		}
-		
-		private function ShowAllInfluences( ) : void
-		{
-			// Mostramos todas las influencias de pase al pie
-			var friendCaps:Array = CurTeam.CapsList;
-			for each( var friend:Cap in friendCaps )
-			{
-				friend.SetInfluenceAspect( Enums.FriendColor, Cap.Radius + BallEntity.Radius + CurTeam.RadiusPase );
-				friend.ShowInfluence = true;
-			}				
-			
-			// Mostramos todas las influencias de robo
-			var enemyTeam:Team = AgainstTeam( CurTeam );
-			var enemyCaps:Array = enemyTeam.CapsList;
-			
-			for each( var enemy:Cap in enemyCaps )
-			{
-				enemy.SetInfluenceAspect( Enums.EnemyColor, Cap.Radius + BallEntity.Radius + enemyTeam.RadiusSteal );
-				enemy.ShowInfluence = true;
-			}
-		}
-		
-		
-		//
-		// Muestra los areas de influencia de las chapas que están en el radio de la pelota
-		//
-		public function ShowInfluences( ) : void
-		{
-			// Determinamos si debemos mostrar "TODAS" las influencias (si el jugador local tiene la habilidad de mostrar radios)			
-			var bShowAllInfluences:Boolean = false;
-			if( this.CurTeam.IsUsingSkill( Enums.Verareas ) && CurTeam.IsLocalUser )
-				bShowAllInfluences = true;
-			
-			// Solo mostramos influencias cuando estamos simulando un disparo y el jugador que lanzó ha tocado la pelota,
-			// o mostrando todas las influencias (por uso de la habilidad especial)
-			if (bShowAllInfluences)
-			{
-				ShowAllInfluences();
-			}
-			else if (SimulatingShoot)
-			{
-				// Si los turnos o los pases al pie estan agotados, no mostramos ninguna influencia amiga.
-				// Además, el pase al pie sólo empieza a ser posible cuando la chapa que lanza ha tocado la pelota.
-				if (_RemainingHits != 0 && _RemainingPasesAlPie != 0 && this.HasTouchedBall( this._CapShooting ))
-				{
-					var potential:Array = GetPotentialPaseAlPie();
-					
-					for each( var friend:Cap in potential )
-					{
-						friend.SetInfluenceAspect( Enums.FriendColor, Cap.Radius + BallEntity.Radius + CurTeam.RadiusPase );
-						friend.ShowInfluence = true;
-					}
-					
-					// Apagamos inmediatamente las q ya no son potenciales
-					for each(friend in CurTeam.CapsList)
-					{
-						if (friend.ShowInfluence && potential.indexOf(friend) == -1)
-							friend.ShowInfluence = false;
-					}
-				}
-				
-				// Mostramos las chapas enemigas que podrían robar la pelota o sobre las que podríamos perder la pelota
-				// Si ninguna de nuestras chapas ha tocado la pelota, no se produce la perdida, asi que tampoco pintamos el area
-				if (HasTouchedBallAny(CurTeam))
-				{
-					var enemyTeam:Team = AgainstTeam( CurTeam );
-					var enemyCaps:Array = enemyTeam.InsideCircle( _Ball.GetPos(), Cap.Radius + BallEntity.Radius + enemyTeam.RadiusSteal );
-					
-					for each( var enemy:Cap in enemyCaps )
-					{
-						enemy.SetInfluenceAspect( Enums.EnemyColor, Cap.Radius + BallEntity.Radius + enemyTeam.RadiusSteal );
-						enemy.ShowInfluence = true;
-					}
-					
-					for each(enemy in enemyTeam.CapsList )
-					{
-						if (enemy.ShowInfluence && enemyCaps.indexOf(enemy) == -1)
-							enemy.ShowInfluence = false;
-					}
-				}
-			}
-		}
-		
-		//
 		// Comprueba si la posición del equipo actual es válida para marcar gol. Debe estar
 		//    - La pelota en el campo enemigo o tener la habilidad especial de permitir gol de más de medio campo? 
-		// 	  - 
 		//
-		public function IsTeamPosValidToScore(  ) : Boolean
+		public function IsTeamPosValidToScore() : Boolean
 		{
 			var player:Team = this.CurTeam;
 			if( player == null )
@@ -1760,9 +1279,9 @@ package Caps
 			
 			if( !player.IsUsingSkill( Enums.Tiroagoldesdetupropiocampo ) )
 			{
-				if( player.Side == Enums.Right_Side && _LastPosBallStopped.x >= Field.CenterX)
+				if( player.Side == Enums.Right_Side && TheBall.LastPosBallStopped.x >= Field.CenterX)
 					bValid = false;
-				else if( player.Side == Enums.Left_Side && _LastPosBallStopped.x <= Field.CenterX)
+				else if( player.Side == Enums.Left_Side && TheBall.LastPosBallStopped.x <= Field.CenterX)
 					bValid = false;
 			}
 			
@@ -1780,7 +1299,7 @@ package Caps
 			
 			var bDeclared:Boolean = true;
 			
-			if( !team.IsUsingSkill( Enums.Manodedios ) )
+			if( !team.IsUsingSkill(Enums.Manodedios) )
 			{
 				if( ReasonTurnChanged != Enums.TurnByGoalKeeperSet && ReasonTurnChanged != Enums.TurnByTiroAPuerta  )
 					bDeclared = false;
@@ -1805,9 +1324,9 @@ package Caps
 			// Lanzamos la cutscene de fin de tiempo, cuando termine pasamos realmente de parte
 			// o finalizamos el partido
 			if( part == 1 )
-				Interface.OnFinishPart( _Part, Delegate.create( ChangeState, GameState.EndPart ) );
+				TheInterface.OnFinishPart( _Part, Delegate.create( ChangeState, GameState.EndPart ) );
 			else if( part == 2 )
-				Interface.OnFinishPart( _Part, Delegate.create( Finish, result ) );
+				TheInterface.OnFinishPart( _Part, Delegate.create( Finish, result ) );
 		}
 		
 		//
@@ -1835,60 +1354,11 @@ package Caps
 			
 			// Pausamos el juego y no permitimos entrada de interface
 			Playing = false;
-			Interface.UserInputEnabled = false;
+			TheInterface.UserInputEnabled = false;
 			
 			Match.Ref.Shutdown(result);
 		}
-				
-		//
-		// Comienza desde el centro del campo, sincronizando que los 2 jugadores estén listos
-		//
-		public function StartCenter() : void
-		{
-			// Pasamos al estado de espera hasta que nos llegue la confirmación "OnAllPlayersReady" desde el servidor
-			ChangeState(GameState.WaittingPlayers);
 
-				// Enviamos al servidor nuestro estamos listos! cuando todos estén listos nos llamarán a StartCenterAllReady
-			if (!AppParams.OfflineMode)
-				SendPlayerReady(StartCenterAllReady);				
-			else
-				StartCenterAllReady();
-		}
-
-		//
-		// Los 2 jugadores han comunicado que están listos para comenzar el saque de centro
-		//
-		public function StartCenterAllReady( ) : void
-		{
-			// Reseteamos el número de disparos disponibles para el jugador que tiene el turno
-			_RemainingHits = AppParams.MaxHitsPerTurn;
-			_RemainingPasesAlPie = AppParams.MaxNumPasesAlPie;
-			
-			// Colocamos el balón en el centro y los jugadores en la alineación correspondiente, detenemos cualquier simulación física
-			StopSimulation();
-			_Teams[ Enums.Team1 ].ResetToCurrentFormation();
-			_Teams[ Enums.Team2 ].ResetToCurrentFormation();
-			_Ball.Reset();
-			_LastPosBallStopped = Ball.GetPos();
-			
-			// Sincronizamos el interface visual para asegurar que se actualicen los cambios
-			Interface.Sync();
-			
-			// Reasignamos el turno del jugador actual (para que se le habilite el interface). A veces
-			// pasamos por StartCenter sin que necesariamente haya sido un cambio de parte
-			SetTurn(CurTeam.IdxTeam, true);
-			
-			// Se indica que no estamos simulando ningún disparo
-			SimulatingShoot = false;
-			// Reseteamos el detector de gol y falta
-			_DetectedGoal = false;
-			DetectedFault = null;				// Bandera que indica Falta detectada (objeto que describe la falta)
-			
-			// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
-			Playing = true;		
-			
-			ChangeState(GameState.Playing);
-		}
 		
 		//
 		// GENERICO: Envía nuestro indicador de que estamos listos
@@ -1899,10 +1369,13 @@ package Caps
 		public function SendPlayerReady(callbackOnAllPlayersReady:Function = null) : void
 		{
 			trace( "Enviado nuestro 'Player Ready'" );
-						
+			
 			// Función a llamar cuando todos los players estén listos
 			_CallbackOnAllPlayersReady = callbackOnAllPlayersReady;
 			
+			// Pasamos al estado de espera hasta que nos llegue la confirmación "OnAllPlayersReady" desde el servidor
+			ChangeState(GameState.WaitingPlayersAllReady);
+						
 			// Mandamos nuestro estamos listos
 			Match.Ref.Connection.Invoke("OnPlayerReady", null);
 		}

@@ -242,19 +242,16 @@ namespace SoccerServer
             LogEx( "OnServerShoot: " + idPlayer + " Shoot: " + ShootCount + " Cap ID: " + capID + " dir: " + dirX + ", " + dirY + " force: " + force + " CPES: " + CountPlayersEndShoot );
             
             if (CountPlayersEndShoot != 0)
-            {
                 throw new Exception("Match: " + MatchID + " SERVER: Hemos recibido un ServerShoot cuando todavía no todos los clientes habían confirmado la finalización de un disparo anterior");
-            }
+            
             if (SimulatingShoot == true)
-            {
                 throw new Exception("Match: " + MatchID + " SERVER: Hemos recibido un ServerShoot mientras estamos simulando (SimulatingShoot = true)");
-            }
-
-            if ( CheckActionsAllowed() )        // Estan las acciones permitidas?
+            
+            if (CheckActionsAllowed())        // Estan las acciones permitidas?
             {
                 // Creamos una nueva descripción de estado para que los clientes puedan envíarnos su estado.
                 // NOTE: Lo hacemos con lista ya que un cliente puede no haber envíado los resultados del anterior disparo, y el otro estar simulando el siguiente.
-                if ( DebugClientState == true )
+                if (DebugClientState == true)
                 {
                     ClientState clientState = new ClientState();
                     clientState.ShootCount = ShootCount;
@@ -569,7 +566,7 @@ namespace SoccerServer
         {
             LogEx("OnTiroPuerta: Player: " + idPlayer);
 
-            if ( CheckActionsAllowed() )        // Estan las acciones permitidas?
+            if (CheckActionsAllowed())        // Estan las acciones permitidas?
             {
                 if ( ValidatePlayer( idPlayer ) )
                 {

@@ -13,6 +13,9 @@ package Caps
 	{
 		static public const Radius:Number = 9;
 		
+		// Ultima posicion donde se forzo la posicion o donde paro despues de una simulacion
+		public function get LastPosBallStopped() : Point { return _LastPosBallStopped; }
+		
 		public function BallEntity() : void
 		{
 			// Inicializamos la entidad
@@ -35,23 +38,12 @@ package Caps
 			this.Visual.scaleX = 1.0;
 			this.Visual.scaleY = 1.0;
 			
-			// Asignamos el estado inicial
-			Reset();
+			// Nos auto-añadimos al manager de entidades
+			Match.Ref.Game.TheEntityManager.AddTagged(this, "Ball");
 		}
-		
-		// 
-		// Resetea al estado inicial el balón
-		// (en el centro, parado, ...)
+						
 		//
-		public function Reset( ) : void
-		{
-			SetPos( new Point( Field.CenterX, Field.CenterY ) );
-			StopMovement();
-			super._Visual.stop();	// Detenemos animación
-		}
-		
-		//
-		// - Se encarga de copiar el objeto físico al objeto visual
+		// Se encarga de copiar el objeto físico al objeto visual
 		//
 		public override function Draw( elapsed:Number ) : void
 		{
@@ -63,8 +55,7 @@ package Caps
 			else
 				_Visual.play();
 		}
-		
-		
+				
 		// 
 		// Asigna la posición de la pelota en frente de la chapa
 		// En frente quiere decir mirando a la dirección de la mitad del campo del oponente
@@ -79,11 +70,32 @@ package Caps
 			if ( cap.OwnerTeam.Side == Enums.Right_Side )
 				dir = new Point( -len, 0 );
 			
-			var newPos:Point =  pos.add( dir );
-			SetPos( newPos );
-			
-			// Detenemos el movimiento que pudiera tener la pelota
-			this.StopMovement();
+			SetPosAndStop(pos.add(dir));
 		}
+		
+		// Asigna la posición del balón y su última posición en la que estuvo parado
+		// Siempre que se cambia "forzadamente" la posición del balón, utilizar esta función
+		public function SetPosAndStop( pos:Point ) : void
+		{
+			this.StopMovement();
+			super.SetPos(pos);
+			_LastPosBallStopped = GetPos();
+		}
+		
+		// Resetea al estado inicial el balón (en el centro, parado...)
+		public function SetCenterFieldPosAndStop() : void
+		{
+			SetPosAndStop( new Point( Field.CenterX, Field.CenterY ) );
+		}
+		
+		public function SetStopPosToCurrent() : void
+		{
+			if (IsMoving)
+				throw new Error("No se deberia estar moviendo cuando haces SetStopPosToCurrent");
+			
+			_LastPosBallStopped = GetPos();
+		}
+		
+		private var _LastPosBallStopped:Point = null;
 	}
 }

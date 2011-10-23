@@ -49,7 +49,7 @@ package Caps
 		// Inicializa una chapa
 		//
 		public function Cap(team:Team, id:int, descCap:Object) : void
-		{			
+		{	
 			var phyInit : Object = { radius: AppParams.Screen2Physic( Radius ),
 									 isBullet: true, 				// UseCCD: Detección de colisión continua (Ninguna chapa se debe atravesar)
 									 mass: 1.7,
@@ -99,18 +99,20 @@ package Caps
 			_Defense = descCap.Defense;
 			_OwnerTeam = team;
 					
-			// Nos registramos a los eventos de entrada del ratón! (menos para las chapas Ghost id=(-1)
-			if( id != (-1) )
-				_Visual.addEventListener( MouseEvent.MOUSE_DOWN, OnMouseDown );
+			// Nos registramos a los eventos de entrada del ratón!
+			_Visual.addEventListener( MouseEvent.MOUSE_DOWN, OnMouseDown );
 			
 			// Creamos un Sprite linkado a la chapa, donde pintaremos los radios de influencia de la chapa
 			// Estos sprites los introducimos como hijos del campo, para asegurar que se vean debajo de las chapas 
 			Influence = new Sprite();
-			Match.Ref.Game.GetField().Visual.addChild( Influence );
+			Match.Ref.Game.TheField.Visual.addChild( Influence );
 			DrawInfluence();
 			Influence.alpha = 0.0;
 			
 			CapId = id;
+			
+			// Auto-añadimos al manager de entidades
+			Match.Ref.Game.TheEntityManager.AddTagged(this, "Team"+(team.IdxTeam +1).toString() + "_" + CapId.toString());
 		}
 		
 		//
@@ -119,7 +121,7 @@ package Caps
 		//
 		private function OnMouseDown( e: MouseEvent ) : void
 		{			
-			Match.Ref.Game.Interface.OnClickCap( this );
+			Match.Ref.Game.TheInterface.OnClickCap( this );
 		}
 		
 		//

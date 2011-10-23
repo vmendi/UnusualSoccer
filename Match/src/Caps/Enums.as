@@ -57,9 +57,7 @@ package Caps
 		{
 			if( side == Left_Side )
 				return( Right_Side );
-			//else if( side == Right_Side )
-				//return( Left_Side );
-			
+						
 			return( Left_Side );
 		}
 	}

@@ -45,11 +45,11 @@ package Framework
 			// Creamos la primitiva física indicada
 			if( primitiveType == Circle )
 			{
-				PhyObject = Match.Ref.Game.Physic.addCircle( params );
+				PhyObject = Match.Ref.Game.TheGamePhysics.TheBox2D.addCircle( params );
 			}
 			else if( primitiveType == Box )
 			{
-				PhyObject = Match.Ref.Game.Physic.addBox( params );
+				PhyObject = Match.Ref.Game.TheGamePhysics.TheBox2D.addBox( params );
 			}
 			
 			// Cogemos el objeto visual desde el objeto físico
@@ -141,8 +141,6 @@ package Framework
 				return false;
 			return true;
 		}
-		
-		
 	}
 
 }
