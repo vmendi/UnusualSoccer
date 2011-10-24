@@ -13,15 +13,13 @@ package Caps
 	
 	public class ControlShoot extends Controller
 	{		
-		protected var canvas        : Sprite;
-		protected var angle	      : Number; 
-		protected var maxLongLine   : uint;
-		protected var colorLine	  : uint;
-		protected var thickness	  : uint;
+		protected var canvas       : Sprite;
+		protected var angle	       : Number; 
+		protected var maxLongLine  : uint;
+		protected var colorLine	   : uint;
+		protected var thickness	   : uint;
 		protected var potenciaTiro : TextField;
 		
-		
-		static protected const BLACK    	  : uint = 0x000000;
 		static protected const MIN_FORCE : Number = 0.1; // Fuerza mínima que debe tener un disparo.
 		
 		public function ControlShoot(canvas:Sprite, maxLongLine: uint, colorLine: uint = 0, thickness: uint = 1)
@@ -46,8 +44,6 @@ package Caps
 			this.canvas 	 = canvas;
 			this.thickness   = thickness;
 			this.potenciaTiro = campoPotenciaTiro;
-			
-			( colorLine == 0 ) ? this.colorLine = ControlShoot.BLACK : this.colorLine = colorLine;
 		}
 	
 		//
@@ -194,6 +190,5 @@ package Caps
 
 			return( len / (maxLongLine-Cap.Radius) );
 		}
-
 	}
 }
