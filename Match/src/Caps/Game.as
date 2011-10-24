@@ -366,8 +366,12 @@ package Caps
 					else
 					{
 						var targetPasePie : Cap = TheGamePhysics.GetFirstTouchedCapFromShooterTeam();
+						
 						if (targetPasePie != null)
-							TheBall.StopMovement();
+						{
+							TheBall.SlowDown();
+							TheGamePhysics.ForgetTouchedCap(targetPasePie);
+						}
 						
 						InfluenceController.UpdateInfluences(_RemainingHits, _RemainingPasesAlPie);
 					}
