@@ -365,15 +365,13 @@ package Caps
 						trace( "Finalizado nuestra simulacion de disparo, esperando al otro usuario" );
 					}
 					else
-					{
-						var targetPasePie : Cap = TheGamePhysics.GetFirstTouchedCapFromShooterTeamLastRun();
-						
-						if (targetPasePie != null)
+					{	
+						if (TheGamePhysics.GetFirstTouchedCapLastRun() != null)
 						{
-							trace("Ralentizando");
+							trace("ralentizo");
 							TheBall.SetSpeedFactor(0.3);
 						}
-												
+						
 						InfluenceController.UpdateInfluences(_RemainingHits, _RemainingPasesAlPie);
 					}
 					break;
@@ -427,7 +425,8 @@ package Caps
 				}
 			}
 			
-			TheGamePhysics.Reset();
+			// Al final del proceso, le pedimos a la fisica que olvide todo lo que se ha necesitado durante este Run.
+			//TheGamePhysics.Reset();
 		}
 		
 		public function Draw( elapsed:Number ) : void
@@ -1202,7 +1201,7 @@ package Caps
 				return null;
 			
 			// Si la chapa que hemos lanzado no ha tocado la pelota no puede haber pase al pie
-			if(!TheGamePhysics.HasShooterCapTouchedBall())
+			if(!TheGamePhysics.HasTouchedBall(TheGamePhysics.ShooterCap))
 				return null;
 						
 			// La más cercana de todas las potenciales
