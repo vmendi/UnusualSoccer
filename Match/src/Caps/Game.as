@@ -221,6 +221,7 @@ package Caps
 			TheTeams[Enums.Team2].Run(elapsed);
 			
 			TheGamePhysics.Run();
+			TheEntityManager.Run(elapsed);
 			
 			// Calculamos el tiempo "real" que ha pasado, independiente del frame-rate
 			var realElapsed:Number = _TimeCounter.GetElapsed();
@@ -364,13 +365,11 @@ package Caps
 						trace( "Finalizado nuestra simulacion de disparo, esperando al otro usuario" );
 					}
 					else
-					{
-						var targetPasePie : Cap = TheGamePhysics.GetFirstTouchedCapFromShooterTeam();
-						
-						if (targetPasePie != null)
+					{	
+						if (TheGamePhysics.GetFirstTouchedCapLastRun() != null)
 						{
-							TheBall.SlowDown();
-							TheGamePhysics.ForgetTouchedCap(targetPasePie);
+							trace("ralentizo");
+							TheBall.SetSpeedFactor(0.3);
 						}
 						
 						InfluenceController.UpdateInfluences(_RemainingHits, _RemainingPasesAlPie);
@@ -426,7 +425,8 @@ package Caps
 				}
 			}
 			
-			TheEntityManager.Run(elapsed);
+			// Al final del proceso, le pedimos a la fisica que olvide todo lo que se ha necesitado durante este Run.
+			//TheGamePhysics.Reset();
 		}
 		
 		public function Draw( elapsed:Number ) : void
@@ -1201,7 +1201,7 @@ package Caps
 				return null;
 			
 			// Si la chapa que hemos lanzado no ha tocado la pelota no puede haber pase al pie
-			if(!TheGamePhysics.HasShooterCapTouchedBall())
+			if(!TheGamePhysics.HasTouchedBall(TheGamePhysics.ShooterCap))
 				return null;
 						
 			// La más cercana de todas las potenciales

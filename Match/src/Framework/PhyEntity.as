@@ -119,6 +119,12 @@ package Framework
 			return PhyObject;
 		}
 		
+		// Cambia la velocidad lineal del solido por un factor dado
+		public function SetSpeedFactor(factor:Number) : void
+		{
+			PhyObject.body.GetLinearVelocity().Multiply(factor);
+		}
+		
 		//
 		// Detiene cualquier tipo de movimiento físico que esté realizando la entidad
 		//

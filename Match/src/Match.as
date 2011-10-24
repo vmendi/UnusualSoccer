@@ -99,7 +99,9 @@ package
 		}
 		
 		//
-		// Destruimos todo!
+		// Nos llaman desde Game al acabar (siempre: por abandono, por fin del partido...).
+		// Desde aqui nos ocupamos de destruir todo, especialmente los listeners (globales) 
+		// para no perder memoria
 		//
 		public function Shutdown(result : Object) : void
 		{
@@ -110,15 +112,11 @@ package
 				Connection = null;
 			}
 
-			// Nos desregistramos del frame
 			removeEventListener(Event.ENTER_FRAME, OnFrame);
-			
-			// Eliminamos los elementos del framework
 			AudioManager.Shutdown();
-			
-			// Más cosas a destruir
 			TweenMax.killAll();
-			
+			Game.TheGamePhysics.TheBox2D.destroy();
+
 			// Internamente nadie puede llamarnos mas
 			Instance = null;
 			

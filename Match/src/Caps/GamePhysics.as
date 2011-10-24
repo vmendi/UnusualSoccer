@@ -62,8 +62,11 @@ package Caps
 				TheBox2D.mouseDrag( );
 			
 			_Contacts = TheBox2D.addContactListener();
-			_Contacts.addEventListener( QuickContacts.ADD, OnContact);
-			_Contacts.addEventListener( QuickContacts.RESULT, OnContact);
+			_Contacts.addEventListener(QuickContacts.ADD, OnContact);
+			_Contacts.addEventListener(QuickContacts.RESULT, OnContact);
+			
+			// Para poder hacer proceso (olvidar contactos) antes que el RENDER, que es donde se calcula la simulacion
+			TheBox2D.main.addEventListener(Event.ENTER_FRAME, OnPhysicsEnterFrame);
 		}
 		
 		public function Start() : void
@@ -132,11 +135,12 @@ package Caps
 				if( ent1 is Cap ) cap = ent1 as Cap;
 				if( ent2 is Cap ) cap = ent2 as Cap;
 				
-				// Tenemos una colisión entre una chapa y el balón? Si es así guardamos la
-				// chapa en una lista para comprobar posibles "Pase al pie" a la misma
+				// Tenemos una colisión entre una chapa y el balón?
 				if( cap != null && ball != null )
 				{
-					_TouchedCaps.push( cap );
+					_TouchedCaps.push(cap);
+					_TouchedCapsLastRun.push(cap);
+										
 					AudioManager.Play( "SoundCollisionCapBall" );
 				}
 				else
@@ -305,16 +309,11 @@ package Caps
 			return false;
 		}
 		
-		public function HasShooterCapTouchedBall() : Boolean
-		{
-			return HasTouchedBall(ShooterCap);
-		}
-
 		public function HasTouchedBall(cap:Cap) : Boolean
 		{			
 			return _TouchedCaps.indexOf(cap) != -1;
 		}
-		
+				
 		// Ha tocado la pelota cualquiera de las chapas del equipo?
 		public function HasTouchedBallAny(team : Team) : Boolean
 		{
@@ -326,23 +325,17 @@ package Caps
 			return false;
 		}
 		
-		// Primera chapa tocada del mismo equipo que el que tira
-		public function GetFirstTouchedCapFromShooterTeam() : Cap
+		// Primera chapa tocada en este Run del mismo equipo que la chapa que tira
+		public function GetFirstTouchedCapLastRun() : Cap
 		{
-			var shooterTeam : Team = _CapShooting.OwnerTeam;
-			
-			for each(var cap : Cap in _TouchedCaps)
+			for each(var cap : Cap in _TouchedCapsLastRun)
 			{
-				if (cap != _CapShooting && cap.OwnerTeam == shooterTeam)
+				if (cap != _CapShooting && cap.OwnerTeam == _CapShooting.OwnerTeam)
 					return cap;
 			}
 			return null;
 		}
 		
-		public function ForgetTouchedCap(cap : Cap) : void
-		{
-			_TouchedCaps.splice(_TouchedCaps.indexOf(cap), 1);
-		}
 
 		public function Run() : void
 		{
@@ -358,12 +351,19 @@ package Caps
 				}
 			}
 		}
+		
+		private function OnPhysicsEnterFrame(e:Event) : void
+		{
+			// Olvidamos los contactos del Run anterior 
+			_TouchedCapsLastRun.length = 0;
+		}
 
 		private var _Ball : BallEntity;
 		private var _Field : Field;
 		
 		private var _Contacts : QuickContacts;					// Manager para controlar los contactos físicos entre objetos
 		private var _TouchedCaps:Array = new Array();			// Lista de chapas en las que ha rebotado la pelota antes de detenerse
+		private var _TouchedCapsLastRun:Array = new Array();	// Lista de chapas que ha tocado la pelota soloe en este Run
 		private var _SideGoal:int= -1;							// Lado que ha marcado goal
 		private var _DetectedFault:Object = null;				// Bandera que indica Falta detectada (además objeto que describe la falta)
 		
