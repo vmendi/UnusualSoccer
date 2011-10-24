@@ -74,7 +74,7 @@ package Caps
 						
 			// Le decimos al interface de usuario que dispare
 			// TODO: El disparo no se puede aplicar aquí!! Deberíamos generar un evento
-			Match.Ref.Game.Interface.OnShoot();
+			Match.Ref.Game.TheInterface.OnShoot();
 		}
 		
 		//

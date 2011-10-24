@@ -2,26 +2,18 @@ package Caps
 {
 	import Box2D.Common.*;
 	import Box2D.Common.Math.*;
-	import Box2D.Dynamics.b2Body;
 	
 	import Embedded.Assets;
 	
-	import Framework.Entity;
 	import Framework.ImageEntity;
 	import Framework.PhyEntity;
 	
-	import com.actionsnippet.qbox.QuickObject;
 	import com.greensock.*;
 	
-	import flash.display.DisplayObject;
-	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
-	//
-	// La chapa de un equipo
-	// Características:
 	//   
 	// TODO: Derivar de Entity!!!! e implementar física / visual / update!!
 	//
@@ -56,44 +48,35 @@ package Caps
 		//
 		// Inicializa una chapa
 		//
-		/*
-		// El Object "descCap" es un objeto con la siguiente topología:
-		//
-		public class SoccerPlayerData
-		{
-			public int	  Number;		// Dorsal
-			public String Name;			
-			public int    Power;
-			public int    Control;
-			public int    Defense;
-		}
-		*/
-		
-		public function InitFromTeam( team:Team, id:int, descCap:Object ) : void
-		{
+		public function Cap(team:Team, id:int, descCap:Object) : void
+		{	
+			var phyInit : Object = { radius: AppParams.Screen2Physic( Radius ),
+									 isBullet: true, 				// UseCCD: Detección de colisión continua (Ninguna chapa se debe atravesar)
+									 mass: 1.7,
+									 isSleeping: true,
+									 allowSleep: true, 
+									 friction: .3, 
+									 restitution:/*.3*/.6,			// Fuerza que recupera en un choque 
+									 linearDamping: /*2*/5, 
+									 angularDamping: 5 }
+				
+			var asset:Class = null;
+				
 			// Elegimos el asset de jugador o portero (y con la equipación primaria o secundaria)
-			var asset:Class = Embedded.Assets.Cap;
-			
-			if( team.UseSecondaryEquipment )
-				asset = Embedded.Assets.Cap2;
-			
-			if( id == 0 )
+			if (id != 0)
 			{
-				asset = Embedded.Assets.Goalkeeper;
-				if( team.UseSecondaryEquipment )
-					asset = Embedded.Assets.Goalkeeper2;
+				asset = team.UseSecondaryEquipment? Embedded.Assets.Cap2 : Embedded.Assets.Cap;
+				phyInit.categoryBits = 1;			// Choca con todo				
+			}
+			else
+			{
+				asset = team.UseSecondaryEquipment? Embedded.Assets.Goalkeeper2 : Embedded.Assets.Goalkeeper;
+				phyInit.categoryBits = 2;
+				phyInit.maskBits = 1 + 2 + 4 + 8;	// Choca con todo excepto con SmallArea (que tiene categoryBits=16)
+				
 			}
 			
-			super.InitWithPhysic( asset, Match.Ref.Game.GameLayer, PhyEntity.Circle, {  					
-				radius: AppParams.Screen2Physic( Radius ),
-				isBullet: true, 			// UseCCD: Detección de colisión continua (Ninguna chapa se debe atravesar)
-				mass: 1.7,
-				isSleeping: true, 
-				allowSleep: true, 
-				friction: .3, 
-				restitution:/*.3*/.6,			// Fuerza que recupera en un choque 
-				linearDamping: /*2*/5, 
-				angularDamping: 5 } );
+			super(asset, Match.Ref.Game.GameLayer, PhyEntity.Circle, phyInit);
 			
 			// Reasignamos la escala de la chapa, ya que la física la escala para que encaje con el radio físico asignado
 			this.Visual.scaleX = 1.0;
@@ -116,18 +99,20 @@ package Caps
 			_Defense = descCap.Defense;
 			_OwnerTeam = team;
 					
-			// Nos registramos a los eventos de entrada del ratón! (menos para las chapas Ghost id=(-1)
-			if( id != (-1) )
-				_Visual.addEventListener( MouseEvent.MOUSE_DOWN, OnMouseDown );
+			// Nos registramos a los eventos de entrada del ratón!
+			_Visual.addEventListener( MouseEvent.MOUSE_DOWN, OnMouseDown );
 			
 			// Creamos un Sprite linkado a la chapa, donde pintaremos los radios de influencia de la chapa
 			// Estos sprites los introducimos como hijos del campo, para asegurar que se vean debajo de las chapas 
 			Influence = new Sprite();
-			Match.Ref.Game.GetField().Visual.addChild( Influence );
+			Match.Ref.Game.TheField.Visual.addChild( Influence );
 			DrawInfluence();
 			Influence.alpha = 0.0;
 			
 			CapId = id;
+			
+			// Auto-añadimos al manager de entidades
+			Match.Ref.Game.TheEntityManager.AddTagged(this, "Team"+(team.IdxTeam +1).toString() + "_" + CapId.toString());
 		}
 		
 		//
@@ -136,7 +121,7 @@ package Caps
 		//
 		private function OnMouseDown( e: MouseEvent ) : void
 		{			
-			Match.Ref.Game.Interface.OnClickCap( this );
+			Match.Ref.Game.TheInterface.OnClickCap( this );
 		}
 		
 		//

@@ -2,7 +2,6 @@ package Caps
 {
 	import Embedded.Assets;
 	
-	import Framework.EntityManager;
 	import Framework.ImageEntity;
 	
 	import com.actionsnippet.qbox.QuickBox2D;
@@ -14,9 +13,6 @@ package Caps
 	
 	import utils.MathUtils;
 	
-	//
-	// El estadio 
-	//
 	public class Field
 	{
 		// Las dimensiones de la zona jugable del campo (en pixels)
@@ -28,13 +24,13 @@ package Caps
 		static public const OffsetX:Number = 46;
 		static public const OffsetY:Number = 64;
 		
-		// Coordenadas de las areas del campo en coordenadas absolutas desde el corner superior izquierdo del movieclip
-		static public const AreaLeftX:Number = 0 + OffsetX;
-		static public const AreaLeftY:Number = 126 + OffsetY;
-		static public const AreaRightX:Number = 628 + OffsetX;
-		static public const AreaRightY:Number = 126 + OffsetY;
-		static public const SizeAreaX:Number = 40;
-		static public const SizeAreaY:Number = 148;
+		// Coordenadas de las areas PEQUEÑAS del campo en coordenadas absolutas desde el corner superior izquierdo del movieclip
+		static public const SmallAreaLeftX:Number = 0 + OffsetX;
+		static public const SmallAreaLeftY:Number = 126 + OffsetY;
+		static public const SmallAreaRightX:Number = 628 + OffsetX;
+		static public const SmallAreaRightY:Number = 126 + OffsetY;
+		static public const SmallSizeAreaX:Number = 40;
+		static public const SmallSizeAreaY:Number = 148;
 		// Coordenadas de las areas GRANDES del campo en coordenadas absolutas desde el corner superior izquierdo del movieclip
 		static public const BigAreaLeftX:Number = 0 + OffsetX;
 		static public const BigAreaLeftY:Number = 48 + OffsetY;
@@ -54,10 +50,8 @@ package Caps
 		
 		public var Visual:DisplayObjectContainer = null;					// Objeto visual del campo
 
-		//
-		// Inicializa el estadio
-		// 
-		public function Initialize( parent:MovieClip ) : void
+		
+		public function Field(parent:MovieClip) : void
 		{
 			// Creamos el campo
 			Visual = new Embedded.Assets.Field();
@@ -70,40 +64,47 @@ package Caps
 		}
 		
 		//
-		// Inicializa el estadio
+		// Se llama despues para que sean las ultimas y aparezcan on top
 		// 
-		public function CreatePorterias( parent:MovieClip ) : void
+		public function CreatePorterias(parent:MovieClip) : void
 		{
-			// Creamos las porterias
-			var goalLeft:ImageEntity = new ImageEntity();
-			goalLeft.Init( Embedded.Assets.GoalLeft, parent );
+			var goalLeft:ImageEntity = new ImageEntity(Embedded.Assets.GoalLeft, parent);
 			Match.Ref.Game.TheEntityManager.Add( goalLeft );
 			goalLeft.SetPos( new Point( X_GOAL_LEFT, Y_GOAL ) );
 			
-			var goalRight:ImageEntity = new ImageEntity();
-			goalRight.Init( Embedded.Assets.GoalRight, parent );
+			var goalRight:ImageEntity = new ImageEntity(Embedded.Assets.GoalRight, parent);
 			Match.Ref.Game.TheEntityManager.Add( goalRight );
 			goalRight.SetPos( new Point( X_GOAL_RIGHT, Y_GOAL ) );
 		}
 		
+		/* 
+			Chapas: Chocan con TODO.
+			Category:
+			Mask: 1 + 2 + 4 + 8 + 16
+				
+			Portero: Choca con todo menos con la SmallArea (puede estar dentro de ella)
+			Category:
+			Mask: 1 + 2 + 4 + 8
+				
+			Ball: No choca con la BackPorteria y con la SmallArea
+			Category:
+			Mask: 1 + 2 + 4
+				
+			BackPorteria:
+			Category: 8
 			
-		//
-		// Crea objetos físicos para gestionar el estadio
-		// Límites, porterias, sensores de goles, ...
-		//
+			SmallArea:
+			Category: 16
+		*/
 		protected function CreatePhysicWalls() : void
 		{
-			// Calculamos los valores en coordenadas de espacio físicas 
+			// Todo lo que le entra a Box2D tiene que estar convertido a coords fisicas 
 			var sw:Number = AppParams.Screen2Physic( SizeX );
 			var sh:Number = AppParams.Screen2Physic( SizeY );	
 			var offsetX:Number = AppParams.Screen2Physic( OffsetX );
 			var offsetY:Number = AppParams.Screen2Physic( OffsetY );
 			
-			// NOTE: La posición especificada tanto en cajas como círculos siempre es el centro
-			// Calculamos en coordenadas físicas:
-			// 	- Altura de la portería
-			//	- Las mitad de la altura del campo sin porterías
-			
+			// NOTE: La posición especificada para Box2D tanto en cajas como círculos siempre es el centro
 			var heightGoal:Number = AppParams.Screen2Physic( HeightGoal );
 			var halfHeightWithoutGoal:Number = AppParams.Screen2Physic( (SizeY - HeightGoal)/2 );
 			var hc1:Number = offsetY + (halfHeightWithoutGoal/2);
@@ -112,14 +113,16 @@ package Caps
 			var centerGoalRight:Point = GetCenterGoal( Enums.Right_Side );
 			var halfBall:Number = AppParams.Screen2Physic( BallEntity.Radius/2 );
 			
-			// Creamos los muros que delimitan el campo 
-			var phy:QuickBox2D = Match.Ref.Game.Physic;
+			var halfSizeSmallAreaX : Number = AppParams.Screen2Physic(SmallSizeAreaX / 2);
+
+			var phy:QuickBox2D = Match.Ref.Game.TheGamePhysics.TheBox2D;
 			var fillColor:int = 0xFF0000;
 			var fillAlpha:Number = 0;
 			if( AppParams.Debug )
 				fillAlpha = 0.5;
 			
-			var bCCD:Boolean = true;		// utilizar detección de colisiones continua? Aunque son estaticos lo ponemos a true, por si acaso el motor lo tiene en cuenta
+			// Utilizar detección de colisiones continua? Aunque son estaticos lo ponemos a true, por si acaso el motor lo tiene en cuenta
+			var bCCD:Boolean = true;
 
 			// Bottom (Utilizamos un grosor mas fino para no tapar los botones del interface)
 			var grosor:Number = 0.5;
@@ -143,25 +146,29 @@ package Caps
 			phy.addBox({x:offsetX + sw + halfGrosor, y:hc1, restitution:1, width:grosor, height:halfHeightWithoutGoal,  density:.0, fillColor: fillColor, fillAlpha: fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD});
 			phy.addBox({x:offsetX + sw + halfGrosor, y:hc2, restitution:1, width:grosor, height:halfHeightWithoutGoal,  density:.0, fillColor: fillColor, fillAlpha: fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD});
 		
-			// Muros en las porterías para que sólo rebote la chapa y no el balón (usando el mismo GroupIndex(-1) que el balón)
-			phy.addBox( { groupIndex:-1, x: AppParams.Screen2Physic( centerGoalLeft.x ) - halfGrosor, y: AppParams.Screen2Physic( centerGoalLeft.y ), density: 0, width:grosor, height:heightGoal, fillColor:0xFF0000, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
-			phy.addBox( { groupIndex:-1, x: AppParams.Screen2Physic( centerGoalRight.x ) + halfGrosor, y: AppParams.Screen2Physic( centerGoalRight.y ), density: 0, width:grosor, height:heightGoal, fillColor:0xFF0000, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
+			// Muros en las porterías para que sólo rebote las chapas y no el balón
+			phy.addBox({categoryBits:8, x: AppParams.Screen2Physic( centerGoalLeft.x ) - halfGrosor, y: AppParams.Screen2Physic( centerGoalLeft.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
+			phy.addBox({categoryBits:8, x: AppParams.Screen2Physic( centerGoalRight.x ) + halfGrosor, y: AppParams.Screen2Physic( centerGoalRight.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
 			
 			// Creamos los sensores para chequear el gol
-			GoalLeft = phy.addBox( { isSensor: true, x: AppParams.Screen2Physic( centerGoalLeft.x ) - halfGrosor - halfBall, y: AppParams.Screen2Physic( centerGoalLeft.y ), density: 0, width:grosor, height:heightGoal, fillColor:0xFF0000, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
-			GoalRight = phy.addBox( { isSensor: true, x: AppParams.Screen2Physic( centerGoalRight.x ) + halfGrosor + halfBall, y: AppParams.Screen2Physic( centerGoalRight.y ), density: 0, width:grosor, height:heightGoal, fillColor:0xFF0000, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
+			GoalLeft = phy.addBox({isSensor: true, x: AppParams.Screen2Physic(centerGoalLeft.x) - halfGrosor - halfBall, y:AppParams.Screen2Physic( centerGoalLeft.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
+			GoalRight = phy.addBox({isSensor: true, x: AppParams.Screen2Physic(centerGoalRight.x) + halfGrosor + halfBall, y:AppParams.Screen2Physic( centerGoalRight.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
+			
+			// Area pequeña en la que solo rebotan las chapas. Desactivamos la skin para que funcione el raton cuando el portero este debajo => No se vera en debug
+			phy.addBox({categoryBits:16, x:AppParams.Screen2Physic(centerGoalLeft.x) + halfSizeSmallAreaX, y:AppParams.Screen2Physic(centerGoalLeft.y), restitution:1, width: AppParams.Screen2Physic(SmallSizeAreaX), height:AppParams.Screen2Physic(SmallSizeAreaY), density:.0, skin:"none", isBullet: bCCD});
+			phy.addBox({categoryBits:16, x:AppParams.Screen2Physic(centerGoalRight.x) - halfSizeSmallAreaX, y:AppParams.Screen2Physic(centerGoalRight.y), restitution:1, width:AppParams.Screen2Physic(SmallSizeAreaX), height:AppParams.Screen2Physic(SmallSizeAreaY), density:.0, skin:"none", isBullet: bCCD});
 		}
 		
 		//
 		// Obtiene el centro del campo
 		//
-		static public function get CenterX( ) : Number
+		static public function get CenterX() : Number
 		{
-			return( OffsetX + (SizeX * 0.5) );
+			return(OffsetX + (SizeX * 0.5));
 		}
-		static public function get CenterY( ) : Number
+		static public function get CenterY() : Number
 		{
-			return( OffsetY + (SizeY * 0.5) );
+			return(OffsetY + (SizeY * 0.5));
 		}
 		
 		//
@@ -181,47 +188,39 @@ package Caps
 		// 
 		// Comprobamos si una chapa está dentro de su propio area pequeña
 		//
-		public function IsCircleInsideArea( pos:Point, radius:Number, side:int ) : Boolean
+		public function IsCircleInsideSmallArea( pos:Point, radius:Number, side:int ) : Boolean
 		{
 			var bInside:Boolean = false;
 			
 			if( side == Enums.Left_Side )
-			{
-				bInside = MathUtils.CircleInRect( pos, radius, new Point( AreaLeftX, AreaLeftY ), new Point( SizeAreaX, SizeAreaY ) );
-			}
+				bInside = MathUtils.CircleInRect( pos, radius, new Point( SmallAreaLeftX, SmallAreaLeftY ), new Point( SmallSizeAreaX, SmallSizeAreaY ) );
 			else if( side == Enums.Right_Side )
-			{
-				bInside = MathUtils.CircleInRect( pos, radius, new Point( AreaRightX, AreaRightY ), new Point( SizeAreaX, SizeAreaY ) );
-			}
-			
+				bInside = MathUtils.CircleInRect( pos, radius, new Point( SmallAreaRightX, SmallAreaRightY ), new Point( SmallSizeAreaX, SmallSizeAreaY ) );
+						
 			return( bInside );
 		}
 		
 		// 
-		// Comprobamos si una chapa está dentro de su propio area pequeña
+		// 
 		//
 		public function IsCircleInsideBigArea( pos:Point, radius:Number, side:int ) : Boolean
 		{
 			var bInside:Boolean = false;
 			
 			if( side == Enums.Left_Side )
-			{
-				bInside = MathUtils.CircleInRect( pos, radius, new Point( BigAreaLeftX, BigAreaLeftY ), new Point( SizeBigAreaX, SizeBigAreaY ) );
-			}
+				bInside = MathUtils.CircleInRect( pos, radius, new Point( BigAreaLeftX, BigAreaLeftY ), new Point( SizeBigAreaX, SizeBigAreaY ) );			
 			else if( side == Enums.Right_Side )
-			{
 				bInside = MathUtils.CircleInRect( pos, radius, new Point( BigAreaRightX, BigAreaRightY ), new Point( SizeBigAreaX, SizeBigAreaY ) );
-			}
-			
+						
 			return( bInside );
 		}		
 		
 		// 
-		// Comprobamos si una chapa está dentro de su propio area pequeña
+		// Comprobamos si el centro de una chapa está dentro del area de su propio equipo
 		//
-		public function IsCapInsideArea( cap:Cap ) : Boolean
+		public function IsCapCenterInsideSmallArea( cap:Cap ) : Boolean
 		{
-			return( IsCircleInsideArea( cap.GetPos(), 0 /* Cap.Radius*/, cap.OwnerTeam.Side ) );  	
+			return( IsCircleInsideSmallArea( cap.GetPos(), 0, cap.OwnerTeam.Side ) );  	
 		}
 		
 		//
@@ -248,9 +247,9 @@ package Caps
 			if( bValid )
 			{
 				// Validamos contra las chapas
-				for each( var team:Team in Match.Ref.Game.Teams )
+				for each (var team:Team in Match.Ref.Game.TheTeams)
 				{
-					for each( var cap:Cap in team.CapsList )
+					for each (var cap:Cap in team.CapsList)
 					{
 						if( cap != null && cap != ignoreCap && cap.InsideCircle( pos, Cap.Radius+Cap.Radius) == true )
 							return( false );
@@ -259,7 +258,7 @@ package Caps
 			
 				// Comprobamos que no colisionemos con el balón
 				
-				if( checkAgainstBall && Match.Ref.Game.Ball.InsideCircle( pos, Cap.Radius+BallEntity.Radius) )
+				if (checkAgainstBall && Match.Ref.Game.TheBall.InsideCircle( pos, Cap.Radius+BallEntity.Radius))
 					bValid = false;
 			}
 			

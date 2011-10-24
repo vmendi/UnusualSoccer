@@ -5,6 +5,7 @@ package
 	import Caps.Game;
 	
 	import Framework.AudioManager;
+	import Framework.Random;
 	
 	import com.greensock.TweenMax;
 	
@@ -46,8 +47,8 @@ package
 			}			
 									
 			// Añadimos la zona de información de debug (por delante de todo el interface)
-			addChild( DebugArea );
-						
+			addChild(DebugArea);
+									
 			// Nos quedamos a la espera del siguiente Frame. Quien aquí nos llama tiene tiempo entonces para llamar a Init
 			addEventListener(Event.ENTER_FRAME, OnFrame);
 		}
@@ -71,11 +72,6 @@ package
 						
 			// Indicamos al servidor que nuestro cliente necesita los datos del partido para continuar 
 			Connection.Invoke("OnRequestData", null);
-			
-			// Prueba de trackeo del mouse por la película
-			if( AppParams.Debug == true )
-				stage.addEventListener(MouseEvent.MOUSE_MOVE, function (e: MouseEvent):void {
-															  trace( "Mouse move: " + this.mouseX.toString() + "," + this.mouseY.toString())} );
 		}
 		
 		//
@@ -136,8 +132,8 @@ package
 		public function ForceMatchFinish( ) : void
 		{
 			// Generamos un cierre voluntario
-			if( Game.Interface != null )
-				Game.Interface.OnAbandonar( null );
+			if( Game.TheInterface != null )
+				Game.TheInterface.OnAbandonar( null );
 		}
 		
 		private var _Game:Caps.Game;

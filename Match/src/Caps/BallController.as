@@ -51,7 +51,7 @@ package Caps
 		public override function IsValid( ) : Boolean
 		{
 			// NOTE: Inidcamos que no tenga en cuenta el balón, ya que es el mismo el que estamos colocando
-			return( Match.Ref.Game.GetField().ValidatePosCap( EndPos, false, this.Target ) );
+			return Match.Ref.Game.TheField.ValidatePosCap( EndPos, false, this.Target );
 		}
 			
 		//
@@ -65,8 +65,7 @@ package Caps
 				super.MouseUp( e );
 	
 				// Le decimos al interface de usuario que recoloque la pelota
-				// TODO: Probando!!! La llamada no puede estar aquí!!
-				Match.Ref.Game.Interface.OnPlaceBall();
+				Match.Ref.Game.TheInterface.OnPlaceBall();
 			}
 		}
 		
@@ -121,8 +120,5 @@ package Caps
 			
 			return( newPos );
 		}
-		
-		
-		
 	}
 }

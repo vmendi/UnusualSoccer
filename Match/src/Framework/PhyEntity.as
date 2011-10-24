@@ -29,11 +29,11 @@ package Framework
 		// Inicializa una entidad con aspecto visual. 
 		//   - Se le pasa la clase que debe instanciar
 		// Asignamos al userData de la shape a la entidad
-		// NOTE: Si no se especifica un parent, la entidad no será visible
 		//
-		public function InitWithPhysic( assetClass:Class, parent:DisplayObjectContainer, primitiveType:Number, params:Object  ) : Boolean
+		public function PhyEntity(assetClass:Class, parent:DisplayObjectContainer, primitiveType:Number, params:Object  ) : void
 		{
-			//super.Init( assetClass, parent );
+			// Nosotros nos encargamos de inicializar, nuestro padre no hace nada
+			super(null,null);
 			
 			// Asignamos valores por defecto si no los ha asignado el usuario
 			params.skin = assetClass;
@@ -45,11 +45,11 @@ package Framework
 			// Creamos la primitiva física indicada
 			if( primitiveType == Circle )
 			{
-				PhyObject = Match.Ref.Game.Physic.addCircle( params );
+				PhyObject = Match.Ref.Game.TheGamePhysics.TheBox2D.addCircle( params );
 			}
 			else if( primitiveType == Box )
 			{
-				PhyObject = Match.Ref.Game.Physic.addBox( params );
+				PhyObject = Match.Ref.Game.TheGamePhysics.TheBox2D.addBox( params );
 			}
 			
 			// Cogemos el objeto visual desde el objeto físico
@@ -63,14 +63,12 @@ package Framework
 			// Asignamos al userData del "shape" del objeto físico a una referencia a la entidad
 			if ( PhyObject != null )
 				PhyObject.shape.m_userData = this;
-			
-			return true;
 		}
 		
 		//
 		// Destruye el elemento físico y visual asociado
 		//
-		public override function Destroy(   ) : void
+		public override function Destroy() : void
 		{
 			super.Destroy();
 			if( PhyObject != null )
@@ -143,8 +141,6 @@ package Framework
 				return false;
 			return true;
 		}
-		
-		
 	}
 
 }

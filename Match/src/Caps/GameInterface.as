@@ -51,7 +51,7 @@ package Caps
 		//
 		// Inicialización
 		//
-		public function Init() : void
+		public function GameInterface() : void
 		{
 			// Canvas de pintado compartido entre todos los controllers
 			// NOTE: Lo añadimos al principio del interface, para que se pinte encima del juego pero debajo del interface 
@@ -70,7 +70,7 @@ package Caps
 			Sync();
 						
 			// Creamos un evento para cuando pulsen el botón de tirar a puerta
-			var Gui:* = Match.Ref.Game.GetField().Visual;
+			var Gui:* = Match.Ref.Game.TheField.Visual;
 			Gui.BotonTiroPuerta.addEventListener( MouseEvent.CLICK, OnTiroPuerta );
 			Gui.SoundButton.addEventListener( MouseEvent.CLICK, OnMute );
 			
@@ -118,7 +118,7 @@ package Caps
 			if (so.data.hasOwnProperty("Muted"))
 				bMuted = so.data.Muted;
 			
-			var Gui:* = Match.Ref.Game.GetField().Visual;
+			var Gui:* = Match.Ref.Game.TheField.Visual;
 			if (bMuted)
 			{
 				SoundMixer.soundTransform = new SoundTransform(0);
@@ -136,10 +136,10 @@ package Caps
 		//
 		// Iniciaizamos el Interface Gráfico de Usuario
 		//
-		public function Sync(  ) : void
+		public function Sync() : void
 		{
-			var teams:Array = Match.Ref.Game.Teams;
-			var Gui:* = Match.Ref.Game.GetField().Visual;
+			var teams:Array = Match.Ref.Game.TheTeams;
+			var Gui:* = Match.Ref.Game.TheField.Visual;
 			
 			CutSceneTurnRunning = null;		// Si tenemos una cutscene de turno corriendo, nos olvidamos de ella  
 			
@@ -169,7 +169,7 @@ package Caps
 		//   - Tiempo del partido
 		public function Update(  ) : void
 		{
-			var Gui:* = Match.Ref.Game.GetField().Visual;
+			var Gui:* = Match.Ref.Game.TheField.Visual;
 			
 			// Actualizamos el tiempo del partido
 			var totalSeconds:Number = Match.Ref.Game.Time; 
@@ -179,7 +179,7 @@ package Caps
 			// Actualizamos el tiempo del sub-turno
 			// NOTE: Utilizamos el tiempo de turno que indica el interface, ya que se modifica cuando se utiliza la habilidad especial
 			// extra-time. Luego cada vez que se resetea el tiempo se coloca a la duración real del turno
-			var timeout:Number = Match.Ref.Game.Timeout / TurnTime; 
+			var timeout:Number = Match.Ref.Game.Timeout / TurnTime;
 			
 			// Clampeamos a 1.0, ya que si tenemos tiempo extra de turno podemos desbordarnos
 			if( timeout > 1.0 )
@@ -205,23 +205,23 @@ package Caps
 		//
 		private function IsSkillAllowedInTurn( index:int ) : Boolean 
 		{
-			if( Match.Ref.Game.CurTeam == null )
-				return( false );
-			
 			var game:Game = Match.Ref.Game;
-
-			// Si estamos en el turno de colocación de portero, ninguna habilidad está disponible para nadie!
-			if( game.ReasonTurnChanged == Enums.TurnByTiroAPuerta )
+			
+			if( game.CurTeam == null )
 				return false;
 			
 			// Si estamos Simulando un disparo, ninguna habilidad está disponible para nadie! ni siquiera Catenaccion
-			if( game.SimulatingShoot )
+			// TODO: No se debería comprobar la simulacion fisica, sino el estado logico
+			if (game.TheGamePhysics.IsSimulating)
 				return false;
 			
+			// Si estamos en el turno de colocación de portero, ninguna habilidad está disponible para nadie!
+			if (game.ReasonTurnChanged == Enums.TurnByTiroAPuerta )
+				return false;
+						
 			// Si algún controlador está activo las habilidades no están permitidas
 			if( BallControl.IsStarted || this.PosControl.IsStarted || this.Shoot.IsStarted )
 				return false;
-									
 			
 			// Si es nuestro turno y tenemos el input activo la habilidad está disponible
 			var allowedInTurn:Boolean = false;
@@ -245,7 +245,7 @@ package Caps
 		//
 		private function SetSpecialSkill( index:int, available:Boolean, percentCharged:int ) : void
 		{
-			var Gui:* = Match.Ref.Game.GetField().Visual;
+			var Gui:* = Match.Ref.Game.TheField.Visual;
 						
 			var objectName:String = "SpecialSkill"+index.toString(); 
 			var item:MovieClip = Gui.getChildByName( objectName ) as MovieClip;
@@ -328,7 +328,7 @@ package Caps
 		//
 		public function SelectCap( cap:Cap ) : void
 		{
-			var gui:* = Match.Ref.Game.GetField().Visual;
+			var gui:* = Match.Ref.Game.TheField.Visual;
 			
 			if( cap != null )
 			{
@@ -445,18 +445,17 @@ package Caps
 		//
 		// Activa el control de posicionamiento de chapa
 		//
-		public function ShowPosController( cap:Cap /* , callback:Function = null */ ) : void
+		public function ShowPosController( cap:Cap ) : void
 		{
 			trace( "GameInterface: ShowPosController: " + cap.OwnerTeam.Name );
 			// Comprobamos : 
 			// 	- Si la chapa es del equipo actual,
 			//  NOTE: No se comprueba si la entrada de usuario está permitida, ya que
-			//  no es una accioón decidida por el usuario, sino una consecuencia del pase al pie
+			//  no es una acción decidida por el usuario, sino una consecuencia del pase al pie
 			// si no ignoramos la acción
 			if( Match.Ref.Game.CurTeam == cap.OwnerTeam /* && UserInputEnabled == true */ )
 			{
 				PosControl.OnStop.removeAll();
-				//PosControl.OnStop.add( Framework.Callback.Create( FinishPosController, callback ) );
 				PosControl.OnStop.add( FinishPosController );
 				
 				PosControl.Start( cap );
@@ -465,16 +464,20 @@ package Caps
 				SelectCap( cap );
 			}
 		}
+		
 		//
 		// Se ha terminado el controlador de posicionamiento de chapa (portero)
 		//
-		public function FinishPosController( result:int, callback:Function = null ) : void
+		public function FinishPosController( result:int ) : void
 		{
 			// Envíamos la información al servidor de colocar al portero en la coordenada indicada
 			// Si no es válida la posición ignoramos simplemente			
 			if( result == Controller.Success && PosControl.IsValid() )
 			{
-				Match.Ref.Connection.Invoke( "OnPosCap", null, PosControl.Target.Id, PosControl.EndPos.x, PosControl.EndPos.y );
+				if (!AppParams.OfflineMode)
+					Match.Ref.Connection.Invoke( "OnServerPosCap", null, PosControl.Target.Id, PosControl.EndPos.x, PosControl.EndPos.y );
+				else
+					Match.Ref.Game.OnClientPosCap(Match.Ref.Game.CurTeam.IdxTeam, PosControl.Target.Id, PosControl.EndPos.x, PosControl.EndPos.y ); 
 			}
 		}
 		
@@ -507,7 +510,6 @@ package Caps
 		
 		//
 		// Se produce cuando el usuario termina de utilizar el control "HandleBall"
-		// En ese momento se envíamos la acción de ejecutar disparo según el valor actual del controlador direccional de tiro
 		//
 		public function OnPlaceBall( ) : void
 		{
@@ -516,13 +518,13 @@ package Caps
 			// Envíamos la acción al servidor para que la verifique y la devuelva a todos los clientes
 			// NOTE: [Debug] En modo Offline ejecuta directamente la acción en el cliente 
 			
-			if( !AppParams.OfflineMode )
+			if (!AppParams.OfflineMode)
 			{
-				Match.Ref.Connection.Invoke( "OnPlaceBall", null, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y );
+				Match.Ref.Connection.Invoke( "OnServerPlaceBall", null, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y );
 				WaitResponse();
 			}
 			else
-				Match.Ref.Game.OnPlaceBall( BallControl.Target.OwnerTeam.IdxTeam, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y );
+				Match.Ref.Game.OnClientPlaceBall( BallControl.Target.OwnerTeam.IdxTeam, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y );
 		}
 		
 		
@@ -545,9 +547,6 @@ package Caps
 				_UserInputEnabled = value;
 			}
 			
-			// Actualiza el estado(enable/disable) del botón de tiro a puerta
-			//UpdateButtonTiroPuerta();
-			
 			// Si se prohibe la entrada de usuario cancelamos cualquier controlador
 			// de entrada que estuviera funcionando. 
 			// NOTE: Esto se reliza siempre aunque sea una asignación redundante! 
@@ -563,11 +562,11 @@ package Caps
 		
 		public function UpdateButtonTiroPuerta(  ) : void
 		{
-			var Gui:* = Match.Ref.Game.GetField().Visual;
+			var Gui:* = Match.Ref.Game.TheField.Visual;
 			var bActiveTiroPuerta:Boolean = _UserInputEnabled;
 			
 			// Si ya se ha declarado tiro a puerta no permitimos pulsar el botón 
-			bActiveTiroPuerta = bActiveTiroPuerta && (!Match.Ref.Game.TiroPuertaDeclarado( ));
+			bActiveTiroPuerta = bActiveTiroPuerta && (!Match.Ref.Game.IsTiroPuertaDeclarado( ));
 			
 			// Posición válida para tirar a puerta o Tenemos la habilidad especial de permitir gol de más de medio campo? 
 			bActiveTiroPuerta = bActiveTiroPuerta && Match.Ref.Game.IsTeamPosValidToScore( );						
@@ -575,12 +574,11 @@ package Caps
 			Gui.BotonTiroPuerta.visible = bActiveTiroPuerta;
 		}		
 		
-		
 		//
 		// Cancela cualquier operación de entrada que estuviera ocurriendo 
 		//  - Uso del controlador de tiro, posicionamiento de pelota, ... 
 		//
-		private function Cancel( ) : void
+		private function Cancel() : void
 		{
 			// Comprobamos si el usuario estaba utilizando el control de tiro,
 			// caso en el cual debemos cancelarlo
@@ -675,7 +673,7 @@ package Caps
 			// NOTE: Las habilidades están solo disponibles en tu turno, salvo "Catenaccio" que está siempre permitida
 			
 			var team:Team = Match.Ref.Game.LocalUserTeam;
-			if( team.ChargedSkill( idSkill ) == 100 && IsSkillAllowedInTurn( idSkill) )
+			if( team.ChargedSkill( idSkill ) == 100 && IsSkillAllowedInTurn(idSkill) )
 			{
 				// Notificamos al servidor para que lo propague en los usuarios
 				if( !AppParams.OfflineMode )
@@ -690,9 +688,15 @@ package Caps
 		//
 		public function OnTiroPuerta( event:Object ) : void
 		{
-			// Propagamos al servidor
-			Match.Ref.Connection.Invoke( "OnTiroPuerta", null );
-			WaitResponse();
+			if (!AppParams.OfflineMode)
+			{
+				Match.Ref.Connection.Invoke("OnTiroPuerta", null );
+				WaitResponse();
+			}
+			else
+			{
+				Match.Ref.Game.OnTiroPuerta(Match.Ref.Game.CurTeam.IdxTeam);
+			}
 		}
 
 		// 
@@ -751,7 +755,6 @@ package Caps
 		
 		// 
 		// Reproduce una animación mostrando el turno del jugador
-		// dueToRob: Indica que el turno ha sido asignado por un robo de balón
 		//
 		public function OnTurn( idTeam:int, reason:int, callback:Function = null  ) : void
 		{
@@ -776,7 +779,7 @@ package Caps
 				{					
 					// Los nombres están al revés porque aquí representa a quien le han hecho la falta
 					cutScene = CreateMovieClip( Embedded.Assets.MensajeFaltaContraria, 0, 210 );
-					FillConflictoFault( cutScene, Match.Ref.Game.DetectedFault );
+					FillConflictoFault( cutScene, Match.Ref.Game.TheGamePhysics.Fault );
 				}
 				else if( reason == Enums.TurnBySaquePuerta  )		// El saque de puerta no tiene un mensaje específico para el oponente
 					cutScene = CreateMovieClip( Embedded.Assets.MensajeTurnoPropioSaquePuerta, 0, 210 );
@@ -801,7 +804,7 @@ package Caps
 				else if( reason == Enums.TurnByFault || reason == Enums.TurnBySaquePuertaByFalta )
 				{
 					cutScene = CreateMovieClip( Embedded.Assets.MensajeFaltaPropia, 0, 210 );
-					FillConflictoFault( cutScene, Match.Ref.Game.DetectedFault );
+					FillConflictoFault( cutScene, Match.Ref.Game.TheGamePhysics.Fault );
 				}
 				else if( reason == Enums.TurnByTiroAPuerta  )
 					cutScene = CreateMovieClip( Embedded.Assets.MensajeColocarPorteroContrario, 0, 210 );
@@ -812,7 +815,7 @@ package Caps
 			}
 			
 			// Lanzamos la cutscene
-			if( cutScene != null )
+			if (cutScene != null)
 			{
 				LaunchCutScene( cutScene, true, callback );
 				CutSceneTurnRunning = cutScene;					// Almacenamos la cut-scene de turno que está ejecutandose hasta que termine
@@ -860,7 +863,6 @@ package Caps
 		
 		//
 		// Lanza una cutscene a partir de un asset embebido que se crea y dispara
-		//   - 
 		//
 		public function CreateGraphic( cutScene:Class, x:Number = 0, y:Number = 0, parent:DisplayObjectContainer = null ) : DisplayObject
 		{
@@ -1184,7 +1186,7 @@ package Caps
 			Match.Ref.Game.ResetTimeout();
 			// Deshabilitamos la entrada de interface y pausamos el timeout
 			UserInputEnabled = false;
-			// NOTE: Hacer depués del reset, ya que dentro se asigna a true
+			// NOTE: Hacer depués del ResetTimeout, ya que dentro se asigna a false
 			Match.Ref.Game.TimeOutPaused = true;
 		}
 		

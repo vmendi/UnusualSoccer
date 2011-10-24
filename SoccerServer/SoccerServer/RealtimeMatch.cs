@@ -242,19 +242,16 @@ namespace SoccerServer
             LogEx( "OnServerShoot: " + idPlayer + " Shoot: " + ShootCount + " Cap ID: " + capID + " dir: " + dirX + ", " + dirY + " force: " + force + " CPES: " + CountPlayersEndShoot );
             
             if (CountPlayersEndShoot != 0)
-            {
                 throw new Exception("Match: " + MatchID + " SERVER: Hemos recibido un ServerShoot cuando todavía no todos los clientes habían confirmado la finalización de un disparo anterior");
-            }
+            
             if (SimulatingShoot == true)
-            {
                 throw new Exception("Match: " + MatchID + " SERVER: Hemos recibido un ServerShoot mientras estamos simulando (SimulatingShoot = true)");
-            }
-
-            if ( CheckActionsAllowed() )        // Estan las acciones permitidas?
+            
+            if (CheckActionsAllowed())        // Estan las acciones permitidas?
             {
                 // Creamos una nueva descripción de estado para que los clientes puedan envíarnos su estado.
                 // NOTE: Lo hacemos con lista ya que un cliente puede no haber envíado los resultados del anterior disparo, y el otro estar simulando el siguiente.
-                if ( DebugClientState == true )
+                if (DebugClientState == true)
                 {
                     ClientState clientState = new ClientState();
                     clientState.ShootCount = ShootCount;
@@ -357,24 +354,23 @@ namespace SoccerServer
         // 
         // Un cliente ha colocado el balón después de un pase al pie
         // 
-        public void OnPlaceBall(int idPlayer, int capID, float dirX, float dirY)
+        public void OnServerPlaceBall(int idPlayer, int capID, float dirX, float dirY)
         {
-            LogEx("OnPlaceBall: " + idPlayer + " Cap ID: " + capID);
+            LogEx("OnServerPlaceBall: " + idPlayer + " Cap ID: " + capID);
 
-            if ( CheckActionsAllowed() )        // Estan las acciones permitidas?
-                Broadcast("OnPlaceBall", idPlayer, capID, dirX, dirY);
+            if (CheckActionsAllowed())
+                Broadcast("OnClientPlaceBall", idPlayer, capID, dirX, dirY);
         }
 
         // 
-        // Un cliente ha colocado una chapa en una posición 
-        // NOTE: Se utiliza para la colocación del portero
+        // Un cliente ha colocado una chapa en una posición. Se utiliza para la colocación del portero
         // 
-        public void OnPosCap(int idPlayer, int capID, float posX, float posY)
+        public void OnServerPosCap(int idPlayer, int capID, float posX, float posY)
         {
-            LogEx("OnPosCap: " + idPlayer + " Cap ID: " + capID);
+            LogEx("OnServerPosCap: " + idPlayer + " Cap ID: " + capID);
 
             if ( CheckActionsAllowed() )        // Estan las acciones permitidas?
-                Broadcast("OnPosCap", idPlayer, capID, posX, posY);
+                Broadcast("OnClientPosCap", idPlayer, capID, posX, posY);
         }
 
 
@@ -391,7 +387,7 @@ namespace SoccerServer
                 throw new Exception("Match: " + MatchID + " Hemos recibido un TimeOut mientras estamos simulando un disparo (SimulatingShoot = true). ");
 
             if ( CheckActionsAllowed() )        // Estan las acciones permitidas?
-                Broadcast("OnTimeout", idPlayer);
+                Broadcast("OnClientTimeout", idPlayer);
         }
 
         #endregion
@@ -448,7 +444,7 @@ namespace SoccerServer
                                 // Notificamos a los clientes que ha terminado la mitad de juego
 
                                 LogEx( "Finalización de parte!. Enviado a los clientes <FinishPart>" );
-                                Broadcast("FinishPart", Part, null);
+                                Broadcast("OnClientFinishPart", Part, null);
 
                                 Part++;                             // Pasamos  a la siguiente parte
                                 StartPart();
@@ -459,7 +455,7 @@ namespace SoccerServer
                                 RealtimeMatchResult result = NotifyOwnerFinishMatch();
                                 // Notificamos a los clientes que ha terminado la mitad de juego y como es la segunda
                                 // envíamos el resultado
-                                Broadcast("FinishPart", Part, result);
+                                Broadcast("OnClientFinishPart", Part, result);
                                 CurState = State.End;
                             }
                         }
@@ -569,9 +565,9 @@ namespace SoccerServer
         {
             LogEx("OnTiroPuerta: Player: " + idPlayer);
 
-            if ( CheckActionsAllowed() )        // Estan las acciones permitidas?
+            if (CheckActionsAllowed())        // Estan las acciones permitidas?
             {
-                if ( ValidatePlayer( idPlayer ) )
+                if (ValidatePlayer(idPlayer))
                 {
                     PlayersState[ idPlayer ].TiroPuerta = true;
 
@@ -585,9 +581,9 @@ namespace SoccerServer
         // Un jugador declara que ha ocurrido un gol (puede ser de si mismo o del contrario)!
         // Hasta que todos los jugadores nos digan que ha habido gol, no hacemos nada!
         //
-        public void OnGoalScored(int idPlayer, int scoredPlayer, int validity)
+        public void OnServerGoalScored(int idPlayer, int scoredPlayer, int validity)
         {
-            LogEx( "OnGoalScored: Player: " + idPlayer + " Scored player: " + scoredPlayer + " Validity: " + validity + " CountPlayersReportGoal: " + CountPlayersReportGoal );
+            LogEx( "OnServerGoalScored: Player: " + idPlayer + " Scored player: " + scoredPlayer + " Validity: " + validity + " CountPlayersReportGoal: " + CountPlayersReportGoal );
 
             if ( CheckActionsAllowed() )        // Estan las acciones permitidas?
             {
@@ -625,7 +621,7 @@ namespace SoccerServer
                             PlayersState[ scoredPlayer ].ScoredGoals++;
 
                         // Propagamos a los usuarios
-                        Broadcast( "OnGoalScored", scoredPlayer, ValidityGoal );
+                        Broadcast( "OnClientGoalScored", scoredPlayer, ValidityGoal );
 
                         // Reseteamos validez del gol y comprobamos coherencia
                         if ( ValidityGoal == Invalid )
