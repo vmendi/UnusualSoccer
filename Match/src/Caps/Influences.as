@@ -1,6 +1,6 @@
 package Caps
 {
-	public final class InfluenceController
+	public final class Influences
 	{
 		static private function ShowAllInfluences() : void
 		{

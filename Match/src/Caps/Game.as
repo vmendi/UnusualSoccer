@@ -369,7 +369,7 @@ package Caps
 						if (TheGamePhysics.GetFirstTouchedCapLastRun() != null)
 							TheBall.SetSpeedFactor(0.3);
 
-						InfluenceController.UpdateInfluences(_RemainingHits, _RemainingPasesAlPie);
+						Influences.UpdateInfluences(_RemainingHits, _RemainingPasesAlPie);
 					}
 					break;
 				}

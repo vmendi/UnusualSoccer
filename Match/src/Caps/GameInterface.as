@@ -59,7 +59,7 @@ package Caps
 			Match.Ref.Game.GUILayer.addChild( ControllerCanvas );
 						
 			// Inicializamos los controladores (disparo, balón, posición )
-			Shoot = new ExternalControlShoot( ControllerCanvas, MAX_LONG_SHOOT, COLOR_SHOOT, THICKNESS_SHOOT );
+			Shoot = new ControlShoot( ControllerCanvas, MAX_LONG_SHOOT, COLOR_SHOOT, THICKNESS_SHOOT );
 			
 			var longLine:Number = Cap.Radius + BallEntity.Radius + AppParams.DistToPutBallHandling;
 			BallControl = new BallController( ControllerCanvas, longLine, COLOR_HANDLEBALL, THICKNESS_SHOOT );
@@ -68,7 +68,7 @@ package Caps
 			
 			// Sincroniza los valores de la lógica dentro del interface visual
 			Sync();
-						
+
 			// Creamos un evento para cuando pulsen el botón de tirar a puerta
 			var Gui:* = Match.Ref.Game.TheField.Visual;
 			Gui.BotonTiroPuerta.addEventListener( MouseEvent.CLICK, OnTiroPuerta );
