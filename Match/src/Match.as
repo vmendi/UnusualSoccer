@@ -5,6 +5,7 @@ package
 	import Caps.Game;
 	
 	import Framework.AudioManager;
+	import Framework.Random;
 	
 	import com.greensock.TweenMax;
 	
@@ -47,7 +48,7 @@ package
 									
 			// Añadimos la zona de información de debug (por delante de todo el interface)
 			addChild(DebugArea);
-						
+									
 			// Nos quedamos a la espera del siguiente Frame. Quien aquí nos llama tiene tiempo entonces para llamar a Init
 			addEventListener(Event.ENTER_FRAME, OnFrame);
 		}

@@ -136,7 +136,7 @@ package Caps
 		//
 		// Iniciaizamos el Interface Gráfico de Usuario
 		//
-		public function Sync(  ) : void
+		public function Sync() : void
 		{
 			var teams:Array = Match.Ref.Game.TheTeams;
 			var Gui:* = Match.Ref.Game.TheField.Visual;
@@ -475,9 +475,9 @@ package Caps
 			if( result == Controller.Success && PosControl.IsValid() )
 			{
 				if (!AppParams.OfflineMode)
-					Match.Ref.Connection.Invoke( "OnPosCap", null, PosControl.Target.Id, PosControl.EndPos.x, PosControl.EndPos.y );
+					Match.Ref.Connection.Invoke( "OnServerPosCap", null, PosControl.Target.Id, PosControl.EndPos.x, PosControl.EndPos.y );
 				else
-					Match.Ref.Game.OnPosCap(Match.Ref.Game.CurTeam.IdxTeam, PosControl.Target.Id, PosControl.EndPos.x, PosControl.EndPos.y ); 
+					Match.Ref.Game.OnClientPosCap(Match.Ref.Game.CurTeam.IdxTeam, PosControl.Target.Id, PosControl.EndPos.x, PosControl.EndPos.y ); 
 			}
 		}
 		
@@ -518,13 +518,13 @@ package Caps
 			// Envíamos la acción al servidor para que la verifique y la devuelva a todos los clientes
 			// NOTE: [Debug] En modo Offline ejecuta directamente la acción en el cliente 
 			
-			if( !AppParams.OfflineMode )
+			if (!AppParams.OfflineMode)
 			{
-				Match.Ref.Connection.Invoke( "OnPlaceBall", null, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y );
+				Match.Ref.Connection.Invoke( "OnServerPlaceBall", null, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y );
 				WaitResponse();
 			}
 			else
-				Match.Ref.Game.OnPlaceBall( BallControl.Target.OwnerTeam.IdxTeam, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y );
+				Match.Ref.Game.OnClientPlaceBall( BallControl.Target.OwnerTeam.IdxTeam, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y );
 		}
 		
 		
@@ -566,7 +566,7 @@ package Caps
 			var bActiveTiroPuerta:Boolean = _UserInputEnabled;
 			
 			// Si ya se ha declarado tiro a puerta no permitimos pulsar el botón 
-			bActiveTiroPuerta = bActiveTiroPuerta && (!Match.Ref.Game.TiroPuertaDeclarado( ));
+			bActiveTiroPuerta = bActiveTiroPuerta && (!Match.Ref.Game.IsTiroPuertaDeclarado( ));
 			
 			// Posición válida para tirar a puerta o Tenemos la habilidad especial de permitir gol de más de medio campo? 
 			bActiveTiroPuerta = bActiveTiroPuerta && Match.Ref.Game.IsTeamPosValidToScore( );						

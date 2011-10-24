@@ -61,7 +61,7 @@ package Caps
 		// En frente quiere decir mirando a la dirección de la mitad del campo del oponente
 		// NOTE: No se valida la posición!
 		//
-		public function SetPosInFrontOf(cap:Cap) : void
+		public function StopMovementInFrontOf(cap:Cap) : void
 		{
 			var pos:Point = cap.GetPos();
 			
@@ -70,32 +70,31 @@ package Caps
 			if ( cap.OwnerTeam.Side == Enums.Right_Side )
 				dir = new Point( -len, 0 );
 			
-			SetPosAndStop(pos.add(dir));
+			StopMovementInPos(pos.add(dir));
 		}
 		
 		// Asigna la posición del balón y su última posición en la que estuvo parado
 		// Siempre que se cambia "forzadamente" la posición del balón, utilizar esta función
-		public function SetPosAndStop( pos:Point ) : void
+		public function StopMovementInPos( pos:Point ) : void
 		{
-			this.StopMovement();
+			super.StopMovement();
 			super.SetPos(pos);
 			_LastPosBallStopped = GetPos();
 		}
 		
-		// Resetea al estado inicial el balón (en el centro, parado...)
-		public function SetCenterFieldPosAndStop() : void
+		// Overrideamos porque queremos siempre tener anotado la ultima vez que nos pararon
+		public override function StopMovement() : void
 		{
-			SetPosAndStop( new Point( Field.CenterX, Field.CenterY ) );
-		}
-		
-		public function SetStopPosToCurrent() : void
-		{
-			if (IsMoving)
-				throw new Error("No se deberia estar moviendo cuando haces SetStopPosToCurrent");
-			
+			super.StopMovement();
 			_LastPosBallStopped = GetPos();
 		}
 		
+		// Resetea al estado inicial el balón (en el centro, parado...)
+		public function StopMovementInFieldCenter() : void
+		{
+			StopMovementInPos( new Point( Field.CenterX, Field.CenterY ) );
+		}
+				
 		private var _LastPosBallStopped:Point = null;
 	}
 }

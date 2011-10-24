@@ -30,6 +30,24 @@ package Caps
 		
 		public function get NumTouchedCaps() : int 	 	{ return _TouchedCaps.length; }
 		public function get NumFramesSimulated() : int	{ return _FramesSimulating; }
+		
+		// Es gol en propia meta?
+		public function IsSelfGoal() : Boolean
+		{
+			if (!IsGoal)
+				throw new Error("No deberias preguntar por el IsSelfGoal cuando no ha sido Goal");
+			
+			return _CapShooting.OwnerTeam == Match.Ref.Game.TeamInSide(SideGoal);
+		}
+		
+		// Equipo que ha marcado el gol
+		public function ScorerTeam() : Team
+		{
+			if (!IsGoal)
+				throw new Error("No deberias preguntar por el ScorerTeam cuando no ha sido Goal");
+			
+			return Match.Ref.Game.TeamInSide(Enums.AgainstSide(SideGoal))
+		}
 
 		public function GamePhysics(parent : MovieClip)
 		{
@@ -107,16 +125,12 @@ package Caps
 				var cap:Cap = null;
 				
 				// Determinamos si una de las entidades colisionadas es el balón
-				if( ent1 is BallEntity )
-					ball = ent1 as BallEntity;
-				if( ent2 is BallEntity )
-					ball = ent2 as BallEntity;
+				if( ent1 is BallEntity ) ball = ent1 as BallEntity;
+				if( ent2 is BallEntity ) ball = ent2 as BallEntity;
 				
 				// Determinamos si una de las entidades colisionadas es una chapa
-				if( ent1 is Cap )
-					cap = ent1 as Cap;
-				if( ent2 is Cap )
-					cap = ent2 as Cap;
+				if( ent1 is Cap ) cap = ent1 as Cap;
+				if( ent2 is Cap ) cap = ent2 as Cap;
 				
 				// Tenemos una colisión entre una chapa y el balón? Si es así guardamos la
 				// chapa en una lista para comprobar posibles "Pase al pie" a la misma
@@ -169,7 +183,7 @@ package Caps
 			var fault:Object = null;
 			
 			// Las 2 chapas son del mismo equipo? Entonces ignoramos, no puede haber falta. 
-			if( cap1.OwnerTeam != cap2.OwnerTeam )
+			if (cap1.OwnerTeam != cap2.OwnerTeam)
 			{
 				// La chapa del equipo que tiene el turno es el ATACANTE, quien puede provocar faltas.
 				// Detectamos que chapa es de las dos
@@ -311,6 +325,19 @@ package Caps
 			}
 			return false;
 		}
+		
+		// Primera chapa tocada del mismo equipo que el que tira
+		public function GetFirstTouchedCapFromShooterTeam() : Cap
+		{
+			var shooterTeam : Team = _CapShooting.OwnerTeam;
+			
+			for each(var cap : Cap in _TouchedCaps)
+			{
+				if (cap != _CapShooting && cap.OwnerTeam == shooterTeam)
+					return cap;
+			}
+			return null;
+		}
 			
 		public function Run() : void
 		{
@@ -318,34 +345,15 @@ package Caps
 			{
 				_FramesSimulating++;
 			
+				// Se acabo la simulacion? (es decir, esta todo parado?)
 				if (!IsPhysicSimulating)
 				{
 					_SimulatingShoot = false;
-					
-					// Deberia ella ser capaz de recordarla automaticamente?
-					_Ball.SetStopPosToCurrent();
+					_Ball.StopMovement();		// TODO: Se hace solo para anotar la ultima posicion de parada. Estaria bien que no hicera falta
 				}
 			}
 		}
-		
-		// Es gol en propia meta?
-		public function IsSelfGoal() : Boolean
-		{
-			if (!IsGoal)
-				throw new Error("No deberias preguntar por el IsSelfGoal cuando no ha sido Goal");
 			
-			return _CapShooting.OwnerTeam == Match.Ref.Game.TeamInSide(SideGoal);
-		}
-		
-		// Equipo que ha marcado el gol
-		public function ScorerTeam() : Team
-		{
-			if (!IsGoal)
-				throw new Error("No deberias preguntar por el ScorerTeam cuando no ha sido Goal");
-			
-			return Match.Ref.Game.TeamInSide(Enums.AgainstSide(SideGoal))
-		}
-	
 		private var _Ball : BallEntity;
 		private var _Field : Field;
 		
