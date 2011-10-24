@@ -288,7 +288,7 @@ package Caps
 					var phyEntity:PhyEntity = entity as PhyEntity;
 					phyEntity.StopMovement();
 				}
-			}			
+			}	
 		}
 		
 		//
@@ -338,7 +338,12 @@ package Caps
 			}
 			return null;
 		}
-			
+		
+		public function ForgetTouchedCap(cap : Cap) : void
+		{
+			_TouchedCaps.splice(_TouchedCaps.indexOf(cap), 1);
+		}
+
 		public function Run() : void
 		{
 			if (_SimulatingShoot)
@@ -353,7 +358,7 @@ package Caps
 				}
 			}
 		}
-			
+
 		private var _Ball : BallEntity;
 		private var _Field : Field;
 		
