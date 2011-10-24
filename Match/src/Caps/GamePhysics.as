@@ -62,8 +62,8 @@ package Caps
 				TheBox2D.mouseDrag( );
 			
 			_Contacts = TheBox2D.addContactListener();
-			_Contacts.addEventListener( QuickContacts.ADD, OnContact);
-			_Contacts.addEventListener( QuickContacts.RESULT, OnContact);
+			_Contacts.addEventListener(QuickContacts.ADD, OnContact);
+			_Contacts.addEventListener(QuickContacts.RESULT, OnContact);
 		}
 		
 		public function Start() : void
@@ -132,11 +132,12 @@ package Caps
 				if( ent1 is Cap ) cap = ent1 as Cap;
 				if( ent2 is Cap ) cap = ent2 as Cap;
 				
-				// Tenemos una colisión entre una chapa y el balón? Si es así guardamos la
-				// chapa en una lista para comprobar posibles "Pase al pie" a la misma
+				// Tenemos una colisión entre una chapa y el balón?
 				if( cap != null && ball != null )
 				{
-					_TouchedCaps.push( cap );
+					_TouchedCaps.push(cap);
+					_TouchedCapsLastRun.push(cap);
+										
 					AudioManager.Play( "SoundCollisionCapBall" );
 				}
 				else
@@ -326,12 +327,12 @@ package Caps
 			return false;
 		}
 		
-		// Primera chapa tocada del mismo equipo que el que tira
-		public function GetFirstTouchedCapFromShooterTeam() : Cap
+		// Primera chapa tocada del mismo equipo que el que tira, pero solo en este Run
+		public function GetFirstTouchedCapFromShooterTeamLastRun() : Cap
 		{
 			var shooterTeam : Team = _CapShooting.OwnerTeam;
 			
-			for each(var cap : Cap in _TouchedCaps)
+			for each(var cap : Cap in _TouchedCapsLastRun)
 			{
 				if (cap != _CapShooting && cap.OwnerTeam == shooterTeam)
 					return cap;
@@ -339,10 +340,6 @@ package Caps
 			return null;
 		}
 		
-		public function ForgetTouchedCap(cap : Cap) : void
-		{
-			_TouchedCaps.splice(_TouchedCaps.indexOf(cap), 1);
-		}
 
 		public function Run() : void
 		{
@@ -358,12 +355,19 @@ package Caps
 				}
 			}
 		}
+		
+		public function Reset() : void
+		{
+			// Olvidamos los contactos del Run anterior
+			_TouchedCapsLastRun.length = 0;
+		}
 
 		private var _Ball : BallEntity;
 		private var _Field : Field;
 		
 		private var _Contacts : QuickContacts;					// Manager para controlar los contactos físicos entre objetos
 		private var _TouchedCaps:Array = new Array();			// Lista de chapas en las que ha rebotado la pelota antes de detenerse
+		private var _TouchedCapsLastRun:Array = new Array();	// Lista de chapas que ha tocado la pelota en este Run
 		private var _SideGoal:int= -1;							// Lado que ha marcado goal
 		private var _DetectedFault:Object = null;				// Bandera que indica Falta detectada (además objeto que describe la falta)
 		

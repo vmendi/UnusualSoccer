@@ -221,6 +221,7 @@ package Caps
 			TheTeams[Enums.Team2].Run(elapsed);
 			
 			TheGamePhysics.Run();
+			TheEntityManager.Run(elapsed);
 			
 			// Calculamos el tiempo "real" que ha pasado, independiente del frame-rate
 			var realElapsed:Number = _TimeCounter.GetElapsed();
@@ -365,14 +366,14 @@ package Caps
 					}
 					else
 					{
-						var targetPasePie : Cap = TheGamePhysics.GetFirstTouchedCapFromShooterTeam();
+						var targetPasePie : Cap = TheGamePhysics.GetFirstTouchedCapFromShooterTeamLastRun();
 						
 						if (targetPasePie != null)
 						{
+							trace("Ralentizando");
 							TheBall.SetSpeedFactor(0.3);
-							TheGamePhysics.ForgetTouchedCap(targetPasePie);
 						}
-						
+												
 						InfluenceController.UpdateInfluences(_RemainingHits, _RemainingPasesAlPie);
 					}
 					break;
@@ -426,7 +427,7 @@ package Caps
 				}
 			}
 			
-			TheEntityManager.Run(elapsed);
+			TheGamePhysics.Reset();
 		}
 		
 		public function Draw( elapsed:Number ) : void
