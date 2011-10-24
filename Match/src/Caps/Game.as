@@ -369,7 +369,7 @@ package Caps
 						
 						if (targetPasePie != null)
 						{
-							TheBall.SlowDown();
+							TheBall.SetSpeedFactor(0.3);
 							TheGamePhysics.ForgetTouchedCap(targetPasePie);
 						}
 						

@@ -94,16 +94,7 @@ package Caps
 		{
 			StopMovementInPos( new Point( Field.CenterX, Field.CenterY ) );
 		}
-		
-		public function SlowDown() : void
-		{
-			var vel : b2Vec2 = PhyObject.body.GetLinearVelocity();
-			vel.x *= 0.3;
-			vel.y *= 0.3;
-			PhyObject.body.SetLinearVelocity(vel);
-			//PhyObject.body.SetAngularVelocity( 0 );
-		}
-				
+						
 		private var _LastPosBallStopped:Point = null;
 	}
 }
