@@ -3,7 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 creationComplete="CreationCompleteHandler(event)" 
-		 width="200" height="60">
+		 width="186" height="65">
 	
 	<fx:Style source="styles.css"/>
 	
@@ -34,11 +34,17 @@
 			private function OnTicketRemainingMatchesChanged(newVal : int) : void
 			{
 				if (newVal == 0)
+				{
 					MyZeroRemaining.visible = true;
-					//MyRemainingMatches.visible = false;
+					MyRemainingMatches.visible = false;
+					MyRemainingMatchesTitle.visible = false;
+				}
 				else
+				{
 					MyZeroRemaining.visible = false;
-					//MyRemainingMatches.visible = true;
+					MyRemainingMatches.visible = true;
+					MyRemainingMatchesTitle.visible = true;
+				}
 			}
 			
 			private function OnTicketExpiryDateChanged(newVal : Date) : void
@@ -61,28 +67,22 @@
 
 	<s:Image source="@Embed(source='/Assets/General.swf', symbol='TicketBg')" alpha.NotPurchased="0.5" alpha.Purchased="1" />
 	
-	<s:Group height="40" x="0" horizontalCenter="0">
+	<s:Group height="40" x="0" horizontalCenter="0" includeIn="NotPurchased">
 		<s:layout>
 			<s:HorizontalLayout gap="4" verticalAlign="middle" />
 		</s:layout>
-		<s:Label id="MyRemainingMatches"  text="{mTeamModel.TheTeam.Ticket.RemainingMatches}" styleName="blackBoldHuge"
-				 x="35" y="0" />
-		<s:Label text="MATCHES TODAY" styleName="blackBoldBig"
-				 width="80" x="60" y="6" />
+		<s:Label id="MyRemainingMatches"  text="{mTeamModel.TheTeam.Ticket.RemainingMatches}" styleName="blackBoldHuge" />
+		<s:RichText id="MyRemainingMatchesTitle" styleName="blackBoldBig" whiteSpaceCollapse="preserve" textAlign="center" kerning="auto" lineHeight="104%">
+			<s:content><s:p><s:span>MATCHES</s:span></s:p><s:p><s:span>TODAY</s:span></s:p></s:content>
+		</s:RichText>
 	</s:Group>
 
-
-	<!--<s:Label text="You don't have any more matches for today." styleName="whiteBoldMedium" 
-			 width="124" x="32" y="7" 
-			 textAlign="center" />-->
-
-	<s:Label id="MyZeroRemaining" text="You don't have any more matches for today." styleName="whiteBoldMedium" 
+	<s:Label id="MyZeroRemaining" text="You don't have any more matches for today." styleName="blackBoldMediumHN"  includeIn="NotPurchased"
 			 width="124" x="32" y="7"
 			 textAlign="center" />
 	
-	
 	<s:Group includeIn="Purchased">
-		<s:Label id="MyTicketKind" text="Ticket Kind: {mTeamModel.TheTeam.Ticket.TicketKind}" styleName="whiteBoldBig" x="0" y="0" />
+		<!--<s:Label id="MyTicketKind" text="Ticket Kind: {mTeamModel.TheTeam.Ticket.TicketKind}" styleName="whiteBoldBig" x="0" y="0" />-->
 		<s:Label id="MyTicketExpiryDate" text="Valid until: {mTeamModel.TheTeam.Ticket.TicketExpiryDate.toLocaleString()}" styleName="whiteBoldBig" x="0" y="30" />
 	</s:Group>
 	

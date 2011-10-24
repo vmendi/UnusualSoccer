@@ -73,7 +73,7 @@
 	
 	<s:Group left="0" right="0" top="0" bottom="0" includeIn="AvailableCredit">
 		<s:Panel id="MyPlayersInRoomPanel" skinClass="GameView.Skins.DefaultPanelSkin" title="JUGADORES ONLINE"
-				 width="423" height="237" left="10" top="110" controlBarVisible="true">
+				 width="423" height="303" left="10" top="10" controlBarVisible="true">
 			<s:List id="MyPlayersInRoomList" width="100%" height="100%" skinClass="GameView.Skins.DefaultListSkin"
 					dataProvider="{mRoomModel.PlayersInRoom}" itemRenderer="GameView.Friendly.RealtimePlayerItem" 
 					change="MyPlayersInRoomList_changeHandler(event)"/>
@@ -83,7 +83,7 @@
 		</s:Panel>
 		
 		<s:Panel id="MyChallengesPanel" skinClass="GameView.Skins.DefaultPanelSkin" title="RETOS RECIBIDOS"
-				 width="423" height="132" left="10" bottom="10" controlBarVisible="false">
+				 width="423" height="156" left="10" bottom="10" controlBarVisible="false">
 			<s:List id="MyChallengesList" width="100%" height="100%" skinClass="GameView.Skins.DefaultListSkin"
 					dataProvider="{mRoomModel.ReceivedChallenges}" itemRenderer="GameView.Friendly.ChallengeItem" change="MyChallengesList_changeHandler(event)"/>
 		</s:Panel>
