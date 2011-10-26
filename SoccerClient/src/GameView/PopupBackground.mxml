@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="632" height="150">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:Rect left="0" right="0" top="0" bottom="0" alpha="0.9" radiusX="10">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"
+								weight="2"/>
+		</s:stroke>
+		<s:fill>
+			<s:SolidColor alpha="1" color="#000000"/>
+		</s:fill>
+	</s:Rect>
+	<s:Group left="1" right="1" top="1" bottom="1" mask="{myMask}">
+		<s:Path left="-0.181" right="0.181" top="-0.22" alpha="0.5"
+				data="M 624 0 L 8 0 C 3.588 0 0 3.588 0 8 L 0 33.162 C 36.362 44.963 252.193 50 302 50 C 355.532 50 594.473 43.871 632 30.436 L 632 8 C 632 3.588 628.411 0 624 0 Z"
+				maskType="alpha">
+			<s:fill>
+				<s:LinearGradient x="316" y="0" scaleX="50" rotation="90">
+					<s:GradientEntry alpha="1.0" color="#FFFFFF" ratio="0"/>
+					<s:GradientEntry alpha="0.7" color="#000000" ratio="1"/>
+				</s:LinearGradient>
+			</s:fill>
+		</s:Path>
+	</s:Group>	
+	<s:Group left="1" right="1" top="1" bottom="1" id="myMask">
+		<s:Rect left="0" right="0" top="0" bottom="0" radiusX="10">
+			<s:fill>
+				<s:SolidColor alpha="1" color="#AF0000"/>
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	
+</s:Group>
