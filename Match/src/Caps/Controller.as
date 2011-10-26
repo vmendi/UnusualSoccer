@@ -73,7 +73,7 @@ package Caps
 		}
 		protected function RemoveHandlers( object:DisplayObject  ):void
 		{
-			if( object != null )
+			if (object != null)
 			{
 				object.stage.removeEventListener( MouseEvent.MOUSE_DOWN, MouseDown );
 				object.stage.removeEventListener( MouseEvent.MOUSE_UP, MouseUp );	

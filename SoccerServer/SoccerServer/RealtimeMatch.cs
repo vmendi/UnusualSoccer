@@ -442,7 +442,6 @@ namespace SoccerServer
                             if (Part == 1)
                             {
                                 // Notificamos a los clientes que ha terminado la mitad de juego
-
                                 LogEx( "Finalización de parte!. Enviado a los clientes <FinishPart>" );
                                 Broadcast("OnClientFinishPart", Part, null);
 

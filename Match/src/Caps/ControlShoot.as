@@ -8,36 +8,44 @@ package Caps
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 
 	
 	public class ControlShoot extends Controller
 	{		
-		protected var canvas        : Sprite;
-		protected var angle	      : Number; 
-		protected var maxLongLine   : uint;
-		protected var colorLine	  : uint;
-		protected var thickness	  : uint;
+		protected var canvas       : Sprite;
+		protected var angle	       : Number; 
+		protected var maxLongLine  : uint;
+		protected var colorLine	   : uint;
+		protected var thickness	   : uint;
 		protected var potenciaTiro : TextField;
 		
-		
-		static protected const BLACK    	  : uint = 0x000000;
 		static protected const MIN_FORCE : Number = 0.1; // Fuerza mínima que debe tener un disparo.
 		
-		// Constructor para poder heredar
-		public function ControlShoot(  )
+		public function ControlShoot(canvas:Sprite, maxLongLine: uint, colorLine: uint = 0, thickness: uint = 1)
 		{
-		}
-		/*	
-		public function ControlShoot( canvas:Sprite, maxLongLine: uint, colorLine: uint = 0, thickness: uint = 1 )		
-		{
+			// Campo de texto en el que indicaremos la potencia
+			var myFormat:TextFormat = new TextFormat();
+			myFormat.size = 14;
+			myFormat.bold = true;
+			myFormat.font = "HelveticaNeue LT 77 BdCn"; 
+			var campoPotenciaTiro : TextField = new TextField(); 
+			campoPotenciaTiro.selectable = false;
+			campoPotenciaTiro.mouseEnabled = false;
+			campoPotenciaTiro.embedFonts = true;
+			campoPotenciaTiro.antiAliasType = flash.text.AntiAliasType.ADVANCED;
+			campoPotenciaTiro.defaultTextFormat = myFormat;
+			campoPotenciaTiro.textColor = 0xFFFFFF;
+			campoPotenciaTiro.width = 800;
+			
+			canvas.addChild(campoPotenciaTiro);
+			
 			this.maxLongLine = maxLongLine;
 			this.canvas 	 = canvas;
 			this.thickness   = thickness;
-			
-			( colorLine == 0 ) ? this.colorLine = BLACK : this.colorLine = colorLine;
+			this.potenciaTiro = campoPotenciaTiro;
 		}
-		*/
-		
+	
 		//
 		// Detiene el sistema de control direccional con el ratón, lo que
 		// implica dejar de visualizarlo
@@ -91,9 +99,9 @@ package Caps
 			return( true );
 		}
 			
-		public override function MouseMove( e: MouseEvent ) :void
-		{
-			super.MouseMove( e );
+		public override function MouseMove(e: MouseEvent) :void
+		{			
+			super.MouseMove(e);
 			
 			angle = Math.atan2(  - ( canvas.mouseY - yInit ), - ( canvas.mouseX - xInit ) );
 			
@@ -106,7 +114,6 @@ package Caps
 			canvas.arrow.rotation =  angle * 180 / Math.PI;
 			canvas.arrow.visible = true;
 			*/
-			
 			
 			// Obtenemos la dirección truncada a la máxima longitud
 			var dir:Point = Direction;
@@ -183,6 +190,5 @@ package Caps
 
 			return( len / (maxLongLine-Cap.Radius) );
 		}
-
 	}
 }
