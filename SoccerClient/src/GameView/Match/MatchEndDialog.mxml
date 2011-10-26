@@ -251,8 +251,9 @@
 		<s:State name="Winner"/>
 		<s:State name="WinnerAbandoned"/>
 	</s:states>		
-	
-	<s:BitmapImage x="0" y="0" source="@Embed(source='/Assets/General.swf', symbol='PopupTallDialogBg')" fillMode="clip" />	
+
+	<GameView:PopupBackground width="356" height="252" />
+
 	<s:BitmapImage x="2" y="98" source="@Embed(source='/Assets/General.swf', symbol='MatchEndDialogBg')" fillMode="clip" />
 	
 	<s:Group x="10" y="12" width="336" height="55">

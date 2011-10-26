@@ -52,13 +52,13 @@ package Caps
 		{	
 			var phyInit : Object = { radius: AppParams.Screen2Physic( Radius ),
 									 isBullet: true, 				// UseCCD: Detección de colisión continua (Ninguna chapa se debe atravesar)
-									 mass: 1.7,
+									 mass: 4,
 									 isSleeping: true,
 									 allowSleep: true, 
 									 friction: .3, 
-									 restitution:/*.3*/.6,			// Fuerza que recupera en un choque 
-									 linearDamping: /*2*/5, 
-									 angularDamping: 5 }
+									 restitution: .8,			// Fuerza que recupera en un choque (old: 0.6)
+									 linearDamping: 8, 
+									 angularDamping: 8 }
 				
 			var asset:Class = null;
 				

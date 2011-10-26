@@ -23,8 +23,8 @@ package Caps
 		public static const RadiusPaseAlPie:int = 18; //30;		// El radio en el cual si se queda la pelota despúes de chocar contigo, se queda en tu pie
 		public static const RadiusSteal:int = 18; //25;			// El radio de robo  
 				
-		public static const MinCapImpulse:Number = 80.0;	// Intensidad MÁXIMA que se le aplica a una chapa cuando se dispara a la máxima potencia (con una chapa de potencia 0)
-		public static const MaxCapImpulse:Number = 120.0;	// Intensidad MÁXIMA que se le aplica a una chapa cuando se dispara a la máxima potencia (con una chapa de potencia 100)
+		public static const MinCapImpulse:Number = 350.0;	// Intensidad MÁXIMA que se le aplica a una chapa cuando se dispara a la máxima potencia (con una chapa de potencia 0)
+		public static const MaxCapImpulse:Number = 350.0;	// Intensidad MÁXIMA que se le aplica a una chapa cuando se dispara a la máxima potencia (con una chapa de potencia 100)
 		
 		public static const MaxHitsPerTurn:int = 2;				// Nº de disparos máximos por turno si no se toca la pelota
 		public static const MaxNumPasesAlPie:int = 3;			// No de pases al pie máximos permitidos

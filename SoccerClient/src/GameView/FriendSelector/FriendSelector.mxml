@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 width="600" height="500"
 		 creationComplete="CreationCompleteHandler(event)"
-		 currentState="Selecting">
+		 currentState="Selecting" xmlns:GameView="GameView.*">
 	
 	<fx:Style source="../styles.css"/>
 	
@@ -160,37 +160,72 @@
 		
 	]]></fx:Script>
 	
-	<s:BitmapImage x="0" y="0" source="@Embed(source='/Assets/General.swf', symbol='PopupDialogBg')" fillMode="scale" width="600" height="500" />
+	<GameView:PopupBackground width="600" height="500" />
 	
 	<s:Group includeIn="Waiting" width="600" height="500">
 		<s:Label horizontalCenter="0" verticalCenter="0" text="Waiting... TO-DO TO-DO TO-DO" styleName="whiteBoldBig"/>
 	</s:Group>
 	
 	<s:Group includeIn="Selecting" width="600" height="500">
-		<s:TextInput id="MySearchInput" width="150" right="20" bottom="10" prompt="Buscar amigo" maxChars="50" change="MySearchInputChange(event)"/>
 		
-		<s:Button label="CERRAR" click="CloseClickHandler(event)" minWidth="80" horizontalCenter="-50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
-		<s:Button label="Enviar" click="SendClickHandler(event)" minWidth="80" horizontalCenter="50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+		<s:TextInput id="MySearchInput" width="300" right="20" top="80" prompt="Buscar amigo" maxChars="50" change="MySearchInputChange(event)"/>
 		
-		<s:Scroller horizontalScrollPolicy="off" left="20" right="20" top="20" bottom="200">
-			<s:Group>
-				<s:List id="MyFriendsList" dataProvider="{mSelectableFriends}" left="0" right="0" height="100%" 
-						itemRenderer="GameView.FriendSelector.FriendItem" useVirtualLayout="true" 
-						change="OnMyFriendListChangeHandler(event)">
-					<s:layout><s:TileLayout columnWidth="125" rowHeight="125" /></s:layout>
-				</s:List>
-			</s:Group>
-		</s:Scroller>
+		<s:Rect left="20" right="20" top="111" height="197" radiusX="4">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#CCCCCC" joints="miter" miterLimit="4"
+									weight="2"/>
+			</s:stroke>
+			<s:fill>
+				<s:SolidColor color="#DDD9D9"/>
+			</s:fill>
+			<s:filters>
+				<s:DropShadowFilter alpha="0.5" angle="90" blurX="40" blurY="40" color="#000000"
+									distance="0" hideObject="false" inner="true" knockout="false"
+									quality="2" strength="1.1"/>
+			</s:filters>
+		</s:Rect>
 		
-		<s:Scroller horizontalScrollPolicy="on" verticalScrollPolicy="off" left="20" right="20" bottom="30" height="160">
-			<s:Group>
-				<s:List id="MySelectedList" dataProvider="{mSelectedFriends}" left="0" right="0" height="100%" 
-						itemRenderer="GameView.FriendSelector.FriendItem" useVirtualLayout="true"
-						change="OnMySelectedListChangeHandler(event)">
-					<s:layout><s:HorizontalLayout gap="20" /></s:layout>
-				</s:List>
-			</s:Group>
-		</s:Scroller>
+		<s:List id="MyFriendsList" dataProvider="{mSelectableFriends}" left="20" right="20" top="110" height="200"
+				horizontalScrollPolicy="off"
+				itemRenderer="GameView.FriendSelector.FriendItem" useVirtualLayout="true" 
+				change="OnMyFriendListChangeHandler(event)"
+				skinClass="GameView.Skins.DefaultListSkin">
+			<s:layout><s:TileLayout columnWidth="125" rowHeight="100" /></s:layout>
+		</s:List>
+		
+		<s:Rect left="20" right="20" bottom="50" height="120" radiusX="4">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#CCCCCC" joints="miter" miterLimit="4"
+									weight="2"/>
+			</s:stroke>
+			<s:fill>
+				<s:SolidColor color="#DDD9D9"/>
+			</s:fill>
+			<s:filters>
+				<s:DropShadowFilter alpha="0.5" angle="90" blurX="40" blurY="40" color="#000000"
+									distance="0" hideObject="false" inner="true" knockout="false"
+									quality="2" strength="1.1"/>
+			</s:filters>
+		</s:Rect>
+
+		<s:List id="MySelectedList" dataProvider="{mSelectedFriends}" left="20" right="20" bottom="50" height="120"
+				verticalScrollPolicy="off"
+				horizontalScrollPolicy="on"
+				itemRenderer="GameView.FriendSelector.FriendItem" useVirtualLayout="true"
+				change="OnMySelectedListChangeHandler(event)"
+				skinClass="GameView.Skins.DefaultListSkin">
+			<s:layout><s:HorizontalLayout gap="20" /></s:layout>
+		</s:List>
+		
+		<s:Group bottom="15" horizontalCenter="0">
+			<s:layout>
+				<s:HorizontalLayout gap="20" />
+			</s:layout>
+			<s:Button label="ENVIAR INVITACIÓN" click="SendClickHandler(event)" horizontalCenter="50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			<s:Button label="CERRAR" click="CloseClickHandler(event)" horizontalCenter="-50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+		</s:Group>		
+
+
 	</s:Group>
 	
 </s:Group>
