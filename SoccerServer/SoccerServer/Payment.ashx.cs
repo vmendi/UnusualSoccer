@@ -22,9 +22,9 @@ namespace SoccerServer
                 if (new CanvasAuthorizer().Authorize())
                 {
                     var signedRequest = context.Request.Params["signed_request"];
-                    var sig = Facebook.FacebookSignedRequest.Parse(context.Application["FacebookSettings"] as IFacebookApplication, signedRequest);
+                    var sig = Facebook.FacebookSignedRequest.Parse(Global.Instance.FacebookSettings, signedRequest);
 
-                    Log.log(Global.GLOBAL, "Purchase request from user: " + sig.UserId);
+                    Log.log(Global.GLOBAL_LOG, "Purchase request from user: " + sig.UserId);
 
                     string method = context.Request.Form["method"];
 
@@ -47,7 +47,7 @@ namespace SoccerServer
                     }
                     else if (method == null)
                     {
-                        Log.log(Global.GLOBAL, "Call to payment.ashx without method (probably manually)");
+                        Log.log(Global.GLOBAL_LOG, "Call to payment.ashx without method (probably manually)");
                     }
                     else
                     {
@@ -233,17 +233,17 @@ namespace SoccerServer
 
                 if (thePurchase != null)
                 {
-                    Log.log(Global.GLOBAL, "Order ID: " + thePurchase.FacebookOrderID);
-                    Log.log(Global.GLOBAL, "FacebookBuyerID: " + thePurchase.FacebookBuyerID + " - " + fb_id);
-                    Log.log(Global.GLOBAL, "Price: " + thePurchase.Price + " - " + credsspent);
-                    Log.log(Global.GLOBAL, "Item ID: " + thePurchase.ItemID + " - " + item_id);
+                    Log.log(Global.GLOBAL_LOG, "Order ID: " + thePurchase.FacebookOrderID);
+                    Log.log(Global.GLOBAL_LOG, "FacebookBuyerID: " + thePurchase.FacebookBuyerID + " - " + fb_id);
+                    Log.log(Global.GLOBAL_LOG, "Price: " + thePurchase.Price + " - " + credsspent);
+                    Log.log(Global.GLOBAL_LOG, "Item ID: " + thePurchase.ItemID + " - " + item_id);
                 }
                 else
                 {
-                    Log.log(Global.GLOBAL, "Order ID not found: " + order_id);
+                    Log.log(Global.GLOBAL_LOG, "Order ID not found: " + order_id);
                 }
 
-                Log.log(Global.GLOBAL, "-----------------------------------------------------------------------<");                
+                Log.log(Global.GLOBAL_LOG, "-----------------------------------------------------------------------<");                
             }
 
             return thePurchase;
@@ -251,12 +251,12 @@ namespace SoccerServer
 
         static private void CriticalLog(string message)
         { 
-            Log.log(Global.GLOBAL, ">-----------------------------------------------------------------------");
-            Log.log(Global.GLOBAL, "----------------- Big blunder in the purchase system  ------------------");
-            Log.log(Global.GLOBAL, "------------------------ Inmediate review!!!  --------------------------");
-            Log.log(Global.GLOBAL, "------------------------------------------------------------------------");
-            Log.log(Global.GLOBAL, message);
-            Log.log(Global.GLOBAL, "------------------------------------------------------------------------");
+            Log.log(Global.GLOBAL_LOG, ">-----------------------------------------------------------------------");
+            Log.log(Global.GLOBAL_LOG, "----------------- Big blunder in the purchase system  ------------------");
+            Log.log(Global.GLOBAL_LOG, "------------------------ Inmediate review!!!  --------------------------");
+            Log.log(Global.GLOBAL_LOG, "------------------------------------------------------------------------");
+            Log.log(Global.GLOBAL_LOG, message);
+            Log.log(Global.GLOBAL_LOG, "------------------------------------------------------------------------");
         }
 
         private void ProcessGetItems(HttpContext context)

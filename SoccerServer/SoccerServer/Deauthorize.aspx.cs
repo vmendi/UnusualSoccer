@@ -18,9 +18,9 @@ namespace SoccerServer
             
             try
             {
-                var sig = Facebook.FacebookSignedRequest.Parse(Application["FacebookSettings"] as IFacebookApplication, signedRequest);
+                var sig = Facebook.FacebookSignedRequest.Parse(Global.Instance.FacebookSettings, signedRequest);
 
-                Log.log(Global.GLOBAL, "Deauthoring " + sig.UserId.ToString() + "...");
+                Log.log(Global.GLOBAL_LOG, "Deauthoring " + sig.UserId.ToString() + "...");
 
                 using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
                 {
@@ -35,7 +35,7 @@ namespace SoccerServer
             }
             catch (Exception exc)
             {
-                Log.log(Global.GLOBAL, "Exception while deauthorizing: " + exc);
+                Log.log(Global.GLOBAL_LOG, "Exception while deauthorizing: " + exc);
             }
 		}
 	}

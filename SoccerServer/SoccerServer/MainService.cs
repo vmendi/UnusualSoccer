@@ -138,9 +138,7 @@ namespace SoccerServer
 			name = name.Replace("ò", "o");
 			name = name.Replace("ù", "u");
 
-			bool bRet = PROFANE_WORDS.Any(word => name.Contains(word));
-
-			return bRet;
+			return PROFANE_WORDS.Any(word => name.Contains(word));
 		}
 		
 		static private string PlayerToString(Player player)

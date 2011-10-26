@@ -18,7 +18,7 @@ namespace SoccerServer
         protected void Page_Load(object sender, EventArgs e)
         {            
             // Cargamos nuestros settings procedurales que nos deja ahi Global.asax
-            FacebookApplication.SetApplication(Application["FacebookSettings"] as IFacebookApplication);
+            FacebookApplication.SetApplication(Global.Instance.FacebookSettings as IFacebookApplication);
 
             if (Request.QueryString.AllKeys.Contains("FakeSessionKey"))
             {
@@ -89,9 +89,9 @@ namespace SoccerServer
 
         protected void RunGlobalReplacements(StringBuilder pageSource)
         {
-            IFacebookApplication theFBApp = Application["FacebookSettings"] as IFacebookApplication;
-            var unusualSoccerSettings = Application["UnusualSoccerSettings"] as Dictionary<string, string>;
-            var unusualSoccerClientSettings = Application["UnusualSoccerClientSettings"] as Dictionary<string, string>;
+            var theFBApp = Global.Instance.FacebookSettings;
+            var serverSettings = Global.Instance.ServerSettings;
+            var clientSettings = Global.Instance.ClientSettings;
 
             pageSource.Replace("${version_major}", "10");
             pageSource.Replace("${version_minor}", "0");
@@ -106,18 +106,18 @@ namespace SoccerServer
             pageSource.Replace("${facebookCanvasUrl}", theFBApp.CanvasUrl);
             pageSource.Replace("${facebookAppId}", theFBApp.AppId);
 
-            pageSource.Replace("${title}", unusualSoccerSettings["Title"]);
-            pageSource.Replace("${siteName}", unusualSoccerSettings["Title"]);
-            pageSource.Replace("${description}", unusualSoccerSettings["Description"]);
-            pageSource.Replace("${imageUrl}", unusualSoccerSettings["ImageUrl"]);
+            pageSource.Replace("${title}", serverSettings["Title"]);
+            pageSource.Replace("${siteName}", serverSettings["Title"]);
+            pageSource.Replace("${description}", serverSettings["Description"]);
+            pageSource.Replace("${imageUrl}", serverSettings["ImageUrl"]);
 
             // Parametros de entrada al SWF
             string flashVars = " { "; 
             foreach (string key in Request.QueryString.AllKeys)
                 flashVars += key + ": '" + Request.QueryString[key] + "' ,";
 
-            foreach (string key in unusualSoccerClientSettings.Keys)
-                flashVars += key + ": '" + unusualSoccerClientSettings[key] + "' ,";
+            foreach (string key in clientSettings.Keys)
+                flashVars += key + ": '" + clientSettings[key] + "' ,";
 
             flashVars += "AppId: '" + theFBApp.AppId + "' ,";
             flashVars += "CanvasPage: '" + theFBApp.CanvasPage + "' ,";

@@ -65,7 +65,7 @@ package GameModel
 		private function OnSeasonEndDateRefreshed(e:ResultEvent):void
 		{
 			SeasonEndDate = e.result as Date;
-			
+
 			OnRefreshTimer(null);
 		}
 				

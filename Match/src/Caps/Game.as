@@ -1308,7 +1308,7 @@ package Caps
 			
 			// Nos quedamos en el estado "EndGame" que no hace nada
 			ChangeState( GameState.EndGame );
-			
+						
 			Playing = false;
 			
 			// No permitimos entrada de interface. Esto cancela los Controllers => los remueve de la stage

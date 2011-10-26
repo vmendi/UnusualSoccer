@@ -16,6 +16,8 @@ package
 	import flash.net.URLRequestMethod;
 	
 	import mx.core.FlexGlobals;
+	import mx.messaging.Channel;
+	import mx.messaging.ChannelSet;
 	import mx.messaging.config.ServerConfig;
 	import mx.utils.URLUtil;
 	
@@ -28,9 +30,6 @@ package
 	{		
 		public function Init(callback:Function, requestedFakeSessionKey : String = null) : void
 		{
-			if (mFakeSessionKey != null || mFBAuthResponse != null)
-				throw new Error("No se puede inicializar dos veces");
-			
 			if (AppConfig.REMOTE == "true")
 			{
 				if (AppConfig.FAKE_SESSION_KEY == null)
@@ -87,12 +86,18 @@ package
 		{
 			var current : String = ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
 			
-			// Cuando nos llaman una segunda vez debido a un Fault
+			// Cuando nos llaman una segunda vez debido a un Fault o a un ServerTest
 			if (current.indexOf("?") != -1)
 				current = current.substr(0, current.indexOf("?"));
 
 			ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri = current + "?SessionKey=" + SessionKey;
-		}	
+
+			var channelSet : ChannelSet = ServerConfig.getChannelSet("GenericDestination");
+			channelSet.disconnectAll();
+			
+			var theChannel : Channel = ServerConfig.getChannel("my-amf");
+			theChannel.uri = ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
+		}
 		
 		private function EnsureSessionIsCreatedOnServer(sessionKey : String, onCompleted:Function) : void
 		{

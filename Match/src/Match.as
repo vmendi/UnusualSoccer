@@ -1,11 +1,9 @@
 package
 {
 	import Caps.AppParams;
-	import Caps.Cap;
 	import Caps.Game;
 	
 	import Framework.AudioManager;
-	import Framework.Random;
 	
 	import com.greensock.TweenMax;
 	
@@ -14,11 +12,9 @@ package
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
-	import flash.events.MouseEvent;
 	
 	import utils.GenericEvent;
 	
-	//[SWF(width="800", height="600", frameRate="20", backgroundColor="#445878")]
 	[SWF(width="800", height="600", frameRate="30")]
 	public class Match extends Sprite
 	{		
@@ -115,7 +111,7 @@ package
 			removeEventListener(Event.ENTER_FRAME, OnFrame);
 			AudioManager.Shutdown();
 			TweenMax.killAll();
-			Game.TheGamePhysics.TheBox2D.destroy();
+			Game.TheGamePhysics.Shutdown();
 
 			// Internamente nadie puede llamarnos mas
 			Instance = null;
@@ -127,11 +123,11 @@ package
 		//
 		// Desde fuera nos cierran el partido
 		//
-		public function ForceMatchFinish( ) : void
+		public function ForceMatchFinish() : void
 		{
 			// Generamos un cierre voluntario
 			if( Game.TheInterface != null )
-				Game.TheInterface.OnAbandonar( null );
+				Game.TheInterface.OnAbandonar(null);
 		}
 		
 		private var _Game:Caps.Game;

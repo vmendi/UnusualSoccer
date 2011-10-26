@@ -129,7 +129,7 @@ package Framework
 			
 			// Es un objeto estático, debe existir siempre.
 			// Para que se destruya el contenido del objeto lo recreamos!
-			Sounds = new Array();		
+			Sounds = new Array();
 		}
 	}
 }

@@ -4,11 +4,11 @@
 puts "Hello World"
 
 $address = 'http://mahouligachapas.unusualwonder.com/TestForm.aspx'
-$address = 'http://localhost/TestForm.aspx'
+$address = 'http://localhost/'
 
-$testName = 'Test02'
+$testName = 'Test06'
 
-for i in 1...10
+for i in 1...4
 
   $addressFinal = $address + '?FakeSessionKey=' + i.to_s + "&Test=" + $testName
 

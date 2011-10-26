@@ -77,6 +77,12 @@ package Caps
 			TheBox2D.start();
 		}
 		
+		public function Shutdown() : void
+		{
+			if (TheBox2D.main.stage != null)
+				TheBox2D.destroy();
+		}
+		
 		public function Shoot(cap : Cap, dir : Point, force : Number) : void
 		{
 			// Tenemos memoria de todo lo que ocurrio en la ultima simulacion hasta que vuelven a disparar

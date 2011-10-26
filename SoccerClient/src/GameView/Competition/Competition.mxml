@@ -33,7 +33,10 @@
 
 			// Se produce el AddedToStage antes q el CreationComplete (solo la primera vez, luego no se produce mas el CreationComplete, claro)
 			if (mCompetitionModel != null)
+			{
 				mCompetitionModel.RefreshGroup(OnGroupRefreshed);
+				mCompetitionModel.RefreshSeasonEndDate();
+			}
 		}
 		
 		protected function CreationCompleteHandler(event:FlexEvent):void
@@ -44,6 +47,7 @@
 			BindingUtils.bindSetter(OnHasCreditChanged, mGameModel.TheTicketModel, ["HasCredit"]);
 			
 			mCompetitionModel.RefreshGroup(OnGroupRefreshed);
+			mCompetitionModel.RefreshSeasonEndDate();
 		}
 		
 		private function OnHasCreditChanged(hasCredit : Boolean) : void
