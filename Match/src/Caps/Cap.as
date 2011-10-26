@@ -56,9 +56,9 @@ package Caps
 									 isSleeping: true,
 									 allowSleep: true, 
 									 friction: .3, 
-									 restitution: .2,			// Fuerza que recupera en un choque (old: 0.6)
-									 linearDamping: 5, 
-									 angularDamping: 5 }
+									 restitution: .8,			// Fuerza que recupera en un choque (old: 0.6)
+									 linearDamping: 8, 
+									 angularDamping: 8 }
 				
 			var asset:Class = null;
 				

@@ -23,15 +23,15 @@ package Caps
 			super(Embedded.Assets.Ball, Match.Ref.Game.GameLayer, PhyEntity.Circle, {
 				  categoryBits:4,
 				  maskBits: 1 + 2 + 4,		// Choca con todo excepto con BackPorteria y SmallArea
-				  mass: 0.05, //0.04
+				  mass: 3, //0.04
 				  fixedRotation: true,		// If set to true the rigid body will not rotate.
 				  isBullet: true, 			// UseCCD: Detección de colisión continua
 				  radius:AppParams.Screen2Physic( Radius ), 
 				  isSleeping: true,
 				  allowSleep: true, 
-				  linearDamping: 4, 
-				  angularDamping: 4, 
-				  friction:.2, 
+				  linearDamping: 6, 
+				  angularDamping: 6, 
+				  friction: .2, 
 				  restitution: .8 } );	// Fuerza que recupera en un choque (old: 0.4)
 			
 			// Reasignamos la escala del balón, ya que la física lo escala para que encaje con el radio físico asignado

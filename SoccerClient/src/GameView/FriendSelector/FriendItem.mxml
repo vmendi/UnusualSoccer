@@ -6,9 +6,24 @@
 				clipAndEnableScrolling="true"
 				contentBackgroundColor="0xFF0000">
 	
-	<s:layout><s:VerticalLayout /></s:layout>
+	<s:layout><s:VerticalLayout horizontalAlign="center" /></s:layout>
 	
-	<GameView:FacebookPicture FacebookID="{data.FacebookID}" Size="square" />
-	<s:Label text="{data.Name}" maxDisplayedLines="3" width="100%" height="50"/>
+	<s:Group>
+		<mx:Image top="0" left="0" scaleContent="false"
+				  source="@Embed(source='/Assets/General.swf', symbol='CapDetailBg')" />
+		<GameView:FacebookPicture FacebookID="{data.FacebookID}" maskType="alpha" scaleX="0.88" scaleY="0.88" top="9" left="9">
+			<GameView:mask>
+				<s:Group>
+					<s:Ellipse width="50" height="50">
+						<s:fill>
+							<s:SolidColor color="#000000" alpha="1" />
+						</s:fill>
+					</s:Ellipse>
+				</s:Group>
+			</GameView:mask>
+		</GameView:FacebookPicture>
+	</s:Group>
+	
+	<s:Label text="{data.Name}" maxDisplayedLines="2" width="125" height="30" textAlign="center" styleName="blackBoldMedium"/>
 	
 </s:ItemRenderer>

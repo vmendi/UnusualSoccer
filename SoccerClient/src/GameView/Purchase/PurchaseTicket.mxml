@@ -3,7 +3,7 @@
 					   xmlns:s="library://ns.adobe.com/flex/spark"
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   xmlns:Purchase="GameView.Purchase.*"
-					   width="356" height="212">
+					   width="356" height="212" xmlns:GameView="GameView.*">
 	
 	<fx:Style source="../styles.css"/>
 	
@@ -24,8 +24,7 @@
 		
 	]]></fx:Script>
 	
-	<s:BitmapImage x="0" y="0" fillMode="clip"
-				   source="@Embed(source='/Assets/General.swf', symbol='PopupDialogBg')"/>
+	<GameView:PopupBackground width="356" height="212" />
 	
 	<s:Group id="MyChooseItemGroup" includeIn="ChoosingItem" horizontalCenter="0" verticalCenter="0">
 		<s:layout><s:HorizontalLayout gap="20" horizontalAlign="center" verticalAlign="middle"/></s:layout>

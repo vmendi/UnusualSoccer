@@ -369,7 +369,7 @@ package Caps
 						if (TheGamePhysics.GetFirstTouchedCapLastRun() != null)
 						{
 							trace("ralentizo");
-							TheBall.SetSpeedFactor(0.3);
+							//TheBall.SetSpeedFactor(0.0);
 						}
 						
 						InfluenceController.UpdateInfluences(_RemainingHits, _RemainingPasesAlPie);
