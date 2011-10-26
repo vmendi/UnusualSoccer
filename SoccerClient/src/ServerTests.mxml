@@ -40,30 +40,37 @@
 
 		private function Test01() : void
 		{
-			var current : int = 0;
-
+			var rand : int = RandUtils.RandIntBetween(1000, 1000000);
+			
 			InitTest();
 						
 			function InitTest() : void
-			{
-				if (current < 1000)
-				{
-					SoccerClient.GetFacebookFacade().Init(OnTestFacebookInit, current.toString());
-					current++;
-				}
-				else
-					AppendLine("Test01 end");
+			{				
+				AppendLine("Intento de creación de equipo " + rand);
+				SoccerClient.GetFacebookFacade().Init(OnTestFacebookInit, rand.toString());
 			}
 			
 			function OnTestFacebookInit() : void
 			{
-				mMainGameModel.TheTeamModel.CreateTeam("TestTeam" + current, RandUtils.RandIntBetween(1, 20), InitTest, OnFailed);				
-				SetLine(1, "Intento de creación de equipo " + current.toString());
+				mMainGameModel.TheTeamModel.HasTeam(OnHasTeamResponse);
+			}
+						
+			function OnHasTeamResponse(hasTeam : Boolean) : void
+			{
+				if (hasTeam)
+					AppendLine("El equipo ya existia");
+				else
+					mMainGameModel.TheTeamModel.CreateTeam("TestTeam" + rand, RandUtils.RandIntBetween(1, 20), OnCreateTeamSuccess, OnFailed);
 			}
 			
+			function OnCreateTeamSuccess() : void
+			{
+				AppendLine("Equipo creado con exito");
+			}
+						
 			function OnFailed() : void
 			{
-				InitTest();
+				AppendLine("Fallo");
 			}
 		}
 		

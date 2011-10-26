@@ -47,11 +47,12 @@ package GameModel
 		}
 		
 		//
-		// No queremos que se nos queden timers
+		// No queremos que se nos queden timers cuando se produce un error y se da la OnCleaningShutdownSignal
 		//
 		public function OnCleaningShutdown() : void
 		{
-			mTrainingModel.CleaningShutdown();	
+			mTrainingModel.CleaningShutdown();
+			mCompetitionModel.CleaningShutdown();
 		}
 
 		[Bindable(event="dummy")]

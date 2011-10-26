@@ -14,7 +14,6 @@
 		import SoccerServer.DataTypeInitializer;
 		
 		import mx.events.FlexEvent;
-		import mx.resources.ResourceManager;
 			
 		protected function ApplicationCompleteHandler(event:FlexEvent):void
 		{
@@ -33,13 +32,13 @@
 			// Para que las estructuras creadas por weborb existan
 			var dataTypeInit : DataTypeInitializer = new DataTypeInitializer();
 
-			if (AppConfig.TEST_NAME != null)
+			if (AppConfig.TEST != null)
 			{
 				mFacebookFacade = new FacebookFacade();
 				mMainGameModel = new MainGameModel();
 				
 				MyServerTests.visible = true;
-				MyServerTests.ExecuteTest(AppConfig.TEST_NAME);
+				MyServerTests.ExecuteTest(AppConfig.TEST);
 			}
 			else
 			{

@@ -28,7 +28,7 @@
         public var RefreshMatchStatsForTeamResult:TeamMatchStats;     
         public var RefreshPredefinedTeamsResult:ArrayCollection;     
         public var RefreshRankingPageResult:RankingPage;     
-        public var RefreshSelfRankingPageResult:RankingPage;     
+        public var RefreshSeasonEndDateResult:Date;     
         public var RefreshTeamResult:Team;     
         public var RefreshTeamDetailsResult:TeamDetails;     
         public var RefreshTrainingDefinitionsResult:ArrayCollection;     

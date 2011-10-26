@@ -59,6 +59,20 @@ namespace SoccerServer
             return ret;
         }
 
+        private const int SEASON_DURATION_DAYS = 3;     // Las competiciones duran 2 dias
+        private const int SEASON_HOUR_STARTTIME = 3;    // A las 3 de la mañana
+
+        [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 10000)]
+        public DateTime RefreshSeasonEndDate()
+        {
+            var context = new SoccerDataModelDataContext();
+            var currentSeason = GetCurrentSeason(context);
+
+            // Momento pronosticado en el que se acabara la temporada
+            DateTime seasonEnd = currentSeason.CreationDate.AddDays(SEASON_DURATION_DAYS);
+            return new DateTime(seasonEnd.Year, seasonEnd.Month, seasonEnd.Day, SEASON_HOUR_STARTTIME, 0, 0, 0, seasonEnd.Kind);
+        }
+        
         /*
         internal static void PreprocessAllTeams()
         {

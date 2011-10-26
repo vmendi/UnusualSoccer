@@ -59,7 +59,6 @@ package Caps
 			potenciaTiro.visible = true;
 		}
 		
-		
 		public override function Stop( result:int ):void
 		{
 			super.Stop( result );
@@ -89,7 +88,7 @@ package Caps
 		// Comprueba si tiene un valor válido
 		// NOTE: La flecha tiene que salir de la chapa para ser válida!
 		//
-		public override function IsValid( ) : Boolean
+		public override function IsValid() : Boolean
 		{
 			// Obtenemos la dirección truncada a la máxima longitud
 			var dir:Point = Direction;
@@ -103,7 +102,7 @@ package Caps
 		{			
 			super.MouseMove(e);
 			
-			angle = Math.atan2(  - ( canvas.mouseY - yInit ), - ( canvas.mouseX - xInit ) );
+			angle = Math.atan2(-( canvas.mouseY - yInit ), -( canvas.mouseX - xInit ));
 			
 			//trace( "Mouse move recieved in : " + canvas.mouseX.toString() + "," + canvas.mouseY.toString() );   
 
@@ -162,7 +161,7 @@ package Caps
 		// Obtenemos el vector de dirección del disparo
 		// NOTE: El vector estará truncado a una longitud máxima de maxLongLine 
 		// 
-		public override function get Direction(  ) : Point
+		public override function get Direction() : Point
 		{
 			var dir:Point = super.Direction;
 			var distance:Number = dir.length;
@@ -181,7 +180,7 @@ package Caps
 		//
 		// Obtiene la fuerza de disparo como un valor de ( 0 - 1.0)
 		// 
-		public function get Force(  ) : Number
+		public function get Force() : Number
 		{
 			var len:Number = Direction.length - Cap.Radius;
 			

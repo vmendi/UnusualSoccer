@@ -19,7 +19,7 @@ package
 	import utils.GenericEvent;
 	
 	//[SWF(width="800", height="600", frameRate="20", backgroundColor="#445878")]
-	[SWF(width="800", height="600")]
+	[SWF(width="800", height="600", frameRate="30")]
 	public class Match extends Sprite
 	{		
 		static private var Instance:Match = null;				// Instancia única de la aplicación

@@ -1292,8 +1292,7 @@ package Caps
 		}
 		
 		//
-		// Nuestro enemigo se ha desconectado en medio del partido
-		// Hacemos una salida limpia, cerrando el servidor y notificando al manager
+		// Nuestro enemigo se ha desconectado en medio del partido. Nosotros hacemos una salida limpia
 		//
 		public function PushedOpponentDisconnected ( result:Object ) : void
 		{
@@ -1301,11 +1300,7 @@ package Caps
 		}
 
 		// 
-		// Finaliza INMEDIATAMENTE el partido. Para ello:
-		//   - Detiene interface de entrada/juego
-		//	 - Cierra el servidor y notifica hacia afuera de la finalización 
-		// 
-		//	NOTE: En los casos de cierre por finalización normal de partido o porque abortan se pasa por aquí 
+		// Finaliza INMEDIATAMENTE el partido. Es el Shutdown de verdad. Llama al Shutdown global de Match.
 		//
 		public function Finish( result:Object ) : void
 		{
@@ -1314,8 +1309,9 @@ package Caps
 			// Nos quedamos en el estado "EndGame" que no hace nada
 			ChangeState( GameState.EndGame );
 			
-			// Pausamos el juego y no permitimos entrada de interface
 			Playing = false;
+			
+			// No permitimos entrada de interface. Esto cancela los Controllers => los remueve de la stage
 			TheInterface.UserInputEnabled = false;
 			
 			Match.Ref.Shutdown(result);
