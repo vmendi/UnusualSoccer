@@ -366,8 +366,8 @@ package Caps
 					}
 					else
 					{	
-						if (TheGamePhysics.GetFirstTouchedCapLastRun() != null)
-							TheBall.SetSpeedFactor(0.3);
+						/*if (TheGamePhysics.GetFirstTouchedCapLastRun() != null)
+							TheBall.SetSpeedFactor(0.3);*/
 
 						Influences.UpdateInfluences(_RemainingHits, _RemainingPasesAlPie);
 					}
