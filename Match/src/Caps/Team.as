@@ -69,7 +69,7 @@ package Caps
 		
 		protected var Skill:Array = null;						// Lista de habilidades. Una entrada para cada habilidad, si no la tiene es null
 		
-		public var Ghost:ImageEntity = null;					// Ghost utilizado para decidir donde colocarás el portero
+		public var Ghost:Entity = null;					// Ghost utilizado para decidir donde colocarás el portero
 		
 		public var UseSecondaryEquipment:Boolean = false;		// Indica si utiliza la equipacion secundaria
 		
@@ -105,7 +105,7 @@ package Caps
 			ResetToCurrentFormation();
 						
 			// Creamos una imagen de chapa Ghost (la utilizaremos para indicar donde mover el portero)
-			Ghost = new ImageEntity(Embedded.Assets.Goalkeeper, Match.Ref.Game.GameLayer);
+			Ghost = new Entity(Embedded.Assets.Goalkeeper, Match.Ref.Game.GameLayer);
 			Ghost.Visual.gotoAndStop( Name );
 			Ghost.Visual.alpha = 0.4;
 			Ghost.Visual.visible = false;
@@ -214,12 +214,12 @@ package Caps
 			var formation:Array = null;
 			
 			if( AppParams.OfflineMode )
-				formation = OfflineFormations.Position[0];
+				formation = Match.Ref.Formations[0];
 			else
-				formation = Match.Ref.Formations[ formationName ];
+				formation = Match.Ref.Formations[formationName];
 			
-			if( formation == null )
-				throw new Error( "No existe la formación solicitada " + formationName );
+			if (formation == null)
+				throw new Error( "No existe la formación solicitada " + formationName);
 
 			return formation;
 		}

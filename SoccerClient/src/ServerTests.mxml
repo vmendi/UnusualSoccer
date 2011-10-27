@@ -17,6 +17,7 @@
 		import SoccerServer.TransferModel.vo.RankingPage;
 		
 		import com.greensock.TweenLite;
+		import com.greensock.TweenMax;
 		import com.greensock.TweenNano;
 		
 		import mx.binding.utils.BindingUtils;
@@ -40,30 +41,80 @@
 
 		private function Test01() : void
 		{
-			var current : int = 0;
-
+			var rand : int = RandUtils.RandIntBetween(1000, 1000000);
+			
 			InitTest();
 						
 			function InitTest() : void
-			{
-				if (current < 1000)
-				{
-					SoccerClient.GetFacebookFacade().Init(OnTestFacebookInit, current.toString());
-					current++;
-				}
-				else
-					AppendLine("Test01 end");
+			{				
+				AppendLine("Intento de creación de equipo " + rand);
+				SoccerClient.GetFacebookFacade().Init(OnTestFacebookInit, rand.toString());
 			}
 			
 			function OnTestFacebookInit() : void
 			{
-				mMainGameModel.TheTeamModel.CreateTeam("TestTeam" + current, RandUtils.RandIntBetween(1, 20), InitTest, OnFailed);				
-				SetLine(1, "Intento de creación de equipo " + current.toString());
+				mMainGameModel.TheTeamModel.HasTeam(OnHasTeamResponse);
+			}
+						
+			function OnHasTeamResponse(hasTeam : Boolean) : void
+			{
+				if (hasTeam)
+					AppendLine("El equipo ya existia");
+				else
+					mMainGameModel.TheTeamModel.CreateTeam("TestTeam" + rand, RandUtils.RandIntBetween(1, 20), OnCreateTeamSuccess, OnFailed);
+			}
+			
+			function OnCreateTeamSuccess() : void
+			{
+				AppendLine("Equipo creado con exito");
+			}
+						
+			function OnFailed() : void
+			{
+				AppendLine("Fallo");
+			}
+		}
+		
+		private function Test12() : void
+		{
+			var currentTeam : int = -1;
+			
+			InitTest();
+			
+			function InitTest() : void
+			{
+				mMainGameModel.TheRealtimeModel.Disconnect();
+				mMainGameModel = new MainGameModel();
+				currentTeam++;
+				SetLine(1, "Intento de creación de equipo " + currentTeam);
+				SoccerClient.GetFacebookFacade().Init(OnTestFacebookInit, currentTeam.toString());
+			}
+			
+			function OnTestFacebookInit() : void
+			{
+				mMainGameModel.TheTeamModel.HasTeam(OnHasTeamResponse);
+			}
+			
+			function OnHasTeamResponse(hasTeam : Boolean) : void
+			{
+				if (hasTeam)
+				{
+					SetLine(2, "Equipo ya existia " + currentTeam);
+					InitTest();
+				}
+				else
+					mMainGameModel.TheTeamModel.CreateTeam("TestTeam" + currentTeam, RandUtils.RandIntBetween(1, 20), OnCreateTeamSuccess, OnFailed);
+			}
+			
+			function OnCreateTeamSuccess() : void
+			{
+				SetLine(2, "Equipo creado con exito " + currentTeam);
+				InitTest();
 			}
 			
 			function OnFailed() : void
 			{
-				InitTest();
+				SetLine(3, "Fallo");
 			}
 		}
 		
@@ -108,7 +159,7 @@
 					passCounter++;
 			
 					pageCounter=0;
-					mainService.RefreshRankingPage(0, new mx.rpc.Responder(onRefreshRankingPageCompleted, null));
+					mainService.RefreshRankingPage(0, new mx.rpc.Responder(onRefreshRankingPageCompleted, ErrorMessages.Fault));
 				}
 			}
 			
@@ -119,7 +170,7 @@
 				if (pageCounter < rankingPage.TotalPageCount)
 				{
 					SetLine(2, "RankingPage " + pageCounter + " complete");
-					mainService.RefreshRankingPage(pageCounter+1, new mx.rpc.Responder(onRefreshRankingPageCompleted, null));
+					mainService.RefreshRankingPage(pageCounter+1, new mx.rpc.Responder(onRefreshRankingPageCompleted, ErrorMessages.Fault));
 					pageCounter++;
 				}
 				else
@@ -198,36 +249,46 @@
 						
 			function Loopa() : void
 			{
-				TweenLite.delayedCall(1, onTime);
+				TweenMax.killAll();
+				TweenMax.delayedCall(1, onTime);
 			}
 			
 			function onMatchEnded(matchResult : Object) : void
 			{	
 				SetLine(2, "Partido finalizado " + numMatches);
 				numMatches++;
-				TweenLite.killDelayedCallsTo(forceMatchFinish);
+				TweenMax.killDelayedCallsTo(forceMatchFinish);
 				Loopa();
 			}
 
 			function onMatchStarted() : void
 			{
 				SetLine(2, "Jugando partido " + numMatches);
-				TweenLite.killDelayedCallsTo(onTime);
+				TweenMax.killDelayedCallsTo(onTime);
 				
 				loader = new Loader();
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onMatchLoaded);
-				loader.load(new URLRequest("match.swf"));
+				loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
+				loader.load(new URLRequest("SoccerClient/Match.swf"));
+			}
+			
+			function onError(e:Event):void
+			{
+				SetLine(2, "Error de carga");
+				mMainGameModel.TheRealtimeModel.Disconnect();
+				mMainGameModel = new MainGameModel();
+				startTest();
 			}
 			
 			function onMatchLoaded(e:Event) : void
 			{
 				mMainGameModel.TheRealtimeModel.OnMatchLoaded(loader.content);
-				TweenLite.delayedCall(RandUtils.RandIntBetween(3, 5), forceMatchFinish);
+				TweenMax.delayedCall(RandUtils.RandIntBetween(3, 5), forceMatchFinish);
 				loader = null;
 			}
 			
 			function forceMatchFinish() : void
-			{				
+			{
 				mMainGameModel.TheRealtimeModel.ForceMatchFinish();
 			}
 
@@ -279,7 +340,8 @@
 				SetLine(1, c.toString());
 				c++;
 
-				TweenNano.delayedCall(0.05, onLoginSuccess);
+				mMainGameModel.TheRealtimeModel.Disconnect();
+				TweenNano.delayedCall(0.05, startTest);
 			}
 		}
 		

@@ -26,7 +26,7 @@ package Caps
 		//
 		// Arranca el sistema de control direccional con el ratón
 		//
-		public function Start( _cap: Cap ): void					
+		public function Start(_cap: Cap): void					
 		{	
 			this._Target = _cap;
 			
@@ -34,7 +34,7 @@ package Caps
 			yInit = _Target.GetPos().y;					
 			
 			// Nos registramos a los eventos de entrada de todo el flash
-			AddHandlers( _Target.Visual.stage );
+			AddHandlers(_Target.Visual.stage);
 			
 			_IsStarted = true;
 			
@@ -61,9 +61,9 @@ package Caps
 		//
 		// Nos registramos a los eventos de ratón del objeto indicado "stage" 
 		//
-		protected function AddHandlers( object:DisplayObject ):void
+		protected function AddHandlers (object:DisplayObject):void
 		{
-			if( object != null )
+			if (object != null)
 			{
 				object.stage.addEventListener( MouseEvent.MOUSE_DOWN, MouseDown );
 				object.stage.addEventListener( MouseEvent.MOUSE_UP, MouseUp );	

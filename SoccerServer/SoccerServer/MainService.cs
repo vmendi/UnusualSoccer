@@ -13,6 +13,7 @@ namespace SoccerServer
 		public const String MAINSERVICE = "MAINSERVICE";
 		public const String CLIENT_ERROR = "CLIENT_ERROR";
 
+        
         public MainService()
         {
             if (!Log.isLogging(MainService.MAINSERVICE))
@@ -22,7 +23,7 @@ namespace SoccerServer
                 Log.startLogging(MainService.CLIENT_ERROR);
         }
 
-        
+                
         private SoccerDataModelDataContext CreateDataForRequest()
         {
             mContext = new SoccerDataModelDataContext();
@@ -138,9 +139,7 @@ namespace SoccerServer
 			name = name.Replace("ò", "o");
 			name = name.Replace("ù", "u");
 
-			bool bRet = PROFANE_WORDS.Any(word => name.Contains(word));
-
-			return bRet;
+			return PROFANE_WORDS.Any(word => name.Contains(word));
 		}
 		
 		static private string PlayerToString(Player player)

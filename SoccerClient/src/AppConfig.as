@@ -13,7 +13,7 @@ package
 		static public var REMOTE_SERVER : String = null;			// "mahouligachapas.unusualwonder.com"; (CANVAS_URL puede ser localhost)
 		static public var SESSION_KEY : String = null;				
 		static public var FAKE_SESSION_KEY : String = null;
-		static public var TEST_NAME : String = null;
+		static public var TEST : String = null;
 		
 		static public var REQUEST_IDS : ArrayCollection = null;
 		
@@ -43,8 +43,8 @@ package
 			if (parameters.hasOwnProperty("FakeSessionKey"))
 				FAKE_SESSION_KEY = parameters["FakeSessionKey"];
 			
-			if (parameters.hasOwnProperty("TestName"))
-				TEST_NAME = parameters["TestName"];
+			if (parameters.hasOwnProperty("Test"))
+				TEST = parameters["Test"];
 			
 			if (parameters.hasOwnProperty("request_ids"))
 				REQUEST_IDS = new ArrayCollection(parameters["request_ids"].split(","));

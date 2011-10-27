@@ -165,6 +165,9 @@ namespace SoccerServer
 
                     Team theCurrentTeam = theCurrentPlayer.Team;
 
+                    if (theCurrentTeam == null)
+                        throw new Exception("Player without Team sent a LogInToDefaultRoom");
+
                     // Unico punto de creacion del RealtimePlayer
                     RealtimePlayer theRealtimePlayer = new RealtimePlayer();
 
@@ -273,9 +276,12 @@ namespace SoccerServer
 
         static private bool CheckTicketValidity(SoccerDataModelDataContext theContext, RealtimePlayer player)
         {
-            var selfTicket =  RealtimeMatchCreator.GetPlayerForRealtimePlayer(theContext, player).Team.Ticket;
+            if (!Global.Instance.TicketingSystemEnabled)
+                return true;
 
-            return selfTicket.TicketExpiryDate > DateTime.Now || selfTicket.RemainingMatches > 0;
+            var ticket = RealtimeMatchCreator.GetPlayerForRealtimePlayer(theContext, player).Team.Ticket;
+
+            return ticket.TicketExpiryDate > DateTime.Now || ticket.RemainingMatches > 0;
         }
 
         // La habitacion tiene que estar lockeada

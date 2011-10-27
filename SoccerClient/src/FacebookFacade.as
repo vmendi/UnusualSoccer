@@ -3,11 +3,7 @@ package
 	import GameModel.RealtimeModel;
 	
 	import com.facebook.graph.Facebook;
-	import com.facebook.graph.core.FacebookJSBridge;
-	import com.facebook.graph.core.FacebookURLDefaults;
 	import com.facebook.graph.data.FacebookAuthResponse;
-	import com.facebook.graph.data.FacebookSession;
-	import com.facebook.graph.utils.FacebookDataUtils;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -15,16 +11,17 @@ package
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	
-	import mx.core.FlexGlobals;
+	import mx.messaging.Channel;
+	import mx.messaging.ChannelSet;
 	import mx.messaging.config.ServerConfig;
 	import mx.utils.URLUtil;
+	
+	import utils.Delegate;
 	
 	public final class FacebookFacade extends EventDispatcher
 	{		
 		public function Init(callback:Function, requestedFakeSessionKey : String = null) : void
 		{
-			mSuccessCallback = callback;
-			
 			if (AppConfig.REMOTE == "true")
 			{
 				if (AppConfig.FAKE_SESSION_KEY == null)
@@ -40,14 +37,7 @@ package
 			else
 			if (AppConfig.FAKE_SESSION_KEY != null || requestedFakeSessionKey != null)
 			{
-				if (requestedFakeSessionKey != null)
-					mFakeSessionKey = requestedFakeSessionKey;
-				else
-					mFakeSessionKey = AppConfig.FAKE_SESSION_KEY;
-
-				SetWeborbSessionKey();
-				
-				mSuccessCallback();
+				SetFakeSessionKey(callback, requestedFakeSessionKey != null? requestedFakeSessionKey : AppConfig.FAKE_SESSION_KEY);  
 			}
 			else
 			{
@@ -56,17 +46,17 @@ package
 				
 				// Esto generara una llamada a FB para conseguir un nuevo access_token, distinto al primero 
 				// que se le pasa por POST al servidor (dentro del signed_request)
-				Facebook.init(AppConfig.APP_ID, OnFacebookInit, { xfbml: true, oauth: true, cookie:true, frictionlessRequests:true } );
+				Facebook.init(AppConfig.APP_ID, Delegate.create(OnFacebookInit, callback), { xfbml: true, oauth: true, cookie:true, frictionlessRequests:true } );
 			}
 		}
 		
-		private function OnFacebookInit(result:Object, fail:Object) : void
+		private function OnFacebookInit(result:Object, fail:Object, callback:Function) : void
 		{
 			if (result != null)
 			{
 				mFBAuthResponse = result as FacebookAuthResponse;
 
-				mSuccessCallback();
+				callback();
 			}
 			else
 			{
@@ -75,13 +65,11 @@ package
 		}
 		
 		private function SetFakeSessionKey(callback:Function, requestedFakeSessionKey : String) : void
-		{
-			if (requestedFakeSessionKey == null)
-				throw "Invalid requested fake session key";
-			
+		{			
 			mFakeSessionKey = requestedFakeSessionKey;
-			SetWeborbSessionKey();
 			
+			SetWeborbSessionKey();
+		
 			// Tenemos que asegurar que la SessionKey está insertada en la BDD en el server
 			EnsureSessionIsCreatedOnServer(mFakeSessionKey, callback);
 		}
@@ -89,24 +77,45 @@ package
 		public function SetWeborbSessionKey() : void
 		{
 			var current : String = ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
+			
+			// Cuando nos llaman una segunda vez debido a un Fault o a un ServerTest
+			if (current.indexOf("?") != -1)
+				current = current.substr(0, current.indexOf("?"));
+
 			ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri = current + "?SessionKey=" + SessionKey;
-		}		
+
+			var channelSet : ChannelSet = ServerConfig.getChannelSet("GenericDestination");
+			channelSet.disconnectAll();
+			
+			var theChannel : Channel = ServerConfig.getChannel("my-amf");
+			theChannel.uri = ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
+		}
 		
 		private function EnsureSessionIsCreatedOnServer(sessionKey : String, onCompleted:Function) : void
 		{
 			var current : String = ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
-			var domainBase : String = URLUtil.getServerName(current);
+			var domainBase : String = "";
 			
-			var request : URLRequest = new URLRequest("http://" + domainBase + "/TestCreateSession.aspx?FakeSessionKey="+sessionKey);
+			if (URLUtil.hasTokens(current))
+				domainBase = "http://" + URLUtil.getServerName(current);
+			
+			var request : URLRequest = new URLRequest(domainBase + "/TestCreateSession.aspx?FakeSessionKey="+sessionKey);
 			request.method = URLRequestMethod.POST;
 			
 			mSessionKeyURLLoader = new URLLoader();
 			mSessionKeyURLLoader.addEventListener("complete", onLoaded);
+			mSessionKeyURLLoader.addEventListener("ioError", onError);
 			mSessionKeyURLLoader.load(request);
 			
 			function onLoaded(e:Event) : void
 			{
 				onCompleted();	
+			}
+			
+			function onError(e:Event):void
+			{
+				trace("EnsureSessionIsCreatedOnServer onError. Retrying....");
+				EnsureSessionIsCreatedOnServer(sessionKey, onCompleted);
 			}
 		}
 				
@@ -131,10 +140,7 @@ package
 		}
 						
 		private var mFakeSessionKey : String;
-		
-		private var mSuccessCallback : Function;
-		private var mFBAuthResponse:FacebookAuthResponse;
-						
+		private var mFBAuthResponse:FacebookAuthResponse;						
 		private var mSessionKeyURLLoader : URLLoader;
 	}
 }

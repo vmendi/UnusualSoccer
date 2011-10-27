@@ -7,6 +7,7 @@ package GameModel
 	import NetEngine.NetPlug;
 	
 	import SoccerServer.MainService;
+	import SoccerServer.TransferModel.vo.Team;
 	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
@@ -54,14 +55,18 @@ package GameModel
 			
 			// Basamos nuestra conexion/desconexion en la disponibilidad de credito
 			BindingUtils.bindSetter(OnHasCreditChanged, mMainModel, ["TheTicketModel", "HasCredit"]);
+			
+			// La generacion del LocalRealtimePlayer depende de que haya equipo refrescado
+			BindingUtils.bindSetter(OnTeamRefreshed, mMainModel, ["TheTeamModel", "TheTeam"]);
 		}
 		
 		private function OnHasCreditChanged(hasCredit:Boolean) : void
 		{
-			if (hasCredit)
-				InitialConnection(null);
-			else
+			if (!hasCredit)
 				Disconnect();
+			else
+			if (!IsConnected)
+				InitialConnection(null);				
 		}
 		
 		public function InitialConnection(callback : Function) : void
@@ -72,7 +77,7 @@ package GameModel
 		public function Connect(callback : Function) : void
 		{
 			if (IsConnected)
-				throw "Already connected";
+				throw new Error("Already connected");
 			
 			mURI = GetDefaultURI();
 			
@@ -96,7 +101,7 @@ package GameModel
 			mServerConnection.AddClient(this);
 			mServerConnection.Connect(mURI);
 		}
-		
+
 		
 		private function RTMPConnectionSuccess(callback : Function) : void
 		{
@@ -107,19 +112,10 @@ package GameModel
 		{
 			if (IsConnected)
 				throw new Error("WTF NetPlugConnected");
-			
-			var localRealtimePlayer : RealtimePlayer = new RealtimePlayer(null);
-			localRealtimePlayer.ClientID = -1;
-			localRealtimePlayer.PredefinedTeamName = mMainModel.TheTeamModel.PredefinedTeamName;
-			localRealtimePlayer.Name = mMainModel.TheTeamModel.TheTeam.Name;
-			
-			// Los detalles del equipo local los tiene el TeamModel
-			BindingUtils.bindProperty(localRealtimePlayer, "TheTeamDetails", mMainModel, ["TheTeamModel", "TheTeamDetails"]);
-			
-			LocalRealtimePlayer = localRealtimePlayer;
+
 			IsConnected = true;
 		}
-		
+				
 		private function NetPlugClosed() : void
 		{
 			IsConnected=false;
@@ -135,15 +131,16 @@ package GameModel
 		
 		public function Disconnect() : void
 		{
-			if (!IsConnected)
-				return;
-			
 			LocalRealtimePlayer = null;
 			TheRoomModel = null;
 			
-			mServerConnection.RemoveClient(this);
-			mServerConnection.Disconnect();	// Won't dispatch NetPlugClosed
-			mServerConnection = null;
+			if (mServerConnection != null)
+			{
+				mServerConnection.RemoveClient(this);
+				mServerConnection.Disconnect();	// Won't dispatch NetPlugClosed
+				mServerConnection = null;
+			}
+
 			IsConnected = false;
 		}
 			
@@ -187,6 +184,26 @@ package GameModel
 			{
 				if (onSuccess != null)
 					onSuccess();
+			}
+		}
+		
+		private function OnTeamRefreshed(v:Team) : void
+		{
+			if (v != null)
+			{
+				var localRealtimePlayer : RealtimePlayer = new RealtimePlayer(null);
+				localRealtimePlayer.ClientID = -1;
+				localRealtimePlayer.PredefinedTeamName = mMainModel.TheTeamModel.PredefinedTeamName;
+				localRealtimePlayer.Name = mMainModel.TheTeamModel.TheTeam.Name;
+				
+				// Los detalles del equipo local los tiene siempre sincronizados el TeamModel
+				BindingUtils.bindProperty(localRealtimePlayer, "TheTeamDetails", mMainModel, ["TheTeamModel", "TheTeamDetails"]);
+				
+				LocalRealtimePlayer = localRealtimePlayer;
+			}
+			else
+			{
+				LocalRealtimePlayer = null;
 			}
 		}
 		
@@ -237,7 +254,7 @@ package GameModel
 		public function OnMatchEnded(e:GenericEvent) : void
 		{
 			mMatch.removeEventListener("OnMatchEnded", OnMatchEnded);
-			mMatch.loaderInfo.loader.unload();
+			mMatch.root.loaderInfo.loader.unload();
 			mMatch = null;		
 			
 			// Refresco de por ejemplo el Ticket

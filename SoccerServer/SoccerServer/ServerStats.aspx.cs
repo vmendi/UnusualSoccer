@@ -118,7 +118,7 @@ namespace SoccerServer
 
         protected void Run_Click(object sender, EventArgs e)
         {
-            NetEngineMain netEngineMain = (NetEngineMain)Application["NetEngineMain"];
+            NetEngineMain netEngineMain = Global.Instance.TheNetEngine;
 
             if (!netEngineMain.NetServer.IsRunning)
             {
@@ -145,7 +145,7 @@ namespace SoccerServer
 
         protected void MisticalRefresh_Click(object sender, EventArgs e)
         {
-            //MainService.PreprocessAllTeams();
+            MainService.ResetSeasons(false);
         }
 
         protected void MisticalRefresh02_Click(object sender, EventArgs e)
@@ -155,7 +155,7 @@ namespace SoccerServer
 
         private void UpdateRealtimeData()
 		{
-            NetEngineMain netEngineMain = Application["NetEngineMain"] as NetEngineMain;
+            NetEngineMain netEngineMain = Global.Instance.TheNetEngine;
 
             if (netEngineMain.NetServer.IsRunning)
             {
@@ -186,7 +186,7 @@ namespace SoccerServer
 
         protected void MyBroadcastMsgButtton_Click(object sender, EventArgs e)
         {
-            NetEngineMain netEngineMain = Application["NetEngineMain"] as NetEngineMain;
+            NetEngineMain netEngineMain = Global.Instance.TheNetEngine;
 
             if (netEngineMain.NetServer.IsRunning)
             {

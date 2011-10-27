@@ -2,7 +2,7 @@
 <publishData>
   <publishProfile publishUrl="ftp://unusualsoccerdev.unusualwonder.com/wwwsoccerserverv2" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="UnusualSoccerDev" publishMethod="FTP" replaceMatchingFiles="True" userName="ftpuser" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAUaT19xDBF0CD9+tWGYqiqgAAAAACAAAAAAAQZgAAAAEAACAAAACyogdM8ez0c7GkEaWMgB1gLnh0//5rdfXTTU4evYuAWAAAAAAOgAAAAAIAACAAAADh/m5K2/DG+EvzHh8PbBlKdsfsRFWpyG1g3Ivus9xHNDAAAACcwZMtcuvOak0xT5YeYydJbGE/xVs7JcAe6EJ2RdbRd1LIRoKF22bLQGVcbUnbWIZAAAAAj3t7fgCzmZaA1TAsbXIqiDo76vaCfkHPNxMZRDd6/ueufDv0r+WHVFSyHHHb/PhMKLsmiT9OeWO1b1I05cCuOw==" SelectedForPublish="True">
     <file relUrl="Imgs/MensajeHabilidadTiroAGol.jpg" publishTime="08/19/2011 13:07:18" />
-    <file relUrl="Default.aspx" publishTime="09/08/2011 16:10:40" />
+    <file relUrl="Default.aspx" publishTime="10/24/2011 17:46:56" />
     <file relUrl="weborb.config" publishTime="08/11/2011 19:01:34" />
     <file relUrl="Imgs/MensajeHabilidadCatenaccio.jpg" publishTime="08/19/2011 13:07:18" />
     <file relUrl="console/images/consolebar.jpg" publishTime="04/08/2010 17:05:18" />
@@ -31,14 +31,14 @@
     <file relUrl="Imgs/MensajeHabilidad5Estrellas.jpg" publishTime="08/19/2011 13:07:18" />
     <file relUrl="Imgs/NavIcons.png" publishTime="08/19/2011 13:07:18" />
     <file relUrl="Imgs/MensajeHabilidadManoDeDios.jpg" publishTime="08/19/2011 13:07:18" />
-    <file relUrl="WEB-INF/flex/dynamic-remoting-config.xml" publishTime="10/23/2011 23:18:38" />
+    <file relUrl="WEB-INF/flex/dynamic-remoting-config.xml" publishTime="10/27/2011 12:15:00" />
     <file relUrl="bin/Moserware.Skills.dll" publishTime="08/18/2011 00:13:18" />
     <file relUrl="Imgs/Logo75x75.png" publishTime="08/19/2011 13:07:18" />
     <file relUrl="console/playerProductInstall.swf" publishTime="01/07/2010 14:56:46" />
     <file relUrl="bin/Mono.Security.dll" publishTime="03/25/2010 13:31:26" />
     <file relUrl="console/images/orboverview.jpg" publishTime="04/08/2010 17:05:18" />
     <file relUrl="TestCreateSession.aspx" publishTime="08/11/2011 15:05:08" />
-    <file relUrl="WEB-INF/flex/services-config.xml" publishTime="08/11/2011 19:06:14" />
+    <file relUrl="WEB-INF/flex/services-config.xml" publishTime="10/25/2011 17:29:34" />
     <file relUrl="Imgs/MensajeHabilidadVerAreas.jpg" publishTime="08/19/2011 13:07:18" />
     <file relUrl="console/images/folder_closed.png" publishTime="04/01/2010 13:03:40" />
     <file relUrl="ServerStatsPurchases.aspx" publishTime="09/15/2011 11:07:28" />
@@ -61,7 +61,6 @@
     <file relUrl="console/images/services.png" publishTime="05/05/2010 10:16:56" />
     <file relUrl="bin/Npgsql.dll" publishTime="03/25/2010 13:31:26" />
     <file relUrl="console/examplesinstructions.htm" publishTime="10/14/2011 12:14:08" />
-    <file relUrl="Web.config" publishTime="10/23/2011 12:06:10" />
     <file relUrl="WEB-INF/flex/weborb-services-config.xml" publishTime="12/10/2010 15:48:06" />
     <file relUrl="crossdomain.xml" publishTime="05/06/2011 15:58:00" />
     <file relUrl="Imgs/NavIconInvita.png" publishTime="08/19/2011 13:07:18" />
@@ -81,6 +80,7 @@
     <file relUrl="Imgs/MensajeHabilidadTiempoExtra.jpg" publishTime="08/19/2011 13:07:18" />
     <file relUrl="ServerStatsGlobalMatches.aspx" publishTime="08/11/2011 15:05:08" />
     <file relUrl="WEB-INF/flex/messaging-config.xml" publishTime="06/15/2011 21:58:06" />
-    <file relUrl="bin/SoccerServer.dll" publishTime="10/23/2011 23:16:44" />
+    <file relUrl="bin/SoccerServer.dll" publishTime="10/27/2011 12:14:34" />
+    <file relUrl="Web.config" publishTime="10/23/2011 12:06:10" />
   </publishProfile>
 </publishData>

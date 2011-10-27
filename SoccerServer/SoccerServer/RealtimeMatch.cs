@@ -499,7 +499,7 @@ namespace SoccerServer
             LogEx( "OnRequestData: Datos del partido solicitador por el Player: " + idPlayer + "Configuración partido: TotalTime: " + MatchLength + " TurnTime: "+ TurnLength );
 
             // Envía la configuración del partido al jugador, indicándole además a quien controlan  ellos (LocalUser)
-            Invoke(idPlayer, "InitMatch", this.mMatchID, PlayersData[Player1], PlayersData[Player2], idPlayer, MatchLength, TurnLength, MinClientVersion);
+            Invoke(idPlayer, "InitFromServer", this.mMatchID, PlayersData[Player1], PlayersData[Player2], idPlayer, MatchLength, TurnLength, MinClientVersion);
         }
 
         //

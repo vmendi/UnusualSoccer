@@ -13,65 +13,83 @@ using System.Collections.Generic;
 namespace SoccerServer
 {
 	public class Global : System.Web.HttpApplication
-	{		
+	{
+        static public Global Instance { get { return mInstance; } }
+
+        public const String GLOBAL_LOG = "GLOBAL";
+
+        public Dictionary<string, string> ServerSettings { get { return mServerSettings; } }
+        public Dictionary<string, string> ClientSettings { get { return mClientSettings; } }
+        public IFacebookApplication FacebookSettings { get { return mFBSettings; } }
+
+        public NetEngineMain TheNetEngine { get { return mNetEngine; } }
+
+        // Un acceso rapido para una propiedad importante
+        public bool TicketingSystemEnabled { get { return ServerSettings["TicketingSystem"] == "true"; } }
+
+        
 		protected void Application_Start(object sender, EventArgs e)
 		{
+            if (mInstance != null)
+                throw new Exception("WTF 666");
+            
+            // Unica instancia global
+            mInstance = this;
+
+            // Todos nuestros settings se configuran aqui, dependiendo de version, idioma, etc
             ConfigureSettings();
 
             // Inicializacion del motor de red
-            var newEngine = new NetEngineMain(new Realtime());
-            Application["NetEngineMain"] = newEngine;
-
+            mNetEngine = new NetEngineMain(new Realtime());
+            
             var starterThread = new Thread(StarterThread);
             starterThread.Name = "StarterThread";
             starterThread.Start();
 		}
 
-        // Configuracion de Facebook en funcion de qué aplicacion seamos
         private void ConfigureSettings()
         {
-            Dictionary<string, string> unusualSoccerSettings = new Dictionary<string, string>();
-            Application["UnusualSoccerSettings"] = unusualSoccerSettings;
-
-            // Settings que pasaremos a flash
-            Dictionary<string, string> unusualSoccerClientSettings = new Dictionary<string, string>();
-            Application["UnusualSoccerClientSettings"] = unusualSoccerClientSettings;
-
-            FacebookConfigurationSection fbSettings = new FacebookConfigurationSection();
-            Application["FacebookSettings"] = fbSettings;
-
+            mServerSettings = new Dictionary<string, string>();
+            mClientSettings = new Dictionary<string, string>();
+            mFBSettings = new FacebookConfigurationSection();
+            
             // La cancelUrlPath hemos detectado que es la direccion adonde nos manda tras un "Don't allow". 
             // Puede que haya más cancelaciones. Si la dejas vacia, te manda a facebook.com
-            fbSettings.CancelUrlPath = "Cancelled.aspx";
+            mFBSettings.CancelUrlPath = "Cancelled.aspx";
 
             // De momento igual para todas las versiones
-            unusualSoccerSettings["Title"] = "Unusual Soccer";
+            mServerSettings["Title"] = "Unusual Soccer";
 
             // Tiene que ser absoluto pq va en los Meta de facebook
-            unusualSoccerSettings["ImageUrl"] = "http://unusualsoccerdev.unusualwonder.com/Imgs/Logo75x75.png";
+            mServerSettings["ImageUrl"] = "http://unusualsoccerdev.unusualwonder.com/Imgs/Logo75x75.png";
 
             // og:description
-            unusualSoccerSettings["Description"] = "Unusual Soccer Description";
+            mServerSettings["Description"] = "Unusual Soccer Description";
 
             if (this.Server.MachineName == "UNUSUALTWO")
             {
-                fbSettings.AppId = "191393844257355";
-                fbSettings.AppSecret = "a06a6bf1080247ed87ba203422dcbb30";
+                mFBSettings.AppId = "191393844257355";
+                mFBSettings.AppSecret = "a06a6bf1080247ed87ba203422dcbb30";
 
-                fbSettings.CanvasPage = "http://apps.facebook.com/unusualsoccerdev/";
-                fbSettings.CanvasUrl = "http://unusualsoccerdev.unusualwonder.com/";
-                fbSettings.SecureCanvasUrl = "https://unusualsoccerdev.unusualwonder.com/";
+                mFBSettings.CanvasPage = "http://apps.facebook.com/unusualsoccerdev/";
+                mFBSettings.CanvasUrl = "http://unusualsoccerdev.unusualwonder.com/";
+                mFBSettings.SecureCanvasUrl = "https://unusualsoccerdev.unusualwonder.com/";
+
+                mServerSettings["TicketingSystem"] = "false";
             }
             else
             {
-                fbSettings.AppId = "100203833418013";
-                fbSettings.AppSecret = "bec70c821551670c027317de43a5ceae";
-                
-                fbSettings.CanvasPage = "http://apps.facebook.com/unusualsoccerlocal/";
-                fbSettings.CanvasUrl = "http://localhost/";
-                fbSettings.SecureCanvasUrl = "https://localhost/";
+                mFBSettings.AppId = "100203833418013";
+                mFBSettings.AppSecret = "bec70c821551670c027317de43a5ceae";
 
-                unusualSoccerClientSettings["RemoteServer"] = "unusualsoccerdev.unusualwonder.com";
+                mFBSettings.CanvasPage = "http://apps.facebook.com/unusualsoccerlocal/";
+                mFBSettings.CanvasUrl = "http://localhost/";
+                mFBSettings.SecureCanvasUrl = "https://localhost/";
+
+                mServerSettings["TicketingSystem"] = "false";
+
+                // Nuestro servidor remoto favorito cuando depuramos en local
+                mClientSettings["RemoteServer"] = "unusualsoccerdev.unusualwonder.com";
             }
         }
 
@@ -79,10 +97,10 @@ namespace SoccerServer
         {
             var forcedWeborbLogInit = Weborb.Config.ORBConfig.GetInstance();
                      
-            Log.startLogging(GLOBAL);
-            Log.log(GLOBAL, "******************* Initialization from " + this.Server.MachineName + " Global.asax *******************");
+            Log.startLogging(GLOBAL_LOG);
+            Log.log(GLOBAL_LOG, "******************* Initialization from " + this.Server.MachineName + " Global.asax *******************");
             
-            (Application["NetEngineMain"] as NetEngineMain).Start();
+            mNetEngine.Start();
             
             mSecondsTimer = new System.Timers.Timer(1000);
             mSecondsTimer.Elapsed += new System.Timers.ElapsedEventHandler(SecondsTimer_Elapsed);
@@ -91,7 +109,7 @@ namespace SoccerServer
         }
 
 		void SecondsTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-		{         
+		{
 			mSecondsTimer.Stop();
 			mSeconds++;
 
@@ -113,17 +131,17 @@ namespace SoccerServer
 						}
 						catch (ChangeConflictException)
 						{
-							Log.log(GLOBAL, "WTF: Es el unico sitio donde se debería modificar!");
+							Log.log(GLOBAL_LOG, "WTF: Es el unico sitio donde se debería modificar!");
 						}
 					}
 				}
 
 				// Llamamos al tick de los partidos en curso
-                ((Application["NetEngineMain"] as NetEngineMain).NetServer.NetClientApp as Realtime).OnSecondsTick();
+                (mNetEngine.NetServer.NetClientApp as Realtime).OnSecondsTick();
 			}
 			catch (Exception excp)
 			{
-				Log.log(GLOBAL, excp);
+				Log.log(GLOBAL_LOG, excp);
 			}
 			finally
 			{
@@ -141,7 +159,7 @@ namespace SoccerServer
 
             if (expiredTrainings.Count() != 0)
             {
-                Log.log(GLOBAL, "Running Expired Trainings: " + expiredTrainings.Count());
+                Log.log(GLOBAL_LOG, "Running Expired Trainings: " + expiredTrainings.Count());
 
                 foreach (PendingTraining pendingTr in expiredTrainings)
                 {
@@ -165,7 +183,7 @@ namespace SoccerServer
             // 100 de fitness cada 24h
             if (mSeconds % 864 == 0)
             {
-                Log.log(GLOBAL, "Running FitnessSubstract process");
+                Log.log(GLOBAL_LOG, "Running FitnessSubstract process");
 
                 var notZeroFitness = (from t in theContext.Teams
                                       where t.PendingTraining != null && t.Fitness > 0
@@ -188,7 +206,7 @@ namespace SoccerServer
 
             if (now.Date != mLast24hProcessedDateTime.Date)
             {
-                Log.log(GLOBAL, "Running 24h process");
+                Log.log(GLOBAL_LOG, "Running 24h process");
 
                 mLast24hProcessedDateTime = now;
                 bSubmit = true;
@@ -213,8 +231,8 @@ namespace SoccerServer
 		{
             // Code that runs when an unhandled error occurs
             Exception objErr = Server.GetLastError().GetBaseException();
-            
-            Log.log(GLOBAL, "Error in: " + Request.Url.ToString() + ". Error Message:" + objErr.Message.ToString());
+
+            Log.log(GLOBAL_LOG, "Application_Error: " + Request.Url.ToString() + ". Error Message:" + objErr.Message.ToString());
 		}
 
 		protected void Session_End(object sender, EventArgs e)
@@ -223,18 +241,25 @@ namespace SoccerServer
 
 		protected void Application_End(object sender, EventArgs e)
 		{
-			Log.log(GLOBAL, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Application_End !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			Log.log(GLOBAL_LOG, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Application_End !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
             mSecondsTimer.Stop();
             mSecondsTimer.Dispose();
 
-            (Application["NetEngineMain"] as NetEngineMain).Stop();
+            mNetEngine.Stop();
 		}
 
-        public const String GLOBAL = "GLOBAL";
+        static private Global mInstance;
+
+        private NetEngineMain mNetEngine;
+
         private System.Timers.Timer mSecondsTimer;
 		private int mSeconds = 0;
 
         private DateTime mLast24hProcessedDateTime = DateTime.Now;
+
+        private Dictionary<string, string> mServerSettings;
+        private Dictionary<string, string> mClientSettings;    // Settings que pasaremos a flash
+        private FacebookConfigurationSection mFBSettings;
 	}
 }

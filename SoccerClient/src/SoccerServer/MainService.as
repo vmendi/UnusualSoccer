@@ -50,7 +50,7 @@
 
       public function MainService( model:MainServiceModel = null )
       {
-        remoteObject  = new RemoteObject("GenericDestination");
+        remoteObject = new RemoteObject("GenericDestination");
         remoteObject.source = "SoccerServer.MainService";
         
         remoteObject.AssignSkillPoints.addEventListener("result",AssignSkillPointsHandler);
@@ -77,7 +77,7 @@
         
         remoteObject.RefreshRankingPage.addEventListener("result",RefreshRankingPageHandler);
         
-        remoteObject.RefreshSelfRankingPage.addEventListener("result",RefreshSelfRankingPageHandler);
+        remoteObject.RefreshSeasonEndDate.addEventListener("result",RefreshSeasonEndDateHandler);
         
         remoteObject.RefreshTeam.addEventListener("result",RefreshTeamHandler);
         
@@ -222,9 +222,9 @@
 
       }
     
-      public function RefreshSelfRankingPage( responder:IResponder = null ):void
+      public function RefreshSeasonEndDate( responder:IResponder = null ):void
       {
-        var asyncToken:AsyncToken = remoteObject.RefreshSelfRankingPage();
+        var asyncToken:AsyncToken = remoteObject.RefreshSeasonEndDate();
         
         if( responder != null )
             asyncToken.addResponder( responder );
@@ -378,11 +378,11 @@
         
       }
          
-      public virtual function RefreshSelfRankingPageHandler(event:ResultEvent):void
+      public virtual function RefreshSeasonEndDateHandler(event:ResultEvent):void
       {
         
-          var returnValue:RankingPage = event.result as RankingPage;
-          model.RefreshSelfRankingPageResult = returnValue;
+          var returnValue:Date = event.result as Date;
+          model.RefreshSeasonEndDateResult = returnValue;
         
       }
          

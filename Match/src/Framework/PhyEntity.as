@@ -17,7 +17,7 @@ package Framework
 	//
 	// Entidad con aspecto visual y físico 
 	//
-	public class PhyEntity extends ImageEntity
+	public class PhyEntity extends Entity
 	{
 		// Tipos de primitivas físicas
 		static public const Circle:int = 1;

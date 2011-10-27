@@ -1,5 +1,7 @@
 package Framework
 {
+	import org.osmf.elements.ImageElement;
+
 	//
 	// Manager de entidades. Tiene las siguientes características
 	//

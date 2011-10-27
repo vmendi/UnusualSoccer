@@ -2,12 +2,12 @@ package Framework
 {
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
-	import flash.media.SoundTransform;	
+	import flash.media.SoundMixer;
+	import flash.media.SoundTransform;
 	
 	//
 	// Sistema para reproducir sonido y música y contener la libreria de los mismos
 	// TODO:
-	//		- No podemos controlar la polifonia
 	//		- Los sonidos ciclicos deberían siempre almacenarse para luego poder detenerlos
 	//		- Al destruir no se detienen todos los sonidos (sobre todo son importantes los cíclicos)
 	//
@@ -15,35 +15,38 @@ package Framework
 	{
 		static public const Cyclic:int = int.MAX_VALUE;					// Reproduce un sonido ciclicamente (infinitas veces)
 		
-		static private var Sounds:Array = new Array();
+		private var Sounds:Array = new Array();		
+		private var Music:SoundChannel = null;							// El objeto de música que se está reproduciendo
 		
-		static private var Music:SoundChannel = null;					// El objeto de música que se está reproduciendo
-		
-		// TODO: Diferenciar entre música y efectos de sonido
-		static public var GlobalVolume:Number = 1.0;					// Volumen global (0 - 1), todos los sonidos se ven afectado por este volumen  
-		
-
 		//
 		// Crea la instancia de sonido desde una clase concreta.
 		// Luego registra el sonido con un identificador, de tal forma que posteriormente podamos manejarlo a través del mismo
 		// El identificador debe ser único.
 		//
-		static public function AddClass( identifier:String, classSound:Class ) : void
+		public function AddClass( identifier:String, classSound:Class ) : void
 		{
 			var sound:Sound = new classSound() as Sound;
-			AddSound( identifier, sound );
+			AddSound(identifier, sound);
+		}
+		
+		public function Mute(bMute : Boolean) : void
+		{
+			if (bMute)
+				SoundMixer.soundTransform = new SoundTransform(0);
+			else
+				SoundMixer.soundTransform = new SoundTransform(1);
 		}
 		
 		//
 		// Registra un sonido con un identificador, de tal forma que posteriormente podamos manejarlo a través del mismo
 		// El identificador debe ser único.
 		//
-		static protected function AddSound( identifier:String, sound:Sound) : void
+		protected function AddSound(identifier:String, sound:Sound) : void
 		{
-			if( Find( identifier ) == null )
+			if (Find( identifier ) == null)
 			{
 				Sounds[identifier] = sound;
-				if( sound == null )
+				if (sound == null)
 					trace( "Warning: AudioManager.AddSound: Se añadio un sonido NULL con nombre " + identifier );
 			}
 			else
@@ -53,9 +56,9 @@ package Framework
 		//
 		// Obtiene un sonido a partir de su identificador
 		//
-		static protected function Find( identifier:String ) : Sound
+		protected function Find( identifier:String ) : Sound
 		{
-			return( Sounds[ identifier ] );
+			return Sounds[identifier];
 		}
 
 		//
@@ -64,10 +67,9 @@ package Framework
 		// Notes: Se lanza una nueva instancia de sonido, quiere decir que sucesivos Plays antes que que termine el primero, 
 		// lanzaran sonidos simultáneos
 		//
-		public static function Play( identifier:String, loops:int = 0, vol:Number = 1.0 ) : SoundChannel
+		public function Play(identifier:String, loops:int = 0, vol:Number = 1.0) : SoundChannel
 		{
-			var sound:Sound = Find( identifier );
-			return( PlaySound( sound, loops, vol ) ); 
+			return PlaySound(Find(identifier), loops, vol); 
 		}
 
 		//
@@ -76,16 +78,16 @@ package Framework
 		// The volume, ranging from 0 (silent) to 1 (full volume).
 		// loops: Indica el número de veces que se repite el sonido. AudioManager.Cyclic para infinitas reproducciones
 		//
-    	static protected function PlaySound( sound:Sound, loops:int = 0, vol:Number = 1.0) : SoundChannel
+    	protected function PlaySound( sound:Sound, loops:int = 0, vol:Number = 1.0) : SoundChannel
     	{
 			var instance:SoundChannel = null;
     		
-			if( sound != null )
+			if (sound != null )
     		{
 	    		var soundTransform:SoundTransform;
 	    		
 	    		soundTransform = new SoundTransform();    		
-	    		soundTransform.volume = vol * GlobalVolume;
+	    		soundTransform.volume = vol;
 	    		
 	    		// Reproduce un sonido y devuelve un SoundChannel
 				instance = sound.play(0, loops, soundTransform);
@@ -100,19 +102,19 @@ package Framework
 		// 
 		// NOTE: además se guarda la instancia para cuando destruyamos el sistema detenerla
 		//
-		static public function PlayMusic( identifier:String, vol:Number = 1.0) : SoundChannel
+		public function PlayMusic( identifier:String, vol:Number = 1.0) : SoundChannel
 		{
 			StopMusic();
 			Music = Play( identifier, Cyclic, vol );
-			return( Music );
+			return Music;
 		}
 		
 		//
 		// Detiene la música que se está reproduciendo
 		//
-		static public function StopMusic( ) : void
+		public function StopMusic( ) : void
 		{
-			if( Music != null )
+			if (Music != null)
 			{
 				Music.stop();
 				Music = null;
@@ -122,14 +124,12 @@ package Framework
 		//
 		// Destruye todos los sonidos 
 		//
-		static public function Shutdown( ) : void
+		public function Shutdown( ) : void
 		{
-			// Detenemos la música
 			StopMusic();
 			
-			// Es un objeto estático, debe existir siempre.
-			// Para que se destruya el contenido del objeto lo recreamos!
-			Sounds = new Array();		
+			// TODO: Revisar esto. Parece que no vale con parar a traves del soundmixer, da error de seguridad
+			//SoundMixer.stopAll();
 		}
 	}
 }

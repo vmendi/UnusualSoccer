@@ -4,18 +4,15 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   xmlns:local="*"
 			   width="760" height="620" applicationComplete="ApplicationCompleteHandler(event)"
-			   frameRate="30" preloader="ProgressPreloader" xmlns:ns="http://l10n.babelfx.org/">
+			   frameRate="30" preloader="ProgressPreloader">
 
 	<fx:Script><![CDATA[
-		import GameModel.MainGameModel;
-		
+		import GameModel.MainGameModel;		
 		import GameView.MainView;
-		
-		import SoccerServer.DataTypeInitializer;
-		
-		import mx.events.FlexEvent;
-		import mx.resources.ResourceManager;
-			
+		import SoccerServer.DataTypeInitializer;		
+		import mx.events.FlexEvent;		
+		import utils.FPSCounter;
+
 		protected function ApplicationCompleteHandler(event:FlexEvent):void
 		{
 			//FPSCounter.Init(this.stage, new Point(0,0));
@@ -33,13 +30,13 @@
 			// Para que las estructuras creadas por weborb existan
 			var dataTypeInit : DataTypeInitializer = new DataTypeInitializer();
 
-			if (AppConfig.TEST_NAME != null)
+			if (AppConfig.TEST != null)
 			{
 				mFacebookFacade = new FacebookFacade();
 				mMainGameModel = new MainGameModel();
 				
 				MyServerTests.visible = true;
-				MyServerTests.ExecuteTest(AppConfig.TEST_NAME);
+				MyServerTests.ExecuteTest(AppConfig.TEST);
 			}
 			else
 			{

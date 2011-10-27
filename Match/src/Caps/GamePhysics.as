@@ -78,6 +78,12 @@ package Caps
 			TheBox2D.start();
 		}
 		
+		public function Shutdown() : void
+		{
+			if (TheBox2D.main.stage != null)
+				TheBox2D.destroy();
+		}
+		
 		public function Shoot(cap : Cap, dir : Point, force : Number) : void
 		{
 			// Tenemos memoria de todo lo que ocurrio en la ultima simulacion hasta que vuelven a disparar
@@ -142,19 +148,19 @@ package Caps
 					_TouchedCaps.push(cap);
 					_TouchedCapsLastRun.push(cap);
 										
-					AudioManager.Play( "SoundCollisionCapBall" );
+					Match.Ref.AudioManager.Play( "SoundCollisionCapBall" );
 				}
 				else
 				{
 					// chapa / chapa
 					if( ent1 is Cap && ent2 is Cap )
-						AudioManager.Play( "SoundCollisionCapCap" );
+						Match.Ref.AudioManager.Play( "SoundCollisionCapCap" );
 					// chapa / muro 
 					else if( cap != null && ( ent1 == null || ent2 == null ) ) 
-						AudioManager.Play( "SoundCollisionWall" );
+						Match.Ref.AudioManager.Play( "SoundCollisionWall" );
 					// balón / muro 
 					else if( ball != null && ( ent1 == null || ent2 == null ) )
-						AudioManager.Play( "SoundCollisionWall" );
+						Match.Ref.AudioManager.Play( "SoundCollisionWall" );
 				}
 				
 				// Posible falta
@@ -293,15 +299,15 @@ package Caps
 					var phyEntity:PhyEntity = entity as PhyEntity;
 					phyEntity.StopMovement();
 				}
-			}	
+			}
 		}
 		
 		//
-		// Retorna si esta ya todo quieto		
+		// Retorna true si esta ya todo quieto		
 		//
 		private function get IsPhysicSimulating() : Boolean
 		{
-			for each( var entity:Entity in Match.Ref.Game.TheEntityManager.Items )
+			for each (var entity:Entity in Match.Ref.Game.TheEntityManager.Items)
 			{
 				if (entity is PhyEntity && (entity as PhyEntity).IsMoving == true)
 					return true;

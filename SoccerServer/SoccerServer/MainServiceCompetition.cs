@@ -59,30 +59,50 @@ namespace SoccerServer
             return ret;
         }
 
-        /*
-        internal static void PreprocessAllTeams()
+        private const int SEASON_DURATION_DAYS = 3;     // Las competiciones duran 2 dias
+        private const int SEASON_HOUR_STARTTIME = 3;    // A las 3 de la mañana
+
+        [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 10000)]
+        public DateTime RefreshSeasonEndDate()
+        {
+            var context = new SoccerDataModelDataContext();
+            var currentSeason = GetCurrentSeason(context);
+
+            // Momento pronosticado en el que se acabara la temporada
+            DateTime seasonEnd = currentSeason.CreationDate.AddDays(SEASON_DURATION_DAYS);
+            return new DateTime(seasonEnd.Year, seasonEnd.Month, seasonEnd.Day, SEASON_HOUR_STARTTIME, 0, 0, 0, seasonEnd.Kind);
+        }
+        
+        internal static void ResetSeasons(bool addCurrentTeams)
         {
             using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
             {
                 theContext.CompetitionSeasons.DeleteAllOnSubmit(theContext.CompetitionSeasons);
                 theContext.SubmitChanges();
 
-                // Un unico grupo para empezar
-                CreateGroup(theContext, GetLowestDivision(theContext), CreateNewSeason(theContext), "Group 1");
+                var currentSeason = CreateNewSeason(theContext);
+                
+                // Con 1000 nuevos al dia, durando 3 dias la competicion, tendriamos 3000/2 = 1500 por grupo.
+                // Pero al principio no van a entrar tantos, hasta que se creen bastantes mas de 2 grupos...
+                CreateGroup(theContext, GetLowestDivision(theContext), currentSeason, "1");
+                CreateGroup(theContext, GetLowestDivision(theContext), currentSeason, "2");
                 theContext.SubmitChanges();
 
-                var teamList = theContext.Teams.ToList();
-
-                for (int c=0; c < teamList.Count; ++c)
+                if (addCurrentTeams)
                 {
-                    AddTeamToLowestMostAdequateGroup(theContext, teamList[c]);
+                    var teamList = theContext.Teams.ToList();
+
+                    for (int c = 0; c < teamList.Count; ++c)
+                    {
+                        AddTeamToLowestMostAdequateGroup(theContext, teamList[c]);
+                    }
                 }
 
                 theContext.SubmitChanges();
             }
         }
-         */
 
+         
         internal static void SeasonEnd()
         {
             SoccerDataModelDataContext theContext = new SoccerDataModelDataContext();
