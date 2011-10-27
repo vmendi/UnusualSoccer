@@ -5,7 +5,7 @@ package Caps
 	
 	import Embedded.Assets;
 	
-	import Framework.ImageEntity;
+	import Framework.Entity;
 	import Framework.PhyEntity;
 	
 	import com.greensock.*;
@@ -185,7 +185,7 @@ package Caps
 		//
 		// Obtiene el Ghost de la chapa (solo hay uno por equipo)
 		//
-		public function get Ghost( ) : ImageEntity
+		public function get Ghost( ) : Entity
 		{
 			return this.OwnerTeam.Ghost;
 		}

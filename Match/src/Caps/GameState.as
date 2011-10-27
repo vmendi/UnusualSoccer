@@ -2,6 +2,7 @@ package Caps
 {
 	public class GameState
 	{
+		public static const NotInit:int = 0;
 		public static const Init:int = 1;			// Inicio del partido
 		
 		public static const NewPart:int = 2;		// Inicio de una parte

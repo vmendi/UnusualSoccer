@@ -302,11 +302,11 @@ package Caps
 		}
 		
 		//
-		// Retorna si esta ya todo quieto		
+		// Retorna true si esta ya todo quieto		
 		//
 		private function get IsPhysicSimulating() : Boolean
 		{
-			for each( var entity:Entity in Match.Ref.Game.TheEntityManager.Items )
+			for each (var entity:Entity in Match.Ref.Game.TheEntityManager.Items)
 			{
 				if (entity is PhyEntity && (entity as PhyEntity).IsMoving == true)
 					return true;

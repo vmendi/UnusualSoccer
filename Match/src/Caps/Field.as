@@ -2,7 +2,7 @@ package Caps
 {
 	import Embedded.Assets;
 	
-	import Framework.ImageEntity;
+	import Framework.Entity;
 	
 	import com.actionsnippet.qbox.QuickBox2D;
 	import com.actionsnippet.qbox.QuickObject;
@@ -68,11 +68,11 @@ package Caps
 		// 
 		public function CreatePorterias(parent:MovieClip) : void
 		{
-			var goalLeft:ImageEntity = new ImageEntity(Embedded.Assets.GoalLeft, parent);
+			var goalLeft:Entity = new Entity(Embedded.Assets.GoalLeft, parent);
 			Match.Ref.Game.TheEntityManager.Add( goalLeft );
 			goalLeft.SetPos( new Point( X_GOAL_LEFT, Y_GOAL ) );
 			
-			var goalRight:ImageEntity = new ImageEntity(Embedded.Assets.GoalRight, parent);
+			var goalRight:Entity = new Entity(Embedded.Assets.GoalRight, parent);
 			Match.Ref.Game.TheEntityManager.Add( goalRight );
 			goalRight.SetPos( new Point( X_GOAL_RIGHT, Y_GOAL ) );
 		}

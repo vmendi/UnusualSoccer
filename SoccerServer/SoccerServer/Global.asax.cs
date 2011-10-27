@@ -75,7 +75,7 @@ namespace SoccerServer
                 mFBSettings.CanvasUrl = "http://unusualsoccerdev.unusualwonder.com/";
                 mFBSettings.SecureCanvasUrl = "https://unusualsoccerdev.unusualwonder.com/";
 
-                mServerSettings["TicketingSystem"] = "true";
+                mServerSettings["TicketingSystem"] = "false";
             }
             else
             {
@@ -231,8 +231,8 @@ namespace SoccerServer
 		{
             // Code that runs when an unhandled error occurs
             Exception objErr = Server.GetLastError().GetBaseException();
-            
-            Log.log(GLOBAL_LOG, "Error in: " + Request.Url.ToString() + ". Error Message:" + objErr.Message.ToString());
+
+            Log.log(GLOBAL_LOG, "Application_Error: " + Request.Url.ToString() + ". Error Message:" + objErr.Message.ToString());
 		}
 
 		protected void Session_End(object sender, EventArgs e)

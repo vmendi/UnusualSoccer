@@ -2,6 +2,7 @@ package
 {
 	import Caps.AppParams;
 	import Caps.Game;
+	import Caps.InitOffline;
 	
 	import Framework.AudioManager;
 	
@@ -85,7 +86,7 @@ package
 			{
 				AppParams.OfflineMode = true;
 				_Game = new Caps.Game();
-				_Game.InitOffline();
+				InitOffline.Init();
 			}
 			
 			if (stage != null)

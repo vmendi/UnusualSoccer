@@ -13,6 +13,7 @@ namespace SoccerServer
 		public const String MAINSERVICE = "MAINSERVICE";
 		public const String CLIENT_ERROR = "CLIENT_ERROR";
 
+        
         public MainService()
         {
             if (!Log.isLogging(MainService.MAINSERVICE))
@@ -22,7 +23,7 @@ namespace SoccerServer
                 Log.startLogging(MainService.CLIENT_ERROR);
         }
 
-        
+                
         private SoccerDataModelDataContext CreateDataForRequest()
         {
             mContext = new SoccerDataModelDataContext();

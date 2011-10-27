@@ -3,11 +3,7 @@ package
 	import GameModel.RealtimeModel;
 	
 	import com.facebook.graph.Facebook;
-	import com.facebook.graph.core.FacebookJSBridge;
-	import com.facebook.graph.core.FacebookURLDefaults;
 	import com.facebook.graph.data.FacebookAuthResponse;
-	import com.facebook.graph.data.FacebookSession;
-	import com.facebook.graph.utils.FacebookDataUtils;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -15,16 +11,12 @@ package
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	
-	import mx.core.FlexGlobals;
 	import mx.messaging.Channel;
 	import mx.messaging.ChannelSet;
 	import mx.messaging.config.ServerConfig;
 	import mx.utils.URLUtil;
 	
 	import utils.Delegate;
-	
-	import weborb.config.ClientConfig;
-	import weborb.messaging.application.WeborbApplication;
 	
 	public final class FacebookFacade extends EventDispatcher
 	{		
@@ -112,11 +104,18 @@ package
 			
 			mSessionKeyURLLoader = new URLLoader();
 			mSessionKeyURLLoader.addEventListener("complete", onLoaded);
+			mSessionKeyURLLoader.addEventListener("ioError", onError);
 			mSessionKeyURLLoader.load(request);
 			
 			function onLoaded(e:Event) : void
 			{
 				onCompleted();	
+			}
+			
+			function onError(e:Event):void
+			{
+				trace("EnsureSessionIsCreatedOnServer onError. Retrying....");
+				EnsureSessionIsCreatedOnServer(sessionKey, onCompleted);
 			}
 		}
 				

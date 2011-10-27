@@ -11,29 +11,32 @@ package Caps
 	
 	import utils.Delegate;
 
-	
 	public class Game
 	{
-		public var TheInterface:GameInterface = null;
-		public var TheGamePhysics:GamePhysics = null;
-		public var TheField:Field = null;					
-		public var TheTeams:Array = new Array();			
-		public var TheBall:BallEntity = null;
+		public var TheInterface:GameInterface;
+		public var TheGamePhysics:GamePhysics;
+		public var TheField:Field;	
+		public var TheBall:BallEntity;
+		public var TheEntityManager:EntityManager;
+		public var TheTeams:Array = new Array();
 		
 		// Capas de pintado
 		public var GameLayer:MovieClip = null;
 		public var GUILayer:MovieClip = null;
 		public var PhyLayer:MovieClip = null;
-		public var ChatLayer:Chat = null;						// Componente de chat
+		public var ChatLayer:Chat = null;
+		
+		public var Config:MatchConfig = new MatchConfig();		// Configuración del partido (Parámetros recibidos del servidor)
 				
 		// Estado lógico de la aplicación
 		private var _IdxCurTeam:int = Enums.Team1;				// Idice del equipo actual que le toca jugar
-		private var _State:int = GameState.Init;				// Estado inicial
+		private var _State:int = GameState.NotInit;				// Estado inicial
 		private var _TicksInCurState:int = 0;					// Ticks en el estado actual
 		private var _Part:int = 0;								// El juego se divide en 2 partes. Parte en la que nos encontramos (1=1ª 2= 2ª)
 		private var _RemainingHits:int = 0;						// Nº de golpes restantes permitidos antes de perder el turno
 		private var _RemainingPasesAlPie : int = 0;				// No de pases al pie que quedan
 		private var _TimeSecs:Number = 0;						// Tiempo en segundos que queda de la "mitad" actual del partido
+		private var _IsPlaying:Boolean = false;					// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
 		
 		public var Timeout:Number = 0;							// Tiempo en segundos que queda para que ejecutes un disparo
 		public var TimeOutSent:Boolean = false;					// Controla si se ha envíado el timeout en el último ciclo de subturno
@@ -41,59 +44,13 @@ package Caps
 		
 		public var ReasonTurnChanged:int = (-1);				// Razón por la que hemos cambiado al turno actual
 		public var LastConflicto:Object = null;					// Último conflicto de robo que se produjo
-				 
-		private var _IsPlaying:Boolean = false;					// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
-						
-		private var _CallbackOnAllPlayersReady:Function = null 	// Llamar cuando todos los jugadores están listos
-		private var _Initialized:Boolean = false;				// Bandera que indica si hemos terminado de inicializar/cargar
-		
 		public var FireCount:int = 0;							// Contador de jugadores expulsados durante el partido.
-		
-		public var Config:MatchConfig = new MatchConfig();		// Configuración del partido (Parámetros recibidos del servidor)
-				
+
+		private var _CallbackOnAllPlayersReady:Function = null 	// Llamar cuando todos los jugadores están listos
+
 		private var _TimeCounter:Framework.Time = new Framework.Time();
 		private var _Random:Framework.Random;
-		
-		public var TheEntityManager:EntityManager = new EntityManager();	// Instancia única
-
-		
-		public function InitOffline() : void
-		{
-			var descTeam1:Object = { 
-				PredefinedTeamName: "Atlético",
-				SpecialSkillsIDs: [ 1, 4, 5, 6, 7, 8, 9 ],
-				SoccerPlayers: []
-			}
-			var descTeam2:Object = { 
-				PredefinedTeamName: "Sporting",
-				SpecialSkillsIDs: [7, 1, 3],
-				SoccerPlayers: []
-			}
-			
-			for (var c:int=0; c < 8; ++c)
-			{
-				var descCap1:Object = { 
-					DorsalNumber: c+1,
-						Name: "Cap Team01 " + c,
-						Power: 0,
-						Control: 0,
-						Defense: 0
-				};						
-				descTeam1.SoccerPlayers.push(descCap1);
-				
-				var descCap2:Object = { 
-					DorsalNumber: c+1,
-						Name: "Cap Team02 " + c,
-						Power: 0,
-						Control: 0,
-						Defense: 0
-				};						
-				descTeam2.SoccerPlayers.push(descCap2);					
-			}
-			
-			InitFromServer((-1), descTeam1, descTeam2, Enums.Team1, Config.PartTime * 2, Config.TurnTime, AppParams.ClientVersion);
-		}
-		
+						
 		//
 		// Inicialización de los datos del partido. Invocado desde el servidor
 		//
@@ -108,6 +65,7 @@ package Caps
 			// Creamos las capas iniciales de pintado para asegurar un orden adecuado
 			CreateLayers();
 			
+			TheEntityManager = new EntityManager();
 			TheGamePhysics = new GamePhysics(PhyLayer);
 			TheField = new Field(GameLayer);
 			TheBall = new BallEntity();
@@ -170,10 +128,7 @@ package Caps
 			
 			// Inicializamos el interfaz de juego. NOTE: Es necesario que estén construidos los equipos
 			TheInterface = new GameInterface();
-						
-			// Indicamos que hemos terminado de cargar/inicializar
-			_Initialized = true;
-			
+
 			// Lanzamos el sonido ambiente, como música para que se detenga automaticamente al finalizar 
 			Match.Ref.AudioManager.PlayMusic( "SoundAmbience", 0.3 );
 			
@@ -194,6 +149,9 @@ package Caps
 											} ); 
 			}
 			*/
+			
+			// Indicamos que hemos terminado de cargar/inicializar
+			ChangeState(GameState.Init);
 		}
 			
 		//
@@ -204,7 +162,7 @@ package Caps
 		public function Run( elapsed:Number ) : void
 		{
 			// Si todavia no hemos recibido datos desde el servidor...
-			if (!_Initialized)
+			if (_State == GameState.NotInit)
 				return;
 			
 			TheTeams[Enums.Team1].Run(elapsed);
@@ -411,9 +369,6 @@ package Caps
 					break;
 				}
 			}
-			
-			// Al final del proceso, le pedimos a la fisica que olvide todo lo que se ha necesitado durante este Run.
-			//TheGamePhysics.Reset();
 		}
 		
 		public function Draw( elapsed:Number ) : void
