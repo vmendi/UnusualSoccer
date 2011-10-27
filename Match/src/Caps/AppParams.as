@@ -32,7 +32,10 @@ package Caps
 		public static const DistToPutBallHandling:int = 10;		// Distancia a la chapa a la que colocamos la pelota cuando se recibe un pase al pie
 		
 		public static const AutoPasePermitido:Boolean = true;	// La chapa con la que se dispara puede recibir pase al pie despues de tocar el balon
-
+		
+		public static const CapMass:int = 4;
+		public static const CapLinearDamping:int = 10;
+		
 		// Porcentaje de la skill restaurado por segundo para cada habilidad
 		// NOTE: Las skills van de 1 - 9, el primer valor del array en la linea anterior no se utiliza!
 		// 1. Superpotencia
