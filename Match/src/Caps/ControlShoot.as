@@ -1,6 +1,10 @@
 package Caps
 {
+	import Box2D.Common.Math.b2Math;
+	
 	import Framework.*;
+	
+	import com.actionsnippet.qbox.QuickBox2D;
 	
 	import flash.display.GradientType;
 	import flash.display.Sprite;
@@ -104,56 +108,58 @@ package Caps
 			
 			angle = Math.atan2(-( canvas.mouseY - yInit ), -( canvas.mouseX - xInit ));
 			
-			//trace( "Mouse move recieved in : " + canvas.mouseX.toString() + "," + canvas.mouseY.toString() );   
-
-			/*
-			// @rubo:
-			canvas.arrow.x = xInit + Math.cos( angle ) * RADIO_ARROW;
-			canvas.arrow.y = yInit + Math.sin( angle ) * RADIO_ARROW;
-			canvas.arrow.rotation =  angle * 180 / Math.PI;
-			canvas.arrow.visible = true;
-			*/
-			
-			// Obtenemos la dirección truncada a la máxima longitud
-			var dir:Point = Direction;
-			var source:Point = new Point( xInit, yInit);
-			var target:Point = source.add( dir );
+			var dir:Point = Direction.clone(); // Dirección truncada a la máxima longitud
+			var source:Point = new Point( xInit, yInit); // Posición del centro de la chapa
+			var recoil:Point = source.add( dir ); // Punto del mouse respecto a la chapa, cuando soltemos nos dará la potencia del tiro
 			
 			// Mientras que no sacas la flecha de la chapa no es un tiro válido
 			canvas.graphics.clear( );
 			var color:uint = this.colorLine;
+
 			if( !this.IsValid() )
 			{
 				color = 0xff0000;
-				
 				// Campo de texto de la potencia
 				potenciaTiro.text = ""
 			}
 			else
 			{
-				var maxCapImpulse:Number = AppParams.MinCapImpulse + (AppParams.MaxCapImpulse - AppParams.MinCapImpulse ) * ( _Target.Power / 100 );
-				var impulse:Number = Force * maxCapImpulse;
-				var dist:Number = Math.pow( impulse/1.5, 2 ) / 10;
-				var target2:Point = dir.clone();
-				target2.normalize(dist)
-				var target3:Point = source.subtract( target2 );
-				var gradientBoxMatrix:Matrix = new Matrix();
-				gradientBoxMatrix.createGradientBox(760, 760, 0, source.x-(766/2), source.y-(760/2));
+				// Queremos calcular el lugar exacto al que llegará la chapa si no choca con nada
+				// Hacemos lo mismo que hace el Box2D
+				var impulse:Number = Force*AppParams.MaxCapImpulse;
+				// Calculamos la velocidad inicial como lo hace el motor al aplicar un impulso
+				var v:Number = (1.0/AppParams.CapMass) * impulse;
+				// Calculamos la modificación que la velocidad sufrirá en cada iteración por acción del linearDamping: b2Island.as line 188
+				var vmod:Number = b2Math.b2Clamp(1.0 - Match.Ref.Game.TheGamePhysics.TheBox2D.timeStep * AppParams.CapLinearDamping, 0.0, 1.0);
+				var dist:Number = 0;
+				while (v > 0.01)
+				{
+					v *= vmod;
+					dist += (v * Match.Ref.Game.TheGamePhysics.TheBox2D.timeStep);
+				}
+				dist *= AppParams.PixelsPerMeter;
+
+				var target : Point = Direction.clone();
+				target.normalize(dist)
+				var destination:Point = source.subtract( target );
+				
+				//var gradientBoxMatrix:Matrix = new Matrix();
+				//gradientBoxMatrix.createGradientBox(760, 760, 0, source.x-(766/2), source.y-(760/2));
 				//gradientBoxMatrix.rotate(0.5*Math.PI);
 				canvas.graphics.lineStyle( Cap.Radius*2, 0xFFFFFF, 0.2 );
-				canvas.graphics.lineGradientStyle(GradientType.RADIAL, [0xFFFFFF, 0xFFFFFF], [0.3, 0.0], [0, 100], gradientBoxMatrix);
+				//canvas.graphics.lineGradientStyle(GradientType.RADIAL, [0xFFFFFF, 0xFFFFFF], [0.3, 0.0], [0, 100], gradientBoxMatrix);
 				canvas.graphics.moveTo( source.x, source.y );
-				canvas.graphics.lineTo( target3.x, target3.y );
+				canvas.graphics.lineTo( destination.x, destination.y );
 				
 				// Campo de texto de la potencia
 				potenciaTiro.text = "PO: " + Math.round(Force*100);
-				potenciaTiro.x = target.x;
-				potenciaTiro.y = target.y - 30;
+				potenciaTiro.x = recoil.x;
+				potenciaTiro.y = recoil.y - 30;
 			}
 			
 			canvas.graphics.lineStyle( thickness, color, 0.7 );
 			canvas.graphics.moveTo( source.x, source.y );
-			canvas.graphics.lineTo( target.x, target.y );
+			canvas.graphics.lineTo( recoil.x, recoil.y );
 			//e.updateAfterEvent( );
 		}
 		

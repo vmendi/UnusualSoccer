@@ -41,6 +41,7 @@ package
 
 			if (stage != null)
 			{
+				stage.frameRate = 30;
 				stage.scaleMode = StageScaleMode.NO_SCALE;
 				stage.align = StageAlign.TOP_LEFT;
 				trace("Movie Frame Rate: " + stage.frameRate); 

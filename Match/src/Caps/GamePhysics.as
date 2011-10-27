@@ -12,6 +12,7 @@ package Caps
 	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.geom.Point;
 
@@ -54,7 +55,7 @@ package Caps
 			// FRIM: Frame Rate Independent Motion
 			// True  = la velocidad de la máquina y del stage no afecta al resultado, siempre dura lo mismo
 			// False = La velocidad de la máquina y del stage afecta al resultado ya que cada iteración simplemente se avanza un paso. Buena para sincronía de red
-			TheBox2D = new QuickBox2D(parent, { debug: AppParams.DebugPhysic, iterations: AppParams.PhyFPS, frim: false });
+			TheBox2D = new QuickBox2D(parent, { debug: AppParams.DebugPhysic, iterations: AppParams.PhyFPS, timeStep: 1.0/Match.Ref.stage.frameRate,frim: false });
 			TheBox2D.gravity = new b2Vec2( 0, 0 );
 			TheBox2D.createStageWalls( );
 			
