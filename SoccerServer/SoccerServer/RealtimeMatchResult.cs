@@ -131,8 +131,8 @@ namespace SoccerServer
             var competitionMatchParticipation1 = new CompetitionMatchParticipation();
             var competitionMatchParticipation2 = new CompetitionMatchParticipation();
 
-            competitionMatchParticipation1.CompetitionGroupID = entryPlayer1.CompetitionGroupID;
-            competitionMatchParticipation2.CompetitionGroupID = entryPlayer2.CompetitionGroupID;
+            competitionMatchParticipation1.CompetitionGroupEntryID = entryPlayer1.CompetitionGroupEntryID;
+            competitionMatchParticipation2.CompetitionGroupEntryID = entryPlayer2.CompetitionGroupEntryID;
 
             competitionMatchParticipation1.MatchParticipationID = mParticipation1.MatchParticipationID;
             competitionMatchParticipation2.MatchParticipationID = mParticipation2.MatchParticipationID;

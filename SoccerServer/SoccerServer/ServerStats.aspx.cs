@@ -6,6 +6,8 @@ using Weborb.Messaging.Server;
 using Weborb.Messaging.Api;
 using SoccerServer.NetEngine;
 using SoccerServer.BDDModel;
+using System.Collections.Generic;
+using System.Data.Linq;
 
 namespace SoccerServer
 {
@@ -145,7 +147,76 @@ namespace SoccerServer
 
         protected void MisticalRefresh_Click(object sender, EventArgs e)
         {
-            MainService.ResetSeasons(false);
+            //MainService.ResetSeasons(false);
+
+            /*
+            int c = 0;
+            var options = new DataLoadOptions();
+
+            options.LoadWith<MatchParticipation>(m => m.Match);
+            mDC.LoadOptions = options;
+            
+            var parts = mDC.MatchParticipations.ToArray();
+            foreach (var part in parts)
+            {
+                if (part.AsHome)
+                {
+                    part.Match.HomeMatchParticipationID = part.MatchParticipationID;
+                }
+                else
+                {
+                    part.Match.AwayMatchParticipationID = part.MatchParticipationID;
+                }
+                c++;
+            }
+            mDC.SubmitChanges();
+            mDC.Dispose();
+            
+            mDC = new SoccerDataModelDataContext();
+            mDC.DeferredLoadingEnabled = false;
+            options.LoadWith<Match>(p => p.MatchParticipations);
+            mDC.LoadOptions = options;
+
+            var matches = mDC.Matches; //.ToArray();
+            var crapMatches = new List<BDDModel.Match>();            
+
+            foreach (var match in matches)
+            {
+                var parts = match.MatchParticipations;
+                
+                if (parts.Count == 2)
+                {
+                    if (!parts[0].AsHome)
+                        throw new Exception("WTF !@#");
+
+                    match.MatchParticipation = parts[0];
+                    match.MatchParticipation1 = parts[1];
+                }
+                else
+                {
+                    crapMatches.Add(match);
+                }
+                c++;
+            }
+
+            mDC.SubmitChanges();
+             * */
+
+            /*
+            var crapMatches = (from s in mDC.Matches
+                               where s.MatchParticipations.Count != 2
+                               select s);
+
+            var test = crapMatches.Count();
+
+            mDC.Matches.DeleteAllOnSubmit(crapMatches);
+            mDC.SubmitChanges();
+             */
+            var matches = mDC.Matches; //.ToArray();
+            
+            foreach (var match in matches)
+            {
+            }
         }
 
         protected void MisticalRefresh02_Click(object sender, EventArgs e)
