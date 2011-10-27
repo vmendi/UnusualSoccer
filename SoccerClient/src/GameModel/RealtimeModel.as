@@ -254,7 +254,7 @@ package GameModel
 		public function OnMatchEnded(e:GenericEvent) : void
 		{
 			mMatch.removeEventListener("OnMatchEnded", OnMatchEnded);
-			mMatch.loaderInfo.loader.unload();
+			mMatch.root.loaderInfo.loader.unload();
 			mMatch = null;		
 			
 			// Refresco de por ejemplo el Ticket

@@ -4,17 +4,15 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   xmlns:local="*"
 			   width="760" height="620" applicationComplete="ApplicationCompleteHandler(event)"
-			   frameRate="30" preloader="ProgressPreloader" xmlns:ns="http://l10n.babelfx.org/">
+			   frameRate="30" preloader="ProgressPreloader">
 
 	<fx:Script><![CDATA[
-		import GameModel.MainGameModel;
-		
+		import GameModel.MainGameModel;		
 		import GameView.MainView;
-		
-		import SoccerServer.DataTypeInitializer;
-		
-		import mx.events.FlexEvent;
-			
+		import SoccerServer.DataTypeInitializer;		
+		import mx.events.FlexEvent;		
+		import utils.FPSCounter;
+
 		protected function ApplicationCompleteHandler(event:FlexEvent):void
 		{
 			//FPSCounter.Init(this.stage, new Point(0,0));

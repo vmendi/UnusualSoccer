@@ -56,34 +56,8 @@ package Caps
 		
 		public var TheEntityManager:EntityManager = new EntityManager();	// Instancia única
 
-		//
-		// Inicialización del juego. Llamado localmente al comenzar
-		//
-		public function Init() : void
-		{
-			// Creamos las capas iniciales de pintado para asegurar un orden adecuado
-			CreateLayers();
-			
-			TheGamePhysics = new GamePhysics(PhyLayer);
-			TheField = new Field(GameLayer);
-			TheBall = new BallEntity();
-			
-			// Creamos las porterias al final para que se pinten por encima de todo
-			TheField.CreatePorterias(GameLayer);
-			
-			// Registramos sonidos para lanzarlos luego 
-			AudioManager.AddClass( "SoundCollisionCapBall", Assets.SoundCollisionCapBall );			
-			AudioManager.AddClass( "SoundCollisionCapCap", Assets.SoundCollisionCapCap );			
-			AudioManager.AddClass( "SoundCollisionWall", Assets.SoundCollisionWall );
-			AudioManager.AddClass( "SoundAmbience", Assets.SoundAmbience );
-			
-			// En modo offline iniciamos directamente partido. De otra forma nos lo deberá indicar el servidor 
-			// llamando remotamente a InitMatch
-			if (AppParams.OfflineMode)
-				InitOffline();
-		}
 		
-		private function InitOffline() : void
+		public function InitOffline() : void
 		{
 			var descTeam1:Object = { 
 				PredefinedTeamName: "Atlético",
@@ -117,20 +91,36 @@ package Caps
 				descTeam2.SoccerPlayers.push(descCap2);					
 			}
 			
-			InitMatch( (-1), descTeam1, descTeam2, Enums.Team1, Config.PartTime * 2, Config.TurnTime, AppParams.ClientVersion  );
+			InitFromServer((-1), descTeam1, descTeam2, Enums.Team1, Config.PartTime * 2, Config.TurnTime, AppParams.ClientVersion);
 		}
 		
 		//
 		// Inicialización de los datos del partido. Invocado desde el servidor
 		//
-		public function InitMatch(matchId:int, descTeam1:Object, descTeam2:Object, idLocalPlayerTeam:int, matchTimeSecs:int, turnTimeSecs:int, minClientVersion:int) : void
+		public function InitFromServer(matchId:int, descTeam1:Object, descTeam2:Object, idLocalPlayerTeam:int, matchTimeSecs:int, turnTimeSecs:int, minClientVersion:int) : void
 		{
 			// Verificamos la versión mínima de cliente exigida por el servidor.
 			if( AppParams.ClientVersion < minClientVersion )
-				throw new Error("El partido no es la última versión. Limpie la caché de su navegador. ClientVersion: " + AppParams.ClientVersion + " MinClient: " + minClientVersion );  
-									
+				throw new Error("El partido no es la última versión. Limpie la caché de su navegador. ClientVersion: " + AppParams.ClientVersion + " MinClient: " + minClientVersion );
+			
 			trace("InitMatch: " + matchId + " Teams: " + descTeam1.PredefinedTeamName + " vs. " + descTeam2.PredefinedTeamName + " LocalPlayer: " + idLocalPlayerTeam);
 			
+			// Creamos las capas iniciales de pintado para asegurar un orden adecuado
+			CreateLayers();
+			
+			TheGamePhysics = new GamePhysics(PhyLayer);
+			TheField = new Field(GameLayer);
+			TheBall = new BallEntity();
+			
+			// Creamos las porterias al final para que se pinten por encima de todo
+			TheField.CreatePorterias(GameLayer);
+			
+			// Registramos sonidos para lanzarlos luego 
+			Match.Ref.AudioManager.AddClass( "SoundCollisionCapBall", Assets.SoundCollisionCapBall );			
+			Match.Ref.AudioManager.AddClass( "SoundCollisionCapCap", Assets.SoundCollisionCapCap );			
+			Match.Ref.AudioManager.AddClass( "SoundCollisionWall", Assets.SoundCollisionWall );
+			Match.Ref.AudioManager.AddClass( "SoundAmbience", Assets.SoundAmbience );
+
 			// Convertimos las mx.Collections.ArrayCollection que vienen por red a Arrays
 			if (!AppParams.OfflineMode)
 			{
@@ -144,7 +134,7 @@ package Caps
 			// Inicializamos la semilla del generador de números pseudo-aleatorios, para asegurar el mismo resultado en los aleatorios de los jugadores
 			// TODO: Deberiamos utilizar una semilla envíada desde el servidor!!!
 			_Random = new Random(123);
-												
+
 			// Asignamos los tiempos del partido y turno
 			Config.MatchId = matchId;
 			Config.PartTime = matchTimeSecs / 2;
@@ -185,7 +175,7 @@ package Caps
 			_Initialized = true;
 			
 			// Lanzamos el sonido ambiente, como música para que se detenga automaticamente al finalizar 
-			AudioManager.PlayMusic( "SoundAmbience", 0.3 );
+			Match.Ref.AudioManager.PlayMusic( "SoundAmbience", 0.3 );
 			
 			// Obtenemos variables desde la URL de invocación
 			/*
@@ -1163,7 +1153,7 @@ package Caps
 			if (miControl != 0 || suDefensa != 0)
 				probabilidadRobo = AppParams.CoeficienteRobo * (suDefensa * 100 / (miControl + suDefensa));
 			
-			trace("probabilidadRobo " + probabilidadRobo);
+			trace("ProbabilidadRobo " + probabilidadRobo);
 				
 			// Rellenamos el objeto de conflicto
 			conflicto.defense = cap.Control;

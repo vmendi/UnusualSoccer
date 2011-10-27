@@ -26,21 +26,24 @@ package
 		public var IdLocalUser:int = -1;						// Identificador del usuario local
 		
 		public function get Game() : Caps.Game { return _Game; }
+		public function get AudioManager() : Framework.AudioManager { return _AudioManager; }
+		
 		
 		// Unico singleton de todo el partido
 		static public function get Ref() : Match {return Instance;}
 				
 		public function Match()
 		{
-			Instance = this;	// Guardamos la instancia única
+			Instance = this;
 			
-			// Configuramos el player para que no escale
+			_AudioManager = new Framework.AudioManager();
+
 			if (stage != null)
 			{
 				stage.scaleMode = StageScaleMode.NO_SCALE;
 				stage.align = StageAlign.TOP_LEFT;
-				trace( "Movie Frame Rate: " + stage.frameRate ); 
-			}			
+				trace("Movie Frame Rate: " + stage.frameRate); 
+			}
 									
 			// Añadimos la zona de información de debug (por delante de todo el interface)
 			addChild(DebugArea);
@@ -54,19 +57,19 @@ package
 		// con el servidor. Se llama desde el manager.
 		//
 		//
-		public function Init( netConnection: Object, formations : Object ): void
+		public function Init(netConnection: Object, formations : Object): void
 		{
 			// No permitimos modo Offline si entramos inicializando una conexión, es decir, desde el manager
 			AppParams.OfflineMode = false;
+			
 			_Game = new Caps.Game();
-			_Game.Init();
-						
+									
 			Formations = formations;
 			Connection = netConnection;
 			
 			Connection.AddClient(Game);
 						
-			// Indicamos al servidor que nuestro cliente necesita los datos del partido para continuar 
+			// Indicamos al servidor que nuestro cliente necesita los datos del partido para continuar. Esto llamara a InitFromServer desde el servidor 
 			Connection.Invoke("OnRequestData", null);
 		}
 		
@@ -82,7 +85,7 @@ package
 			{
 				AppParams.OfflineMode = true;
 				_Game = new Caps.Game();
-				_Game.Init();
+				_Game.InitOffline();
 			}
 			
 			if (stage != null)
@@ -110,8 +113,8 @@ package
 
 			removeEventListener(Event.ENTER_FRAME, OnFrame);
 			AudioManager.Shutdown();
-			TweenMax.killAll();
 			Game.TheGamePhysics.Shutdown();
+			TweenMax.killAll();			
 
 			// Internamente nadie puede llamarnos mas
 			Instance = null;
@@ -131,5 +134,6 @@ package
 		}
 		
 		private var _Game:Caps.Game;
+		private var _AudioManager:Framework.AudioManager;
 	}
 }

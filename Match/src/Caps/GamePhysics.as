@@ -147,19 +147,19 @@ package Caps
 					_TouchedCaps.push(cap);
 					_TouchedCapsLastRun.push(cap);
 										
-					AudioManager.Play( "SoundCollisionCapBall" );
+					Match.Ref.AudioManager.Play( "SoundCollisionCapBall" );
 				}
 				else
 				{
 					// chapa / chapa
 					if( ent1 is Cap && ent2 is Cap )
-						AudioManager.Play( "SoundCollisionCapCap" );
+						Match.Ref.AudioManager.Play( "SoundCollisionCapCap" );
 					// chapa / muro 
 					else if( cap != null && ( ent1 == null || ent2 == null ) ) 
-						AudioManager.Play( "SoundCollisionWall" );
+						Match.Ref.AudioManager.Play( "SoundCollisionWall" );
 					// balón / muro 
 					else if( ball != null && ( ent1 == null || ent2 == null ) )
-						AudioManager.Play( "SoundCollisionWall" );
+						Match.Ref.AudioManager.Play( "SoundCollisionWall" );
 				}
 				
 				// Posible falta
@@ -298,7 +298,7 @@ package Caps
 					var phyEntity:PhyEntity = entity as PhyEntity;
 					phyEntity.StopMovement();
 				}
-			}	
+			}
 		}
 		
 		//

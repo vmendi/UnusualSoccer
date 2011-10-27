@@ -121,13 +121,15 @@ package Caps
 			var Gui:* = Match.Ref.Game.TheField.Visual;
 			if (bMuted)
 			{
-				SoundMixer.soundTransform = new SoundTransform(0);
+				Match.Ref.AudioManager.Mute(true);
+				
 				Gui.SoundButton.BotonOn.visible = false;
 				Gui.SoundButton.BotonOff.visible = true;
 			}
 			else
 			{
-				SoundMixer.soundTransform = new SoundTransform(1);
+				Match.Ref.AudioManager.Mute(false);
+				
 				Gui.SoundButton.BotonOn.visible = true;
 				Gui.SoundButton.BotonOff.visible = false;
 			}

@@ -17,6 +17,7 @@
 		import SoccerServer.TransferModel.vo.RankingPage;
 		
 		import com.greensock.TweenLite;
+		import com.greensock.TweenMax;
 		import com.greensock.TweenNano;
 		
 		import mx.binding.utils.BindingUtils;
@@ -248,21 +249,22 @@
 						
 			function Loopa() : void
 			{
-				TweenLite.delayedCall(1, onTime);
+				TweenMax.killAll();
+				TweenMax.delayedCall(1, onTime);
 			}
 			
 			function onMatchEnded(matchResult : Object) : void
 			{	
 				SetLine(2, "Partido finalizado " + numMatches);
 				numMatches++;
-				TweenLite.killDelayedCallsTo(forceMatchFinish);
+				TweenMax.killDelayedCallsTo(forceMatchFinish);
 				Loopa();
 			}
 
 			function onMatchStarted() : void
 			{
 				SetLine(2, "Jugando partido " + numMatches);
-				TweenLite.killDelayedCallsTo(onTime);
+				TweenMax.killDelayedCallsTo(onTime);
 				
 				loader = new Loader();
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onMatchLoaded);
@@ -281,7 +283,7 @@
 			function onMatchLoaded(e:Event) : void
 			{
 				mMainGameModel.TheRealtimeModel.OnMatchLoaded(loader.content);
-				TweenLite.delayedCall(RandUtils.RandIntBetween(3, 5), forceMatchFinish);
+				TweenMax.delayedCall(RandUtils.RandIntBetween(3, 5), forceMatchFinish);
 				loader = null;
 			}
 			
@@ -338,7 +340,8 @@
 				SetLine(1, c.toString());
 				c++;
 
-				TweenNano.delayedCall(0.05, onLoginSuccess);
+				mMainGameModel.TheRealtimeModel.Disconnect();
+				TweenNano.delayedCall(0.05, startTest);
 			}
 		}
 		
