@@ -29,8 +29,8 @@ package Caps
 				  radius:AppParams.Screen2Physic( Radius ), 
 				  isSleeping: true,
 				  allowSleep: true, 
-				  linearDamping: 6, 
-				  angularDamping: 6, 
+				  linearDamping: AppParams.BallLinearDamping, 
+				  angularDamping: AppParams.BallLinearDamping, 
 				  friction: .2, 
 				  restitution: .8 } );	// Fuerza que recupera en un choque (old: 0.4)
 			

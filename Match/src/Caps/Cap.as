@@ -58,7 +58,7 @@ package Caps
 									 friction: .3, 
 									 restitution: .8,			// Fuerza que recupera en un choque (old: 0.6)
 									 linearDamping: AppParams.CapLinearDamping, 
-									 angularDamping: 10 }
+									 angularDamping: AppParams.CapLinearDamping }
 				
 			var asset:Class = null;
 				
