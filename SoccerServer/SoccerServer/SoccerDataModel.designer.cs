@@ -1611,15 +1611,7 @@ namespace SoccerServer.BDDModel
 		
 		private int _TurnDuration;
 		
-		private int _HomeMatchParticipationID;
-		
-		private int _AwayMatchParticipationID;
-		
 		private EntitySet<MatchParticipation> _MatchParticipations;
-		
-		private EntityRef<MatchParticipation> _MatchParticipation;
-		
-		private EntityRef<MatchParticipation> _MatchParticipation1;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1645,17 +1637,11 @@ namespace SoccerServer.BDDModel
     partial void OnMatchDurationChanged();
     partial void OnTurnDurationChanging(int value);
     partial void OnTurnDurationChanged();
-    partial void OnHomeMatchParticipationIDChanging(int value);
-    partial void OnHomeMatchParticipationIDChanged();
-    partial void OnAwayMatchParticipationIDChanging(int value);
-    partial void OnAwayMatchParticipationIDChanged();
     #endregion
 		
 		public Match()
 		{
 			this._MatchParticipations = new EntitySet<MatchParticipation>(new Action<MatchParticipation>(this.attach_MatchParticipations), new Action<MatchParticipation>(this.detach_MatchParticipations));
-			this._MatchParticipation = default(EntityRef<MatchParticipation>);
-			this._MatchParticipation1 = default(EntityRef<MatchParticipation>);
 			OnCreated();
 		}
 		
@@ -1859,54 +1845,6 @@ namespace SoccerServer.BDDModel
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HomeMatchParticipationID", DbType="Int NOT NULL")]
-		public int HomeMatchParticipationID
-		{
-			get
-			{
-				return this._HomeMatchParticipationID;
-			}
-			set
-			{
-				if ((this._HomeMatchParticipationID != value))
-				{
-					if (this._MatchParticipation1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnHomeMatchParticipationIDChanging(value);
-					this.SendPropertyChanging();
-					this._HomeMatchParticipationID = value;
-					this.SendPropertyChanged("HomeMatchParticipationID");
-					this.OnHomeMatchParticipationIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AwayMatchParticipationID", DbType="Int NOT NULL")]
-		public int AwayMatchParticipationID
-		{
-			get
-			{
-				return this._AwayMatchParticipationID;
-			}
-			set
-			{
-				if ((this._AwayMatchParticipationID != value))
-				{
-					if (this._MatchParticipation.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnAwayMatchParticipationIDChanging(value);
-					this.SendPropertyChanging();
-					this._AwayMatchParticipationID = value;
-					this.SendPropertyChanged("AwayMatchParticipationID");
-					this.OnAwayMatchParticipationIDChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Match_MatchParticipation", Storage="_MatchParticipations", ThisKey="MatchID", OtherKey="MatchID")]
 		public EntitySet<MatchParticipation> MatchParticipations
 		{
@@ -1917,74 +1855,6 @@ namespace SoccerServer.BDDModel
 			set
 			{
 				this._MatchParticipations.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MatchParticipation_Match", Storage="_MatchParticipation", ThisKey="AwayMatchParticipationID", OtherKey="MatchParticipationID", IsForeignKey=true)]
-		public MatchParticipation MatchParticipation
-		{
-			get
-			{
-				return this._MatchParticipation.Entity;
-			}
-			set
-			{
-				MatchParticipation previousValue = this._MatchParticipation.Entity;
-				if (((previousValue != value) 
-							|| (this._MatchParticipation.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._MatchParticipation.Entity = null;
-						previousValue.Matches.Remove(this);
-					}
-					this._MatchParticipation.Entity = value;
-					if ((value != null))
-					{
-						value.Matches.Add(this);
-						this._AwayMatchParticipationID = value.MatchParticipationID;
-					}
-					else
-					{
-						this._AwayMatchParticipationID = default(int);
-					}
-					this.SendPropertyChanged("MatchParticipation");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MatchParticipation_Match1", Storage="_MatchParticipation1", ThisKey="HomeMatchParticipationID", OtherKey="MatchParticipationID", IsForeignKey=true)]
-		public MatchParticipation MatchParticipation1
-		{
-			get
-			{
-				return this._MatchParticipation1.Entity;
-			}
-			set
-			{
-				MatchParticipation previousValue = this._MatchParticipation1.Entity;
-				if (((previousValue != value) 
-							|| (this._MatchParticipation1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._MatchParticipation1.Entity = null;
-						previousValue.Matches1.Remove(this);
-					}
-					this._MatchParticipation1.Entity = value;
-					if ((value != null))
-					{
-						value.Matches1.Add(this);
-						this._HomeMatchParticipationID = value.MatchParticipationID;
-					}
-					else
-					{
-						this._HomeMatchParticipationID = default(int);
-					}
-					this.SendPropertyChanged("MatchParticipation1");
-				}
 			}
 		}
 		
@@ -2041,10 +1911,6 @@ namespace SoccerServer.BDDModel
 		
 		private EntityRef<CompetitionMatchParticipation> _CompetitionMatchParticipation;
 		
-		private EntitySet<Match> _Matches;
-		
-		private EntitySet<Match> _Matches1;
-		
 		private EntityRef<Match> _Match;
 		
 		private EntityRef<Team> _Team;
@@ -2070,8 +1936,6 @@ namespace SoccerServer.BDDModel
 		public MatchParticipation()
 		{
 			this._CompetitionMatchParticipation = default(EntityRef<CompetitionMatchParticipation>);
-			this._Matches = new EntitySet<Match>(new Action<Match>(this.attach_Matches), new Action<Match>(this.detach_Matches));
-			this._Matches1 = new EntitySet<Match>(new Action<Match>(this.attach_Matches1), new Action<Match>(this.detach_Matches1));
 			this._Match = default(EntityRef<Match>);
 			this._Team = default(EntityRef<Team>);
 			OnCreated();
@@ -2234,32 +2098,6 @@ namespace SoccerServer.BDDModel
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MatchParticipation_Match", Storage="_Matches", ThisKey="MatchParticipationID", OtherKey="AwayMatchParticipationID")]
-		public EntitySet<Match> Matches
-		{
-			get
-			{
-				return this._Matches;
-			}
-			set
-			{
-				this._Matches.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="MatchParticipation_Match1", Storage="_Matches1", ThisKey="MatchParticipationID", OtherKey="HomeMatchParticipationID")]
-		public EntitySet<Match> Matches1
-		{
-			get
-			{
-				return this._Matches1;
-			}
-			set
-			{
-				this._Matches1.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Match_MatchParticipation", Storage="_Match", ThisKey="MatchID", OtherKey="MatchID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public Match Match
 		{
@@ -2346,30 +2184,6 @@ namespace SoccerServer.BDDModel
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_Matches(Match entity)
-		{
-			this.SendPropertyChanging();
-			entity.MatchParticipation = this;
-		}
-		
-		private void detach_Matches(Match entity)
-		{
-			this.SendPropertyChanging();
-			entity.MatchParticipation = null;
-		}
-		
-		private void attach_Matches1(Match entity)
-		{
-			this.SendPropertyChanging();
-			entity.MatchParticipation1 = this;
-		}
-		
-		private void detach_Matches1(Match entity)
-		{
-			this.SendPropertyChanging();
-			entity.MatchParticipation1 = null;
 		}
 	}
 	

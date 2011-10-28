@@ -76,8 +76,10 @@
         <br />
 		<br />
 
+        <asp:Button runat="server" Text="Erase Orphan Matches" OnClick="EraseOrphanMatches_Click" />   
+
         <asp:Button runat="server" Text="Mistical Refresh" OnClick="MisticalRefresh_Click" />        
-        <asp:Button runat="server" Text="Mistical Refresh 02" OnClick="MisticalRefresh02_Click" />        
+        <asp:Button runat="server" Text="Mistical Refresh 02" OnClick="MisticalRefresh02_Click" />
 
 					
 	</form>

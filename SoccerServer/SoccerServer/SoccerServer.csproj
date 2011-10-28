@@ -277,6 +277,11 @@
     <Compile Include="ServerStatsRanking.aspx.designer.cs">
       <DependentUpon>ServerStatsRanking.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SoccerEntityModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SoccerEntityModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="TestCreateSession.aspx.cs">
       <DependentUpon>TestCreateSession.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -308,9 +313,15 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="weborb.config" />
+    <EntityDeploy Include="SoccerEntityModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SoccerEntityModel.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>DBModel</CustomToolNamespace>
+    </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SoccerDataModel.dbml.layout">

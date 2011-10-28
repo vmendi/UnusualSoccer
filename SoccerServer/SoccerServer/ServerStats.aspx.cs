@@ -147,7 +147,17 @@ namespace SoccerServer
 
         protected void MisticalRefresh_Click(object sender, EventArgs e)
         {
-            //MainService.ResetSeasons(false);
+            MainService.ResetSeasons(false);
+
+            /*
+            var test = new DBModel.SoccerDataContext();
+            
+            var leches = (from s in test.Matches
+                          where s.IsFriendly
+                          select s);
+            var a = leches.Count();
+             * */
+                
 
             /*
             int c = 0;
@@ -212,16 +222,21 @@ namespace SoccerServer
             mDC.Matches.DeleteAllOnSubmit(crapMatches);
             mDC.SubmitChanges();
              */
-            var matches = mDC.Matches; //.ToArray();
-            
-            foreach (var match in matches)
-            {
-            }
         }
 
         protected void MisticalRefresh02_Click(object sender, EventArgs e)
         {
             MainService.SeasonEnd();
+        }
+
+        protected void EraseOrphanMatches_Click(object sender, EventArgs e)
+        {
+            var orphanMatches = (from s in mDC.Matches
+                                 where s.MatchParticipations.Count != 2
+                                 select s);
+
+            mDC.Matches.DeleteAllOnSubmit(orphanMatches);
+            mDC.SubmitChanges();
         }
 
         private void UpdateRealtimeData()

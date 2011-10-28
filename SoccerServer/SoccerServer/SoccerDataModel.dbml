@@ -75,11 +75,7 @@
       <Column Name="IsFriendly" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="MatchDuration" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="TurnDuration" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="HomeMatchParticipationID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="AwayMatchParticipationID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Match_MatchParticipation" Member="MatchParticipations" ThisKey="MatchID" OtherKey="MatchID" Type="MatchParticipation" />
-      <Association Name="MatchParticipation_Match" Member="MatchParticipation" ThisKey="AwayMatchParticipationID" OtherKey="MatchParticipationID" Type="MatchParticipation" IsForeignKey="true" />
-      <Association Name="MatchParticipation_Match1" Member="MatchParticipation1" ThisKey="HomeMatchParticipationID" OtherKey="MatchParticipationID" Type="MatchParticipation" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.MatchParticipations" Member="MatchParticipations">
@@ -91,8 +87,6 @@
       <Column Name="Goals" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="TurnsPlayed" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="MatchParticipation_CompetitionMatchParticipation" Member="CompetitionMatchParticipation" ThisKey="MatchParticipationID" OtherKey="MatchParticipationID" Type="CompetitionMatchParticipation" Cardinality="One" />
-      <Association Name="MatchParticipation_Match" Member="Matches" ThisKey="MatchParticipationID" OtherKey="AwayMatchParticipationID" Type="Match" />
-      <Association Name="MatchParticipation_Match1" Member="Matches1" ThisKey="MatchParticipationID" OtherKey="HomeMatchParticipationID" Type="Match" />
       <Association Name="Match_MatchParticipation" Member="Match" ThisKey="MatchID" OtherKey="MatchID" Type="Match" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="Team_MatchParticipation" Member="Team" ThisKey="TeamID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>

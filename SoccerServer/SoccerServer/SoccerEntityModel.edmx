@@ -1,0 +1,1513 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SoccerModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="SoccerModelStoreContainer">
+          <EntitySet Name="CompetitionDivisions" EntityType="SoccerModel.Store.CompetitionDivisions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CompetitionGroupEntries" EntityType="SoccerModel.Store.CompetitionGroupEntries" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CompetitionGroups" EntityType="SoccerModel.Store.CompetitionGroups" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CompetitionMatchParticipations" EntityType="SoccerModel.Store.CompetitionMatchParticipations" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CompetitionSeasons" EntityType="SoccerModel.Store.CompetitionSeasons" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Matches" EntityType="SoccerModel.Store.Matches" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="MatchParticipations" EntityType="SoccerModel.Store.MatchParticipations" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PendingTrainings" EntityType="SoccerModel.Store.PendingTrainings" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Players" EntityType="SoccerModel.Store.Players" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PredefinedTeams" EntityType="SoccerModel.Store.PredefinedTeams" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Purchases" EntityType="SoccerModel.Store.Purchases" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Requests" EntityType="SoccerModel.Store.Requests" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Sessions" EntityType="SoccerModel.Store.Sessions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SoccerPlayers" EntityType="SoccerModel.Store.SoccerPlayers" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SpecialTrainingDefinitions" EntityType="SoccerModel.Store.SpecialTrainingDefinitions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SpecialTrainings" EntityType="SoccerModel.Store.SpecialTrainings" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Teams" EntityType="SoccerModel.Store.Teams" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Tickets" EntityType="SoccerModel.Store.Tickets" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TrainingDefinitions" EntityType="SoccerModel.Store.TrainingDefinitions" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_CompetitionDivisions_CompetitionDivisions" Association="SoccerModel.Store.FK_CompetitionDivisions_CompetitionDivisions">
+            <End Role="CompetitionDivisions" EntitySet="CompetitionDivisions" />
+            <End Role="CompetitionDivisions1" EntitySet="CompetitionDivisions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompetitionGroupEntries_CompetitionGroups" Association="SoccerModel.Store.FK_CompetitionGroupEntries_CompetitionGroups">
+            <End Role="CompetitionGroups" EntitySet="CompetitionGroups" />
+            <End Role="CompetitionGroupEntries" EntitySet="CompetitionGroupEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompetitionGroupEntries_Teams" Association="SoccerModel.Store.FK_CompetitionGroupEntries_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="CompetitionGroupEntries" EntitySet="CompetitionGroupEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompetitionGroups_CompetitionDivisions" Association="SoccerModel.Store.FK_CompetitionGroups_CompetitionDivisions">
+            <End Role="CompetitionDivisions" EntitySet="CompetitionDivisions" />
+            <End Role="CompetitionGroups" EntitySet="CompetitionGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompetitionGroups_CompetitionSeasons" Association="SoccerModel.Store.FK_CompetitionGroups_CompetitionSeasons">
+            <End Role="CompetitionSeasons" EntitySet="CompetitionSeasons" />
+            <End Role="CompetitionGroups" EntitySet="CompetitionGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompetitionMatchParticipations_CompetitionGroupEntries" Association="SoccerModel.Store.FK_CompetitionMatchParticipations_CompetitionGroupEntries">
+            <End Role="CompetitionGroupEntries" EntitySet="CompetitionGroupEntries" />
+            <End Role="CompetitionMatchParticipations" EntitySet="CompetitionMatchParticipations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompetitionMatchParticipations_MatchParticipations" Association="SoccerModel.Store.FK_CompetitionMatchParticipations_MatchParticipations">
+            <End Role="MatchParticipations" EntitySet="MatchParticipations" />
+            <End Role="CompetitionMatchParticipations" EntitySet="CompetitionMatchParticipations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Matches_MatchParticipationsAway" Association="SoccerModel.Store.FK_Matches_MatchParticipationsAway">
+            <End Role="MatchParticipations" EntitySet="MatchParticipations" />
+            <End Role="Matches" EntitySet="Matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Matches_MatchParticipationsHome" Association="SoccerModel.Store.FK_Matches_MatchParticipationsHome">
+            <End Role="MatchParticipations" EntitySet="MatchParticipations" />
+            <End Role="Matches" EntitySet="Matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MatchParticipations_Matches" Association="SoccerModel.Store.FK_MatchParticipations_Matches">
+            <End Role="Matches" EntitySet="Matches" />
+            <End Role="MatchParticipations" EntitySet="MatchParticipations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MatchParticipations_Teams" Association="SoccerModel.Store.FK_MatchParticipations_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="MatchParticipations" EntitySet="MatchParticipations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingTrainings_Teams" Association="SoccerModel.Store.FK_PendingTrainings_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="PendingTrainings" EntitySet="PendingTrainings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingTrainings_TrainingDefinitions" Association="SoccerModel.Store.FK_PendingTrainings_TrainingDefinitions">
+            <End Role="TrainingDefinitions" EntitySet="TrainingDefinitions" />
+            <End Role="PendingTrainings" EntitySet="PendingTrainings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requests_Teams" Association="SoccerModel.Store.FK_Requests_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sessions_Players" Association="SoccerModel.Store.FK_Sessions_Players">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Sessions" EntitySet="Sessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SoccerPlayers_Teams" Association="SoccerModel.Store.FK_SoccerPlayers_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="SoccerPlayers" EntitySet="SoccerPlayers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpecialTrainings_SpecialTrainingDefinitions" Association="SoccerModel.Store.FK_SpecialTrainings_SpecialTrainingDefinitions">
+            <End Role="SpecialTrainingDefinitions" EntitySet="SpecialTrainingDefinitions" />
+            <End Role="SpecialTrainings" EntitySet="SpecialTrainings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpecialTrainings_Teams" Association="SoccerModel.Store.FK_SpecialTrainings_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="SpecialTrainings" EntitySet="SpecialTrainings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Teams_Players" Association="SoccerModel.Store.FK_Teams_Players">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Teams" EntitySet="Teams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Teams_PredefinedTeams" Association="SoccerModel.Store.FK_Teams_PredefinedTeams">
+            <End Role="PredefinedTeams" EntitySet="PredefinedTeams" />
+            <End Role="Teams" EntitySet="Teams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tickets_Teams" Association="SoccerModel.Store.FK_Tickets_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CompetitionDivisions">
+          <Key>
+            <PropertyRef Name="CompetitionDivisionID" />
+          </Key>
+          <Property Name="CompetitionDivisionID" Type="int" Nullable="false" />
+          <Property Name="DivisionName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="MinimumPoints" Type="int" Nullable="false" />
+          <Property Name="ParentCompetitionDivisionID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompetitionGroupEntries">
+          <Key>
+            <PropertyRef Name="CompetitionGroupEntryID" />
+          </Key>
+          <Property Name="CompetitionGroupEntryID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CompetitionGroupID" Type="int" Nullable="false" />
+          <Property Name="TeamID" Type="int" Nullable="false" />
+          <Property Name="NumMatchesPlayed" Type="int" Nullable="false" />
+          <Property Name="NumMatchesWon" Type="int" Nullable="false" />
+          <Property Name="NumMatchesDraw" Type="int" Nullable="false" />
+          <Property Name="Points" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompetitionGroups">
+          <Key>
+            <PropertyRef Name="CompetitionGroupID" />
+          </Key>
+          <Property Name="CompetitionGroupID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CompetitionDivisionID" Type="int" Nullable="false" />
+          <Property Name="GroupName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="CompetitionSeasonID" Type="int" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompetitionMatchParticipations">
+          <Key>
+            <PropertyRef Name="MatchParticipationID" />
+          </Key>
+          <Property Name="MatchParticipationID" Type="int" Nullable="false" />
+          <Property Name="CompetitionGroupEntryID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompetitionSeasons">
+          <Key>
+            <PropertyRef Name="CompetitionSeasonID" />
+          </Key>
+          <Property Name="CompetitionSeasonID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Matches">
+          <Key>
+            <PropertyRef Name="MatchID" />
+          </Key>
+          <Property Name="MatchID" Type="int" Nullable="false" />
+          <Property Name="DateStarted" Type="datetime" Nullable="false" />
+          <Property Name="DateEnded" Type="datetime" />
+          <Property Name="WasTooManyTimes" Type="bit" />
+          <Property Name="WasJust" Type="bit" />
+          <Property Name="WasAbandoned" Type="bit" />
+          <Property Name="WasAbandonedSameIP" Type="bit" />
+          <Property Name="IsFriendly" Type="bit" Nullable="false" />
+          <Property Name="MatchDuration" Type="int" Nullable="false" />
+          <Property Name="TurnDuration" Type="int" Nullable="false" />
+          <Property Name="HomeMatchParticipationID" Type="int" Nullable="false" />
+          <Property Name="AwayMatchParticipationID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MatchParticipations">
+          <Key>
+            <PropertyRef Name="MatchParticipationID" />
+          </Key>
+          <Property Name="MatchParticipationID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MatchID" Type="int" Nullable="false" />
+          <Property Name="TeamID" Type="int" Nullable="false" />
+          <Property Name="AsHome" Type="bit" Nullable="false" />
+          <Property Name="Goals" Type="int" Nullable="false" />
+          <Property Name="TurnsPlayed" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PendingTrainings">
+          <Key>
+            <PropertyRef Name="TeamID" />
+          </Key>
+          <Property Name="TeamID" Type="int" Nullable="false" />
+          <Property Name="TrainingDefinitionID" Type="int" Nullable="false" />
+          <Property Name="TimeStart" Type="datetime" Nullable="false" />
+          <Property Name="TimeEnd" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Players">
+          <Key>
+            <PropertyRef Name="PlayerID" />
+          </Key>
+          <Property Name="PlayerID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Surname" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="FacebookID" Type="bigint" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="Liked" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PredefinedTeams">
+          <Key>
+            <PropertyRef Name="PredefinedTeamID" />
+          </Key>
+          <Property Name="PredefinedTeamID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Purchases">
+          <Key>
+            <PropertyRef Name="PurchaseID" />
+          </Key>
+          <Property Name="PurchaseID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ItemID" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="FacebookBuyerID" Type="bigint" Nullable="false" />
+          <Property Name="FacebookOrderID" Type="bigint" Nullable="false" />
+          <Property Name="Status" Type="varchar" Nullable="false" MaxLength="25" />
+          <Property Name="StatusPlacedDate" Type="datetime" Nullable="false" />
+          <Property Name="StatusSettledDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Requests">
+          <Key>
+            <PropertyRef Name="RequestID" />
+          </Key>
+          <Property Name="RequestID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RequestType" Type="int" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="AnswerDate" Type="datetime" />
+          <Property Name="FacebookRequestID" Type="varchar" Nullable="false" MaxLength="256" />
+          <Property Name="SourceTeamID" Type="int" Nullable="false" />
+          <Property Name="TargetFacebookID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sessions">
+          <Key>
+            <PropertyRef Name="SessionID" />
+          </Key>
+          <Property Name="SessionID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerID" Type="int" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="FacebookSession" Type="varchar" Nullable="false" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="SoccerPlayers">
+          <Key>
+            <PropertyRef Name="SoccerPlayerID" />
+          </Key>
+          <Property Name="SoccerPlayerID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TeamID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="DorsalNumber" Type="int" Nullable="false" />
+          <Property Name="FacebookID" Type="bigint" Nullable="false" />
+          <Property Name="FieldPosition" Type="int" Nullable="false" />
+          <Property Name="Weight" Type="int" Nullable="false" />
+          <Property Name="Sliding" Type="int" Nullable="false" />
+          <Property Name="Power" Type="int" Nullable="false" />
+          <Property Name="IsInjured" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpecialTrainingDefinitions">
+          <Key>
+            <PropertyRef Name="SpecialTrainingDefinitionID" />
+          </Key>
+          <Property Name="SpecialTrainingDefinitionID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="RequiredXP" Type="int" Nullable="false" />
+          <Property Name="EnergyStep" Type="int" Nullable="false" />
+          <Property Name="EnergyTotal" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SpecialTrainings">
+          <Key>
+            <PropertyRef Name="SpecialTrainingID" />
+          </Key>
+          <Property Name="SpecialTrainingID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TeamID" Type="int" Nullable="false" />
+          <Property Name="SpecialTrainingDefinitionID" Type="int" Nullable="false" />
+          <Property Name="EnergyCurrent" Type="int" Nullable="false" />
+          <Property Name="IsCompleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Teams">
+          <Key>
+            <PropertyRef Name="TeamID" />
+          </Key>
+          <Property Name="TeamID" Type="int" Nullable="false" />
+          <Property Name="PredefinedTeamID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="30" />
+          <Property Name="Formation" Type="nvarchar" Nullable="false" MaxLength="20" />
+          <Property Name="TrueSkill" Type="int" Nullable="false" />
+          <Property Name="XP" Type="int" Nullable="false" />
+          <Property Name="SkillPoints" Type="int" Nullable="false" />
+          <Property Name="Energy" Type="int" Nullable="false" />
+          <Property Name="Fitness" Type="int" Nullable="false" />
+          <Property Name="Mean" Type="float" Nullable="false" />
+          <Property Name="StandardDeviation" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tickets">
+          <Key>
+            <PropertyRef Name="TicketID" />
+          </Key>
+          <Property Name="TicketID" Type="int" Nullable="false" />
+          <Property Name="RemainingMatches" Type="int" Nullable="false" />
+          <Property Name="TicketKind" Type="int" Nullable="false" />
+          <Property Name="TicketPurchaseDate" Type="datetime" Nullable="false" />
+          <Property Name="TicketExpiryDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TrainingDefinitions">
+          <Key>
+            <PropertyRef Name="TrainingDefinitionID" />
+          </Key>
+          <Property Name="TrainingDefinitionID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="FitnessDelta" Type="int" Nullable="false" />
+          <Property Name="Time" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CompetitionDivisions_CompetitionDivisions">
+          <End Role="CompetitionDivisions" Type="SoccerModel.Store.CompetitionDivisions" Multiplicity="1" />
+          <End Role="CompetitionDivisions1" Type="SoccerModel.Store.CompetitionDivisions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompetitionDivisions">
+              <PropertyRef Name="CompetitionDivisionID" />
+            </Principal>
+            <Dependent Role="CompetitionDivisions1">
+              <PropertyRef Name="ParentCompetitionDivisionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompetitionGroupEntries_CompetitionGroups">
+          <End Role="CompetitionGroups" Type="SoccerModel.Store.CompetitionGroups" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CompetitionGroupEntries" Type="SoccerModel.Store.CompetitionGroupEntries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompetitionGroups">
+              <PropertyRef Name="CompetitionGroupID" />
+            </Principal>
+            <Dependent Role="CompetitionGroupEntries">
+              <PropertyRef Name="CompetitionGroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompetitionGroupEntries_Teams">
+          <End Role="Teams" Type="SoccerModel.Store.Teams" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CompetitionGroupEntries" Type="SoccerModel.Store.CompetitionGroupEntries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="CompetitionGroupEntries">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompetitionGroups_CompetitionDivisions">
+          <End Role="CompetitionDivisions" Type="SoccerModel.Store.CompetitionDivisions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CompetitionGroups" Type="SoccerModel.Store.CompetitionGroups" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompetitionDivisions">
+              <PropertyRef Name="CompetitionDivisionID" />
+            </Principal>
+            <Dependent Role="CompetitionGroups">
+              <PropertyRef Name="CompetitionDivisionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompetitionGroups_CompetitionSeasons">
+          <End Role="CompetitionSeasons" Type="SoccerModel.Store.CompetitionSeasons" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CompetitionGroups" Type="SoccerModel.Store.CompetitionGroups" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompetitionSeasons">
+              <PropertyRef Name="CompetitionSeasonID" />
+            </Principal>
+            <Dependent Role="CompetitionGroups">
+              <PropertyRef Name="CompetitionSeasonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompetitionMatchParticipations_CompetitionGroupEntries">
+          <End Role="CompetitionGroupEntries" Type="SoccerModel.Store.CompetitionGroupEntries" Multiplicity="1" />
+          <End Role="CompetitionMatchParticipations" Type="SoccerModel.Store.CompetitionMatchParticipations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompetitionGroupEntries">
+              <PropertyRef Name="CompetitionGroupEntryID" />
+            </Principal>
+            <Dependent Role="CompetitionMatchParticipations">
+              <PropertyRef Name="CompetitionGroupEntryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompetitionMatchParticipations_MatchParticipations">
+          <End Role="MatchParticipations" Type="SoccerModel.Store.MatchParticipations" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CompetitionMatchParticipations" Type="SoccerModel.Store.CompetitionMatchParticipations" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="MatchParticipations">
+              <PropertyRef Name="MatchParticipationID" />
+            </Principal>
+            <Dependent Role="CompetitionMatchParticipations">
+              <PropertyRef Name="MatchParticipationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Matches_MatchParticipationsAway">
+          <End Role="MatchParticipations" Type="SoccerModel.Store.MatchParticipations" Multiplicity="1" />
+          <End Role="Matches" Type="SoccerModel.Store.Matches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MatchParticipations">
+              <PropertyRef Name="MatchParticipationID" />
+            </Principal>
+            <Dependent Role="Matches">
+              <PropertyRef Name="AwayMatchParticipationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Matches_MatchParticipationsHome">
+          <End Role="MatchParticipations" Type="SoccerModel.Store.MatchParticipations" Multiplicity="1" />
+          <End Role="Matches" Type="SoccerModel.Store.Matches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MatchParticipations">
+              <PropertyRef Name="MatchParticipationID" />
+            </Principal>
+            <Dependent Role="Matches">
+              <PropertyRef Name="HomeMatchParticipationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MatchParticipations_Matches">
+          <End Role="Matches" Type="SoccerModel.Store.Matches" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MatchParticipations" Type="SoccerModel.Store.MatchParticipations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Matches">
+              <PropertyRef Name="MatchID" />
+            </Principal>
+            <Dependent Role="MatchParticipations">
+              <PropertyRef Name="MatchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MatchParticipations_Teams">
+          <End Role="Teams" Type="SoccerModel.Store.Teams" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MatchParticipations" Type="SoccerModel.Store.MatchParticipations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="MatchParticipations">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingTrainings_Teams">
+          <End Role="Teams" Type="SoccerModel.Store.Teams" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PendingTrainings" Type="SoccerModel.Store.PendingTrainings" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="PendingTrainings">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingTrainings_TrainingDefinitions">
+          <End Role="TrainingDefinitions" Type="SoccerModel.Store.TrainingDefinitions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PendingTrainings" Type="SoccerModel.Store.PendingTrainings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TrainingDefinitions">
+              <PropertyRef Name="TrainingDefinitionID" />
+            </Principal>
+            <Dependent Role="PendingTrainings">
+              <PropertyRef Name="TrainingDefinitionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requests_Teams">
+          <End Role="Teams" Type="SoccerModel.Store.Teams" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Requests" Type="SoccerModel.Store.Requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="SourceTeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sessions_Players">
+          <End Role="Players" Type="SoccerModel.Store.Players" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Sessions" Type="SoccerModel.Store.Sessions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerID" />
+            </Principal>
+            <Dependent Role="Sessions">
+              <PropertyRef Name="PlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SoccerPlayers_Teams">
+          <End Role="Teams" Type="SoccerModel.Store.Teams" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SoccerPlayers" Type="SoccerModel.Store.SoccerPlayers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="SoccerPlayers">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpecialTrainings_SpecialTrainingDefinitions">
+          <End Role="SpecialTrainingDefinitions" Type="SoccerModel.Store.SpecialTrainingDefinitions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SpecialTrainings" Type="SoccerModel.Store.SpecialTrainings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpecialTrainingDefinitions">
+              <PropertyRef Name="SpecialTrainingDefinitionID" />
+            </Principal>
+            <Dependent Role="SpecialTrainings">
+              <PropertyRef Name="SpecialTrainingDefinitionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpecialTrainings_Teams">
+          <End Role="Teams" Type="SoccerModel.Store.Teams" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SpecialTrainings" Type="SoccerModel.Store.SpecialTrainings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="SpecialTrainings">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Teams_Players">
+          <End Role="Players" Type="SoccerModel.Store.Players" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Teams" Type="SoccerModel.Store.Teams" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerID" />
+            </Principal>
+            <Dependent Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Teams_PredefinedTeams">
+          <End Role="PredefinedTeams" Type="SoccerModel.Store.PredefinedTeams" Multiplicity="1" />
+          <End Role="Teams" Type="SoccerModel.Store.Teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PredefinedTeams">
+              <PropertyRef Name="PredefinedTeamID" />
+            </Principal>
+            <Dependent Role="Teams">
+              <PropertyRef Name="PredefinedTeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tickets_Teams">
+          <End Role="Teams" Type="SoccerModel.Store.Teams" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tickets" Type="SoccerModel.Store.Tickets" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="TicketID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SoccerModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="SoccerDataContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CompetitionDivisions" EntityType="SoccerModel.CompetitionDivision" />
+          <EntitySet Name="CompetitionGroupEntries" EntityType="SoccerModel.CompetitionGroupEntry" />
+          <EntitySet Name="CompetitionGroups" EntityType="SoccerModel.CompetitionGroup" />
+          <EntitySet Name="CompetitionSeasons" EntityType="SoccerModel.CompetitionSeason" />
+          <EntitySet Name="Matches" EntityType="SoccerModel.Match" />
+          <EntitySet Name="MatchParticipations" EntityType="SoccerModel.MatchParticipation" />
+          <EntitySet Name="PendingTrainings" EntityType="SoccerModel.PendingTraining" />
+          <EntitySet Name="Players" EntityType="SoccerModel.Player" />
+          <EntitySet Name="PredefinedTeams" EntityType="SoccerModel.PredefinedTeam" />
+          <EntitySet Name="Purchases" EntityType="SoccerModel.Purchase" />
+          <EntitySet Name="Requests" EntityType="SoccerModel.Request" />
+          <EntitySet Name="Sessions" EntityType="SoccerModel.Session" />
+          <EntitySet Name="SoccerPlayers" EntityType="SoccerModel.SoccerPlayer" />
+          <EntitySet Name="SpecialTrainingDefinitions" EntityType="SoccerModel.SpecialTrainingDefinition" />
+          <EntitySet Name="SpecialTrainings" EntityType="SoccerModel.SpecialTraining" />
+          <EntitySet Name="Teams" EntityType="SoccerModel.Team" />
+          <EntitySet Name="Tickets" EntityType="SoccerModel.Ticket" />
+          <EntitySet Name="TrainingDefinitions" EntityType="SoccerModel.TrainingDefinition" />
+          <AssociationSet Name="FK_CompetitionDivisions_CompetitionDivisions" Association="SoccerModel.FK_CompetitionDivisions_CompetitionDivisions">
+            <End Role="CompetitionDivisions" EntitySet="CompetitionDivisions" />
+            <End Role="CompetitionDivisions1" EntitySet="CompetitionDivisions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompetitionGroups_CompetitionDivisions" Association="SoccerModel.FK_CompetitionGroups_CompetitionDivisions">
+            <End Role="CompetitionDivisions" EntitySet="CompetitionDivisions" />
+            <End Role="CompetitionGroups" EntitySet="CompetitionGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompetitionGroupEntries_CompetitionGroups" Association="SoccerModel.FK_CompetitionGroupEntries_CompetitionGroups">
+            <End Role="CompetitionGroups" EntitySet="CompetitionGroups" />
+            <End Role="CompetitionGroupEntries" EntitySet="CompetitionGroupEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompetitionGroupEntries_Teams" Association="SoccerModel.FK_CompetitionGroupEntries_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="CompetitionGroupEntries" EntitySet="CompetitionGroupEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompetitionGroups_CompetitionSeasons" Association="SoccerModel.FK_CompetitionGroups_CompetitionSeasons">
+            <End Role="CompetitionSeasons" EntitySet="CompetitionSeasons" />
+            <End Role="CompetitionGroups" EntitySet="CompetitionGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Matches_MatchParticipationsAway" Association="SoccerModel.FK_Matches_MatchParticipationsAway">
+            <End Role="MatchParticipations" EntitySet="MatchParticipations" />
+            <End Role="Matches" EntitySet="Matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Matches_MatchParticipationsHome" Association="SoccerModel.FK_Matches_MatchParticipationsHome">
+            <End Role="MatchParticipations" EntitySet="MatchParticipations" />
+            <End Role="Matches" EntitySet="Matches" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MatchParticipations_Matches" Association="SoccerModel.FK_MatchParticipations_Matches">
+            <End Role="Matches" EntitySet="Matches" />
+            <End Role="MatchParticipations" EntitySet="MatchParticipations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MatchParticipations_Teams" Association="SoccerModel.FK_MatchParticipations_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="MatchParticipations" EntitySet="MatchParticipations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingTrainings_Teams" Association="SoccerModel.FK_PendingTrainings_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="PendingTrainings" EntitySet="PendingTrainings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PendingTrainings_TrainingDefinitions" Association="SoccerModel.FK_PendingTrainings_TrainingDefinitions">
+            <End Role="TrainingDefinitions" EntitySet="TrainingDefinitions" />
+            <End Role="PendingTrainings" EntitySet="PendingTrainings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sessions_Players" Association="SoccerModel.FK_Sessions_Players">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Sessions" EntitySet="Sessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Teams_Players" Association="SoccerModel.FK_Teams_Players">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Teams" EntitySet="Teams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Teams_PredefinedTeams" Association="SoccerModel.FK_Teams_PredefinedTeams">
+            <End Role="PredefinedTeams" EntitySet="PredefinedTeams" />
+            <End Role="Teams" EntitySet="Teams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requests_Teams" Association="SoccerModel.FK_Requests_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SoccerPlayers_Teams" Association="SoccerModel.FK_SoccerPlayers_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="SoccerPlayers" EntitySet="SoccerPlayers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpecialTrainings_SpecialTrainingDefinitions" Association="SoccerModel.FK_SpecialTrainings_SpecialTrainingDefinitions">
+            <End Role="SpecialTrainingDefinitions" EntitySet="SpecialTrainingDefinitions" />
+            <End Role="SpecialTrainings" EntitySet="SpecialTrainings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpecialTrainings_Teams" Association="SoccerModel.FK_SpecialTrainings_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="SpecialTrainings" EntitySet="SpecialTrainings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tickets_Teams" Association="SoccerModel.FK_Tickets_Teams">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="Tickets" EntitySet="Tickets" />
+          </AssociationSet>
+          <AssociationSet Name="CompetitionMatchParticipations" Association="SoccerModel.CompetitionMatchParticipations">
+            <End Role="CompetitionGroupEntries" EntitySet="CompetitionGroupEntries" />
+            <End Role="MatchParticipations" EntitySet="MatchParticipations" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CompetitionDivision">
+          <Key>
+            <PropertyRef Name="CompetitionDivisionID" />
+          </Key>
+          <Property Name="CompetitionDivisionID" Type="Int32" Nullable="false" />
+          <Property Name="DivisionName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="MinimumPoints" Type="Int32" Nullable="false" />
+          <Property Name="ParentCompetitionDivisionID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CompetitionDivisions1" Relationship="SoccerModel.FK_CompetitionDivisions_CompetitionDivisions" FromRole="CompetitionDivisions" ToRole="CompetitionDivisions1" />
+          <NavigationProperty Name="CompetitionDivision1" Relationship="SoccerModel.FK_CompetitionDivisions_CompetitionDivisions" FromRole="CompetitionDivisions1" ToRole="CompetitionDivisions" />
+          <NavigationProperty Name="CompetitionGroups" Relationship="SoccerModel.FK_CompetitionGroups_CompetitionDivisions" FromRole="CompetitionDivisions" ToRole="CompetitionGroups" />
+        </EntityType>
+        <EntityType Name="CompetitionGroupEntry">
+          <Key>
+            <PropertyRef Name="CompetitionGroupEntryID" />
+          </Key>
+          <Property Name="CompetitionGroupEntryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompetitionGroupID" Type="Int32" Nullable="false" />
+          <Property Name="TeamID" Type="Int32" Nullable="false" />
+          <Property Name="NumMatchesPlayed" Type="Int32" Nullable="false" />
+          <Property Name="NumMatchesWon" Type="Int32" Nullable="false" />
+          <Property Name="NumMatchesDraw" Type="Int32" Nullable="false" />
+          <Property Name="Points" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CompetitionGroup" Relationship="SoccerModel.FK_CompetitionGroupEntries_CompetitionGroups" FromRole="CompetitionGroupEntries" ToRole="CompetitionGroups" />
+          <NavigationProperty Name="Team" Relationship="SoccerModel.FK_CompetitionGroupEntries_Teams" FromRole="CompetitionGroupEntries" ToRole="Teams" />
+          <NavigationProperty Name="MatchParticipations" Relationship="SoccerModel.CompetitionMatchParticipations" FromRole="CompetitionGroupEntries" ToRole="MatchParticipations" />
+        </EntityType>
+        <EntityType Name="CompetitionGroup">
+          <Key>
+            <PropertyRef Name="CompetitionGroupID" />
+          </Key>
+          <Property Name="CompetitionGroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompetitionDivisionID" Type="Int32" Nullable="false" />
+          <Property Name="GroupName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="CompetitionSeasonID" Type="Int32" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="CompetitionDivision" Relationship="SoccerModel.FK_CompetitionGroups_CompetitionDivisions" FromRole="CompetitionGroups" ToRole="CompetitionDivisions" />
+          <NavigationProperty Name="CompetitionGroupEntries" Relationship="SoccerModel.FK_CompetitionGroupEntries_CompetitionGroups" FromRole="CompetitionGroups" ToRole="CompetitionGroupEntries" />
+          <NavigationProperty Name="CompetitionSeason" Relationship="SoccerModel.FK_CompetitionGroups_CompetitionSeasons" FromRole="CompetitionGroups" ToRole="CompetitionSeasons" />
+        </EntityType>
+        <EntityType Name="CompetitionSeason">
+          <Key>
+            <PropertyRef Name="CompetitionSeasonID" />
+          </Key>
+          <Property Name="CompetitionSeasonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" />
+          <Property Name="EndDate" Type="DateTime" />
+          <NavigationProperty Name="CompetitionGroups" Relationship="SoccerModel.FK_CompetitionGroups_CompetitionSeasons" FromRole="CompetitionSeasons" ToRole="CompetitionGroups" />
+        </EntityType>
+        <EntityType Name="Match">
+          <Key>
+            <PropertyRef Name="MatchID" />
+          </Key>
+          <Property Name="MatchID" Type="Int32" Nullable="false" />
+          <Property Name="DateStarted" Type="DateTime" Nullable="false" />
+          <Property Name="DateEnded" Type="DateTime" />
+          <Property Name="WasTooManyTimes" Type="Boolean" />
+          <Property Name="WasJust" Type="Boolean" />
+          <Property Name="WasAbandoned" Type="Boolean" />
+          <Property Name="WasAbandonedSameIP" Type="Boolean" />
+          <Property Name="IsFriendly" Type="Boolean" Nullable="false" />
+          <Property Name="MatchDuration" Type="Int32" Nullable="false" />
+          <Property Name="TurnDuration" Type="Int32" Nullable="false" />
+          <Property Name="HomeMatchParticipationID" Type="Int32" Nullable="false" />
+          <Property Name="AwayMatchParticipationID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="MatchParticipation" Relationship="SoccerModel.FK_Matches_MatchParticipationsAway" FromRole="Matches" ToRole="MatchParticipations" />
+          <NavigationProperty Name="MatchParticipation1" Relationship="SoccerModel.FK_Matches_MatchParticipationsHome" FromRole="Matches" ToRole="MatchParticipations" />
+          <NavigationProperty Name="MatchParticipations" Relationship="SoccerModel.FK_MatchParticipations_Matches" FromRole="Matches" ToRole="MatchParticipations" />
+        </EntityType>
+        <EntityType Name="MatchParticipation">
+          <Key>
+            <PropertyRef Name="MatchParticipationID" />
+          </Key>
+          <Property Name="MatchParticipationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MatchID" Type="Int32" Nullable="false" />
+          <Property Name="TeamID" Type="Int32" Nullable="false" />
+          <Property Name="AsHome" Type="Boolean" Nullable="false" />
+          <Property Name="Goals" Type="Int32" Nullable="false" />
+          <Property Name="TurnsPlayed" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Matches" Relationship="SoccerModel.FK_Matches_MatchParticipationsAway" FromRole="MatchParticipations" ToRole="Matches" />
+          <NavigationProperty Name="Matches1" Relationship="SoccerModel.FK_Matches_MatchParticipationsHome" FromRole="MatchParticipations" ToRole="Matches" />
+          <NavigationProperty Name="Match" Relationship="SoccerModel.FK_MatchParticipations_Matches" FromRole="MatchParticipations" ToRole="Matches" />
+          <NavigationProperty Name="Team" Relationship="SoccerModel.FK_MatchParticipations_Teams" FromRole="MatchParticipations" ToRole="Teams" />
+          <NavigationProperty Name="CompetitionGroupEntry" Relationship="SoccerModel.CompetitionMatchParticipations" FromRole="MatchParticipations" ToRole="CompetitionGroupEntries" />
+        </EntityType>
+        <EntityType Name="PendingTraining">
+          <Key>
+            <PropertyRef Name="TeamID" />
+          </Key>
+          <Property Name="TeamID" Type="Int32" Nullable="false" />
+          <Property Name="TrainingDefinitionID" Type="Int32" Nullable="false" />
+          <Property Name="TimeStart" Type="DateTime" Nullable="false" />
+          <Property Name="TimeEnd" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Team" Relationship="SoccerModel.FK_PendingTrainings_Teams" FromRole="PendingTrainings" ToRole="Teams" />
+          <NavigationProperty Name="TrainingDefinition" Relationship="SoccerModel.FK_PendingTrainings_TrainingDefinitions" FromRole="PendingTrainings" ToRole="TrainingDefinitions" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="PlayerID" />
+          </Key>
+          <Property Name="PlayerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Surname" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="FacebookID" Type="Int64" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" />
+          <Property Name="Liked" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Sessions" Relationship="SoccerModel.FK_Sessions_Players" FromRole="Players" ToRole="Sessions" />
+          <NavigationProperty Name="Team" Relationship="SoccerModel.FK_Teams_Players" FromRole="Players" ToRole="Teams" />
+        </EntityType>
+        <EntityType Name="PredefinedTeam">
+          <Key>
+            <PropertyRef Name="PredefinedTeamID" />
+          </Key>
+          <Property Name="PredefinedTeamID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Teams" Relationship="SoccerModel.FK_Teams_PredefinedTeams" FromRole="PredefinedTeams" ToRole="Teams" />
+        </EntityType>
+        <EntityType Name="Purchase">
+          <Key>
+            <PropertyRef Name="PurchaseID" />
+          </Key>
+          <Property Name="PurchaseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemID" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="FacebookBuyerID" Type="Int64" Nullable="false" />
+          <Property Name="FacebookOrderID" Type="Int64" Nullable="false" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="25" Unicode="false" FixedLength="false" />
+          <Property Name="StatusPlacedDate" Type="DateTime" Nullable="false" />
+          <Property Name="StatusSettledDate" Type="DateTime" />
+        </EntityType>
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="RequestID" />
+          </Key>
+          <Property Name="RequestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequestType" Type="Int32" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" />
+          <Property Name="AnswerDate" Type="DateTime" />
+          <Property Name="FacebookRequestID" Type="String" Nullable="false" MaxLength="256" Unicode="false" FixedLength="false" />
+          <Property Name="SourceTeamID" Type="Int32" Nullable="false" />
+          <Property Name="TargetFacebookID" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Team" Relationship="SoccerModel.FK_Requests_Teams" FromRole="Requests" ToRole="Teams" />
+        </EntityType>
+        <EntityType Name="Session">
+          <Key>
+            <PropertyRef Name="SessionID" />
+          </Key>
+          <Property Name="SessionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerID" Type="Int32" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" />
+          <Property Name="FacebookSession" Type="String" Nullable="false" MaxLength="256" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Player" Relationship="SoccerModel.FK_Sessions_Players" FromRole="Sessions" ToRole="Players" />
+        </EntityType>
+        <EntityType Name="SoccerPlayer">
+          <Key>
+            <PropertyRef Name="SoccerPlayerID" />
+          </Key>
+          <Property Name="SoccerPlayerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeamID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="DorsalNumber" Type="Int32" Nullable="false" />
+          <Property Name="FacebookID" Type="Int64" Nullable="false" />
+          <Property Name="FieldPosition" Type="Int32" Nullable="false" />
+          <Property Name="Weight" Type="Int32" Nullable="false" />
+          <Property Name="Sliding" Type="Int32" Nullable="false" />
+          <Property Name="Power" Type="Int32" Nullable="false" />
+          <Property Name="IsInjured" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Team" Relationship="SoccerModel.FK_SoccerPlayers_Teams" FromRole="SoccerPlayers" ToRole="Teams" />
+        </EntityType>
+        <EntityType Name="SpecialTrainingDefinition">
+          <Key>
+            <PropertyRef Name="SpecialTrainingDefinitionID" />
+          </Key>
+          <Property Name="SpecialTrainingDefinitionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="RequiredXP" Type="Int32" Nullable="false" />
+          <Property Name="EnergyStep" Type="Int32" Nullable="false" />
+          <Property Name="EnergyTotal" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SpecialTrainings" Relationship="SoccerModel.FK_SpecialTrainings_SpecialTrainingDefinitions" FromRole="SpecialTrainingDefinitions" ToRole="SpecialTrainings" />
+        </EntityType>
+        <EntityType Name="SpecialTraining">
+          <Key>
+            <PropertyRef Name="SpecialTrainingID" />
+          </Key>
+          <Property Name="SpecialTrainingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TeamID" Type="Int32" Nullable="false" />
+          <Property Name="SpecialTrainingDefinitionID" Type="Int32" Nullable="false" />
+          <Property Name="EnergyCurrent" Type="Int32" Nullable="false" />
+          <Property Name="IsCompleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="SpecialTrainingDefinition" Relationship="SoccerModel.FK_SpecialTrainings_SpecialTrainingDefinitions" FromRole="SpecialTrainings" ToRole="SpecialTrainingDefinitions" />
+          <NavigationProperty Name="Team" Relationship="SoccerModel.FK_SpecialTrainings_Teams" FromRole="SpecialTrainings" ToRole="Teams" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="TeamID" />
+          </Key>
+          <Property Name="TeamID" Type="Int32" Nullable="false" />
+          <Property Name="PredefinedTeamID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+          <Property Name="Formation" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="TrueSkill" Type="Int32" Nullable="false" />
+          <Property Name="XP" Type="Int32" Nullable="false" />
+          <Property Name="SkillPoints" Type="Int32" Nullable="false" />
+          <Property Name="Energy" Type="Int32" Nullable="false" />
+          <Property Name="Fitness" Type="Int32" Nullable="false" />
+          <Property Name="Mean" Type="Double" Nullable="false" />
+          <Property Name="StandardDeviation" Type="Double" Nullable="false" />
+          <NavigationProperty Name="CompetitionGroupEntries" Relationship="SoccerModel.FK_CompetitionGroupEntries_Teams" FromRole="Teams" ToRole="CompetitionGroupEntries" />
+          <NavigationProperty Name="MatchParticipations" Relationship="SoccerModel.FK_MatchParticipations_Teams" FromRole="Teams" ToRole="MatchParticipations" />
+          <NavigationProperty Name="PendingTraining" Relationship="SoccerModel.FK_PendingTrainings_Teams" FromRole="Teams" ToRole="PendingTrainings" />
+          <NavigationProperty Name="Player" Relationship="SoccerModel.FK_Teams_Players" FromRole="Teams" ToRole="Players" />
+          <NavigationProperty Name="PredefinedTeam" Relationship="SoccerModel.FK_Teams_PredefinedTeams" FromRole="Teams" ToRole="PredefinedTeams" />
+          <NavigationProperty Name="Requests" Relationship="SoccerModel.FK_Requests_Teams" FromRole="Teams" ToRole="Requests" />
+          <NavigationProperty Name="SoccerPlayers" Relationship="SoccerModel.FK_SoccerPlayers_Teams" FromRole="Teams" ToRole="SoccerPlayers" />
+          <NavigationProperty Name="SpecialTrainings" Relationship="SoccerModel.FK_SpecialTrainings_Teams" FromRole="Teams" ToRole="SpecialTrainings" />
+          <NavigationProperty Name="Ticket" Relationship="SoccerModel.FK_Tickets_Teams" FromRole="Teams" ToRole="Tickets" />
+        </EntityType>
+        <EntityType Name="Ticket">
+          <Key>
+            <PropertyRef Name="TicketID" />
+          </Key>
+          <Property Name="TicketID" Type="Int32" Nullable="false" />
+          <Property Name="RemainingMatches" Type="Int32" Nullable="false" />
+          <Property Name="TicketKind" Type="Int32" Nullable="false" />
+          <Property Name="TicketPurchaseDate" Type="DateTime" Nullable="false" />
+          <Property Name="TicketExpiryDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Team" Relationship="SoccerModel.FK_Tickets_Teams" FromRole="Tickets" ToRole="Teams" />
+        </EntityType>
+        <EntityType Name="TrainingDefinition">
+          <Key>
+            <PropertyRef Name="TrainingDefinitionID" />
+          </Key>
+          <Property Name="TrainingDefinitionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FitnessDelta" Type="Int32" Nullable="false" />
+          <Property Name="Time" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PendingTrainings" Relationship="SoccerModel.FK_PendingTrainings_TrainingDefinitions" FromRole="TrainingDefinitions" ToRole="PendingTrainings" />
+        </EntityType>
+        <Association Name="FK_CompetitionDivisions_CompetitionDivisions">
+          <End Role="CompetitionDivisions" Type="SoccerModel.CompetitionDivision" Multiplicity="1" />
+          <End Role="CompetitionDivisions1" Type="SoccerModel.CompetitionDivision" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompetitionDivisions">
+              <PropertyRef Name="CompetitionDivisionID" />
+            </Principal>
+            <Dependent Role="CompetitionDivisions1">
+              <PropertyRef Name="ParentCompetitionDivisionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompetitionGroups_CompetitionDivisions">
+          <End Role="CompetitionDivisions" Type="SoccerModel.CompetitionDivision" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CompetitionGroups" Type="SoccerModel.CompetitionGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompetitionDivisions">
+              <PropertyRef Name="CompetitionDivisionID" />
+            </Principal>
+            <Dependent Role="CompetitionGroups">
+              <PropertyRef Name="CompetitionDivisionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompetitionGroupEntries_CompetitionGroups">
+          <End Role="CompetitionGroups" Type="SoccerModel.CompetitionGroup" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CompetitionGroupEntries" Type="SoccerModel.CompetitionGroupEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompetitionGroups">
+              <PropertyRef Name="CompetitionGroupID" />
+            </Principal>
+            <Dependent Role="CompetitionGroupEntries">
+              <PropertyRef Name="CompetitionGroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompetitionGroupEntries_Teams">
+          <End Role="Teams" Type="SoccerModel.Team" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CompetitionGroupEntries" Type="SoccerModel.CompetitionGroupEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="CompetitionGroupEntries">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompetitionGroups_CompetitionSeasons">
+          <End Role="CompetitionSeasons" Type="SoccerModel.CompetitionSeason" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CompetitionGroups" Type="SoccerModel.CompetitionGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompetitionSeasons">
+              <PropertyRef Name="CompetitionSeasonID" />
+            </Principal>
+            <Dependent Role="CompetitionGroups">
+              <PropertyRef Name="CompetitionSeasonID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Matches_MatchParticipationsAway">
+          <End Role="MatchParticipations" Type="SoccerModel.MatchParticipation" Multiplicity="1" />
+          <End Role="Matches" Type="SoccerModel.Match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MatchParticipations">
+              <PropertyRef Name="MatchParticipationID" />
+            </Principal>
+            <Dependent Role="Matches">
+              <PropertyRef Name="AwayMatchParticipationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Matches_MatchParticipationsHome">
+          <End Role="MatchParticipations" Type="SoccerModel.MatchParticipation" Multiplicity="1" />
+          <End Role="Matches" Type="SoccerModel.Match" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MatchParticipations">
+              <PropertyRef Name="MatchParticipationID" />
+            </Principal>
+            <Dependent Role="Matches">
+              <PropertyRef Name="HomeMatchParticipationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MatchParticipations_Matches">
+          <End Role="Matches" Type="SoccerModel.Match" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MatchParticipations" Type="SoccerModel.MatchParticipation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Matches">
+              <PropertyRef Name="MatchID" />
+            </Principal>
+            <Dependent Role="MatchParticipations">
+              <PropertyRef Name="MatchID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MatchParticipations_Teams">
+          <End Role="Teams" Type="SoccerModel.Team" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MatchParticipations" Type="SoccerModel.MatchParticipation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="MatchParticipations">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingTrainings_Teams">
+          <End Role="Teams" Type="SoccerModel.Team" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PendingTrainings" Type="SoccerModel.PendingTraining" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="PendingTrainings">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PendingTrainings_TrainingDefinitions">
+          <End Role="TrainingDefinitions" Type="SoccerModel.TrainingDefinition" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PendingTrainings" Type="SoccerModel.PendingTraining" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TrainingDefinitions">
+              <PropertyRef Name="TrainingDefinitionID" />
+            </Principal>
+            <Dependent Role="PendingTrainings">
+              <PropertyRef Name="TrainingDefinitionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sessions_Players">
+          <End Role="Players" Type="SoccerModel.Player" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Sessions" Type="SoccerModel.Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerID" />
+            </Principal>
+            <Dependent Role="Sessions">
+              <PropertyRef Name="PlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Teams_Players">
+          <End Role="Players" Type="SoccerModel.Player" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Teams" Type="SoccerModel.Team" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerID" />
+            </Principal>
+            <Dependent Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Teams_PredefinedTeams">
+          <End Role="PredefinedTeams" Type="SoccerModel.PredefinedTeam" Multiplicity="1" />
+          <End Role="Teams" Type="SoccerModel.Team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PredefinedTeams">
+              <PropertyRef Name="PredefinedTeamID" />
+            </Principal>
+            <Dependent Role="Teams">
+              <PropertyRef Name="PredefinedTeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requests_Teams">
+          <End Role="Teams" Type="SoccerModel.Team" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Requests" Type="SoccerModel.Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="SourceTeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SoccerPlayers_Teams">
+          <End Role="Teams" Type="SoccerModel.Team" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SoccerPlayers" Type="SoccerModel.SoccerPlayer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="SoccerPlayers">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpecialTrainings_SpecialTrainingDefinitions">
+          <End Role="SpecialTrainingDefinitions" Type="SoccerModel.SpecialTrainingDefinition" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SpecialTrainings" Type="SoccerModel.SpecialTraining" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpecialTrainingDefinitions">
+              <PropertyRef Name="SpecialTrainingDefinitionID" />
+            </Principal>
+            <Dependent Role="SpecialTrainings">
+              <PropertyRef Name="SpecialTrainingDefinitionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpecialTrainings_Teams">
+          <End Role="Teams" Type="SoccerModel.Team" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SpecialTrainings" Type="SoccerModel.SpecialTraining" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="SpecialTrainings">
+              <PropertyRef Name="TeamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tickets_Teams">
+          <End Role="Teams" Type="SoccerModel.Team" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tickets" Type="SoccerModel.Ticket" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="Tickets">
+              <PropertyRef Name="TicketID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CompetitionMatchParticipations">
+          <End Role="CompetitionGroupEntries" Type="SoccerModel.CompetitionGroupEntry" Multiplicity="0..1" />
+          <End Role="MatchParticipations" Type="SoccerModel.MatchParticipation" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SoccerModelStoreContainer" CdmEntityContainer="SoccerDataContext">
+          <EntitySetMapping Name="CompetitionDivisions"><EntityTypeMapping TypeName="SoccerModel.CompetitionDivision"><MappingFragment StoreEntitySet="CompetitionDivisions">
+            <ScalarProperty Name="CompetitionDivisionID" ColumnName="CompetitionDivisionID" />
+            <ScalarProperty Name="DivisionName" ColumnName="DivisionName" />
+            <ScalarProperty Name="MinimumPoints" ColumnName="MinimumPoints" />
+            <ScalarProperty Name="ParentCompetitionDivisionID" ColumnName="ParentCompetitionDivisionID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="CompetitionGroupEntries"><EntityTypeMapping TypeName="SoccerModel.CompetitionGroupEntry"><MappingFragment StoreEntitySet="CompetitionGroupEntries">
+            <ScalarProperty Name="CompetitionGroupEntryID" ColumnName="CompetitionGroupEntryID" />
+            <ScalarProperty Name="CompetitionGroupID" ColumnName="CompetitionGroupID" />
+            <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+            <ScalarProperty Name="NumMatchesPlayed" ColumnName="NumMatchesPlayed" />
+            <ScalarProperty Name="NumMatchesWon" ColumnName="NumMatchesWon" />
+            <ScalarProperty Name="NumMatchesDraw" ColumnName="NumMatchesDraw" />
+            <ScalarProperty Name="Points" ColumnName="Points" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="CompetitionGroups"><EntityTypeMapping TypeName="SoccerModel.CompetitionGroup"><MappingFragment StoreEntitySet="CompetitionGroups">
+            <ScalarProperty Name="CompetitionGroupID" ColumnName="CompetitionGroupID" />
+            <ScalarProperty Name="CompetitionDivisionID" ColumnName="CompetitionDivisionID" />
+            <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+            <ScalarProperty Name="CompetitionSeasonID" ColumnName="CompetitionSeasonID" />
+            <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="CompetitionSeasons"><EntityTypeMapping TypeName="SoccerModel.CompetitionSeason"><MappingFragment StoreEntitySet="CompetitionSeasons">
+            <ScalarProperty Name="CompetitionSeasonID" ColumnName="CompetitionSeasonID" />
+            <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+            <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Matches"><EntityTypeMapping TypeName="SoccerModel.Match"><MappingFragment StoreEntitySet="Matches">
+            <ScalarProperty Name="MatchID" ColumnName="MatchID" />
+            <ScalarProperty Name="DateStarted" ColumnName="DateStarted" />
+            <ScalarProperty Name="DateEnded" ColumnName="DateEnded" />
+            <ScalarProperty Name="WasTooManyTimes" ColumnName="WasTooManyTimes" />
+            <ScalarProperty Name="WasJust" ColumnName="WasJust" />
+            <ScalarProperty Name="WasAbandoned" ColumnName="WasAbandoned" />
+            <ScalarProperty Name="WasAbandonedSameIP" ColumnName="WasAbandonedSameIP" />
+            <ScalarProperty Name="IsFriendly" ColumnName="IsFriendly" />
+            <ScalarProperty Name="MatchDuration" ColumnName="MatchDuration" />
+            <ScalarProperty Name="TurnDuration" ColumnName="TurnDuration" />
+            <ScalarProperty Name="HomeMatchParticipationID" ColumnName="HomeMatchParticipationID" />
+            <ScalarProperty Name="AwayMatchParticipationID" ColumnName="AwayMatchParticipationID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="MatchParticipations"><EntityTypeMapping TypeName="SoccerModel.MatchParticipation"><MappingFragment StoreEntitySet="MatchParticipations">
+            <ScalarProperty Name="MatchParticipationID" ColumnName="MatchParticipationID" />
+            <ScalarProperty Name="MatchID" ColumnName="MatchID" />
+            <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+            <ScalarProperty Name="AsHome" ColumnName="AsHome" />
+            <ScalarProperty Name="Goals" ColumnName="Goals" />
+            <ScalarProperty Name="TurnsPlayed" ColumnName="TurnsPlayed" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="PendingTrainings"><EntityTypeMapping TypeName="SoccerModel.PendingTraining"><MappingFragment StoreEntitySet="PendingTrainings">
+            <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+            <ScalarProperty Name="TrainingDefinitionID" ColumnName="TrainingDefinitionID" />
+            <ScalarProperty Name="TimeStart" ColumnName="TimeStart" />
+            <ScalarProperty Name="TimeEnd" ColumnName="TimeEnd" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Players"><EntityTypeMapping TypeName="SoccerModel.Player"><MappingFragment StoreEntitySet="Players">
+            <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Surname" ColumnName="Surname" />
+            <ScalarProperty Name="FacebookID" ColumnName="FacebookID" />
+            <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+            <ScalarProperty Name="Liked" ColumnName="Liked" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="PredefinedTeams"><EntityTypeMapping TypeName="SoccerModel.PredefinedTeam"><MappingFragment StoreEntitySet="PredefinedTeams">
+            <ScalarProperty Name="PredefinedTeamID" ColumnName="PredefinedTeamID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Purchases"><EntityTypeMapping TypeName="SoccerModel.Purchase"><MappingFragment StoreEntitySet="Purchases">
+            <ScalarProperty Name="PurchaseID" ColumnName="PurchaseID" />
+            <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+            <ScalarProperty Name="Price" ColumnName="Price" />
+            <ScalarProperty Name="FacebookBuyerID" ColumnName="FacebookBuyerID" />
+            <ScalarProperty Name="FacebookOrderID" ColumnName="FacebookOrderID" />
+            <ScalarProperty Name="Status" ColumnName="Status" />
+            <ScalarProperty Name="StatusPlacedDate" ColumnName="StatusPlacedDate" />
+            <ScalarProperty Name="StatusSettledDate" ColumnName="StatusSettledDate" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Requests"><EntityTypeMapping TypeName="SoccerModel.Request"><MappingFragment StoreEntitySet="Requests">
+            <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+            <ScalarProperty Name="RequestType" ColumnName="RequestType" />
+            <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+            <ScalarProperty Name="AnswerDate" ColumnName="AnswerDate" />
+            <ScalarProperty Name="FacebookRequestID" ColumnName="FacebookRequestID" />
+            <ScalarProperty Name="SourceTeamID" ColumnName="SourceTeamID" />
+            <ScalarProperty Name="TargetFacebookID" ColumnName="TargetFacebookID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Sessions"><EntityTypeMapping TypeName="SoccerModel.Session"><MappingFragment StoreEntitySet="Sessions">
+            <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+            <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+            <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+            <ScalarProperty Name="FacebookSession" ColumnName="FacebookSession" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="SoccerPlayers"><EntityTypeMapping TypeName="SoccerModel.SoccerPlayer"><MappingFragment StoreEntitySet="SoccerPlayers">
+            <ScalarProperty Name="SoccerPlayerID" ColumnName="SoccerPlayerID" />
+            <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="DorsalNumber" ColumnName="DorsalNumber" />
+            <ScalarProperty Name="FacebookID" ColumnName="FacebookID" />
+            <ScalarProperty Name="FieldPosition" ColumnName="FieldPosition" />
+            <ScalarProperty Name="Weight" ColumnName="Weight" />
+            <ScalarProperty Name="Sliding" ColumnName="Sliding" />
+            <ScalarProperty Name="Power" ColumnName="Power" />
+            <ScalarProperty Name="IsInjured" ColumnName="IsInjured" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="SpecialTrainingDefinitions"><EntityTypeMapping TypeName="SoccerModel.SpecialTrainingDefinition"><MappingFragment StoreEntitySet="SpecialTrainingDefinitions">
+            <ScalarProperty Name="SpecialTrainingDefinitionID" ColumnName="SpecialTrainingDefinitionID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="RequiredXP" ColumnName="RequiredXP" />
+            <ScalarProperty Name="EnergyStep" ColumnName="EnergyStep" />
+            <ScalarProperty Name="EnergyTotal" ColumnName="EnergyTotal" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="SpecialTrainings"><EntityTypeMapping TypeName="SoccerModel.SpecialTraining"><MappingFragment StoreEntitySet="SpecialTrainings">
+            <ScalarProperty Name="SpecialTrainingID" ColumnName="SpecialTrainingID" />
+            <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+            <ScalarProperty Name="SpecialTrainingDefinitionID" ColumnName="SpecialTrainingDefinitionID" />
+            <ScalarProperty Name="EnergyCurrent" ColumnName="EnergyCurrent" />
+            <ScalarProperty Name="IsCompleted" ColumnName="IsCompleted" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Teams"><EntityTypeMapping TypeName="SoccerModel.Team"><MappingFragment StoreEntitySet="Teams">
+            <ScalarProperty Name="TeamID" ColumnName="TeamID" />
+            <ScalarProperty Name="PredefinedTeamID" ColumnName="PredefinedTeamID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Formation" ColumnName="Formation" />
+            <ScalarProperty Name="TrueSkill" ColumnName="TrueSkill" />
+            <ScalarProperty Name="XP" ColumnName="XP" />
+            <ScalarProperty Name="SkillPoints" ColumnName="SkillPoints" />
+            <ScalarProperty Name="Energy" ColumnName="Energy" />
+            <ScalarProperty Name="Fitness" ColumnName="Fitness" />
+            <ScalarProperty Name="Mean" ColumnName="Mean" />
+            <ScalarProperty Name="StandardDeviation" ColumnName="StandardDeviation" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Tickets"><EntityTypeMapping TypeName="SoccerModel.Ticket"><MappingFragment StoreEntitySet="Tickets">
+            <ScalarProperty Name="TicketID" ColumnName="TicketID" />
+            <ScalarProperty Name="RemainingMatches" ColumnName="RemainingMatches" />
+            <ScalarProperty Name="TicketKind" ColumnName="TicketKind" />
+            <ScalarProperty Name="TicketPurchaseDate" ColumnName="TicketPurchaseDate" />
+            <ScalarProperty Name="TicketExpiryDate" ColumnName="TicketExpiryDate" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="TrainingDefinitions"><EntityTypeMapping TypeName="SoccerModel.TrainingDefinition"><MappingFragment StoreEntitySet="TrainingDefinitions">
+            <ScalarProperty Name="TrainingDefinitionID" ColumnName="TrainingDefinitionID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="FitnessDelta" ColumnName="FitnessDelta" />
+            <ScalarProperty Name="Time" ColumnName="Time" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <AssociationSetMapping Name="CompetitionMatchParticipations" TypeName="SoccerModel.CompetitionMatchParticipations" StoreEntitySet="CompetitionMatchParticipations">
+            <EndProperty Name="CompetitionGroupEntries">
+              <ScalarProperty Name="CompetitionGroupEntryID" ColumnName="CompetitionGroupEntryID" />
+            </EndProperty>
+            <EndProperty Name="MatchParticipations">
+              <ScalarProperty Name="MatchParticipationID" ColumnName="MatchParticipationID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="SoccerEntityModel">
+        <EntityTypeShape EntityType="SoccerModel.CompetitionDivision" Width="1.5" PointX="3.75" PointY="3.875" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.CompetitionGroupEntry" Width="1.5" PointX="8.25" PointY="10.875" Height="2.9417936197916674" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.CompetitionGroup" Width="1.5" PointX="6" PointY="5.125" Height="2.5571907552083335" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.CompetitionSeason" Width="1.5" PointX="3.75" PointY="7" Height="1.7879850260416657" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Match" Width="1.5" PointX="15.75" PointY="11.375" Height="3.9033007812499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.MatchParticipation" Width="1.5" PointX="13.5" PointY="11.75" Height="3.1340950520833317" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.PendingTraining" Width="1.5" PointX="11.25" PointY="12.25" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Player" Width="1.5" PointX="0.75" PointY="12.125" Height="2.5571907552083317" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.PredefinedTeam" Width="1.5" PointX="3.75" PointY="9.5" Height="1.5956835937499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Purchase" Width="1.5" PointX="0.75" PointY="0.75" Height="2.5571907552083353" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Request" Width="1.5" PointX="8.25" PointY="15.25" Height="2.5571907552083317" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Session" Width="1.5" PointX="3" PointY="12.375" Height="1.9802864583333317" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.SoccerPlayer" Width="1.5" PointX="8.25" PointY="18.625" Height="3.1340950520833388" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.SpecialTrainingDefinition" Width="1.5" PointX="9" PointY="7.125" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.SpecialTraining" Width="1.5" PointX="11.25" PointY="9.125" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Team" Width="1.5" PointX="6" PointY="10.875" Height="4.8648079427083388" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Ticket" Width="1.5" PointX="8.25" PointY="25.625" Height="2.1725878906250031" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.TrainingDefinition" Width="1.5" PointX="9" PointY="3.25" Height="2.1725878906250031" IsExpanded="true" />
+        <AssociationConnector Association="SoccerModel.FK_CompetitionDivisions_CompetitionDivisions" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.2819230769230767" PointY="6.2398893229166674" />
+          <ConnectorPoint PointX="4.2819230769230767" PointY="6.4898893229166674" />
+          <ConnectorPoint PointX="4.7284615384615378" PointY="6.4898893229166674" />
+          <ConnectorPoint PointX="4.7284615384615378" PointY="6.2398893229166674" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_CompetitionGroups_CompetitionDivisions" ManuallyRouted="false">
+          <ConnectorPoint PointX="5.25" PointY="5.6824446614583337" />
+          <ConnectorPoint PointX="6" PointY="5.6824446614583337" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_CompetitionGroupEntries_CompetitionGroups" ManuallyRouted="false">
+          <ConnectorPoint PointX="7.5" PointY="6.2737939453125016" />
+          <ConnectorPoint PointX="8.59375" PointY="6.2737939453125016" />
+          <ConnectorPoint PointX="8.59375" PointY="10.875" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_CompetitionGroupEntries_Teams" ManuallyRouted="false">
+          <ConnectorPoint PointX="7.5" PointY="12.345896809895834" />
+          <ConnectorPoint PointX="8.25" PointY="12.345896809895834" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_CompetitionGroups_CompetitionSeasons" ManuallyRouted="false">
+          <ConnectorPoint PointX="5.25" PointY="7.3410953776041667" />
+          <ConnectorPoint PointX="6" PointY="7.3410953776041667" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_Matches_MatchParticipationsAway" ManuallyRouted="false">
+          <ConnectorPoint PointX="15" PointY="13.317047526041666" />
+          <ConnectorPoint PointX="15.75" PointY="13.317047526041666" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_Matches_MatchParticipationsHome" ManuallyRouted="false">
+          <ConnectorPoint PointX="15" PointY="12.471023763020833" />
+          <ConnectorPoint PointX="15.75" PointY="12.471023763020833" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_MatchParticipations_Matches" ManuallyRouted="false">
+          <ConnectorPoint PointX="15.75" PointY="14.163071289062499" />
+          <ConnectorPoint PointX="15" PointY="14.163071289062499" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_MatchParticipations_Teams" ManuallyRouted="false">
+          <ConnectorPoint PointX="7.5" PointY="14.684591471354166" />
+          <ConnectorPoint PointX="13.5" PointY="14.684591471354166" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_PendingTrainings_Teams" ManuallyRouted="false">
+          <ConnectorPoint PointX="7.5" PointY="14.150940755208334" />
+          <ConnectorPoint PointX="11.25" PointY="14.150940755208334" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_PendingTrainings_TrainingDefinitions" ManuallyRouted="false">
+          <ConnectorPoint PointX="10.5" PointY="5.4214330444711569" />
+          <ConnectorPoint PointX="10.875" PointY="5.7964330444711569" />
+          <ConnectorPoint PointX="10.875" PointY="13.169218377604166" />
+          <ConnectorPoint PointX="11.25" PointY="13.169218377604166" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_Sessions_Players" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="13.365143229166666" />
+          <ConnectorPoint PointX="3" PointY="13.365143229166666" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_Teams_Players" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="14.549988606770832" />
+          <ConnectorPoint PointX="6" PointY="14.549988606770832" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_Teams_PredefinedTeams" ManuallyRouted="false">
+          <ConnectorPoint PointX="5.25" PointY="10.187499500000001" />
+          <ConnectorPoint PointX="6.75" PointY="10.187499500000001" />
+          <ConnectorPoint PointX="6.75" PointY="10.875" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_Requests_Teams" ManuallyRouted="false">
+          <ConnectorPoint PointX="7.5" PointY="15.494903971354169" />
+          <ConnectorPoint PointX="8.25" PointY="15.494903971354169" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_SoccerPlayers_Teams" ManuallyRouted="false">
+          <ConnectorPoint PointX="6.75" PointY="15.739807942708339" />
+          <ConnectorPoint PointX="6.75" PointY="20.192047526041669" />
+          <ConnectorPoint PointX="7.0729191666666669" PointY="20.192047526041669" />
+          <ConnectorPoint PointX="7.2395858333333329" PointY="20.192047526041669" />
+          <ConnectorPoint PointX="8.25" PointY="20.192047526041669" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_SpecialTrainings_SpecialTrainingDefinitions" ManuallyRouted="false">
+          <ConnectorPoint PointX="10.5" PointY="9.3074446614583337" />
+          <ConnectorPoint PointX="10.791666666666666" PointY="9.3074446614583337" />
+          <ConnectorPoint PointX="10.958333333333334" PointY="9.3074446614583337" />
+          <ConnectorPoint PointX="11.25" PointY="9.3074446614583337" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_SpecialTrainings_Teams" ManuallyRouted="false">
+          <ConnectorPoint PointX="7.1562525" PointY="10.875" />
+          <ConnectorPoint PointX="7.1562525" PointY="9.8699444114583343" />
+          <ConnectorPoint PointX="8.5104166666666661" PointY="9.8699444114583343" />
+          <ConnectorPoint PointX="8.6770833333333339" PointY="9.8699444114583343" />
+          <ConnectorPoint PointX="10.791666666666666" PointY="9.8699444114583343" />
+          <ConnectorPoint PointX="10.958333333333334" PointY="9.8699444114583343" />
+          <ConnectorPoint PointX="11.25" PointY="9.8699444114583343" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.FK_Tickets_Teams" ManuallyRouted="false">
+          <ConnectorPoint PointX="7.1562525" PointY="15.739807942708339" />
+          <ConnectorPoint PointX="7.1562525" PointY="26.7112939453125" />
+          <ConnectorPoint PointX="8.25" PointY="26.7112939453125" />
+        </AssociationConnector>
+        <AssociationConnector Association="SoccerModel.CompetitionMatchParticipations" ManuallyRouted="false">
+          <ConnectorPoint PointX="9.75" PointY="11.96875" />
+          <ConnectorPoint PointX="10.791666666666666" PointY="11.96875" />
+          <ConnectorPoint PointX="10.958333333333334" PointY="11.96875" />
+          <ConnectorPoint PointX="13.5" PointY="11.96875" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
