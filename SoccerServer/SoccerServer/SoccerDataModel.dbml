@@ -65,7 +65,7 @@
   </Table>
   <Table Name="dbo.Matches" Member="Matches">
     <Type Name="Match">
-      <Column Name="MatchID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MatchID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="DateStarted" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="DateEnded" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="WasTooManyTimes" Type="System.Boolean" DbType="Bit" CanBeNull="true" />

@@ -370,6 +370,9 @@ package Caps
 		
 		public function Draw( elapsed:Number ) : void
 		{
+			if (_State == GameState.NotInit)
+				return;
+			
 			TheEntityManager.Draw(elapsed);
 		}
 		
