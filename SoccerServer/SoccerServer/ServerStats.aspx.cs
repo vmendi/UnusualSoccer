@@ -20,28 +20,54 @@ namespace SoccerServer
 			mDC = new SoccerDataModelDataContext();
 		}
 
+        protected override void OnUnload(EventArgs e)
+        {
+            base.OnUnload(e);
+            mDC.Dispose();
+        }
+
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			if (!IsPostBack)
 			{
 				UpdateRealtimeData();
 
-                MyTotalPlayersLabel.Text = "Total players: " + GetTotalPlayers();
-                MyNumLikesLabel.Text = "Num likes: " + GetNumLikes();
-				MyTotalMatchesLabel.Text = "Total played matches: " + GetTotalPlayedMatches();
-                MyTodayMatchesLabel.Text = "Matches today: " + GetMatchesForToday();
-				MyTooManyTimes.Text = "Total too many times matches: " + GetTooManyTimes();
-				MyNonFinishedMatchesLabel.Text = "Total non-ended matches: " + GetNonEndedMatchesCount();
-				MyAbandonedMatchesLabel.Text = "Abandoned matches: " + GetAbandonedMatchesCount();
-				MyAbandonedSameIPMatchesLabel.Text = "Same IP abandoned matches: " + GetSameIPAbandondedMatchesCount();
-                MyUnjustMatchesLabel.Text = "Unjust matches: " + GetUnjustMatchesCount();
+                MyConsoleLabel.Text += "Total players: " + GetTotalPlayers() + "<br/>";
+                MyConsoleLabel.Text += "Num likes: " + GetNumLikes() + "<br/>";
+                MyConsoleLabel.Text += "Total played matches: " + GetTotalPlayedMatches() + "<br/>";
+                MyConsoleLabel.Text += "Matches today: " + GetMatchesForToday() + "<br/>";
+                MyConsoleLabel.Text += "Total too many times matches: " + GetTooManyTimes() + "<br/>";
+                MyConsoleLabel.Text += "Total non-ended matches: " + GetNonEndedMatchesCount() + "<br/>";
+                MyConsoleLabel.Text += "Abandoned matches: " + GetAbandonedMatchesCount() + "<br/>";
+                MyConsoleLabel.Text += "Same IP abandoned matches: " + GetSameIPAbandondedMatchesCount() + "<br/>";
+                MyConsoleLabel.Text += "Unjust matches: " + GetUnjustMatchesCount() + "<br/>";
 			}
 		}
 
-        protected override void OnUnload(EventArgs e)
+        private void UpdateRealtimeData()
         {
-            base.OnUnload(e);
-            mDC.Dispose();
+            NetEngineMain netEngineMain = Global.Instance.TheNetEngine;
+
+            if (netEngineMain.NetServer.IsRunning)
+            {
+                Realtime theMainRealtime = netEngineMain.NetServer.NetClientApp as Realtime;
+                MyRealtimeConsole.Text = "Currently in play matches: " + theMainRealtime.GetNumMatches().ToString() + "<br/>";
+                MyRealtimeConsole.Text += "People in rooms: " + theMainRealtime.GetNumTotalPeopleInRooms().ToString() + "<br/>";
+                MyRealtimeConsole.Text += "People looking for match: " + theMainRealtime.GetPeopleLookingForMatch().ToString() + "<br/>";
+                MyRealtimeConsole.Text += "Current connections: " + netEngineMain.NetServer.NumCurrentSockets.ToString() + "<br/>";
+                MyRealtimeConsole.Text += "Cumulative connections: " + netEngineMain.NetServer.NumCumulativePlugs.ToString() + "<br/>";
+                MyRealtimeConsole.Text += "Max Concurrent connections: " + netEngineMain.NetServer.NumMaxConcurrentSockets.ToString() + "<br/>";
+                MyRunButton.Text = "Stop";
+                MyCurrentBroadcastMsgLabel.Text = "Current msg: " + theMainRealtime.GetBroadcastMsg(null);
+            }
+            else
+            {
+                MyRealtimeConsole.Text = "Not running";
+                MyRunButton.Text = "Run";
+                MyCurrentBroadcastMsgLabel.Text = "Not running";
+            }
+
+            MyUpSinceLabel.Text = "Up since: " + netEngineMain.NetServer.LastStartTime.ToString();
         }
 
         private int GetTotalPlayers()
@@ -65,52 +91,45 @@ namespace SoccerServer
                     select p).Count();
         }
 
-
 		public int GetTooManyTimes()
 		{
-			var ret = (from m in mDC.Matches
-					   where m.WasTooManyTimes.Value
-					   select m).Count();
-			return ret;
+			return (from m in mDC.Matches
+					where m.WasTooManyTimes.Value
+					select m).Count();
 		}
 
 		public int GetUnjustMatchesCount()
 		{
-			var ret = (from m in mDC.Matches
-					   where !m.WasJust.Value
-					   select m).Count();
-			return ret;
+			return (from m in mDC.Matches
+					where !m.WasJust.Value
+					select m).Count();
 		}
 
 		public int GetNonEndedMatchesCount()
 		{
-			var ret = (from m in mDC.Matches
-					   where m.DateEnded == null
-					   select m).Count();
-			return ret;
+			return (from m in mDC.Matches
+					where m.DateEnded == null
+					select m).Count();
 		}
 
 		public int GetTotalPlayedMatches()
 		{
-			var ret = (from m in mDC.Matches
-					   select m).Count();
-			return ret;
+			return (from m in mDC.Matches
+		    	    select m).Count();
 		}
 
 		public int GetAbandonedMatchesCount()
 		{
-			var ret = (from m in mDC.Matches
-					   where m.WasAbandoned.Value
-					   select m).Count();
-			return ret;
+			return (from m in mDC.Matches
+				    where m.WasAbandoned.Value
+					select m).Count();
 		}
 
 		public int GetSameIPAbandondedMatchesCount()
 		{
-			var ret = (from m in mDC.Matches
-					   where m.WasAbandonedSameIP.Value
-					   select m).Count();
-			return ret;
+			return (from m in mDC.Matches
+					where m.WasAbandonedSameIP.Value
+					select m).Count();
 		}
 
 		protected void MyTimer_Tick(object sender, EventArgs e)
@@ -123,15 +142,24 @@ namespace SoccerServer
             NetEngineMain netEngineMain = Global.Instance.TheNetEngine;
 
             if (!netEngineMain.NetServer.IsRunning)
-            {
                 netEngineMain.Start();
-            }
-            else
-            {
+            else            
                 netEngineMain.Stop();
-            }
-
+            
             UpdateRealtimeData();
+        }
+
+        protected void MyBroadcastMsgButtton_Click(object sender, EventArgs e)
+        {
+            NetEngineMain netEngineMain = Global.Instance.TheNetEngine;
+
+            if (netEngineMain.NetServer.IsRunning)
+            {
+                Realtime theMainRealtime = netEngineMain.NetServer.NetClientApp as Realtime;
+                theMainRealtime.SetBroadcastMsg(MyBroadcastMsgTextBox.Text);
+
+                UpdateRealtimeData();
+            }
         }
 
         protected void RefreshTrueskill_Click(object sender, EventArgs e)
@@ -148,80 +176,6 @@ namespace SoccerServer
         protected void MisticalRefresh_Click(object sender, EventArgs e)
         {
             MainService.ResetSeasons(false);
-
-            /*
-            var test = new DBModel.SoccerDataContext();
-            
-            var leches = (from s in test.Matches
-                          where s.IsFriendly
-                          select s);
-            var a = leches.Count();
-             * */
-                
-
-            /*
-            int c = 0;
-            var options = new DataLoadOptions();
-
-            options.LoadWith<MatchParticipation>(m => m.Match);
-            mDC.LoadOptions = options;
-            
-            var parts = mDC.MatchParticipations.ToArray();
-            foreach (var part in parts)
-            {
-                if (part.AsHome)
-                {
-                    part.Match.HomeMatchParticipationID = part.MatchParticipationID;
-                }
-                else
-                {
-                    part.Match.AwayMatchParticipationID = part.MatchParticipationID;
-                }
-                c++;
-            }
-            mDC.SubmitChanges();
-            mDC.Dispose();
-            
-            mDC = new SoccerDataModelDataContext();
-            mDC.DeferredLoadingEnabled = false;
-            options.LoadWith<Match>(p => p.MatchParticipations);
-            mDC.LoadOptions = options;
-
-            var matches = mDC.Matches; //.ToArray();
-            var crapMatches = new List<BDDModel.Match>();            
-
-            foreach (var match in matches)
-            {
-                var parts = match.MatchParticipations;
-                
-                if (parts.Count == 2)
-                {
-                    if (!parts[0].AsHome)
-                        throw new Exception("WTF !@#");
-
-                    match.MatchParticipation = parts[0];
-                    match.MatchParticipation1 = parts[1];
-                }
-                else
-                {
-                    crapMatches.Add(match);
-                }
-                c++;
-            }
-
-            mDC.SubmitChanges();
-             * */
-
-            /*
-            var crapMatches = (from s in mDC.Matches
-                               where s.MatchParticipations.Count != 2
-                               select s);
-
-            var test = crapMatches.Count();
-
-            mDC.Matches.DeleteAllOnSubmit(crapMatches);
-            mDC.SubmitChanges();
-             */
         }
 
         protected void MisticalRefresh02_Click(object sender, EventArgs e)
@@ -235,52 +189,12 @@ namespace SoccerServer
                                  where s.MatchParticipations.Count != 2
                                  select s);
 
+            var numOrphan = orphanMatches.Count();
+
             mDC.Matches.DeleteAllOnSubmit(orphanMatches);
             mDC.SubmitChanges();
-        }
 
-        private void UpdateRealtimeData()
-		{
-            NetEngineMain netEngineMain = Global.Instance.TheNetEngine;
-
-            if (netEngineMain.NetServer.IsRunning)
-            {
-                Realtime theMainRealtime = netEngineMain.NetServer.NetClientApp as Realtime;
-                MyNumCurrentMatchesLabel.Text = "Currently in play matches: " + theMainRealtime.GetNumMatches().ToString();
-                MyNumPeopleInRooms.Text = "People in rooms: " + theMainRealtime.GetNumTotalPeopleInRooms().ToString();
-                MyPeopleLookingForMatch.Text = "People looking for match: " + theMainRealtime.GetPeopleLookingForMatch().ToString();
-                MyNumConnnectionsLabel.Text = "Current connections: " + netEngineMain.NetServer.NumCurrentSockets.ToString();
-                MyCumulativeConnectionsLabel.Text = "Cumulative connections: " + netEngineMain.NetServer.NumCumulativePlugs.ToString();
-                MyMaxConcurrentConnectionsLabel.Text = "Max Concurrent connections: " + netEngineMain.NetServer.NumMaxConcurrentSockets.ToString();
-                MyUpSinceLabel.Text = "Up since: " + netEngineMain.NetServer.LastStartTime.ToString();
-                MyRunButton.Text = "Stop";
-                MyCurrentBroadcastMsgLabel.Text = "Current msg: " + theMainRealtime.GetBroadcastMsg(null);
-            }
-            else
-            {
-                MyNumCurrentMatchesLabel.Text = "Not running";
-                MyNumPeopleInRooms.Text = "Not running";
-                MyPeopleLookingForMatch.Text = "Not running";
-                MyNumConnnectionsLabel.Text = "Not running";
-                MyCumulativeConnectionsLabel.Text = "Not running";
-                MyMaxConcurrentConnectionsLabel.Text = "Not running";
-                MyUpSinceLabel.Text = "Up since: " + netEngineMain.NetServer.LastStartTime.ToString();
-                MyRunButton.Text = "Run";
-                MyCurrentBroadcastMsgLabel.Text = "Not running";
-            }
-		}
-
-        protected void MyBroadcastMsgButtton_Click(object sender, EventArgs e)
-        {
-            NetEngineMain netEngineMain = Global.Instance.TheNetEngine;
-
-            if (netEngineMain.NetServer.IsRunning)
-            {
-                Realtime theMainRealtime = netEngineMain.NetServer.NetClientApp as Realtime;
-                theMainRealtime.SetBroadcastMsg(MyBroadcastMsgTextBox.Text);
-
-                UpdateRealtimeData();
-            }
+            MyLogConsole.Text += "Num orphan matches deleted: " + numOrphan.ToString() + "<br/>";
         }
 	}
 }

@@ -49,58 +49,13 @@ namespace SoccerServer {
         protected global::System.Web.UI.UpdatePanel MyUpdatePanel;
         
         /// <summary>
-        /// MyNumCurrentMatchesLabel control.
+        /// MyRealtimeConsole control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyNumCurrentMatchesLabel;
-        
-        /// <summary>
-        /// MyNumPeopleInRooms control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyNumPeopleInRooms;
-        
-        /// <summary>
-        /// MyPeopleLookingForMatch control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyPeopleLookingForMatch;
-        
-        /// <summary>
-        /// MyNumConnnectionsLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyNumConnnectionsLabel;
-        
-        /// <summary>
-        /// MyMaxConcurrentConnectionsLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyMaxConcurrentConnectionsLabel;
-        
-        /// <summary>
-        /// MyCumulativeConnectionsLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyCumulativeConnectionsLabel;
+        protected global::System.Web.UI.WebControls.Literal MyRealtimeConsole;
         
         /// <summary>
         /// MyUpSinceLabel control.
@@ -148,85 +103,13 @@ namespace SoccerServer {
         protected global::System.Web.UI.WebControls.Label MyCurrentBroadcastMsgLabel;
         
         /// <summary>
-        /// MyTotalPlayersLabel control.
+        /// MyConsoleLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyTotalPlayersLabel;
-        
-        /// <summary>
-        /// MyNumLikesLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyNumLikesLabel;
-        
-        /// <summary>
-        /// MyTotalMatchesLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyTotalMatchesLabel;
-        
-        /// <summary>
-        /// MyTodayMatchesLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyTodayMatchesLabel;
-        
-        /// <summary>
-        /// MyTooManyTimes control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyTooManyTimes;
-        
-        /// <summary>
-        /// MyNonFinishedMatchesLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyNonFinishedMatchesLabel;
-        
-        /// <summary>
-        /// MyAbandonedMatchesLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyAbandonedMatchesLabel;
-        
-        /// <summary>
-        /// MyAbandonedSameIPMatchesLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyAbandonedSameIPMatchesLabel;
-        
-        /// <summary>
-        /// MyUnjustMatchesLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyUnjustMatchesLabel;
+        protected global::System.Web.UI.WebControls.Literal MyConsoleLabel;
         
         /// <summary>
         /// HyperLink1 control.
@@ -254,5 +137,14 @@ namespace SoccerServer {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink HyperLink2;
+        
+        /// <summary>
+        /// MyLogConsole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal MyLogConsole;
     }
 }
