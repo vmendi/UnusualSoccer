@@ -8,6 +8,9 @@ using SoccerServer.NetEngine;
 using SoccerServer.BDDModel;
 using System.Collections.Generic;
 using System.Data.Linq;
+using System.Data.SqlClient;
+
+using Microsoft.Samples.EntityDataReader;
 
 namespace SoccerServer
 {
@@ -173,14 +176,26 @@ namespace SoccerServer
             mDC.SubmitChanges();
         }
 
-        protected void MisticalRefresh_Click(object sender, EventArgs e)
+        protected void ResetSeasons_Click(object sender, EventArgs e)
         {
             MainService.ResetSeasons(false);
         }
 
-        protected void MisticalRefresh02_Click(object sender, EventArgs e)
+        protected void NewSeason_Click(object sender, EventArgs e)
         {
             MainService.SeasonEnd();
+        }
+
+        protected void ResetAllTickets_Click(object sender, EventArgs e)
+        {
+            foreach (var ticket in mDC.Tickets)
+            {
+                ticket.TicketKind = -1;
+                ticket.TicketPurchaseDate = DateTime.Now;
+                ticket.TicketExpiryDate = ticket.TicketPurchaseDate;
+                ticket.RemainingMatches = 5;
+            }
+            mDC.SubmitChanges();
         }
 
         protected void EraseOrphanMatches_Click(object sender, EventArgs e)
@@ -195,6 +210,38 @@ namespace SoccerServer
             mDC.SubmitChanges();
 
             MyLogConsole.Text += "Num orphan matches deleted: " + numOrphan.ToString() + "<br/>";
+        }
+
+        protected void MisticalRefresh_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection con = new SqlConnection(mDC.Connection.ConnectionString))
+            {
+                con.Open();
+                using (SqlTransaction tran = con.BeginTransaction())
+                {
+                    var teamStats = from t in mDC.Teams
+                                    where t.TeamStat == null
+                                    select new 
+                                    {
+                                        TeamStatsID = t.TeamID,
+                                        NumPlayedMatches = 0,
+                                        NumMatchesWon = 0,
+                                        NumMatchesDraw = 0,
+                                        ScoredGoals = 0,
+                                        ReceivedGoals = 0
+                                    };
+
+                    SqlBulkCopy bc = new SqlBulkCopy(con, SqlBulkCopyOptions.CheckConstraints |
+                                                          SqlBulkCopyOptions.FireTriggers |
+                                                          SqlBulkCopyOptions.KeepNulls, tran);
+
+                    bc.DestinationTableName = "TeamStats";
+                    bc.WriteToServer(teamStats.AsDataReader());
+
+                    tran.Commit();
+                }
+                con.Close();
+            }
         }
 	}
 }

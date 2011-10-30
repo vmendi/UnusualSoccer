@@ -146,7 +146,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="ServerStats.aspx" />
-    <Content Include="ServerStatsDaily.aspx" />
     <Content Include="ServerStatsGlobalMatches.aspx" />
     <Content Include="ServerStatsMatchesControl.ascx" />
     <Content Include="ServerStatsProfile.aspx" />
@@ -195,6 +194,7 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EntityDataReader.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -234,13 +234,6 @@
     </Compile>
     <Compile Include="ServerStats.aspx.designer.cs">
       <DependentUpon>ServerStats.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ServerStatsDaily.aspx.cs">
-      <DependentUpon>ServerStatsDaily.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ServerStatsDaily.aspx.designer.cs">
-      <DependentUpon>ServerStatsDaily.aspx</DependentUpon>
     </Compile>
     <Compile Include="ServerStatsGlobalMatches.aspx.cs">
       <DependentUpon>ServerStatsGlobalMatches.aspx</DependentUpon>

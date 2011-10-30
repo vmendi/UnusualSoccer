@@ -34,16 +34,17 @@ namespace SoccerServer
             }
             else
                 throw new Exception("Tienes que pasar un TeamID o un FacebookID");
-                        
+
             mPlayer = (from p in mDC.Players where p.Team.TeamID == mTeamID select p).First();
 
             FillProfile();
+            FillTeamStats();
             FillPurchases();
         }
 
         protected override void OnUnload(EventArgs e)
         {
-            base.OnUnload(e);            
+            base.OnUnload(e);
             mDC.Dispose();
         }
 
@@ -55,23 +56,30 @@ namespace SoccerServer
             matchesForProfileLinQ.OrderBy = "MatchID desc";
             matchesForProfileLinQ.Where = "MatchParticipations.Any(TeamID == " + mTeamID + ")";
             MyProfileMatches.DataSource = matchesForProfileLinQ;
-            
-            MyPlayerName.Text = "Player name: " + mPlayer.Name + " " + mPlayer.Surname;
-            MyTeamName.Text = "Team Name: " + mPlayer.Team.Name;
-            MyDateCreated.Text = "Date created: " + mPlayer.CreationDate.ToString();
-            MyLiked.Text = "Liked: " + mPlayer.Liked.ToString();
-            MyNumSessions.Text = "Sessions: " + GetNumSessions().ToString();
-            MyTrueSkill.Text = "TrueSkill " + GetTrueSkill().ToString();
-            MyXP.Text = "XP: " + mPlayer.Team.XP.ToString();
-            MySkillPoints.Text = "SkillPoints: " + mPlayer.Team.SkillPoints.ToString();
-            MyFitness.Text = "Fitness: " + mPlayer.Team.Fitness.ToString();
 
-            string specialTrainings = "";
-            foreach(var training in mPlayer.Team.SpecialTrainings)
-            {
-                specialTrainings += training.SpecialTrainingDefinition.Name + "/";
-            }
-            MySpecialTrainings.Text = "SpecialTrainings: " + specialTrainings.TrimEnd('/');
+            MyTeamInfo.Text  = "Player name: " + mPlayer.Name + " " + mPlayer.Surname + "<br/>";
+            MyTeamInfo.Text += "Team Name: " + mPlayer.Team.Name + "<br/>";
+            MyTeamInfo.Text += "Date created: " + mPlayer.CreationDate.ToString() + "<br/>";
+            MyTeamInfo.Text += "Liked: " + mPlayer.Liked.ToString() + "<br/>";
+            MyTeamInfo.Text += "Sessions: " + GetNumSessions().ToString() + "<br/>";
+            MyTeamInfo.Text += "TrueSkill " + GetTrueSkill().ToString() + "<br/>";
+            MyTeamInfo.Text += "XP: " + mPlayer.Team.XP.ToString() + "<br/>";
+            MyTeamInfo.Text += "SkillPoints: " + mPlayer.Team.SkillPoints.ToString() + "<br/>";
+            MyTeamInfo.Text += "Fitness: " + mPlayer.Team.Fitness.ToString() + "<br/>";
+            MyTeamInfo.Text += "SpecialTrainings: " + (from s in mPlayer.Team.SpecialTrainings.Where(s => s.IsCompleted)    // :)
+                                                       select s.SpecialTrainingDefinition.Name).Aggregate("", (agg, curr) => agg += curr + "/").TrimEnd('/'); // :D
+        }
+
+        private void FillTeamStats()
+        {
+            MyTeamStats.Text  = "Played Matches: " + mPlayer.Team.TeamStat.NumPlayedMatches + "<br/>";
+            MyTeamStats.Text += "Won Matches: " + mPlayer.Team.TeamStat.NumMatchesWon + "<br/>";
+            MyTeamStats.Text += "Draw Matches: " + mPlayer.Team.TeamStat.NumMatchesDraw + "<br/>";
+            MyTeamStats.Text += "Lost Matches: " + (mPlayer.Team.TeamStat.NumPlayedMatches - 
+                                                  mPlayer.Team.TeamStat.NumMatchesWon -
+                                                  mPlayer.Team.TeamStat.NumMatchesDraw) + "<br/>";
+            MyTeamStats.Text += "Goals Scored: " + mPlayer.Team.TeamStat.ScoredGoals + "<br/>";
+            MyTeamStats.Text += "Goals Received: " + mPlayer.Team.TeamStat.ReceivedGoals + "<br/>";
         }
 
         private void FillPurchases()
@@ -132,6 +140,5 @@ namespace SoccerServer
 
             FillPurchases();
         }
-
     }
 }

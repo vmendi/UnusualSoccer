@@ -82,6 +82,9 @@ namespace SoccerServer
     partial void InsertTeam(SoccerServer.BDDModel.Team instance);
     partial void UpdateTeam(SoccerServer.BDDModel.Team instance);
     partial void DeleteTeam(SoccerServer.BDDModel.Team instance);
+    partial void InsertTeamStat(SoccerServer.BDDModel.TeamStat instance);
+    partial void UpdateTeamStat(SoccerServer.BDDModel.TeamStat instance);
+    partial void DeleteTeamStat(SoccerServer.BDDModel.TeamStat instance);
     partial void InsertTicket(SoccerServer.BDDModel.Ticket instance);
     partial void UpdateTicket(SoccerServer.BDDModel.Ticket instance);
     partial void DeleteTicket(SoccerServer.BDDModel.Ticket instance);
@@ -258,6 +261,14 @@ namespace SoccerServer
 			get
 			{
 				return this.GetTable<SoccerServer.BDDModel.Team>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SoccerServer.BDDModel.TeamStat> TeamStats
+		{
+			get
+			{
+				return this.GetTable<SoccerServer.BDDModel.TeamStat>();
 			}
 		}
 		
@@ -1358,7 +1369,7 @@ namespace SoccerServer.BDDModel
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CompetitionGroupEntry_CompetitionMatchParticipation", Storage="_CompetitionGroupEntry", ThisKey="CompetitionGroupEntryID", OtherKey="CompetitionGroupEntryID", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CompetitionGroupEntry_CompetitionMatchParticipation", Storage="_CompetitionGroupEntry", ThisKey="CompetitionGroupEntryID", OtherKey="CompetitionGroupEntryID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public CompetitionGroupEntry CompetitionGroupEntry
 		{
 			get
@@ -1899,9 +1910,9 @@ namespace SoccerServer.BDDModel
 		
 		private int _MatchParticipationID;
 		
-		private int _MatchID;
+		private System.Nullable<int> _TeamID;
 		
-		private int _TeamID;
+		private int _MatchID;
 		
 		private bool _AsHome;
 		
@@ -1921,10 +1932,10 @@ namespace SoccerServer.BDDModel
     partial void OnCreated();
     partial void OnMatchParticipationIDChanging(int value);
     partial void OnMatchParticipationIDChanged();
+    partial void OnTeamIDChanging(System.Nullable<int> value);
+    partial void OnTeamIDChanged();
     partial void OnMatchIDChanging(int value);
     partial void OnMatchIDChanged();
-    partial void OnTeamIDChanging(int value);
-    partial void OnTeamIDChanged();
     partial void OnAsHomeChanging(bool value);
     partial void OnAsHomeChanged();
     partial void OnGoalsChanging(int value);
@@ -1961,6 +1972,30 @@ namespace SoccerServer.BDDModel
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TeamID", DbType="Int")]
+		public System.Nullable<int> TeamID
+		{
+			get
+			{
+				return this._TeamID;
+			}
+			set
+			{
+				if ((this._TeamID != value))
+				{
+					if (this._Team.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTeamIDChanging(value);
+					this.SendPropertyChanging();
+					this._TeamID = value;
+					this.SendPropertyChanged("TeamID");
+					this.OnTeamIDChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MatchID", DbType="Int NOT NULL")]
 		public int MatchID
 		{
@@ -1981,30 +2016,6 @@ namespace SoccerServer.BDDModel
 					this._MatchID = value;
 					this.SendPropertyChanged("MatchID");
 					this.OnMatchIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TeamID", DbType="Int NOT NULL")]
-		public int TeamID
-		{
-			get
-			{
-				return this._TeamID;
-			}
-			set
-			{
-				if ((this._TeamID != value))
-				{
-					if (this._Team.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnTeamIDChanging(value);
-					this.SendPropertyChanging();
-					this._TeamID = value;
-					this.SendPropertyChanged("TeamID");
-					this.OnTeamIDChanged();
 				}
 			}
 		}
@@ -2132,7 +2143,7 @@ namespace SoccerServer.BDDModel
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_MatchParticipation", Storage="_Team", ThisKey="TeamID", OtherKey="TeamID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_MatchParticipation", Storage="_Team", ThisKey="TeamID", OtherKey="TeamID", IsForeignKey=true, DeleteRule="SET NULL")]
 		public Team Team
 		{
 			get
@@ -2159,7 +2170,7 @@ namespace SoccerServer.BDDModel
 					}
 					else
 					{
-						this._TeamID = default(int);
+						this._TeamID = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Team");
 				}
@@ -4220,6 +4231,8 @@ namespace SoccerServer.BDDModel
 		
 		private EntitySet<SpecialTraining> _SpecialTrainings;
 		
+		private EntityRef<TeamStat> _TeamStat;
+		
 		private EntityRef<Ticket> _Ticket;
 		
 		private EntityRef<Player> _Player;
@@ -4262,6 +4275,7 @@ namespace SoccerServer.BDDModel
 			this._Requests = new EntitySet<Request>(new Action<Request>(this.attach_Requests), new Action<Request>(this.detach_Requests));
 			this._SoccerPlayers = new EntitySet<SoccerPlayer>(new Action<SoccerPlayer>(this.attach_SoccerPlayers), new Action<SoccerPlayer>(this.detach_SoccerPlayers));
 			this._SpecialTrainings = new EntitySet<SpecialTraining>(new Action<SpecialTraining>(this.attach_SpecialTrainings), new Action<SpecialTraining>(this.detach_SpecialTrainings));
+			this._TeamStat = default(EntityRef<TeamStat>);
 			this._Ticket = default(EntityRef<Ticket>);
 			this._Player = default(EntityRef<Player>);
 			this._PredefinedTeam = default(EntityRef<PredefinedTeam>);
@@ -4590,6 +4604,35 @@ namespace SoccerServer.BDDModel
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_TeamStat", Storage="_TeamStat", ThisKey="TeamID", OtherKey="TeamStatsID", IsUnique=true, IsForeignKey=false)]
+		public TeamStat TeamStat
+		{
+			get
+			{
+				return this._TeamStat.Entity;
+			}
+			set
+			{
+				TeamStat previousValue = this._TeamStat.Entity;
+				if (((previousValue != value) 
+							|| (this._TeamStat.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TeamStat.Entity = null;
+						previousValue.Team = null;
+					}
+					this._TeamStat.Entity = value;
+					if ((value != null))
+					{
+						value.Team = this;
+					}
+					this.SendPropertyChanged("TeamStat");
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Ticket", Storage="_Ticket", ThisKey="TeamID", OtherKey="TicketID", IsUnique=true, IsForeignKey=false)]
 		public Ticket Ticket
 		{
@@ -4765,6 +4808,229 @@ namespace SoccerServer.BDDModel
 		{
 			this.SendPropertyChanging();
 			entity.Team = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TeamStats")]
+	public partial class TeamStat : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TeamStatsID;
+		
+		private int _NumPlayedMatches;
+		
+		private int _NumMatchesWon;
+		
+		private int _NumMatchesDraw;
+		
+		private int _ScoredGoals;
+		
+		private int _ReceivedGoals;
+		
+		private EntityRef<Team> _Team;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTeamStatsIDChanging(int value);
+    partial void OnTeamStatsIDChanged();
+    partial void OnNumPlayedMatchesChanging(int value);
+    partial void OnNumPlayedMatchesChanged();
+    partial void OnNumMatchesWonChanging(int value);
+    partial void OnNumMatchesWonChanged();
+    partial void OnNumMatchesDrawChanging(int value);
+    partial void OnNumMatchesDrawChanged();
+    partial void OnScoredGoalsChanging(int value);
+    partial void OnScoredGoalsChanged();
+    partial void OnReceivedGoalsChanging(int value);
+    partial void OnReceivedGoalsChanged();
+    #endregion
+		
+		public TeamStat()
+		{
+			this._Team = default(EntityRef<Team>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TeamStatsID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int TeamStatsID
+		{
+			get
+			{
+				return this._TeamStatsID;
+			}
+			set
+			{
+				if ((this._TeamStatsID != value))
+				{
+					if (this._Team.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTeamStatsIDChanging(value);
+					this.SendPropertyChanging();
+					this._TeamStatsID = value;
+					this.SendPropertyChanged("TeamStatsID");
+					this.OnTeamStatsIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumPlayedMatches", DbType="Int NOT NULL")]
+		public int NumPlayedMatches
+		{
+			get
+			{
+				return this._NumPlayedMatches;
+			}
+			set
+			{
+				if ((this._NumPlayedMatches != value))
+				{
+					this.OnNumPlayedMatchesChanging(value);
+					this.SendPropertyChanging();
+					this._NumPlayedMatches = value;
+					this.SendPropertyChanged("NumPlayedMatches");
+					this.OnNumPlayedMatchesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumMatchesWon", DbType="Int NOT NULL")]
+		public int NumMatchesWon
+		{
+			get
+			{
+				return this._NumMatchesWon;
+			}
+			set
+			{
+				if ((this._NumMatchesWon != value))
+				{
+					this.OnNumMatchesWonChanging(value);
+					this.SendPropertyChanging();
+					this._NumMatchesWon = value;
+					this.SendPropertyChanged("NumMatchesWon");
+					this.OnNumMatchesWonChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumMatchesDraw", DbType="Int NOT NULL")]
+		public int NumMatchesDraw
+		{
+			get
+			{
+				return this._NumMatchesDraw;
+			}
+			set
+			{
+				if ((this._NumMatchesDraw != value))
+				{
+					this.OnNumMatchesDrawChanging(value);
+					this.SendPropertyChanging();
+					this._NumMatchesDraw = value;
+					this.SendPropertyChanged("NumMatchesDraw");
+					this.OnNumMatchesDrawChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ScoredGoals", DbType="Int NOT NULL")]
+		public int ScoredGoals
+		{
+			get
+			{
+				return this._ScoredGoals;
+			}
+			set
+			{
+				if ((this._ScoredGoals != value))
+				{
+					this.OnScoredGoalsChanging(value);
+					this.SendPropertyChanging();
+					this._ScoredGoals = value;
+					this.SendPropertyChanged("ScoredGoals");
+					this.OnScoredGoalsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReceivedGoals", DbType="Int NOT NULL")]
+		public int ReceivedGoals
+		{
+			get
+			{
+				return this._ReceivedGoals;
+			}
+			set
+			{
+				if ((this._ReceivedGoals != value))
+				{
+					this.OnReceivedGoalsChanging(value);
+					this.SendPropertyChanging();
+					this._ReceivedGoals = value;
+					this.SendPropertyChanged("ReceivedGoals");
+					this.OnReceivedGoalsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_TeamStat", Storage="_Team", ThisKey="TeamStatsID", OtherKey="TeamID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Team Team
+		{
+			get
+			{
+				return this._Team.Entity;
+			}
+			set
+			{
+				Team previousValue = this._Team.Entity;
+				if (((previousValue != value) 
+							|| (this._Team.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Team.Entity = null;
+						previousValue.TeamStat = null;
+					}
+					this._Team.Entity = value;
+					if ((value != null))
+					{
+						value.TeamStat = this;
+						this._TeamStatsID = value.TeamID;
+					}
+					else
+					{
+						this._TeamStatsID = default(int);
+					}
+					this.SendPropertyChanged("Team");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	

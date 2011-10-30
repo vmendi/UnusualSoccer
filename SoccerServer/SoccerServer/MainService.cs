@@ -13,17 +13,10 @@ namespace SoccerServer
 		public const String MAINSERVICE = "MAINSERVICE";
 		public const String CLIENT_ERROR = "CLIENT_ERROR";
 
-        
         public MainService()
         {
-            if (!Log.isLogging(MainService.MAINSERVICE))
-                Log.startLogging(MainService.MAINSERVICE);
-
-            if (!Log.isLogging(MainService.CLIENT_ERROR))
-                Log.startLogging(MainService.CLIENT_ERROR);
         }
-
-                
+       
         private SoccerDataModelDataContext CreateDataForRequest()
         {
             mContext = new SoccerDataModelDataContext();
@@ -106,18 +99,12 @@ namespace SoccerServer
 
 		static private bool HasNameWhitespacesAtStartOrEnd(string name)
 		{
-			bool bRet = false;
-			if (name.StartsWith(" ") || name.EndsWith(" "))
-				bRet = true;
-			return bRet;
+			return name.StartsWith(" ") || name.EndsWith(" ");
 		}
 
 		static private bool HasTooManyWhitespaces(string name)
 		{
-			bool bRet = false;
-			if (name.Count(theChar => theChar == ' ') > 3)
-				bRet = true;
-			return bRet;
+            return name.Count(theChar => theChar == ' ') > 3;
 		}
 
 		static private bool IsNameInappropiate(string name)

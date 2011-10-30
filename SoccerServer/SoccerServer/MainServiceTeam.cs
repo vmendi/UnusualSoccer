@@ -56,8 +56,9 @@ namespace SoccerServer
                     theNewTeam.Player = mPlayer;
                     theNewTeam.Name = name;
 
-                    // Uno por equipo, siempre
+                    // Uno por equipo, siempre. No se puede forzar 1:1 desde la BDD
                     GenerateTicket(theNewTeam);
+                    GenerateTeamStats(theNewTeam);
 
                     // TODO: No está bien. Se deberían generar bajo demanda (al entrenar) y no desde el principio
                     GenerateSpecialTrainings(theNewTeam);
@@ -88,6 +89,11 @@ namespace SoccerServer
             theTicket.RemainingMatches = 5;
 
             mContext.Tickets.InsertOnSubmit(theTicket);
+        }
+
+        private void GenerateTeamStats(Team team)
+        {
+            mContext.TeamStats.InsertOnSubmit(new TeamStat());
         }
 
 		private void GenerateSpecialTrainings(Team team)

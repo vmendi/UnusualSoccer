@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SoccerModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="SoccerModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="SoccerModelStoreContainer">
           <EntitySet Name="CompetitionDivisions" EntityType="SoccerModel.Store.CompetitionDivisions" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CompetitionGroupEntries" EntityType="SoccerModel.Store.CompetitionGroupEntries" store:Type="Tables" Schema="dbo" />
@@ -23,6 +23,7 @@
           <EntitySet Name="SpecialTrainingDefinitions" EntityType="SoccerModel.Store.SpecialTrainingDefinitions" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="SpecialTrainings" EntityType="SoccerModel.Store.SpecialTrainings" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Teams" EntityType="SoccerModel.Store.Teams" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TeamStats" EntityType="SoccerModel.Store.TeamStats" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Tickets" EntityType="SoccerModel.Store.Tickets" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="TrainingDefinitions" EntityType="SoccerModel.Store.TrainingDefinitions" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_CompetitionDivisions_CompetitionDivisions" Association="SoccerModel.Store.FK_CompetitionDivisions_CompetitionDivisions">
@@ -52,14 +53,6 @@
           <AssociationSet Name="FK_CompetitionMatchParticipations_MatchParticipations" Association="SoccerModel.Store.FK_CompetitionMatchParticipations_MatchParticipations">
             <End Role="MatchParticipations" EntitySet="MatchParticipations" />
             <End Role="CompetitionMatchParticipations" EntitySet="CompetitionMatchParticipations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Matches_MatchParticipationsAway" Association="SoccerModel.Store.FK_Matches_MatchParticipationsAway">
-            <End Role="MatchParticipations" EntitySet="MatchParticipations" />
-            <End Role="Matches" EntitySet="Matches" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Matches_MatchParticipationsHome" Association="SoccerModel.Store.FK_Matches_MatchParticipationsHome">
-            <End Role="MatchParticipations" EntitySet="MatchParticipations" />
-            <End Role="Matches" EntitySet="Matches" />
           </AssociationSet>
           <AssociationSet Name="FK_MatchParticipations_Matches" Association="SoccerModel.Store.FK_MatchParticipations_Matches">
             <End Role="Matches" EntitySet="Matches" />
@@ -104,6 +97,10 @@
           <AssociationSet Name="FK_Teams_PredefinedTeams" Association="SoccerModel.Store.FK_Teams_PredefinedTeams">
             <End Role="PredefinedTeams" EntitySet="PredefinedTeams" />
             <End Role="Teams" EntitySet="Teams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeamStats_TeamStats" Association="SoccerModel.Store.FK_TeamStats_TeamStats">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="TeamStats" EntitySet="TeamStats" />
           </AssociationSet>
           <AssociationSet Name="FK_Tickets_Teams" Association="SoccerModel.Store.FK_Tickets_Teams">
             <End Role="Teams" EntitySet="Teams" />
@@ -160,7 +157,7 @@
           <Key>
             <PropertyRef Name="MatchID" />
           </Key>
-          <Property Name="MatchID" Type="int" Nullable="false" />
+          <Property Name="MatchID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DateStarted" Type="datetime" Nullable="false" />
           <Property Name="DateEnded" Type="datetime" />
           <Property Name="WasTooManyTimes" Type="bit" />
@@ -170,16 +167,14 @@
           <Property Name="IsFriendly" Type="bit" Nullable="false" />
           <Property Name="MatchDuration" Type="int" Nullable="false" />
           <Property Name="TurnDuration" Type="int" Nullable="false" />
-          <Property Name="HomeMatchParticipationID" Type="int" Nullable="false" />
-          <Property Name="AwayMatchParticipationID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="MatchParticipations">
           <Key>
             <PropertyRef Name="MatchParticipationID" />
           </Key>
           <Property Name="MatchParticipationID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TeamID" Type="int" />
           <Property Name="MatchID" Type="int" Nullable="false" />
-          <Property Name="TeamID" Type="int" Nullable="false" />
           <Property Name="AsHome" Type="bit" Nullable="false" />
           <Property Name="Goals" Type="int" Nullable="false" />
           <Property Name="TurnsPlayed" Type="int" Nullable="false" />
@@ -198,9 +193,9 @@
             <PropertyRef Name="PlayerID" />
           </Key>
           <Property Name="PlayerID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FacebookID" Type="bigint" Nullable="false" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Surname" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="FacebookID" Type="bigint" Nullable="false" />
           <Property Name="CreationDate" Type="datetime" Nullable="false" />
           <Property Name="Liked" Type="bit" Nullable="false" />
         </EntityType>
@@ -297,6 +292,17 @@
           <Property Name="Mean" Type="float" Nullable="false" />
           <Property Name="StandardDeviation" Type="float" Nullable="false" />
         </EntityType>
+        <EntityType Name="TeamStats">
+          <Key>
+            <PropertyRef Name="TeamStatsID" />
+          </Key>
+          <Property Name="TeamStatsID" Type="int" Nullable="false" />
+          <Property Name="NumPlayedMatches" Type="int" Nullable="false" />
+          <Property Name="NumMatchesWon" Type="int" Nullable="false" />
+          <Property Name="NumMatchesDraw" Type="int" Nullable="false" />
+          <Property Name="ScoredGoals" Type="int" Nullable="false" />
+          <Property Name="ReceivedGoals" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Tickets">
           <Key>
             <PropertyRef Name="TicketID" />
@@ -386,7 +392,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompetitionMatchParticipations_CompetitionGroupEntries">
-          <End Role="CompetitionGroupEntries" Type="SoccerModel.Store.CompetitionGroupEntries" Multiplicity="1" />
+          <End Role="CompetitionGroupEntries" Type="SoccerModel.Store.CompetitionGroupEntries" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="CompetitionMatchParticipations" Type="SoccerModel.Store.CompetitionMatchParticipations" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CompetitionGroupEntries">
@@ -411,30 +419,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Matches_MatchParticipationsAway">
-          <End Role="MatchParticipations" Type="SoccerModel.Store.MatchParticipations" Multiplicity="1" />
-          <End Role="Matches" Type="SoccerModel.Store.Matches" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MatchParticipations">
-              <PropertyRef Name="MatchParticipationID" />
-            </Principal>
-            <Dependent Role="Matches">
-              <PropertyRef Name="AwayMatchParticipationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Matches_MatchParticipationsHome">
-          <End Role="MatchParticipations" Type="SoccerModel.Store.MatchParticipations" Multiplicity="1" />
-          <End Role="Matches" Type="SoccerModel.Store.Matches" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MatchParticipations">
-              <PropertyRef Name="MatchParticipationID" />
-            </Principal>
-            <Dependent Role="Matches">
-              <PropertyRef Name="HomeMatchParticipationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_MatchParticipations_Matches">
           <End Role="Matches" Type="SoccerModel.Store.Matches" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -450,9 +434,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MatchParticipations_Teams">
-          <End Role="Teams" Type="SoccerModel.Store.Teams" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="Teams" Type="SoccerModel.Store.Teams" Multiplicity="0..1" />
           <End Role="MatchParticipations" Type="SoccerModel.Store.MatchParticipations" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Teams">
@@ -587,6 +569,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TeamStats_TeamStats">
+          <End Role="Teams" Type="SoccerModel.Store.Teams" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TeamStats" Type="SoccerModel.Store.TeamStats" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="TeamStats">
+              <PropertyRef Name="TeamStatsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Tickets_Teams">
           <End Role="Teams" Type="SoccerModel.Store.Teams" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -601,8 +597,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SoccerModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -644,14 +639,6 @@
           <AssociationSet Name="FK_CompetitionGroups_CompetitionSeasons" Association="SoccerModel.FK_CompetitionGroups_CompetitionSeasons">
             <End Role="CompetitionSeasons" EntitySet="CompetitionSeasons" />
             <End Role="CompetitionGroups" EntitySet="CompetitionGroups" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Matches_MatchParticipationsAway" Association="SoccerModel.FK_Matches_MatchParticipationsAway">
-            <End Role="MatchParticipations" EntitySet="MatchParticipations" />
-            <End Role="Matches" EntitySet="Matches" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Matches_MatchParticipationsHome" Association="SoccerModel.FK_Matches_MatchParticipationsHome">
-            <End Role="MatchParticipations" EntitySet="MatchParticipations" />
-            <End Role="Matches" EntitySet="Matches" />
           </AssociationSet>
           <AssociationSet Name="FK_MatchParticipations_Matches" Association="SoccerModel.FK_MatchParticipations_Matches">
             <End Role="Matches" EntitySet="Matches" />
@@ -704,6 +691,11 @@
           <AssociationSet Name="CompetitionMatchParticipations" Association="SoccerModel.CompetitionMatchParticipations">
             <End Role="CompetitionGroupEntries" EntitySet="CompetitionGroupEntries" />
             <End Role="MatchParticipations" EntitySet="MatchParticipations" />
+          </AssociationSet>
+          <EntitySet Name="TeamStats" EntityType="SoccerModel.TeamStat" />
+          <AssociationSet Name="FK_TeamStats_TeamStats" Association="SoccerModel.FK_TeamStats_TeamStats">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="TeamStat" EntitySet="TeamStats" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="CompetitionDivision">
@@ -759,7 +751,7 @@
           <Key>
             <PropertyRef Name="MatchID" />
           </Key>
-          <Property Name="MatchID" Type="Int32" Nullable="false" />
+          <Property Name="MatchID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DateStarted" Type="DateTime" Nullable="false" />
           <Property Name="DateEnded" Type="DateTime" />
           <Property Name="WasTooManyTimes" Type="Boolean" />
@@ -769,10 +761,6 @@
           <Property Name="IsFriendly" Type="Boolean" Nullable="false" />
           <Property Name="MatchDuration" Type="Int32" Nullable="false" />
           <Property Name="TurnDuration" Type="Int32" Nullable="false" />
-          <Property Name="HomeMatchParticipationID" Type="Int32" Nullable="false" />
-          <Property Name="AwayMatchParticipationID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="MatchParticipation" Relationship="SoccerModel.FK_Matches_MatchParticipationsAway" FromRole="Matches" ToRole="MatchParticipations" />
-          <NavigationProperty Name="MatchParticipation1" Relationship="SoccerModel.FK_Matches_MatchParticipationsHome" FromRole="Matches" ToRole="MatchParticipations" />
           <NavigationProperty Name="MatchParticipations" Relationship="SoccerModel.FK_MatchParticipations_Matches" FromRole="Matches" ToRole="MatchParticipations" />
         </EntityType>
         <EntityType Name="MatchParticipation">
@@ -785,8 +773,6 @@
           <Property Name="AsHome" Type="Boolean" Nullable="false" />
           <Property Name="Goals" Type="Int32" Nullable="false" />
           <Property Name="TurnsPlayed" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Matches" Relationship="SoccerModel.FK_Matches_MatchParticipationsAway" FromRole="MatchParticipations" ToRole="Matches" />
-          <NavigationProperty Name="Matches1" Relationship="SoccerModel.FK_Matches_MatchParticipationsHome" FromRole="MatchParticipations" ToRole="Matches" />
           <NavigationProperty Name="Match" Relationship="SoccerModel.FK_MatchParticipations_Matches" FromRole="MatchParticipations" ToRole="Matches" />
           <NavigationProperty Name="Team" Relationship="SoccerModel.FK_MatchParticipations_Teams" FromRole="MatchParticipations" ToRole="Teams" />
           <NavigationProperty Name="CompetitionGroupEntry" Relationship="SoccerModel.CompetitionMatchParticipations" FromRole="MatchParticipations" ToRole="CompetitionGroupEntries" />
@@ -923,6 +909,7 @@
           <NavigationProperty Name="SoccerPlayers" Relationship="SoccerModel.FK_SoccerPlayers_Teams" FromRole="Teams" ToRole="SoccerPlayers" />
           <NavigationProperty Name="SpecialTrainings" Relationship="SoccerModel.FK_SpecialTrainings_Teams" FromRole="Teams" ToRole="SpecialTrainings" />
           <NavigationProperty Name="Ticket" Relationship="SoccerModel.FK_Tickets_Teams" FromRole="Teams" ToRole="Tickets" />
+          <NavigationProperty Name="TeamStat" Relationship="SoccerModel.FK_TeamStats_TeamStats" FromRole="Team" ToRole="TeamStat" />
         </EntityType>
         <EntityType Name="Ticket">
           <Key>
@@ -1011,30 +998,6 @@
             </Principal>
             <Dependent Role="CompetitionGroups">
               <PropertyRef Name="CompetitionSeasonID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Matches_MatchParticipationsAway">
-          <End Role="MatchParticipations" Type="SoccerModel.MatchParticipation" Multiplicity="1" />
-          <End Role="Matches" Type="SoccerModel.Match" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MatchParticipations">
-              <PropertyRef Name="MatchParticipationID" />
-            </Principal>
-            <Dependent Role="Matches">
-              <PropertyRef Name="AwayMatchParticipationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Matches_MatchParticipationsHome">
-          <End Role="MatchParticipations" Type="SoccerModel.MatchParticipation" Multiplicity="1" />
-          <End Role="Matches" Type="SoccerModel.Match" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MatchParticipations">
-              <PropertyRef Name="MatchParticipationID" />
-            </Principal>
-            <Dependent Role="Matches">
-              <PropertyRef Name="HomeMatchParticipationID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1208,6 +1171,30 @@
           <End Role="CompetitionGroupEntries" Type="SoccerModel.CompetitionGroupEntry" Multiplicity="0..1" />
           <End Role="MatchParticipations" Type="SoccerModel.MatchParticipation" Multiplicity="*" />
         </Association>
+        <EntityType Name="TeamStat">
+          <Key>
+            <PropertyRef Name="TeamStatsID" />
+          </Key>
+          <Property Type="Int32" Name="TeamStatsID" Nullable="false" />
+          <Property Type="Int32" Name="NumPlayedMatches" Nullable="false" />
+          <Property Type="Int32" Name="NumMatchesWon" Nullable="false" />
+          <Property Type="Int32" Name="NumMatchesDraw" Nullable="false" />
+          <Property Type="Int32" Name="ScoredGoals" Nullable="false" />
+          <Property Type="Int32" Name="ReceivedGoals" Nullable="false" />
+          <NavigationProperty Name="Team" Relationship="SoccerModel.FK_TeamStats_TeamStats" FromRole="TeamStat" ToRole="Team" />
+        </EntityType>
+        <Association Name="FK_TeamStats_TeamStats">
+          <End Type="SoccerModel.Team" Role="Team" Multiplicity="1" />
+          <End Type="SoccerModel.TeamStat" Role="TeamStat" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="TeamID" />
+            </Principal>
+            <Dependent Role="TeamStat">
+              <PropertyRef Name="TeamStatsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1252,8 +1239,6 @@
             <ScalarProperty Name="IsFriendly" ColumnName="IsFriendly" />
             <ScalarProperty Name="MatchDuration" ColumnName="MatchDuration" />
             <ScalarProperty Name="TurnDuration" ColumnName="TurnDuration" />
-            <ScalarProperty Name="HomeMatchParticipationID" ColumnName="HomeMatchParticipationID" />
-            <ScalarProperty Name="AwayMatchParticipationID" ColumnName="AwayMatchParticipationID" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="MatchParticipations"><EntityTypeMapping TypeName="SoccerModel.MatchParticipation"><MappingFragment StoreEntitySet="MatchParticipations">
             <ScalarProperty Name="MatchParticipationID" ColumnName="MatchParticipationID" />
@@ -1368,6 +1353,18 @@
               <ScalarProperty Name="MatchParticipationID" ColumnName="MatchParticipationID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="TeamStats">
+            <EntityTypeMapping TypeName="SoccerModel.TeamStat">
+              <MappingFragment StoreEntitySet="TeamStats">
+                <ScalarProperty Name="ReceivedGoals" ColumnName="ReceivedGoals" />
+                <ScalarProperty Name="ScoredGoals" ColumnName="ScoredGoals" />
+                <ScalarProperty Name="NumMatchesDraw" ColumnName="NumMatchesDraw" />
+                <ScalarProperty Name="NumMatchesWon" ColumnName="NumMatchesWon" />
+                <ScalarProperty Name="NumPlayedMatches" ColumnName="NumPlayedMatches" />
+                <ScalarProperty Name="TeamStatsID" ColumnName="TeamStatsID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1384,128 +1381,112 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="SoccerEntityModel">
-        <EntityTypeShape EntityType="SoccerModel.CompetitionDivision" Width="1.5" PointX="3.75" PointY="3.875" Height="2.3648893229166674" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.CompetitionGroupEntry" Width="1.5" PointX="8.25" PointY="10.875" Height="2.9417936197916674" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.CompetitionGroup" Width="1.5" PointX="6" PointY="5.125" Height="2.5571907552083335" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.CompetitionSeason" Width="1.5" PointX="3.75" PointY="7" Height="1.7879850260416657" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.Match" Width="1.5" PointX="15.75" PointY="11.375" Height="3.9033007812499996" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.MatchParticipation" Width="1.5" PointX="13.5" PointY="11.75" Height="3.1340950520833317" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.PendingTraining" Width="1.5" PointX="11.25" PointY="12.25" Height="2.1725878906249996" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.Player" Width="1.5" PointX="0.75" PointY="12.125" Height="2.5571907552083317" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.PredefinedTeam" Width="1.5" PointX="3.75" PointY="9.5" Height="1.5956835937499996" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.Purchase" Width="1.5" PointX="0.75" PointY="0.75" Height="2.5571907552083353" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.Request" Width="1.5" PointX="8.25" PointY="15.25" Height="2.5571907552083317" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.Session" Width="1.5" PointX="3" PointY="12.375" Height="1.9802864583333317" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.SoccerPlayer" Width="1.5" PointX="8.25" PointY="18.625" Height="3.1340950520833388" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.SpecialTrainingDefinition" Width="1.5" PointX="9" PointY="7.125" Height="2.3648893229166674" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.SpecialTraining" Width="1.5" PointX="11.25" PointY="9.125" Height="2.3648893229166674" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.Team" Width="1.5" PointX="6" PointY="10.875" Height="4.8648079427083388" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.Ticket" Width="1.5" PointX="8.25" PointY="25.625" Height="2.1725878906250031" IsExpanded="true" />
-        <EntityTypeShape EntityType="SoccerModel.TrainingDefinition" Width="1.5" PointX="9" PointY="3.25" Height="2.1725878906250031" IsExpanded="true" />
+      <Diagram Name="SoccerEntityModel" ZoomLevel="93">
+        <EntityTypeShape EntityType="SoccerModel.CompetitionDivision" Width="1.5" PointX="3.125" PointY="2.5" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.CompetitionGroupEntry" Width="2.125" PointX="5.125" PointY="5.5" Height="2.9417936197916639" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.CompetitionGroup" Width="2" PointX="5.125" PointY="2.5" Height="2.5571907552083335" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.CompetitionSeason" Width="1.75" PointX="8.125" PointY="2.375" Height="1.7879850260416657" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Match" Width="2" PointX="12.625" PointY="5" Height="3.1340950520833317" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.MatchParticipation" Width="2" PointX="9.375" PointY="5.5" Height="2.7494921874999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.PendingTraining" Width="1.75" PointX="12" PointY="12.75" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Player" Width="1.5" PointX="1" PointY="11.5" Height="2.5571907552083317" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.PredefinedTeam" Width="1.625" PointX="3.5" PointY="9.75" Height="1.5956835937499996" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Purchase" Width="1.5" PointX="1.375" PointY="5.375" Height="2.5571907552083353" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Request" Width="1.875" PointX="9.5" PointY="14.375" Height="2.5571907552083317" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Session" Width="1.5" PointX="1" PointY="15" Height="1.9802864583333317" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.SoccerPlayer" Width="1.5" PointX="3.125" PointY="15.5" Height="3.1340950520833388" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.SpecialTrainingDefinition" Width="2.25" PointX="10.875" PointY="9.75" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.SpecialTraining" Width="2.25" PointX="8.125" PointY="9.75" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Team" Width="2.125" PointX="5.5" PointY="10.375" Height="4.8648079427083388" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.Ticket" Width="1.875" PointX="8.125" PointY="19.75" Height="2.1725878906250031" IsExpanded="true" />
+        <EntityTypeShape EntityType="SoccerModel.TrainingDefinition" Width="2" PointX="14.375" PointY="12.75" Height="2.1725878906250031" IsExpanded="true" />
         <AssociationConnector Association="SoccerModel.FK_CompetitionDivisions_CompetitionDivisions" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.2819230769230767" PointY="6.2398893229166674" />
-          <ConnectorPoint PointX="4.2819230769230767" PointY="6.4898893229166674" />
-          <ConnectorPoint PointX="4.7284615384615378" PointY="6.4898893229166674" />
-          <ConnectorPoint PointX="4.7284615384615378" PointY="6.2398893229166674" />
+          <ConnectorPoint PointX="3.6569230769230767" PointY="4.8648893229166674" />
+          <ConnectorPoint PointX="3.6569230769230767" PointY="5.1148893229166674" />
+          <ConnectorPoint PointX="4.1034615384615378" PointY="5.1148893229166674" />
+          <ConnectorPoint PointX="4.1034615384615378" PointY="4.8648893229166674" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_CompetitionGroups_CompetitionDivisions" ManuallyRouted="false">
-          <ConnectorPoint PointX="5.25" PointY="5.6824446614583337" />
-          <ConnectorPoint PointX="6" PointY="5.6824446614583337" />
+          <ConnectorPoint PointX="4.625" PointY="3.6824446614583337" />
+          <ConnectorPoint PointX="5.125" PointY="3.6824446614583337" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_CompetitionGroupEntries_CompetitionGroups" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.5" PointY="6.2737939453125016" />
-          <ConnectorPoint PointX="8.59375" PointY="6.2737939453125016" />
-          <ConnectorPoint PointX="8.59375" PointY="10.875" />
+          <ConnectorPoint PointX="6.125" PointY="5.0571907552083335" />
+          <ConnectorPoint PointX="6.125" PointY="5.5" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_CompetitionGroupEntries_Teams" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.5" PointY="12.345896809895834" />
-          <ConnectorPoint PointX="8.25" PointY="12.345896809895834" />
+          <ConnectorPoint PointX="6.375" PointY="10.375" />
+          <ConnectorPoint PointX="6.375" PointY="8.4417936197916639" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_CompetitionGroups_CompetitionSeasons" ManuallyRouted="false">
-          <ConnectorPoint PointX="5.25" PointY="7.3410953776041667" />
-          <ConnectorPoint PointX="6" PointY="7.3410953776041667" />
-        </AssociationConnector>
-        <AssociationConnector Association="SoccerModel.FK_Matches_MatchParticipationsAway" ManuallyRouted="false">
-          <ConnectorPoint PointX="15" PointY="13.317047526041666" />
-          <ConnectorPoint PointX="15.75" PointY="13.317047526041666" />
-        </AssociationConnector>
-        <AssociationConnector Association="SoccerModel.FK_Matches_MatchParticipationsHome" ManuallyRouted="false">
-          <ConnectorPoint PointX="15" PointY="12.471023763020833" />
-          <ConnectorPoint PointX="15.75" PointY="12.471023763020833" />
+          <ConnectorPoint PointX="8.125" PointY="3.3314925130208328" />
+          <ConnectorPoint PointX="7.125" PointY="3.3314925130208328" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_MatchParticipations_Matches" ManuallyRouted="false">
-          <ConnectorPoint PointX="15.75" PointY="14.163071289062499" />
-          <ConnectorPoint PointX="15" PointY="14.163071289062499" />
+          <ConnectorPoint PointX="12.625" PointY="6.8170475260416659" />
+          <ConnectorPoint PointX="11.375" PointY="6.8170475260416659" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_MatchParticipations_Teams" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.5" PointY="14.684591471354166" />
-          <ConnectorPoint PointX="13.5" PointY="14.684591471354166" />
+          <ConnectorPoint PointX="7.031252" PointY="10.375" />
+          <ConnectorPoint PointX="7.031252" PointY="8.6917936197916639" />
+          <ConnectorPoint PointX="7.5" PointY="8.6917936197916639" />
+          <ConnectorPoint PointX="7.5" PointY="6.87474609375" />
+          <ConnectorPoint PointX="9.375" PointY="6.87474609375" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_PendingTrainings_Teams" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.5" PointY="14.150940755208334" />
-          <ConnectorPoint PointX="11.25" PointY="14.150940755208334" />
+          <ConnectorPoint PointX="7.625" PointY="13.53125" />
+          <ConnectorPoint PointX="12" PointY="13.53125" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_PendingTrainings_TrainingDefinitions" ManuallyRouted="false">
-          <ConnectorPoint PointX="10.5" PointY="5.4214330444711569" />
-          <ConnectorPoint PointX="10.875" PointY="5.7964330444711569" />
-          <ConnectorPoint PointX="10.875" PointY="13.169218377604166" />
-          <ConnectorPoint PointX="11.25" PointY="13.169218377604166" />
+          <ConnectorPoint PointX="14.375" PointY="13.8362939453125" />
+          <ConnectorPoint PointX="13.75" PointY="13.8362939453125" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_Sessions_Players" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="13.365143229166666" />
-          <ConnectorPoint PointX="3" PointY="13.365143229166666" />
+          <ConnectorPoint PointX="1.75" PointY="14.057190755208332" />
+          <ConnectorPoint PointX="1.75" PointY="15" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_Teams_Players" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="14.549988606770832" />
-          <ConnectorPoint PointX="6" PointY="14.549988606770832" />
+          <ConnectorPoint PointX="2.5" PointY="12.685580737101235" />
+          <ConnectorPoint PointX="5.5" PointY="12.685580737101235" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_Teams_PredefinedTeams" ManuallyRouted="false">
-          <ConnectorPoint PointX="5.25" PointY="10.187499500000001" />
-          <ConnectorPoint PointX="6.75" PointY="10.187499500000001" />
-          <ConnectorPoint PointX="6.75" PointY="10.875" />
+          <ConnectorPoint PointX="5.125" PointY="10.860341796875" />
+          <ConnectorPoint PointX="5.5" PointY="10.860341796875" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_Requests_Teams" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.5" PointY="15.494903971354169" />
-          <ConnectorPoint PointX="8.25" PointY="15.494903971354169" />
+          <ConnectorPoint PointX="7.625" PointY="14.903554687500002" />
+          <ConnectorPoint PointX="9.5" PointY="14.903554687500002" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_SoccerPlayers_Teams" ManuallyRouted="false">
-          <ConnectorPoint PointX="6.75" PointY="15.739807942708339" />
-          <ConnectorPoint PointX="6.75" PointY="20.192047526041669" />
-          <ConnectorPoint PointX="7.0729191666666669" PointY="20.192047526041669" />
-          <ConnectorPoint PointX="7.2395858333333329" PointY="20.192047526041669" />
-          <ConnectorPoint PointX="8.25" PointY="20.192047526041669" />
+          <ConnectorPoint PointX="5.5" PointY="14.090097556050612" />
+          <ConnectorPoint PointX="3.28125" PointY="14.090097556050612" />
+          <ConnectorPoint PointX="3.28125" PointY="15.5" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_SpecialTrainings_SpecialTrainingDefinitions" ManuallyRouted="false">
-          <ConnectorPoint PointX="10.5" PointY="9.3074446614583337" />
-          <ConnectorPoint PointX="10.791666666666666" PointY="9.3074446614583337" />
-          <ConnectorPoint PointX="10.958333333333334" PointY="9.3074446614583337" />
-          <ConnectorPoint PointX="11.25" PointY="9.3074446614583337" />
+          <ConnectorPoint PointX="10.875" PointY="10.932444661458334" />
+          <ConnectorPoint PointX="10.375" PointY="10.932444661458334" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_SpecialTrainings_Teams" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.1562525" PointY="10.875" />
-          <ConnectorPoint PointX="7.1562525" PointY="9.8699444114583343" />
-          <ConnectorPoint PointX="8.5104166666666661" PointY="9.8699444114583343" />
-          <ConnectorPoint PointX="8.6770833333333339" PointY="9.8699444114583343" />
-          <ConnectorPoint PointX="10.791666666666666" PointY="9.8699444114583343" />
-          <ConnectorPoint PointX="10.958333333333334" PointY="9.8699444114583343" />
-          <ConnectorPoint PointX="11.25" PointY="9.8699444114583343" />
+          <ConnectorPoint PointX="7.625" PointY="11.244944661458334" />
+          <ConnectorPoint PointX="8.125" PointY="11.244944661458334" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.FK_Tickets_Teams" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.1562525" PointY="15.739807942708339" />
-          <ConnectorPoint PointX="7.1562525" PointY="26.7112939453125" />
-          <ConnectorPoint PointX="8.25" PointY="26.7112939453125" />
+          <ConnectorPoint PointX="7.21875" PointY="15.432109375000001" />
+          <ConnectorPoint PointX="7.21875" PointY="19.84375" />
+          <ConnectorPoint PointX="8.125" PointY="19.84375" />
         </AssociationConnector>
         <AssociationConnector Association="SoccerModel.CompetitionMatchParticipations" ManuallyRouted="false">
-          <ConnectorPoint PointX="9.75" PointY="11.96875" />
-          <ConnectorPoint PointX="10.791666666666666" PointY="11.96875" />
-          <ConnectorPoint PointX="10.958333333333334" PointY="11.96875" />
-          <ConnectorPoint PointX="13.5" PointY="11.96875" />
+          <ConnectorPoint PointX="7.25" PointY="6.562915202915268" />
+          <ConnectorPoint PointX="9.375" PointY="6.562915202915268" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="SoccerModel.TeamStat" Width="2.125" PointX="4.625" PointY="20" Height="2.3648893229166674" />
+        <AssociationConnector Association="SoccerModel.FK_TeamStats_TeamStats" >
+          <ConnectorPoint PointX="6.125" PointY="15.432109375000001" />
+          <ConnectorPoint PointX="6.125" PointY="20" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

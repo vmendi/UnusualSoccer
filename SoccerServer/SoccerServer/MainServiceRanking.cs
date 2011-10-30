@@ -68,49 +68,19 @@ namespace SoccerServer
             }
 		}
 
-		private TransferModel.TeamMatchStats GetMatchStatsFor(BDDModel.Team theTeam)
-		{
-			TransferModel.TeamMatchStats ret = new TransferModel.TeamMatchStats();
+        private TransferModel.TeamMatchStats GetMatchStatsFor(BDDModel.Team theTeam)
+        {
+            TransferModel.TeamMatchStats ret = new TransferModel.TeamMatchStats();
 
-            // Todas las participaciones tanto suyas como de su oponente, agrupadas de 2 en 2 (gracias al orderby) y traidas a memoria
-            // BTW, los non-ended se contaran tb, y vendran con los goles a 0-0
-            var participations = (from p in mContext.MatchParticipations
-                                  where p.Match.MatchParticipations.Any(l => l.TeamID == theTeam.TeamID) &&
-                                        p.Match.MatchParticipations.Count == 2      // Cuando borramos un equipo habra partidos q se queden con solo 1
-                                  orderby p.MatchID
-                                  select p).ToList();
-            
-            int numParticipations = participations.Count();
-
-            if (numParticipations % 2 != 0)
-                throw new Exception("WTF ad infinitum! : " + numParticipations.ToString() + " " + theTeam.TeamID);
-            
-            ret.NumMatches = numParticipations / 2;
-
-            for (int c = 0; c < numParticipations; c += 2)
-            {
-                BDDModel.MatchParticipation part = participations[c];
-                BDDModel.MatchParticipation otherPart = participations[c + 1];
-
-                if (participations[c].Team != theTeam)
-                {
-                    // Swaparoo
-                    part = participations[c + 1];
-                    otherPart = participations[c];
-                }
-                
-                if (part.Goals > otherPart.Goals)
-                    ret.NumWonMatches++;
-                else
-                if (part.Goals < otherPart.Goals)
-                    ret.NumLostMatches++;
-
-                ret.NumGoalsScored += part.Goals;
-                ret.NumGoalsReceived += otherPart.Goals;
-            }
+            ret.NumMatches = theTeam.TeamStat.NumPlayedMatches;
+            ret.NumWonMatches = theTeam.TeamStat.NumMatchesWon;
+            ret.NumLostMatches = theTeam.TeamStat.NumPlayedMatches - theTeam.TeamStat.NumMatchesWon - theTeam.TeamStat.NumMatchesDraw;
+            ret.NumGoalsScored = theTeam.TeamStat.ScoredGoals;
+            ret.NumGoalsReceived = theTeam.TeamStat.ReceivedGoals;
 
             return ret;
-		}
+        }
+
 	}
 }
 

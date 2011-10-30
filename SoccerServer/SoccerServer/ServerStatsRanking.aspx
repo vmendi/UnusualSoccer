@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>Unusual Soccer - Hall of Fame</title>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -53,6 +53,12 @@
 				<asp:TemplateField HeaderText="Won Matches" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50">
 					<ItemTemplate>
 					<asp:Label ID="Label2" runat="server" Text="<%# GetWonMatchesCount((SoccerServer.BDDModel.Team)Container.DataItem) %>" />
+					</ItemTemplate>
+				</asp:TemplateField>
+
+                <asp:TemplateField HeaderText="Draw Matches" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50">
+					<ItemTemplate>
+					<asp:Label ID="Label3" runat="server" Text="<%# GetDrawMatchesCount((SoccerServer.BDDModel.Team)Container.DataItem) %>" />
 					</ItemTemplate>
 				</asp:TemplateField>
 

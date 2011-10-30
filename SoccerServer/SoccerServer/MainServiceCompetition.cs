@@ -18,44 +18,37 @@ namespace SoccerServer
         {
             var ret = new TransferModel.CompetitionGroup();
 
-            try
+            // Nos ahorramos pedir mSession y mPlayer, esto es una query universal
+            using (mContext = new SoccerDataModelDataContext())
             {
-                // Nos ahorramos pedir mSession y mPlayer, para esta query no son necesarios
-                using (mContext = new SoccerDataModelDataContext())
+                BDDModel.Team theTeam = (from t in mContext.Teams
+                                         where t.Player.FacebookID == facebookID
+                                         select t).First();
+
+                // Ultimo grupo (por fecha) en el que ha participado
+                CompetitionGroupEntry theGroupEntry = theTeam.CompetitionGroupEntries.OrderBy(entry => entry.CompetitionGroup.CreationDate).Last();
+                CompetitionGroup theGroup = theGroupEntry.CompetitionGroup;
+
+                ret.DivisionName = theGroup.CompetitionDivision.DivisionName;
+                ret.GroupName = theGroup.GroupName;
+                ret.MinimumPoints = theGroup.CompetitionDivision.MinimumPoints;
+
+                foreach (var entry in theGroup.CompetitionGroupEntries)
                 {
-                    BDDModel.Team theTeam = (from t in mContext.Teams
-                                             where t.Player.FacebookID == facebookID
-                                             select t).First();
+                    TransferModel.CompetitionGroupEntry retEntry = new TransferModel.CompetitionGroupEntry();
 
-                    // Ultimo grupo (por fecha) en el que ha participado
-                    CompetitionGroupEntry theGroupEntry = theTeam.CompetitionGroupEntries.OrderBy(entry => entry.CompetitionGroup.CreationDate).Last();
-                    CompetitionGroup theGroup = theGroupEntry.CompetitionGroup;
+                    retEntry.Name = entry.Team.Name;
+                    retEntry.FacebookID = entry.Team.Player.FacebookID;
+                    retEntry.PredefinedTeamName = entry.Team.PredefinedTeam.Name;
+                    retEntry.Points = entry.Points;
+                    retEntry.NumMatchesPlayed = entry.NumMatchesPlayed;
+                    retEntry.NumMatchesWon = entry.NumMatchesWon;
+                    retEntry.NumMatchesDraw = entry.NumMatchesDraw;
 
-                    ret.DivisionName = theGroup.CompetitionDivision.DivisionName;
-                    ret.GroupName = theGroup.GroupName;
-                    ret.MinimumPoints = theGroup.CompetitionDivision.MinimumPoints;
-
-                    foreach (var entry in theGroup.CompetitionGroupEntries)
-                    {
-                        TransferModel.CompetitionGroupEntry retEntry = new TransferModel.CompetitionGroupEntry();
-
-                        retEntry.Name = entry.Team.Name;
-                        retEntry.FacebookID = entry.Team.Player.FacebookID;
-                        retEntry.PredefinedTeamName = entry.Team.PredefinedTeam.Name;
-                        retEntry.Points = entry.Points;
-                        retEntry.NumMatchesPlayed = entry.NumMatchesPlayed;
-                        retEntry.NumMatchesWon = entry.NumMatchesWon;
-                        retEntry.NumMatchesDraw = entry.NumMatchesDraw;
-
-                        ret.GroupEntries.Add(retEntry);
-                    }
+                    ret.GroupEntries.Add(retEntry);
                 }
             }
-            catch (Exception e)
-            {
-                Log.log(MAINSERVICE, "RefreshGroupForTeam exception: " + e.ToString());
-            }
-
+            
             return ret;
         }
 

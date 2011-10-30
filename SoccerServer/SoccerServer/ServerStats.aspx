@@ -63,12 +63,14 @@
         
         <asp:HyperLink ID="HyperLink1" runat="server" Text="Matches" NavigateUrl="~/ServerStatsGlobalMatches.aspx" /><br /><br />
         <asp:HyperLink ID="HyperLink3" runat="server" Text="Purchases" NavigateUrl="~/ServerStatsPurchases.aspx" /><br /><br />
-        <asp:HyperLink ID="HyperLink2" runat="server" Text="Ranking" NavigateUrl="~/ServerStatsRanking.aspx" /><br /><br />
+        <asp:HyperLink ID="HyperLink2" runat="server" Text="Hall of Fame" NavigateUrl="~/ServerStatsRanking.aspx" /><br /><br />
 
-        <asp:Button runat="server" Text="Erase Orphan Matches" OnClick="EraseOrphanMatches_Click" />   
+        <asp:Button runat="server" Text="Mistical Refresh" OnClick="MisticalRefresh_Click" /><br />
+        <asp:Button runat="server" Text="Erase Orphan Matches" OnClick="EraseOrphanMatches_Click" /><br />
 
-        <asp:Button runat="server" Text="Mistical Refresh" OnClick="MisticalRefresh_Click" />        
-        <asp:Button runat="server" Text="Mistical Refresh 02" OnClick="MisticalRefresh02_Click" />
+        <asp:Button runat="server" Text="Reset Season" OnClick="ResetSeasons_Click" />        
+        <asp:Button runat="server" Text="New Season" OnClick="NewSeason_Click" /><br />
+        <asp:Button runat="server" Text="ResetAllTickets" OnClick="ResetAllTickets_Click" /><br /><br />
 
         <div class="borderedBox">
             <asp:Literal runat="server" id="MyLogConsole"/>
