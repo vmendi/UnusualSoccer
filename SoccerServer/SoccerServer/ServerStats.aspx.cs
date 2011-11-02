@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Linq;
-
-using Weborb.Messaging;
-using Weborb.Messaging.Server;
-using Weborb.Messaging.Api;
 using SoccerServer.NetEngine;
 using SoccerServer.BDDModel;
-using System.Collections.Generic;
-using System.Data.Linq;
 using System.Data.SqlClient;
 
 using Microsoft.Samples.EntityDataReader;
@@ -178,7 +172,7 @@ namespace SoccerServer
 
         protected void ResetSeasons_Click(object sender, EventArgs e)
         {
-            MainService.ResetSeasons(false);
+            MainService.ResetSeasons(true);
         }
 
         protected void NewSeason_Click(object sender, EventArgs e)
@@ -231,9 +225,7 @@ namespace SoccerServer
                                         ReceivedGoals = 0
                                     };
 
-                    SqlBulkCopy bc = new SqlBulkCopy(con, SqlBulkCopyOptions.CheckConstraints |
-                                                          SqlBulkCopyOptions.FireTriggers |
-                                                          SqlBulkCopyOptions.KeepNulls, tran);
+                    SqlBulkCopy bc = new SqlBulkCopy(con, SqlBulkCopyOptions.Default, tran);
 
                     bc.DestinationTableName = "TeamStats";
                     bc.WriteToServer(teamStats.AsDataReader());
