@@ -7,6 +7,8 @@ using System.Data.SqlClient;
 
 using Microsoft.Samples.EntityDataReader;
 using System.Reflection;
+using System.Diagnostics;
+using Weborb.Util.Logging;
 
 namespace SoccerServer
 {
@@ -116,6 +118,9 @@ namespace SoccerServer
 
         internal static void SeasonEnd()
         {
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
             using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
             {
                 con.Open();
@@ -165,7 +170,11 @@ namespace SoccerServer
                                                    where entry.Points < currentDivision.MinimumPoints
                                                    select entry.Team.TeamID);
 
+                        // Numero de grupos en ESTA division, los que vamos a crear
                         int numGroups = (int)(((float)currDivisionTeams.Count() / (float)COMPETITION_GROUP_PREFERRED_ENTRIES) + 1.0);
+
+                        // Los creamos para a continuacion hacer una insercion Bulk. Haremos tantas inserciones bulk como divisiones
+                        List<CompetitionGroup> groups = new List<CompetitionGroup>(numGroups);
 
                         for (int c = 0; c < numGroups; ++c)
                         {
@@ -173,18 +182,30 @@ namespace SoccerServer
                             newGroup.CompetitionDivisionID = currentDivision.CompetitionDivisionID;
                             newGroup.CompetitionSeasonID = newSeason.CompetitionSeasonID;
                             newGroup.GroupName = (c + 1).ToString();
-                            newGroup.CreationDate = DateTime.Now;       // No tiene por qué coincidir con creacion de la Season
+                            newGroup.CreationDate = DateTime.Now;       // No tiene por qué coincidir con la creacion de la Season
+                            groups.Add(newGroup);
+                        }
 
-                            theContext.CompetitionGroups.InsertOnSubmit(newGroup);
-                            theContext.SubmitChanges();                 // Tenemos ya el ID aqui... sigh
+                        InsertBulkCopyCompetitionGroups(groups, con, tran);
 
+                        // Traemos los grupos que acabamos de crear de vuelta, para obtener su ID
+                        List<int> groupIDs = (from s in theContext.CompetitionGroups
+                                              where s.CompetitionDivisionID == currentDivision.CompetitionDivisionID &&
+                                                    s.CompetitionSeasonID == newSeason.CompetitionSeasonID
+                                              select s.CompetitionGroupID).ToList();
+
+                        if (groupIDs.Count() != numGroups)
+                            throw new Exception("WTF 666-3141592 " + groupIDs.Count() + " " + numGroups);
+
+                        for (int c = 0; c < numGroups; ++c)
+                        {
                             for (var d = c * COMPETITION_GROUP_PREFERRED_ENTRIES; d < (c+1) * COMPETITION_GROUP_PREFERRED_ENTRIES; ++d)
                             {
                                 if (d >= currDivisionTeams.Count())
                                     break;
 
                                 entries.Add(new CompetitionGroupEntry {
-                                                                         CompetitionGroupID = newGroup.CompetitionGroupID,
+                                                                         CompetitionGroupID = groupIDs[c],
                                                                          TeamID = currDivisionTeams[d],
                                                                          NumMatchesPlayed = 0,
                                                                          NumMatchesWon = 0,
@@ -198,11 +219,16 @@ namespace SoccerServer
                         currentDivision = currentDivision.CompetitionDivision1;
                     }
 
+                    // Nuestra insercion bulk para todas las entries
                     InsertBulkCopyCompetitionGroupEntries(entries, con, tran);
                     tran.Commit();
                 }
                 con.Close();
             }
+
+            stopWatch.Stop();
+
+            Log.log(MAINSERVICE, "MainServiceCompetition.SeasonEnd: Elapsed miliseconds " + stopWatch.Elapsed.Milliseconds.ToString());
         }
 
         private static void InsertBulkCopyCompetitionGroupEntries(IEnumerable<CompetitionGroupEntry> entries, SqlConnection con, SqlTransaction tran)
@@ -221,6 +247,19 @@ namespace SoccerServer
             }
         }
 
+        private static void InsertBulkCopyCompetitionGroups(IEnumerable<CompetitionGroup> groups, SqlConnection con, SqlTransaction tran)
+        {
+            using (SqlBulkCopy bc = new SqlBulkCopy(con, SqlBulkCopyOptions.CheckConstraints, tran))
+            {
+                bc.ColumnMappings.Add("CompetitionDivisionID", "CompetitionDivisionID");
+                bc.ColumnMappings.Add("CompetitionSeasonID", "CompetitionSeasonID");
+                bc.ColumnMappings.Add("GroupName", "GroupName");
+                bc.ColumnMappings.Add("CreationDate", "CreationDate");
+
+                bc.DestinationTableName = "CompetitionGroups";
+                bc.WriteToServer(groups.AsDataReader());
+            }
+        }
 
         // La unica no finalizada. Tiene que haber 1 y solo 1. Si hubiera mas de una, violacion de invariante, exception aqui
         internal static CompetitionSeason GetCurrentSeason(SoccerDataModelDataContext theContext)
