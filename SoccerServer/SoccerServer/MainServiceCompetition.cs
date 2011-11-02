@@ -96,9 +96,9 @@ namespace SoccerServer
 
                     if (addCurrentTeams)
                     {
-                        var entriesToAdd = theContext.Teams.ToList().Select((val, index) => new             // :)
+                        var entriesToAdd = theContext.Teams.ToList().Select((val, index) => new CompetitionGroupEntry               // :)
                         {
-                            CompetitionGroupID = newGroups[index % newGroups.Count].CompetitionGroupID,     // :D
+                            CompetitionGroupID = newGroups[index % newGroups.Count].CompetitionGroupID,                             // :D
                             TeamID = val.TeamID,
                             NumMatchesPlayed = 0,
                             NumMatchesWon = 0,
@@ -106,19 +106,7 @@ namespace SoccerServer
                             Points = 0
                         });
 
-                        using (SqlBulkCopy bc = new SqlBulkCopy(con, SqlBulkCopyOptions.CheckConstraints, tran))
-                        {
-                            // Si no añades mappings, lo intenta por indice
-                            bc.ColumnMappings.Add("CompetitionGroupID", "CompetitionGroupID");
-                            bc.ColumnMappings.Add("TeamID", "TeamID");
-                            bc.ColumnMappings.Add("NumMatchesPlayed", "NumMatchesPlayed");
-                            bc.ColumnMappings.Add("NumMatchesWon", "NumMatchesWon");
-                            bc.ColumnMappings.Add("NumMatchesDraw", "NumMatchesDraw");
-                            bc.ColumnMappings.Add("Points", "Points");
-                                                                          
-                            bc.DestinationTableName = "CompetitionGroupEntries";
-                            bc.WriteToServer(entriesToAdd.AsDataReader());
-                        }
+                        InsertBulkCopyCompetitionGroupEntries(entriesToAdd, con, tran);
                     }
                     tran.Commit();
                 }
@@ -188,7 +176,7 @@ namespace SoccerServer
                             newGroup.CreationDate = DateTime.Now;       // No tiene por qué coincidir con creacion de la Season
 
                             theContext.CompetitionGroups.InsertOnSubmit(newGroup);
-                            theContext.SubmitChanges();     // Tenemos ya el ID aqui... sigh
+                            theContext.SubmitChanges();                 // Tenemos ya el ID aqui... sigh
 
                             for (var d = c * COMPETITION_GROUP_PREFERRED_ENTRIES; d < (c+1) * COMPETITION_GROUP_PREFERRED_ENTRIES; ++d)
                             {
@@ -210,25 +198,29 @@ namespace SoccerServer
                         currentDivision = currentDivision.CompetitionDivision1;
                     }
 
-                    using (SqlBulkCopy bc = new SqlBulkCopy(con, SqlBulkCopyOptions.CheckConstraints, tran))
-                    {
-                        bc.ColumnMappings.Add("CompetitionGroupID", "CompetitionGroupID");
-                        bc.ColumnMappings.Add("TeamID", "TeamID");
-                        bc.ColumnMappings.Add("NumMatchesPlayed", "NumMatchesPlayed");
-                        bc.ColumnMappings.Add("NumMatchesWon", "NumMatchesWon");
-                        bc.ColumnMappings.Add("NumMatchesDraw", "NumMatchesDraw");
-                        bc.ColumnMappings.Add("Points", "Points");
-
-                        bc.DestinationTableName = "CompetitionGroupEntries";
-                        bc.WriteToServer(entries.AsDataReader());
-                    }
+                    InsertBulkCopyCompetitionGroupEntries(entries, con, tran);
                     tran.Commit();
                 }
                 con.Close();
             }
         }
 
-        //internal private void InsertBulkCopyCompetitionGroupEntries()
+        private static void InsertBulkCopyCompetitionGroupEntries(IEnumerable<CompetitionGroupEntry> entries, SqlConnection con, SqlTransaction tran)
+        {
+            using (SqlBulkCopy bc = new SqlBulkCopy(con, SqlBulkCopyOptions.CheckConstraints, tran))
+            {
+                bc.ColumnMappings.Add("CompetitionGroupID", "CompetitionGroupID");
+                bc.ColumnMappings.Add("TeamID", "TeamID");
+                bc.ColumnMappings.Add("NumMatchesPlayed", "NumMatchesPlayed");
+                bc.ColumnMappings.Add("NumMatchesWon", "NumMatchesWon");
+                bc.ColumnMappings.Add("NumMatchesDraw", "NumMatchesDraw");
+                bc.ColumnMappings.Add("Points", "Points");
+
+                bc.DestinationTableName = "CompetitionGroupEntries";
+                bc.WriteToServer(entries.AsDataReader());
+            }
+        }
+
 
         // La unica no finalizada. Tiene que haber 1 y solo 1. Si hubiera mas de una, violacion de invariante, exception aqui
         internal static CompetitionSeason GetCurrentSeason(SoccerDataModelDataContext theContext)
@@ -317,7 +309,7 @@ namespace SoccerServer
             return theContext.CompetitionDivisions.Single(division => division.CompetitionDivisions.Count() == 0);
         }
 
-        static private int COMPETITION_GROUP_PREFERRED_ENTRIES = 50;
+        static private int COMPETITION_GROUP_PREFERRED_ENTRIES = 100;
         static private TimeSpan SEASON_DURATION = new TimeSpan(2, 0, 0, 0);
     }
 }
