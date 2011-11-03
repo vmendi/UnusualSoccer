@@ -172,7 +172,7 @@ namespace SoccerServer
 
         protected void ResetSeasons_Click(object sender, EventArgs e)
         {
-            MainService.ResetSeasons(true);
+            MainService.ResetSeasons(false);
         }
 
         protected void NewSeason_Click(object sender, EventArgs e)

@@ -1032,9 +1032,9 @@ namespace SoccerServer.BDDModel
 		
 		private int _CompetitionDivisionID;
 		
-		private string _GroupName;
-		
 		private int _CompetitionSeasonID;
+		
+		private string _GroupName;
 		
 		private System.DateTime _CreationDate;
 		
@@ -1052,10 +1052,10 @@ namespace SoccerServer.BDDModel
     partial void OnCompetitionGroupIDChanged();
     partial void OnCompetitionDivisionIDChanging(int value);
     partial void OnCompetitionDivisionIDChanged();
-    partial void OnGroupNameChanging(string value);
-    partial void OnGroupNameChanged();
     partial void OnCompetitionSeasonIDChanging(int value);
     partial void OnCompetitionSeasonIDChanged();
+    partial void OnGroupNameChanging(string value);
+    partial void OnGroupNameChanged();
     partial void OnCreationDateChanging(System.DateTime value);
     partial void OnCreationDateChanged();
     #endregion
@@ -1112,26 +1112,6 @@ namespace SoccerServer.BDDModel
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string GroupName
-		{
-			get
-			{
-				return this._GroupName;
-			}
-			set
-			{
-				if ((this._GroupName != value))
-				{
-					this.OnGroupNameChanging(value);
-					this.SendPropertyChanging();
-					this._GroupName = value;
-					this.SendPropertyChanged("GroupName");
-					this.OnGroupNameChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompetitionSeasonID", DbType="Int NOT NULL")]
 		public int CompetitionSeasonID
 		{
@@ -1152,6 +1132,26 @@ namespace SoccerServer.BDDModel
 					this._CompetitionSeasonID = value;
 					this.SendPropertyChanged("CompetitionSeasonID");
 					this.OnCompetitionSeasonIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string GroupName
+		{
+			get
+			{
+				return this._GroupName;
+			}
+			set
+			{
+				if ((this._GroupName != value))
+				{
+					this.OnGroupNameChanging(value);
+					this.SendPropertyChanging();
+					this._GroupName = value;
+					this.SendPropertyChanged("GroupName");
+					this.OnGroupNameChanged();
 				}
 			}
 		}
@@ -2422,11 +2422,11 @@ namespace SoccerServer.BDDModel
 		
 		private int _PlayerID;
 		
+		private long _FacebookID;
+		
 		private string _Name;
 		
 		private string _Surname;
-		
-		private long _FacebookID;
 		
 		private System.DateTime _CreationDate;
 		
@@ -2442,12 +2442,12 @@ namespace SoccerServer.BDDModel
     partial void OnCreated();
     partial void OnPlayerIDChanging(int value);
     partial void OnPlayerIDChanged();
+    partial void OnFacebookIDChanging(long value);
+    partial void OnFacebookIDChanged();
     partial void OnNameChanging(string value);
     partial void OnNameChanged();
     partial void OnSurnameChanging(string value);
     partial void OnSurnameChanged();
-    partial void OnFacebookIDChanging(long value);
-    partial void OnFacebookIDChanged();
     partial void OnCreationDateChanging(System.DateTime value);
     partial void OnCreationDateChanged();
     partial void OnLikedChanging(bool value);
@@ -2477,6 +2477,26 @@ namespace SoccerServer.BDDModel
 					this._PlayerID = value;
 					this.SendPropertyChanged("PlayerID");
 					this.OnPlayerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FacebookID", DbType="BigInt NOT NULL")]
+		public long FacebookID
+		{
+			get
+			{
+				return this._FacebookID;
+			}
+			set
+			{
+				if ((this._FacebookID != value))
+				{
+					this.OnFacebookIDChanging(value);
+					this.SendPropertyChanging();
+					this._FacebookID = value;
+					this.SendPropertyChanged("FacebookID");
+					this.OnFacebookIDChanged();
 				}
 			}
 		}
@@ -2517,26 +2537,6 @@ namespace SoccerServer.BDDModel
 					this._Surname = value;
 					this.SendPropertyChanged("Surname");
 					this.OnSurnameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FacebookID", DbType="BigInt NOT NULL")]
-		public long FacebookID
-		{
-			get
-			{
-				return this._FacebookID;
-			}
-			set
-			{
-				if ((this._FacebookID != value))
-				{
-					this.OnFacebookIDChanging(value);
-					this.SendPropertyChanging();
-					this._FacebookID = value;
-					this.SendPropertyChanged("FacebookID");
-					this.OnFacebookIDChanged();
 				}
 			}
 		}
@@ -3253,13 +3253,11 @@ namespace SoccerServer.BDDModel
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _SessionID;
+		private string _FacebookSession;
 		
 		private int _PlayerID;
 		
 		private System.DateTime _CreationDate;
-		
-		private string _FacebookSession;
 		
 		private EntityRef<Player> _Player;
 		
@@ -3267,14 +3265,12 @@ namespace SoccerServer.BDDModel
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnSessionIDChanging(int value);
-    partial void OnSessionIDChanged();
+    partial void OnFacebookSessionChanging(string value);
+    partial void OnFacebookSessionChanged();
     partial void OnPlayerIDChanging(int value);
     partial void OnPlayerIDChanged();
     partial void OnCreationDateChanging(System.DateTime value);
     partial void OnCreationDateChanged();
-    partial void OnFacebookSessionChanging(string value);
-    partial void OnFacebookSessionChanged();
     #endregion
 		
 		public Session()
@@ -3283,22 +3279,22 @@ namespace SoccerServer.BDDModel
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SessionID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int SessionID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FacebookSession", DbType="VarChar(256) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string FacebookSession
 		{
 			get
 			{
-				return this._SessionID;
+				return this._FacebookSession;
 			}
 			set
 			{
-				if ((this._SessionID != value))
+				if ((this._FacebookSession != value))
 				{
-					this.OnSessionIDChanging(value);
+					this.OnFacebookSessionChanging(value);
 					this.SendPropertyChanging();
-					this._SessionID = value;
-					this.SendPropertyChanged("SessionID");
-					this.OnSessionIDChanged();
+					this._FacebookSession = value;
+					this.SendPropertyChanged("FacebookSession");
+					this.OnFacebookSessionChanged();
 				}
 			}
 		}
@@ -3343,26 +3339,6 @@ namespace SoccerServer.BDDModel
 					this._CreationDate = value;
 					this.SendPropertyChanged("CreationDate");
 					this.OnCreationDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FacebookSession", DbType="VarChar(256) NOT NULL", CanBeNull=false)]
-		public string FacebookSession
-		{
-			get
-			{
-				return this._FacebookSession;
-			}
-			set
-			{
-				if ((this._FacebookSession != value))
-				{
-					this.OnFacebookSessionChanging(value);
-					this.SendPropertyChanging();
-					this._FacebookSession = value;
-					this.SendPropertyChanged("FacebookSession");
-					this.OnFacebookSessionChanged();
 				}
 			}
 		}

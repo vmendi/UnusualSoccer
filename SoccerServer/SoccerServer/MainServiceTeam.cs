@@ -17,7 +17,6 @@ namespace SoccerServer
         [WebORBCache(CacheScope = CacheScope.Global)]
 		public List<TransferModel.PredefinedTeam> RefreshPredefinedTeams()
 		{
-            // TODO: No hace falta pedir un monton de cosas dentro de CreateDateForRequest
             using (CreateDataForRequest())
             {
                 List<TransferModel.PredefinedTeam> ret = new List<TransferModel.PredefinedTeam>();
@@ -64,7 +63,7 @@ namespace SoccerServer
                     GenerateSpecialTrainings(theNewTeam);
 
                     // Lo añadimos al mejor grupo posible (el de menos players, por ejemplo), desde la division mas baja
-                    AddTeamToLowestMostAdequateGroup(mContext, theNewTeam);
+                    AddTeamToMostAdequateGroup(mContext, GetLowestDivision(mContext), theNewTeam);
 
                     mContext.SubmitChanges();
                 }
@@ -93,7 +92,7 @@ namespace SoccerServer
 
         private void GenerateTeamStats(Team team)
         {
-            mContext.TeamStats.InsertOnSubmit(new TeamStat());
+            mContext.TeamStats.InsertOnSubmit(new TeamStat { Team = team });
         }
 
 		private void GenerateSpecialTrainings(Team team)

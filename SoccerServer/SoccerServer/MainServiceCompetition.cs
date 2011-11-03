@@ -6,9 +6,9 @@ using Weborb.Service;
 using System.Data.SqlClient;
 
 using Microsoft.Samples.EntityDataReader;
-using System.Reflection;
 using System.Diagnostics;
 using Weborb.Util.Logging;
+using System.Data.Linq;
 
 namespace SoccerServer
 {
@@ -24,41 +24,60 @@ namespace SoccerServer
             // Nos ahorramos pedir mSession y mPlayer, esto es una query universal
             using (mContext = new SoccerDataModelDataContext())
             {
+                // Cada vez que traigas una GroupEntry a memoria, traete tambien el equipo y el player. 
+                // Pasamos de 3 queries por groupentry (si hay 100 entries => 300 queries) a 1 sola para todo (+ la traida de los PredefinedTeamName)
+                DataLoadOptions options = new DataLoadOptions();
+                options.LoadWith<Team>(t => t.Player);
+                options.LoadWith<CompetitionGroupEntry>(entry => entry.Team);
+                mContext.LoadOptions = options;
+
                 BDDModel.Team theTeam = (from t in mContext.Teams
                                          where t.Player.FacebookID == facebookID
                                          select t).First();
+                
+                var currentSeason = GetCurrentSeason(mContext);
 
-                // Ultimo grupo (por fecha) en el que ha participado
-                CompetitionGroupEntry theGroupEntry = theTeam.CompetitionGroupEntries.OrderBy(entry => entry.CompetitionGroup.CreationDate).Last();
+                // GroupEntry de la temporada actual
+                CompetitionGroupEntry theGroupEntry = (from e in mContext.CompetitionGroupEntries
+                                                       where e.TeamID == theTeam.TeamID &&
+                                                             e.CompetitionGroup.CompetitionSeasonID == currentSeason.CompetitionSeasonID
+                                                       select e).FirstOrDefault();
+
+                // Lo habiamos descartado en el SeasonEnd por inactividad?
+                if (theGroupEntry == null)
+                {
+                    // Veamos en que division se quedo la ultima vez que jugo
+                    var lastDivision = (from e in theTeam.CompetitionGroupEntries
+                                        orderby e.CompetitionGroup.CreationDate ascending
+                                        select e.CompetitionGroup.CompetitionDivision).Last();
+
+                    theGroupEntry = AddTeamToMostAdequateGroup(mContext, lastDivision, theTeam);
+                    mContext.SubmitChanges();
+                }
+
                 CompetitionGroup theGroup = theGroupEntry.CompetitionGroup;
 
                 ret.DivisionName = theGroup.CompetitionDivision.DivisionName;
                 ret.GroupName = theGroup.GroupName;
                 ret.MinimumPoints = theGroup.CompetitionDivision.MinimumPoints;
 
-                foreach (var entry in theGroup.CompetitionGroupEntries)
-                {
-                    TransferModel.CompetitionGroupEntry retEntry = new TransferModel.CompetitionGroupEntry();
-
-                    retEntry.Name = entry.Team.Name;
-                    retEntry.FacebookID = entry.Team.Player.FacebookID;
-                    retEntry.PredefinedTeamName = entry.Team.PredefinedTeam.Name;
-                    retEntry.Points = entry.Points;
-                    retEntry.NumMatchesPlayed = entry.NumMatchesPlayed;
-                    retEntry.NumMatchesWon = entry.NumMatchesWon;
-                    retEntry.NumMatchesDraw = entry.NumMatchesDraw;
-
-                    ret.GroupEntries.Add(retEntry);
-                }
+                ret.GroupEntries = (from e in theGroup.CompetitionGroupEntries
+                                    select new TransferModel.CompetitionGroupEntry
+                                    {
+                                        Name = e.Team.Name,
+                                        FacebookID = e.Team.Player.FacebookID,
+                                        PredefinedTeamName = e.Team.PredefinedTeam.Name,
+                                        Points = e.Points,
+                                        NumMatchesPlayed = e.NumMatchesPlayed,
+                                        NumMatchesWon = e.NumMatchesWon,
+                                        NumMatchesDraw = e.NumMatchesDraw
+                                    }).ToList();
             }
 
             return ret;
         }
 
-        private const int SEASON_DURATION_DAYS = 3;     // Las competiciones duran 3 dias
-        private const int SEASON_HOUR_STARTTIME = 3;    // A las 3 de la mañana
-
-        [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 10000)]
+        [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 60000)]
         public DateTime RefreshSeasonEndDate()
         {
             var context = new SoccerDataModelDataContext();
@@ -139,7 +158,7 @@ namespace SoccerServer
                     var newSeason = CreateNewSeason(theContext);
                     newSeason.CreationDate = now;
 
-                    // Submitimos la nueva season la primera dentro de la transaccion
+                    // Submitimos la nueva season _dentro_ de la transaccion. Con esto, tenemos su ID
                     theContext.SubmitChanges();
 
                     List<int> parentDivisionTeams = new List<int>();
@@ -154,7 +173,8 @@ namespace SoccerServer
                         // Todas las entries de esta division, temporada pasada
                         var groupEntries = (from e in theContext.CompetitionGroupEntries
                                             where e.CompetitionGroup.CompetitionSeasonID == oldSeason.CompetitionSeasonID &&
-                                                  e.CompetitionGroup.CompetitionDivisionID == currentDivision.CompetitionDivisionID
+                                                  e.CompetitionGroup.CompetitionDivisionID == currentDivision.CompetitionDivisionID &&
+                                                  e.NumMatchesPlayed > 0    // Quitamos los inactivos!
                                             select e);
 
                         // Nos quedamos con los ascendidos de la division hija
@@ -171,7 +191,7 @@ namespace SoccerServer
                                                    select entry.Team.TeamID);
 
                         // Numero de grupos en ESTA division, los que vamos a crear
-                        int numGroups = (int)(((float)currDivisionTeams.Count() / (float)COMPETITION_GROUP_PREFERRED_ENTRIES) + 1.0);
+                        int numGroups = (int)(((float)currDivisionTeams.Count() / (float)COMPETITION_GROUP_ENTRIES) + 1.0);
 
                         // Los creamos para a continuacion hacer una insercion Bulk. Haremos tantas inserciones bulk como divisiones
                         List<CompetitionGroup> groups = new List<CompetitionGroup>(numGroups);
@@ -199,7 +219,7 @@ namespace SoccerServer
 
                         for (int c = 0; c < numGroups; ++c)
                         {
-                            for (var d = c * COMPETITION_GROUP_PREFERRED_ENTRIES; d < (c+1) * COMPETITION_GROUP_PREFERRED_ENTRIES; ++d)
+                            for (var d = c * COMPETITION_GROUP_ENTRIES; d < (c+1) * COMPETITION_GROUP_ENTRIES; ++d)
                             {
                                 if (d >= currDivisionTeams.Count())
                                     break;
@@ -290,19 +310,11 @@ namespace SoccerServer
             return newGroup;
         }
 
-        internal static void AddTeamToLowestMostAdequateGroup(SoccerDataModelDataContext theContext, BDDModel.Team theTeam)
+        internal static CompetitionGroupEntry AddTeamToMostAdequateGroup(SoccerDataModelDataContext theContext, CompetitionDivision theDivision, Team theTeam)
         {
-            if (theTeam.CompetitionGroupEntries.Count != 0)
-                throw new Exception("WTF!");
+            int theMostAdequateGroupID = GetMostAdequateGroupID(theContext, theDivision);
 
-            int theMostAdequateGroupID = GetMostAdequateGroupID(theContext);
-
-            /*
-               Nuevo approach: Nunca consideramos lleno, crecemos y crecemos, ya se reequilibra al acabar la temporada
-            if (theMostAdequateGroup == null)
-                theMostAdequateGroup = CreateGroupCurrentSeason(theContext, GetLowestDivision(theContext));
-            */
-
+            // Nuevo approach: Nunca consideramos lleno, crecemos y crecemos, ya se reequilibra al acabar la temporada
             if (theMostAdequateGroupID == -1)
                 throw new Exception("WTF");
 
@@ -312,33 +324,33 @@ namespace SoccerServer
             newGroupEntry.Team = theTeam;
 
             theContext.CompetitionGroupEntries.InsertOnSubmit(newGroupEntry);
+
+            return newGroupEntry;
         }
 
-        private static int GetMostAdequateGroupID(SoccerDataModelDataContext theContext)
+        private static int GetMostAdequateGroupID(SoccerDataModelDataContext theContext, CompetitionDivision theDivision)
         {
             var currentSeasonID = GetCurrentSeason(theContext).CompetitionSeasonID;
-            var lowestDivisionID = GetLowestDivision(theContext).CompetitionDivisionID;
+            var divisionID = theDivision.CompetitionDivisionID;
 
             var daPack = (from g in theContext.CompetitionGroups
                           where g.CompetitionSeasonID == currentSeasonID &&
-                          g.CompetitionDivisionID == lowestDivisionID
-                          select new { g.CompetitionGroupID, g.CompetitionGroupEntries.Count });
-
-            var daPackArray = daPack.ToArray();
+                                g.CompetitionDivisionID == divisionID
+                          select new { g.CompetitionGroupID, g.CompetitionGroupEntries.Count }).ToArray();
 
             int minID = -1;
             int minCount = int.MaxValue;
 
             // Cogemos el de menos jugadores
-            for (int c = 0; c < daPackArray.Count(); ++c)
+            for (int c = 0; c < daPack.Count(); ++c)
             {
-                if (daPackArray[c].Count < minCount)
+                if (daPack[c].Count < minCount)
                 {
-                    minID = daPackArray[c].CompetitionGroupID;
-                    minCount = daPackArray[c].Count;
+                    minID = daPack[c].CompetitionGroupID;
+                    minCount = daPack[c].Count;
                 }
             }
-
+                        
             return minID;
         }
 
@@ -348,7 +360,8 @@ namespace SoccerServer
             return theContext.CompetitionDivisions.Single(division => division.CompetitionDivisions.Count() == 0);
         }
 
-        static private int COMPETITION_GROUP_PREFERRED_ENTRIES = 100;
-        static private TimeSpan SEASON_DURATION = new TimeSpan(2, 0, 0, 0);
+        static private int COMPETITION_GROUP_ENTRIES = 100;             // 100 entradas en cada grupo
+        static private int SEASON_DURATION_DAYS = 3;                    // Las competiciones duran 3 dias
+        static private int SEASON_HOUR_STARTTIME = 3;                   // A las 3 de la mañana
     }
 }
