@@ -11,10 +11,7 @@ namespace SoccerServer
     {
         public object DataSource
         {
-            get
-            {
-                return MyMatchGridView.DataSource;
-            }
+            get { return MyMatchGridView.DataSource; }
             set
             {
                 MyMatchGridView.DataSource = value;
@@ -44,18 +41,23 @@ namespace SoccerServer
 
         public string GetPlayerNameOfMatch(SoccerServer.BDDModel.Match theMatch, int thePlayerIdx)
         {
-            return theMatch.MatchParticipations[thePlayerIdx].Team.Name;
+            if (theMatch.MatchParticipations[thePlayerIdx].Team != null)
+                return theMatch.MatchParticipations[thePlayerIdx].Team.Name;
+            else
+                return "DELETED";
         }
 
         public string GetProfileLinkOfMatch(SoccerServer.BDDModel.Match theMatch, int thePlayerIdx)
         {
-            return "ServerStatsProfile.aspx?TeamID=" + theMatch.MatchParticipations[thePlayerIdx].Team.TeamID;
+            if (theMatch.MatchParticipations[thePlayerIdx].Team != null)
+                return "ServerStatsProfile.aspx?TeamID=" + theMatch.MatchParticipations[thePlayerIdx].Team.TeamID;
+            else
+                return "ServerStatsProfile.aspx";
         }
 
         public string GetGoalsOfMatch(SoccerServer.BDDModel.Match theMatch, int thePlayerIdx)
         {
             return theMatch.MatchParticipations[thePlayerIdx].Goals.ToString();
         }
-
     }
 }

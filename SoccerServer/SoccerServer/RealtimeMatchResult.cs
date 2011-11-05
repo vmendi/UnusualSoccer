@@ -53,12 +53,16 @@ namespace SoccerServer
                 ResultPlayer2.Goals = mMatch.GetGoals(mRealtimePlayer2);
 
                 UpdateFlags();
+                UpdateAbandon();
 
                 if (!WasAbandonedSameIP && !WasTooManyTimes && WasJust)
                 {
                     RecomputeRatings(); // Recalculo del TrueSkill
                     GiveRewards();      // XP, SkillPoints, etc
                 }
+
+                // Las estadisticas las actualizamos siempre, independientemente de si el partido es valido o no
+                UpdateTeamStats();
 
                 // Actualizacion del BDDMatch...
                 mBDDMatch.DateEnded = DateTime.Now;
@@ -70,15 +74,15 @@ namespace SoccerServer
                 // ... y de las MatchParticipations de la BDD
                 mParticipation1 = (from p in mContext.MatchParticipations
                                    where p.MatchID == mBDDMatch.MatchID && p.TeamID == mBDDPlayer1.Team.TeamID
-                          select p).First();
+                                   select p).First();
                 mParticipation1.Goals = ResultPlayer1.Goals;
 
                 mParticipation2 = (from p in mContext.MatchParticipations
                                    where p.MatchID == mBDDMatch.MatchID && p.TeamID == mBDDPlayer2.Team.TeamID
-                          select p).First();
+                                   select p).First();
                 mParticipation2.Goals = ResultPlayer2.Goals;
 
-                // Competicion. Si abandonan en la misma IP, no cuenta para la competicion
+                // Competicion. Solo si abandonan en la misma IP no cuenta
                 if (!mBDDMatch.IsFriendly && !WasAbandonedSameIP)
                     ProcessCompetition();
                 
@@ -131,8 +135,8 @@ namespace SoccerServer
             var competitionMatchParticipation1 = new CompetitionMatchParticipation();
             var competitionMatchParticipation2 = new CompetitionMatchParticipation();
 
-            competitionMatchParticipation1.CompetitionGroupID = entryPlayer1.CompetitionGroupID;
-            competitionMatchParticipation2.CompetitionGroupID = entryPlayer2.CompetitionGroupID;
+            competitionMatchParticipation1.CompetitionGroupEntryID = entryPlayer1.CompetitionGroupEntryID;
+            competitionMatchParticipation2.CompetitionGroupEntryID = entryPlayer2.CompetitionGroupEntryID;
 
             competitionMatchParticipation1.MatchParticipationID = mParticipation1.MatchParticipationID;
             competitionMatchParticipation2.MatchParticipationID = mParticipation2.MatchParticipationID;
@@ -200,6 +204,31 @@ namespace SoccerServer
             ResultPlayer2.DiffTrueSkill = mBDDPlayer2.Team.TrueSkill - oldTrueSkillPlayer2;
         }
 
+        private void UpdateTeamStats()
+        {
+            var teamStats1 = mBDDPlayer1.Team.TeamStat;
+            var teamStats2 = mBDDPlayer2.Team.TeamStat;
+            
+            teamStats1.NumPlayedMatches++;
+            teamStats2.Team.TeamStat.NumPlayedMatches++;
+
+            if (WonPlayer1)
+                teamStats1.NumMatchesWon++;
+            else if (WonPlayer2)
+                teamStats2.NumMatchesWon++;
+            else
+            {
+                teamStats1.NumMatchesDraw++;
+                teamStats2.NumMatchesDraw++;
+            }
+
+            teamStats1.ScoredGoals += ResultPlayer1.Goals;
+            teamStats1.ReceivedGoals += ResultPlayer2.Goals;
+
+            teamStats2.ScoredGoals += ResultPlayer2.Goals;
+            teamStats2.ReceivedGoals += ResultPlayer1.Goals;
+        }
+
         private void UpdateFlags()
         {
             // Partido de competicion o amistoso?
@@ -218,36 +247,39 @@ namespace SoccerServer
             }
             else
             {
+                // Los partidos de competicion, nunca son muchos y siempre son justos. El filtro tiene que estar en el MatchMaking
                 WasTooManyTimes = false;
                 WasJust = true;
             }
+        }
 
-            // Veamos ahora todo lo relacionado con el abandono (independientemente de competicion o amistoso)
-            if (mMatch.HasPlayerAbandoned(mRealtimePlayer1) || mMatch.HasPlayerAbandoned(mRealtimePlayer2))
+        // Todo lo relacionado con el abandono (independientemente de competicion o amistoso)
+        private void UpdateAbandon()
+        {
+            if (!mMatch.HasPlayerAbandoned(mRealtimePlayer1) && !mMatch.HasPlayerAbandoned(mRealtimePlayer2))
+                return;
+            
+            WasAbandoned = true;
+
+            if (mRealtimePlayer1.TheConnection.RemoteAddress == mRealtimePlayer2.TheConnection.RemoteAddress &&
+                Global.Instance.ServerSettings["SameIPAbandonsChecked"] == "true")
             {
-                WasAbandoned = true;
-
-                /*
-                if (mRealtimePlayer1.TheConnection.RemoteAddress == mRealtimePlayer2.TheConnection.RemoteAddress)
+                // No tocamos los goles, el resultado nos da igual puesto que el partido no se va a tener en cuenta
+                WasAbandonedSameIP = true;
+            }
+            else
+            {
+                if (mMatch.HasPlayerAbandoned(mRealtimePlayer1))
                 {
-                    // Si es un abandono en la misma IP, no tocamos los goles...
-                    WasAbandonedSameIP = true;
+                    ResultPlayer1.Goals = 0;
+                    ResultPlayer2.Goals = ResultPlayer2.Goals < 3 ? 3 : ResultPlayer2.Goals;
                 }
                 else
-                */
                 {
-                    if (mMatch.HasPlayerAbandoned(mRealtimePlayer1))
-                    {
-                        ResultPlayer1.Goals = 0;
-                        ResultPlayer2.Goals = ResultPlayer2.Goals < 3 ? 3 : ResultPlayer2.Goals;
-                    }
-                    else
-                    {
-                        ResultPlayer2.Goals = 0;
-                        ResultPlayer1.Goals = ResultPlayer1.Goals < 3 ? 3 : ResultPlayer1.Goals;
-                    }
+                    ResultPlayer2.Goals = 0;
+                    ResultPlayer1.Goals = ResultPlayer1.Goals < 3 ? 3 : ResultPlayer1.Goals;
                 }
-            }            
+            }
         }
 
         private bool GetTooManyTimes()

@@ -76,6 +76,7 @@ namespace SoccerServer
                 mFBSettings.SecureCanvasUrl = "https://unusualsoccerdev.unusualwonder.com/";
 
                 mServerSettings["TicketingSystem"] = "false";
+                mServerSettings["SameIPAbandonsChecked"] = "true";
             }
             else
             {
@@ -87,6 +88,7 @@ namespace SoccerServer
                 mFBSettings.SecureCanvasUrl = "https://localhost/";
 
                 mServerSettings["TicketingSystem"] = "false";
+                mServerSettings["SameIPAbandonsChecked"] = "false";
 
                 // Nuestro servidor remoto favorito cuando depuramos en local
                 mClientSettings["RemoteServer"] = "unusualsoccerdev.unusualwonder.com";
@@ -98,8 +100,11 @@ namespace SoccerServer
             var forcedWeborbLogInit = Weborb.Config.ORBConfig.GetInstance();
                      
             Log.startLogging(GLOBAL_LOG);
+            Log.startLogging(MainService.MAINSERVICE);
+            Log.startLogging(MainService.CLIENT_ERROR);
+
             Log.log(GLOBAL_LOG, "******************* Initialization from " + this.Server.MachineName + " Global.asax *******************");
-            
+           
             mNetEngine.Start();
             
             mSecondsTimer = new System.Timers.Timer(1000);

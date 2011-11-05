@@ -53,7 +53,7 @@ namespace SoccerServer
                 mFirstData = GetRealtimePlayerData(mContext, mFirstPlayer);
                 mSecondData = GetRealtimePlayerData(mContext, mSecondPlayer);
 
-                // Es aqui donde se restan los partidos al ticket
+                // Unico punto donde se restan los partidos al ticket
                 if (Global.Instance.TicketingSystemEnabled)
                 {
                     DiscountTicketsInner(mContext, mFirstPlayer);

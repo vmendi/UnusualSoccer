@@ -108,9 +108,9 @@ package Caps
 			var useSecondaryEquipment1:Boolean = false;
 			var useSecondaryEquipment2:Boolean = false;
 			
-			var group1:int = Team.GroupTeam( descTeam1.PredefinedTeamName );
-			var group2:int = Team.GroupTeam( descTeam2.PredefinedTeamName );
-			if( group1 == group2 )
+			var group1:int = Team.GroupTeam(descTeam1.PredefinedTeamName);
+			var group2:int = Team.GroupTeam(descTeam2.PredefinedTeamName);
+			if (group1 == group2)
 			{
 				trace( "Los equipos pertenecen al mismo grupo de equipación. Utilizando equipación secundaria para el equipo contrario" ); 
 				if( idLocalPlayerTeam == Enums.Team1 )
@@ -159,7 +159,7 @@ package Caps
 		// Se invoca a frecuencia constante APP_LOGIC_FPS / Sec
 		// elapsed: Tiempo que ha pasado en segundos
 		//
-		public function Run( elapsed:Number ) : void
+		public function Run(elapsed:Number) : void
 		{
 			// Si todavia no hemos recibido datos desde el servidor...
 			if (_State == GameState.NotInit)
@@ -314,9 +314,6 @@ package Caps
 					}
 					else
 					{	
-						/*if (TheGamePhysics.GetFirstTouchedCapLastRun() != null)
-							TheBall.SetSpeedFactor(0.3);*/
-
 						Influences.UpdateInfluences(_RemainingHits, _RemainingPasesAlPie);
 					}
 					break;
@@ -373,6 +370,9 @@ package Caps
 		
 		public function Draw( elapsed:Number ) : void
 		{
+			if (_State == GameState.NotInit)
+				return;
+			
 			TheEntityManager.Draw(elapsed);
 		}
 		

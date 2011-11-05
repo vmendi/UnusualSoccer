@@ -48,47 +48,17 @@ namespace SoccerServer
             return (objDeserialized as Dictionary<string, object>)["name"] as string;
         }
 
-        public int GetTotalMatchesCount(BDDModel.Team team)
-        {
-            return (from p in mDC.MatchParticipations
-                    where p.TeamID == team.TeamID
-                    select p).Count();
-        }
-
-        public int GetWonMatchesCount(BDDModel.Team team)
-        {
-            return (from p in mDC.MatchParticipations
-                    where p.TeamID == team.TeamID && p.Goals > p.Match.MatchParticipations.Single(o => o != p).Goals
-                    select p).Count();
-        }
-
-        public int GetLostMatchesCount(BDDModel.Team team)
-        {
-            return (from p in mDC.MatchParticipations
-                    where p.TeamID == team.TeamID && p.Goals < p.Match.MatchParticipations.Single(o => o != p).Goals
-                    select p).Count();
-        }
-
-        public int GetTotalGoalsScored(BDDModel.Team team)
-        {
-            return (from p in mDC.MatchParticipations
-                    where p.TeamID == team.TeamID
-                    select p.Goals).ToArray().Sum();
-        }
-
-        public int GetTotalGoalsReceived(BDDModel.Team team)
-        {
-            return (from p in mDC.MatchParticipations
-                    where p.TeamID == team.TeamID && p.Match.MatchParticipations.Count > 1
-                    select p.Match.MatchParticipations.Single(o => o != p).Goals).ToArray().Sum();
-        }
+        public int GetTotalMatchesCount(BDDModel.Team team)  { return team.TeamStat.NumPlayedMatches; }
+        public int GetWonMatchesCount(BDDModel.Team team)    { return team.TeamStat.NumMatchesWon; }
+        public int GetDrawMatchesCount(BDDModel.Team team)   { return team.TeamStat.NumMatchesDraw; }
+        public int GetLostMatchesCount(BDDModel.Team team)   { return team.TeamStat.NumPlayedMatches - team.TeamStat.NumMatchesWon - team.TeamStat.NumMatchesDraw; }
+        public int GetTotalGoalsScored(BDDModel.Team team)   { return team.TeamStat.ScoredGoals; }
+        public int GetTotalGoalsReceived(BDDModel.Team team) { return team.TeamStat.ReceivedGoals;  }
 
         public void MyRankingTable_OnRowCommand(Object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "ViewProfile")
-            {
                 Response.Redirect("ServerStatsProfile.aspx?TeamID=" + e.CommandArgument as string);
-            }
         }
     }
 }

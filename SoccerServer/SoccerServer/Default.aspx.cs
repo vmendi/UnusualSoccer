@@ -56,11 +56,8 @@ namespace SoccerServer
                 var fb = new FacebookWebClient();
                 
                 // Usamos un delegate para que solo se haga la llamada sincrona en caso necesario
-				Player player = EnsurePlayerIsCreated(theContext, FacebookWebContext.Current.UserId, () => fb.Get("me"));
-
-                string sessionKey = FacebookWebContext.Current.AccessToken;
-                
-				EnsureSessionIsCreated(theContext, player, sessionKey);
+				Player player = EnsurePlayerIsCreated(theContext, FacebookWebContext.Current.UserId, () => fb.Get("me"));                
+				EnsureSessionIsCreated(theContext, player, FacebookWebContext.Current.AccessToken);
 				theContext.SubmitChanges();
 
                 // Ahora podemos hacer visible todo el contenido flash

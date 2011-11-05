@@ -17,7 +17,6 @@ namespace SoccerServer
         [WebORBCache(CacheScope = CacheScope.Global)]
 		public List<TransferModel.PredefinedTeam> RefreshPredefinedTeams()
 		{
-            // TODO: No hace falta pedir un monton de cosas dentro de CreateDateForRequest
             using (CreateDataForRequest())
             {
                 List<TransferModel.PredefinedTeam> ret = new List<TransferModel.PredefinedTeam>();
@@ -56,14 +55,15 @@ namespace SoccerServer
                     theNewTeam.Player = mPlayer;
                     theNewTeam.Name = name;
 
-                    // Uno por equipo, siempre
+                    // Uno por equipo, siempre. No se puede forzar 1:1 desde la BDD
                     GenerateTicket(theNewTeam);
+                    GenerateTeamStats(theNewTeam);
 
                     // TODO: No está bien. Se deberían generar bajo demanda (al entrenar) y no desde el principio
                     GenerateSpecialTrainings(theNewTeam);
 
                     // Lo añadimos al mejor grupo posible (el de menos players, por ejemplo), desde la division mas baja
-                    AddTeamToLowestMostAdequateGroup(mContext, theNewTeam);
+                    AddTeamToMostAdequateGroup(mContext, GetLowestDivision(mContext), theNewTeam);
 
                     mContext.SubmitChanges();
                 }
@@ -88,6 +88,11 @@ namespace SoccerServer
             theTicket.RemainingMatches = 5;
 
             mContext.Tickets.InsertOnSubmit(theTicket);
+        }
+
+        private void GenerateTeamStats(Team team)
+        {
+            mContext.TeamStats.InsertOnSubmit(new TeamStat { Team = team });
         }
 
 		private void GenerateSpecialTrainings(Team team)

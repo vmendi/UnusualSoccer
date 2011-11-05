@@ -18,7 +18,7 @@ package
 	
 	[SWF(width="800", height="600", frameRate="30")]
 	public class Match extends Sprite
-	{		
+	{
 		static private var Instance:Match = null;				// Instancia única de la aplicación
 		
 		public var DebugArea:MovieClip = new MovieClip();		// Area de pintando de información de debug. Se posiciona por delante de todo
