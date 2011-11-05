@@ -155,8 +155,10 @@ package Caps
 			GoalRight = phy.addBox({isSensor: true, x: AppParams.Screen2Physic(centerGoalRight.x) + halfGrosor + halfBall, y:AppParams.Screen2Physic( centerGoalRight.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
 			
 			// Area pequeña en la que solo rebotan las chapas. Desactivamos la skin para que funcione el raton cuando el portero este debajo => No se vera en debug
+			/*
 			phy.addBox({categoryBits:16, x:AppParams.Screen2Physic(centerGoalLeft.x) + halfSizeSmallAreaX, y:AppParams.Screen2Physic(centerGoalLeft.y), restitution:1, width: AppParams.Screen2Physic(SmallSizeAreaX), height:AppParams.Screen2Physic(SmallSizeAreaY), density:.0, skin:"none", isBullet: bCCD});
 			phy.addBox({categoryBits:16, x:AppParams.Screen2Physic(centerGoalRight.x) - halfSizeSmallAreaX, y:AppParams.Screen2Physic(centerGoalRight.y), restitution:1, width:AppParams.Screen2Physic(SmallSizeAreaX), height:AppParams.Screen2Physic(SmallSizeAreaY), density:.0, skin:"none", isBullet: bCCD});
+			*/
 		}
 		
 		//
