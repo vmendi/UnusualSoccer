@@ -64,10 +64,10 @@
 
 	]]></fx:Script>
 	
-	<s:Label width="218" x="12" y="0" text="Haz clic en “Buscar Partido” y blah blah." styleName="whiteBoldBig"
-			 includeIn="Wait" />
-	<s:Label width="218" x="12" y="38" text="Puntos para molar..." styleName="whiteBoldBig"
-			 includeIn="Wait" />	
+	<!--<s:Label width="218" x="12" y="0" text="Haz clic en “Buscar Partido” y blah blah." styleName="whiteBoldBig"
+			 includeIn="Wait" />-->
+	<!--<s:Label width="218" x="12" y="38" text="Puntos para molar..." styleName="whiteBoldBig"
+			 includeIn="Wait" />-->	
 	<s:Label width="172" x="61" y="22" textAlign="center" text="Estás desconectado del juego..." styleName="whiteBoldBig" includeIn="Disabled" />
 	<s:Label x="121" y="36" text="Buscando partido..." styleName="whiteBoldBig" includeIn="LookingForMatch" />
 		

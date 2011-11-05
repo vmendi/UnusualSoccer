@@ -49,7 +49,7 @@
 		<s:Label x="0" y="7" text="{mTeamModel.TheTeam.Name}" styleName="whiteBoldBig" id="MyTeamNameLabel" filters="{txtGlowFilter}"/>	
 	</s:Group>
 	
-	<s:Button id="MyHallOfFameButton" label="Hall of Fame" x="190" y="0" click="OnHallOfFameClickHandler(event)" />
+	<!--<s:Button id="MyHallOfFameButton" label="Hall of Fame" x="190" y="0" click="OnHallOfFameClickHandler(event)" />-->
 	
 	<s:Group right="{resourceManager.getNumber('main','StatusPanelRightMargin')}">
 		<s:layout>
@@ -123,6 +123,10 @@
 			-->
 		</s:Group>
 		
+		<s:Group width="10">
+			
+		</s:Group>
+		
 		<s:Group top="0">
 			<s:Label top="5" width="100%" text="PUNTOS MAHOU" styleName="whiteBoldBig" textAlign="center" filters="{txtGlowFilter}"/>
 			<s:Group height="43" top="25">
@@ -135,7 +139,10 @@
 			</s:Group>
 		</s:Group>
 		
-		<GameView:TicketsPanel />
+		<!--<GameView:TicketsPanel />-->
+		<s:Group width="10">
+			
+		</s:Group>
 		
 	</s:Group>
 	
