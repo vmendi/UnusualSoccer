@@ -62,9 +62,6 @@ namespace SoccerServer
                     // TODO: No está bien. Se deberían generar bajo demanda (al entrenar) y no desde el principio
                     GenerateSpecialTrainings(theNewTeam);
 
-                    // Lo añadimos al mejor grupo posible (el de menos players, por ejemplo), desde la division mas baja
-                    AddTeamToMostAdequateGroup(mContext, GetLowestDivision(mContext), theNewTeam);
-
                     mContext.SubmitChanges();
                 }
                 catch (Exception e)
