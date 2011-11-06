@@ -13,10 +13,11 @@ namespace SoccerServer
         private int mTeamID;
         private BDDModel.Player mPlayer;
 
-        public ServerStatsProfile()
-		{
-			mDC = new SoccerDataModelDataContext();
-		}
+        protected override void OnLoad(EventArgs e)
+        {
+            mDC = new SoccerDataModelDataContext();
+            base.OnLoad(e);
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {

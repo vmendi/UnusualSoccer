@@ -55,7 +55,7 @@ namespace SoccerServer
                     if (lastDivision == null)
                         lastDivision = GetLowestDivision(mContext); // ...lo añadimos a la division mas baja
 
-                    theGroupEntry = AddTeamToMostAdequateGroup(mContext, lastDivision, theTeam);
+                    theGroupEntry = AddTeamToMostAdequateGroup(mContext, currentSeason, lastDivision, theTeam);
 
                     mContext.SubmitChanges();
                 }
@@ -307,9 +307,10 @@ namespace SoccerServer
             return newGroup;
         }
 
-        internal static CompetitionGroupEntry AddTeamToMostAdequateGroup(SoccerDataModelDataContext theContext, CompetitionDivision theDivision, Team theTeam)
+        private static CompetitionGroupEntry AddTeamToMostAdequateGroup(SoccerDataModelDataContext theContext, 
+                                                                        CompetitionSeason theSeason, CompetitionDivision theDivision, Team theTeam)
         {
-            int theMostAdequateGroupID = GetMostAdequateGroupID(theContext, theDivision);
+            int theMostAdequateGroupID = GetMostAdequateGroupID(theContext, theSeason, theDivision);
 
             // Nuevo approach: Nunca consideramos lleno, crecemos y crecemos, ya se reequilibra al acabar la temporada
             if (theMostAdequateGroupID == -1)
@@ -320,19 +321,17 @@ namespace SoccerServer
             newGroupEntry.CompetitionGroupID = theMostAdequateGroupID;
             newGroupEntry.Team = theTeam;
 
+            // Tienes que submitear por fuera
             theContext.CompetitionGroupEntries.InsertOnSubmit(newGroupEntry);
 
             return newGroupEntry;
         }
 
-        private static int GetMostAdequateGroupID(SoccerDataModelDataContext theContext, CompetitionDivision theDivision)
+        private static int GetMostAdequateGroupID(SoccerDataModelDataContext theContext, CompetitionSeason theSeason, CompetitionDivision theDivision)
         {
-            var currentSeasonID = GetCurrentSeason(theContext).CompetitionSeasonID;
-            var divisionID = theDivision.CompetitionDivisionID;
-
             var daPack = (from g in theContext.CompetitionGroups
-                          where g.CompetitionSeasonID == currentSeasonID &&
-                                g.CompetitionDivisionID == divisionID
+                          where g.CompetitionSeasonID == theSeason.CompetitionSeasonID &&
+                                g.CompetitionDivisionID == theDivision.CompetitionDivisionID
                           select new { g.CompetitionGroupID, g.CompetitionGroupEntries.Count }).ToArray();
 
             int minID = -1;

@@ -12,10 +12,11 @@ namespace SoccerServer
 	{
 		SoccerDataModelDataContext mDC;
 
-		public ServerStats()
-		{
-			mDC = new SoccerDataModelDataContext();
-		}
+        protected override void OnLoad(EventArgs e)
+        {
+            mDC = new SoccerDataModelDataContext();
+            base.OnLoad(e);            
+        }
 
         protected override void OnUnload(EventArgs e)
         {
