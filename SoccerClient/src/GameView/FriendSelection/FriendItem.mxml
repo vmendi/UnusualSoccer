@@ -10,7 +10,7 @@
 	
 	<s:Group>
 		<mx:Image top="0" left="0" scaleContent="false"
-				  source="@Embed(source='/Assets/General.swf', symbol='CapDetail')" />
+				  source="@Embed(source='/Assets/General.swf', symbol='CapDetailBg')" />
 		<GameView:FacebookPicture FacebookID="{data.FacebookID}" maskType="alpha" scaleX="0.88" scaleY="0.88" top="9" left="9">
 			<GameView:mask>
 				<s:Group>
