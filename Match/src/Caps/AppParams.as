@@ -20,23 +20,23 @@ package Caps
 		public static const PixelsPerMeter:uint = 30;			// 30 píxeles es igual a 1 metro físico
 		
 		// Parámetros para el GamePlay		
-		public static const RadiusPaseAlPie:int = 20; //30;		// El radio en el cual si se queda la pelota despúes de chocar contigo, se queda en tu pie
+		public static const RadiusPaseAlPie:int = 14; //30;		// El radio en el cual si se queda la pelota despúes de chocar contigo, se queda en tu pie
 		public static const RadiusSteal:int = 20; //25;			// El radio de robo  
 				
-		public static const MinCapImpulse:Number = 350.0;		// Intensidad MÁXIMA que se le aplica a una chapa cuando se dispara a la máxima potencia (con una chapa de potencia 0)
-		public static const MaxCapImpulse:Number = 350.0;		// Intensidad MÁXIMA que se le aplica a una chapa cuando se dispara a la máxima potencia (con una chapa de potencia 100)
+		public static const MinCapImpulse:Number = 160.0;		// Intensidad MÁXIMA que se le aplica a una chapa cuando se dispara a la máxima potencia (con una chapa de potencia 0)
+		public static const MaxCapImpulse:Number = 225.0;		// Intensidad MÁXIMA que se le aplica a una chapa cuando se dispara a la máxima potencia (con una chapa de potencia 100)
 		
 		public static const MaxHitsPerTurn:int = 2;				// Nº de disparos máximos por turno si no se toca la pelota
-		public static const MaxNumPasesAlPie:int = 3;			// No de pases al pie máximos permitidos
+		public static const MaxNumPasesAlPie:int = 2;			// No de pases al pie máximos permitidos
 		
 		public static const DistToPutBallHandling:int = 10;		// Distancia a la chapa a la que colocamos la pelota cuando se recibe un pase al pie
 		
 		public static const AutoPasePermitido:Boolean = true;	// La chapa con la que se dispara puede recibir pase al pie despues de tocar el balon
 		
 		public static const CapMass:int = 4;
-		public static const CapLinearDamping:int = 6;
+		public static const CapLinearDamping:int = 5;
 		public static const BallMass:int = 3;
-		public static const BallLinearDamping:int = 4;
+		public static const BallLinearDamping:int = 3;
 		
 		// Porcentaje de la skill restaurado por segundo para cada habilidad
 		// NOTE: Las skills van de 1 - 9, el primer valor del array en la linea anterior no se utiliza!
