@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="150" height="150"
 		 creationComplete="CreationCompleteHandler(event)"
-		 >
+		 width="150" height="150">
 	
-	<s:layout><s:TileLayout columnWidth="46" rowHeight="46" />
-	</s:layout>
+	<s:layout><s:TileLayout columnWidth="46" rowHeight="46" /></s:layout>
 		
-	<mx:Image visible="false" id="MySpecialSkillTemplate" includeInLayout="false"
-			  source="@Embed(source='/Assets/General.swf', symbol='SpecialSkills')" scaleContent="false" />
+	<s:SWFLoader visible="false" id="MySpecialSkillTemplate" includeInLayout="false"
+			 source="@Embed(source='/Assets/General.swf', symbol='SpecialSkills')"/>
 	
 	<fx:Script><![CDATA[
 		import mx.binding.utils.BindingUtils;
@@ -46,7 +44,7 @@
 			var elements : Array = new Array();						
 			for (var c:int=0; c < numElements; c++)
 				elements.push(getElementAt(c));
-									
+
 			for each (var val : int in mSpecialSkillIDs)
 			{
 				if (val < 1 || val > 9)
@@ -55,7 +53,7 @@
 		
 			for (var i:int=1; i <= 9; i++)
 			{
-				var cloned : Image = CreateImage();
+				var cloned : SWFLoader = CreateSWFLoader();
 				
 				if (mSpecialSkillIDs.contains(i))
 					(cloned.content as MovieClip).gotoAndStop("SpecialSkill" + i);
@@ -69,13 +67,12 @@
 				removeElement(element);
 		}
 		
-		private function CreateImage() : Image
+		private function CreateSWFLoader() : SWFLoader
 		{
-			var cloned : Image = new Image();
+			var cloned : SWFLoader = new SWFLoader();
 			cloned.source = MySpecialSkillTemplate.source;
-			cloned.scaleContent = false;
 			cloned.load();
-			
+						
 			return cloned;
 		}
 
