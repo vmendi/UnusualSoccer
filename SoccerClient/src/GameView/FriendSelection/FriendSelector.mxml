@@ -187,7 +187,7 @@
 		
 		<s:List id="MyFriendsList" dataProvider="{mSelectableFriends}" left="20" right="20" top="110" height="200"
 				horizontalScrollPolicy="off"
-				itemRenderer="GameView.FriendSelector.FriendItem" useVirtualLayout="true" 
+				itemRenderer="GameView.FriendSelection.FriendItem" useVirtualLayout="true" 
 				change="OnMyFriendListChangeHandler(event)"
 				skinClass="GameView.Skins.DefaultListSkin">
 			<s:layout><s:TileLayout columnWidth="125" rowHeight="100" /></s:layout>
@@ -211,7 +211,7 @@
 		<s:List id="MySelectedList" dataProvider="{mSelectedFriends}" left="20" right="20" bottom="50" height="120"
 				verticalScrollPolicy="off"
 				horizontalScrollPolicy="on"
-				itemRenderer="GameView.FriendSelector.FriendItem" useVirtualLayout="true"
+				itemRenderer="GameView.FriendSelection.FriendItem" useVirtualLayout="true"
 				change="OnMySelectedListChangeHandler(event)"
 				skinClass="GameView.Skins.DefaultListSkin">
 			<s:layout><s:HorizontalLayout gap="20" /></s:layout>

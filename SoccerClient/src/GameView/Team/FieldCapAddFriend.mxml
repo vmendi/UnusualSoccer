@@ -7,7 +7,7 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import GameView.FriendSelector.FriendSelector;
+			import GameView.FriendSelection.FriendSelector;
 			
 			protected function OnClickHandler(event:MouseEvent):void
 			{
