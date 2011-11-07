@@ -49,12 +49,12 @@ package Caps
 		{
 			var descTeam1:Object = { 
 				PredefinedTeamName: "Atlético",
-				SpecialSkillsIDs: [ 1, 4, 5, 6, 7, 8, 9 ],
+				SpecialSkillsIDs: [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
 				SoccerPlayers: []
 			}
 			var descTeam2:Object = { 
 				PredefinedTeamName: "Sporting",
-				SpecialSkillsIDs: [7, 1, 3],
+				SpecialSkillsIDs: [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
 				SoccerPlayers: []
 			}
 			
@@ -63,18 +63,18 @@ package Caps
 				var descCap1:Object = { 
 					DorsalNumber: c+1,
 						Name: "Cap Team01 " + c,
-						Power: 0,
-						Control: 0,
-						Defense: 0
+						Power: 100,
+						Control: 100,
+						Defense: 100
 				};						
 				descTeam1.SoccerPlayers.push(descCap1);
 				
 				var descCap2:Object = { 
 					DorsalNumber: c+1,
 						Name: "Cap Team02 " + c,
-						Power: 0,
-						Control: 0,
-						Defense: 0
+						Power: 100,
+						Control: 100,
+						Defense: 100
 				};						
 				descTeam2.SoccerPlayers.push(descCap2);					
 			}

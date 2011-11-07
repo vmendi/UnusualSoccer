@@ -18,7 +18,7 @@ package Caps
 		// Las dimensiones de la zona jugable del campo (en pixels)
 		static public const SizeX:Number = 668;
 		static public const SizeY:Number = 400;
-		static public const HeightGoal:Number = 114;
+		static public const HeightGoal:Number = 146;
 		
 		// Origen del campo (tener en cuenta que el gráfico tiene una zona de vallas, por eso no es 0,0)
 		static public const OffsetX:Number = 46;
@@ -26,11 +26,11 @@ package Caps
 		
 		// Coordenadas de las areas PEQUEÑAS del campo en coordenadas absolutas desde el corner superior izquierdo del movieclip
 		static public const SmallAreaLeftX:Number = 0 + OffsetX;
-		static public const SmallAreaLeftY:Number = 126 + OffsetY;
-		static public const SmallAreaRightX:Number = 628 + OffsetX;
-		static public const SmallAreaRightY:Number = 126 + OffsetY;
-		static public const SmallSizeAreaX:Number = 40;
-		static public const SmallSizeAreaY:Number = 148;
+		static public const SmallAreaLeftY:Number = 106 + OffsetY;
+		static public const SmallAreaRightX:Number = 604 + OffsetX;
+		static public const SmallAreaRightY:Number = 106 + OffsetY;
+		static public const SmallSizeAreaX:Number = 64;
+		static public const SmallSizeAreaY:Number = 188;
 		// Coordenadas de las areas GRANDES del campo en coordenadas absolutas desde el corner superior izquierdo del movieclip
 		static public const BigAreaLeftX:Number = 0 + OffsetX;
 		static public const BigAreaLeftY:Number = 48 + OffsetY;
@@ -40,9 +40,9 @@ package Caps
 		static public const SizeBigAreaY:Number = 304;
 		
 		// Coordenadas de las porterias
-		private var X_GOAL_LEFT:Number = 1;
+		private var X_GOAL_LEFT:Number = 0;
 		private var X_GOAL_RIGHT:Number = 713;
-		private var Y_GOAL:Number = 202;
+		private var Y_GOAL:Number = 191;
 		
 		// Sensores de gol colocados en cada portería para detectar el gol
 		public var GoalLeft : QuickObject = null;

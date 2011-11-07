@@ -66,7 +66,7 @@ package Caps
 			if (id != 0)
 			{
 				asset = team.UseSecondaryEquipment? Embedded.Assets.Cap2 : Embedded.Assets.Cap;
-				phyInit.categoryBits = 1;			// Choca con todo				
+				phyInit.categoryBits = 1;			// Choca con todo	
 			}
 			else
 			{
