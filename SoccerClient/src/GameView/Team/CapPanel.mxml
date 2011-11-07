@@ -73,8 +73,8 @@
 	]]></fx:Script>
 	
 	<Team:CapDetail TheSoccerPlayer="{mTeamModel.SelectedSoccerPlayer}" 
-					excludeFrom="Empty"/>		
-	
+					excludeFrom="Empty"/>
+		
 	<s:Group x="12" y="91">
 	
 		<s:layout><s:VerticalLayout horizontalAlign="left" gap="0"/></s:layout>

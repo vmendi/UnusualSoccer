@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="CreationCompleteHandler(event)" xmlns:GameView="GameView.*">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:GameView="GameView.*"
+		 creationComplete="CreationCompleteHandler(event)">
 	
 	<fx:Style source="../styles.css" />
 	
@@ -34,7 +36,7 @@
 				(MyCapMC.content as MovieClip).gotoAndStop(SoccerClient.GetMainGameModel().TheTeamModel.PredefinedTeamName);
 			else
 				(MyCapMC.content as MovieClip).gotoAndStop("empty");
-						
+
 			var qual : int = TheSoccerPlayerQuality.Quality;
 			var mc : MovieClip = MyCapStars.content["mcStars"] as MovieClip; 
 			mc.gotoAndStop(qual+1);
@@ -55,21 +57,19 @@
 
 	<s:Graphic>
 		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='PlayerDetailBg')" fillMode="clip" />
-	</s:Graphic>	
-	
+	</s:Graphic>
+		
 	<s:Group left="10" top="10" width="59" height="59">
 		<mx:Image top="29" left="29" id="MyCapMC" scaleContent="false"
 						  source="@Embed(source='/Assets/General.swf', symbol='CapDetail')" />
 		<s:Label text="{TheSoccerPlayer.DorsalNumber.toString()}" horizontalCenter="0" top="18" styleName="whiteBoldBig" textAlign="center" filters="{DorsalNumberStrokeFilter}"/>
 	</s:Group>
-	
+		
 	<GameView:FacebookPicture FacebookID="{TheSoccerPlayer.FacebookID}" maskType="alpha" scaleX="0.88" scaleY="0.88" top="17" left="17">
 		<GameView:mask>
 			<s:Group>
 				<s:Ellipse width="50" height="50">
-					<s:fill>
-						<s:SolidColor color="#000000" alpha="1" />
-					</s:fill>
+					<s:fill><s:SolidColor color="#000000" alpha="1" /></s:fill>
 				</s:Ellipse>
 			</s:Group>
 		</GameView:mask>
