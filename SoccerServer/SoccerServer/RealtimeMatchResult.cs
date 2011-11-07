@@ -105,6 +105,7 @@ namespace SoccerServer
         {
             var currentSeason = MainService.GetCurrentSeason(mContext);
 
+            // Excepcion por el problema del paralelismo entre el SeasonEnd y el añadir equipo a competicion
             var entryPlayer1 = mBDDPlayer1.Team.CompetitionGroupEntries.Single(entry => entry.CompetitionGroup.CompetitionSeason == currentSeason);
             var entryPlayer2 = mBDDPlayer2.Team.CompetitionGroupEntries.Single(entry => entry.CompetitionGroup.CompetitionSeason == currentSeason);
 

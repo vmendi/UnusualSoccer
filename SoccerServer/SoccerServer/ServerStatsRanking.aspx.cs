@@ -14,10 +14,11 @@ namespace SoccerServer
     {
         SoccerDataModelDataContext mDC;
 
-        public ServerStatsRanking()
-		{
-			mDC = new SoccerDataModelDataContext();
-		}
+        protected override void OnLoad(EventArgs e)
+        {
+            mDC = new SoccerDataModelDataContext();
+            base.OnLoad(e);
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {

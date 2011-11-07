@@ -49,9 +49,14 @@ namespace SoccerServer
                     // Veamos en que division se quedo la ultima vez que jugo
                     var lastDivision = (from e in theTeam.CompetitionGroupEntries
                                         orderby e.CompetitionGroup.CreationDate ascending
-                                        select e.CompetitionGroup.CompetitionDivision).Last();
+                                        select e.CompetitionGroup.CompetitionDivision).LastOrDefault();
 
-                    theGroupEntry = AddTeamToMostAdequateGroup(mContext, lastDivision, theTeam);
+                    // Si es un equipo recien creado...
+                    if (lastDivision == null)
+                        lastDivision = GetLowestDivision(mContext); // ...lo añadimos a la division mas baja
+
+                    theGroupEntry = AddTeamToMostAdequateGroup(mContext, currentSeason, lastDivision, theTeam);
+
                     mContext.SubmitChanges();
                 }
 
@@ -120,11 +125,7 @@ namespace SoccerServer
                         var entriesToAdd = theContext.Teams.ToList().Select((val, index) => new CompetitionGroupEntry               // :)
                         {
                             CompetitionGroupID = newGroups[index % newGroups.Count].CompetitionGroupID,                             // :D
-                            TeamID = val.TeamID,
-                            NumMatchesPlayed = 0,
-                            NumMatchesWon = 0,
-                            NumMatchesDraw = 0,
-                            Points = 0
+                            TeamID = val.TeamID
                         });
 
                         InsertBulkCopyCompetitionGroupEntries(entriesToAdd, con, tran);
@@ -208,7 +209,7 @@ namespace SoccerServer
 
                         InsertBulkCopyCompetitionGroups(groups, con, tran);
 
-                        // Traemos los grupos que acabamos de crear de vuelta, para obtener su ID
+                        // Traemos los grupos que acabamos de crear de vuelta para obtener su ID
                         List<int> groupIDs = (from s in theContext.CompetitionGroups
                                               where s.CompetitionDivisionID == currentDivision.CompetitionDivisionID &&
                                                     s.CompetitionSeasonID == newSeason.CompetitionSeasonID
@@ -226,11 +227,7 @@ namespace SoccerServer
 
                                 entries.Add(new CompetitionGroupEntry {
                                                                          CompetitionGroupID = groupIDs[c],
-                                                                         TeamID = currDivisionTeams[d],
-                                                                         NumMatchesPlayed = 0,
-                                                                         NumMatchesWon = 0,
-                                                                         NumMatchesDraw = 0,
-                                                                         Points = 0
+                                                                         TeamID = currDivisionTeams[d]
                                                                        });
                             }
                         }
@@ -239,7 +236,7 @@ namespace SoccerServer
                         currentDivision = currentDivision.CompetitionDivision1;
                     }
 
-                    // Nuestra insercion bulk para todas las entries
+                    // Nuestra magica insercion bulk para todas las entries
                     InsertBulkCopyCompetitionGroupEntries(entries, con, tran);
                     tran.Commit();
                 }
@@ -310,9 +307,10 @@ namespace SoccerServer
             return newGroup;
         }
 
-        internal static CompetitionGroupEntry AddTeamToMostAdequateGroup(SoccerDataModelDataContext theContext, CompetitionDivision theDivision, Team theTeam)
+        private static CompetitionGroupEntry AddTeamToMostAdequateGroup(SoccerDataModelDataContext theContext, 
+                                                                        CompetitionSeason theSeason, CompetitionDivision theDivision, Team theTeam)
         {
-            int theMostAdequateGroupID = GetMostAdequateGroupID(theContext, theDivision);
+            int theMostAdequateGroupID = GetMostAdequateGroupID(theContext, theSeason, theDivision);
 
             // Nuevo approach: Nunca consideramos lleno, crecemos y crecemos, ya se reequilibra al acabar la temporada
             if (theMostAdequateGroupID == -1)
@@ -323,19 +321,17 @@ namespace SoccerServer
             newGroupEntry.CompetitionGroupID = theMostAdequateGroupID;
             newGroupEntry.Team = theTeam;
 
+            // Tienes que submitear por fuera
             theContext.CompetitionGroupEntries.InsertOnSubmit(newGroupEntry);
 
             return newGroupEntry;
         }
 
-        private static int GetMostAdequateGroupID(SoccerDataModelDataContext theContext, CompetitionDivision theDivision)
+        private static int GetMostAdequateGroupID(SoccerDataModelDataContext theContext, CompetitionSeason theSeason, CompetitionDivision theDivision)
         {
-            var currentSeasonID = GetCurrentSeason(theContext).CompetitionSeasonID;
-            var divisionID = theDivision.CompetitionDivisionID;
-
             var daPack = (from g in theContext.CompetitionGroups
-                          where g.CompetitionSeasonID == currentSeasonID &&
-                                g.CompetitionDivisionID == divisionID
+                          where g.CompetitionSeasonID == theSeason.CompetitionSeasonID &&
+                                g.CompetitionDivisionID == theDivision.CompetitionDivisionID
                           select new { g.CompetitionGroupID, g.CompetitionGroupEntries.Count }).ToArray();
 
             int minID = -1;
