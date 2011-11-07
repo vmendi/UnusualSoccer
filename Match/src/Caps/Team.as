@@ -69,7 +69,7 @@ package Caps
 		
 		protected var Skill:Array = null;						// Lista de habilidades. Una entrada para cada habilidad, si no la tiene es null
 		
-		public var Ghost:Entity = null;					// Ghost utilizado para decidir donde colocarás el portero
+		public var Ghost:Entity = null;							// Ghost utilizado para decidir donde colocarás el portero
 		
 		public var UseSecondaryEquipment:Boolean = false;		// Indica si utiliza la equipacion secundaria
 		
