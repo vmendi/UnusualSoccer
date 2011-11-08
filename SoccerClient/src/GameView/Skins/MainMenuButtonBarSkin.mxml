@@ -70,8 +70,18 @@
 			 filters.selectedStates="{[MyGlowFilter]}" >
     </s:Label>
 	
+	<s:Graphic creationComplete="OnImageCreationComplete(event);" horizontalCenter="0" verticalCenter="0">
+		<s:BitmapImage id="MyImage" fillMode="clip" />
+	</s:Graphic>
+	
+	
 	<fx:Script><![CDATA[
-			
+		
+		protected function OnImageCreationComplete(e:Event) : void
+		{
+			MyImage.source = hostComponent.data.image;
+		}
+		
 	]]></fx:Script>
     
 </s:SparkSkin>

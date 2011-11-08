@@ -42,6 +42,7 @@
 			{
 				var image : BitmapImage = new BitmapImage();
 				image.source = mLoadersCache[mFacebookID+Size];
+				image.smooth = true;
 				
 				addElement(image);
 			}
@@ -114,6 +115,7 @@
 					
 					var image : BitmapImage = new BitmapImage();					
 					image.source = mLoader.content;
+					image.smooth = true;
 					
 					addElement(image);
 				}

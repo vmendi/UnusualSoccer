@@ -125,7 +125,7 @@
 		    <div style="float:left; width:250px;"><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=info" target="_parent"><img src="Imgs/NavIconInfo.png" width="178" height="33" border="0" /></a></div>
 		    <div style="float:left;"><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=app_2373072738" target="_parent"><img src="Imgs/NavIconForo.png" width="71" height="33" border="0"/></a></div>
 	    </div>
-		    	
+
         <div id="flashContent">
             <p>
 	            To view this page ensure that Adobe Flash Player version 

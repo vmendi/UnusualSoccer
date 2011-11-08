@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 width="400" height="300">
+	
+	<fx:Style source="../styles.css"/>
+	
+	
+	<fx:Script>
+		<![CDATA[
+			public static function Show(matchResult : Object) : void
+			{
+				AnimatableDialog.Show(getDefinitionByName("GameView.Match::InjuredDialog") as Class) as InjuredDialog;
+			}
+			
+			protected function CloseClickHandler(event:MouseEvent):void
+			{
+				AnimatableDialog.Dismiss(this);
+			}
+		]]>
+	</fx:Script>
+	
+	<GameView:PopupBackground width="356" height="252" />
+
+	<s:Label text="TUS FuTbOlIsTaS Se HaN lEsionaDo!" />
+	
+	<s:List 
+		
+	<s:Button label="CERRAR" horizontalCenter="0" bottom="20" click="CloseClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+	
+</s:Group>
