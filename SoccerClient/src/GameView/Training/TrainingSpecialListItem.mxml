@@ -110,7 +110,7 @@
 	<s:Graphic includeIn="Complete">
 		<s:Rect x="0" y="0" width="740" height="68">
 			<s:fill>
-				<s:SolidColor color="#666666" alpha="0.3" />
+				<s:SolidColor color="#000000" alpha="0.3" />
 			</s:fill>
 		</s:Rect>
 	</s:Graphic>

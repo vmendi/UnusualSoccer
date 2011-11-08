@@ -38,112 +38,48 @@
 	]]></fx:Script>
 	
 	<fx:Declarations>
-		<s:GlowFilter id="txtGlowFilter" blurX="18" blurY="18" color="0xFFFFFF"/>
+		<s:GlowFilter id="txtGlowFilter" blurX="18" blurY="18" color="0x000000"/>
 	</fx:Declarations>
+	
+	<s:Image x="470" y="0" source="@Embed(source='/Assets/General.swf', symbol='IconMahouPoints')"/>
 	
 	<s:Image source="@Embed(source='/Assets/General.swf', symbol='StatusPanelBackground')"/>
 	
-	<GameView:BadgeTeam x="10" y="10" TeamName="{mTeamModel.PredefinedTeamName}" BigMode="true" />
-	<s:Group x="65" y="0" width="104">
-		<s:Label x="0" y="34" text="{mTeamModel.PredefinedTeamName}" styleName="whiteBoldVeryBig" id="MyPredefinedTeamLabel" filters="{txtGlowFilter}"/> 
-		<s:Label x="0" y="7" text="{mTeamModel.TheTeam.Name}" styleName="whiteBoldBig" id="MyTeamNameLabel" filters="{txtGlowFilter}"/>	
-	</s:Group>
+	<GameView:BadgeTeam x="10" y="22" TeamName="{mTeamModel.PredefinedTeamName}" BigMode="true" />
+	
+	<s:Label x="62" y="25" text="{mTeamModel.TheTeam.Name}" styleName="whiteBoldBig" id="MyTeamNameLabel" filters="{txtGlowFilter}"/>
+	<s:Label x="62" y="44" text="{mTeamModel.PredefinedTeamName}" styleName="whiteBoldVeryBig" id="MyPredefinedTeamLabel" filters="{txtGlowFilter}"/> 
+	
+	<GameView:BadgeCategory width="64" height="43" left="209" top="24" TrueSkill="{mTeamModel.TheTeam.TrueSkill}" />
+	
+	<s:Label x="294" y="19" text="ENTRENAMIENTO" width="90" styleName="whiteBoldMedium" textAlign="left"/>
+	<s:Label x="378" y="19" text="{mTeamModel.TheTeam.Fitness}%" width="46" id="MyTrainingLabel" styleName="whiteBoldMedium" textAlign="right"/>	
+
+	<s:Label x="310" y="41" text="XP" width="90" styleName="whiteBoldMedium" textAlign="left"/>
+	<s:Label x="394" y="41" text="{mTeamModel.TheTeam.XP}" width="46" id="MyXPLabel" styleName="whiteBoldMedium" textAlign="right"/>
+	
+	<s:Label x="326" y="63" text="HABILIDAD" width="90" styleName="whiteBoldMedium" textAlign="left"/>
+	<s:Label x="410" y="63" text="{mTeamModel.TheTeam.TrueSkill}" width="46" id="MyTrueSkillLabel" styleName="whiteBoldMedium" textAlign="right"/>
 	
 	<!--<s:Button id="MyHallOfFameButton" label="Hall of Fame" x="190" y="0" click="OnHallOfFameClickHandler(event)" />-->
 	
-	<s:Group right="{resourceManager.getNumber('main','StatusPanelRightMargin')}">
-		<s:layout>
-			<s:HorizontalLayout gap="{resourceManager.getNumber('main','StatusPanelGap')}" />
-		</s:layout>
-
-		<s:Group x="500" y="0">
-			<s:layout>
-				<s:HorizontalLayout gap="1"/>
-			</s:layout>
-			<!--
-			<s:Rect width="8" height="65">
-				<s:fill>
-					<s:LinearGradient rotation="0">
-						<s:GradientEntry alpha="0.0" color="#000000" ratio="0"/>
-						<s:GradientEntry alpha="0.5" color="#000000" ratio="1"/>
-					</s:LinearGradient>
-				</s:fill>
-			</s:Rect>
-			-->
-			<s:Group>
-				<s:Rect x="0" y="0" width="65" height="65" alpha="0.5">
-					<s:fill>
-						<s:SolidColor color="#000000"/>
-					</s:fill>
-				</s:Rect>
-				<s:Label width="64" top="6" text="DIVISIÓN" styleName="whiteBoldBig" textAlign="center" filters="{txtGlowFilter}"/>
-				<GameView:BadgeCategory width="64" height="43" top="22" TrueSkill="{mTeamModel.TheTeam.TrueSkill}" />	
-			</s:Group>
-			<s:Group height="65">
-				<s:layout>
-					<s:VerticalLayout gap="1"/>
-				</s:layout>
-				<s:Group>
-					<s:Rect x="0" y="0" width="153" height="21" alpha="0.5">
-						<s:fill>
-							<s:SolidColor color="#000000"/>
-						</s:fill>
-					</s:Rect>
-					<s:Label x="6" y="3" text="HABILIDAD" width="90" styleName="whiteBoldMedium" textAlign="left"/>
-					<s:Label right="6" y="3" text="{mTeamModel.TheTeam.TrueSkill}" width="46" id="MyTrueSkillLabel" styleName="whiteBoldMedium" textAlign="right"/>
-				</s:Group>
-				<s:Group>
-					<s:Rect x="0" y="0" width="153" height="21" alpha="0.5">
-						<s:fill>
-							<s:SolidColor color="#000000"/>
-						</s:fill>
-					</s:Rect>
-					<s:Label x="6" y="3" text="XP" width="90" styleName="whiteBoldMedium" textAlign="left"/>
-					<s:Label right="6" y="3" text="{mTeamModel.TheTeam.XP}" width="46" id="MyXPLabel" styleName="whiteBoldMedium" textAlign="right"/>
-				</s:Group>
-				<s:Group>
-					<s:Rect x="0" y="0" width="153" height="21" alpha="0.5">
-						<s:fill>
-							<s:SolidColor color="#000000"/>
-						</s:fill>
-					</s:Rect>
-					<s:Label x="6" y="3" text="ENTRENAMIENTO" width="90" styleName="whiteBoldMedium" textAlign="left"/>
-					<s:Label right="6" y="3" text="{mTeamModel.TheTeam.Fitness}%" width="46" id="MyTrainingLabel" styleName="whiteBoldMedium" textAlign="right"/>
-				</s:Group>
-			</s:Group>
-			<!--
-			<s:Rect width="8" height="65">
-				<s:fill>
-					<s:LinearGradient rotation="180">
-						<s:GradientEntry alpha="0.0" color="#000000" ratio="0"/>
-						<s:GradientEntry alpha="0.5" color="#000000" ratio="1"/>
-					</s:LinearGradient>
-				</s:fill>
-			</s:Rect>
-			-->
-		</s:Group>
-		
-		<s:Group width="10">
-			
-		</s:Group>
-		
-		<s:Group top="0">
-			<s:Label top="5" width="100%" text="PUNTOS MAHOU" styleName="whiteBoldBig" textAlign="center" filters="{txtGlowFilter}"/>
-			<s:Group height="43" top="25">
-				<s:layout>
-					<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
-				</s:layout>
-				<s:Image source="@Embed(source='/Assets/General.swf', symbol='IconMahouPoints')"/>
-				<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MySkillPointsLabel" styleName="whiteBoldBig" textAlign="left" filters="{txtGlowFilter}"/>
-				<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="Add" skinClass="GameView.Skins.ButtonDarkGreySkin" />
-			</s:Group>
-		</s:Group>
-		
-		<!--<GameView:TicketsPanel />-->
-		<s:Group width="10">
-			
-		</s:Group>
-		
-	</s:Group>
 	
+	
+	<s:Group x="470" y="23">
+		<s:layout>
+			<s:VerticalLayout horizontalAlign="center" gap="0" />
+		</s:layout>
+		<s:Label width="100%" text="PUNTOS MAHOU" styleName="whiteBoldBig" textAlign="center" filters="{txtGlowFilter}"/>
+		<s:Group>
+			<s:layout>
+				<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
+			</s:layout>
+			<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MySkillPointsLabel" styleName="whiteBoldHuge" textAlign="left" filters="{txtGlowFilter}"/>
+			<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="Add" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+		</s:Group>
+	</s:Group>
+		
+	<GameView:TicketsPanel x="576" y="7" />
+		
 </s:Group>
+

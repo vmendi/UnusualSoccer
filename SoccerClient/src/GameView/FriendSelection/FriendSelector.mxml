@@ -162,6 +162,8 @@
 	
 	<GameView:PopupBackground width="600" height="500" />
 	
+	<s:BitmapImage x="2" y="2" source="@Embed(source='/Assets/General.swf', symbol='FriendSelectorHeader')" fillMode="clip" />
+	
 	<s:Group includeIn="Waiting" width="600" height="500">
 		<s:Label horizontalCenter="0" verticalCenter="0" text="Waiting... TO-DO TO-DO TO-DO" styleName="whiteBoldBig"/>
 	</s:Group>
