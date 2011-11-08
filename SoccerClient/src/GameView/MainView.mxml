@@ -148,8 +148,8 @@
 					 horizontalCenter="0" verticalCenter="0" includeIn="InGame" creationComplete="MainMenuButtonBar.selectedIndex=0" labelField="label" >
 			<s:dataProvider>
 				<s:ArrayList>
-					<fx:Object menuId="Competition" label="COMPETICION"/>
-					<fx:Object menuId="Friendly" label="AMISTOSO"/>
+					<fx:Object menuId="Competition" label="COMPETICION" image="@Embed(source='/Assets/General.swf', symbol='CapDetail')"/>
+					<fx:Object menuId="Friendly" label="AMISTOSO" image="@Embed(source='/Assets/General.swf', symbol='CapDetail')"/>
 					<fx:Object menuId="Team" label="EQUIPO"/>
 					<fx:Object menuId="Training" label="ENTRENAMIENTO"/>
 					<fx:Object menuId="TrainingSpecial" label="HABILIDADES"/>
