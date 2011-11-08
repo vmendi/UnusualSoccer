@@ -3,7 +3,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   xmlns:local="*"
-			   width="760" height="620" applicationComplete="ApplicationCompleteHandler(event)"
+			   width="760" height="650" applicationComplete="ApplicationCompleteHandler(event)"
 			   frameRate="30" preloader="ProgressPreloader">
 
 	<fx:Script><![CDATA[

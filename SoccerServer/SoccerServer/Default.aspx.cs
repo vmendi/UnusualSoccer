@@ -97,7 +97,7 @@ namespace SoccerServer
             pageSource.Replace("${swf}", "SoccerClient/SoccerClient");
             pageSource.Replace("${application}", "SoccerClient");
             pageSource.Replace("${width}", "760");
-            pageSource.Replace("${height}", "620");
+            pageSource.Replace("${height}", "650");
             
             pageSource.Replace("${facebookCanvasPage}", theFBApp.CanvasPage);
             pageSource.Replace("${facebookCanvasUrl}", theFBApp.CanvasUrl);

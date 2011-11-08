@@ -135,14 +135,22 @@
 		
 	<GameView:Login id="MyLogin" includeIn="Login" />
 
-	<GameView:StatusPanel height="65" includeIn="InGame, OnRealtimeMatch"/>
+	<GameView:StatusPanel height="80" includeIn="InGame, OnRealtimeMatch"/>
 	
 	<Match:RealtimeMatch width="760" includeIn="OnRealtimeMatch" />
 	
-	<s:Group width="760" height="35" includeIn="InGame">
-		<s:Graphic width="100%" height="100%" >
-			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='MenuVertBar')" fillMode="repeat" />
-		</s:Graphic>
+	<s:Group width="760" height="51" includeIn="InGame">
+		
+		<s:Rect width="760" height="51">
+			<s:fill>
+				<s:LinearGradient rotation="90">
+					<s:GradientEntry alpha="1.0" color="#FDFDFD" ratio="0"/>
+					<s:GradientEntry alpha="1.0" color="#EBEBEB" ratio="0.49"/>
+					<s:GradientEntry alpha="1.0" color="#DEDEDE" ratio="0.50"/>
+					<s:GradientEntry alpha="1.0" color="#BEBEBE" ratio="1"/>
+				</s:LinearGradient>
+			</s:fill>
+		</s:Rect>		
 		
 		<s:ButtonBar id="MainMenuButtonBar" skinClass="GameView.Skins.MainMenuBarSkin" change="ButtonbarChangeHandler(event)" requireSelection="false"
 					 horizontalCenter="0" verticalCenter="0" includeIn="InGame" creationComplete="MainMenuButtonBar.selectedIndex=0" labelField="label" >
@@ -157,6 +165,7 @@
 			</s:dataProvider>
 		</s:ButtonBar>
 	</s:Group>
+	
 	<s:Group includeIn="InGame">
 		<s:BitmapImage source="{resourceManager.getClass('main','BackGeneral')}" fillMode="clip"/>
 		
