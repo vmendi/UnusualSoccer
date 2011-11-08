@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="50" height="50">
+		 width="50" height="50">
 		
 	<fx:Script><![CDATA[
 		import com.greensock.TweenNano;
@@ -99,7 +99,7 @@
 						// Suponemos que 3 segundos es suficiente para que le de tiempo a cargar la policy.
 						// No, lamentablemente no hay forma de preguntarle de ninguna otra manera. En los docs sugieren hacer polling
 						// del childAllowsParent...
-						TweenNano.delayedCall(3, LoadPicture);					
+						TweenNano.delayedCall(3, LoadPicture);	
 					}
 					else
 					{

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:Team="GameView.Team.*" width="356" height="212" xmlns:GameView="GameView.*">
+		 xmlns:Team="GameView.Team.*" width="356" height="212" xmlns:GameView="GameView.*">
 	
 	<fx:Style source="styles.css"/>
 	
@@ -54,6 +54,5 @@
 	<s:Label text="{Text}" styleName="whiteBoldMedium" x="28" y="64" width="300" textAlign="{TextAlign}" />
 	
 	<s:Button label="CERRAR" click="ClickHandler(event)" minWidth="80" x="138" y="170" skinClass="GameView.Skins.ButtonDarkGreySkin" />
-	
 	
 </s:Group>

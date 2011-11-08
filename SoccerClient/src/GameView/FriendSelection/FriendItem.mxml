@@ -9,8 +9,7 @@
 	<s:layout><s:VerticalLayout horizontalAlign="center" /></s:layout>
 	
 	<s:Group>
-		<mx:Image top="0" left="0" scaleContent="false"
-				  source="@Embed(source='/Assets/General.swf', symbol='CapDetailBg')" />
+		<s:BitmapImage top="0" left="0" source="@Embed(source='/Assets/General.swf', symbol='CapDetail')" />
 		<GameView:FacebookPicture FacebookID="{data.FacebookID}" maskType="alpha" scaleX="0.88" scaleY="0.88" top="9" left="9">
 			<GameView:mask>
 				<s:Group>
