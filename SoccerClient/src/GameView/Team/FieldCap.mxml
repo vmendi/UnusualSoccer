@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 		xmlns:s="library://ns.adobe.com/flex/spark" 
-		 		xmlns:mx="library://ns.adobe.com/flex/mx"
 		 		autoDrawBackground="false"
-		 		creationComplete="CreationCompleteHandler(event)" xmlns:GameView="GameView.*">
+		 		creationComplete="CreationCompleteHandler(event)" 
+				xmlns:GameView="GameView.*">
 
 	<fx:Style source="../styles.css" />
 	
@@ -32,8 +32,8 @@
 		</s:layout>
 		
 		<s:Group>
-			<mx:SWFLoader id="MyCapMC" scaleContent="false"
-						  source="@Embed(source='/Assets/General.swf', symbol='CapBase')"/>
+			<s:SWFLoader id="MyCapMC" scaleContent="false"
+					  	 source="@Embed(source='/Assets/General.swf', symbol='CapBase')"/>
 			<GameView:FacebookPicture FacebookID="{data.FacebookID}" maskType="alpha" scaleX="0.65" scaleY="0.65" left="8" top="7">
 				<GameView:mask>
 					<s:Group>

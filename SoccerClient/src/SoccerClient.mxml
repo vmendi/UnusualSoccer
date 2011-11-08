@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
 			   xmlns:s="library://ns.adobe.com/flex/spark"
-			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   xmlns:local="*"
 			   width="760" height="620" applicationComplete="ApplicationCompleteHandler(event)"
 			   frameRate="30" preloader="ProgressPreloader">
 
 	<fx:Script><![CDATA[
-		import GameModel.MainGameModel;		
+		import GameModel.MainGameModel;
+		
 		import GameView.MainView;
-		import SoccerServer.DataTypeInitializer;		
-		import mx.events.FlexEvent;		
+		
+		import SoccerServer.DataTypeInitializer;
+		
+		import com.facebook.graph.Facebook;
+		
+		import mx.events.FlexEvent;
+		
 		import utils.FPSCounter;
 
 		protected function ApplicationCompleteHandler(event:FlexEvent):void
@@ -26,6 +31,8 @@
 			
 			// Carga de parametros y configuracion global
 			AppConfig.Init(parameters);
+			
+			Facebook.setCanvasAutoResize(true);
 			
 			// Para que las estructuras creadas por weborb existan
 			var dataTypeInit : DataTypeInitializer = new DataTypeInitializer();
