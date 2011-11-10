@@ -65,7 +65,7 @@
 		]]>
 	</fx:Script>
 
-	<s:Image source="@Embed(source='/Assets/General.swf', symbol='TicketBg')" alpha.NotPurchased="0.5" alpha.Purchased="1" />
+	<s:Image source="@Embed(source='/Assets/General.swf', symbol='TicketBg')" alpha.NotPurchased="1" alpha.Purchased="1" />
 	
 	<s:Group height="40" x="0" horizontalCenter="0" includeIn="NotPurchased">
 		<s:layout>

@@ -38,10 +38,8 @@
 	]]></fx:Script>
 	
 	<fx:Declarations>
-		<s:GlowFilter id="txtGlowFilter" blurX="18" blurY="18" color="0x000000"/>
+		<s:GlowFilter id="txtGlowFilter" blurX="10" blurY="10" color="0x000000" alpha="0.6"/>
 	</fx:Declarations>
-	
-	<s:Image x="470" y="0" source="@Embed(source='/Assets/General.swf', symbol='IconMahouPoints')"/>
 	
 	<s:Image source="@Embed(source='/Assets/General.swf', symbol='StatusPanelBackground')"/>
 	
@@ -63,8 +61,6 @@
 	
 	<!--<s:Button id="MyHallOfFameButton" label="Hall of Fame" x="190" y="0" click="OnHallOfFameClickHandler(event)" />-->
 	
-	
-	
 	<s:Group x="470" y="23">
 		<s:layout>
 			<s:VerticalLayout horizontalAlign="center" gap="0" />
@@ -74,12 +70,14 @@
 			<s:layout>
 				<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
 			</s:layout>
+			<s:Image source="@Embed(source='/Assets/General.swf', symbol='IconMahouPoints')" visible="{resourceManager.getBoolean('main','StatusIconMahouPointsVisible')}" />
 			<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MySkillPointsLabel" styleName="whiteBoldHuge" textAlign="left" filters="{txtGlowFilter}"/>
-			<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="Add" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="Add" skinClass="GameView.Skins.ButtonDarkGreySkin" visible="{resourceManager.getBoolean('main','StatusAddPointsVisible')}" />
 		</s:Group>
 	</s:Group>
-		
-	<GameView:TicketsPanel x="576" y="7" />
+	
+	<GameView:TicketsPanel x="576" y="7" visible="{resourceManager.getBoolean('main','StatusTicketPanelVisible')}" />
+	<s:Image source="@Embed(source='/Assets/General.swf', symbol='LogoMahouLFP')" y="6" right="10" visible="{resourceManager.getBoolean('main','StatusLogoMahouLFPVisible')}"/>
 		
 </s:Group>
 

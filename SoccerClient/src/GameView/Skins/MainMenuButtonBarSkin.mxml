@@ -59,27 +59,35 @@
 	<s:Graphic includeIn="selectedStates, selectedUpStates">
 		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='MainMenuButtonSelected')" fillMode="clip" />
 	</s:Graphic>
-		
-    <s:Label id="labelDisplay"
-             textAlign="center"
-             verticalAlign="middle"
-             maxDisplayedLines="1"
-             horizontalCenter="0" verticalCenter="0"
-			 styleName="mainMenuButton"
-			 styleName.selectedStates="mainMenuButtonOn"
-			 filters.selectedStates="{[MyGlowFilter]}" >
-    </s:Label>
 	
-	<s:Graphic creationComplete="OnImageCreationComplete(event);" horizontalCenter="0" verticalCenter="0">
+	<s:Graphic creationComplete="OnImageCreationComplete(event);" top="2" horizontalCenter="0" visible="true" visible.selectedStates="false">
 		<s:BitmapImage id="MyImage" fillMode="clip" />
 	</s:Graphic>
+
+	<s:Graphic creationComplete="OnImageOnCreationComplete(event);" top="2" horizontalCenter="0" visible="false" visible.selectedStates="true">
+		<s:BitmapImage id="MyImageOn" fillMode="clip" />
+	</s:Graphic>
 	
+	<s:Label id="labelDisplay"
+			 textAlign="center"
+			 verticalAlign="middle"
+			 maxDisplayedLines="1"
+			 horizontalCenter="0" bottom="0"
+			 styleName="mainMenuButton"
+			 styleName.selectedStates="mainMenuButtonOn">
+			 <!--filters.selectedStates="{[MyGlowFilter]}" >-->
+	</s:Label>
 	
 	<fx:Script><![CDATA[
 		
 		protected function OnImageCreationComplete(e:Event) : void
 		{
 			MyImage.source = hostComponent.data.image;
+		}
+		
+		protected function OnImageOnCreationComplete(e:Event) : void
+		{
+			MyImageOn.source = hostComponent.data.imageOn;
 		}
 		
 	]]></fx:Script>
