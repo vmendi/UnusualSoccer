@@ -59,25 +59,39 @@
 	<s:Label x="326" y="63" text="HABILIDAD" width="90" styleName="whiteBoldMedium" textAlign="left"/>
 	<s:Label x="410" y="63" text="{mTeamModel.TheTeam.TrueSkill}" width="46" id="MyTrueSkillLabel" styleName="whiteBoldMedium" textAlign="right"/>
 	
-	<!--<s:Button id="MyHallOfFameButton" label="Hall of Fame" x="190" y="0" click="OnHallOfFameClickHandler(event)" />-->
-	
-	<s:Group x="470" y="23">
-		<s:layout>
-			<s:VerticalLayout horizontalAlign="center" gap="0" />
-		</s:layout>
-		<s:Label width="100%" text="PUNTOS MAHOU" styleName="whiteBoldBig" textAlign="center" filters="{txtGlowFilter}"/>
-		<s:Group>
+	<s:Group right="0" y="0" visible="{resourceManager.getBoolean('main','StatusLogoMahouLFPVisible')}">
+		<s:Group x="0" y="23" width="100">
 			<s:layout>
-				<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
+				<s:VerticalLayout horizontalAlign="center" gap="0" />
 			</s:layout>
-			<s:Image source="@Embed(source='/Assets/General.swf', symbol='IconMahouPoints')" visible="{resourceManager.getBoolean('main','StatusIconMahouPointsVisible')}" />
-			<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MySkillPointsLabel" styleName="whiteBoldHuge" textAlign="left" filters="{txtGlowFilter}"/>
-			<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="Add" skinClass="GameView.Skins.ButtonDarkGreySkin" visible="{resourceManager.getBoolean('main','StatusAddPointsVisible')}" />
+			<s:Label width="100%" text="PUNTOS MAHOU" styleName="whiteBoldBig" textAlign="center" filters="{txtGlowFilter}"/>
+			<s:Group>
+				<s:layout>
+					<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
+				</s:layout>
+				<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MySkillPointsLabel" styleName="whiteBoldHuge" textAlign="left" filters="{txtGlowFilter}"/>
+				<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="Add" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>
 		</s:Group>
+		<GameView:TicketsPanel x="100" y="6" />
 	</s:Group>
 	
-	<GameView:TicketsPanel x="576" y="7" visible="{resourceManager.getBoolean('main','StatusTicketPanelVisible')}" />
-	<s:Image source="@Embed(source='/Assets/General.swf', symbol='LogoMahouLFP')" y="6" right="10" visible="{resourceManager.getBoolean('main','StatusLogoMahouLFPVisible')}"/>
+	<s:Group right="10" y="0" visible="{resourceManager.getBoolean('main','StatusTicketPanelVisible')}">
+		<s:Group x="0" y="23" width="160" >
+			<s:layout>
+				<s:VerticalLayout horizontalAlign="center" gap="0" />
+			</s:layout>
+			<s:Label width="100%" text="PUNTOS MAHOU" styleName="whiteBoldBig" textAlign="center" filters="{txtGlowFilter}"/>
+			<s:Group>
+				<s:layout>
+					<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
+				</s:layout>
+				<s:Image source="@Embed(source='/Assets/General.swf', symbol='IconMahouPoints')" />
+				<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MyMahouPointsLabel" styleName="whiteBoldHuge" textAlign="left" filters="{txtGlowFilter}"/>
+			</s:Group>
+		</s:Group>
+		<s:Image source="@Embed(source='/Assets/General.swf', symbol='LogoMahouLFP')" x="180" y="6" />
+	</s:Group>
 		
 </s:Group>
 
