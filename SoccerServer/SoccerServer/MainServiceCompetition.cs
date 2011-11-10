@@ -50,7 +50,9 @@ namespace SoccerServer
                     // Descartado en el SeasonEnd por inactividad o equipo recien creado?
                     if (theGroupEntry == null)
                     {
-                        theGroupEntry = AddInactiveTeamToCompetition(mContext, theTeam);
+                        // Unico punto donde se añade un equipo a la competicion
+                        theGroupEntry = AddInactiveTeamToCompetition(mContext, currentSeason, theTeam);
+                        mContext.SubmitChanges();
                     }
 
                     ret = GetTransferCompetitionGroup(theGroupEntry.CompetitionGroup);
@@ -60,7 +62,7 @@ namespace SoccerServer
             return ret;
         }
 
-        private static CompetitionGroupEntry AddInactiveTeamToCompetition(SoccerDataModelDataContext theContext, BDDModel.Team theTeam)
+        private static CompetitionGroupEntry AddInactiveTeamToCompetition(SoccerDataModelDataContext theContext, CompetitionSeason currentSeason, BDDModel.Team theTeam)
         {
             // Veamos en que division se quedo la ultima vez que jugo
             var lastDivision = (from e in theTeam.CompetitionGroupEntries
@@ -72,24 +74,10 @@ namespace SoccerServer
                 lastDivision = GetLowestDivision(theContext); // ...lo añadimos a la division mas baja
 
             // No queremos que la season cambie (SeasonEnd) mientras insertamos equipo!
-            // ...shared locks on read data are held for the duration of the transaction instead of being released at the end of each statement
             // TODO TODO TODO
-            using (DbTransaction tran = theContext.Connection.BeginTransaction(System.Data.IsolationLevel.RepeatableRead))
-            {
-                theContext.Transaction = tran;
-
-                // Volvemos a leer, esta vez dentro de la transaccion
-                var currentSeason = GetCurrentSeason(theContext);
-
-                // Unico punto donde se añade un equipo a la competicion
-                CompetitionGroupEntry ret = AddTeamToMostAdequateGroup(theContext, currentSeason, lastDivision, theTeam);
-                theContext.SubmitChanges();
-
-                tran.Commit();
-                theContext.Transaction = null;
-
-                return ret;
-            }            
+            // http://msdn.microsoft.com/en-us/library/ms189823.aspx
+            // Shared lock aqui y exclusive en SeasonEnd?
+            return AddTeamToMostAdequateGroup(theContext, currentSeason, lastDivision, theTeam);
         }
 
         private static TransferModel.CompetitionGroup GetTransferCompetitionGroup(CompetitionGroup theGroup)

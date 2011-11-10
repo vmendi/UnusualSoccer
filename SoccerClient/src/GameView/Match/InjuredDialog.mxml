@@ -10,7 +10,7 @@
 		<![CDATA[
 			public static function Show(matchResult : Object) : void
 			{
-				AnimatableDialog.Show(getDefinitionByName("GameView.Match::InjuredDialog") as Class) as InjuredDialog;
+				AnimatableDialog.Show(getDefinitionByName("GameView.Match::InjuredDialog") as Class);
 			}
 			
 			protected function CloseClickHandler(event:MouseEvent):void
@@ -24,7 +24,13 @@
 
 	<s:Label text="TUS FuTbOlIsTaS Se HaN lEsionaDo!" />
 	
-	<s:List 
+	<s:List id="MyInjuredList" dataProvider="{mInjured}" left="20" right="20" bottom="50" height="120"
+			verticalScrollPolicy="off"
+			horizontalScrollPolicy="on"
+			itemRenderer="GameView.FriendSelection.FriendItem" useVirtualLayout="false"
+			skinClass="GameView.Skins.DefaultListSkin">
+		<s:layout><s:HorizontalLayout gap="20" /></s:layout>
+	</s:List> 
 		
 	<s:Button label="CERRAR" horizontalCenter="0" bottom="20" click="CloseClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 	
