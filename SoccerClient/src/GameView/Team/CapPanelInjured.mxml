@@ -8,6 +8,8 @@
 	<fx:Script><![CDATA[
 		import SoccerServer.TransferModel.vo.SoccerPlayer;
 		
+		import utils.TimeUtils;
+		
 		[Bindable]
 		public function get TheSoccerPlayer() : SoccerPlayer { return mSoccerPlayer; }
 		public function set TheSoccerPlayer(v:SoccerPlayer) : void { mSoccerPlayer = v;	}
@@ -20,7 +22,20 @@
 		
 		static private function GetInjuryRemainingTime(soccerPlayer : SoccerPlayer) : String
 		{
+			var ret : String = "";
 			
+			if (IsInjured(soccerPlayer))
+			{
+				var remainingMilisecs : Number = (soccerPlayer.LastInjuryDate.time + (2*24*60*60*1000)) - new Date().time;
+				
+				// Seguro que la lesion no ha caducado?
+				if (remainingMilisecs >=0)
+				{
+					ret = TimeUtils.ConvertSecondsToStringWithDays(remainingMilisecs / 1000);
+				}
+			}
+			
+			return ret;
 		}
 		
 	]]></fx:Script>
