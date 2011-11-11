@@ -1,33 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
-		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:Team="GameView.Team.*" xmlns:GameView="GameView.*"
 		 width="400" height="300">
 	
 	<fx:Style source="../styles.css"/>
 	
-	
 	<fx:Script>
 		<![CDATA[
+			import GameModel.MatchResultUtils;
+			import GameModel.TeamModel;
+			
+			import mx.collections.ArrayCollection;
+			
 			public static function Show(matchResult : Object) : void
 			{
-				AnimatableDialog.Show(getDefinitionByName("GameView.Match::InjuredDialog") as Class);
+				var dialog : InjuredDialog = AnimatableDialog.Show(getDefinitionByName("GameView.Match::InjuredDialog") as Class) as InjuredDialog;
+				
+				var teamModel : TeamModel = SoccerClient.GetMainGameModel().TheTeamModel; 
+				var myResult : Object = MatchResultUtils.GetMyResult(matchResult,teamModel);
+				
+				var injured : ArrayCollection = myResult.InjuredSoccerPlayers;
+				
+				for each(var soccerPlayerID : int in injured)
+				{
+					dialog.mInjured.addItem(teamModel.GetSoccerPlayerByID(soccerPlayerID));					
+				}
 			}
 			
 			protected function CloseClickHandler(event:MouseEvent):void
 			{
-				AnimatableDialog.Dismiss(this);
+				AnimatableDialog.Dismiss(this, null);
 			}
+			
+			[Bindable] private var mInjured : ArrayCollection = new ArrayCollection();
 		]]>
 	</fx:Script>
 	
 	<GameView:PopupBackground width="356" height="252" />
 
-	<s:Label text="TUS FuTbOlIsTaS Se HaN lEsionaDo!" />
+	<s:Label top="20" horizontalCenter="0" text="FuTBOliStA LeSIOnaDo (uno y sólo uno de momento, al 33%)!" styleName="whiteBoldBig" />
 	
 	<s:List id="MyInjuredList" dataProvider="{mInjured}" left="20" right="20" bottom="50" height="120"
-			verticalScrollPolicy="off"
-			horizontalScrollPolicy="on"
-			itemRenderer="GameView.FriendSelection.FriendItem" useVirtualLayout="false"
+			verticalScrollPolicy="off" horizontalScrollPolicy="off"
+			itemRenderer="GameView.Team.FieldCap" useVirtualLayout="false"
 			skinClass="GameView.Skins.DefaultListSkin">
 		<s:layout><s:HorizontalLayout gap="20" /></s:layout>
 	</s:List> 

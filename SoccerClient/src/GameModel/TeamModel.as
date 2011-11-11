@@ -208,33 +208,18 @@ package GameModel
 		public function get SelectedSoccerPlayer() : SoccerPlayer { return mSelectedSoccerPlayer; }
 		public function set SelectedSoccerPlayer(s : SoccerPlayer) : void { mSelectedSoccerPlayer = s; }
 				
-		// El MatchResult entra desde el servidor MainRealtime
-		public function AmITheWinner(matchResult : Object) : Boolean
-		{
-			var bRet : Boolean = false;
-			
-			if (matchResult.ResultPlayer1.Goals != matchResult.ResultPlayer2.Goals)
-			{
-				var winner : Object = matchResult.ResultPlayer1.Goals > matchResult.ResultPlayer2.Goals? 
-									  matchResult.ResultPlayer1 : 
-									  matchResult.ResultPlayer2;
-				
-				if (TheTeam.Name == winner.Name)
-					bRet = true;
-			}
-			
-			return bRet;
-		}
 		
-		public function GetOpponentName(matchResult : Object) : String
+		public function GetSoccerPlayerByID(soccerPlayerID : int) : SoccerPlayer
 		{
-			var oppName : String = matchResult.ResultPlayer1.Name;
-			
-			if (matchResult.ResultPlayer1.Name == TheTeam.Name)
-				oppName = matchResult.ResultPlayer2.Name;
-			
-			return oppName;
-		}
+			for each(var soccerPlayer : SoccerPlayer in TheTeam.SoccerPlayers)
+			{
+				if (soccerPlayerID == soccerPlayer.SoccerPlayerID)
+				{
+					return soccerPlayer;
+				}
+			}
+			return null;
+		}			
 		
 		// Aseguramos siempre que, aunque tenemos variables duplicados en Team y en TeamDetails, estan siempre sincronizados.
 		// Se ha producido un cambio en el equipo -> Hay q reflejarlo en los TeamDetails propios. Es internal para que la puede llamar por ejemplo

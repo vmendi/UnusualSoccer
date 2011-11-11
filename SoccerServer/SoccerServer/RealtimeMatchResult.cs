@@ -2,6 +2,7 @@
 using System.Linq;
 using SoccerServer;
 using SoccerServer.BDDModel;
+using System.Collections.Generic;
 
 namespace SoccerServer
 {
@@ -17,6 +18,8 @@ namespace SoccerServer
             public int DiffXP;
             public int DiffSkillPoints;
             public int DiffTrueSkill;
+
+            public List<int> InjuredSoccerPlayers;  // SoccerPlayerID. Los lesionados solo debido a este partido
         }
 
         public Boolean WasCompetition = false;
@@ -82,9 +85,12 @@ namespace SoccerServer
                                    select p).First();
                 mParticipation2.Goals = ResultPlayer2.Goals;
 
-                // Competicion. Solo si abandonan en la misma IP no cuenta
+                // Competicion. Solo si abandonan en la misma IP no cuenta.
                 if (!mBDDMatch.IsFriendly && !WasAbandonedSameIP)
                     ProcessCompetition();
+
+                // Lesionamos a futbolistas
+                ProcessInjured();
                 
                 mContext.SubmitChanges();
             }
@@ -99,6 +105,42 @@ namespace SoccerServer
             mRealtimePlayer2 = null;
             mParticipation1 = null;
             mParticipation2 = null;
+        }
+
+        private void ProcessInjured()
+        {
+            ResultPlayer1.InjuredSoccerPlayers = InjureSoccerPlayers(mBDDPlayer1.Team);
+            ResultPlayer2.InjuredSoccerPlayers = InjureSoccerPlayers(mBDDPlayer2.Team);
+        }
+
+        static private List<int> InjureSoccerPlayers(BDDModel.Team theTeam)
+        {
+            var ret = new List<int>();
+
+            // Los alineados
+            var soccerPlayers = (from p in theTeam.SoccerPlayers
+                                 where p.FieldPosition < 100 && !p.IsInjured
+                                 orderby p.FieldPosition
+                                 select p).ToArray();
+
+            // Si ya hay 3 lesionados entre los alineados, no lesionamos a nadie mas. Si me quedan 5 futbolistas => 4 + portero => 3 lesionados
+            if (soccerPlayers.Count() > 5)
+            {
+                var rand = new Random();
+
+                // Se lesiona un futbolista? (1 y solo 1 por partido de momento, aunque mandemos una lista)
+                if (rand.Next(100) < 33)
+                {
+                    // El portero es el 0, y nunca se lesiona
+                    var randInjured = rand.Next(1, soccerPlayers.Count());
+
+                    soccerPlayers[randInjured].IsInjured = true;
+                    soccerPlayers[randInjured].LastInjuryDate = DateTime.Now;
+                    ret.Add(soccerPlayers[randInjured].SoccerPlayerID);
+                }
+            }
+
+            return ret;
         }
 
         private void ProcessCompetition()

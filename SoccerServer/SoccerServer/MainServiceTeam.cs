@@ -132,6 +132,7 @@ namespace SoccerServer
                 newSoccerPlayer.Sliding = 0;
                 newSoccerPlayer.Weight = 0;
                 newSoccerPlayer.IsInjured = false;
+                newSoccerPlayer.LastInjuryDate = null;
 
                 mContext.SoccerPlayers.InsertOnSubmit(newSoccerPlayer);
             }

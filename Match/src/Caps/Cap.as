@@ -86,7 +86,7 @@ package Caps
 			{
 				// En modo debug cambiamos la equipación del Sporting porque es identia a la del atleti 
 				if( team.Name == "Sporting" )
-					team.Name = "Deportivo";
+					team.Name = "Betis";
 			}
 				
 			// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el quipo
