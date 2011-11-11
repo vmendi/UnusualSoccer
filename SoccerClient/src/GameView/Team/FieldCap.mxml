@@ -44,7 +44,7 @@
 						</s:Ellipse>
 					</s:Group>
 				</GameView:mask>
-			</GameView:FacebookPicture>	
+			</GameView:FacebookPicture>
 		</s:Group>
 		
 		<s:Group horizontalCenter="0" top="65" width="70" height="19" id="MyNameGroup" visible="{IsVisibleName(data)}">
@@ -65,6 +65,8 @@
 		</s:Group>
 		
 	</s:Group>
+	
+	<s:Image x="38" y="-8" source="@Embed(source='/Assets/General.swf', symbol='CapInjured')" />
 	
 	<!-- <s:Label id="MyBackNumberLabel" text="{data.DorsalNumber}" horizontalCenter="0" top="10" styleName="whiteBoldMedium" textAlign="center" filters="{DorsalNumberStrokeFilter}"/> -->
 		

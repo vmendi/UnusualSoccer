@@ -9,8 +9,8 @@
 	<s:layout><s:VerticalLayout horizontalAlign="center" /></s:layout>
 	
 	<s:Group>
-		<s:BitmapImage top="0" left="0" source="@Embed(source='/Assets/General.swf', symbol='CapDetail')" />
-		<GameView:FacebookPicture FacebookID="{data.FacebookID}" maskType="alpha" scaleX="0.88" scaleY="0.88" top="9" left="9">
+		<s:Image x="0" y="0" source="@Embed(source='/Assets/General.swf', symbol='CapDetailBg')" />
+		<GameView:FacebookPicture FacebookID="{data.FacebookID}" maskType="alpha" scaleX="0.88" scaleY="0.88" top="10" left="8">
 			<GameView:mask>
 				<s:Group>
 					<s:Ellipse width="50" height="50">
