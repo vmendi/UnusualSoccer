@@ -98,6 +98,6 @@
 	
 	<Team:SkillPointAssigner width="80%" includeIn="Assigning" itemDestructionPolicy="auto"/>
 
-	<Team:CapPanelInjured x="0" y="310" TheSoccerPlayer="{mTeamModel.SelectedSoccerPlayer}" visible="{mTeamModel.SelectedSoccerPlayer.IsInjured}" />
+	<Team:CapPanelInjured x="0" y="310" TheSoccerPlayer="{mTeamModel.SelectedSoccerPlayer}"/>
 
 </s:Panel>
