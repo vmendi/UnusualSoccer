@@ -25,6 +25,7 @@ package Caps
 					"Sevilla",
 					"Valencia",
 					"Zaragoza",
+					"Rayo",
 				],
 				// Grupo 2 
 				[
@@ -34,6 +35,7 @@ package Caps
 					"Deportivo",
 					"Espanyol",
 					"R. Sociedad",
+					"Betis",
 				],
 				// Grupo 3 
 				[
@@ -41,6 +43,7 @@ package Caps
 					"Athletic",
 					"Almería",
 					"Sporting",
+					"Granada",
 				],
 				// Grupo 4 
 				[
