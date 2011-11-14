@@ -431,7 +431,7 @@ package Caps
 		// Obtenemos el grupo al que pertenece el equipo 
 		// NOTE: Todos los equipos pertenecen a un grupo en función de los colores de su equipación
 		//
-		static public function GroupTeam( teamName:String ) : int
+		static public function GroupTeam(teamName:String) : int
 		{
 			var groupIdx:int = 0;
 			for each ( var group:Array in Team.Groups )
@@ -444,7 +444,7 @@ package Caps
 				}
 			}
 			
-			throw new Error( "El equipo " + teamName + " no está en ninguna de las listas de equipacion. Estan mal escritos los nombres? " );
+			throw new Error("El equipo " + teamName + " no está en ninguna de las listas de equipacion. Estan mal escritos los nombres? ");
 			
 			return( 0 );
 		}

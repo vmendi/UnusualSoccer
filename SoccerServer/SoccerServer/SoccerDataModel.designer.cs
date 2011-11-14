@@ -3424,6 +3424,8 @@ namespace SoccerServer.BDDModel
 		
 		private bool _IsInjured;
 		
+		private System.Nullable<System.DateTime> _LastInjuryDate;
+		
 		private EntityRef<Team> _Team;
 		
     #region Extensibility Method Definitions
@@ -3450,6 +3452,8 @@ namespace SoccerServer.BDDModel
     partial void OnPowerChanged();
     partial void OnIsInjuredChanging(bool value);
     partial void OnIsInjuredChanged();
+    partial void OnLastInjuryDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastInjuryDateChanged();
     #endregion
 		
 		public SoccerPlayer()
@@ -3658,6 +3662,26 @@ namespace SoccerServer.BDDModel
 					this._IsInjured = value;
 					this.SendPropertyChanged("IsInjured");
 					this.OnIsInjuredChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastInjuryDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastInjuryDate
+		{
+			get
+			{
+				return this._LastInjuryDate;
+			}
+			set
+			{
+				if ((this._LastInjuryDate != value))
+				{
+					this.OnLastInjuryDateChanging(value);
+					this.SendPropertyChanging();
+					this._LastInjuryDate = value;
+					this.SendPropertyChanged("LastInjuryDate");
+					this.OnLastInjuryDateChanged();
 				}
 			}
 		}

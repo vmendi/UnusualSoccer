@@ -161,8 +161,8 @@ package Caps
 		//
 		public function Run(elapsed:Number) : void
 		{
-			// Si todavia no hemos recibido datos desde el servidor...
-			if (_State == GameState.NotInit)
+			// Si todavia no hemos recibido datos desde el servidor... o el juego ya se ha acabado
+			if (_State == GameState.NotInit || _State == GameState.EndGame)
 				return;
 			
 			TheTeams[Enums.Team1].Run(elapsed);
@@ -358,11 +358,6 @@ package Caps
 					else if( Part == 3 )
 						throw new Error (IDString + "No deberíamos pasar por EndPart en la segunda parte" );
 										
-					break;
-				}
-				
-				case GameState.EndGame:
-				{
 					break;
 				}
 			}

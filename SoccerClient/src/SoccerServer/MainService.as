@@ -50,7 +50,7 @@
 
       public function MainService( model:MainServiceModel = null )
       {
-        remoteObject = new RemoteObject("GenericDestination");
+        remoteObject  = new RemoteObject("GenericDestination");
         remoteObject.source = "SoccerServer.MainService";
         
         remoteObject.AssignSkillPoints.addEventListener("result",AssignSkillPointsHandler);

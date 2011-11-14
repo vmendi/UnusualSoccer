@@ -18,6 +18,8 @@ package GameView.Match
 	import spark.effects.easing.Elastic;
 	import spark.effects.easing.Power;
 	
+	import utils.Delegate;
+	
 	public final class AnimatableDialog
 	{
 		public static function Show(theDialogClass : Class) : Object
@@ -34,7 +36,7 @@ package GameView.Match
 			return dialog;
 		}
 		
-		public static function Dismiss(dialog : UIComponent) : void
+		public static function Dismiss(dialog : UIComponent, callbackOnEnd : Function) : void
 		{
 			var motionPath : MotionPath = new SimpleMotionPath("x", dialog.x, FlexGlobals.topLevelApplication.width);
 			
@@ -42,14 +44,16 @@ package GameView.Match
 			
 			animateEffect.easer = new Power(1, 5);
 			animateEffect.startDelay = 0;
-			animateEffect.addEventListener(EffectEvent.EFFECT_END, static_onEffectEnd);
+			animateEffect.addEventListener(EffectEvent.EFFECT_END, Delegate.create(static_onEffectEnd, callbackOnEnd));
 			animateEffect.play();
 		}
 		
-		static private function static_onEffectEnd(e:EffectEvent) : void
+		static private function static_onEffectEnd(e:EffectEvent, callbackOnEnd : Function) : void
 		{
-			(e.effectInstance as EventDispatcher).removeEventListener(EffectEvent.EFFECT_END, static_onEffectEnd);
 			PopUpManager.removePopUp(e.effectInstance.target as IFlexDisplayObject);
+			
+			if (callbackOnEnd != null)
+				callbackOnEnd();
 		}
 		
 		static private function static_creationCompleteHandler(event:FlexEvent) : void

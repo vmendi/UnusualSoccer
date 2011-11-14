@@ -77,8 +77,7 @@
 			
 		private function OnMatchEnded(matchResult:Object) : void
 		{
-			MatchEndDialog.Show(matchResult, mMainGameModel.TheTeamModel.AmITheWinner(matchResult),
-											 mMainGameModel.TheTeamModel.GetOpponentName(matchResult));
+			MatchEndDialog.Show(matchResult);
 				
 			if (matchResult.WasCompetition)
 			{

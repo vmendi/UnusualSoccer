@@ -92,6 +92,7 @@
         <field name="Sliding" type="int" fulltype="int" nativetype="int" />
         <field name="Power" type="int" fulltype="int" nativetype="int" />
         <field name="IsInjured" type="Boolean" fulltype="Boolean" nativetype="bool" />
+        <field name="LastInjuryDate" type="Date" fulltype="Date" nativetype="DateTime" />
       </datatype>
       <datatype name="SpecialTraining" fullname="SoccerServer.TransferModel.SpecialTraining" typeNamespace="SoccerServer.TransferModel">
         <field name="SpecialTrainingDefinition" type="SpecialTrainingDefinition" fulltype="SoccerServer.TransferModel.SpecialTrainingDefinition" nativetype="SoccerServer.TransferModel.SpecialTrainingDefinition" typeNamespace="SoccerServer.TransferModel" />

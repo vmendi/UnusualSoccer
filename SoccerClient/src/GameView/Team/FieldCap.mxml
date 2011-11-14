@@ -66,7 +66,7 @@
 		
 	</s:Group>
 	
-	<s:Image x="38" y="-8" source="@Embed(source='/Assets/General.swf', symbol='CapInjured')" />
+	<s:Image x="38" y="-8" source="@Embed(source='/Assets/General.swf', symbol='CapInjured')" visible="{data.IsInjured}" />
 	
 	<!-- <s:Label id="MyBackNumberLabel" text="{data.DorsalNumber}" horizontalCenter="0" top="10" styleName="whiteBoldMedium" textAlign="center" filters="{DorsalNumberStrokeFilter}"/> -->
 		

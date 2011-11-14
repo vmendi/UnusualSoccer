@@ -2,25 +2,39 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 creationComplete="CreationCompleteHandler(event)"
-		 xmlns:Team="GameView.Team.*" width="356" height="212" xmlns:GameView="GameView.*">
+		 xmlns:Team="GameView.Team.*" xmlns:GameView="GameView.*"
+		 width="356" height="212">
 	
 	<fx:Style source="../styles.css"/>
-	
-	
-	<fx:Script><![CDATA[
 		
-		public static function Show(matchResult : Object, winner : Boolean, oppName : String) : void
+	<fx:Script><![CDATA[
+		import GameModel.MatchResultUtils;
+		import GameModel.TeamModel;
+		
+		import mx.collections.ArrayCollection;
+		import mx.collections.ArrayList;
+		
+		public static function Show(matchResult : Object) : void
 		{
 			var dialog : MatchEndDialog = AnimatableDialog.Show(getDefinitionByName("GameView.Match::MatchEndDialog") as Class) as MatchEndDialog;
-
+	
+			dialog.mTeamModel = SoccerClient.GetMainGameModel().TheTeamModel; 
 			dialog.mMatchResult = matchResult;
-			dialog.mWinner = winner;
-			dialog.mOpponentName = oppName;
+			dialog.mWinner =  MatchResultUtils.AmITheWinner(matchResult, dialog.mTeamModel);
+			dialog.mOpponentName = MatchResultUtils.GetOpponentResult(matchResult, dialog.mTeamModel).Name;
 		}
 				
 		protected function AceptarClickHandler(event:MouseEvent):void
 		{
-			AnimatableDialog.Dismiss(this);
+			if ((MatchResultUtils.GetMyResult(mMatchResult, mTeamModel).InjuredSoccerPlayers as ArrayCollection).length != 0)
+				AnimatableDialog.Dismiss(this, ShowInjuredDialog);
+			else
+				AnimatableDialog.Dismiss(this, null);
+		}
+		
+		private function ShowInjuredDialog() : void
+		{
+			InjuredDialog.Show(mMatchResult);
 		}
 		
 		protected function PublicarClickHandler(event:MouseEvent):void
@@ -48,8 +62,8 @@
 			{
 				currentState = "SameIP";
 				// El abandono de mi contrario debería favorecerme a mi, pero ha sido ilegal
-				Titular = "¡ HA HABIDO UN ABANDONO !";
-				Texto = "Ambos jugadores estáis en la misma red, por lo que no habrá reparto de puntos. ";
+				mTitular = "¡ HA HABIDO UN ABANDONO !";
+				mSpeech = "Ambos jugadores estáis en la misma red, por lo que no habrá reparto de puntos. ";
 			}
 			else 
 			{			
@@ -62,22 +76,22 @@
 							// Mi contrincante ha abandonado y me merezco los puntos
 							if (!mMatchResult.WasTooManyTimes)
 							{
-								Titular = "¡ TU RIVAL HA ABANDONADO !";
-								Texto = "Seguro que no ha podido soportar la presión.";
+								mTitular = "¡ TU RIVAL HA ABANDONADO !";
+								mSpeech = "Seguro que no ha podido soportar la presión.";
 								currentState = "WinnerAbandoned";
 							}
 							else
 							{
-								Titular = "¡ TU RIVAL HA ABANDONADO !";
-								Texto = "Pero no habrá reparto de puntos porque has superado el número máximo de partidos diarios que puedes jugar contra este rival.";
+								mTitular = "¡ TU RIVAL HA ABANDONADO !";
+								mSpeech = "Pero no habrá reparto de puntos porque has superado el número máximo de partidos diarios que puedes jugar contra este rival.";
 								currentState = "WinnerAbandoned";
 							}
 						}
 						else
 						{
 							// Mi contrintante ha abandonado pero no me merezco los puntos
-							Titular = "¡ TU RIVAL HA ABANDONADO !";
-							Texto = "Tu habilidad es muy superior a la suya y no habrá reparto de puntos ¡Métete con alguien de tu tamaño!";
+							mTitular = "¡ TU RIVAL HA ABANDONADO !";
+							mSpeech = "Tu habilidad es muy superior a la suya y no habrá reparto de puntos ¡Métete con alguien de tu tamaño!";
 							currentState = "NoJust";
 						}
 					}
@@ -88,22 +102,22 @@
 							// He ganado a mi contrincante y me merezco los puntos
 							if (!mMatchResult.WasTooManyTimes)
 							{
-								Titular = "¡ HAS GANADO !";
-								Texto = "¡Enhorabuena! Estos son los puntos que obtienes.";
+								mTitular = "¡ HAS GANADO !";
+								mSpeech = "¡Enhorabuena! Estos son los puntos que obtienes.";
 								currentState = "Winner";
 							}
 							else
 							{
-								Titular = "¡ HAS GANADO !";
-								Texto = "Pero no habrá reparto de puntos porque has superado el número máximo de partidos diarios que puedes jugar contra este rival.";
+								mTitular = "¡ HAS GANADO !";
+								mSpeech = "Pero no habrá reparto de puntos porque has superado el número máximo de partidos diarios que puedes jugar contra este rival.";
 								currentState = "Winner";
 							}
 						}
 						else
 						{
 							// He ganado a mi contrincante pero no me merezco los puntos
-							Titular = "¡ HAS GANADO !";
-							Texto = "Tu habilidad es muy superior a la suya y no habrá reparto de puntos ¡Busca rivales de tu mismo nivel!";
+							mTitular = "¡ HAS GANADO !";
+							mSpeech = "Tu habilidad es muy superior a la suya y no habrá reparto de puntos ¡Busca rivales de tu mismo nivel!";
 							currentState = "NoJust";
 						}
 					}
@@ -115,15 +129,15 @@
 						if (mMatchResult.WasJust)
 						{
 							// He abandonado
-							Titular = "¡ HAS ABANDONADO !";
-							Texto = "";
+							mTitular = "¡ HAS ABANDONADO !";
+							mSpeech = "";
 							currentState = "Loser";
 						}
 						else
 						{
 							// He abandonado, pero nadie se lleva nada
-							Titular = "¡ HAS ABANDONADO !";
-							Texto = "";
+							mTitular = "¡ HAS ABANDONADO !";
+							mSpeech = "";
 							currentState = "Loser";
 						}
 					}
@@ -132,15 +146,15 @@
 						if (mMatchResult.WasJust)
 						{
 							// Ha ganado mi contrincante y se merece los puntos	
-							Titular = "¡ RESULTADO !";
-							Texto = "";
+							mTitular = "¡ RESULTADO !";
+							mSpeech = "";
 							currentState = "Loser";
 						}
 						else
 						{
 							// Ha ganado mi contrincante pero no se merece ningún punto
-							Titular = "¡ RESULTADO !";
-							Texto = "";
+							mTitular = "¡ RESULTADO !";
+							mSpeech = "";
 							currentState = "Loser";
 						}
 					}
@@ -149,32 +163,15 @@
 			
 			var teams : Array = [ mMatchResult.ResultPlayer1, mMatchResult.ResultPlayer2 ];
 			
-			for (var c:int=0; c < 2; c++)
+			for (var c:int = 0; c < 2; c++)
 			{
 				this["MyName"+c.toString()].text = teams[c].Name;
 				this["MyPredefinedTeamName"+c.toString()].text = teams[c].PredefinedTeamName;
 				(this["MyBadge" + c.toString()] as BadgeTeam).TeamName = teams[c].PredefinedTeamName;
-				this["MyGoals"+c.toString()].text = teams[c].Goals;
-				
-				var appendTo : String = "+";
-				
-				if (teams[c].DiffXP <= 0)
-					appendTo = "";
-				else
-					appendTo = "+";				
-				this["MyXP"+c.toString()].text = appendTo + teams[c].DiffXP;
-				
-				if (teams[c].DiffSkillPoints <= 0)
-					appendTo = "";
-				else
-					appendTo = "+";				
-				this["MySkillPoints"+c.toString()].text = appendTo + teams[c].DiffSkillPoints;
-				
-				if (teams[c].DiffTrueSkill <= 0)
-					appendTo = "";
-				else
-					appendTo = "+";
-				this["MyTrueSkill"+c.toString()].text = appendTo + teams[c].DiffTrueSkill;
+				this["MyGoals"+c.toString()].text = teams[c].Goals;				
+				this["MyXP"+c.toString()].text = (teams[c].DiffXP <= 0? "" : "+") + teams[c].DiffXP;
+				this["MySkillPoints"+c.toString()].text = (teams[c].DiffSkillPoints <= 0? "" : "+") + teams[c].DiffSkillPoints;
+				this["MyTrueSkill"+c.toString()].text = (teams[c].DiffTrueSkill <= 0? "" : "+") + teams[c].DiffTrueSkill;
 			}			
 		}		
 		
@@ -182,10 +179,10 @@
 		private var mWinner : Boolean;
 		private var mOpponentName : String;
 		
-		[Bindable]
-		private var Titular : String;
-		[Bindable]
-		private var Texto : String;
+		[Bindable] private var mTitular : String;
+		[Bindable] private var mSpeech : String;
+		
+		[Bindable] private var mTeamModel : TeamModel;
 		
 	]]></fx:Script>
 	
@@ -204,11 +201,11 @@
 	<s:Group x="10" y="12" width="336" height="55">
 		<s:layout><s:VerticalLayout gap="2" verticalAlign="middle"/></s:layout>
 		<s:Label width="100%" 
-				 text="{Titular}" 
+				 text="{mTitular}" 
 				 textAlign="center" styleName="whiteBoldVeryBig" id="PopupTitular" />
 
 		<s:Label width="100%"
-				 text="{Texto}" 
+				 text="{mSpeech}" 
 				 textAlign="center" styleName="whiteBoldBig" id="PopupTexto" excludeFrom="Loser" />
 	</s:Group>
 	

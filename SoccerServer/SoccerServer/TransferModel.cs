@@ -69,7 +69,8 @@ namespace SoccerServer.TransferModel
 		public int Weight;
 		public int Sliding;
 		public int Power;
-		public bool IsInjured;
+        public bool IsInjured;
+		public DateTime LastInjuryDate;
 
 		public SoccerPlayer(BDDModel.SoccerPlayer from) { CopyHelper.Copy(from, this);  }
 	}

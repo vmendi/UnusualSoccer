@@ -164,6 +164,7 @@
       <Column Name="Sliding" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Power" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="IsInjured" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LastInjuryDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="Team_SoccerPlayer" Member="Team" ThisKey="TeamID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
