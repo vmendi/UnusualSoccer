@@ -23,7 +23,6 @@ package SoccerServer.TransferModel.vo
 		public function Ticket(){}
 	
 		public var RemainingMatches:int;
-		public var TicketKind:int;
 		public var TicketPurchaseDate:Date;
 		public var TicketExpiryDate:Date;
 	}

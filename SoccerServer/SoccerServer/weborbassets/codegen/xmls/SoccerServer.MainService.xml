@@ -74,7 +74,6 @@
       </datatype>
       <datatype name="Ticket" fullname="SoccerServer.TransferModel.Ticket" typeNamespace="SoccerServer.TransferModel">
         <field name="RemainingMatches" type="int" fulltype="int" nativetype="int" />
-        <field name="TicketKind" type="int" fulltype="int" nativetype="int" />
         <field name="TicketPurchaseDate" type="Date" fulltype="Date" nativetype="DateTime" />
         <field name="TicketExpiryDate" type="Date" fulltype="Date" nativetype="DateTime" />
       </datatype>

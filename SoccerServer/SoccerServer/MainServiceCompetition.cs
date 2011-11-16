@@ -148,12 +148,11 @@ namespace SoccerServer
         [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 60000)]
         public DateTime RefreshSeasonEndDate()
         {
-            var context = new SoccerDataModelDataContext();
-            var currentSeason = GetCurrentSeason(context);
-
-            // Momento pronosticado en el que se acabara la temporada
-            DateTime seasonEnd = currentSeason.CreationDate.AddDays(SEASON_DURATION_DAYS);
-            return new DateTime(seasonEnd.Year, seasonEnd.Month, seasonEnd.Day, SEASON_HOUR_STARTTIME, 0, 0, 0, seasonEnd.Kind);
+            using (var context = new SoccerDataModelDataContext())
+            {
+                // Momento pronosticado en el que se acabara la temporada
+                return GenerateTheoricalSeasonEndDate(GetCurrentSeason(context).CreationDate);
+            }
         }
 
         internal static void ResetSeasons(bool addCurrentTeams)
@@ -169,16 +168,24 @@ namespace SoccerServer
 
                     // Fuera todo lo antiguo
                     theContext.ExecuteCommand("DELETE FROM CompetitionSeasons");
-                    
+
                     var lowestDivision = GetLowestDivision(theContext);
-                    var currentSeason = CreateNewSeason(theContext);
+                    var currentSeason = CreateNewSeason(theContext, DateTime.Now);
                     var newGroups = new List<CompetitionGroup>();
 
                     // Con 1000 nuevos al dia, durando 3 dias la competicion, tendriamos 3000/2 = 1500 por grupo.
                     // Pero al principio no van a entrar tantos... hasta que se creen bastantes mas de 2 grupos...
                     for (int c = 0; c < 2; c++)
                     {
-                        newGroups.Add(CreateGroup(theContext, lowestDivision, currentSeason, (c + 1).ToString()));
+                        CompetitionGroup newGroup = new CompetitionGroup();
+                        newGroup.CompetitionDivision = lowestDivision;
+                        newGroup.CompetitionSeason = currentSeason;
+                        newGroup.GroupName = (c+1).ToString();
+                        newGroup.CreationDate = currentSeason.CreationDate;
+
+                        theContext.CompetitionGroups.InsertOnSubmit(newGroup);
+
+                        newGroups.Add(newGroup);
                     }
                     // Submitear generara los IDs de los nuevos grupos
                     theContext.SubmitChanges();
@@ -199,7 +206,7 @@ namespace SoccerServer
             }
         }
 
-        internal static void SeasonEnd()
+        internal static void CheckSeasonEnd(bool forceEnd)
         {
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -210,105 +217,127 @@ namespace SoccerServer
 
                 using (SqlTransaction tran = con.BeginTransaction())
                 {
-                    SoccerDataModelDataContext theContext = new SoccerDataModelDataContext(con);
-                    theContext.Transaction = tran;
-
-                    var now = DateTime.Now;
-
-                    var oldSeason = GetCurrentSeason(theContext);
-                    oldSeason.EndDate = now;
-
-                    // Desde fuera se seguira viendo la oldSeason gracias a la transaccion
-                    var newSeason = CreateNewSeason(theContext);
-                    newSeason.CreationDate = now;
-
-                    // Submitimos la nueva season _dentro_ de la transaccion. Con esto, tenemos su ID
-                    theContext.SubmitChanges();
-
-                    List<int> parentDivisionTeams = new List<int>();
-                    List<int> currDivisionTeams = null;
-                    List<CompetitionGroupEntry> entries = new List<CompetitionGroupEntry>();
-
-                    // Empezamos por la division mas baja, vamos subiendo en el arbol
-                    var currentDivision = GetLowestDivision(theContext);
-
-                    while (currentDivision.ParentCompetitionDivisionID != currentDivision.CompetitionDivisionID)
+                    using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext(con))
                     {
-                        // Todas las entries de esta division, temporada pasada
-                        var groupEntries = (from e in theContext.CompetitionGroupEntries
-                                            where e.CompetitionGroup.CompetitionSeasonID == oldSeason.CompetitionSeasonID &&
-                                                  e.CompetitionGroup.CompetitionDivisionID == currentDivision.CompetitionDivisionID &&
-                                                  e.NumMatchesPlayed > 0    // Quitamos los inactivos!
-                                            select e);
+                        theContext.Transaction = tran;
 
-                        // Nos quedamos con los ascendidos de la division hija
-                        currDivisionTeams = parentDivisionTeams;
+                        var oldSeason = GetCurrentSeason(theContext);
 
-                        // Los ascendidos de esta division que pasaran al padre
-                        parentDivisionTeams = (from entry in groupEntries
-                                               where entry.Points >= currentDivision.MinimumPoints
-                                               select entry.Team.TeamID).ToList();
-
-                        // Los que no ascienden (sumados a los que ascendieron de la division hija)
-                        currDivisionTeams.AddRange(from entry in groupEntries
-                                                   where entry.Points < currentDivision.MinimumPoints
-                                                   select entry.Team.TeamID);
-
-                        // Numero de grupos en ESTA division, los que vamos a crear
-                        int numGroups = (int)(((float)currDivisionTeams.Count() / (float)COMPETITION_GROUP_ENTRIES) + 1.0);
-
-                        // Los creamos para a continuacion hacer una insercion Bulk. Haremos tantas inserciones bulk como divisiones
-                        List<CompetitionGroup> groups = new List<CompetitionGroup>(numGroups);
-
-                        for (int c = 0; c < numGroups; ++c)
-                        {
-                            var newGroup = new CompetitionGroup();
-                            newGroup.CompetitionDivisionID = currentDivision.CompetitionDivisionID;
-                            newGroup.CompetitionSeasonID = newSeason.CompetitionSeasonID;
-                            newGroup.GroupName = (c + 1).ToString();
-                            newGroup.CreationDate = DateTime.Now;       // No tiene por qué coincidir con la creacion de la Season
-                            groups.Add(newGroup);
-                        }
-
-                        InsertBulkCopyCompetitionGroups(groups, con, tran);
-
-                        // Traemos los grupos que acabamos de crear de vuelta para obtener su ID
-                        List<int> groupIDs = (from s in theContext.CompetitionGroups
-                                              where s.CompetitionDivisionID == currentDivision.CompetitionDivisionID &&
-                                                    s.CompetitionSeasonID == newSeason.CompetitionSeasonID
-                                              select s.CompetitionGroupID).ToList();
-
-                        if (groupIDs.Count() != numGroups)
-                            throw new Exception("WTF 666-3141592 " + groupIDs.Count() + " " + numGroups);
-
-                        for (int c = 0; c < numGroups; ++c)
-                        {
-                            for (var d = c * COMPETITION_GROUP_ENTRIES; d < (c+1) * COMPETITION_GROUP_ENTRIES; ++d)
-                            {
-                                if (d >= currDivisionTeams.Count())
-                                    break;
-
-                                entries.Add(new CompetitionGroupEntry {
-                                                                         CompetitionGroupID = groupIDs[c],
-                                                                         TeamID = currDivisionTeams[d]
-                                                                       });
-                            }
-                        }
-                            
-                        // Nueva division ya generada, pasamos al padre
-                        currentDivision = currentDivision.CompetitionDivision1;
+                        if (forceEnd || GenerateTheoricalSeasonEndDate(oldSeason.CreationDate) < DateTime.Now)
+                            SeasonEndInner(oldSeason, theContext, con, tran);
+                        
+                        tran.Commit();
                     }
-
-                    // Nuestra magica insercion bulk para todas las entries
-                    InsertBulkCopyCompetitionGroupEntries(entries, con, tran);
-                    tran.Commit();
-                    theContext.Dispose();
                 }
             }
 
             stopWatch.Stop();
 
             Log.log(MAINSERVICE, "MainServiceCompetition.SeasonEnd: Elapsed miliseconds " + stopWatch.Elapsed.Milliseconds.ToString());
+        }
+
+        // En las fecha de creacion, siempre insertamos la verdadera. Luego los calculos los haremos con la teorica
+        private static DateTime GenerateTheoricalSeasonEndDate(DateTime seasonCreationDate)
+        {
+            return GenerateTheoricalSeasonStartDate(seasonCreationDate).AddDays(SEASON_DURATION_DAYS);
+        }
+
+        private static DateTime GenerateTheoricalSeasonStartDate(DateTime seasonCreationDate)
+        {
+            return new DateTime(seasonCreationDate.Year, seasonCreationDate.Month, seasonCreationDate.Day, SEASON_HOUR_STARTTIME, 0, 0, 0, seasonCreationDate.Kind);
+        }
+
+        private static void SeasonEndInner(CompetitionSeason oldSeason, SoccerDataModelDataContext theContext, SqlConnection con, SqlTransaction tran)
+        {
+            // Queremos que a lo largo de toda la query, el momento actual sea el mismo
+            var now = DateTime.Now;
+
+            // Finalizamos la vieja
+            oldSeason.EndDate = now;
+
+            // Desde fuera se seguira viendo la oldSeason gracias a la transaccion
+            var newSeason = CreateNewSeason(theContext, now);
+            
+            // Submitimos la nueva season _dentro_ de la transaccion. Con esto, tenemos su ID
+            theContext.SubmitChanges();
+
+            List<int> parentDivisionTeams = new List<int>();
+            List<int> currDivisionTeams = null;
+            List<CompetitionGroupEntry> entries = new List<CompetitionGroupEntry>();
+
+            // Empezamos por la division mas baja, vamos subiendo en el arbol
+            var currentDivision = GetLowestDivision(theContext);
+
+            while (currentDivision.ParentCompetitionDivisionID != currentDivision.CompetitionDivisionID)
+            {
+                // Todas las entries de esta division, temporada pasada
+                var groupEntries = (from e in theContext.CompetitionGroupEntries
+                                    where e.CompetitionGroup.CompetitionSeasonID == oldSeason.CompetitionSeasonID &&
+                                          e.CompetitionGroup.CompetitionDivisionID == currentDivision.CompetitionDivisionID &&
+                                          e.NumMatchesPlayed > 0    // Quitamos los inactivos!
+                                    select e);
+
+                // Nos quedamos con los ascendidos de la division hija
+                currDivisionTeams = parentDivisionTeams;
+
+                // Los ascendidos de esta division que pasaran al padre
+                parentDivisionTeams = (from entry in groupEntries
+                                       where entry.Points >= currentDivision.MinimumPoints
+                                       select entry.Team.TeamID).ToList();
+
+                // Los que no ascienden (sumados a los que ascendieron de la division hija)
+                currDivisionTeams.AddRange(from entry in groupEntries
+                                           where entry.Points < currentDivision.MinimumPoints
+                                           select entry.Team.TeamID);
+
+                // Numero de grupos en ESTA division, los que vamos a crear
+                int numGroups = (int)(((float)currDivisionTeams.Count() / (float)COMPETITION_GROUP_ENTRIES) + 1.0);
+
+                // Los creamos para a continuacion hacer una insercion Bulk. Haremos tantas inserciones bulk como divisiones
+                List<CompetitionGroup> groups = new List<CompetitionGroup>(numGroups);
+
+                for (int c = 0; c < numGroups; ++c)
+                {
+                    var newGroup = new CompetitionGroup();
+                    newGroup.CompetitionDivisionID = currentDivision.CompetitionDivisionID;
+                    newGroup.CompetitionSeasonID = newSeason.CompetitionSeasonID;
+                    newGroup.GroupName = (c + 1).ToString();
+                    newGroup.CreationDate = now;
+                    groups.Add(newGroup);
+                }
+
+                InsertBulkCopyCompetitionGroups(groups, con, tran);
+
+                // Traemos los grupos que acabamos de crear de vuelta para obtener su ID
+                List<int> groupIDs = (from s in theContext.CompetitionGroups
+                                      where s.CompetitionDivisionID == currentDivision.CompetitionDivisionID &&
+                                            s.CompetitionSeasonID == newSeason.CompetitionSeasonID
+                                      select s.CompetitionGroupID).ToList();
+
+                if (groupIDs.Count() != numGroups)
+                    throw new Exception("WTF 666-3141592 " + groupIDs.Count() + " " + numGroups);
+
+                for (int c = 0; c < numGroups; ++c)
+                {
+                    for (var d = c * COMPETITION_GROUP_ENTRIES; d < (c + 1) * COMPETITION_GROUP_ENTRIES; ++d)
+                    {
+                        if (d >= currDivisionTeams.Count())
+                            break;
+
+                        entries.Add(new CompetitionGroupEntry
+                        {
+                            CompetitionGroupID = groupIDs[c],
+                            TeamID = currDivisionTeams[d]
+                        });
+                    }
+                }
+
+                // Nueva division ya generada, pasamos al padre
+                currentDivision = currentDivision.CompetitionDivision1;
+            }
+
+            // Nuestra magica insercion bulk para todas las entries
+            InsertBulkCopyCompetitionGroupEntries(entries, con, tran);
         }
 
         private static void InsertBulkCopyCompetitionGroupEntries(IEnumerable<CompetitionGroupEntry> entries, SqlConnection con, SqlTransaction tran)
@@ -347,28 +376,16 @@ namespace SoccerServer
             return theContext.CompetitionSeasons.Single(season => season.EndDate == null);
         }
 
-        private static CompetitionSeason CreateNewSeason(SoccerDataModelDataContext theContext)
+        private static CompetitionSeason CreateNewSeason(SoccerDataModelDataContext theContext, DateTime creationDate)
         {
             CompetitionSeason newSeason = new CompetitionSeason();
-            newSeason.CreationDate = DateTime.Now;
+            newSeason.CreationDate = creationDate;
 
             theContext.CompetitionSeasons.InsertOnSubmit(newSeason);
 
             return newSeason;
         }
 
-        private static CompetitionGroup CreateGroup(SoccerDataModelDataContext theContext, CompetitionDivision division, CompetitionSeason season, string name)
-        {
-            CompetitionGroup newGroup = new CompetitionGroup();
-            newGroup.CompetitionDivision = division;
-            newGroup.CompetitionSeason = season;
-            newGroup.GroupName = name;
-            newGroup.CreationDate = DateTime.Now;   // No tiene por qué coincidir con creacion de la Season
-
-            theContext.CompetitionGroups.InsertOnSubmit(newGroup);
-
-            return newGroup;
-        }
 
         // La unica division que no tiene hijos
         private static CompetitionDivision GetLowestDivision(SoccerDataModelDataContext theContext)
@@ -376,8 +393,9 @@ namespace SoccerServer
             return theContext.CompetitionDivisions.Single(division => division.CompetitionDivisions.Count() == 0);
         }
 
+
         static private int COMPETITION_GROUP_ENTRIES = 100;             // 100 entradas en cada grupo
         static private int SEASON_DURATION_DAYS = 3;                    // Las competiciones duran 3 dias
-        static private int SEASON_HOUR_STARTTIME = 3;                   // A las 3 de la mañana
+        static private int SEASON_HOUR_STARTTIME = 0;                   // Hora de comienzo y fin (teorica). Entre 0 y 23. Actualmente, a las 00:00.
     }
 }
