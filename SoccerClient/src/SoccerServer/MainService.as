@@ -79,6 +79,8 @@
         
         remoteObject.RefreshSeasonEndDate.addEventListener("result",RefreshSeasonEndDateHandler);
         
+        remoteObject.RefreshSpecialTrainingDefinitions.addEventListener("result",RefreshSpecialTrainingDefinitionsHandler);
+        
         remoteObject.RefreshTeam.addEventListener("result",RefreshTeamHandler);
         
         remoteObject.RefreshTeamDetails.addEventListener("result",RefreshTeamDetailsHandler);
@@ -225,6 +227,15 @@
       public function RefreshSeasonEndDate( responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.RefreshSeasonEndDate();
+        
+        if( responder != null )
+            asyncToken.addResponder( responder );
+
+      }
+    
+      public function RefreshSpecialTrainingDefinitions( responder:IResponder = null ):void
+      {
+        var asyncToken:AsyncToken = remoteObject.RefreshSpecialTrainingDefinitions();
         
         if( responder != null )
             asyncToken.addResponder( responder );
@@ -383,6 +394,14 @@
         
           var returnValue:Date = event.result as Date;
           model.RefreshSeasonEndDateResult = returnValue;
+        
+      }
+         
+      public virtual function RefreshSpecialTrainingDefinitionsHandler(event:ResultEvent):void
+      {
+        
+          var returnValue:ArrayCollection = event.result as ArrayCollection;
+          model.RefreshSpecialTrainingDefinitionsResult = returnValue;
         
       }
          

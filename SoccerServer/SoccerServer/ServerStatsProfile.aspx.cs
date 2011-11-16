@@ -97,7 +97,7 @@ namespace SoccerServer
 
         private string GetTicketString()
         {
-            return mPlayer.Team.Ticket.TicketKind.ToString() + " <br/>Purchase Date: " + mPlayer.Team.Ticket.TicketPurchaseDate +
+            return "Purchase Date: " + mPlayer.Team.Ticket.TicketPurchaseDate +
                    "<br/>Expiry Date: " + mPlayer.Team.Ticket.TicketExpiryDate;
         }
 
@@ -122,7 +122,6 @@ namespace SoccerServer
 
         protected void MyResetTicketButton_Click(object sender, EventArgs e)
         {
-            mPlayer.Team.Ticket.TicketKind = -1;
             mPlayer.Team.Ticket.TicketPurchaseDate = DateTime.Now;
             mPlayer.Team.Ticket.TicketExpiryDate = mPlayer.Team.Ticket.TicketPurchaseDate;
             mPlayer.Team.Ticket.RemainingMatches = 5;
@@ -133,7 +132,6 @@ namespace SoccerServer
 
         protected void MySet0RemainingMatchesButton_Click(object sender, EventArgs e)
         {
-            mPlayer.Team.Ticket.TicketKind = -1;
             mPlayer.Team.Ticket.TicketPurchaseDate = DateTime.Now;
             mPlayer.Team.Ticket.TicketExpiryDate = mPlayer.Team.Ticket.TicketPurchaseDate;
             mPlayer.Team.Ticket.RemainingMatches = 0;

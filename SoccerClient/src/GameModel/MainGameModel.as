@@ -38,14 +38,19 @@ package GameModel
 
 		public function InitialRefresh(callback : Function) : void
 		{
-			mPredefinedTeamsModel.InitialRefresh(Delegate.create(InitialRefreshStage01Completed, callback));
+			mPredefinedTeamsModel.InitialRefresh(initialRefreshStage01Completed);
+			
+			function initialRefreshStage01Completed() : void
+			{
+				mTrainingModel.InitialRefresh(initialRefreshStage02Completed);
+			}
+			
+			function initialRefreshStage02Completed() : void
+			{
+				mSpecialTrainingModel.InitialRefresh(callback);	
+			}
 		}
-		
-		private function InitialRefreshStage01Completed(callback : Function) : void
-		{
-			mTrainingModel.InitialRefresh(callback);
-		}
-		
+
 		//
 		// No queremos que se nos queden timers cuando se produce un error y se da la OnCleaningShutdownSignal
 		//

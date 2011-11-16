@@ -173,7 +173,7 @@ namespace SoccerServer
 
         protected void ResetSeasons_Click(object sender, EventArgs e)
         {
-            MainService.ResetSeasons(false);
+            MainService.ResetSeasons(true);
         }
 
         protected void NewSeason_Click(object sender, EventArgs e)
@@ -185,7 +185,6 @@ namespace SoccerServer
         {
             foreach (var ticket in mDC.Tickets)
             {
-                ticket.TicketKind = -1;
                 ticket.TicketPurchaseDate = DateTime.Now;
                 ticket.TicketExpiryDate = ticket.TicketPurchaseDate;
                 ticket.RemainingMatches = 5;

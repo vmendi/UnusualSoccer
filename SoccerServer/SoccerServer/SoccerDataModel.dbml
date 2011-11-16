@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SoccerV2" EntityNamespace="SoccerServer.BDDModel" Class="SoccerDataModelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=localhost;Initial Catalog=SoccerV2;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="SoccerV2ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.TrainingDefinitions" Member="TrainingDefinitions">
+    <Type Name="TrainingDefinition">
+      <Column Name="TrainingDefinitionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="FitnessDelta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Time" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="TrainingDefinition_PendingTraining" Member="PendingTrainings" ThisKey="TrainingDefinitionID" OtherKey="TrainingDefinitionID" Type="PendingTraining" />
+    </Type>
+  </Table>
   <Table Name="dbo.CompetitionDivisions" Member="CompetitionDivisions">
     <Type Name="CompetitionDivision">
       <Column Name="CompetitionDivisionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -9,16 +19,6 @@
       <Association Name="CompetitionDivision_CompetitionDivision" Member="CompetitionDivisions" ThisKey="CompetitionDivisionID" OtherKey="ParentCompetitionDivisionID" Type="CompetitionDivision" />
       <Association Name="CompetitionDivision_CompetitionGroup" Member="CompetitionGroups" ThisKey="CompetitionDivisionID" OtherKey="CompetitionDivisionID" Type="CompetitionGroup" />
       <Association Name="CompetitionDivision_CompetitionDivision" Member="CompetitionDivision1" ThisKey="ParentCompetitionDivisionID" OtherKey="CompetitionDivisionID" Type="CompetitionDivision" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.TrainingDefinitions" Member="TrainingDefinitions">
-    <Type Name="TrainingDefinition">
-      <Column Name="TrainingDefinitionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="FitnessDelta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Time" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="TrainingDefinition_PendingTraining" Member="PendingTrainings" ThisKey="TrainingDefinitionID" OtherKey="TrainingDefinitionID" Type="PendingTraining" />
     </Type>
   </Table>
   <Table Name="dbo.CompetitionGroupEntries" Member="CompetitionGroupEntries">
@@ -164,7 +164,7 @@
       <Column Name="Sliding" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Power" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="IsInjured" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="LastInjuryDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LastInjuryDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Team_SoccerPlayer" Member="Team" ThisKey="TeamID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
@@ -200,9 +200,10 @@
       <Column Name="XP" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SkillPoints" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Energy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Fitness" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Mean" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
       <Column Name="StandardDeviation" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Fitness" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LastFitnessUpdate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Team_CompetitionGroupEntry" Member="CompetitionGroupEntries" ThisKey="TeamID" OtherKey="TeamID" Type="CompetitionGroupEntry" />
       <Association Name="Team_MatchParticipation" Member="MatchParticipations" ThisKey="TeamID" OtherKey="TeamID" Type="MatchParticipation" />
       <Association Name="Team_PendingTraining" Member="PendingTraining" ThisKey="TeamID" OtherKey="TeamID" Type="PendingTraining" Cardinality="One" />
@@ -230,7 +231,6 @@
     <Type Name="Ticket">
       <Column Name="TicketID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="RemainingMatches" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="TicketKind" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="TicketPurchaseDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="TicketExpiryDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Team_Ticket" Member="Team" ThisKey="TicketID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
