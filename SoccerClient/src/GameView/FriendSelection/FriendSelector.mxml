@@ -2,7 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
-		 width="600" height="500"
+		 width="570" height="530"
 		 creationComplete="CreationCompleteHandler(event)"
 		 currentState="Selecting" xmlns:GameView="GameView.*">
 	
@@ -160,19 +160,29 @@
 		
 	]]></fx:Script>
 	
-	<GameView:PopupBackground width="600" height="500" />
+	<GameView:PopupBackground width="570" height="530" />
 	
 	<s:BitmapImage x="2" y="2" source="@Embed(source='/Assets/General.swf', symbol='FriendSelectorHeader')" fillMode="clip" />
 	
-	<s:Group includeIn="Waiting" width="600" height="500">
+	<s:Group x="2" y="20">
+		<s:layout>
+			<s:VerticalLayout />
+		</s:layout>
+		<s:Label width="570" text="{resourceManager.getString('main','FriendSelectorTitle')}" styleName="whiteBoldHuge" textAlign="center"/>
+		<s:Label width="570" text="{resourceManager.getString('main','FriendSelectorTxt')}" styleName="whiteBoldMedium" textAlign="center"/>
+	</s:Group>
+
+	
+	<s:Group includeIn="Waiting" width="570" height="500">
 		<s:Label horizontalCenter="0" verticalCenter="0" text="Waiting... TO-DO TO-DO TO-DO" styleName="whiteBoldBig"/>
 	</s:Group>
 	
-	<s:Group includeIn="Selecting" width="600" height="500">
+	<s:Group includeIn="Selecting" width="570" height="530">
 		
-		<s:TextInput id="MySearchInput" width="300" right="20" top="80" prompt="Buscar amigo" maxChars="50" change="MySearchInputChange(event)"/>
+		<s:Label top="95" right="280" width="200" text="{resourceManager.getString('main','FriendSelectorSearchByName')}" styleName="whiteBoldMedium" textAlign="right"/>
+		<s:TextInput id="MySearchInput" width="250" right="20" top="93" prompt="Buscar amigo" maxChars="50" change="MySearchInputChange(event)"/>
 		
-		<s:Rect left="20" right="20" top="111" height="197" radiusX="4">
+		<s:Rect left="20" right="20" top="121" height="197" radiusX="4">
 			<s:stroke>
 				<s:SolidColorStroke caps="none" color="#CCCCCC" joints="miter" miterLimit="4"
 									weight="2"/>
@@ -187,12 +197,12 @@
 			</s:filters>
 		</s:Rect>
 		
-		<s:List id="MyFriendsList" dataProvider="{mSelectableFriends}" left="20" right="20" top="110" height="200"
+		<s:List id="MyFriendsList" dataProvider="{mSelectableFriends}" left="20" right="20" top="121" height="199"
 				horizontalScrollPolicy="off"
 				itemRenderer="GameView.FriendSelection.FriendItem" useVirtualLayout="true" 
 				change="OnMyFriendListChangeHandler(event)"
 				skinClass="GameView.Skins.DefaultListSkin">
-			<s:layout><s:TileLayout columnWidth="125" rowHeight="100" /></s:layout>
+			<s:layout><s:TileLayout verticalGap="10" horizontalGap="10" columnWidth="90" rowHeight="100" paddingLeft="10" paddingRight="10" /></s:layout>
 		</s:List>
 		
 		<s:Rect left="20" right="20" bottom="50" height="120" radiusX="4">
@@ -210,13 +220,15 @@
 			</s:filters>
 		</s:Rect>
 
+		<s:Label x="2" bottom="175" width="570" text="{resourceManager.getString('main','FriendSelectorSubtitle')}" styleName="whiteBoldBig" textAlign="center"/>
+		
 		<s:List id="MySelectedList" dataProvider="{mSelectedFriends}" left="20" right="20" bottom="50" height="120"
 				verticalScrollPolicy="off"
 				horizontalScrollPolicy="on"
 				itemRenderer="GameView.FriendSelection.FriendItem" useVirtualLayout="true"
 				change="OnMySelectedListChangeHandler(event)"
 				skinClass="GameView.Skins.DefaultListSkin">
-			<s:layout><s:HorizontalLayout gap="20" /></s:layout>
+			<s:layout><s:HorizontalLayout gap="10" /></s:layout>
 		</s:List>
 		
 		<s:Group bottom="15" horizontalCenter="0">
@@ -226,7 +238,6 @@
 			<s:Button label="ENVIAR INVITACIÓN" click="SendClickHandler(event)" horizontalCenter="50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			<s:Button label="CERRAR" click="CloseClickHandler(event)" horizontalCenter="-50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 		</s:Group>		
-
 
 	</s:Group>
 	

@@ -2,13 +2,22 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
-				autoDrawBackground="true" xmlns:GameView="GameView.*" 
-				clipAndEnableScrolling="true"
-				contentBackgroundColor="0xFF0000">
+				autoDrawBackground="false" xmlns:GameView="GameView.*" 
+				clipAndEnableScrolling="true">
+	
+	<fx:Declarations>
+		<s:DropShadowFilter id="shadowHovered" distance="6" angle="124" blurX="6" blurY="6"/>
+		<s:DropShadowFilter id="shadowNormal" distance="1" angle="124" blurX="6" blurY="6"/>
+	</fx:Declarations>
+	
+	<s:states> 
+		<s:State name="normal"/> 
+		<s:State name="hovered"/> 
+	</s:states>
 	
 	<s:layout><s:VerticalLayout horizontalAlign="center" /></s:layout>
 	
-	<s:Group>
+	<s:Group filters.normal="{[shadowNormal]}" filters.hovered="{[shadowHovered]}">
 		<s:Image x="0" y="0" source="@Embed(source='/Assets/General.swf', symbol='CapDetailBg')" />
 		<GameView:FacebookPicture FacebookID="{data.FacebookID}" maskType="alpha" scaleX="0.88" scaleY="0.88" top="10" left="8">
 			<GameView:mask>
@@ -23,6 +32,6 @@
 		</GameView:FacebookPicture>
 	</s:Group>
 	
-	<s:Label text="{data.Name}" maxDisplayedLines="2" width="125" height="30" textAlign="center" styleName="blackBoldMedium"/>
+	<s:Label text="{data.Name}" maxDisplayedLines="2" width="90" height="30" textAlign="center" styleName="blackBoldMediumHN"/>
 	
 </s:ItemRenderer>
