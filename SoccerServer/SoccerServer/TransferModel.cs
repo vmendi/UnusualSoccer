@@ -52,7 +52,6 @@ namespace SoccerServer.TransferModel
     public class Ticket
     {
         public int RemainingMatches;
-        public int TicketKind;
         public DateTime TicketPurchaseDate;
         public DateTime TicketExpiryDate;
 

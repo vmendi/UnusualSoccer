@@ -120,26 +120,10 @@ namespace SoccerServer
 
 			try
 			{
-				using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
-				{
-                    bool bSubmit = false;
-
-                    bSubmit |= Run24hProcess(theContext);
-                    bSubmit |= RunWeeklyProcess(theContext);
+                RunHourlyProcess();
+                Run24hProcess();
+                RunWeeklyProcess();
                                         
-					if (bSubmit)
-					{
-						try
-						{
-							theContext.SubmitChanges(ConflictMode.FailOnFirstConflict);
-						}
-						catch (ChangeConflictException)
-						{
-							Log.log(GLOBAL_LOG, "WTF, (old) es el unico sitio donde se debería modificar!");
-						}
-					}
-				}
-
 				// Llamamos al tick de los partidos en curso
                 (mNetEngine.NetServer.NetClientApp as Realtime).OnSecondsTick();
 			}
@@ -153,29 +137,37 @@ namespace SoccerServer
 			}
         }
 
-        // Proceso cada 24h, a las 00:00
-        private bool Run24hProcess(SoccerDataModelDataContext theContext)
+        private void RunHourlyProcess()
         {
-            bool bSubmit = false;
+            if (mSeconds % 3600 == 0)
+            {
+                Log.log(GLOBAL_LOG, "Running Hourly process");
+
+                MainService.CheckSeasonEnd(false);
+            }
+        }
+
+        // Proceso cada 24h, a las 00:00
+        private void Run24hProcess()
+        {
             DateTime now = DateTime.Now;
 
             if (now.Date != mLast24hProcessedDateTime.Date)
             {
                 Log.log(GLOBAL_LOG, "Running 24h process");
 
-                theContext.ExecuteCommand("UPDATE [SoccerV2].[dbo].[Tickets] SET [RemainingMatches] = 5");
+                using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
+                {
+                    theContext.ExecuteCommand("UPDATE [SoccerV2].[dbo].[Tickets] SET [RemainingMatches] = 5");
+                }               
 
                 mLast24hProcessedDateTime = now;
-                bSubmit = true;
             }
-
-            return bSubmit;
         }
 
         // TODO
-        private bool RunWeeklyProcess(SoccerDataModelDataContext theContext)
+        private void RunWeeklyProcess()
         {
-            return false;
         }
 
 		protected void Session_Start(object sender, EventArgs e)

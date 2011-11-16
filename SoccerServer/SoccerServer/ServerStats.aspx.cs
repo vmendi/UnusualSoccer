@@ -178,7 +178,7 @@ namespace SoccerServer
 
         protected void NewSeason_Click(object sender, EventArgs e)
         {
-            MainService.SeasonEnd();
+            MainService.CheckSeasonEnd(true);
         }
 
         protected void ResetAllTickets_Click(object sender, EventArgs e)

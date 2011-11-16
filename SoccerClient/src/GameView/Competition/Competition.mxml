@@ -94,7 +94,7 @@
 		<s:Label width="147" x="0" y="9" text="DIVISIÓN" styleName="whiteBoldMedium" textAlign="center" />
 		
 		<s:Label width="72" x="148" y="9" text="GRUPO" styleName="whiteBoldMedium" textAlign="center" />
-		<!--<s:Label id="MyGroupNameLabel" text="{mCompetitionModel.TheGroup.GroupName}" width="72" x="148" y="41" styleName="whiteBoldVeryBig" textAlign="center" />-->
+		<s:Label id="MyGroupNameLabel" text="{mCompetitionModel.TheGroup.GroupName}" width="72" x="148" y="41" styleName="whiteBoldVeryBig" textAlign="center" />
 		
 		<s:Label width="192" x="221" y="9" text="FIN DE TEMPORADA EN:" styleName="whiteBoldMedium" textAlign="center" />
 		<s:Label width="192" x="221" y="45" text="{TimeUtils.ConvertSecondsToStringWithDays(mCompetitionModel.RemainingSeasonSeconds)}" 
