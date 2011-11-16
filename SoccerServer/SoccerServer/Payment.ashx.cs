@@ -192,20 +192,11 @@ namespace SoccerServer
             // Siempre marca la fecha del ultimo ticket comprado
             theTicket.TicketPurchaseDate = DateTime.Now;
 
+            // Quedaba tiempo en el anterior todavía?
             if (theTicket.TicketExpiryDate > DateTime.Now)
-            {
-                // Si todavia no ha expirado, hay que sumar
-                theTicket.TicketExpiryDate += time;
-
-                // Siempre le saldra el mayor ticket q haya comprado (p. ejemplo, si es gold, dejamos gold cuando añade un silver)
-                if (theTicket.TicketKind < ticketKind)
-                    theTicket.TicketKind = ticketKind;
-            }
+                theTicket.TicketExpiryDate += time;         // se lo sumamos a la expiración anterior, para que el restante que tuviera esté incluido
             else
-            {
                 theTicket.TicketExpiryDate = theTicket.TicketPurchaseDate + time;
-                theTicket.TicketKind = ticketKind;
-            }
         }
 
         static private BDDModel.Purchase GetPurchase(HttpContext context, SoccerDataModelDataContext bddContext, long order_id)

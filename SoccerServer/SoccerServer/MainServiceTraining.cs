@@ -26,10 +26,27 @@ namespace SoccerServer
             }
 		}
 
+        [WebORBCache(CacheScope = CacheScope.Global)]
+        public List<TransferModel.SpecialTrainingDefinition> RefreshSpecialTrainingDefinitions()
+        {
+            using (CreateDataForRequest())
+            {
+                List<TransferModel.SpecialTrainingDefinition> ret = new List<TransferModel.SpecialTrainingDefinition>();
+
+                foreach (SpecialTrainingDefinition tr in mContext.SpecialTrainingDefinitions)
+                    ret.Add(new TransferModel.SpecialTrainingDefinition(tr));
+
+                return ret;
+            }
+        }
+
 		public TransferModel.PendingTraining Train(string trainingName)
 		{
             using (CreateDataForRequest())
             {
+                // Tenemos que sincronizar el equipo puesto que puede q el entrenamiento este expirado
+                bool bSubmit = SyncTeam(mContext, mPlayer.Team);
+
                 PendingTraining ret = mPlayer.Team.PendingTraining;
 
                 if (ret == null)
@@ -48,8 +65,11 @@ namespace SoccerServer
                     ret.TimeEnd = ret.TimeStart.Add(TimeSpan.FromSeconds(newTrDef.Time));
 
                     mContext.PendingTrainings.InsertOnSubmit(ret);
-                    mContext.SubmitChanges();
+                    bSubmit = true;
                 }
+
+                if (bSubmit)
+                    mContext.SubmitChanges();
 
                 return new TransferModel.PendingTraining(ret);
             }
@@ -66,9 +86,20 @@ namespace SoccerServer
                                                where t.SpecialTrainingDefinitionID == specialTrainingDefinitionID
                                                select t).FirstOrDefault();
 
+                // Es la primera vez que nos entrenan, tenemos que crearlo?
                 if (theTraining == null)
-                    throw new Exception("Unknown Training");
+                {
+                    theTraining = new SpecialTraining();
+                    theTraining.SpecialTrainingDefinition = (from st in mContext.SpecialTrainingDefinitions
+                                                             where st.SpecialTrainingDefinitionID == specialTrainingDefinitionID
+                                                             select st).First();
+                    theTraining.TeamID = theTeam.TeamID;
+                    theTraining.EnergyCurrent = 0;
+                    theTraining.IsCompleted = false;
 
+                    mContext.SpecialTrainings.InsertOnSubmit(theTraining);
+                }
+                
                 if (theTeam.XP < theTraining.SpecialTrainingDefinition.RequiredXP)
                     throw new Exception("Nice try");
 

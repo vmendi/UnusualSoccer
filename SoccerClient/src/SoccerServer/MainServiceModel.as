@@ -29,6 +29,7 @@
         public var RefreshPredefinedTeamsResult:ArrayCollection;     
         public var RefreshRankingPageResult:RankingPage;     
         public var RefreshSeasonEndDateResult:Date;     
+        public var RefreshSpecialTrainingDefinitionsResult:ArrayCollection;     
         public var RefreshTeamResult:Team;     
         public var RefreshTeamDetailsResult:TeamDetails;     
         public var RefreshTrainingDefinitionsResult:ArrayCollection;     

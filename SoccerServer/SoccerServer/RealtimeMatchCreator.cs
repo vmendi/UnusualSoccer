@@ -47,6 +47,9 @@ namespace SoccerServer
                 mFirstPlayer = GetPlayerForRealtimePlayer(theContext, mFirstRealtimePlayer);
                 mSecondPlayer = GetPlayerForRealtimePlayer(theContext, mSecondRealtimePlayer);
 
+                if (MainService.SyncTeam(theContext, mFirstPlayer.Team) | MainService.SyncTeam(theContext, mSecondPlayer.Team))
+                    theContext.SubmitChanges();
+
                 mMatchID = CreateDatabaseMatchInner(mContext);
 
                 // Generacion de los datos de inicializacion para el partido. No valen con los del RealtimePlayer, hay que refrescarlos.
@@ -61,7 +64,6 @@ namespace SoccerServer
                 }
             }
         }
-
 
         static private void DiscountTicketsInner(SoccerDataModelDataContext theContext, Player thePlayer)
         {

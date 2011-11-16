@@ -28,7 +28,7 @@ package GameModel
 			mRefreshTimer.start();
 		}
 		
-		public function CleaningShutdown() : void
+		internal function CleaningShutdown() : void
 		{
 			if (mRefreshTimer != null)
 			{

@@ -30,11 +30,81 @@ namespace SoccerServer
 	
 		public TransferModel.Team RefreshTeam()
 		{
+            TransferModel.Team ret = null;
+
             using (CreateDataForRequest())
             {
-                return mPlayer.Team != null? new TransferModel.Team(mPlayer.Team) : null;
+                if (mPlayer.Team != null)
+                {
+                    bool bSubmit = SyncTeam(mContext, mPlayer.Team);
+
+                    if (bSubmit)
+                        mContext.SubmitChanges();
+
+                    ret = new TransferModel.Team(mPlayer.Team);
+                }
             }
+
+            return ret;
 		}
+
+        // Un nuevo approach os doy...
+        static internal bool SyncTeam(SoccerDataModelDataContext theContext, Team theTeam)
+        {
+            bool bSubmit = false;
+
+            var now = DateTime.Now;
+
+            // Entrenamiento pendiente?
+            if (theTeam.PendingTraining != null && theTeam.PendingTraining.TimeEnd < now)
+            {
+                theTeam.Fitness += theTeam.PendingTraining.TrainingDefinition.FitnessDelta;
+
+                if (theTeam.Fitness > 100)
+                    theTeam.Fitness = 100;
+
+                theContext.PendingTrainings.DeleteOnSubmit(theTeam.PendingTraining);
+                theTeam.PendingTraining = null;
+                bSubmit = true;
+            }
+
+            // Hay que restar fitness?
+            if (theTeam.PendingTraining == null && theTeam.Fitness > 0)
+            {
+                var secondsSinceLastUpdate = (now - theTeam.LastFitnessUpdate).TotalSeconds;
+                var fitnessToSubstract = secondsSinceLastUpdate / 864;
+
+                // 1 de fitness cada 864 secs => cada 14.4 minutos => 100 de fitness cada 1440 minutos == 24h
+                if (fitnessToSubstract > 1)
+                {
+                    // Perderemos algo de substraccion puesto q redondeamos hacia abajo... no importa.
+                    theTeam.Fitness -= (int)fitnessToSubstract;
+                    theTeam.LastFitnessUpdate = now;
+
+                    if (theTeam.Fitness < 0)
+                        theTeam.Fitness = 0;
+
+                    bSubmit = true;
+                }
+            }
+
+            // Deslesionar
+            var injured = (from s in theTeam.SoccerPlayers
+                           where s.IsInjured
+                           select s);
+
+            foreach (var sp in injured)
+            {
+                // Las lesiones duran N dias...
+                if ((now - sp.LastInjuryDate).TotalDays >= 2)
+                {
+                    sp.IsInjured = false;
+                    bSubmit = true;
+                }
+            }
+            
+            return bSubmit;
+        }
 
 		public bool CreateTeam(string name, int predefinedTeamID)
 		{
@@ -54,13 +124,11 @@ namespace SoccerServer
                     theNewTeam = GenerateTeamFromPredefinedTeamID(predefinedTeamID);
                     theNewTeam.Player = mPlayer;
                     theNewTeam.Name = name;
+                    theNewTeam.LastFitnessUpdate = DateTime.Now;
 
                     // Uno por equipo, siempre. No se puede forzar 1:1 desde la BDD
                     GenerateTicket(theNewTeam);
                     GenerateTeamStats(theNewTeam);
-
-                    // TODO: No está bien. Se deberían generar bajo demanda (al entrenar) y no desde el principio
-                    GenerateSpecialTrainings(theNewTeam);
 
                     mContext.SubmitChanges();
                 }
@@ -79,7 +147,6 @@ namespace SoccerServer
             Ticket theTicket = new Ticket();
             
             theTicket.TicketID = team.TeamID;
-            theTicket.TicketKind = -1;
             theTicket.TicketPurchaseDate = DateTime.Now;
             theTicket.TicketExpiryDate = theTicket.TicketPurchaseDate;
             theTicket.RemainingMatches = 5;
@@ -92,21 +159,6 @@ namespace SoccerServer
             mContext.TeamStats.InsertOnSubmit(new TeamStat { Team = team });
         }
 
-		private void GenerateSpecialTrainings(Team team)
-		{
-			foreach (SpecialTrainingDefinition def in mContext.SpecialTrainingDefinitions)
-			{
-				SpecialTraining tr = new SpecialTraining();
-
-				tr.SpecialTrainingDefinitionID = def.SpecialTrainingDefinitionID;
-				tr.Team = team;
-				tr.IsCompleted = false;
-				tr.EnergyCurrent = 0;
-
-				mContext.SpecialTrainings.InsertOnSubmit(tr);
-			}
-		}
-
 		private Team GenerateTeamFromPredefinedTeamID(int predefinedTeamID)
 		{
 			var predefinedTeam = (from pr in mContext.PredefinedTeams
@@ -117,6 +169,7 @@ namespace SoccerServer
 				throw new Exception("Unknown predefinedTeamID: " + predefinedTeamID.ToString());
 
 			Team ret = new Team();
+            var now = DateTime.Now;
 
             for (int c = 0; c < 8; c++)
             {
@@ -132,8 +185,8 @@ namespace SoccerServer
                 newSoccerPlayer.Sliding = 0;
                 newSoccerPlayer.Weight = 0;
                 newSoccerPlayer.IsInjured = false;
-                newSoccerPlayer.LastInjuryDate = null;
-
+                newSoccerPlayer.LastInjuryDate = now;
+                
                 mContext.SoccerPlayers.InsertOnSubmit(newSoccerPlayer);
             }
 
@@ -213,6 +266,7 @@ namespace SoccerServer
             ret.AverageSliding = (int)Math.Ceiling(myAlignedPlayers.Average(sp => sp.Sliding));
             ret.AveragePower = (int)Math.Ceiling(myAlignedPlayers.Average(sp => sp.Power));
 
+            // No hacemos un SyncTeam, admitimos cierta obsolescencia
             ret.Fitness = theTeam.Fitness;
 
             ret.SpecialSkillsIDs = (from s in theTeam.SpecialTrainings

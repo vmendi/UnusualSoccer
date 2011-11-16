@@ -59,12 +59,12 @@
 	<s:Label x="326" y="63" text="HABILIDAD" width="90" styleName="whiteBoldMedium" textAlign="left"/>
 	<s:Label x="410" y="63" text="{mTeamModel.TheTeam.TrueSkill}" width="46" id="MyTrueSkillLabel" styleName="whiteBoldMedium" textAlign="right"/>
 	
-	<s:Group right="0" y="0" visible="{resourceManager.getBoolean('main','StatusLogoMahouLFPVisible')}">
+	<s:Group right="0" y="0" visible="{resourceManager.getBoolean('main','StatusTicketPanelVisible')}"> 
 		<s:Group x="0" y="23" width="100">
 			<s:layout>
 				<s:VerticalLayout horizontalAlign="center" gap="0" />
 			</s:layout>
-			<s:Label width="100%" text="PUNTOS MAHOU" styleName="whiteBoldBig" textAlign="center" filters="{txtGlowFilter}"/>
+			<s:Label width="100%" text="UNUSUAL POINTS" styleName="whiteBoldBig" textAlign="center" filters="{txtGlowFilter}"/>
 			<s:Group>
 				<s:layout>
 					<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
@@ -76,7 +76,7 @@
 		<GameView:TicketsPanel x="100" y="6" />
 	</s:Group>
 	
-	<s:Group right="10" y="0" visible="{resourceManager.getBoolean('main','StatusTicketPanelVisible')}">
+	<s:Group right="10" y="0" visible="{!resourceManager.getBoolean('main','StatusTicketPanelVisible')}">
 		<s:Group x="0" y="23" width="160" >
 			<s:layout>
 				<s:VerticalLayout horizontalAlign="center" gap="0" />

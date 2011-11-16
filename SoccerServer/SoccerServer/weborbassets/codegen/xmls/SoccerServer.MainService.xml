@@ -50,6 +50,14 @@
         <field name="PredefinedTeamName" type="String" fulltype="String" nativetype="String" />
         <field name="TrueSkill" type="int" fulltype="int" nativetype="int" />
       </datatype>
+      <datatype name="SpecialTrainingDefinition" fullname="SoccerServer.TransferModel.SpecialTrainingDefinition" typeNamespace="SoccerServer.TransferModel">
+        <field name="SpecialTrainingDefinitionID" type="int" fulltype="int" nativetype="int" />
+        <field name="Name" type="String" fulltype="String" nativetype="String" />
+        <field name="Description" type="String" fulltype="String" nativetype="String" />
+        <field name="RequiredXP" type="int" fulltype="int" nativetype="int" />
+        <field name="EnergyStep" type="int" fulltype="int" nativetype="int" />
+        <field name="EnergyTotal" type="int" fulltype="int" nativetype="int" />
+      </datatype>
       <datatype name="Team" fullname="SoccerServer.TransferModel.Team" typeNamespace="SoccerServer.TransferModel">
         <field name="Name" type="String" fulltype="String" nativetype="String" />
         <field name="PredefinedTeamID" type="int" fulltype="int" nativetype="int" />
@@ -99,14 +107,6 @@
         <field name="EnergyCurrent" type="int" fulltype="int" nativetype="int" />
         <field name="IsCompleted" type="Boolean" fulltype="Boolean" nativetype="bool" />
       </datatype>
-      <datatype name="SpecialTrainingDefinition" fullname="SoccerServer.TransferModel.SpecialTrainingDefinition" typeNamespace="SoccerServer.TransferModel">
-        <field name="SpecialTrainingDefinitionID" type="int" fulltype="int" nativetype="int" />
-        <field name="Name" type="String" fulltype="String" nativetype="String" />
-        <field name="Description" type="String" fulltype="String" nativetype="String" />
-        <field name="RequiredXP" type="int" fulltype="int" nativetype="int" />
-        <field name="EnergyStep" type="int" fulltype="int" nativetype="int" />
-        <field name="EnergyTotal" type="int" fulltype="int" nativetype="int" />
-      </datatype>
       <datatype name="TeamDetails" fullname="SoccerServer.TransferModel.TeamDetails" typeNamespace="SoccerServer.TransferModel">
         <field name="AverageWeight" type="int" fulltype="int" nativetype="int" />
         <field name="AverageSliding" type="int" fulltype="int" nativetype="int" />
@@ -152,6 +152,7 @@
         <arg name="pageIndex" type="int" nativetype="int" />
       </method>
       <method name="RefreshSeasonEndDate" type="Date" nativetype="DateTime" containsvalues="0" />
+      <method name="RefreshSpecialTrainingDefinitions" type="ArrayCollection" nativetype="List&lt;SoccerServer.TransferModel.SpecialTrainingDefinition&gt;" containsvalues="0" />
       <method name="RefreshTeam" type="Team" nativetype="SoccerServer.TransferModel.Team" containsvalues="0" />
       <method name="RefreshTeamDetails" type="TeamDetails" nativetype="SoccerServer.TransferModel.TeamDetails" containsvalues="0">
         <arg name="facebookID" type="Number" nativetype="long" />

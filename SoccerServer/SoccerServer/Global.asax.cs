@@ -124,10 +124,9 @@ namespace SoccerServer
 				{
                     bool bSubmit = false;
 
-                    bSubmit |= RunExpiredTrainingsProcess(theContext);
-                    bSubmit |= RunFitnessSubstractProcess(theContext);
                     bSubmit |= Run24hProcess(theContext);
-                    
+                    bSubmit |= RunWeeklyProcess(theContext);
+                                        
 					if (bSubmit)
 					{
 						try
@@ -136,7 +135,7 @@ namespace SoccerServer
 						}
 						catch (ChangeConflictException)
 						{
-							Log.log(GLOBAL_LOG, "WTF: Es el unico sitio donde se debería modificar!");
+							Log.log(GLOBAL_LOG, "WTF, (old) es el unico sitio donde se debería modificar!");
 						}
 					}
 				}
@@ -154,55 +153,6 @@ namespace SoccerServer
 			}
         }
 
-        private bool RunExpiredTrainingsProcess(SoccerDataModelDataContext theContext)
-        {
-            bool bSubmit = false;
-
-            var expiredTrainings = from pendingTr in theContext.PendingTrainings
-                                    where pendingTr.TimeEnd < DateTime.Now
-                                    select pendingTr;
-
-            if (expiredTrainings.Count() != 0)
-            {
-                Log.log(GLOBAL_LOG, "Running Expired Trainings: " + expiredTrainings.Count());
-
-                foreach (PendingTraining pendingTr in expiredTrainings)
-                {
-                    pendingTr.Team.Fitness += pendingTr.TrainingDefinition.FitnessDelta;
-
-                    if (pendingTr.Team.Fitness > 100)
-                        pendingTr.Team.Fitness = 100;
-                }
-
-                theContext.PendingTrainings.DeleteAllOnSubmit(expiredTrainings);
-                bSubmit = true;
-            }
-            
-            return bSubmit;
-        }
-
-        private bool RunFitnessSubstractProcess(SoccerDataModelDataContext theContext)
-        {
-            bool bSubmit = false;
-
-            // 100 de fitness cada 24h
-            if (mSeconds % 864 == 0)
-            {
-                Log.log(GLOBAL_LOG, "Running FitnessSubstract process");
-
-                var notZeroFitness = (from t in theContext.Teams
-                                      where t.PendingTraining != null && t.Fitness > 0
-                                      select t);
-
-                foreach (var team in notZeroFitness)
-                    team.Fitness -= 1;
-
-                bSubmit = true;
-            }        
-
-            return bSubmit;
-        }
-
         // Proceso cada 24h, a las 00:00
         private bool Run24hProcess(SoccerDataModelDataContext theContext)
         {
@@ -213,11 +163,19 @@ namespace SoccerServer
             {
                 Log.log(GLOBAL_LOG, "Running 24h process");
 
+                theContext.ExecuteCommand("UPDATE [SoccerV2].[dbo].[Tickets] SET [RemainingMatches] = 5");
+
                 mLast24hProcessedDateTime = now;
                 bSubmit = true;
             }
 
             return bSubmit;
+        }
+
+        // TODO
+        private bool RunWeeklyProcess(SoccerDataModelDataContext theContext)
+        {
+            return false;
         }
 
 		protected void Session_Start(object sender, EventArgs e)

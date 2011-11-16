@@ -34,7 +34,7 @@ package GameModel
 			//TweenNano.delayedCall(600, OnFitnessUpdateDelayedCall);
 		}
 		
-		public function CleaningShutdown() : void
+		internal function CleaningShutdown() : void
 		{
 			TweenNano.killTweensOf(OnFitnessUpdateDelayedCall);
 						
@@ -61,7 +61,7 @@ package GameModel
 		{
 			if (callback != null)
 				callback();	
-		}		
+		}	
 		
 		public function InitialRefresh(response : Function) : void
 		{

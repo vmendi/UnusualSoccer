@@ -17,6 +17,9 @@ package GameModel
 	
 	import org.osflash.signals.Signal;
 	
+	import spark.collections.Sort;
+	import spark.collections.SortField;
+	
 	import utils.Delegate;
 
 	public final class SpecialTrainingModel extends EventDispatcher
@@ -31,13 +34,82 @@ package GameModel
 			mTeamModel = mMainModel.TheTeamModel;
 			
 			// Nos aseguramos de estar siempre sincronizados con las copias maestras
-			BindingUtils.bindProperty(this, "SpecialTrainings", mMainModel, ["TheTeamModel", "TheTeam", "SpecialTrainings"]);
+			BindingUtils.bindSetter(OnSpecialTrainingsChanged, mMainModel, ["TheTeamModel", "TheTeam", "SpecialTrainings"]);
 			BindingUtils.bindProperty(this, "CompletedSpecialTrainingIDs", mMainModel, ["TheTeamModel", "TheTeamDetails", "SpecialSkillsIDs"]);
 			
 			// Subscripcion al evento de cualquier Like. Si, se llama edge.create. El boton concreto vendra en el href
 			Facebook.addJSEventListener('edge.create', OnLikeButtonPressed);
 		}
+		
+		public function InitialRefresh(callback : Function) : void
+		{
+			mMainService.RefreshSpecialTrainingDefinitions(new Responder(Delegate.create(OnRefreshSpecialTrainingDefinitionsResponse, callback), 
+														   ErrorMessages.Fault));
+		}
+		
+		private function GetSpecialTrainingByDefinitionID(specialTrainingDefinitionID : int) : SpecialTraining
+		{
+			for each(var sp : SpecialTraining in SpecialTrainings)
+			{
+				if (sp.SpecialTrainingDefinition.SpecialTrainingDefinitionID == specialTrainingDefinitionID)
+					return sp;
+			}
+			return null;
+		}
+		
+		private function OnSpecialTrainingsChanged(specialTrainings : ArrayCollection) : void
+		{
+			// Tenemos que mantener nuestra copia sincronizada Y CON TODOS los SpecialTrainings aunque no esten entrenados (el servidor
+			// solo nos manda los que alguna vez han sido entrenados)
+			// Es decir, en nuestra lista de SpecialTrainings siempre estan todos para los que tenemos una Definition
+			SpecialTrainings = specialTrainings;
+			
+			if (SpecialTrainings == null)
+				SpecialTrainings = new ArrayCollection();
+			
+			if (SpecialTrainings == null)	// El set ha fallado pq todavia no tenemos TheTeam
+				return;
+			
+			for each(var def : SpecialTrainingDefinition in mDefinitions)
+			{												
+				// Si el servidor no nos lo ha mandado (no esta entre los SpecialTrainings), lo añadimos
+				if (GetSpecialTrainingByDefinitionID(def.SpecialTrainingDefinitionID) == null)
+				{
+					var newSpecTr : SpecialTraining = new SpecialTraining();
+					newSpecTr.SpecialTrainingDefinition = def;
+					
+					SpecialTrainings.addItem(newSpecTr);
+				}
+			}
+
+			// Ordenamos por DefinitionID
+			var sorter : Sort = new Sort();
+			sorter.compareFunction = compareFunc;
+			
+			SpecialTrainings.sort = sorter; 
+			SpecialTrainings.refresh();
+			
+			function compareFunc(a:Object, b:Object, fields:Array = null):int
+			{
+				var defA : SpecialTrainingDefinition = a.SpecialTrainingDefinition as SpecialTrainingDefinition;
+				var defB : SpecialTrainingDefinition = b.SpecialTrainingDefinition as SpecialTrainingDefinition;
 				
+				if (defA.SpecialTrainingDefinitionID == defB.SpecialTrainingDefinitionID)
+					return 0;
+				if (defA.SpecialTrainingDefinitionID < defB.SpecialTrainingDefinitionID)
+					return -1;
+				return 1;
+			}
+		}
+		
+		private function OnRefreshSpecialTrainingDefinitionsResponse(e : ResultEvent, callback : Function) : void
+		{
+			mDefinitions = e.result as ArrayCollection;
+			
+			if (callback != null)
+				callback();
+		}
+
 		public function OnLikeButtonPressed(href : Object) : void
 		{
 			// Es posible que se pulse el boton Like antes de tener creado un equipo, por ejemplo durante la pantalla de Login.mxml
@@ -105,14 +177,23 @@ package GameModel
 		{
 			return specialTraining.SpecialTrainingDefinition.RequiredXP < mMainModel.TheTeamModel.TheTeam.XP;
 		}
-		
+				
 		[Bindable]
-		public  function get SpecialTrainings() : ArrayCollection { return (mTeamModel.TheTeam != null)? mTeamModel.TheTeam.SpecialTrainings : null; }
-		private function set SpecialTrainings(v : ArrayCollection) : void {}
+		public  function get SpecialTrainings() : ArrayCollection 
+		{ 
+			return (mTeamModel.TheTeam != null)? mTeamModel.TheTeam.SpecialTrainings : null; 
+		}
+		private function set SpecialTrainings(v : ArrayCollection) : void
+		{
+			if (mTeamModel.TheTeam != null)
+				mTeamModel.TheTeam.SpecialTrainings = v;
+		}
 		
 		[Bindable]
 		public  function get CompletedSpecialTrainingIDs() : ArrayCollection { return (mTeamModel.TheTeamDetails != null)? mTeamModel.TheTeamDetails.SpecialSkillsIDs : null; }
 		private function set CompletedSpecialTrainingIDs(v:ArrayCollection) : void  {}
+		
+		private var mDefinitions : ArrayCollection;
 		
 		private var mMainModel : MainGameModel;
 		private var mTeamModel : TeamModel;
