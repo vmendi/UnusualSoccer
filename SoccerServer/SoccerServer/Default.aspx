@@ -56,53 +56,6 @@
 		/* JavaScript enabled so display the flashContent div in case it is not replaced with a swf object. */
 		swfobject.createCSS("#flashContent", "display:block;text-align:left;");
     </script>
-
-    <script type="text/javascript">
-        /* http://developers.facebook.com/docs/guides/attachments */
-        /* http://developers.facebook.com/docs/reference/javascript/FB.ui */
-        function streamPublish(daUserEditableMessage, daName, daDescription, daImgSrc, daUserMessagePrompt) {
-            var daMedia =
-			    [
-				    {
-				        "type": "image",
-				        "src": daImgSrc,
-				        "href": "${facebookCanvasPage}"
-				    }
-			    ]
-
-            var daAttachment =
-			    {
-			        name: daName,
-			        description: daDescription,
-			        href: '${facebookCanvasPage}',
-			        media: daMedia
-			    }
-
-            FB.ui(
-				    {
-				        method: 'stream.publish',
-				        message: daUserEditableMessage,
-				        attachment: daAttachment,
-				        user_message_prompt: daUserMessagePrompt
-				    },
-				    function (response) {
-				        if (response && response.post_id) {
-				            //alert('Post was published.');
-				        } else {
-				            //alert('Post was not published.');
-				        }
-				    }
-			    );
-        }
-
-        function thisMovie(movieName) {
-            if (navigator.appName.indexOf("Microsoft") != -1) {
-                return window[movieName];
-            } else {
-                return document[movieName];
-            }
-        }
-	    </script>
 </head>
 	
 <body>
@@ -118,7 +71,7 @@
 		    </div>
 	    </asp:Panel>
 
-	    <!- Navegación -->		
+	    <!-- Navegación -->		
 	    <div style="width:760px; height:33px; background:url(Imgs/NavBg.png);" >
 		    <div style="padding-left:39px; float:left; width:203px;"><a href="/InviteFriends.aspx"><img src="Imgs/NavIconInvita.png" width="142" height="33" border="0" /></a></div>
 		    <div style="float:left; width:130px;"><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=wall" target="_parent"><img src="Imgs/NavIconMuro.png" width="60" height="33" border="0" /></a></div>
@@ -138,12 +91,8 @@
 		    </script> 
         </div>
 	   			
-        <noscript>
-            <p>
-                Either scripts and active content are not permitted to run or Adobe Flash Player version 10.0.0 or greater is not installed.
-            </p>
-	    </noscript>	
-
+        <noscript><p>Either scripts and active content are not permitted to run or Adobe Flash Player version 10.0.0 or greater is not installed.</p></noscript>	
+    
     </asp:Panel>
 
 </body>

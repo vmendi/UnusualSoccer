@@ -233,7 +233,7 @@ namespace SoccerServer
 
             stopWatch.Stop();
 
-            Log.log(MAINSERVICE, "MainServiceCompetition.SeasonEnd: Elapsed miliseconds " + stopWatch.Elapsed.Milliseconds.ToString());
+            Log.log(MAINSERVICE, "MainServiceCompetition.CheckSeasonEnd: Elapsed miliseconds " + stopWatch.Elapsed.Milliseconds.ToString());
         }
 
         // En las fecha de creacion, siempre insertamos la verdadera. Luego los calculos los haremos con la teorica
@@ -249,6 +249,8 @@ namespace SoccerServer
 
         private static void SeasonEndInner(CompetitionSeason oldSeason, SoccerDataModelDataContext theContext, SqlConnection con, SqlTransaction tran)
         {
+            Log.log(MAINSERVICE, "MainServiceCompetition.SeasonEndInner");
+
             // Queremos que a lo largo de toda la query, el momento actual sea el mismo
             var now = DateTime.Now;
 

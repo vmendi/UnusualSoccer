@@ -123,7 +123,7 @@ namespace SoccerServer
                                  orderby p.FieldPosition
                                  select p).ToArray();
 
-            // Si ya hay 3 lesionados entre los alineados, no lesionamos a nadie mas. Si me quedan 5 futbolistas => 4 + portero => 3 lesionados
+            // Si ya hay 3 lesionados entre los alineados, no lesionamos a nadie mas.
             if (soccerPlayers.Count() > 5)
             {
                 var rand = new Random();
@@ -131,8 +131,7 @@ namespace SoccerServer
                 // Se lesiona un futbolista? (1 y solo 1 por partido de momento, aunque mandemos una lista)
                 if (rand.Next(100) < 33)
                 {
-                    // El portero es el 0, y nunca se lesiona
-                    var randInjured = rand.Next(1, soccerPlayers.Count());
+                    var randInjured = rand.Next(0, soccerPlayers.Count());
 
                     soccerPlayers[randInjured].IsInjured = true;
                     soccerPlayers[randInjured].LastInjuryDate = DateTime.Now;

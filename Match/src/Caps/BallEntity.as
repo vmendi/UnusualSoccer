@@ -7,6 +7,7 @@ package Caps
 	
 	import Framework.PhyEntity;
 	
+	import flash.display.MovieClip;
 	import flash.geom.Point;
 
 	public class BallEntity extends PhyEntity
@@ -19,11 +20,10 @@ package Caps
 		public function BallEntity() : void
 		{
 			// Inicializamos la entidad
-			// NOTE: Inicializamos el objeto físico en el grupo (-1) para poder hacer que los obstáculos de las porterías no le afecten)
-			super(Embedded.Assets.Ball, Match.Ref.Game.GameLayer, PhyEntity.Circle, {
+			super(Embedded.Assets.BallAnimated, Match.Ref.Game.GameLayer, PhyEntity.Circle, {
 				  categoryBits:4,
 				  maskBits: 1 + 2 + 4,		// Choca con todo excepto con BackPorteria y SmallArea
-				  mass: 3, //0.04
+				  mass: 3, 					// 0.04
 				  fixedRotation: true,		// If set to true the rigid body will not rotate.
 				  isBullet: true, 			// UseCCD: Detección de colisión continua
 				  radius:AppParams.Screen2Physic( Radius ), 
@@ -32,7 +32,7 @@ package Caps
 				  linearDamping: AppParams.BallLinearDamping, 
 				  angularDamping: AppParams.BallLinearDamping, 
 				  friction: .2, 
-				  restitution: .8 } );	// Fuerza que recupera en un choque (old: 0.4)
+				  restitution: .8 } );		// Fuerza que recupera en un choque (old: 0.4)
 			
 			// Reasignamos la escala del balón, ya que la física lo escala para que encaje con el radio físico asignado
 			this.Visual.scaleX = 1.0;
@@ -41,20 +41,37 @@ package Caps
 			// Nos auto-añadimos al manager de entidades
 			Match.Ref.Game.TheEntityManager.AddTagged(this, "Ball");
 		}
-						
+
 		//
 		// Se encarga de copiar el objeto físico al objeto visual
 		//
 		public override function Draw( elapsed:Number ) : void
 		{
-			// Obtenemos la velocidad del balón  
-			var vel:Number = PhyObject.body.GetLinearVelocity().LengthSquared();
+			var mcVisual : MovieClip = (_Visual as MovieClip);
+			var vel : b2Vec2 = PhyObject.body.GetLinearVelocity();
 			
-			if( IsMoving == false )
-				_Visual.stop();
-			else
-				_Visual.play();
+			var perimeter : Number = AppParams.Screen2Physic(Radius) * 2 * Math.PI;
+			var numFrames : Number = mcVisual.framesLoaded;
+			
+			mCurrentFrame += vel.Length() * elapsed * numFrames / perimeter;
+						
+			if (mCurrentFrame >= numFrames)
+				mCurrentFrame = mCurrentFrame - numFrames;
+			
+			mcVisual.gotoAndStop(int(mCurrentFrame) + 1);
+									
+			if (vel.Length() > Number.MIN_VALUE)
+			{
+				var angle : Number = Math.acos(vel.x/vel.Length());
+				
+				if (vel.y < 0)
+					angle = -angle;
+				
+				PhyObject.angle = angle;
+			}
 		}
+		
+		private var mCurrentFrame : Number = 1;
 				
 		// 
 		// Asigna la posición de la pelota en frente de la chapa

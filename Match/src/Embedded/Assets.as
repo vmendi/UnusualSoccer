@@ -134,6 +134,10 @@ package Embedded
 		[Embed(source="Embedded/Assets.swf", symbol="Balon")]
 		static public var Ball:Class;
 		
+		// El balón animado
+		[Embed(source="Embedded/Assets.swf", symbol="BalonAnimado")]
+		static public var BallAnimated:Class;
+		
 		// La caja del chat
 		[Embed(source="Embedded/Assets.swf", symbol="Chat")]
 		static public var ChatClass:Class;

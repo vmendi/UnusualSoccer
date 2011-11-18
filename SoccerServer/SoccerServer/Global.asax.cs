@@ -139,11 +139,15 @@ namespace SoccerServer
 
         private void RunHourlyProcess()
         {
-            if (mSeconds % 3600 == 0)
+            DateTime now = DateTime.Now;
+
+            if (now.Hour != mLastHourlyProcessedDateTime.Hour)
             {
                 Log.log(GLOBAL_LOG, "Running Hourly process");
 
                 MainService.CheckSeasonEnd(false);
+
+                mLastHourlyProcessedDateTime = now;
             }
         }
 
@@ -212,6 +216,7 @@ namespace SoccerServer
 		private int mSeconds = 0;
 
         private DateTime mLast24hProcessedDateTime = DateTime.Now;
+        private DateTime mLastHourlyProcessedDateTime = DateTime.Now;
 
         private Dictionary<string, string> mServerSettings;
         private Dictionary<string, string> mClientSettings;    // Settings que pasaremos a flash

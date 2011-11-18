@@ -1,6 +1,6 @@
 package
 {
-	import flash.external.ExternalInterface;
+	import com.facebook.graph.Facebook;
 
 	public final class PublishMessages
 	{
@@ -112,14 +112,45 @@ package
 				daImgSrc: AppConfig.CANVAS_URL + "/Imgs/MensajeHabilidadManoDeDios.jpg",
 				daUserMessagePrompt: "Mahou Liga Chapas: el juego definitivo de fútbol"
 			}
-			
+		
 		static public function Publish(publishMessage : Object) : void
 		{
-			ExternalInterface.call("streamPublish", publishMessage.daUserEditableMessage, 
-													publishMessage.daName, 
-													publishMessage.daDescription, 
-													publishMessage.daImgSrc, 
-													publishMessage.daUserMessagePrompt);
-		}		
+			var daMedia : Object =
+								[
+									{
+										"type": "image",
+										"src": publishMessage.daImgSrc,
+										"href": AppConfig.CANVAS_PAGE
+									}
+								];
+			
+			var daAttachment : Object =
+								{
+									name: publishMessage.daName,
+									description: publishMessage.daDescription,
+									href: AppConfig.CANVAS_PAGE,
+									media: daMedia
+								};
+				
+			var data : Object = {
+									message: publishMessage.daUserEditableMessage,
+									attachment: daAttachment,
+									user_message_prompt: publishMessage.daUserMessagePrompt
+								};
+			
+			Facebook.ui('stream.publish',data, streamPublishResponse);
+						
+			function streamPublishResponse(response : Object) : void
+			{
+				if (response && response.post_id)
+				{
+					//alert('Post was published.');
+				} 
+				else 
+				{
+					//alert('Post was not published.');
+				}
+			}
+		}
 	}
 }

@@ -46,37 +46,37 @@
 
 				<asp:TemplateField HeaderText="Total Matches" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50">
                     <ItemTemplate>
-						<asp:Label ID="Label1" runat="server" Text='<%# GetTotalMatchesCount((SoccerServer.BDDModel.Team)Container.DataItem) %>' />
+						<asp:Label runat="server" Text='<%# GetTotalMatchesCount((SoccerServer.BDDModel.Team)Container.DataItem) %>' />
                     </ItemTemplate>
                 </asp:TemplateField>
 
 				<asp:TemplateField HeaderText="Won Matches" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50">
 					<ItemTemplate>
-					<asp:Label ID="Label2" runat="server" Text="<%# GetWonMatchesCount((SoccerServer.BDDModel.Team)Container.DataItem) %>" />
+					<asp:Label runat="server" Text="<%# GetWonMatchesCount((SoccerServer.BDDModel.Team)Container.DataItem) %>" />
 					</ItemTemplate>
 				</asp:TemplateField>
 
                 <asp:TemplateField HeaderText="Draw Matches" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50">
 					<ItemTemplate>
-					<asp:Label ID="Label3" runat="server" Text="<%# GetDrawMatchesCount((SoccerServer.BDDModel.Team)Container.DataItem) %>" />
+					<asp:Label runat="server" Text="<%# GetDrawMatchesCount((SoccerServer.BDDModel.Team)Container.DataItem) %>" />
 					</ItemTemplate>
 				</asp:TemplateField>
 
 				<asp:TemplateField HeaderText="Lost Matches" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50">
 					<ItemTemplate>
-					<asp:Label ID="Label3" runat="server" Text="<%# GetLostMatchesCount((SoccerServer.BDDModel.Team)Container.DataItem) %>" />
+					<asp:Label runat="server" Text="<%# GetLostMatchesCount((SoccerServer.BDDModel.Team)Container.DataItem) %>" />
 					</ItemTemplate>
 				</asp:TemplateField>
 
 				<asp:TemplateField HeaderText="Goals Scored" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50">
 					<ItemTemplate>
-					<asp:Label ID="Label4" runat="server" Text="<%# GetTotalGoalsScored((SoccerServer.BDDModel.Team)Container.DataItem) %>" />
+					<asp:Label runat="server" Text="<%# GetTotalGoalsScored((SoccerServer.BDDModel.Team)Container.DataItem) %>" />
 					</ItemTemplate>
 				</asp:TemplateField>
 
 				<asp:TemplateField HeaderText="Goals Received" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50">
 					<ItemTemplate>
-					<asp:Label ID="Label5" runat="server" Text="<%# GetTotalGoalsReceived((SoccerServer.BDDModel.Team)Container.DataItem) %>" />
+					<asp:Label runat="server" Text="<%# GetTotalGoalsReceived((SoccerServer.BDDModel.Team)Container.DataItem) %>" />
 					</ItemTemplate>
 				</asp:TemplateField>
 			</Columns>
