@@ -6,7 +6,7 @@
 		 width="100%" height="100%"
 		 addedToStage="AddedToStageHandler(event)"
 		 creationComplete="CreationCompleteHandler(event)"
-		 currentState="Empty" xmlns:Team="GameView.Team.*">
+		 currentState="Empty" xmlns:Team="GameView.Team.*" xmlns:Match="GameView.Match.*">
 	
 	<fx:Style source="../styles.css" />
 	
@@ -91,7 +91,8 @@
 	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" bottom="10" left="10" width="740" title="RANKING DE TU DIVISION">
 		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraFondo')" fillMode="clip" />
 		
-		<s:Label width="147" x="0" y="9" text="DIVISIÓN" styleName="whiteBoldMedium" textAlign="center" />
+		<Competition:DivisionBadge x="0" y="0" width="147" height="74" Division="{mCompetitionModel.TheGroup.DivisionName}" />
+		<!--<s:Label width="147" x="0" y="9" text="DIVISIÓN" styleName="whiteBoldMedium" textAlign="center" />-->
 		
 		<s:Label width="72" x="148" y="9" text="GRUPO" styleName="whiteBoldMedium" textAlign="center" />
 		<s:Label id="MyGroupNameLabel" text="{mCompetitionModel.TheGroup.GroupName}" width="72" x="148" y="41" styleName="whiteBoldVeryBig" textAlign="center" />
@@ -108,4 +109,5 @@
 	<Competition:LookingForMatchPanel x="424" y="49" includeIn="AvailableCredit" />
 	
 	<s:Label id="MyOutOfCredit" right="10" y="29" text="OUT OF CREDIT BLAH BLAH" includeIn="OutOfCredit" styleName="whiteBoldMedium" />
+
 </s:Group>
