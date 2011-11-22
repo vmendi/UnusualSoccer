@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Facebook.Web;
+using System.Transactions;
 using System.Web.Script.Serialization;
 using Weborb.Util.Logging;
 using System.Collections;
-using Facebook;
+using Facebook.Web;
+
 
 namespace SoccerServer
 {
@@ -37,13 +38,21 @@ namespace SoccerServer
                         string status = context.Request.Form["status"];
 
                         if (status == "placed")
+                        {
                             ProcessStatusUpdatePlaced(context);
-                        else if (status == "settled")
-                            ProcessStatusUpdateSettled(context);
+                        }
                         else if (status == "disputed")
+                        {
                             ProcessStatusUpdateDisputed(context);
-                        else
+                        }
+                        // Note: Facebook sometimes issues a second payments_status_update callback after the placed order is moved to settled as in 
+                        // the sample developer response above. You can ignore this callback and only use the first, placed callback as the signal for 
+                        // when to grant the user their in-game item.
+                        // Es decir, que por motivos historicos nos puede llegar un status == "settled", que ignoramos
+                        else if (status != "settled")
+                        {
                             CriticalLog("Unknown payments_status_update " + status);
+                        }
                     }
                     else if (method == null)
                     {
@@ -62,13 +71,26 @@ namespace SoccerServer
         }
 
 
-        private void ProcessStatusUpdateDisputed(HttpContext context)
+        private void ProcessStatusUpdateDisputed(HttpContext httpContext)
         {
-            throw new Exception("TODO");
+            using (var bddContext = new SoccerDataModelDataContext())
+            {
+                BDDModel.PurchaseStatus newStatus = new BDDModel.PurchaseStatus();
+                newStatus.Purchase = GetPurchase(httpContext, bddContext);
+                newStatus.Status = "disputed";
+                newStatus.StatusDate = DateTime.Now;
+
+                bddContext.PurchaseStatus.InsertOnSubmit(newStatus);
+                bddContext.SubmitChanges();
+
+                Log.log(Global.GLOBAL_LOG, ">----------------------------------------------------------");
+                Log.log(Global.GLOBAL_LOG, "----------------- Nueva orden disputada  ------------------");
+                Log.log(Global.GLOBAL_LOG, ">----------------------------------------------------------");
+            }
         }
 
         //
-        // El usuario ha dado el OK final a la compra!
+        // El usuario ha dado el OK final a la compra! Aquí es donde le damos los items.
         //
         private void ProcessStatusUpdatePlaced(HttpContext context)
         {
@@ -86,15 +108,12 @@ namespace SoccerServer
             Dictionary<string, object> item_details = (Dictionary<string, object>)arrlist[0]; 
             string item_id = item_details["item_id"].ToString();
 
-            // Creamos un status Placed en la BDD, hasta q FB nos ingresa el dinero en la siguiente llamada
-            CreatePurchase(fb_id, order_id, item_id);
-
+            NewPurchaseCompleted(fb_id, order_id, item_id);
+            
             // The application responds with the status it wants to move the order to.
-            // Mark new status as settled.
-            // You can respond with one of three statuses: settled, canceled, or refunded.
             var content = new Dictionary<string, object>(); 
-            content["order_id"] = order_id; 
-            content["status"] = "settled";
+            content["order_id"] = order_id;
+            content["status"] = "settled";                  // When the status is placed, the application can respond with canceled or settled
 
             var res = new Dictionary<string, object>();
             res["method"] = "payments_status_update"; 
@@ -106,7 +125,7 @@ namespace SoccerServer
             context.Response.Write(ob); 
         }
 
-        private void CreatePurchase(long buyerFacebookID, long facebookOrderID, string itemID)
+        private void NewPurchaseCompleted(long buyerFacebookID, long facebookOrderID, string itemID)
         {
             using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
             {
@@ -114,37 +133,21 @@ namespace SoccerServer
 
                 newPurchase.ItemID = itemID;
                 newPurchase.Price = GetItemForSale(itemID).price;
-                
+
                 newPurchase.FacebookBuyerID = buyerFacebookID;
                 newPurchase.FacebookOrderID = facebookOrderID;
-                newPurchase.Status = "Placed";
-                newPurchase.StatusPlacedDate = DateTime.Now;
 
+                BDDModel.PurchaseStatus currentStatus = new BDDModel.PurchaseStatus();
+                currentStatus.Purchase = newPurchase;
+                currentStatus.Status = "settled";
+                currentStatus.StatusDate = DateTime.Now;
+
+                AwardTheItem(theContext, newPurchase);
+
+                // El Submit genera hace su trabajo dentro de una transaccion, asi que no se quedara ningun Purchase sin su PurchaseStatus
+                theContext.PurchaseStatus.InsertOnSubmit(currentStatus);
                 theContext.Purchases.InsertOnSubmit(newPurchase);
                 theContext.SubmitChanges();
-            }
-        }
-
-        //
-        // FB ya nos ha pasado el dinero a nuestra cuenta!
-        // 
-        private void ProcessStatusUpdateSettled(HttpContext context)
-        {
-            // Identificador de facebook unico para todo el proceso
-            long order_id = long.Parse(context.Request.Form["order_id"]);
-
-            using (SoccerDataModelDataContext bddContext = new SoccerDataModelDataContext())
-            {
-                var thePurchase = GetPurchase(context, bddContext, order_id);
-
-                if (thePurchase == null)
-                    throw new Exception("Inconsistent or unknown order");
-
-                AwardTheItem(bddContext, thePurchase);
-
-                thePurchase.Status = "Settled";
-                thePurchase.StatusSettledDate = DateTime.Now;
-                bddContext.SubmitChanges();
             }
         }
 
@@ -199,46 +202,6 @@ namespace SoccerServer
                 theTicket.TicketExpiryDate = theTicket.TicketPurchaseDate + time;
         }
 
-        static private BDDModel.Purchase GetPurchase(HttpContext context, SoccerDataModelDataContext bddContext, long order_id)
-        {
-            var thePurchase = (from p in bddContext.Purchases
-                               where p.FacebookOrderID == order_id
-                               select p).FirstOrDefault();
-
-            // Comparar y alertar
-            var order_details_array = context.Request.Form["order_details"];
-
-            JavaScriptSerializer jss = new JavaScriptSerializer();
-            Dictionary<string, object> order_details = jss.Deserialize<Dictionary<string, object>>(order_details_array);
-            long fb_id = long.Parse(order_details["buyer"].ToString());
-            int credsspent = int.Parse(order_details["amount"].ToString());
-
-            ArrayList arrlist = (ArrayList)order_details["items"];
-            Dictionary<string, object> item_details = (Dictionary<string, object>)arrlist[0];
-            string item_id = item_details["item_id"].ToString();
-
-            if (thePurchase == null || thePurchase.FacebookBuyerID != fb_id || thePurchase.Price != credsspent
-                || thePurchase.Status != "Placed" || thePurchase.ItemID != item_id)
-            {
-                CriticalLog("Inconsistent comparision with our BDD");
-
-                if (thePurchase != null)
-                {
-                    Log.log(Global.GLOBAL_LOG, "Order ID: " + thePurchase.FacebookOrderID);
-                    Log.log(Global.GLOBAL_LOG, "FacebookBuyerID: " + thePurchase.FacebookBuyerID + " - " + fb_id);
-                    Log.log(Global.GLOBAL_LOG, "Price: " + thePurchase.Price + " - " + credsspent);
-                    Log.log(Global.GLOBAL_LOG, "Item ID: " + thePurchase.ItemID + " - " + item_id);
-                }
-                else
-                {
-                    Log.log(Global.GLOBAL_LOG, "Order ID not found: " + order_id);
-                }
-
-                Log.log(Global.GLOBAL_LOG, "-----------------------------------------------------------------------<");                
-            }
-
-            return thePurchase;
-        }
 
         static private void CriticalLog(string message)
         { 
@@ -273,6 +236,48 @@ namespace SoccerServer
             context.Response.Write(ob);
         }
 
+        static private BDDModel.Purchase GetPurchase(HttpContext context, SoccerDataModelDataContext bddContext)
+        {
+            long order_id = long.Parse(context.Request.Form["order_id"]);
+
+            var thePurchase = (from p in bddContext.Purchases
+                               where p.FacebookOrderID == order_id
+                               select p).FirstOrDefault();
+
+            // Comparamos lo que nos viene desde FB con lo que tenemos en la BDD, simplemente para alertar
+            var order_details_array = context.Request.Form["order_details"];
+
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            Dictionary<string, object> order_details = jss.Deserialize<Dictionary<string, object>>(order_details_array);
+            long fb_id = long.Parse(order_details["buyer"].ToString());
+            int credsspent = int.Parse(order_details["amount"].ToString());
+
+            ArrayList arrlist = (ArrayList)order_details["items"];
+            Dictionary<string, object> item_details = (Dictionary<string, object>)arrlist[0];
+            string item_id = item_details["item_id"].ToString();
+
+            if (thePurchase == null || thePurchase.FacebookBuyerID != fb_id || thePurchase.Price != credsspent || thePurchase.ItemID != item_id)
+            {
+                CriticalLog("Inconsistent comparision with our BDD");
+
+                if (thePurchase != null)
+                {
+                    Log.log(Global.GLOBAL_LOG, "Order ID: " + thePurchase.FacebookOrderID);
+                    Log.log(Global.GLOBAL_LOG, "FacebookBuyerID: " + thePurchase.FacebookBuyerID + " - " + fb_id);
+                    Log.log(Global.GLOBAL_LOG, "Price: " + thePurchase.Price + " - " + credsspent);
+                    Log.log(Global.GLOBAL_LOG, "Item ID: " + thePurchase.ItemID + " - " + item_id);
+                }
+                else
+                {
+                    Log.log(Global.GLOBAL_LOG, "Order ID not found: " + order_id);
+                }
+
+                Log.log(Global.GLOBAL_LOG, "-----------------------------------------------------------------------<");
+            }
+
+            return thePurchase;
+        }
+
         static private ItemForSale GetItemForSale(string orderInfoFromClient_itemID)
         {
             // TODO
@@ -282,7 +287,7 @@ namespace SoccerServer
                     {
                         item_id = "SkillPoints100",
                         description = "A package of 100 Skill points",
-                        price = 10,
+                        price = 1,
                         title = "100 Skill Points",
                         product_url = "http://www.facebook.com/images/gifts/20.png",
                         image_url = "http://www.facebook.com/images/gifts/20.png",
@@ -292,7 +297,7 @@ namespace SoccerServer
                     {
                         item_id = "SkillPoints300",
                         description = "A package of 300 Skill points",
-                        price = 20,
+                        price = 22,
                         title = "300 Skill Points",
                         product_url = "http://www.facebook.com/images/gifts/21.png",
                         image_url = "http://www.facebook.com/images/gifts/21.png",
@@ -302,7 +307,7 @@ namespace SoccerServer
                     {
                         item_id = "SkillPoints500",
                         description = "A package of 500 Skill points",
-                        price = 30,
+                        price = 3,
                         title = "500 Skill Points",
                         product_url = "http://www.facebook.com/images/gifts/22.png",
                         image_url = "http://www.facebook.com/images/gifts/22.png",
@@ -312,7 +317,7 @@ namespace SoccerServer
                     {
                         item_id = "BronzeTicket",
                         description = "Unlimited matches during XXX days",
-                        price = 10,
+                        price = 1,
                         title = "Unlimited matches during XXX days",
                         product_url = "http://www.facebook.com/images/gifts/22.png",
                         image_url = "http://www.facebook.com/images/gifts/22.png",
@@ -322,7 +327,7 @@ namespace SoccerServer
                     {
                         item_id = "SilverTicket",
                         description = "Unlimited matches during XXX days",
-                        price = 20,
+                        price = 2,
                         title = "Unlimited matches during XXX days",
                         product_url = "http://www.facebook.com/images/gifts/22.png",
                         image_url = "http://www.facebook.com/images/gifts/22.png",
@@ -332,7 +337,7 @@ namespace SoccerServer
                     {
                         item_id = "GoldTicket",
                         description = "Unlimited matches during XXX days",
-                        price = 30,
+                        price = 3,
                         title = "Unlimited matches during XXX days",
                         product_url = "http://www.facebook.com/images/gifts/22.png",
                         image_url = "http://www.facebook.com/images/gifts/22.png",

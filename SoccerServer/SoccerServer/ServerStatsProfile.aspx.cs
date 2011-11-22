@@ -104,8 +104,7 @@ namespace SoccerServer
         private int GetNumPurchases()
         {
             return (from p in mDC.Purchases
-                    where p.FacebookBuyerID == mPlayer.FacebookID &&
-                          p.Status == "Settled"
+                    where p.FacebookBuyerID == mPlayer.FacebookID
                     select p).Count();
         }
 
