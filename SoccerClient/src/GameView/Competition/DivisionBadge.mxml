@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark">
+	
+	<fx:Script><![CDATA[
+		import mx.events.FlexEvent;
+		
+		[Bindable]
+		public function get Division() : String { return mDivision; }
+		public function set Division(division : String) : void
+		{
+			mDivision = division;
+			
+			MyBitmap.visible = true;
+			(MyBitmap.content as MovieClip).gotoAndStop(mDivision);	
+			MyDivisionName.text = mDivision;
+
+		}
+
+		private var mDivision : String = "";
+		
+	]]></fx:Script>
+	
+	<s:SWFLoader top="0" horizontalCenter="0" id="MyBitmap" visible="false" source="{resourceManager.getClass('main','CompetitionDivisionBadgeMC')}" />
+	<s:Label width="100%" horizontalCenter="0" top="57" id="MyDivisionName" text="" styleName="whiteBoldMedium" textAlign="center" />
+	
+</s:Group>
