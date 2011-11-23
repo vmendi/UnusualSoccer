@@ -245,7 +245,7 @@ package Caps
 					TheInterface.UserInputEnabled = false;
 					
 					// Espera a los jugadores y comienza del centro 
-					StartCenter();
+					SaqueCentro();
 					break;
 				}
 					
@@ -794,7 +794,7 @@ package Caps
 				SetTurn(turnTeam.IdxTeam, false);
 				
 				// Espera a los jugadores y comienza del centro 
-				StartCenter();
+				SaqueCentro();
 			}
 			else
 			{				
@@ -843,19 +843,19 @@ package Caps
 		//
 		// Comienza desde el centro del campo, sincronizando que los 2 jugadores estén listos
 		//
-		public function StartCenter() : void
+		public function SaqueCentro() : void
 		{
 			// Enviamos al servidor nuestro estamos listos! cuando todos estén listos nos llamarán a StartCenterAllReady
 			if (!AppParams.OfflineMode)
-				SendPlayerReady(StartCenterAllReady);				
+				SendPlayerReady(SaqueCentroAllReady);				
 			else
-				StartCenterAllReady();
+				SaqueCentroAllReady();
 		}
 		
 		//
 		// Los 2 jugadores han comunicado que están listos para comenzar el saque de centro
 		//
-		public function StartCenterAllReady( ) : void
+		public function SaqueCentroAllReady( ) : void
 		{
 			TheGamePhysics.StopSimulation();
 			
@@ -1251,13 +1251,9 @@ package Caps
 			
 			Match.Ref.Shutdown(result);
 		}
-
 		
 		//
 		// GENERICO: Envía nuestro indicador de que estamos listos
-		// Marca que no todos los jugadores NO están listos, ya que si nosotros no lo estábamos, seguro que al menos faltaba uno
-		// Cuando todos los jugadores estén listos, el servidor nos mandará un 'OnAllPlayersReady' que simplemente subirá la bandera
-		// 'PlayersReady'. Debemos esperar a la bandera para continuar!
 		//
 		public function SendPlayerReady(callbackOnAllPlayersReady:Function = null) : void
 		{
@@ -1274,8 +1270,7 @@ package Caps
 		}
 		
 		// 
-		// GENERICO: Todos los jugadores están listos, simplemente ponemos el semáforo en verde 'PlayersReady' 
-		// e invocamos la función de usuario que hubiese configurado
+		// GENERICO: Todos los jugadores están listos, llamada desde el servidor
 		//
 		public function OnAllPlayersReady() : void
 		{
