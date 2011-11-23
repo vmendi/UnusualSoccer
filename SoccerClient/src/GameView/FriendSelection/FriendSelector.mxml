@@ -110,7 +110,7 @@
 					user_ids.push(friend.FacebookID.toString());
 				
 				var data : Object =	{ 
-									message: "TO-DO TO-DO TO-DO TO-DO",
+									message: resourceManager.getString('main','FriendSelectorRequestTxt'),
 									to: user_ids
 									};
 	
@@ -133,7 +133,7 @@
 				mMainModel.TheTeamModel.CreateRequests(response.request, response.to);
 				
 				// Mensaje de exito
-				ImportantMessageDialog.Show("Requests exitosos. TO-DO TO-DO TO-DO", "Blah blah", "center");
+				ImportantMessageDialog.Show(resourceManager.getString('main','FriendSelectorReqSuccessTxt'), resourceManager.getString('main','FriendSelectorReqSuccessTit'), "center");
 			}
 			
 			return true;
@@ -171,10 +171,9 @@
 		<s:Label width="570" text="{resourceManager.getString('main','FriendSelectorTitle')}" styleName="whiteBoldHuge" textAlign="center"/>
 		<s:Label width="570" text="{resourceManager.getString('main','FriendSelectorTxt')}" styleName="whiteBoldMedium" textAlign="center"/>
 	</s:Group>
-
 	
 	<s:Group includeIn="Waiting" width="570" height="500">
-		<s:Label horizontalCenter="0" verticalCenter="0" text="Waiting... TO-DO TO-DO TO-DO" styleName="whiteBoldBig"/>
+		<s:Label horizontalCenter="0" verticalCenter="0" text="{resourceManager.getString('main','FriendSelectorSendingRequest')}" styleName="whiteBoldBig"/>
 	</s:Group>
 	
 	<s:Group includeIn="Selecting" width="570" height="530">

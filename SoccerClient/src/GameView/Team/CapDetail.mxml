@@ -31,11 +31,14 @@
 		private function OnQualityRefreshed(v:Number) : void
 		{
 			// [Fran] Si la chapa tiene amigo asignado, no mostramos la equipación
+			(MyCapMC.content as MovieClip).gotoAndStop(SoccerClient.GetMainGameModel().TheTeamModel.PredefinedTeamName);
+			/*
 			if (TheSoccerPlayer != null && TheSoccerPlayer.FacebookID < 0)
 				(MyCapMC.content as MovieClip).gotoAndStop(SoccerClient.GetMainGameModel().TheTeamModel.PredefinedTeamName);
 			else
 				(MyCapMC.content as MovieClip).gotoAndStop("empty");
-
+			*/
+			
 			var qual : int = TheSoccerPlayerQuality.Quality;
 			var mc : MovieClip = MyCapStars.content["mcStars"] as MovieClip; 
 			mc.gotoAndStop(qual+1);
@@ -63,7 +66,7 @@
 		<s:Label text="{TheSoccerPlayer.DorsalNumber.toString()}" horizontalCenter="0" top="18" styleName="whiteBoldBig" textAlign="center" filters="{DorsalNumberStrokeFilter}"/>
 	</s:Group>
 		
-	<GameView:FacebookPicture FacebookID="{TheSoccerPlayer.FacebookID}" maskType="alpha" scaleX="0.88" scaleY="0.88" top="17" left="17">
+	<GameView:FacebookPicture FacebookID="{TheSoccerPlayer.FacebookID}" maskType="alpha" scaleX="0.96" scaleY="0.96" top="14" left="15">
 		<GameView:mask>
 			<s:Group>
 				<s:Ellipse width="50" height="50">
