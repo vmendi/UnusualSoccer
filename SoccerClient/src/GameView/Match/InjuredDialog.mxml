@@ -2,7 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 xmlns:Team="GameView.Team.*" xmlns:GameView="GameView.*"
-		 width="400" height="264">
+		 width="400" height="226">
 	
 	<fx:Style source="../styles.css"/>
 	
@@ -48,7 +48,7 @@
 	</s:Group>
 
 	
-	<s:Rect left="20" right="20" top="92" height="120" radiusX="4">
+	<s:Rect left="20" right="20" top="92" height="82" radiusX="4">
 		<s:stroke>
 			<s:SolidColorStroke caps="none" color="#CCCCCC" joints="miter" miterLimit="4"
 								weight="2"/>
@@ -63,10 +63,11 @@
 		</s:filters>
 	</s:Rect>
 	
-	<s:List id="MyInjuredList" dataProvider="{mInjured}" left="20" right="20" top="92" height="120"
+	<s:List id="MyInjuredList" dataProvider="{mInjured}" left="20" right="20" top="102" height="72"
 			verticalScrollPolicy="off" horizontalScrollPolicy="off"
 			itemRenderer="GameView.Team.FieldCap" useVirtualLayout="false"
-			skinClass="GameView.Skins.DefaultListSkin">
+			skinClass="GameView.Skins.DefaultListSkin"
+			horizontalCenter="0">
 		<s:layout><s:HorizontalLayout gap="20" /></s:layout>
 	</s:List> 
 		
