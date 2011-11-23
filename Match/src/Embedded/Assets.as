@@ -76,12 +76,6 @@ package Embedded
 		static public var MensajeTurnoPropioRobo:Class;
 		
 		
-		[Embed(source="Embedded/Assets.swf", symbol="MensajeTurnoContrarioRoboSinConflicto")]
-		static public var MensajeTurnoContrarioRoboSinConflicto:Class;
-		[Embed(source="Embedded/Assets.swf", symbol="MensajeTurnoPropioRoboSinConflicto")]
-		static public var MensajeTurnoPropioRoboSinConflicto:Class;
-		
-		
 		[Embed(source="Embedded/Assets.swf", symbol="MensajeTurnoPropioSaquePuerta")]
 		static public var MensajeTurnoPropioSaquePuerta:Class;			// El saque de puerta no tiene un mensaje específico para el oponente
 		
@@ -108,10 +102,15 @@ package Embedded
 		[Embed(source="Embedded/Assets.swf", symbol="QuedanTiros3")]
 		static public var QuedanTiros3:Class;
 		
-		[Embed(source="Embedded/Assets.swf", symbol="MensajePasealpie")]		// Un pase al pie sin conflicto de que me intenten robar la pelota
-		static public var MensajePasealPie:Class;
-		[Embed(source="Embedded/Assets.swf", symbol="MensajePaseAlPieInfo")]	// Un pase al pie con intento de robo que no se consigue
-		static public var MensajePasealPieConConflicto:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="MensajePaseAlPie")]		// Un pase al pie sin conflicto de que me intenten robar la pelota
+		static public var MensajePaseAlPie:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="MensajePaseAlPieNoRobo")]	// Un pase al pie con intento de robo que no se consigue
+		static public var MensajePaseAlPieNoRobo:Class;
+		
+		[Embed(source="Embedded/Assets.swf", symbol="MensajeUltimoPaseAlPie")]			// El ULTIMO pase al pie sin conflictos
+		static public var MensajeUltimoPaseAlPie:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="MensajeUltimoPaseAlPieNoRobo")]	// El ULTIMO pase al pie con intento de robo que no se consigue
+		static public var MensajeUltimoPaseAlPieNoRobo:Class;
 		
 		[Embed(source="Embedded/Assets.swf", symbol="MensajeRobo")]
 		static public var MensajeRobo:Class;

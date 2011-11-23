@@ -92,8 +92,7 @@
 		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraFondo')" fillMode="clip" />
 		
 		<Competition:DivisionBadge x="0" y="0" width="147" height="74" Division="{mCompetitionModel.TheGroup.DivisionName}" />
-		<!--<s:Label width="147" x="0" y="9" text="DIVISIÓN" styleName="whiteBoldMedium" textAlign="center" />-->
-		
+				
 		<s:Label width="72" x="148" y="9" text="GRUPO" styleName="whiteBoldMedium" textAlign="center" />
 		<s:Label id="MyGroupNameLabel" text="{mCompetitionModel.TheGroup.GroupName}" width="72" x="148" y="41" styleName="whiteBoldVeryBig" textAlign="center" />
 		

@@ -191,7 +191,7 @@ package Caps
 				
 				// Mientras que se está realizando una simulación de un disparo o está ejecutando el cambio de turno, 
 				// o estamos pausados, no se resta el timeout
-				if( (!TheGamePhysics.IsSimulating) && (!this.TimeOutPaused) && (!TheInterface.CutSceneTurnRunning))
+				if( (!TheGamePhysics.IsSimulating) && (!this.TimeOutPaused))
 				{
 					Timeout -= realElapsed;
 					
@@ -223,7 +223,7 @@ package Caps
 				{
 					_Part = 1;
 					TheGamePhysics.Start();					
-					ChangeState(GameState.NewPart);				
+					ChangeState(GameState.NewPart);
 					break;
 				}
 				
@@ -579,18 +579,14 @@ package Caps
 					if (_RemainingHits == 1)
 						_RemainingHits++;
 					
+					_RemainingPasesAlPie--;
+					
 					// Mostramos el cartel de pase al pie en los 2 clientes!
-					TheInterface.OnMsgPasePie( stealer ? true : false, LastConflicto );
+					TheInterface.OnMsgPasePieConseguido(_RemainingPasesAlPie == 0, stealer ? true : false, LastConflicto);
 					
 					// Si no somos el 'LocalUser', solo esperamos la respuesta del otro cliente
 					if( paseToCap.OwnerTeam.IsLocalUser )
 						TheInterface.ShowHandleBall( paseToCap );
-					
-					_RemainingPasesAlPie--;
-					
-					// Si este ha sido el último pase al pie, informamos al player
-					if (_RemainingPasesAlPie == 0)
-						TheInterface.OnLastPaseAlPie();
 				}
 			}
 			else	// No ha habido falta y no se ha producido pase al pie					
@@ -678,7 +674,7 @@ package Caps
 			
 			// Mostramos un mensaje animado de uso del skill (cuando el el otro jugador quien ha utilizado el skill)
 			if( idPlayer != Match.Ref.IdLocalUser )
-				TheInterface.ShowAniUseSkill(idSkill, null);
+				TheInterface.ShowAniUseSkill(idSkill);
 			
 			// Algunos de los skills se aplican aquí ( son inmediatas ) otras no
 			// Las habilidades inmediatas que llegan tienen que ser del jugador activo
@@ -1009,7 +1005,7 @@ package Caps
 			_IdxCurTeam = idTeam;
 			
 			// Mostramos un mensaje animado de cambio de turno
-			TheInterface.OnTurn( idTeam, reason, null );
+			TheInterface.OnTurn(idTeam, reason);
 			
 			// Reseteamos el tiempo disponible para el subturno (time-out)
 			ResetTimeout();
@@ -1223,8 +1219,7 @@ package Caps
 			_Part = part;
 			Playing = false;	// Pausamos el partido
 			
-			// Lanzamos la cutscene de fin de tiempo, cuando termine pasamos realmente de parte
-			// o finalizamos el partido
+			// Lanzamos la cutscene de fin de tiempo, cuando termine pasamos realmente de parte o finalizamos el partido
 			if( part == 1 )
 				TheInterface.OnFinishPart( _Part, Delegate.create( ChangeState, GameState.EndPart ) );
 			else if( part == 2 )

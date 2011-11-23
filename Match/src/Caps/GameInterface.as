@@ -9,18 +9,14 @@ package Caps
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
-	import flash.display.SimpleButton;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import flash.media.SoundMixer;
-	import flash.media.SoundTransform;
 	import flash.net.SharedObject;
 	
 	import utils.Delegate;
 	import utils.TimeUtils;
 
 	//
-	// Interface de juego
 	// Controla "TODAS" las entradas del usuario local y reacciona o la propaga de la forma correspondiente
 	// Al tratarse de un juego en red lo reenvía al interface de red que lo mandará al servidor como una petición
 	//
@@ -31,22 +27,17 @@ package Caps
 		private var ControllerCanvas:Sprite = null;				// El contenedor donde se pinta las flecha de direccion
 		private var PosControl:PosController = null;			// Control para posicionar chapas (lo usamos solo para el portero)
 		
-		private var QuedanTiros2:DisplayObject = null;			// Cartel para mostrar el nº de tiros que tienes
-		private var QuedanTiros1:DisplayObject = null;			// Cartel para mostrar el nº de tiros que tienes
-		private var MensajePasealPie:DisplayObject = null;		// Cartel para mostrar el panel de pase al pie
-		private var MensajeRobo:DisplayObject = null;			// Cartel para mostrar el mensaje de robo de balón
-		
 		public var TurnTime:Number = 0;							// Tiempo que representa la tartita contadora de timeout del interface
 		
 		// Parámetros visuales de la flecha que se pinta para disparar
-		private const MAX_LONG_SHOOT:Number = 80; //55;
+		private const MAX_LONG_SHOOT:Number = 80;
 		private const COLOR_SHOOT:uint = 0xE97026;
 		private const COLOR_HANDLEBALL:uint = 0x2670E9;
 		private const THICKNESS_SHOOT:uint = 7;
 		
 		private var _UserInputEnabled:Boolean = false;			// Indica si se acepta la entrada del usuario
 		
-		public var CutSceneTurnRunning:MovieClip = null;		// la cut-scene de turno que está ejecutandose hasta que termine
+		//public var CutSceneTurnRunning:MovieClip = null;		// la cut-scene de turno que está ejecutandose hasta que termine
 		
 		//
 		// Inicialización
@@ -76,22 +67,6 @@ package Caps
 			
 			// Nos registramos al botón de abandonar el partido
 			/*  Gui.BotonAbandonar.addEventListener( MouseEvent.CLICK, OnAbandonar ); */
-						
-			// Creamos unos carteles que muestren el nº de tiros pendientes del jugador y pase al pie y robo
-			var x:Number = Field.CenterX;
-			var y:Number = Field.CenterY;
-			
-			QuedanTiros2 = CreateGraphic( Embedded.Assets.QuedanTiros2, x, y );
-			QuedanTiros2.visible = false;
-
-			QuedanTiros1 = CreateGraphic( Embedded.Assets.QuedanTiros1, x, y );
-			QuedanTiros1.visible = false;
-			
-			MensajePasealPie = CreateGraphic( Embedded.Assets.MensajePasealPie, x, y );
-			MensajePasealPie.visible = false;
-			
-			MensajeRobo = CreateGraphic( Embedded.Assets.MensajeRobo, x, y );
-			MensajeRobo.visible = false;
 			
 			UpdateMuteButton();
 		}
@@ -143,8 +118,6 @@ package Caps
 			var teams:Array = Match.Ref.Game.TheTeams;
 			var Gui:* = Match.Ref.Game.TheField.Visual;
 			
-			CutSceneTurnRunning = null;		// Si tenemos una cutscene de turno corriendo, nos olvidamos de ella  
-			
 			// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el quipo
 			Gui.BadgeHome.gotoAndStop( teams[ Enums.Team1 ].Name );
 			Gui.BadgeAway.gotoAndStop( teams[ Enums.Team2 ].Name );
@@ -167,9 +140,9 @@ package Caps
 		}
 		
 		//
-		// Actualizamos los elementos visuales del Gui que están cambiando todo el tiempo
-		//   - Tiempo del partido
-		public function Update(  ) : void
+		// Actualizamos los elementos visuales del Gui que están cambiando todo el tiempo (Tiempo del partido...)
+		// 
+		public function Update() : void
 		{
 			var Gui:* = Match.Ref.Game.TheField.Visual;
 			
@@ -193,7 +166,7 @@ package Caps
 			var team:Team = Match.Ref.Game.LocalUserTeam;
 			for ( var i:int = Enums.SkillFirst; i <= Enums.SkillLast; i++ )
 			{
-				SetSpecialSkill( i, team.HasSkill( i ), team.ChargedSkill( i ) );
+				UpdateSpecialSkill( i, team.HasSkill( i ), team.ChargedSkill( i ) );
 			}
 			
 			// Actualizamos el estado (enable/disable) del botón de tiro a puerta
@@ -242,93 +215,65 @@ package Caps
 		}
 		
 		//
-		// Sincroniza el valor de una Special-Skill
-		// Habilitando/deshabilitando el botón en el interface
+		// Sincroniza el valor de una Special-Skill, por ejemplo habilitando/desabilitando el boton
 		//
-		private function SetSpecialSkill( index:int, available:Boolean, percentCharged:int ) : void
+		private function UpdateSpecialSkill(index:int, available:Boolean, percentCharged:int) : void
 		{
 			var Gui:* = Match.Ref.Game.TheField.Visual;
 						
 			var objectName:String = "SpecialSkill"+index.toString(); 
 			var item:MovieClip = Gui.getChildByName( objectName ) as MovieClip;
-			if( item != null )
+			
+			// No tenemos esa habilidad o no está permitida en el turno actual
+			if( !available || (!IsSkillAllowedInTurn( index )) )
 			{
-				// No tenemos esa habilidad o no está permitida en el turno actual
-				if( !available || (!IsSkillAllowedInTurn( index )) )
-				{
-					item.Icono.alpha = 0.25;	
-					item.IconoBase.alpha = 0.25;
-					item.Icono.gotoAndStop( objectName );
-					item.IconoBase.gotoAndStop( objectName );
-					item.Tiempo.gotoAndStop( 1 );
-					item.Tiempo.visible = false;
+				item.Icono.alpha = 0.25;	
+				item.IconoBase.alpha = 0.25;
+				item.Icono.gotoAndStop( objectName );
+				item.IconoBase.gotoAndStop( objectName );
+				item.Tiempo.gotoAndStop( 1 );
+				item.Tiempo.visible = false;
 
-					item.gotoAndStop( "NotAvailable" );	
-				}
-				// Tenemos la habilidad pero no está cargada al 100% (no se puede utilizar) 
-				else if( available && percentCharged < 100 )
-				{
-					item.gotoAndStop( "Available" );
-					
-					item.Icono.alpha = 0.25;	
-					item.IconoBase.alpha = 0.25;
-					item.Icono.gotoAndStop( objectName );
-					item.IconoBase.gotoAndStop( objectName );
-					item.Tiempo.gotoAndStop( percentCharged );
-					item.Tiempo.visible = true;
-				}
-				// Tenemos la habilidad y lista para ser usada
-				else if( available && percentCharged >= 100 )
-				{
-					item.gotoAndStop( "Available" );
-					
-					item.Icono.alpha = 1.0;	
-					item.IconoBase.alpha = 1.0;
-					item.Icono.gotoAndStop( objectName );
-					item.IconoBase.gotoAndStop( objectName );
-					item.Tiempo.gotoAndStop( 1 );
-					item.Tiempo.visible = false;
-				}
-				
-
-				// Registramos el evento de utilizar skill añadiéndole un parámetro que indica
-				// el índice de la skill a utilizar
-				// NOTE: Dejamos siempre registrado el evento a pesar de que luego no se pueda utilizar la skill
-				// el método determinará si está disponible
-				
-				//var usable:Boolean = ( available && percentCharged == 100 ); 
-				var usable:Boolean = ( available  );
-
-				if( item.hasEventListener( MouseEvent.CLICK ) )
-				{
-					if( !usable )
-					{
-						/*
-						// NOTE: No se pueden elimar listener de esta manera si los hemos agregado con Callback.Create
-						//
-						item.removeEventListener( MouseEvent.CLICK, OnUseSkill );
-						if( item.hasEventListener( MouseEvent.CLICK ) )
-						{
-							throw new Error( "No se elimina el listener!" );
-						}
-						*/
-					}
-				}
-				else
-				{
-					if( usable )
-						item.addEventListener( MouseEvent.CLICK, Delegate.create( OnUseSkill, index ) ); 
-				}
-				item.mouseEnabled = usable;
+				item.gotoAndStop( "NotAvailable" );	
 			}
+			// Tenemos la habilidad pero no está cargada al 100% (no se puede utilizar) 
+			else if( available && percentCharged < 100 )
+			{
+				item.gotoAndStop( "Available" );
+				
+				item.Icono.alpha = 0.25;	
+				item.IconoBase.alpha = 0.25;
+				item.Icono.gotoAndStop( objectName );
+				item.IconoBase.gotoAndStop( objectName );
+				item.Tiempo.gotoAndStop( percentCharged );
+				item.Tiempo.visible = true;
+			}
+			// Tenemos la habilidad y lista para ser usada
+			else if( available && percentCharged >= 100 )
+			{
+				item.gotoAndStop( "Available" );
+				
+				item.Icono.alpha = 1.0;	
+				item.IconoBase.alpha = 1.0;
+				item.Icono.gotoAndStop( objectName );
+				item.IconoBase.gotoAndStop( objectName );
+				item.Tiempo.gotoAndStop( 1 );
+				item.Tiempo.visible = false;
+			}
+			
+			if (!item.hasEventListener( MouseEvent.CLICK ))
+			{
+				item.addEventListener(MouseEvent.CLICK, Delegate.create(OnUseSkillButtonClick, index));
+			}
+			
+			item.mouseEnabled = available;
 		}
 			
 		//
 		// Selecciona una chapa 
 		// Al seleccionarse se visualiza información sobre la misma en la parte inferior derecha de la pantalla
-		// NOTE: <null> implica ningunca chapa seleccionada
 		//
-		public function SelectCap( cap:Cap ) : void
+		private function SelectCap( cap:Cap ) : void
 		{
 			var gui:* = Match.Ref.Game.TheField.Visual;
 			
@@ -562,7 +507,7 @@ package Caps
 		//   - Asegurando que durante un tiro a puerta no esté activo
 		//   - y que estés en posición válida: más del medio campo o habilidad especial "Tiroagoldesdetupropiocampo" 
 		
-		public function UpdateButtonTiroPuerta(  ) : void
+		private function UpdateButtonTiroPuerta(  ) : void
 		{
 			var Gui:* = Match.Ref.Game.TheField.Visual;
 			var bActiveTiroPuerta:Boolean = _UserInputEnabled;
@@ -601,73 +546,11 @@ package Caps
 				PosControl.Stop( Controller.Canceled );
 			}
 		}
-		
-		
-		//
-		// Obtiene un MovieClip del Gui a partir de un nombre y un índice. 
-		// El índice lo concatena al final del nombre base, para forma el nombre final a buscar
-		// Si el índice es (-1) lo ignora
-		// Si root es null utiliza el Gui
-		//
-		public function GetMovieClipByName ( baseName:String, idx:int = (-1), root:DisplayObjectContainer = null ) : MovieClip
-		{
-			var mc:MovieClip = null;
-			
-			if( root == null )
-				root = Match.Ref;
-			
-			if( root != null )
-			{
-				// Obtenemos el nombre final concatenando el indice que nos han dado.
-				// Si el indice es (-1) lo ignoramos
-				var finalName:String = baseName;
-				if( idx != (-1) )
-					finalName += idx.toString();
 				
-				mc = root.getChildByName( finalName ) as MovieClip;
-			}
-			
-			return( mc );
-		}
-		
-		//
-		// Creamos un botón, a partir de 3 estados 
-		// Los estados son clases que se instanciarán (embebidas)
-		// Si se especifica un 'parent' añadimos el botón al mismo
-		// NOTE: Para el estado de 'hit' o colisión que no se especifica se utiliza el upState
-		//
-		public function CreateButton( upState:Class, overState:Class = null, downState:Class = null, parent:DisplayObjectContainer = null  ) : SimpleButton
-		{
-			// Creamos instancias de cada estado
-			var upInstance:DisplayObject = null; 
-			var overInstance:DisplayObject = null;
-			var downInstance:DisplayObject = null;
-			
-			if( upState != null )
-				upInstance = new upState;
-			if( overState != null )
-				overInstance = new overState;
-			if( downState != null )
-				downInstance = new downState;
-			
-			// Creamos el botón con los elementos gráficos indicados
-			// NOTE: Para que pueda tener interacción debe rellenarse hitTestState (el último parámetro)
-			var item:SimpleButton = new SimpleButton( upInstance, overInstance, downInstance, upInstance );
-			
-			// Si nos dicen un padre, añadimos el botón
-			if( parent != null )
-				parent.addChild( item );
-			
-			// No es necesario, por defacto está activo
-			//item.enabled = true;
-			
-			return( item );
-		}
-		
 		// 
 		// Han pulsado un botón de "Utilizar Skill x"
 		//
-		public function OnUseSkill( event:MouseEvent, idSkill:int ) : void
+		private function OnUseSkillButtonClick(event:MouseEvent, idSkill:int) : void
 		{
 			trace( "Interface: OnUseSkill: Utilizando habilidad " + idSkill.toString() );
 	
@@ -703,54 +586,37 @@ package Caps
 
 		// 
 		// Ha terminado una mitad
-		// <part> Indica la parte que ha terminado
 		//
-		public function OnFinishPart( part:int, callback:Function = null ) : void
+		public function OnFinishPart( part:int, callback:Function) : void
 		{
 			// No permitimos entrada del usuario y además cancelamos cualquier operación que estuviera ocurriendo
 			UserInputEnabled = false;
-			var cutScene:MovieClip = null;
-			
+						
 			// Reproducimos una cutscene u otra en función de si ha acabado la primera parte o el partido 
 			if( part == 1 )
-			{
-				// Creamos el mensaje de fin de partido				
-				cutScene = CreateMovieClip( Embedded.Assets.MensajeFinTiempo1, 0, 210 );
-				LaunchCutScene( cutScene, true, callback ); 
-			}
+				LaunchCutScene(Embedded.Assets.MensajeFinTiempo1, 0, 210, callback); 
 			else if ( part == 2 )
-			{
-				cutScene = CreateMovieClip( Embedded.Assets.MensajeFinPartido, 0, 210 );
-				LaunchCutScene( cutScene, true, callback ); 
-			}
+				LaunchCutScene(Embedded.Assets.MensajeFinPartido, 0, 210, callback);
+			else
+				throw new Error("Unknown part");
 		}
 		
 		// 
 		// Reproduce una animación dependiendo de si el gol es válido o no
 		//
-		public function OnGoalScored( validity:int, callback:Function = null  ) : void
+		public function OnGoalScored(validity:int, callback:Function) : void
 		{
 			// No permitimos entrada del usuario y además cancelamos cualquier operación que estuviera ocurriendo
 			UserInputEnabled = false;
-			var cutScene:MovieClip = null;
-			
+						
 			if( validity == Enums.GoalValid )
-			{
-				cutScene = CreateMovieClip( Embedded.Assets.MensajeGol, 0, 210 );
-				LaunchCutScene( cutScene, true, callback ); 
-			}
+				LaunchCutScene(Embedded.Assets.MensajeGol, 0, 210, callback);
 			else
 			if( validity == Enums.GoalInvalidNoDeclarado )
-			{
-				cutScene = CreateMovieClip( Embedded.Assets.MensajeGolInvalido, 0, 210 );
-				LaunchCutScene( cutScene, true, callback ); 
-			}
+				LaunchCutScene(Embedded.Assets.MensajeGolInvalido, 0, 210, callback); 
 			else
 			if( validity == Enums.GoalInvalidPropioCampo )
-			{
-				cutScene = CreateMovieClip( Embedded.Assets.MensajeGolinvalidoPropioCampo, 0, 210 );
-				LaunchCutScene( cutScene, true, callback ); 
-			}
+				LaunchCutScene(Embedded.Assets.MensajeGolinvalidoPropioCampo, 0, 210, callback); 
 			else
 				throw new Error("Validez del gol desconocida");
 		}
@@ -758,312 +624,150 @@ package Caps
 		// 
 		// Reproduce una animación mostrando el turno del jugador
 		//
-		public function OnTurn( idTeam:int, reason:int, callback:Function = null  ) : void
+		public function OnTurn(idTeam:int, reason:int) : void
 		{
 			// No permitimos entrada del usuario y además cancelamos cualquier operación que estuviera ocurriendo
 			UserInputEnabled = false;
-			var cutScene:MovieClip = null;
-			
+						
 			// Creamos la cutscene adecuada en función de si el turno del jugador local o el contrario y de la razón
-			// por la que hemos cambiado de turno			
-			if( idTeam == Match.Ref.IdLocalUser )	// Es el turno propio ( jugador local )
+			// por la que hemos cambiado de turno
+			if (idTeam == Match.Ref.IdLocalUser)	// Es el turno propio ( jugador local )
 			{
-				if( reason == Enums.TurnByStolen  )
+				if (reason == Enums.TurnByLost || reason == Enums.TurnByStolen)
 				{
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeTurnoPropioRobo, 0, 210 );
-					FillConflicto( cutScene.ModuloConflicto, Match.Ref.Game.LastConflicto );
-				}
-				else if (reason == Enums.TurnByLost)
-				{
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeTurnoPropioRoboSinConflicto, 0, 210 );
+					LaunchCutScene(Embedded.Assets.MensajeTurnoPropioRobo, 0, 210, null);
 				}
 				else if( reason == Enums.TurnByFault || reason == Enums.TurnBySaquePuertaByFalta )
 				{					
 					// Los nombres están al revés porque aquí representa a quien le han hecho la falta
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeFaltaContraria, 0, 210 );
-					FillConflictoFault( cutScene, Match.Ref.Game.TheGamePhysics.Fault );
+					var cutScene : MovieClip = LaunchCutScene(Embedded.Assets.MensajeFaltaContraria, 0, 210, null);
+					FillConflictoFault(cutScene, Match.Ref.Game.TheGamePhysics.Fault);
 				}
 				else if( reason == Enums.TurnBySaquePuerta  )		// El saque de puerta no tiene un mensaje específico para el oponente
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeTurnoPropioSaquePuerta, 0, 210 );
+					LaunchCutScene(Embedded.Assets.MensajeTurnoPropioSaquePuerta, 0, 210, null);
 				else if( reason == Enums.TurnByTiroAPuerta  )
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeColocarPorteroPropio, 0, 210 );
+					LaunchCutScene(Embedded.Assets.MensajeColocarPorteroPropio, 0, 210, null);
 				else if( reason == Enums.TurnByGoalKeeperSet)
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeTiroPuertaPropio, 0, 210 );
+					LaunchCutScene(Embedded.Assets.MensajeTiroPuertaPropio, 0, 210, null);
 				else
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeTurnoPropio, 0, 210 );
+					LaunchCutScene(Embedded.Assets.MensajeTurnoPropio, 0, 210, null);
 			}
 			else 	// Es el turno del oponente
 			{
-				if( reason == Enums.TurnByStolen  )	
+				if (reason == Enums.TurnByLost || reason == Enums.TurnByStolen)	
 				{
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeTurnoContrarioRobo, 0, 210 );
-					FillConflicto( cutScene.ModuloConflicto, Match.Ref.Game.LastConflicto );
-				}
-				else if (reason == Enums.TurnByLost)
-				{
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeTurnoContrarioRoboSinConflicto, 0, 210 );
+					LaunchCutScene(Embedded.Assets.MensajeTurnoContrarioRobo, 0, 210, null);
 				}
 				else if( reason == Enums.TurnByFault || reason == Enums.TurnBySaquePuertaByFalta )
 				{
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeFaltaPropia, 0, 210 );
-					FillConflictoFault( cutScene, Match.Ref.Game.TheGamePhysics.Fault );
+					cutScene = LaunchCutScene(Embedded.Assets.MensajeFaltaPropia, 0, 210, null);
+					FillConflictoFault(cutScene, Match.Ref.Game.TheGamePhysics.Fault );
 				}
 				else if( reason == Enums.TurnByTiroAPuerta  )
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeColocarPorteroContrario, 0, 210 );
+					LaunchCutScene(Embedded.Assets.MensajeColocarPorteroContrario, 0, 210, null);
 				else if( reason == Enums.TurnByGoalKeeperSet)
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeTiroPuertaContrario, 0, 210 );
+					LaunchCutScene(Embedded.Assets.MensajeTiroPuertaContrario, 0, 210, null);
 				else
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeTurnoContrario, 0, 210 );
-			}
-			
-			// Lanzamos la cutscene
-			if (cutScene != null)
-			{
-				LaunchCutScene( cutScene, true, callback );
-				CutSceneTurnRunning = cutScene;					// Almacenamos la cut-scene de turno que está ejecutandose hasta que termine
+					LaunchCutScene(Embedded.Assets.MensajeTurnoContrario, 0, 210, null);
 			}
 		}
 		
 		// 
 		// Reproduce una animación mostrando el uso de una skill
 		//
-		public function ShowAniUseSkill( idSkill:int, callback:Function = null  ) : void
+		public function ShowAniUseSkill(idSkill:int) : void
 		{
 			// Cancelamos cualquier operación de entrada que estuviera ocurriendo
 			// Cancel();
-			var cutScene:MovieClip = null;
-			
-			// Reproducimos una cutscene u otra en función de si el turno del jugador local o el contrario 
-			//if( idTeam == Server.Ref.IdLocalUser )	// Es el jugador local?
-			{
-				// Creamos/lanzamos la cutscene
-				if( idSkill == 1 )
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeSkill01, 0, 210 );
-				else if( idSkill == 2 )
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeSkill02, 0, 210 );
-				else if( idSkill == 3 )
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeSkill03, 0, 210 );
-				else if( idSkill == 4 )
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeSkill04, 0, 210 );
-				else if( idSkill == 5 )
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeSkill05, 0, 210 );
-				else if( idSkill == 6 )
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeSkill06, 0, 210 );
-				else if( idSkill == 7 )
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeSkill07, 0, 210 );
-				else if( idSkill == 8 )
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeSkill08, 0, 210 );
-				else if( idSkill == 9 )
-					cutScene = CreateMovieClip( Embedded.Assets.MensajeSkill09, 0, 210 );
-				else
-					throw new Error( "Identificador de skill invalido" );
-				
-				LaunchCutScene( cutScene, true, callback ); 
-			}
-		}
-		
-		
-		//
-		// Lanza una cutscene a partir de un asset embebido que se crea y dispara
-		//
-		public function CreateGraphic( cutScene:Class, x:Number = 0, y:Number = 0, parent:DisplayObjectContainer = null ) : DisplayObject
-		{
-			// Creamos el objeto gráfico
-			var item:DisplayObject = new cutScene() as DisplayObject;
-			
-			if( item != null)
-			{
-				// Posicionamos la cutscene
-				item.x = x;
-				item.y = y;
-				
-				// Linkamos la cutscene al arbol de pintado
-				if( parent == null )
-					parent = Match.Ref.Game.GUILayer;
-				parent.addChild( item );
-				
-				// Aseguramos que no se reproduce la animación
-				//item.gotoAndStop( 1 );
-			}
-			else
-				trace( "Error creando asset" );
-			
-			return( item );
-		}
-		public function CreateMovieClip( cutScene:Class, x:Number = 0, y:Number = 0, parent:DisplayObjectContainer = null ) : MovieClip
-		{
-			return( CreateGraphic( cutScene, x, y, parent ) as MovieClip );
-		}
-		
-		
-		//
-		// Lanza una cutscene a partir de la animación de un movie-clip
-		//
-		public function LaunchCutScene( mc:MovieClip, removeToEnd:Boolean = false, callback:Function = null ) : void
-		{
-			if( mc )
-			{
-				// Aseguramos que es visible		
-				mc.visible = true;
-				// Lanzamos!
-				mc.gotoAndPlay( 1 );
-				
-				var labelEnd:String = "EndAnim";
-				
-				if( Framework.Graphics.HasLabel( labelEnd, mc ) ) 
-					utils.MovieClipListener.AddFrameScript( mc, labelEnd, Delegate.create(OnEndCutScene, mc, removeToEnd, callback) );
-				else
-					trace( "El MovieClip " + mc.name + " no tiene la etiqueta " + labelEnd );
-			}
-		}
-		
-		//
-		// Ha terminado una cut-scene
-		//
-		public function OnEndCutScene( mc:MovieClip, removeToEnd:Boolean, callback:Function ) : void
-		{
-			// Si ha terminado una cutscene de turno, limpiamos la variable que indica que está ejecutándose
-			if( CutSceneTurnRunning == mc )
-				CutSceneTurnRunning = null;
 
-			// Detenemos animación (para que no sea cíclica)
-			mc.gotoAndStop( 1 );
-			mc.visible = false;
-			// Si nos lo han indicado eliminamos el movieclip
-			if( removeToEnd == true && mc.parent )
-			{
-				mc.parent.removeChild( mc );
-			}
+			if( idSkill == 1 )
+				LaunchCutScene(Embedded.Assets.MensajeSkill01, 0, 210, null);
+			else if( idSkill == 2 )
+				LaunchCutScene(Embedded.Assets.MensajeSkill02, 0, 210, null);
+			else if( idSkill == 3 )
+				LaunchCutScene(Embedded.Assets.MensajeSkill03, 0, 210, null);
+			else if( idSkill == 4 )
+				LaunchCutScene(Embedded.Assets.MensajeSkill04, 0, 210, null);
+			else if( idSkill == 5 )
+				LaunchCutScene(Embedded.Assets.MensajeSkill05, 0, 210, null);
+			else if( idSkill == 6 )
+				LaunchCutScene(Embedded.Assets.MensajeSkill06, 0, 210, null);
+			else if( idSkill == 7 )
+				LaunchCutScene(Embedded.Assets.MensajeSkill07, 0, 210, null);
+			else if( idSkill == 8 )
+				LaunchCutScene(Embedded.Assets.MensajeSkill08, 0, 210, null);
+			else if( idSkill == 9 )
+				LaunchCutScene(Embedded.Assets.MensajeSkill09, 0, 210, null);
+			else
+				throw new Error( "Identificador de skill invalido" );
+		}
+		
+		private function LaunchCutScene(cutScene:Class, x:Number, y:Number, callback:Function) : MovieClip
+		{
+			var mc:MovieClip = new cutScene() as MovieClip;
+			
+			mc.x = x;
+			mc.y = y;
 						
-			// Llamamos al usuario
+			Match.Ref.Game.GUILayer.addChild(mc);
+			
+			mc.gotoAndPlay(1);
+			
+			var labelEnd:String = "EndAnim";
+			
+			if (Framework.Graphics.HasLabel( labelEnd, mc )) 
+				utils.MovieClipListener.AddFrameScript( mc, labelEnd, Delegate.create(OnEndCutScene, mc, callback) );
+			else
+				trace( "El MovieClip " + mc.name + " no tiene la etiqueta " + labelEnd );
+			
+			return mc;
+		}
+		
+		public function OnEndCutScene(mc:MovieClip, callback:Function) : void
+		{			
+			mc.gotoAndStop(1);
+			mc.visible = false;
+			
+			mc.parent.removeChild(mc);
+			
 			if( callback != null )
 				callback();
 		}
-		
-		// 
-		// Lanza el diálogo del número de turnos que quedan
-		// NOTE: Solo se muestra cuando quedan 2, o 1 turno
+			
 		public function OnQuedanTurnos( turnos:int ) : void
 		{
-			var item:DisplayObject = null;
+			var itemClass:Class = null;
 			
-			// Creamos unos carteles para el nº de turnos del jugador
-			
-			// Elegimos un cartelito u otro
 			if( turnos == 2 )
-				item = QuedanTiros2;
+				itemClass = Assets.QuedanTiros2;
 			else if( turnos == 1 )
-				item = QuedanTiros1;
-			
-			// Hacemos aparecer el cartelillo inmediatamente y lo fundimos
-			if( item != null )
-			{
-				item.visible = true;
-				item.alpha = 1.0;
-				
-				// Cuando termina el fundido del dialogo de QuedanTurnos lo ocultamos, ya que si no 
-				// al estar por delante no podemos pulsar sobre las chapas
-				TweenMax.to( item, 2, {alpha:0, onComplete: OnFinishTween } );
-			}
+				itemClass = Assets.QuedanTiros1;
+
+			if (itemClass != null)
+				LaunchCutScene(itemClass, 0, 210, null);
 		}
 
-		// 
-		// Lanza el diálogo de pase al pie con conflicto o sin conflicto
-		// 
-		public function OnMsgPasePie( bConConflicto:Boolean, conflicto:Object ) : void
+		//
+		// Se ha producido un pase al pie. Pudo haber conflicto o no, pero se resolvio SIN robo.
+		//
+		public function OnMsgPasePieConseguido(bUltimoPase:Boolean, bConConflicto:Boolean, conflicto:Object) : void
 		{
-			if( bConConflicto )
+			if (bConConflicto)
 			{
-				// Creamos animación de pase al pie efectuado con conflicto de intento de robo!				
-				var mc:MovieClip = CreateMovieClip( Assets.MensajePasealPieConConflicto, 200, 200 );
-				FillConflicto( mc.ModuloConflicto, conflicto );
-				LaunchCutScene( mc, true );
+				if (!bUltimoPase)
+					LaunchCutScene(Assets.MensajePaseAlPieNoRobo, 0, 210, null);
+				else
+					LaunchCutScene(Assets.MensajeUltimoPaseAlPieNoRobo, 0, 210, null);
 			}
 			else
-			{
-				var item:DisplayObject = MensajePasealPie;
-				
-				// Hacemos aparecer el cartelillo inmediatamente y lo fundimos
-				if( item != null )
-				{
-					item.visible = true;
-					item.alpha = 1.0;
-					
-					// Cuando termina el fundido del dialogo de QuedanTurnos lo ocultamos, ya que si no 
-					// al estar por delante no podemos pulsar sobre las chapas
-					TweenMax.to( item, 2, {alpha:0, onComplete: OnFinishTween } );
-				}
+			{	
+				if (!bUltimoPase)
+					LaunchCutScene(Assets.MensajePaseAlPie, 0, 210, null);
+				else
+					LaunchCutScene(Assets.MensajeUltimoPaseAlPie, 0, 210, null);
 			}
 		}
-		
-		//
-		// Informa a los players de que este a sido el último pase al pie posible dentro del turno
-		//
-		public function OnLastPaseAlPie() : void
-		{
-			if (Match.Ref.Game.CurTeam.IsLocalUser)
-				Match.Ref.Game.ChatLayer.AddLine("Este ha sido tu último pase al pie");
-			else
-				Match.Ref.Game.ChatLayer.AddLine("Este ha sido el último pase al pie de tu oponente");
-		}
-		
-		// 
-		// Lanza el diálogo de robo
-		// NOTE: Deprecated. El robo se anuncia como un mensaje de turno especializado
-		// 
-		/*
-		public function OnMsgRobo(  ) : void
-		{
-			var item:DisplayObject = MensajeRobo;
-			
-			// Hacemos aparecer el cartelillo inmediatamente y lo fundimos
-			if( item != null )
-			{
-				item.visible = true;
-				item.alpha = 1.0;
 				
-				// Cuando termina el fundido del dialogo de QuedanTurnos lo ocultamos, ya que si no 
-				// al estar por delante no podemos pulsar sobre las chapas
-				TweenMax.to( item, 2, {alpha:0, onComplete: OnFinishTween } );
-			}
-		}
-		*/
-
-		// 
-		// Cuando termina el fundido del dialogo de QuedanTurnos lo ocultamos, ya que si no 
-		// al estar por delante no podemos pulsar sobre las chapas
-		// 
-		public function OnFinishTween(  ) : void
-		{
-			QuedanTiros1.visible = false;
-			QuedanTiros2.visible = false;
-			MensajePasealPie.visible = false;
-			MensajeRobo.visible = false;
-		}
-		
-		// 
-		// Mensaje de conflicto :
-		// - A la izquierda el equipo defensor y a la derecha el atacante (o el que intenta robar)
-		// 
-		/*
-		public function OnMsgConflicto( x:Number, y:Number, defense:int, attack:int, probabilidad:int ) : void
-		{
-			var item:MovieClip = this.CreateMovieClip( Embedded.Assets.MensajeConflicto, x, y );
-			this.LaunchCutScene( item, true );
-			
-			var game:Game = Match.Ref.Game;
-				
-			var defender:Team = game.CurTeam;
-				
-			item.JugadorPropio.text = defender.Name;
-			item.JugadorContrario.text = game.AgainstTeam( defender ).Name;
-			
-			item.ValorPropio.text = defense.toString();
-			item.ValorContrario.text = attack.toString();
-			item.Probabilidad.text = probabilidad.toString();
-		}
-		*/
-
 		//
 		// Rellena los datos de un panel de conflicto utilizando un Objeto "conflicto"
 		//
@@ -1116,52 +820,6 @@ package Caps
 			item.Probabilidad.text = int(conflicto.probabilidadRobo).toString() + "%";
 			*/
 		}
-		
-		
-		// 
-		// Lanza el diálogo de final de partido
-		// Deprecated
-		/*
-		public function OnFinalDialog( bDueToAbandon:Boolean = false, callback:Function = null ) : void
-		{
-			var dialog:MovieClip = null;
-			
-			if( bDueToAbandon == false )
-				dialog = CreateGraphic( Embedded.Assets.FinalDialog, 100, 100 ) as MovieClip;
-			else
-				dialog = CreateGraphic( Embedded.Assets.FinalDialogLeave, 100, 100 ) as MovieClip;
-			
-			//LaunchCutScene( cutScene, true, callback );
-			
-			// Rellenamos los datos del diálogo
-			
-			var teams:Array = Match.Ref.Game.Teams;
-			
-			if( bDueToAbandon == false )
-			{
-				// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el quipo
-				dialog.BadgeHome.gotoAndStop( teams[ Enums.Team1 ].Name );
-				dialog.BadgeAway.gotoAndStop( teams[ Enums.Team2 ].Name );
-				
-				
-				dialog.TeamHome.text = teams[ Enums.Team1 ].Name;
-				dialog.TeamAway.text = teams[ Enums.Team2 ].Name;
-				
-				dialog.NameHome.text = teams[ Enums.Team1 ].UserName;
-				dialog.NameAway.text = teams[ Enums.Team2 ].UserName;
-			}
-			
-			// Estos campos los tienen todos los diálogos:
-			
-			//dialog.ValueXP.text = ;
-			//dialog.ValuePuntosMahou.text = ;
-			//dialog.ValueTrueSkill.text = ;
-			
-			// Cuando pulsen aceptar destruimos el control y llamamos al callback de usuario
-			dialog.BotonAceptar.addEventListener( MouseEvent.CLICK, Framework.Callback.Create( OnEndCutScene, dialog, true, callback ) );
-		}
-		*/
-		
 		
 		// 
 		// Han pulsado en el botón de "Cerrar Partido"

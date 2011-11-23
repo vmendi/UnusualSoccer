@@ -14,7 +14,6 @@
 			MyBitmap.visible = true;
 			(MyBitmap.content as MovieClip).gotoAndStop(mDivision);	
 			MyDivisionName.text = mDivision;
-
 		}
 
 		private var mDivision : String = "";
