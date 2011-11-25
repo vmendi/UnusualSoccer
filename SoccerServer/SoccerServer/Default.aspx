@@ -6,6 +6,19 @@
       xmlns:fb="http://www.facebook.com/2008/fbml">
 
 <head id="TheHead">
+
+    <!-- Kissmetrics -->
+    <script type="text/javascript">
+        var _kmq = _kmq || [];
+        function _kms(u) {
+            setTimeout(function () {
+                var s = document.createElement('script'); var f = document.getElementsByTagName('script')[0]; s.type = 'text/javascript'; s.async = true;
+                s.src = u; f.parentNode.insertBefore(s, f);
+            }, 1);
+        }
+        _kms('//i.kissmetrics.com/i.js'); _kms('//doug1izaerwt3.cloudfront.net/ae86ab550667e1579736f7bbf25066047d01b340.1.js');
+    </script>
+
     <title>${title}</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -57,6 +70,7 @@
 		swfobject.createCSS("#flashContent", "display:block;text-align:left;");
     </script>
 
+    <!-- Google Analytics -->
     <script type="text/javascript">
 
         var _gaq = _gaq || [];
