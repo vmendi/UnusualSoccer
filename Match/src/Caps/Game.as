@@ -36,12 +36,8 @@ package Caps
 		private var _RemainingHits:int = 0;						// Nº de golpes restantes permitidos antes de perder el turno
 		private var _RemainingPasesAlPie : int = 0;				// No de pases al pie que quedan
 		private var _TimeSecs:Number = 0;						// Tiempo en segundos que queda de la "mitad" actual del partido
-		private var _IsPlaying:Boolean = false;					// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
-		
-		public var Timeout:Number = 0;							// Tiempo en segundos que queda para que ejecutes un disparo
-		public var TimeOutSent:Boolean = false;					// Controla si se ha envíado el timeout en el último ciclo de subturno
-		public var TimeOutPaused:Boolean = false;				// Controla si está pausado el timeout
-		
+		private var _Timeout:Number = 0;							// Tiempo en segundos que queda para que ejecutes un disparo
+				
 		public var ReasonTurnChanged:int = (-1);				// Razón por la que hemos cambiado al turno actual
 		public var LastConflicto:Object = null;					// Último conflicto de robo que se produjo
 		public var FireCount:int = 0;							// Contador de jugadores expulsados durante el partido.
@@ -50,6 +46,26 @@ package Caps
 
 		private var _TimeCounter:Framework.Time = new Framework.Time();
 		private var _Random:Framework.Random;
+		
+		private var _MatchResultFromServer : Object;
+		
+		
+		public function get CurTeam() : Team { return TheTeams[_IdxCurTeam]; }
+		public function get LocalUserTeam() : Team { return TheTeams[Match.Ref.IdLocalUser]; }
+		public function get Part() : int { return _Part; }
+		public function get Time() : Number { return _TimeSecs; }
+		public function get Timeout() : Number { return _Timeout; }
+		public function get IsPlaying() : Boolean { return _State == GameState.Playing; }
+		
+		
+		public function ChangeState(newState:int) : void
+		{
+			if (_State != newState)
+			{
+				_State = newState;
+				_TicksInCurState = 0;		// Reseteamos los ticks dentro del estado actual
+			}
+		}
 						
 		//
 		// Inicialización de los datos del partido. Invocado desde el servidor
@@ -156,13 +172,11 @@ package Caps
 			
 		//
 		// Bucle principal de la aplicación. 
-		// Se invoca a frecuencia constante APP_LOGIC_FPS / Sec
-		// elapsed: Tiempo que ha pasado en segundos
 		//
 		public function Run(elapsed:Number) : void
 		{
 			// Si todavia no hemos recibido datos desde el servidor... o el juego ya se ha acabado
-			if (_State == GameState.NotInit || _State == GameState.EndGame)
+			if (_State == GameState.NotInit)
 				return;
 			
 			TheTeams[Enums.Team1].Run(elapsed);
@@ -171,53 +185,13 @@ package Caps
 			TheGamePhysics.Run();
 			TheEntityManager.Run(elapsed);
 			
+			TheInterface.Update();
+			
 			// Calculamos el tiempo "real" que ha pasado, independiente del frame-rate
 			var realElapsed:Number = _TimeCounter.GetElapsed();
 			realElapsed = realElapsed / 1000; 
-			
-			// Actualizamos el tiempo del partido (si estamos jugando)
-			if (Playing == true)
-			{
-				_TimeSecs -= realElapsed;
-				
-				if (_TimeSecs <= 0)
-				{
-					_TimeSecs = 0;
-					
-					// En modo offline terminamos la parte si alcanzamos 0 de tiempo
-					if( AppParams.OfflineMode )
-						OnClientFinishPart( _Part, null );
-				}
-				
-				// Mientras que se está realizando una simulación de un disparo o está ejecutando el cambio de turno, 
-				// o estamos pausados, no se resta el timeout
-				if( (!TheGamePhysics.IsSimulating) && (!this.TimeOutPaused))
-				{
-					Timeout -= realElapsed;
-					
-					// Si se acaba el tiempo disponible del subturno, lanzamos el evento timeout y aseguramos que solo se mande una vez
-					// NOTE: El evento de timeout solo se manda por el juador local activo.
-					// NOTE: En modo offline simulamos la respuesta del server
-					if (Timeout <= 0 && (!TimeOutSent))
-					{
-						if (AppParams.OfflineMode)
-							OnClientTimeout( this.CurTeam.IdxTeam );
-						else 
-						if (this.CurTeam.IsLocalUser)
-						{
-							// Una vez envíado el tiemout no le permitimos al jugador local utilizar el interface
-							TheInterface.UserInputEnabled = false;
-							Match.Ref.Connection.Invoke("OnServerTimeout", null);
-							TimeOutSent = true;		// Para que no volvamos a envíar el timeout!
-						}
-					}
-				}
 
-				// Actualizamos el interface visual
-				TheInterface.Update(); 
-			}
-							
-			switch( _State )
+			switch(_State)
 			{
 				case GameState.Init:
 				{
@@ -226,10 +200,40 @@ package Caps
 					ChangeState(GameState.NewPart);
 					break;
 				}
+					
+				case GameState.EndGame:
+				{
+					TheInterface.UserInputEnabled = false;
+					Match.Ref.Shutdown(_MatchResultFromServer);
+					
+					// Bye
+					ChangeState(GameState.NotInit);
+					break;
+				}
+					
+				// Simplemente esperando a que acabe la cutscene de fin de parte
+				case GameState.FinishingPart:
+				{
+					break;
+				}
+					
+				// Fin de la primera parte 
+				case GameState.EndPart:
+				{
+					if( Part != 1 )
+						throw new Error (IDString + "EndPart cuando no estamos en la primera parte" );
+					
+					_Part++;	// Pasamos a la segunda parte
+					
+					// Cambiamos a los equipos de lado de campo
+					TheTeams[ Enums.Team1 ].InvertedSide();
+					TheTeams[ Enums.Team2 ].InvertedSide();
+					 
+					ChangeState(GameState.NewPart);
+					break;
+				}
 				
-				//
-				// Nueva parte del juego! (Se divide en 2  mitades)
-				// 
+				// Nueva parte del juego! (Pasamos por aqui 2 veces, una por parte)
 				case GameState.NewPart:
 				{
 					_TimeSecs = Config.PartTime;		// Reseteamos el tiempo del partido
@@ -237,9 +241,9 @@ package Caps
 					// Dependiendo de en que parte estamos, saca un equipo u otro.
 					// NOTE: Solo asinamos la variable. No utilizamos la función pq no queremos mostrar el panel de turno todavía
 					if( Part == 1 )
-						_IdxCurTeam = Enums.Team1; // SetTurn( Enums.Team1, false );
+						_IdxCurTeam = Enums.Team1;
 					else if( Part == 2 ) 
-						_IdxCurTeam = Enums.Team2; // SetTurn( Enums.Team2, false );
+						_IdxCurTeam = Enums.Team2;
 					
 					// El interface comienza desactivado
 					TheInterface.UserInputEnabled = false;
@@ -248,10 +252,8 @@ package Caps
 					SaqueCentro();
 					break;
 				}
-					
-				//
-				// Estado de espera generico
-				// 
+
+				// Estado de espera generico. Se usa tanto en SaquePuerta como en SaqueCentro
 				case GameState.WaitingPlayersAllReady:
 				{
 					break;
@@ -259,13 +261,53 @@ package Caps
 				
 				case GameState.Playing:
 				{
+					if (TheGamePhysics.IsSimulating)
+						throw new Error("La fisica no pueda estar simulando en estado GameState.Playing");
+					
+					_TimeSecs -= realElapsed;
+					
+					if (_TimeSecs <= 0)
+					{
+						_TimeSecs = 0;
+						
+						if (AppParams.OfflineMode)	// Tenemos que simular que hemos alcanzado el fin de la parte
+							OnClientFinishPart(_Part, null);
+					}
+										
+					_Timeout -= realElapsed;
+					
+					if (_Timeout <= 0)
+					{
+						// Al jugador que no tiene el turno simplemente le llega el Timeout, él no lo genera
+						if (this.CurTeam.IsLocalUser)
+						{
+							ChangeState(GameState.WaitingForTimeout);
+							
+							// Una vez envíado el timeout no permitimos al jugador local utilizar el interface
+							WaitResponse();
+						
+							if (!AppParams.OfflineMode)
+								Match.Ref.Connection.Invoke("OnServerTimeout", null);
+							else
+								OnClientTimeout(this.CurTeam.IdxTeam);
+						}
+					}
+
+					break;
+				}
+					
+				case GameState.WaitingForTimeout:
+				{
 					break;
 				}
 
 				case GameState.Simulating:
 				{
 					if (TheGamePhysics.IsGoal)
-					{													
+					{	
+						// Equipo que ha marcado el gol
+						var scorerTeam : Team = TheGamePhysics.ScorerTeam();
+						
 						// Comproba si ha metido un gol válido, para ello se debe cumplir lo siguiente:
 						//	 - El jugador debe haber declarado "Tiro a Puerta"
 						//   - El jugador que ha marcado ha lanzado la pelota desde el equipo contrario (no puedes meter gol desde tu campo) a no ser
@@ -279,25 +321,20 @@ package Caps
 							else if (!IsTiroPuertaDeclarado())
 								validity = Enums.GoalInvalidNoDeclarado;
 						}
-
+						
 						// Cambiamos al estado esperando gol. Asi, por ejemplo cuando pare la simulacion, no haremos nada. Esperamos a que haya saque de centro
 						// o de porteria despues de la cutscene
 						this.ChangeState(GameState.WaitingGoal);
+
+						// Envíamos la acción al servidor para que la propague a los 2 clientes y asignamos el modo de espera
+						WaitResponse();
 						
-						// Equipo que ha marcado el gol
-						var scorerTeam : Team = TheGamePhysics.ScorerTeam();
-						
-						// Envíamos la acción al servidor para que la propague a los 2 clientes y asignamos el modo de espera que se encarga
-						// de desactivar interface y pausar el time-out
 						if (!AppParams.OfflineMode)
-						{
-							Match.Ref.Connection.Invoke("OnServerGoalScored", null, scorerTeam.IdxTeam, validity);
-							TheInterface.WaitResponse();
-						}
+							Match.Ref.Connection.Invoke("OnServerGoalScored", null, scorerTeam.IdxTeam, validity);							
 						else
-							Match.Ref.Game.OnClientGoalScored(scorerTeam.IdxTeam, validity);
+							OnClientGoalScored(scorerTeam.IdxTeam, validity);
 						
-						trace( "Gol detectado en cliente! Esperamos confirmación del servidor. Validity=" + validity.toString() );	
+						trace( "Gol detectado en cliente! Esperamos confirmación del servidor. Validity=" + validity.toString() );
 					}
 					else
 					if (!TheGamePhysics.IsSimulating)
@@ -308,6 +345,8 @@ package Caps
 						
 						if (!AppParams.OfflineMode)
 							Match.Ref.Connection.Invoke("OnServerEndShoot", null);
+						else
+							OnClientShootSimulated();
 						
 						// Hasta que todos los clientes no indiquen que han terminado la simulación, no tomaremos ninguna decisión
 						trace( "Finalizado nuestra simulacion de disparo, esperando al otro usuario" );
@@ -318,46 +357,18 @@ package Caps
 					}
 					break;
 				}
-					
-				//
-				// Nuestro disparo ya se ha simulado.
-				// Esperando a que TODOS los demás clientes indiquen que han terminado la simulación
+
+				// Nuestro disparo ya se ha simulado. Esperando a que TODOS los clientes indiquen que han terminado la simulación.
 				// Recibiremos una notificacion desde el servidor "OnClientShootSimulated"
-				//
 				case GameState.WaitingClientsToEndShoot:
 				{
-					// En modo offline simulamos que nos llega el mensaje de que todos los clientes ya han simulado
-					if (AppParams.OfflineMode)
-						OnClientShootSimulated();
 					break;
 				}
 					
-				//
 				// Hemos detectado gol en el cliente.
-				// Estamos esperando a que llegue la confirmación desde el servidor 'OnClientGoalScored'
-				// 
+				// Estamos esperando a que llegue la confirmación desde el servidor 'OnClientGoalScored' 
 				case GameState.WaitingGoal:
 				{
-					break;
-				}
-
-				//
-				// NOTE: Solo se pasa por aquí al terminar la 1ª parte, al finalizar la segunda va directamente por Finish 
-				// 
-				case GameState.EndPart:
-				{
-					_Part++;	// Pasamos a la siguiente parte
-					
-					// Cambiamos a los equipos de lado de campo
-					TheTeams[ Enums.Team1 ].InvertedSide();
-					TheTeams[ Enums.Team2 ].InvertedSide();
-					
-					// Decidimos el siguiente estado en función de la mitad en la que nos encontramos 
-					if( Part == 2 )
-						ChangeState( GameState.NewPart );
-					else if( Part == 3 )
-						throw new Error (IDString + "No deberíamos pasar por EndPart en la segunda parte" );
-										
 					break;
 				}
 			}
@@ -371,38 +382,12 @@ package Caps
 			TheEntityManager.Draw(elapsed);
 		}
 		
-		//
-		// Transforma una lista de chapas en una array de chapas listo para ser enviado por red
-		//
-		/*
-		protected function GetListToSend( capList:Array ) : Array
-		{
-			var listToSend:Array = new Array();
-			
-			for each( var cap:Cap in capList )
-			{
-				if( cap != null )
-				{
-					var desc:Object = { Id: cap.Id, x:cap.GetPos().x, y:cap.GetPos().y };
-					listToSend.push( desc );
-				}
-			}
-			
-			return listToSend;
-		}
-		*/
 		protected function GetString( capList:Array ) : String
 		{
 			var capListStr:String = "";
 			
 			for each( var cap:Cap in capList )
 			{
-				/*
-				capListStr += 	"[Id:" +cap.Id +
-								" x:" + cap.GetPos().x +
-								" y:" + cap.GetPos().y + 
-								"]";
-				*/
 				if( cap != null )
 					capListStr += 	"[" +cap.Id + ":"+cap.GetPos().toString() + "]";
 			}
@@ -432,28 +417,7 @@ package Caps
 			ChatLayer = new Chat();
 			Match.Ref.addChild(ChatLayer);
 		}
-				
-		//
-		// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
-		// El partido se detiene en numerosos eventos (goles, cambio de partes, ...)		 
-		//
-		public function get Playing() : Boolean { return _IsPlaying; }
-		public function set Playing(value:Boolean) : void {	_IsPlaying = value;	}
-		
-		public function get CurTeam() : Team { return TheTeams[_IdxCurTeam]; }
-		public function get LocalUserTeam() : Team { return TheTeams[Match.Ref.IdLocalUser]; }
-		public function get Part() : int { return _Part; }
-		public function get Time() : Number { return _TimeSecs; }
-		
-		public function ChangeState(newState:int) : void
-		{
-			if (_State != newState)
-			{
-				_State = newState;
-				_TicksInCurState = 0;		// Reseteamos los ticks dentro del estado actual
-			}
-		}
-		
+
 		//
 		// Recibimos una "ORDEN" del servidor : "Disparar chapa" 
 		//
@@ -482,8 +446,7 @@ package Caps
 		}
 		
 		//
-		// El servidor nos indica que todos los clientes han terminado de simular el disparo! 
-		// Evaluamos el resultado producido: ( normal, pase al pie, robo, ...)	
+		// El servidor nos indica que todos los clientes han terminado de simular el disparo!
 		//
 		public function OnClientShootSimulated() : void
 		{
@@ -657,7 +620,7 @@ package Caps
 		// 
 		// Un jugador ha utilizado una skill
 		//
-		public function OnUseSkill( idPlayer:int, idSkill:int ) : void
+		public function OnClientUseSkill( idPlayer:int, idSkill:int ) : void
 		{
 			if (_State != GameState.Playing)
 				throw new Error(IDString + "OnUseSkill en estado: " + _State +  " Player: "+idPlayer+" Skill: "+idSkill+" RTC: "+ReasonTurnChanged);
@@ -683,8 +646,8 @@ package Caps
 			{				
 				// NOTE: Ademas modificamos lo que representa el quesito del interface, para que se adapte al tiempo que tenemos ahora,
 				// que puede ser superior al tiempo de turno del partido! Este valor se restaura al resetear el timeout
-				Timeout += AppParams.ExtraTimeTurno;
-				TheInterface.TurnTime = Timeout;
+				_Timeout += AppParams.ExtraTimeTurno;
+				TheInterface.TurnTime = _Timeout;
 				bInmediate = true;
 			}
 			else if( idSkill == Enums.Turnoextra )		// Obtenemos un turno extra
@@ -700,7 +663,7 @@ package Caps
 		// 
 		// Un jugador ha declarado tiro a puerta
 		//
-		public function OnTiroPuerta(idPlayer:int) : void
+		public function OnClientTiroPuerta(idPlayer:int) : void
 		{
 			if (_State != GameState.Playing)
 				throw new Error(IDString + "OnTiroPuerta en estado: " + _State + " Player: "+idPlayer);
@@ -708,8 +671,6 @@ package Caps
 			// Mostramos el interface de colocación de portero al jugador contrario
 			var team:Team = TheTeams[ idPlayer ] ;
 			var enemy:Team = team.AgainstTeam();
-
-			trace( "Game: OnTiroPuerta: Un jugador ha declarado tiro a puerta!" + team.Name );
 
 			// Si el portero del enemigo está dentro del area,
 			// cambiamos el turno al enemigo para que coloque el portero
@@ -728,8 +689,7 @@ package Caps
 		}
 		
 		//
-		// El servidor ordena posicionar una chapa
-		// - Se utiliza para colocar el portero cuando alguien declara un disparo a puerta 
+		// El servidor ordena posicionar una chapa, se utiliza para colocar el portero cuando alguien declara un disparo a puerta
 		//
 		public function OnClientPosCap( idPlayer:int, capId:int, posX:Number, posY:Number ) : void
 		{
@@ -744,13 +704,13 @@ package Caps
 			}
 			else
 				throw new Error(IDString + "Alguien ha posicionado una chapa que no es el portero!" );
-		}		
+		}
 		
 		// 
 		// Un jugador ha terminado la colocación de su portero
 		// NOTE: Volvemos al turno del otro jugador para que efectúe su lanzamiento
 		//
-		public function OnGoalKeeperSet(idPlayer:int ) : void
+		private function OnGoalKeeperSet(idPlayer:int) : void
 		{
 			// Mostramos el interface de colocación de portero al jugador contrario
 			var team:Team = TheTeams[ idPlayer ] ;
@@ -770,8 +730,6 @@ package Caps
 			if (this._State != GameState.WaitingGoal)
 				throw new Error( "OnClientGoalScored: El estado debería ser 'GameState.WaitingGoal'. Curent State=" + this._State.toString() );
 
-			Playing = false;						// Pausamos el partido
-			
 			// Contabilizamos el gol
 			if( validity == Enums.GoalValid )
 				TheTeams[ idPlayer ].Goals ++;
@@ -784,8 +742,9 @@ package Caps
 		//
 		protected function FinishGoalCutScene( idPlayer:int, validity:int ) : void
 		{
-			trace( "Game: Finalizada Cut-Scene de gol!" );
-			
+			if (this._State != GameState.WaitingGoal)
+				throw new Error( "FinishGoalCutScene: El estado debería ser 'GameState.WaitingGoal'. Curent State=" + this._State.toString() );
+						
 			var turnTeam:Team = TheTeams[idPlayer].AgainstTeam();
 			
 			if (validity == Enums.GoalValid)
@@ -823,8 +782,7 @@ package Caps
 			TheTeams[ Enums.Team1 ].ResetToCurrentFormation();
 			TheTeams[ Enums.Team2 ].ResetToCurrentFormation();
 			
-			// Colocamos el balón delante del portero que va a sacar de puerta
-			// Delante quiere decir mirando al centro del campo
+			// Colocamos el balón delante del portero que va a sacar de puerta (mirando al centro del campo)
 			TheBall.StopMovementInFrontOf(team.GoalKeeper);
 
 			// Asignamos el turno al equipo que debe sacar de puerta
@@ -832,11 +790,7 @@ package Caps
 				SetTurn( team.IdxTeam, true, Enums.TurnBySaquePuertaByFalta );
 			else
 				SetTurn( team.IdxTeam, true, Enums.TurnBySaquePuerta );
-			
-			// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
-			Playing = true;
-			
-			// Cambiamos al estado a jugar de nuevo
+
 			this.ChangeState(GameState.Playing);
 		}
 		
@@ -876,32 +830,36 @@ package Caps
 			// pasamos por StartCenter sin que necesariamente haya sido un cambio de parte
 			SetTurn(CurTeam.IdxTeam, true);
 			
-			// Indica si estamos jugando o no. El tiempo de partido solo cambia mientras que estamos jugando
-			Playing = true;		
-			
 			ChangeState(GameState.Playing);
 		}
 		
-		// 
+		//
+		// Se ha producido un Timeout en el cliente que manda (el que tiene el turno)
 		//
 		public function OnClientTimeout(idPlayer:int) : void
 		{
-			trace( "Game: OnClientTimeout del player " + TheTeams[ idPlayer ].Name );
-			
-			if( idPlayer == CurTeam.IdxTeam )
-			{
-				// Si se acaba el tiempo, cuando cambiamos de turno por tiro a puerta : para colocar el portero
-				// Entonces damos por finalizada la colocación    
-				if (ReasonTurnChanged == Enums.TurnByTiroAPuerta)
-				{
-					OnGoalKeeperSet( idPlayer );
-				}
-				// El caso normal cuando se acaba el tiempo simplemente pasamos el turno al jugador siguiente
-				else
-					YieldTurnToOpponent( true );
-			}
-			else
+			if (idPlayer != CurTeam.IdxTeam)
 				throw new Error(IDString + "No puede llegar Timeout del jugador no actual" );
+			
+			if (Match.Ref.IdLocalUser == idPlayer)
+			{
+				if (_State != GameState.WaitingForTimeout) 
+					throw new Error(IDString + "Nosotros deberíamos haber generado el Timeout, pero no estamos en GameState.WaitingForTimeout");
+			}
+			else if (_State != GameState.Playing)
+				throw new Error(IDString + "Hemos recibido un Timeout del otro player, pero no estabamos en estado Playing. Nuestro estado es: " + _State.toString());	
+					
+			// Si se acaba el tiempo cuando estamos colocando al portero...
+			if (ReasonTurnChanged == Enums.TurnByTiroAPuerta)
+			{
+				// ...damos por finalizada la colocacion, pasamos el turno al q va a tirar
+				OnGoalKeeperSet(idPlayer);
+			}
+			// El caso normal cuando se acaba el tiempo simplemente pasamos el turno al jugador siguiente
+			else
+				YieldTurnToOpponent( true );
+			
+			ChangeState(GameState.Playing);
 		}
 		
 		//
@@ -909,10 +867,8 @@ package Caps
 		//
 		public function ResetTimeout(  ) : void
 		{
-			Timeout = Config.TurnTime;
-			TheInterface.TurnTime = Timeout;	// Asignamos el tiempo de turno que entiende el interface, ya que este valor se modifica cuando se obtiene extratime
-			TimeOutSent = false;				// Para controlar que no se mande múltiples veces el timeout
-			TimeOutPaused = false;				// Se elimina la pausa en el timeout
+			_Timeout = Config.TurnTime;
+			TheInterface.TurnTime = _Timeout;	// Asignamos el tiempo de turno que entiende el interface, ya que este valor se modifica cuando se obtiene extratime
 		}
 		
 		//
@@ -934,7 +890,7 @@ package Caps
 		// Consumimos un turno del jugador actual
 		// Si alcanza 0 pasamos de turno
 		// 
-		public function ConsumeTurn( ) : void
+		private function ConsumeTurn( ) : void
 		{
 			_RemainingHits--;
 			
@@ -973,7 +929,7 @@ package Caps
 		// NOTE: Si se indicaca además se activará el interface de entrada de usuario 
 		// si es el turno del jugador local
 		//
-		public function YieldTurnToOpponent(enableUserInput:Boolean = true, reason:int = Enums.TurnByTurn) : void
+		private function YieldTurnToOpponent(enableUserInput:Boolean = true, reason:int = Enums.TurnByTurn) : void
 		{
 			if( _IdxCurTeam == Enums.Team1 )
 				SetTurn( Enums.Team2, enableUserInput, reason );
@@ -983,10 +939,9 @@ package Caps
 		//
 		// Asigna el turno de juego de un equipo
 		// (Reseteamos el nº de "hits" permitidos en el turno)
-		// NOTE: Si se indica además se activará el interface de entrada de usuario 
-		// si es el turno del jugador local
+		// NOTE: Si se indica además se activará el interface de entrada de usuario si es el turno del jugador local
 		//
-		public function SetTurn( idTeam:int, enableUserInput:Boolean = true, reason:int = Enums.TurnByTurn ) : void
+		private function SetTurn( idTeam:int, enableUserInput:Boolean = true, reason:int = Enums.TurnByTurn ) : void
 		{
 			// DEBUG: En modo offline nos convertimos en el otro jugador, para poder testear!
 			if (AppParams.OfflineMode == true)
@@ -1012,7 +967,7 @@ package Caps
 			
 			// Para colocar el portero solo se posee la mitad de tiempo!!
 			if (reason == Enums.TurnByTiroAPuerta)
-				this.Timeout = this.Config.TimeToPlaceGoalkeeper;
+				this._Timeout = this.Config.TimeToPlaceGoalkeeper;
 			
 			// Para tirar a puerta solo se posee un tiro y se pierden todos los pases al pie
 			if (reason == Enums.TurnByGoalKeeperSet)
@@ -1207,49 +1162,36 @@ package Caps
 		}
 		
 		// 
-		// Entrada de un evento desde el servidor de finalización de una de las mitades del partido
-		// Pasamos por esta función tanto para una parte como para otra!
+		// Entrada desde el servidor de finalización de una de las mitades del partido
 		// En la segunda parte nos envían ademas el resultado, en la primera es null
 		//
-		public function OnClientFinishPart( part:int, result:Object ) : void
+		public function OnClientFinishPart(part:int, result:Object) : void
 		{
 			trace( "Finish: Finalización de mitad del partido: " + part.toString() );
 			
-			// Actualizamos la mitad del partido y pasamos al estado correspondiente 
-			_Part = part;
-			Playing = false;	// Pausamos el partido
+			// Nos quedamos esperando a que acabe la cut-scene (no queremos que corra el tiempo si estabamos en Playing)
+			ChangeState(GameState.FinishingPart);
 			
 			// Lanzamos la cutscene de fin de tiempo, cuando termine pasamos realmente de parte o finalizamos el partido
 			if( part == 1 )
-				TheInterface.OnFinishPart( _Part, Delegate.create( ChangeState, GameState.EndPart ) );
-			else if( part == 2 )
-				TheInterface.OnFinishPart( _Part, Delegate.create( Finish, result ) );
+			{
+				TheInterface.OnFinishPart(_Part, Delegate.create(ChangeState, GameState.EndPart));
+			}
+			else 
+			if( part == 2 )
+			{
+				_MatchResultFromServer = result;
+				TheInterface.OnFinishPart(_Part, Delegate.create(ChangeState, GameState.EndGame));
+			}
 		}
 		
 		//
 		// Nuestro enemigo se ha desconectado en medio del partido. Nosotros hacemos una salida limpia
 		//
-		public function PushedOpponentDisconnected ( result:Object ) : void
+		public function PushedOpponentDisconnected(result:Object) : void
 		{
-			Finish(result);
-		}
-
-		// 
-		// Finaliza INMEDIATAMENTE el partido. Es el Shutdown de verdad. Llama al Shutdown global de Match.
-		//
-		public function Finish( result:Object ) : void
-		{
-			trace( "Finish: Finalizando el partido" );
-			
-			// Nos quedamos en el estado "EndGame" que no hace nada
-			ChangeState( GameState.EndGame );
-						
-			Playing = false;
-			
-			// No permitimos entrada de interface. Esto cancela los Controllers => los remueve de la stage
-			TheInterface.UserInputEnabled = false;
-			
-			Match.Ref.Shutdown(result);
+			_MatchResultFromServer = result;			
+			ChangeState(GameState.EndGame);
 		}
 		
 		//
@@ -1301,6 +1243,18 @@ package Caps
 		{
 			// Simplemente dejamos que lo gestione el componente de chat
 			ChatLayer.AddLine(msg);
+		}
+		
+		// 
+		// Nos pone en modo de espera de respuesta del servidor
+		// NOTE: (IMPORTANT): waitResponse es útil para eventos que se lanzan al servidor pero tenemos que esperar a que lleguen, ya que mientras
+		// que llegan podrian producirse TimeOut o similares
+		//
+		public function WaitResponse(  ) : void
+		{
+			ResetTimeout();
+
+		 	TheInterface.UserInputEnabled = false;
 		}
 		
 		private function get IDString() : String { return "MatchID: " + Config.MatchId + " LocalID: " + Match.Ref.IdLocalUser + " "; } 
