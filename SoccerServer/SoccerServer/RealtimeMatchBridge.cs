@@ -92,7 +92,7 @@ namespace SoccerServer
             }
         }
 
-        public void OnUseSkill(NetPlug plug, int idSkill)
+        public void OnServerUseSkill(NetPlug plug, int idSkill)
         {
             RealtimePlayer thePlayer = plug.UserData as RealtimePlayer;
 
@@ -101,12 +101,12 @@ namespace SoccerServer
                 if (thePlayer.TheMatch != null)
                 {
                     int idPlayer = thePlayer.TheMatch.GetIdPlayer(thePlayer);
-                    thePlayer.TheMatch.OnUseSkill(idPlayer, idSkill);
+                    thePlayer.TheMatch.OnServerUseSkill(idPlayer, idSkill);
                 }
             }
         }
 
-        public void OnTiroPuerta(NetPlug plug)
+        public void OnServerTiroPuerta(NetPlug plug)
         {
             RealtimePlayer thePlayer = plug.UserData as RealtimePlayer;
 
@@ -115,7 +115,7 @@ namespace SoccerServer
                 if (thePlayer.TheMatch != null)
                 {
                     int idPlayer = thePlayer.TheMatch.GetIdPlayer(thePlayer);
-                    thePlayer.TheMatch.OnTiroPuerta(idPlayer);
+                    thePlayer.TheMatch.OnServerTiroPuerta(idPlayer);
                 }
             }
         }

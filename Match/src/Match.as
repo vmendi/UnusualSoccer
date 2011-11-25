@@ -79,7 +79,7 @@ package
 		// Bucle principal de la aplicación
 		//
 		private function OnFrame( event:Event ):void
-		{
+		{			
 			// Lo que primero ocurra, el OnFrame o el Init, creara el Game. Se hace asi para asegurar que no inicializamos en modo offline
 			// cuando realmente nos llaman desde el manager. Es decir, decidimos cual es el modo autentico sin hacer caso de la variable
 			// en AppParams
@@ -93,7 +93,7 @@ package
 			if (stage != null)
 			{
 				var elapsed:Number = 1.0 / stage.frameRate;
-			
+				
 				Game.Run(elapsed);
 				Game.Draw(elapsed);
 			}

@@ -6,8 +6,6 @@ package Caps
 	
 	import com.greensock.*;
 	
-	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -16,13 +14,10 @@ package Caps
 	import utils.Delegate;
 	import utils.TimeUtils;
 
-	//
-	// Controla "TODAS" las entradas del usuario local y reacciona o la propaga de la forma correspondiente
-	// Al tratarse de un juego en red lo reenvía al interface de red que lo mandará al servidor como una petición
-	//
+	
 	public class GameInterface
 	{
-		private var Shoot:ControlShoot = null;			// Control de disparo : Se encarga de pintar/gestionar la flecha de disparo
+		private var Shoot:ControlShoot = null;					// Control de disparo : Se encarga de pintar/gestionar la flecha de disparo
 		private var BallControl:BallController = null;			// Control para posicionar la pelota
 		private var ControllerCanvas:Sprite = null;				// El contenedor donde se pinta las flecha de direccion
 		private var PosControl:PosController = null;			// Control para posicionar chapas (lo usamos solo para el portero)
@@ -36,8 +31,6 @@ package Caps
 		private const THICKNESS_SHOOT:uint = 7;
 		
 		private var _UserInputEnabled:Boolean = false;			// Indica si se acepta la entrada del usuario
-		
-		//public var CutSceneTurnRunning:MovieClip = null;		// la cut-scene de turno que está ejecutandose hasta que termine
 		
 		//
 		// Inicialización
@@ -132,8 +125,8 @@ package Caps
 			// Actualizamos la parte de juego en la que estamos "gui.Period"
 			Gui.Period.text = Match.Ref.Game.Part.toString() + "T";
 			
-			// Marcamos que nadie tiene la posesion
-			SelectCap( null );
+			// Vaciamos el panel donde sale la info de la chapa
+			ShowInfoForCap( null );
 			
 			// Actualizamos los elementos que se actualizan a cada tick
 			Update();
@@ -178,16 +171,12 @@ package Caps
 		// Comprobamos si la habilidad está disponible en el turno actual
 		// NOTE: Las habilidades están solo disponibles en tu turno, salvo "Catenaccio" que está siempre permitida
 		//
-		private function IsSkillAllowedInTurn( index:int ) : Boolean 
+		private function IsSkillAllowedInTurn(index:int) : Boolean 
 		{
 			var game:Game = Match.Ref.Game;
 			
-			if( game.CurTeam == null )
-				return false;
-			
-			// Si estamos Simulando un disparo, ninguna habilidad está disponible para nadie! ni siquiera Catenaccion
-			// TODO: No se debería comprobar la simulacion fisica, sino el estado logico
-			if (game.TheGamePhysics.IsSimulating)
+			// Si no estamos jugando (...no estamos en ninguna espera), ninguna habilidad disponible para nadie, ni siquiera Cattenacio
+			if (!game.IsPlaying)
 				return false;
 			
 			// Si estamos en el turno de colocación de portero, ninguna habilidad está disponible para nadie!
@@ -200,18 +189,18 @@ package Caps
 			
 			// Si es nuestro turno y tenemos el input activo la habilidad está disponible
 			var allowedInTurn:Boolean = false;
-			if( Match.Ref.Game.CurTeam.IsLocalUser )
+			if (Match.Ref.Game.CurTeam.IsLocalUser)
 			{
 				allowedInTurn = this.UserInputEnabled;
 			}
-			// Si NO es nuestro turno no está disponible a no ser que la habilidad sea Catenaccion (que se puede usar fuera de tu turno)
+			// Si NO es nuestro turno no está disponible a no ser que la habilidad sea Catenaccio (que se puede usar fuera de tu turno)
 			else
 			{
 				if( index == Enums.Catenaccio )
 					allowedInTurn = true;
 			}
 			
-			return ( allowedInTurn );
+			return allowedInTurn;
 		}
 		
 		//
@@ -269,11 +258,7 @@ package Caps
 			item.mouseEnabled = available;
 		}
 			
-		//
-		// Selecciona una chapa 
-		// Al seleccionarse se visualiza información sobre la misma en la parte inferior derecha de la pantalla
-		//
-		private function SelectCap( cap:Cap ) : void
+		private function ShowInfoForCap(cap:Cap) : void
 		{
 			var gui:* = Match.Ref.Game.TheField.Visual;
 			
@@ -297,11 +282,7 @@ package Caps
 			}
 		}
 		
-		//
-		// Han cliqueado sobre una chapa
-		// Modo de disparo:
-		//    Pinta la flecha de disparo tomando como destino la chapa y como origen la posición del cursor 
-		//
+		
 		public function OnClickCap( cap:Cap ) : void
 		{
 			var game:Game = Match.Ref.Game;
@@ -354,7 +335,7 @@ package Caps
 					// NOTE: Hacemos esto antes de iniciar el controlador de disparo, ya que si no
 					// el detenar la entrada del usuario, automaticamente se cancelará el controlador 
 					// de disparo
-					UserInputEnabled = false;				
+					UserInputEnabled = false;
 					
 					// Comenzamos el controlador visual de disparo
 					Shoot.Start( cap );
@@ -366,8 +347,7 @@ package Caps
 				}
 			}
 			
-			// Marcamos que esta chapa tiene la posesión
-			SelectCap( cap );
+			ShowInfoForCap(cap);
 		}
 		//
 		// Activa el control de posicionamiento de pelota de la chapa indicada
@@ -385,7 +365,7 @@ package Caps
 				BallControl.Start( cap );
 								
 				// Marcamos que esta chapa tiene la posesión
-				SelectCap( cap );
+				ShowInfoForCap( cap );
 			}
 		}
 		
@@ -408,7 +388,7 @@ package Caps
 				PosControl.Start( cap );
 				
 				// Marcamos que esta chapa tiene la posesión
-				SelectCap( cap );
+				ShowInfoForCap( cap );
 			}
 		}
 		
@@ -442,8 +422,8 @@ package Caps
 			{
 				if (!AppParams.OfflineMode)
 				{
+					Match.Ref.Game.WaitResponse();
 					Match.Ref.Connection.Invoke("OnServerShoot", null, Shoot.Target.Id, Shoot.Direction.x, Shoot.Direction.y, Shoot.Force);
-					WaitResponse();
 				}
 				else
 				{
@@ -467,8 +447,8 @@ package Caps
 			
 			if (!AppParams.OfflineMode)
 			{
+				Match.Ref.Game.WaitResponse();
 				Match.Ref.Connection.Invoke( "OnServerPlaceBall", null, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y );
-				WaitResponse();
 			}
 			else
 				Match.Ref.Game.OnClientPlaceBall( BallControl.Target.OwnerTeam.IdxTeam, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y );
@@ -488,12 +468,8 @@ package Caps
 		// está asignada!!!		
 		public function set UserInputEnabled( value:Boolean ) : void
 		{
-			// Ignoramos asignaciones redundantes
-			if( _UserInputEnabled != value )
-			{
-				_UserInputEnabled = value;
-			}
-			
+			_UserInputEnabled = value;
+						
 			// Si se prohibe la entrada de usuario cancelamos cualquier controlador
 			// de entrada que estuviera funcionando. 
 			// NOTE: Esto se reliza siempre aunque sea una asignación redundante! 
@@ -562,9 +538,9 @@ package Caps
 			{
 				// Notificamos al servidor para que lo propague en los usuarios
 				if( !AppParams.OfflineMode )
-					Match.Ref.Connection.Invoke("OnUseSkill", null, idSkill);
+					Match.Ref.Connection.Invoke("OnServerUseSkill", null, idSkill);
 				else
-					Match.Ref.Game.OnUseSkill( Match.Ref.IdLocalUser, idSkill );
+					Match.Ref.Game.OnClientUseSkill( Match.Ref.IdLocalUser, idSkill );
 			}
 		}
 		
@@ -575,12 +551,12 @@ package Caps
 		{
 			if (!AppParams.OfflineMode)
 			{
-				Match.Ref.Connection.Invoke("OnTiroPuerta", null );
-				WaitResponse();
+				Match.Ref.Game.WaitResponse();
+				Match.Ref.Connection.Invoke("OnServerTiroPuerta", null );
 			}
 			else
 			{
-				Match.Ref.Game.OnTiroPuerta(Match.Ref.Game.CurTeam.IdxTeam);
+				Match.Ref.Game.OnClientTiroPuerta(Match.Ref.Game.CurTeam.IdxTeam);
 			}
 		}
 
@@ -677,9 +653,6 @@ package Caps
 		//
 		public function ShowAniUseSkill(idSkill:int) : void
 		{
-			// Cancelamos cualquier operación de entrada que estuviera ocurriendo
-			// Cancel();
-
 			if( idSkill == 1 )
 				LaunchCutScene(Embedded.Assets.MensajeSkill01, 0, 210, null);
 			else if( idSkill == 2 )
@@ -833,22 +806,6 @@ package Caps
 				Match.Ref.Connection.Invoke( "OnAbort", null );
 			else
 				trace( "OnAbandonar: [warning] La conexión es nula. Ya se ha cerrado el cliente" );
-		}
-		
-		
-		// 
-		// Nos pone en modo de espera de respuesta del servidor
-		// NOTE: (IMPORTANT): waitResponse es útil para eventos que se lanzan al servidor pero tenemos que esperar a que lleguen, ya que mientras
-		// que llegan podrian producirse TimeOut o similares
-		//
-		public function WaitResponse(  ) : void
-		{
-			Match.Ref.Game.ResetTimeout();
-			// Deshabilitamos la entrada de interface y pausamos el timeout
-			UserInputEnabled = false;
-			// NOTE: Hacer depués del ResetTimeout, ya que dentro se asigna a false
-			Match.Ref.Game.TimeOutPaused = true;
-		}
-		
+		}		
 	}
 }
