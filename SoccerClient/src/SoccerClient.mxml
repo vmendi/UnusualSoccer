@@ -33,9 +33,6 @@
 			// Carga de parametros y configuracion global
 			AppConfig.Init(parameters);
 			
-			// Inicializamos la clase de las estadísticas
-			GameMetrics.Init(this);
-			
 			// Para que las estructuras creadas por weborb existan
 			var dataTypeInit : DataTypeInitializer = new DataTypeInitializer();
 
@@ -64,6 +61,10 @@
 				mMainView = new MainView();
 				addElement(mMainView);
 			}
+			
+			// Inicializamos la clase de las estadísticas
+			GameMetrics.Init(this);
+			
 		}
 
 		private function OnCleaningShutdown() : void

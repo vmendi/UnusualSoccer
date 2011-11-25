@@ -105,7 +105,7 @@
 				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="true"/>
 	</s:Panel>
 	
-	<Competition:LookingForMatchPanel x="424" y="49" includeIn="AvailableCredit" />
+	<Competition:LookingForMatchPanel x="424" y="22" includeIn="AvailableCredit" />
 	
 	<s:Label id="MyOutOfCredit" right="10" y="29" text="OUT OF CREDIT BLAH BLAH" includeIn="OutOfCredit" styleName="whiteBoldMedium" />
 

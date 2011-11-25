@@ -3,7 +3,8 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*"
-		 currentState="Disabled" 
+		 currentState="Disabled"
+		 width="326" height="92"
 		 preinitialize="PreinitializeHandler(event)">
 	
 	<s:states>
@@ -61,27 +62,29 @@
 
 	]]></fx:Script>
 	
-	<s:Label width="218" x="12" y="0" text="{resourceManager.getString('main','LookingForMatchPanelTxt')}" styleName="whiteBoldBig"
+	<s:Label horizontalCenter="0" y="46" textAlign="center" text="Estás desconectado del juego..." styleName="whiteBoldBig" includeIn="Disabled" />
+	
+	<s:Label width="218" x="10" y="27" text="{resourceManager.getString('main','LookingForMatchPanelTxt')}" styleName="whiteBoldBig"
 			 includeIn="Wait" />
+	<s:Image id="MyFindMatchButton" x="236" y="0" includeIn="Wait"
+			 alpha.Disabled="0.2" alpha.Wait="1"
+			 source="@Embed(source='/Assets/General.swf', symbol='BotonBuscarPartido')"
+			 click="MyFindMatchButton_clickHandler(event)"/>	
 	
-	<!--<s:Label width="218" x="12" y="38" text="Puntos para molar..." styleName="whiteBoldBig"
-			 includeIn="Wait" />-->	
-	
-	<s:Label width="172" x="61" y="22" textAlign="center" text="Estás desconectado del juego..." styleName="whiteBoldBig" includeIn="Disabled" />
-	
-	<s:Label x="121" y="36" text="Buscando partido..." styleName="whiteBoldBig" includeIn="LookingForMatch" />
-
-	<s:Image id="MyLoadingAnim" x="211" y="20" includeIn="LookingForMatch"
-			  source="@Embed(source='/Assets/General.swf', symbol='LoadingAnim')"
-			  />
-	
-	<s:Button id="MyCancelButton" right="0" y="33" includeIn="LookingForMatch"
-			  label="Cancelar" minWidth="70" skinClass="GameView.Skins.ButtonDarkGreySkin"
-			  click="MyFindMatchButton_clickHandler(event)"/>
-	
-	<s:Image id="MyFindMatchButton" x="236" y="-29" includeIn="Disabled, Wait"
-			  alpha.Disabled="0.2" alpha.Wait="1"
-			  source="@Embed(source='/Assets/General.swf', symbol='BotonBuscarPartido')"
-			  click="MyFindMatchButton_clickHandler(event)"/>
+	<s:Group includeIn="LookingForMatch" horizontalCenter="0" top="38">
+		<s:layout>
+			<s:VerticalLayout gap="2" horizontalAlign="center" />
+		</s:layout>
+		<s:SWFLoader y="0" x="0" id="MyLoadingAnim" source="@Embed(source='/Assets/General.swf', symbol='LoadingAnim')" includeIn="LookingForMatch"/>
+		<s:Group>
+			<s:layout>
+				<s:HorizontalLayout gap="10" verticalAlign="middle" />
+			</s:layout>
+			<s:Label text="{resourceManager.getString('main','LookingForMatchPanelLooking')}" styleName="whiteBoldBig"/>
+			<s:Button id="MyCancelButton"
+					  label="{resourceManager.getString('main','Cancel')}" minWidth="70" skinClass="GameView.Skins.ButtonDarkGreySkin"
+					  click="MyFindMatchButton_clickHandler(event)"/>
+		</s:Group>
+	</s:Group>
 	
 </s:Group>

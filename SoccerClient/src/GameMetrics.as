@@ -5,6 +5,7 @@ package
 	import com.google.analytics.v4.Tracker;
 	
 	import flash.display.DisplayObject;
+	import flash.external.ExternalInterface;
 	import flash.net.URLRequest;
 	import flash.net.sendToURL;
 
@@ -20,12 +21,22 @@ package
 		static public function Init(dobject:DisplayObject) : void
 		{
 			tracker = new GATracker( dobject, "UA-6476735-8", "AS3", false );
+			
+			var uid : String = SoccerClient.GetFacebookFacade().FacebookID //SoccerClient.GetFacebookFacade().FacebookID;
+			ExternalInterface.call("_kmq.push", ['identify', uid]);
 		}
 		
 		static public function ReportEvent(event:String) : void
 		{
-			//var uid : String = SoccerClient.GetFacebookFacade().FacebookID; 
+			var uid : String = SoccerClient.GetFacebookFacade().FacebookID; 
+			
+			// Kontagent
 			//sendToURL(new URLRequest("http://api.geo.kontagent.net/api/v1/75bcc0495d1b49d8a5c8ad62d989dcf7/evt/?s="+uid+"&n="+event));
+			
+			// Kissmetrics
+			ExternalInterface.call("_kmq.push", ['record', event]);
+			
+			// Google Analytics
 			tracker.trackEvent("Manager", event);
 		}
 		
