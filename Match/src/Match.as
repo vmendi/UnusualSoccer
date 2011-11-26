@@ -126,7 +126,7 @@ package
 		}
 		
 		//
-		// Desde fuera nos cierran el partido
+		// Desde fuera nos cierran el partido (para los Tests)
 		//
 		public function ForceMatchFinish() : void
 		{

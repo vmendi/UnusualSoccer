@@ -90,7 +90,7 @@ package Caps
 		// Inicialización de los datos del partido. Invocado desde el servidor
 		//
 		public function InitFromServer(matchId:int, descTeam1:Object, descTeam2:Object, idLocalPlayerTeam:int, matchTimeSecs:int, turnTimeSecs:int, minClientVersion:int) : void
-		{
+		{			
 			// Verificamos la versión mínima de cliente exigida por el servidor.
 			if( AppParams.ClientVersion < minClientVersion )
 				throw new Error("El partido no es la última versión. Limpie la caché de su navegador. ClientVersion: " + AppParams.ClientVersion + " MinClient: " + minClientVersion );
@@ -99,6 +99,9 @@ package Caps
 			
 			// Creamos las capas iniciales de pintado para asegurar un orden adecuado
 			CreateLayers();
+			
+			// Identificador del jugador local (a quien controlamos nosotros desde el cliente)
+			Match.Ref.IdLocalUser = idLocalPlayerTeam;
 			
 			TheEntityManager = new EntityManager();
 			TheGamePhysics = new GamePhysics(PhyLayer);
@@ -132,10 +135,7 @@ package Caps
 			Config.MatchId = matchId;
 			Config.PartTime = matchTimeSecs / 2;
 			Config.TurnTime = turnTimeSecs;
-						
-			// Identificador del jugador local (a quien controlamos nosotros desde el cliente)
-			Match.Ref.IdLocalUser = idLocalPlayerTeam;
-						
+												
 			// Determinamos la equipación a utilizar en cada equipo.
 			//   - Determinamos los grupos de equipación a los que pertenece cada equipo.
 			//	 - Si son del mismo grupo:
@@ -484,7 +484,7 @@ package Caps
 			var paseToCap:Cap = GetPaseAlPie();
 			
 			// Si se ha producido UNA FALTA cambiamos el turno al siguiente jugador como si nos hubieran robado la pelota
-			var DetectedFault : Object = TheGamePhysics.Fault;
+			var DetectedFault : Fault = TheGamePhysics.TheFault;
 			
 			if (DetectedFault != null)
 			{
@@ -497,7 +497,7 @@ package Caps
 					result = 1;
 					
 					// Destruimos la chapa del equipo!
-					attacker.OwnerTeam.FireCap( attacker );
+					attacker.OwnerTeam.FireCap(attacker, true);
 				}
 				else	// Hacemos retroceder al jugador que ha producido la falta
 				{

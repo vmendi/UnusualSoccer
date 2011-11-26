@@ -10,41 +10,45 @@ package Caps
 	
 	import com.greensock.*;
 	
+	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
+	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
+	import flash.events.SecurityErrorEvent;
 	import flash.geom.Point;
+	import flash.net.URLRequest;
 	
-	//   
-	// TODO: Derivar de Entity!!!! e implementar física / visual / update!!
-	//
 	public class Cap extends PhyEntity
 	{
 		static public const Radius:Number = 15;
 		
-		// Información cosmética del jugador
 		protected var _Name:String = null;						// Nombre del jugador
 		protected var _Dorsal:int = 0;							// Nº de dorsal del jugador
-				
-		// Características
-		
+						
 		protected var _Defense:int = 50;						// Valor de defensa de 0 - 100 --> (Afecta a la capacidad de evitar el robo de balón.... )
 		protected var _Power:int = 50;							// Valor de ataque (Potencia) de 0 - 100 --> (Afecta a la potencia de tiro)
 		protected var _Control:int = 50;						// Control de 0 - 100 --> (Afecta a la capacidad de robar el balón.... ) 
 				
 		protected var _OwnerTeam:Team = null;					// Equipo dueño de la chapa
 		
-		private var Influence:Sprite = null;					// Objeto visual para pintar la influencia de la chapa
-		private var TimeShowingInfluence:Number = 0;			// Tiempo que se lleva mostrando el area de influencias desde la última vez que se mando pintar
+		private var _Influence:Sprite = null;					// Objeto visual para pintar la influencia de la chapa
+		private var _TimeShowingInfluence:Number = 0;			// Tiempo que se lleva mostrando el area de influencias desde la última vez que se mando pintar
 		private var _ShowInfluence:Boolean=false;				// Indica si se está pintando
 		
-		private var CapId:int = (-1);							// Identificador de la chapa
+		private var _CapId:int = (-1);							// Identificador de la chapa
 		
-		private var ColorInfluence:int = Enums.FriendColor; 		// Color del radio de influencia visual
-		private var SizeInfluence:int = AppParams.RadiusPaseAlPie;	// tamaño del radio de influencia visual
-				
-		public var YellowCards:int = 0; 						// Número de tarjetas amariallas (2 = roja = expulsión)
+		private var _ColorInfluence:int = Enums.FriendColor; 		// Color del radio de influencia visual
+		private var _SizeInfluence:int = AppParams.RadiusPaseAlPie;	// tamaño del radio de influencia visual
 		
+		private var _IsInjured : Boolean = false;
 				
+		public var YellowCards:int = 0; 						// Número de tarjetas amarillas (2 = roja = expulsión)
+						
 		//
 		// Inicializa una chapa
 		//
@@ -71,9 +75,7 @@ package Caps
 			else
 			{
 				asset = team.UseSecondaryEquipment? Embedded.Assets.Goalkeeper2 : Embedded.Assets.Goalkeeper;
-				phyInit.categoryBits = 2;
-				phyInit.maskBits = 1 + 2 + 4 + 8;	// Choca con todo excepto con SmallArea (que tiene categoryBits=16)
-				
+				phyInit.categoryBits = 2;			// Choca con todo tb	
 			}
 			
 			super(asset, Match.Ref.Game.GameLayer, PhyEntity.Circle, phyInit);
@@ -97,6 +99,7 @@ package Caps
 			_Power = descCap.Power;
 			_Control = descCap.Control;
 			_Defense = descCap.Defense;
+			_IsInjured = descCap.IsInjured;
 			_OwnerTeam = team;
 					
 			// Nos registramos a los eventos de entrada del ratón!
@@ -104,15 +107,19 @@ package Caps
 			
 			// Creamos un Sprite linkado a la chapa, donde pintaremos los radios de influencia de la chapa
 			// Estos sprites los introducimos como hijos del campo, para asegurar que se vean debajo de las chapas 
-			Influence = new Sprite();
-			Match.Ref.Game.TheField.Visual.addChild( Influence );
+			_Influence = new Sprite();
+			Match.Ref.Game.TheField.Visual.addChild( _Influence );
 			DrawInfluence();
-			Influence.alpha = 0.0;
+			_Influence.alpha = 0.0;
 			
-			CapId = id;
+			_CapId = id;
+			
+			// Solo mostramos la foto de los amigos del equipo local (privacidad...)
+			if (team.IsLocalUser)
+				LoadFacebookPicture(descCap.FacebookID);
 			
 			// Auto-añadimos al manager de entidades
-			Match.Ref.Game.TheEntityManager.AddTagged(this, "Team"+(team.IdxTeam +1).toString() + "_" + CapId.toString());
+			Match.Ref.Game.TheEntityManager.AddTagged(this, "Team"+(team.IdxTeam +1).toString() + "_" + _CapId.toString());
 		}
 		
 		//
@@ -142,50 +149,18 @@ package Caps
 			PhyObject.body.ApplyImpulse( new b2Vec2( vecForce.x, vecForce.y ), PhyObject.body.GetWorldCenter() );
 		}
 		
-		public function get OwnerTeam( ) : Team
-		{
-			return _OwnerTeam;
-		}
-		public function get Name( ) : String
-		{
-			return _Name;
-		}
-		public function get Id( ) : int
-		{
-			return CapId;
-		}
-		public function get Defense( ) : int
-		{
-			return _Defense;
-		}
-		public function get Power( ) : int
-		{
-			return _Power;
-		}
-		public function get Control( ) : int
-		{
-			return _Control;
-		}
-		
-		//
-		// Copia las propiedades de otra chapa en esta chapa. Util por ejemplo para en la expulsion del portero, substituirlo.
-		//
-		public function ImpersonateOther(other : Cap) : void
-		{
-			if (this._OwnerTeam != other._OwnerTeam)
-				throw new Error("El equipo debe ser el mismo");
-			
-			this._Control = other._Control;
-			this._Defense = other._Defense;
-			this._Dorsal = other._Dorsal;
-			this._Name = other._Name;
-			this.YellowCards = other.YellowCards;
-		}
+		public function get OwnerTeam() : Team	  { return _OwnerTeam; }
+		public function get Name() : String		  { return _Name; }
+		public function get Id() : int			  { return _CapId; }
+		public function get Defense() : int		  { return _Defense; }
+		public function get Power() : int		  { return _Power; }
+		public function get Control() : int		  { return _Control; }
+		public function get IsInjured() : Boolean { return _IsInjured; }
 		
 		//
 		// Obtiene el Ghost de la chapa (solo hay uno por equipo)
 		//
-		public function get Ghost( ) : Entity
+		public function get Ghost() : Entity
 		{
 			return this.OwnerTeam.Ghost;
 		}
@@ -193,10 +168,9 @@ package Caps
 		//
 		// Obtiene el vector de dirección desde la chapa que apunta hacia la portería contraria
 		//
-		public function get DirToGoal( ) : Point
+		public function get DirToGoal() : Point
 		{
 			// Obtenemos el punto donde está la portería contraria
-			
 			var target:Point = Field.GetCenterGoal( Enums.AgainstSide( OwnerTeam.Side ) );
 			// Retornamos el vector de direccion
 			return( target.subtract( GetPos() ) );
@@ -206,7 +180,7 @@ package Caps
 		// Devuelve si está atacando o no.
 		// Se considera que una chapa está atacando cuando está en la mitad del campo oponente
 		//
-		public function get IsAttacking( ) : Boolean
+		public function get IsAttacking() : Boolean
 		{
 			var x:Number = GetPos().x;
 			var centerX:Number = Field.CenterX;
@@ -217,7 +191,7 @@ package Caps
 					return false;
 				return true;
 			}
-			else /* if( OwnerTeam.Side == Enums.Right_Side ) */
+			else
 			{
 				if( x > centerX )
 					return false;
@@ -232,10 +206,10 @@ package Caps
 		public function SetInfluenceAspect( color:int, size:Number ) : void
 		{
 			// Si algo cambia, reasignamos
-			if( color != ColorInfluence || size != SizeInfluence )
+			if( color != _ColorInfluence || size != _SizeInfluence )
 			{
-				ColorInfluence = color;
-				SizeInfluence = size;
+				_ColorInfluence = color;
+				_SizeInfluence = size;
 				
 				DrawInfluence( );
 			}
@@ -246,12 +220,12 @@ package Caps
 		//
 		protected function DrawInfluence( ) : void
 		{
-			Influence.graphics.clear( );
-			Influence.graphics.lineStyle( 1, ColorInfluence, 0.4 );
+			_Influence.graphics.clear( );
+			_Influence.graphics.lineStyle( 1, _ColorInfluence, 0.4 );
 			
-			Influence.graphics.beginFill( ColorInfluence, 0.3 );
-			Influence.graphics.drawCircle( 0, 0, SizeInfluence );
-			Influence.graphics.endFill();
+			_Influence.graphics.beginFill( _ColorInfluence, 0.3 );
+			_Influence.graphics.drawCircle( 0, 0, _SizeInfluence );
+			_Influence.graphics.endFill();
 		}
 		
 		//
@@ -262,12 +236,12 @@ package Caps
 			if (value != _ShowInfluence)
 			{	
 				_ShowInfluence = value;
-				TimeShowingInfluence = 0;
+				_TimeShowingInfluence = 0;
 				
 				if( _ShowInfluence )			
-					TweenMax.to( this.Influence, 1, {alpha:1} );
+					TweenMax.to( this._Influence, 1, {alpha:1} );
 				else
-					TweenMax.to( this.Influence, 1, {alpha:0} );
+					TweenMax.to( this._Influence, 1, {alpha:0} );
 			}
 		}
 		
@@ -276,10 +250,6 @@ package Caps
 			return _ShowInfluence;
 		}		
 		
-		//
-		// Se ejecuta a velocidad de pintado
-		// - Se encarga de copiar el objeto físico al objeto visual
-		//
 		public override function Draw( elapsed:Number ) : void
 		{
 			super.Draw( elapsed );
@@ -287,18 +257,56 @@ package Caps
 			if( this.Visual )
 			{
 				// Reasignamos la posicion del objeto de radio de influencia, para que siga a la chapa
-				Influence.x = GetPos().x;			
-				Influence.y = GetPos().y;
+				_Influence.x = GetPos().x;			
+				_Influence.y = GetPos().y;
 			}
 				
 			// Apagamos al cabo de 2 segundos
 			if( ShowInfluence )
 			{
-				TimeShowingInfluence += elapsed;
+				_TimeShowingInfluence += elapsed;
 				
-				if( TimeShowingInfluence > 2.0 )
+				if( _TimeShowingInfluence > 2.0 )
 					ShowInfluence = false;
 			}
 		}
+		
+		private function LoadFacebookPicture(facebookID : Number) : void
+		{
+			if (facebookID != -1)
+			{
+				mFacebookPictureLoader = new Loader();
+				mFacebookPictureLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, OnLoadComplete);
+				mFacebookPictureLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, OnError);
+				mFacebookPictureLoader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, OnError);
+				mFacebookPictureLoader.load(new URLRequest("http://graph.facebook.com/"+facebookID+"/picture/?type=square"));
+			}
+			
+			function OnLoadComplete(e:Event) : void
+			{
+				var loaderInfo : LoaderInfo = e.target as LoaderInfo;
+				
+				if (loaderInfo.bytesLoaded != 0 && loaderInfo.bytesLoaded == loaderInfo.bytesTotal)
+				{
+					var theBitmap : Bitmap = loaderInfo.content as Bitmap;
+					
+					(Visual as DisplayObjectContainer).addChild(theBitmap);
+
+					theBitmap.scaleX = 0.7;
+					theBitmap.scaleY = 0.7;
+					theBitmap.smoothing = true;
+					
+					mFacebookPictureLoader = null;
+				}
+			}
+			
+			function OnError(e:Event):void
+			{
+				// Poco podemos hacer... No merece la pena mandarlo al servidor, fallara mucho y no sabremos distinguir por qué
+			}
+			
+		}
+		
+		private var mFacebookPictureLoader : Loader;
 	}
 }

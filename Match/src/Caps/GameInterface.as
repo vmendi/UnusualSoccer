@@ -232,7 +232,6 @@ package Caps
 			if( cap != null )
 			{
 				gui.SelectedCap.gotoAndStop( cap.OwnerTeam.Name );
-				//gui.SelectedName.text = cap.Name;
 				gui.SelectedWeight.text = cap.Defense.toString();
 				gui.SelectedSliding.text = cap.Control.toString();
 				gui.SelectedPower.text = cap.Power.toString();
@@ -241,7 +240,6 @@ package Caps
 			else
 			{
 				gui.SelectedCap.gotoAndStop(1);
-				//gui.SelectedName.text = "";
 				gui.SelectedWeight.text = "";
 				gui.SelectedSliding.text = "";
 				gui.SelectedPower.text = "";

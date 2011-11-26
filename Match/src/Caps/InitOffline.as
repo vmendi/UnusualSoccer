@@ -62,19 +62,23 @@ package Caps
 			{
 				var descCap1:Object = { 
 					DorsalNumber: c+1,
-						Name: "Cap Team01 " + c,
-						Power: 100,
-						Control: 100,
-						Defense: 100
+					Name: "Cap Team01 " + c,
+					Power: 100,
+					Control: 100,
+					Defense: 100,
+					FacebookID: 611084838,
+					IsInjured:c == 5
 				};						
 				descTeam1.SoccerPlayers.push(descCap1);
 				
 				var descCap2:Object = { 
 					DorsalNumber: c+1,
-						Name: "Cap Team02 " + c,
-						Power: 100,
-						Control: 100,
-						Defense: 100
+					Name: "Cap Team02 " + c,
+					Power: 100,
+					Control: 100,
+					Defense: 100,
+					FacebookID: 611084838,
+					IsInjured:c == 3
 				};						
 				descTeam2.SoccerPlayers.push(descCap2);					
 			}

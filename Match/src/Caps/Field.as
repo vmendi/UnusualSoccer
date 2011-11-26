@@ -79,22 +79,17 @@ package Caps
 		
 		/* 
 			Chapas: Chocan con TODO.
-			Category:
-			Mask: 1 + 2 + 4 + 8 + 16
-				
-			Portero: Choca con todo menos con la SmallArea (puede estar dentro de ella)
-			Category:
-			Mask: 1 + 2 + 4 + 8
-				
-			Ball: No choca con la BackPorteria y con la SmallArea
-			Category:
+			Category: 1
+							
+			Portero: Choca con TODO tambien.
+			Category: 2
+							
+			Ball: Choca con TODO excepto con BackPorteria
+			Category: 4
 			Mask: 1 + 2 + 4
-				
+
 			BackPorteria:
 			Category: 8
-			
-			SmallArea:
-			Category: 16
 		*/
 		protected function CreatePhysicWalls() : void
 		{
@@ -124,24 +119,19 @@ package Caps
 			// Utilizar detección de colisiones continua? Aunque son estaticos lo ponemos a true, por si acaso el motor lo tiene en cuenta
 			var bCCD:Boolean = true;
 
-			// Bottom (Utilizamos un grosor mas fino para no tapar los botones del interface)
-			var grosor:Number = 0.5;
+			// Con este grosor se tapa los botones del interfaz POR TENER fillColor, fillAlpha, etc. Ponemos skin:"none" -> no se veran en debug
+			var grosor:Number = 10;
 			var halfGrosor:Number = grosor * 0.5;
 			
-			phy.addBox({x:offsetX + sw / 2 + 0.05, restitution:1, y:offsetY+sh+halfGrosor, width: sw, height:grosor, density:.0, fillColor: fillColor, fillAlpha: fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
+			// Bottom
+			phy.addBox({x:offsetX + sw / 2 + 0.05, restitution:1, y:offsetY+sh+halfGrosor, width: sw, height:grosor, density:.0, skin:"none", isBullet: bCCD });
 			
-			// Top			
-			grosor = 0.50;
-			halfGrosor = grosor * 0.5;
-			phy.addBox({x:offsetX + sw / 2 + 0.05, restitution:1, y:offsetY+0-halfGrosor, width:sw, height:grosor,  density:.0,fillColor: fillColor, fillAlpha: fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD});
-			
-			// Restauramos el grosor standard
-			grosor = 1.5;
-			halfGrosor = grosor * 0.5;
+			// Top
+			phy.addBox({x:offsetX + sw / 2 + 0.05, restitution:1, y:offsetY+0-halfGrosor, width:sw, height:grosor, density:.0, skin:"none", isBullet: bCCD});
 			
 			// Left
-			phy.addBox({x:offsetX + 0 - halfGrosor, y:hc1, restitution:1, width:grosor, height:halfHeightWithoutGoal,  density:.0, fillColor: fillColor, fillAlpha: fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD});
-			phy.addBox({x:offsetX + 0 - halfGrosor, y:hc2, restitution:1, width:grosor, height:halfHeightWithoutGoal,  density:.0, fillColor: fillColor, fillAlpha: fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD});
+			phy.addBox({x:offsetX + 0 - halfGrosor, y:hc1, restitution:1, width:grosor, height:halfHeightWithoutGoal, density:.0, fillColor: fillColor, fillAlpha: fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD});
+			phy.addBox({x:offsetX + 0 - halfGrosor, y:hc2, restitution:1, width:grosor, height:halfHeightWithoutGoal, density:.0, fillColor: fillColor, fillAlpha: fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD});
 			// Right
 			phy.addBox({x:offsetX + sw + halfGrosor, y:hc1, restitution:1, width:grosor, height:halfHeightWithoutGoal,  density:.0, fillColor: fillColor, fillAlpha: fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD});
 			phy.addBox({x:offsetX + sw + halfGrosor, y:hc2, restitution:1, width:grosor, height:halfHeightWithoutGoal,  density:.0, fillColor: fillColor, fillAlpha: fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD});
@@ -153,12 +143,6 @@ package Caps
 			// Creamos los sensores para chequear el gol
 			GoalLeft = phy.addBox({isSensor: true, x: AppParams.Screen2Physic(centerGoalLeft.x) - halfGrosor - halfBall, y:AppParams.Screen2Physic( centerGoalLeft.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
 			GoalRight = phy.addBox({isSensor: true, x: AppParams.Screen2Physic(centerGoalRight.x) + halfGrosor + halfBall, y:AppParams.Screen2Physic( centerGoalRight.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
-			
-			// Area pequeña en la que solo rebotan las chapas. Desactivamos la skin para que funcione el raton cuando el portero este debajo => No se vera en debug
-			/*
-			phy.addBox({categoryBits:16, x:AppParams.Screen2Physic(centerGoalLeft.x) + halfSizeSmallAreaX, y:AppParams.Screen2Physic(centerGoalLeft.y), restitution:1, width: AppParams.Screen2Physic(SmallSizeAreaX), height:AppParams.Screen2Physic(SmallSizeAreaY), density:.0, skin:"none", isBullet: bCCD});
-			phy.addBox({categoryBits:16, x:AppParams.Screen2Physic(centerGoalRight.x) - halfSizeSmallAreaX, y:AppParams.Screen2Physic(centerGoalRight.y), restitution:1, width:AppParams.Screen2Physic(SmallSizeAreaX), height:AppParams.Screen2Physic(SmallSizeAreaY), density:.0, skin:"none", isBullet: bCCD});
-			*/
 		}
 		
 		//
@@ -258,8 +242,7 @@ package Caps
 					}
 				}
 			
-				// Comprobamos que no colisionemos con el balón
-				
+				// Comprobamos que no colisionemos con el balón				
 				if (checkAgainstBall && Match.Ref.Game.TheBall.InsideCircle( pos, Cap.Radius+BallEntity.Radius))
 					bValid = false;
 			}

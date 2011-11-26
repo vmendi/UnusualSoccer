@@ -148,6 +148,8 @@ namespace SoccerServer
 
                 spData.Name = sp.Name;
                 spData.DorsalNumber = sp.DorsalNumber;
+                spData.FacebookID = sp.FacebookID;
+                spData.IsInjured = sp.IsInjured;
 
                 spData.Power = (int)Math.Round(sp.Power * daFitness);
                 spData.Control = (int)Math.Round(sp.Sliding * daFitness);

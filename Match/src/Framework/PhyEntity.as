@@ -98,14 +98,11 @@ package Framework
 		
 		//
 		// Posicionamiento del objeto lógico
-		// TODO: Definir como funciona el pipeline físico / visual!!!
 		//
 		public override function SetPos( pos:Point ) : void
 		{
 			super.SetPos( pos ); 
-	
-			// TODO: Eliminar referencia externa a Screen2Physic
-			PhyObject.setLoc( Caps.AppParams.Screen2Physic( pos.x ), Caps.AppParams.Screen2Physic( pos.y ) ); 
+			PhyObject.setLoc(Caps.AppParams.Screen2Physic( pos.x ), Caps.AppParams.Screen2Physic( pos.y )); 
 		}
 		
 		public override function GetPos( ) : Point

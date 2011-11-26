@@ -637,6 +637,8 @@ namespace SoccerServer
         {
             public int DorsalNumber;
             public String Name;
+            public long FacebookID;
+            public bool IsInjured;
             public int Power;
             public int Control;
             public int Defense;

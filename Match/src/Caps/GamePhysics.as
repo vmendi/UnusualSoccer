@@ -20,7 +20,7 @@ package Caps
 		public function get SideGoal() : int	 { return _SideGoal; }					// Enums.Left_Side, Enums.Right_Side. Porteria donde entro el gol
 				
 		public function get IsFault()  : Boolean { return _DetectedFault != null; }
-		public function get Fault()	   : Object  { return _DetectedFault; }
+		public function get TheFault() : Fault   { return _DetectedFault; }
 		
 		public function get ShooterCap()   : Cap	 { return _CapShooting; }
 		public function get IsSimulating() : Boolean { return _SimulatingShoot;	}
@@ -110,7 +110,7 @@ package Caps
 			if (IsGoal || IsFault)
 				return;
 			
-			if( e.type == QuickContacts.ADD )
+			if (e.type == QuickContacts.ADD)
 			{
 				// Detectamos GOL: Para ello comprobamos si ha habido un contacto entre los sensores de las porterías y el balón				
 				if( _Contacts.isCurrentContact( _Ball.PhyBody, _Field.GoalLeft ) )
@@ -161,34 +161,20 @@ package Caps
 				}
 				
 				// Posible falta
-				EvaluateFault(ent1, ent2);
-			}
-		}
-		
-		private function EvaluateFault(ent1 : PhyEntity, ent2 : PhyEntity) : void
-		{
-			if (ent1 is Cap && ent2 is Cap)
-			{
-				_DetectedFault = DetectFault(Cap(ent1), Cap(ent2));
-				
-				if (_DetectedFault != null)
-				{
-					// Detenemos la simulación física y creamos un descriptor de falta
-					// NOTE: Al denener la simulación se detectará en el próximo tick que se ha terminado el disparo y se procesará la respuesta
-					StopSimulation();
+				if (ent1 is Cap && ent2 is Cap)
+				{					
+					if ((_DetectedFault = DetectFault(Cap(ent1), Cap(ent2))) != null)
+						StopSimulation();	// La detencion se detectará en el próximo tick, procesandose entonces la falta
 				}
 			}
 		}
 		
 		//
-		// Detecta una falta entre las dos chapas y retorno un objeto de falta que describe lo ocurrido
-		// Además contabiliza las tarjetas amarillas
+		// Detecta una falta entre las dos chapas y retorna un objeto de falta que describe lo ocurrido
 		//
-		// ( Conflicto de jugadores, tarjetas, ... )
-		//
-		private function DetectFault(cap1:Cap, cap2:Cap) : Object		
+		private function DetectFault(cap1:Cap, cap2:Cap) : Fault		
 		{
-			var fault:Object = null;
+			var fault:Fault = null;
 			
 			// Las 2 chapas son del mismo equipo? Entonces ignoramos, no puede haber falta. 
 			if (cap1.OwnerTeam != cap2.OwnerTeam)
@@ -207,81 +193,60 @@ package Caps
 					attacker = cap2;
 					defender = cap1;
 				}
-				
+								
 				// Calculamos la velocidad con la que ha impactado 
-				var vVel:b2Vec2 = attacker.PhyBody.body.GetLinearVelocity()
-				
+				var vVel:b2Vec2 = attacker.PhyBody.body.GetLinearVelocity();
+								
 				// Calculamos la velocidad proyectando sobre el vector diferencial de las 2 chapas, de esta
 				// forma calculamos el coeficiente de impacto real y excluye rozamientos
-				var vecDiff:Point  = defender.GetPos().subtract( attacker.GetPos() );
-				vecDiff.normalize( 1.0 );
+				var vecDiff : Point = defender.GetPos().subtract(attacker.GetPos());
+				vecDiff.normalize(1.0);
 				var vel:Number = vVel.x * vecDiff.x + vVel.y * vecDiff.y;
 				
 				// Si excedemos la velocidad de 'falta' determinamos el tipo de falta
-				if( vel >= AppParams.VelPossibleFault )
-				{
-					// Se considera falta sólo si el jugador ATACANTE no ha tocado previamente la pelota
-					if( !HasTouchedBall( attacker ) )
+				// Se considera falta sólo si el jugador ATACANTE no ha tocado previamente la pelota
+				if (vel >= AppParams.VelPossibleFault && !HasTouchedBall(attacker))
+				{				
+					trace( "DETECTADA POSIBLE FALTA ENTRE 2 JUGADORES " + vel.toString());
+					
+					// Creamos el objeto que describe la 'falta'
+					fault = new Fault();
+					fault.Attacker = attacker;
+					fault.Defender = defender;
+					
+					// Comprobamos si la falta ha sido al portero dentro de su area pequeña
+					if (defender == defender.OwnerTeam.GoalKeeper && Match.Ref.Game.TheField.IsCircleInsideSmallArea(defender.GetPos(), 0, defender.OwnerTeam.Side))
 					{
-						// Creamos el objeto que describe la 'falta'
-						fault = new Object();
-						fault.Attacker = attacker;
-						fault.Defender = defender;
-						fault.YellowCard = false;
-						fault.RedCard = false;
-						fault.SaquePuerta = false;
+						// Caso especial: Todo el mundo vuelve a su posición de alineación y se produce un saque de puerta.
+						fault.SaquePuerta = true;
 						
-						trace( "DETECTADA POSIBLE FALTA ENTRE 2 JUGADORES" );
-						
-						// Comprobamos si la falta ha sido al portero dentro de su area pequeña
-						if( defender == defender.OwnerTeam.GoalKeeper && 
-							Match.Ref.Game.TheField.IsCircleInsideSmallArea( defender.GetPos(), 0, defender.OwnerTeam.Side) )
-						{
-							// Caso especial: Todo el mundo vuelve a su posición de alineación y se produce un saque de puerta.
-							fault.SaquePuerta = true;
-							
-							// Evaluamos la gravedad de la falta. Para el portero la evaluación de tarjetas es más sensible!
-							if( vel < AppParams.VelFaultT1 )	// falta normal. es el valor por defecto
-								trace ( "Resultado: falta normal" )
-							else if( vel < AppParams.VelFaultT2 )
-								AddYellowCard( fault );	// Sacamos tarjeta amarilla (y roja si acumula 2)
-							else
-								fault.RedCard = true;	// Marcamos tarjeta roja
-						}
-							/*
-							// Comprobamos caso de penalti : Falta a cualquier chapa en el area grande contrario
-							else if( Match.Ref.Game.GetField().IsCircleInsideBigArea( defender.GetPos(), 0, attacker.OwnerTeam.Side) )
-							{
-							// TODO: PENALTIE!!!
-							throw new Error( "Implementar penaltie" );
-							}
-							*/
+						// Evaluamos la gravedad de la falta. Para el portero la evaluación de tarjetas es más sensible!
+						if( vel < AppParams.VelFaultT1 )		// Falta normal, en el caso de al portero muy "leve"
+							trace ( "Resultado: falta normal" )
+						else if( vel < AppParams.VelFaultT2 )
+							fault.AddYellowCard();				// Sacamos tarjeta amarilla (y roja si acumula 2)
 						else
-						{
-							if( vel < AppParams.VelFaultT1 )		// La falta más leve en el caso general no es falta 
-								fault = null;
-							else if( vel < AppParams.VelFaultT2 )	// falta normal. es el valor por defecto
-							{
-								trace ( "Resultado: falta normal" )
-							}
-							else if( vel < AppParams.VelFaultT3 )	// Sacamos tarjeta amarilla (y roja si acumula 2)
-								AddYellowCard( fault );
-							else									// // Sacamos tarjeta roja (Caso de máxima fuerza) 
-								fault.RedCard = true;	// Marcamos tarjeta roja	
-						}
+							fault.RedCard = true;				// Roja directa
 					}
+					else
+					{
+						if (vel < AppParams.VelFaultT1)			// La falta más leve en el caso general no es falta 
+							fault = null;
+						else if( vel < AppParams.VelFaultT2 )	// falta normal. es el valor por defecto
+							trace ( "Resultado: falta normal" )
+						else if( vel < AppParams.VelFaultT3 )	// Sacamos tarjeta amarilla (y roja si acumula 2)
+							fault.AddYellowCard();
+						else									 
+							fault.RedCard = true;				// Roja directa	(maxima fuerza)	
+					}
+					
+					// Si el que hace la falta es el portero, le perdonamos las tarjetas. No queremos que nos lo expulsen
+					if (fault != null)
+						fault.ForgiveCardsIfGoalKeeper();
 				}
 			} 
 			
 			return fault;
-		}
-		private function AddYellowCard( fault:Object ) : void		
-		{
-			// Marcamos tarjeta amarilla, la contabilizamos y si llevamos 2 marcamos roja
-			fault.YellowCard = true;
-			fault.Attacker.YellowCards ++;
-			if( fault.Attacker.YellowCards >= 2 )
-				fault.RedCard = true;
 		}
 		
 		//
@@ -357,7 +322,7 @@ package Caps
 		private var _TouchedCaps:Array = new Array();			// Lista de chapas en las que ha rebotado la pelota antes de detenerse
 		private var _TouchedCapsLastRun:Array = new Array();	// Lista de chapas que ha tocado la pelota solo en este Run
 		private var _SideGoal:int= -1;							// Lado que ha marcado goal
-		private var _DetectedFault:Object = null;				// Bandera que indica Falta detectada (además objeto que describe la falta)
+		private var _DetectedFault:Fault = null;				// Bandera que indica Falta detectada (además objeto que describe la falta)
 		
 		private var _SimulatingShoot : Boolean = false;
 		private var _CapShooting : Cap = null;

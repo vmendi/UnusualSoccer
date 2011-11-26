@@ -94,8 +94,14 @@ package Caps
 			for (var i:int = 0; i < CAPS_BY_TEAM; i++ )
 			{
 				// Creamos una chapa y la agregamos a la lista
-				var cap:Cap = new Cap(this, i, descTeam.SoccerPlayers[i]);
-				CapsList.push(cap);
+				CapsList.push(new Cap(this, i, descTeam.SoccerPlayers[i]));
+			}
+			
+			// Echamos a las que esten lesionadas, excepto al portero!
+			for each(var cap : Cap in CapsList)
+			{
+				if (cap.IsInjured && cap != GoalKeeper)
+					FireCap(cap, false);
 			}
 			
 			// El equipo 1 empieza en el lado izquierdo y el 2 en el derecho
@@ -109,7 +115,7 @@ package Caps
 						
 			// Creamos una imagen de chapa Ghost (la utilizaremos para indicar donde mover el portero)
 			Ghost = new Entity(Embedded.Assets.Goalkeeper, Match.Ref.Game.GameLayer);
-			Ghost.Visual.gotoAndStop( Name );
+			Ghost.Visual.gotoAndStop(Name);
 			Ghost.Visual.alpha = 0.4;
 			Ghost.Visual.visible = false;
 		}
@@ -148,11 +154,11 @@ package Caps
 		{
 			_Name = value;
 		}
-		public function get CapsList( ) : Array
+		public function get CapsList() : Array
 		{
 			return _CapsList; 
 		}
-		public function get Goals( ) : int
+		public function get Goals() : int
 		{
 			return _Goals; 
 		}
@@ -163,7 +169,7 @@ package Caps
 		// Retornamos el portero del equipo
 		public function get GoalKeeper( ) : Cap
 		{
-			return this.CapsList[ 0 ]; 
+			return _CapsList[ 0 ]; 
 		}
 		
 		//
@@ -180,17 +186,16 @@ package Caps
 		//
 		public function ResetToCurrentFormationOnlyGoalKeeper() : void
 		{
-			// Por si acaso el portero hace su segunda tarjeta amarilla en el saque de puerta...		
-			if (GoalKeeper != null && GoalKeeper.YellowCards != 2)
-			{
-				var currentFormation : Array = GetFormation(FormationName);
-				
-				// Si hay algún obstaculo en esa posicion, no podemos resetear al portero, ignoramos la orden
-				var desiredPos : Point = ConvertFormationPosToFieldPos(currentFormation[0], Side);
-				
-				if (Match.Ref.Game.TheField.ValidatePosCap(desiredPos, true, GoalKeeper))
-					SetFormationPosForCap(GoalKeeper, currentFormation[0], Side);
-			}
+			if (GoalKeeper == null)
+				throw new Error("WTF where is my GoalKeeper?");
+			
+			var currentFormation : Array = GetFormation(FormationName);
+			
+			// Si hay algún obstaculo en esa posicion, no podemos resetear al portero, ignoramos la orden
+			var desiredPos : Point = ConvertFormationPosToFieldPos(currentFormation[0], Side);
+			
+			if (Match.Ref.Game.TheField.ValidatePosCap(desiredPos, true, GoalKeeper))
+				SetFormationPosForCap(GoalKeeper, currentFormation[0], Side);
 		}
 
 		//
@@ -205,7 +210,7 @@ package Caps
 			for ( var i:int = 0; i < CapsList.length; i++ )
 			{
 				// Si la chapa no está expulsada la colocamos en posición de alineación
-				if( CapsList[i] != null && CapsList[i].YellowCards != 2 )
+				if (CapsList[i].YellowCards != 2)
 				{
 					SetFormationPosForCap(CapsList[i], currentFormation[i], side);
 				}
@@ -290,22 +295,17 @@ package Caps
 			if( AppParams.Debug == true )
 				availableSkillsIDs = new Array( 1, 2, 4, 5, 6, 7, 8, 9 );
 			
-			if( availableSkillsIDs != null )
+			// Recorremos la lista de habilidades disponibles generando la entrada para cada habilidad
+			for each (var item:int in availableSkillsIDs)
 			{
-				// Recorremos la lista de habilidades disponibles generando la entrada para cada habilidad
-				for each( var item:int in availableSkillsIDs )
-				{
-					// Skill disponible y al 100% de carga
-					var descSkill:Object = new Object();
-					descSkill.Available = true;
-					descSkill.PercentCharged = 100;
-					descSkill.Activated = false;
-					
-					Skill[item] = descSkill;  
-				}
+				// Skill disponible y al 100% de carga
+				var descSkill:Object = new Object();
+				descSkill.Available = true;
+				descSkill.PercentCharged = 100;
+				descSkill.Activated = false;
+				
+				Skill[item] = descSkill;  
 			}
-			else
-				trace( "La lista de habilidades es null!" );
 		}
 		
 		//
@@ -318,10 +318,8 @@ package Caps
 		
 		//
 		// Bucle principal del equipo 
-		// Se invoca a frecuencia constante APP_LOGIC_FPS / Sec
-		// elapsed: Tiempo que ha pasado en segundos
 		//		
-		public function Run( elapsed:Number ) : void
+		public function Run(elapsed:Number) : void
 		{
 			// Cargamos las habilidades que hayan sido utilizadas
 			for( var i:int = Enums.SkillFirst; i <= Enums.SkillLast; i++ )
@@ -354,7 +352,7 @@ package Caps
 		public function UseSkill( idSkill:int ) : void
 		{
 			//if( HasSkill( idSkill ) == false || ChargedSkill( idSkill) < 100 )
-			if( HasSkill( idSkill ) == false )
+			if(!HasSkill( idSkill ))
 			{
 				throw new Error( "Skill no disponible según los datos del cliente! Skill="+idSkill.toString()+" HasSkill="+HasSkill( idSkill ).toString()+" Charge="+ChargedSkill( idSkill).toString() );
 			}
@@ -363,8 +361,10 @@ package Caps
 				// NOTE: Los datos de carga de la skill de cada cliente no tienen porque ser iguales, realmente solo importan los del cliente que lanza
 				// la habilidad, con lo cual no determina si lanzar o no la skill. Simplemente lanzamos una traza para poder analizar posibles intentos
 				// de hack, ya que en situaciones sin lag deberían tener valores casi idénticos
-				if( ChargedSkill( idSkill) < 100 )
+				if(ChargedSkill(idSkill) < 100 )
+				{
 					trace( "Skill no cargada según los datos del cliente! Skill="+idSkill.toString()+" HasSkill="+HasSkill( idSkill ).toString()+" Charge="+ChargedSkill( idSkill).toString() );
+				}
 					
 				Skill[ idSkill ].PercentCharged = 0;
 				Skill[ idSkill ].Activated = true;
@@ -445,72 +445,44 @@ package Caps
 			}
 			
 			throw new Error("El equipo " + teamName + " no está en ninguna de las listas de equipacion. Estan mal escritos los nombres? ");
-			
-			return( 0 );
 		}
 		
 		// 
 		// Expulsamos una chapa, para ello simplemente la movemos fuera de la zona de juego 
 		//
-		public function FireCap( cap:Cap ) : void
+		public function FireCap(cap:Cap, withFadeOut:Boolean) : void
 		{
+			if (cap == GoalKeeper)
+				throw new Error("El portero no es expulsable!");
+			
 			// Contabilizamos el numero de expulsiones
-			Match.Ref.Game.FireCount ++;
+			Match.Ref.Game.FireCount++;
 			
 			// Cuando se expulsa un jugador lo registramos como 2 tarjetas amarillas, porque no tenemos un flag único para ello
 			cap.YellowCards = 2;
-			
-			// Si es el portero, hay que substituirlo
-			if (cap == GoalKeeper)
-			{
-				// Buscamos una chapa que no este expulsada
-				var other : Cap = GetRandomNotFiredCap();
-				
-				if (other != null)
-				{
-					// Truco sucio: Hacemos que el portero coja las propiedades de la otra chapa. Es "como si" el recien expulsado 
-					// portero hubiera sido substituido por la otra chapa
-					cap.ImpersonateOther(other);
-					
-					// Expulsamos realmente a la otra. Nuestro portero tendrá las faltas amarillas q tuviera el jugador substituto.
-					other.YellowCards = 2;
-					
-					// Movemos al nuevo portero
-					ResetToCurrentFormationOnlyGoalKeeper();
-					
-					// Y es a la otra a la que movemos fuera
-					cap = other;
-				}
-			}
-			
+
 			// Hacemos un clon visual que es el que realmente desvanecemos
-			var visual : DisplayObject = (cap.Visual as DisplayObject); 
-			var cloned : MovieClip = new (getDefinitionByName(getQualifiedClassName(cap.Visual)) as Class)();
-			visual.parent.addChild(cloned);
-			cloned.gotoAndStop(this.Name);
-			cloned.x = visual.x; cloned.y = visual.y;
-			cloned.rotationZ = cap.PhyBody.angle * 180.0 / 3.1416;
+			if (withFadeOut)
+			{
+				var visual : DisplayObject = (cap.Visual as DisplayObject); 
+				var cloned : MovieClip = new (getDefinitionByName(getQualifiedClassName(cap.Visual)) as Class)();
+				visual.parent.addChild(cloned);
+				cloned.gotoAndStop(this.Name);
+				cloned.x = visual.x; 
+				cloned.y = visual.y;
+				cloned.rotationZ = cap.PhyBody.angle * 180.0 / Math.PI;
+				
+				// Hacemos desvanecer el clon
+				TweenMax.to(cloned, 2, {alpha:0, onComplete: Delegate.create(OnFinishTween, cloned) });
+			}
 			
 			// Colocamos la chapa fuera del area de visión. Las llevamos a puntos distintos para que no colisionen
-			var pos:Point = new Point( -100, -100 );
+			var pos:Point = new Point(-100, -100);
 			pos.x -= Match.Ref.Game.FireCount * ((Cap.Radius * 2) * 5);
-			cap.SetPos( pos );
-								
-			// Hacemos desvanecer el clon
-			TweenMax.to( cloned, 2, {alpha:0, onComplete: Delegate.create(OnFinishTween, cloned) } );
+			cap.SetPos( pos );			
 		}
 		
-		private function GetRandomNotFiredCap() : Cap
-		{
-			for each (var cap : Cap in CapsList)
-			{
-				if (cap.YellowCards < 2)
-					return cap;
-			}
-			return null;
-		}
-		
-		public function OnFinishTween( cap:DisplayObject  ) : void
+		private function OnFinishTween( cap:DisplayObject  ) : void
 		{
 			cap.parent.removeChild(cap);
 		}

@@ -9,7 +9,6 @@ package Caps
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
-	import flash.text.TextField;
 	
 	import utils.Delegate;
 	
@@ -71,15 +70,10 @@ package Caps
 			if (idTeam == Match.Ref.IdLocalUser)	// Es el turno propio ( jugador local )
 			{
 				if (reason == Enums.TurnByLost || reason == Enums.TurnByStolen)
-				{
 					LaunchCutScene(Embedded.Assets.MensajeTurnoPropioRobo, 0, 210);
-				}
-				else if( reason == Enums.TurnByFault || reason == Enums.TurnBySaquePuertaByFalta )
-				{					
+				else if( reason == Enums.TurnByFault || reason == Enums.TurnBySaquePuertaByFalta )	
 					// Los nombres están al revés porque aquí representa a quien le han hecho la falta
-					var cutScene : MovieClip = LaunchCutScene(Embedded.Assets.MensajeFaltaContraria, 0, 210);
-					FillConflictoFault(cutScene, Match.Ref.Game.TheGamePhysics.Fault);
-				}
+					FillConflictoFault(LaunchCutScene(Embedded.Assets.MensajeFaltaContraria, 0, 210), Match.Ref.Game.TheGamePhysics.TheFault);
 				else if( reason == Enums.TurnBySaquePuerta  )		// El saque de puerta no tiene un mensaje específico para el oponente
 					LaunchCutScene(Embedded.Assets.MensajeTurnoPropioSaquePuerta, 0, 210);
 				else if( reason == Enums.TurnByTiroAPuerta  )
@@ -92,14 +86,9 @@ package Caps
 			else 	// Es el turno del oponente
 			{
 				if (reason == Enums.TurnByLost || reason == Enums.TurnByStolen)	
-				{
 					LaunchCutScene(Embedded.Assets.MensajeTurnoContrarioRobo, 0, 210);
-				}
 				else if( reason == Enums.TurnByFault || reason == Enums.TurnBySaquePuertaByFalta )
-				{
-					cutScene = LaunchCutScene(Embedded.Assets.MensajeFaltaPropia, 0, 210);
-					FillConflictoFault(cutScene, Match.Ref.Game.TheGamePhysics.Fault );
-				}
+					FillConflictoFault(LaunchCutScene(Embedded.Assets.MensajeFaltaPropia, 0, 210), Match.Ref.Game.TheGamePhysics.TheFault);
 				else if( reason == Enums.TurnByTiroAPuerta  )
 					LaunchCutScene(Embedded.Assets.MensajeColocarPorteroContrario, 0, 210);
 				else if( reason == Enums.TurnByGoalKeeperSet)
@@ -207,26 +196,6 @@ package Caps
 		}
 		
 		//
-		// Rellena los datos de un panel de conflicto utilizando un Objeto "conflicto"
-		//
-		static private function FillConflicto( item:MovieClip, conflicto:Object ) : void
-		{
-			var game:Game = Match.Ref.Game;
-			var defender:Team = game.CurTeam;
-			
-			// Ponemos nombres de los equipos
-			//item.JugadorPropio.text = defender.Name;
-			//item.JugadorContrario.text = game.AgainstTeam( defender ).Name;
-			
-			// Ponemos nombres de las chapas concretas en el conflicto
-			item.JugadorPropio.text = "Jugador Propio"; //conflicto.defenserCapName;
-			item.JugadorContrario.text = "Jugador Contrario"; //conflicto.attackerCapName;
-			item.ValorPropio.text = conflicto.defense.toString();
-			item.ValorContrario.text = conflicto.attack.toString();
-			item.Probabilidad.text = Math.round(conflicto.probabilidadRobo).toString() + "%";
-		}
-		
-		//
 		// Rellena los datos de un panel de conflicto utilizando un Objeto "conflicto" cuando se ha producido una falta
 		//
 		static private function FillConflictoFault( item:MovieClip, conflicto:Object ) : void
@@ -241,22 +210,6 @@ package Caps
 				item.Tarjeta.gotoAndStop( "amarilla" );
 			else
 				item.Tarjeta.gotoAndStop( 0 );
-			
-			
-			var defender:Team = game.CurTeam;
-			
-			// Ponemos nombres de los equipos
-			//item.JugadorPropio.text = defender.Name;
-			//item.JugadorContrario.text = game.AgainstTeam( defender ).Name;
-			
-			// Ponemos nombres de las chapas concretas en el conflicto
-			/*
-			item.JugadorPropio.text = "Jugador Propio"; //conflicto.defenserCapName;
-			item.JugadorContrario.text = "Jugador Contrario"; //conflicto.attackerCapName;
-			item.ValorPropio.text = conflicto.defense.toString();
-			item.ValorContrario.text = conflicto.attack.toString();
-			item.Probabilidad.text = int(conflicto.probabilidadRobo).toString() + "%";
-			*/
 		}
 		
 		static public function CreateGraphic(cutScene:Class, x:Number, y:Number, parent:DisplayObjectContainer) : DisplayObject
