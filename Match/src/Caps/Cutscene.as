@@ -55,10 +55,10 @@ package Caps
 			var paramLoser : Number = conflict.Stolen? conflict.Control : conflict.Defense;
 
 			var mcWinner : MovieClip = LaunchCutScene(Assets.ConflictoGana, winner.Visual.x, winner.Visual.y);		
-			mcWinner.ConflictoNum.SelectedWeight.text = paramWinner.toString();
+			mcWinner.ConflictoNum.Num.text = paramWinner.toString();
 			
 			var mcLoser : MovieClip = LaunchCutScene(Assets.ConflictoPierde, loser.Visual.x, loser.Visual.y);
-			mcLoser.ConflictoNum.SelectedWeight.text = paramLoser.toString();
+			mcLoser.ConflictoNum.Num.text = paramLoser.toString();
 		}
 		
 		// 
