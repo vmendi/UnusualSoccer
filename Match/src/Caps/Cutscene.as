@@ -9,6 +9,7 @@ package Caps
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
+	import flash.text.TextField;
 	
 	import utils.Delegate;
 	
@@ -46,6 +47,20 @@ package Caps
 				throw new Error("Validez del gol desconocida");
 		}
 		
+		static public function ShowConflictOverCaps(conflict:Conflict):void
+		{
+			var winner : Cap = conflict.Stolen? conflict.DefenderCap : conflict.AttackerCap;
+			var loser : Cap = conflict.Stolen? conflict.AttackerCap : conflict.DefenderCap;;
+			var paramWinner : Number = conflict.Stolen? conflict.Defense : conflict.Control;
+			var paramLoser : Number = conflict.Stolen? conflict.Control : conflict.Defense;
+
+			var mcWinner : MovieClip = LaunchCutScene(Assets.ConflictoGana, 0, 0, null, winner.Visual as DisplayObjectContainer);		
+			mcWinner.ConflictoNum.SelectedWeight.text = paramWinner.toString();
+			
+			var mcLoser : MovieClip = LaunchCutScene(Assets.ConflictoPierde, 0, 0, null, loser.Visual as DisplayObjectContainer);
+			mcLoser.ConflictoNum.SelectedWeight.text = paramLoser.toString();
+		}
+		
 		// 
 		// Reproduce una animación mostrando el turno del jugador
 		//
@@ -57,40 +72,40 @@ package Caps
 			{
 				if (reason == Enums.TurnByLost || reason == Enums.TurnByStolen)
 				{
-					LaunchCutScene(Embedded.Assets.MensajeTurnoPropioRobo, 0, 210, null);
+					LaunchCutScene(Embedded.Assets.MensajeTurnoPropioRobo, 0, 210);
 				}
 				else if( reason == Enums.TurnByFault || reason == Enums.TurnBySaquePuertaByFalta )
 				{					
 					// Los nombres están al revés porque aquí representa a quien le han hecho la falta
-					var cutScene : MovieClip = LaunchCutScene(Embedded.Assets.MensajeFaltaContraria, 0, 210, null);
+					var cutScene : MovieClip = LaunchCutScene(Embedded.Assets.MensajeFaltaContraria, 0, 210);
 					FillConflictoFault(cutScene, Match.Ref.Game.TheGamePhysics.Fault);
 				}
 				else if( reason == Enums.TurnBySaquePuerta  )		// El saque de puerta no tiene un mensaje específico para el oponente
-					LaunchCutScene(Embedded.Assets.MensajeTurnoPropioSaquePuerta, 0, 210, null);
+					LaunchCutScene(Embedded.Assets.MensajeTurnoPropioSaquePuerta, 0, 210);
 				else if( reason == Enums.TurnByTiroAPuerta  )
-					LaunchCutScene(Embedded.Assets.MensajeColocarPorteroPropio, 0, 210, null);
+					LaunchCutScene(Embedded.Assets.MensajeColocarPorteroPropio, 0, 210);
 				else if( reason == Enums.TurnByGoalKeeperSet)
-					LaunchCutScene(Embedded.Assets.MensajeTiroPuertaPropio, 0, 210, null);
+					LaunchCutScene(Embedded.Assets.MensajeTiroPuertaPropio, 0, 210);
 				else
-					LaunchCutScene(Embedded.Assets.MensajeTurnoPropio, 0, 210, null);
+					LaunchCutScene(Embedded.Assets.MensajeTurnoPropio, 0, 210);
 			}
 			else 	// Es el turno del oponente
 			{
 				if (reason == Enums.TurnByLost || reason == Enums.TurnByStolen)	
 				{
-					LaunchCutScene(Embedded.Assets.MensajeTurnoContrarioRobo, 0, 210, null);
+					LaunchCutScene(Embedded.Assets.MensajeTurnoContrarioRobo, 0, 210);
 				}
 				else if( reason == Enums.TurnByFault || reason == Enums.TurnBySaquePuertaByFalta )
 				{
-					cutScene = LaunchCutScene(Embedded.Assets.MensajeFaltaPropia, 0, 210, null);
+					cutScene = LaunchCutScene(Embedded.Assets.MensajeFaltaPropia, 0, 210);
 					FillConflictoFault(cutScene, Match.Ref.Game.TheGamePhysics.Fault );
 				}
 				else if( reason == Enums.TurnByTiroAPuerta  )
-					LaunchCutScene(Embedded.Assets.MensajeColocarPorteroContrario, 0, 210, null);
+					LaunchCutScene(Embedded.Assets.MensajeColocarPorteroContrario, 0, 210);
 				else if( reason == Enums.TurnByGoalKeeperSet)
-					LaunchCutScene(Embedded.Assets.MensajeTiroPuertaContrario, 0, 210, null);
+					LaunchCutScene(Embedded.Assets.MensajeTiroPuertaContrario, 0, 210);
 				else
-					LaunchCutScene(Embedded.Assets.MensajeTurnoContrario, 0, 210, null);
+					LaunchCutScene(Embedded.Assets.MensajeTurnoContrario, 0, 210);
 			}
 		}
 		
@@ -100,23 +115,23 @@ package Caps
 		static public function ShowUseSkill(idSkill:int) : void
 		{
 			if( idSkill == 1 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill01, 0, 210, null);
+				LaunchCutScene(Embedded.Assets.MensajeSkill01, 0, 210);
 			else if( idSkill == 2 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill02, 0, 210, null);
+				LaunchCutScene(Embedded.Assets.MensajeSkill02, 0, 210);
 			else if( idSkill == 3 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill03, 0, 210, null);
+				LaunchCutScene(Embedded.Assets.MensajeSkill03, 0, 210);
 			else if( idSkill == 4 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill04, 0, 210, null);
+				LaunchCutScene(Embedded.Assets.MensajeSkill04, 0, 210);
 			else if( idSkill == 5 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill05, 0, 210, null);
+				LaunchCutScene(Embedded.Assets.MensajeSkill05, 0, 210);
 			else if( idSkill == 6 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill06, 0, 210, null);
+				LaunchCutScene(Embedded.Assets.MensajeSkill06, 0, 210);
 			else if( idSkill == 7 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill07, 0, 210, null);
+				LaunchCutScene(Embedded.Assets.MensajeSkill07, 0, 210);
 			else if( idSkill == 8 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill08, 0, 210, null);
+				LaunchCutScene(Embedded.Assets.MensajeSkill08, 0, 210);
 			else if( idSkill == 9 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill09, 0, 210, null);
+				LaunchCutScene(Embedded.Assets.MensajeSkill09, 0, 210);
 			else
 				throw new Error( "Identificador de skill invalido" );
 		}
@@ -131,39 +146,42 @@ package Caps
 				itemClass = Assets.QuedanTiros1;
 			
 			if (itemClass != null)
-				LaunchCutScene(itemClass, 0, 210, null);
+				LaunchCutScene(itemClass, 0, 210);
 		}
 		
 		//
 		// Se ha producido un pase al pie. Pudo haber conflicto o no, pero se resolvio SIN robo.
 		//
-		static public function ShowMsgPasePieConseguido(bUltimoPase:Boolean, bConConflicto:Boolean, conflicto:Object) : void
+		static public function ShowMsgPasePieConseguido(bUltimoPase:Boolean, conflicto:Conflict) : void
 		{
-			if (bConConflicto)
+			if (conflicto != null)
 			{
 				if (!bUltimoPase)
-					LaunchCutScene(Assets.MensajePaseAlPieNoRobo, 0, 210, null);
+					LaunchCutScene(Assets.MensajePaseAlPieNoRobo, 0, 210);
 				else
-					LaunchCutScene(Assets.MensajeUltimoPaseAlPieNoRobo, 0, 210, null);
+					LaunchCutScene(Assets.MensajeUltimoPaseAlPieNoRobo, 0, 210);
 			}
 			else
 			{	
 				if (!bUltimoPase)
-					LaunchCutScene(Assets.MensajePaseAlPie, 0, 210, null);
+					LaunchCutScene(Assets.MensajePaseAlPie, 0, 210);
 				else
-					LaunchCutScene(Assets.MensajeUltimoPaseAlPie, 0, 210, null);
+					LaunchCutScene(Assets.MensajeUltimoPaseAlPie, 0, 210);
 			}
 		}
 		
 		
-		static private function LaunchCutScene(cutScene:Class, x:Number, y:Number, callback:Function) : MovieClip
+		static private function LaunchCutScene(cutScene:Class, x:Number, y:Number, callback:Function=null, parent:DisplayObjectContainer=null) : MovieClip
 		{
 			var mc:MovieClip = new cutScene() as MovieClip;
 			
 			mc.x = x;
 			mc.y = y;
-			
-			Match.Ref.Game.GUILayer.addChild(mc);
+
+			if (parent == null)
+				Match.Ref.Game.GUILayer.addChild(mc);
+			else
+				parent.addChild(mc);
 			
 			mc.gotoAndPlay(1);
 			

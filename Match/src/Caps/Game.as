@@ -6,6 +6,7 @@ package Caps
 	
 	import flash.display.MovieClip;
 	import flash.geom.Point;
+	import flash.globalization.LastOperationStatus;
 	
 	import utils.Delegate;
 
@@ -34,10 +35,10 @@ package Caps
 		private var _RemainingHits:int = 0;						// Nº de golpes restantes permitidos antes de perder el turno
 		private var _RemainingPasesAlPie : int = 0;				// No de pases al pie que quedan
 		private var _TimeSecs:Number = 0;						// Tiempo en segundos que queda de la "mitad" actual del partido
-		private var _Timeout:Number = 0;							// Tiempo en segundos que queda para que ejecutes un disparo
-				
-		public var ReasonTurnChanged:int = (-1);				// Razón por la que hemos cambiado al turno actual
-		public var LastConflicto:Object = null;					// Último conflicto de robo que se produjo
+		private var _Timeout:Number = 0;						// Tiempo en segundos que queda para que ejecutes un disparo
+		private var _LastConflict:Conflict = null;				// Último conflicto de robo que se produjo
+		
+		public var ReasonTurnChanged:int = (-1);				// Razón por la que hemos cambiado al turno actual		
 		public var FireCount:int = 0;							// Contador de jugadores expulsados durante el partido.
 
 		private var _TimeCounter:Framework.Time = new Framework.Time();
@@ -377,7 +378,7 @@ package Caps
 				case GameState.WaitingCommandShoot: 				
 				case GameState.WaitingCommandPosCap: 	
 				{
-					if (AppParams.OfflineMode)
+					if (AppParams.OfflineMode && _OfflineWaitCall != null)
 					{
 						var backup : Function = _OfflineWaitCall;
 						_OfflineWaitCall = null;
@@ -527,24 +528,21 @@ package Caps
 			else if( paseToCap != null )
 			{
 				// Comprobamos si alguien del equipo contrario puede robar el balón al jugador que le hemos pasado y obtenemos el conflicto
-				LastConflicto = new Object();
+				_LastConflict = CheckConflictoSteal(paseToCap);
 				
-				var stealer:Cap = CheckConflictoSteal( paseToCap, LastConflicto );
-				var stolenProduced:Boolean = false;
-				
-				if( stealer != null )
-					stolenProduced = _Random.Probability(LastConflicto.probabilidadRobo);
-				
+				if (_LastConflict != null)
+					Cutscene.ShowConflictOverCaps(_LastConflict);
+								
 				// Si se produce el robo, activamos el controlador de pelota al usuario que ha robado el pase y pasamos el turno
-				if (stolenProduced)
+				if (_LastConflict != null && _LastConflict.Stolen)
 				{
 					result = 4;
-
+					
 					// Pasamos turno al otro jugador. El cartelito de robo se pondra como cutscene en el ShowTurn
 					YieldTurnToOpponent(Enums.TurnByStolen);
 					
-					if (stealer.OwnerTeam.IsLocalUser)
-						TheInterface.ShowHandleBall(stealer);
+					if (_LastConflict.DefenderCap.OwnerTeam.IsLocalUser)
+						TheInterface.ShowHandleBall(_LastConflict.DefenderCap);
 				}
 				else
 				{
@@ -560,7 +558,7 @@ package Caps
 					_RemainingPasesAlPie--;
 					
 					// Mostramos el cartel de pase al pie en los 2 clientes!
-					Cutscene.ShowMsgPasePieConseguido(_RemainingPasesAlPie == 0, stealer ? true : false, LastConflicto);
+					Cutscene.ShowMsgPasePieConseguido(_RemainingPasesAlPie == 0, _LastConflict);
 					
 					// Si no somos el 'LocalUser', solo esperamos la respuesta del otro cliente
 					if( paseToCap.OwnerTeam.IsLocalUser )
@@ -968,10 +966,10 @@ package Caps
 		// Retorna el enemigo que podría robar la pelota o NULL si no hay conflicto posible
 		// NOTE: Ademas si se devuelve un potencial ladrón, se rellena el objeto conflicto
 		//
-		private function CheckConflictoSteal( cap:Cap, conflicto:Object ) : Cap
+		private function CheckConflictoSteal(attacker:Cap) : Conflict
 		{
 			// Cogemos el equipo contrario al de la chapa que evaluaremos
-			var enemyTeam:Team = cap.OwnerTeam.AgainstTeam();
+			var enemyTeam:Team = attacker.OwnerTeam.AgainstTeam();
 			
 			// Comprobamos las chapas enemigas en el radio de robo
 			var stealer:Cap = GetPotencialStealer(enemyTeam);
@@ -980,31 +978,25 @@ package Caps
 				return null;
 								
 			// Calculamos el valor de control de la chapa que tiene el turno
-			var miControl:int = 10 + cap.Control;
-			if( cap.OwnerTeam.IsUsingSkill( Enums.Furiaroja ) )
+			var miControl:Number = attacker.Control;
+			if( attacker.OwnerTeam.IsUsingSkill( Enums.Furiaroja ) )
 				miControl *= AppParams.ControlMultiplier;
 						
 			// Calculamos el valor de defensa de la chapa contraria, la que intenta robar el balón, teniendo en cuenta las habilidades especiales
-			var suDefensa:int = 10 + stealer.Defense;
+			var suDefensa:Number = stealer.Defense;
 			if( stealer.OwnerTeam.IsUsingSkill( Enums.Catenaccio ) )
 				suDefensa *= AppParams.DefenseMultiplier;
 
 			// Comprobamos si se produce el robo entre las dos chapas teniendo en cuenta sus parámetros de Defensa y Control
-			var probabilidadRobo:Number = 50;
+			var stolen : Boolean = false;
 			
-			if (miControl != 0 || suDefensa != 0)
-				probabilidadRobo = AppParams.CoeficienteRobo * (suDefensa * 100 / (miControl + suDefensa));
-			
-			trace("ProbabilidadRobo " + probabilidadRobo);
-				
-			// Rellenamos el objeto de conflicto
-			conflicto.defense = cap.Control;
-			conflicto.attack = stealer.Defense;
-			conflicto.probabilidadRobo = probabilidadRobo;
-			conflicto.defenserCapName = cap.Name;
-			conflicto.attackerCapName = stealer.Name;
-												
-			return stealer;		// Retornamos el enemigo que puede robar la pelota
+			if (miControl > suDefensa)
+				stolen = true;
+			else
+			if (miControl == suDefensa)
+				stolen = _Random.Probability(50);
+						
+			return new Conflict(attacker, stealer, miControl, suDefensa, stolen);
 		}
 		
 		// 
@@ -1098,8 +1090,8 @@ package Caps
 			trace( "Finish: Finalización de mitad del partido: " + part.toString() );
 			
 			// Nos quedamos esperando a que acabe la cut-scene (no queremos que corra el tiempo si estabamos en Playing)
-			ChangeState(GameState.WaitingEndPart);
-			
+			EnterWaitState(GameState.WaitingEndPart, null);
+						
 			// Lanzamos la cutscene de fin de tiempo, cuando termine pasamos realmente de parte o finalizamos el partido
 			if( part == 1 )
 			{

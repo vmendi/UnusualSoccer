@@ -54,7 +54,7 @@ package Framework
   		}
 		
 		//
-		// Devuelve true con el porcentaje de  probabilidad indicado 
+		// Devuelve true con el porcentaje de  probabilidad indicado, expresado entre 0 y 100% 
 		//
 		public function Probability( percentProbability:Number ) : Boolean
 		{
