@@ -2,17 +2,13 @@ package Caps
 {
 	import Box2D.Common.Math.b2Vec2;
 	
-	import Caps.Cap;
-	
 	import Framework.*;
 	
 	import com.actionsnippet.qbox.QuickBox2D;
 	import com.actionsnippet.qbox.QuickContacts;
 	import com.greensock.*;
 	
-	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
-	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.geom.Point;
 
@@ -31,6 +27,7 @@ package Caps
 		
 		public function get NumTouchedCaps() : int 	 	{ return _TouchedCaps.length; }
 		public function get NumFramesSimulated() : int	{ return _FramesSimulating; }
+		
 		
 		// Es gol en propia meta?
 		public function IsSelfGoal() : Boolean
@@ -332,18 +329,6 @@ package Caps
 			return false;
 		}
 		
-		// Primera chapa tocada en este Run del mismo equipo que la chapa que tira
-		public function GetFirstTouchedCapLastRun() : Cap
-		{
-			for each(var cap : Cap in _TouchedCapsLastRun)
-			{
-				if (cap != _CapShooting && cap.OwnerTeam == _CapShooting.OwnerTeam)
-					return cap;
-			}
-			return null;
-		}
-		
-
 		public function Run() : void
 		{
 			if (_SimulatingShoot)
@@ -370,7 +355,7 @@ package Caps
 		
 		private var _Contacts : QuickContacts;					// Manager para controlar los contactos físicos entre objetos
 		private var _TouchedCaps:Array = new Array();			// Lista de chapas en las que ha rebotado la pelota antes de detenerse
-		private var _TouchedCapsLastRun:Array = new Array();	// Lista de chapas que ha tocado la pelota soloe en este Run
+		private var _TouchedCapsLastRun:Array = new Array();	// Lista de chapas que ha tocado la pelota solo en este Run
 		private var _SideGoal:int= -1;							// Lado que ha marcado goal
 		private var _DetectedFault:Object = null;				// Bandera que indica Falta detectada (además objeto que describe la falta)
 		

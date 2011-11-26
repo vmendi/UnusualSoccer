@@ -348,8 +348,6 @@ package Caps
 						// Cambiamos al estado esperando gol. Asi, por ejemplo cuando pare la simulacion, no haremos nada. Esperamos a que haya saque de centro
 						// o de porteria despues de la cutscene
 						EnterWaitState(GameState.WaitingGoal, Delegate.create(OnClientGoalScored, scorerTeam.IdxTeam, validity)); 
-						
-						trace( "Gol detectado en cliente! Esperamos confirmación del servidor. Validity=" + validity.toString() );
 					}
 					else
 					if (!TheGamePhysics.IsSimulating)
@@ -360,9 +358,6 @@ package Caps
 						// Si la física ha terminado de simular quiere decir que en nuestro cliente hemos terminado la simulación del disparo.
 						// Se lo notificamos al servidor y nos quedamos a la espera de la confirmación de ambos jugadores
 						EnterWaitState(GameState.WaitingClientsToEndShoot, OnClientShootSimulated);
-						
-						// Hasta que todos los clientes no indiquen que han terminado la simulación, no tomaremos ninguna decisión
-						trace( "Finalizado nuestra simulacion de disparo, esperando al otro usuario" );
 					}
 					else
 					{	
@@ -392,7 +387,7 @@ package Caps
 				}
 			}
 		}
-		
+				
 		public function EnterWaitState(state:int, offlineCall:Function) : void
 		{
 			ChangeState(state);
@@ -416,24 +411,24 @@ package Caps
 		//
 		// Resetea el tiempo del timeout
 		//
-		public function ResetTimeout(  ) : void
+		public function ResetTimeout() : void
 		{
 			_Timeout = Config.TurnTime;
 			TheInterface.TurnTime = _Timeout;	// Asignamos el tiempo de turno que entiende el interface, ya que este valor se modifica cuando se obtiene extratime
 		}
 		
 		//
-		// Se ha producido un Timeout en el cliente que manda (el que tiene el turno). Es como un comando mas (por ejemplo Shoot)
+		// Se ha producido un Timeout en el cliente que manda (el que tiene el turno). Es un comando mas (como por ejemplo Shoot...)
 		//
 		public function OnClientTimeout(idPlayer:int) : void
 		{
-			VerifyLocalStateWhenReceivingCommand(GameState.WaitingForTimeout, idPlayer, "OnClientTimeout");
+			VerifyStateWhenReceivingCommand(GameState.WaitingForTimeout, idPlayer, "OnClientTimeout");
 						
 			// Si se acaba el tiempo cuando estamos colocando al portero...
 			if (ReasonTurnChanged == Enums.TurnByTiroAPuerta)
 				OnGoalKeeperSet(idPlayer);	// ... damos por finalizada la colocacion, pasamos el turno al q va a tirar
 			else
-				YieldTurnToOpponent();		// El caso normal cuando se acaba el tiempo simplemente pasamos el turno al jugador siguiente
+				YieldTurnToOpponent();		// Caso normal, cuando se acaba el tiempo simplemente pasamos el turno al jugador siguiente
 			
 			ChangeState(GameState.Playing);
 		}
@@ -443,7 +438,7 @@ package Caps
 		//
 		public function OnClientShoot(idPlayer:int, capID:int, dirX:Number, dirY:Number, force:Number) : void
 		{
-			VerifyLocalStateWhenReceivingCommand(GameState.WaitingCommandShoot, idPlayer, "OnClientShoot");
+			VerifyStateWhenReceivingCommand(GameState.WaitingCommandShoot, idPlayer, "OnClientShoot");
 										
 			// Reseteamos el tiempo de juego al efectuar un lanzamiento
 			ResetTimeout();
@@ -487,7 +482,7 @@ package Caps
 			// 	 - La pelota debe quedarse dentro del radio de pase al pie del jugador
 			var paseToCap:Cap = GetPaseAlPie();
 			
-			// Si se ha producido UNA FALTA cambiamos el turno al siguiente jugador como si nos hubieran robado la pelota + caso saque de puerta
+			// Si se ha producido UNA FALTA cambiamos el turno al siguiente jugador como si nos hubieran robado la pelota
 			var DetectedFault : Object = TheGamePhysics.Fault;
 			
 			if (DetectedFault != null)
@@ -540,13 +535,14 @@ package Caps
 				if( stealer != null )
 					stolenProduced = _Random.Probability(LastConflicto.probabilidadRobo);
 				
-				// Si se produce el robo, activamos el contralador de pelota al usuario que ha robado el pase y pasamos el turno
-				if( stolenProduced )
+				// Si se produce el robo, activamos el controlador de pelota al usuario que ha robado el pase y pasamos el turno
+				if (stolenProduced)
 				{
 					result = 4;
 
-					// Pasamos turno al otro jugador
+					// Pasamos turno al otro jugador. El cartelito de robo se pondra como cutscene en el ShowTurn
 					YieldTurnToOpponent(Enums.TurnByStolen);
+					
 					if (stealer.OwnerTeam.IsLocalUser)
 						TheInterface.ShowHandleBall(stealer);
 				}
@@ -564,7 +560,7 @@ package Caps
 					_RemainingPasesAlPie--;
 					
 					// Mostramos el cartel de pase al pie en los 2 clientes!
-					TheInterface.OnMsgPasePieConseguido(_RemainingPasesAlPie == 0, stealer ? true : false, LastConflicto);
+					Cutscene.ShowMsgPasePieConseguido(_RemainingPasesAlPie == 0, stealer ? true : false, LastConflicto);
 					
 					// Si no somos el 'LocalUser', solo esperamos la respuesta del otro cliente
 					if( paseToCap.OwnerTeam.IsLocalUser )
@@ -614,11 +610,11 @@ package Caps
 		}
 
 		//
-		// Recibimos una "ORDEN" del servidor : "PlaceBall"
+		// Se colaca el balon en un pase al pie
 		//	
 		public function OnClientPlaceBall(idPlayer:int, capID:int, dirX:Number, dirY:Number) : void
 		{
-			VerifyLocalStateWhenReceivingCommand(GameState.WaitingCommandPlaceBall, idPlayer, "OnClientPlaceBall");
+			VerifyStateWhenReceivingCommand(GameState.WaitingCommandPlaceBall, idPlayer, "OnClientPlaceBall");
 									
 			// Obtenemos la chapa en la que vamos a colocar la pelota
 			var cap:Cap = GetCap(idPlayer, capID);
@@ -641,14 +637,14 @@ package Caps
 		//
 		public function OnClientUseSkill(idPlayer:int, idSkill:int) : void
 		{
-			VerifyLocalStateWhenReceivingCommand(GameState.WaitingCommandUseSkill, idPlayer, "OnClientUseSkill");
+			VerifyStateWhenReceivingCommand(GameState.WaitingCommandUseSkill, idPlayer, "OnClientUseSkill");
 									
 			var team:Team = TheTeams[ idPlayer ];
 			team.UseSkill( idSkill );
 			
-			// Mostramos un mensaje animado de uso del skill (cuando el el otro jugador quien ha utilizado el skill)
+			// Mostramos un mensaje animado de uso del skill
 			if( idPlayer != Match.Ref.IdLocalUser )
-				TheInterface.ShowAniUseSkill(idSkill);
+				Cutscene.ShowUseSkill(idSkill);
 			
 			// Algunos de los skills se aplican aquí ( son inmediatas ) otras no
 			// Las habilidades inmediatas que llegan tienen que ser del jugador activo
@@ -678,7 +674,7 @@ package Caps
 		//
 		public function OnClientTiroPuerta(idPlayer:int) : void
 		{
-			VerifyLocalStateWhenReceivingCommand(GameState.WaitingCommandTiroPuerta, idPlayer, "OnClientTiroPuerta");
+			VerifyStateWhenReceivingCommand(GameState.WaitingCommandTiroPuerta, idPlayer, "OnClientTiroPuerta");
 									
 			// Mostramos el interface de colocación de portero al jugador contrario
 			var team:Team = TheTeams[ idPlayer ] ;
@@ -705,7 +701,7 @@ package Caps
 		//
 		public function OnClientPosCap(idPlayer:int, capId:int, posX:Number, posY:Number) : void
 		{
-			VerifyLocalStateWhenReceivingCommand(GameState.WaitingCommandPosCap, idPlayer, "OnClientPosCap");
+			VerifyStateWhenReceivingCommand(GameState.WaitingCommandPosCap, idPlayer, "OnClientPosCap");
 						
 			if (capId == 0)
 				this.GetCap(idPlayer, capId).SetPos(new Point(posX, posY));
@@ -715,21 +711,21 @@ package Caps
 			ChangeState(GameState.Playing);
 		}
 		
-		private function VerifyLocalStateWhenReceivingCommand(expectedStateIfLocalPlayer:int, idPlayerExecutingCommand:int, fromServerCall:String) : void
+		private function VerifyStateWhenReceivingCommand(expectedStateIfLocalPlayer:int, idPlayerExecutingCommand:int, fromServerCall:String) : void
 		{
+			// Solo manda comandos el jugador que tiene el turno
+			// TODO: Cuando implementemos el mecanismo para tener Skills tipo Catenaccio esto no sera siempre asi 
 			if (idPlayerExecutingCommand != CurTeam.IdxTeam)
 				throw new Error(IDString + "No puede llegar " + fromServerCall + " del jugador no actual" );
 			
-			// Sólo podemos estar esperando el comando (si somos el jugador local, es decir, el que siempre manda comandos) o Playing, si somos
-			// el otro jugador, el que no tiene el turno.
-			// TODO: Cuando implementemos el mecanismo para tener Skills tipo Catenaccio esto no sera siempre asi, puesto que el jugador que no 
-			// tiene el turno podra mandar comandos
+			// Sólo podemos estar... 			
 			if (CurTeam.IsLocalUser)
 			{
+				// ...esperando el comando si somos el que lo manda  
 				if (_State != expectedStateIfLocalPlayer)
 					throw new Error(IDString + fromServerCall + " en estado: " + _State + " Player: " + idPlayerExecutingCommand + " RTC: " + ReasonTurnChanged);
 			}
-			else if (_State != GameState.Playing)
+			else if (_State != GameState.Playing)	// ...en estado Playing si somos el otro jugador, el que no tiene el turno.
 				throw new Error(IDString + fromServerCall + " sin estar en Playing. Nuestro estado es: " + _State +" RTC: " + ReasonTurnChanged);
 		}
 		
@@ -761,7 +757,7 @@ package Caps
 			if( validity == Enums.GoalValid )
 				TheTeams[ idPlayer ].Goals ++;
 									
-			TheInterface.OnGoalScored(validity, Delegate.create(FinishGoalCutScene, idPlayer, validity));
+			Cutscene.ShowGoalScored(validity, Delegate.create(FinishGoalCutScene, idPlayer, validity));
 		}
 		
 		//
@@ -874,7 +870,7 @@ package Caps
 			
 			// Si es el jugador local el activo mostramos los tiros que nos quedan en el interface
 			if( this.CurTeam.IsLocalUser  )
-				TheInterface.OnQuedanTurnos( _RemainingHits );
+				Cutscene.ShowQuedanTurnos(_RemainingHits);
 			
 			// Si has declarado tiro a puerta, el jugador contrario ha colocado el portero, nuestro indicador
 			// de que el turno ha sido cambiado por colocación de portero solo dura un sub-turno (Los restauramos a turno x turno).
@@ -923,7 +919,7 @@ package Caps
 			_IdxCurTeam = idTeam;
 			
 			// Mostramos un mensaje animado de cambio de turno
-			TheInterface.OnTurn(idTeam, reason);
+			Cutscene.ShowTurn(idTeam, reason);
 			
 			// Reseteamos el tiempo disponible para el subturno (time-out)
 			ResetTimeout();
@@ -1107,13 +1103,13 @@ package Caps
 			// Lanzamos la cutscene de fin de tiempo, cuando termine pasamos realmente de parte o finalizamos el partido
 			if( part == 1 )
 			{
-				TheInterface.OnFinishPart(_Part, Delegate.create(ChangeState, GameState.EndPart));
+				Cutscene.ShowFinishPart(_Part, Delegate.create(ChangeState, GameState.EndPart));
 			}
 			else 
 			if( part == 2 )
 			{
 				_MatchResultFromServer = result;
-				TheInterface.OnFinishPart(_Part, Delegate.create(ChangeState, GameState.EndGame));
+				Cutscene.ShowFinishPart(_Part, Delegate.create(ChangeState, GameState.EndGame));
 			}
 		}
 		

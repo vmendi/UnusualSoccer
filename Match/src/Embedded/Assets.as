@@ -75,6 +75,11 @@ package Embedded
 		[Embed(source="Embedded/Assets.swf", symbol="MensajeTurnoPropioRobo")]
 		static public var MensajeTurnoPropioRobo:Class;
 		
+		[Embed(source="Embedded/Assets.swf", symbol="ConflictoGana")]
+		static public var ConflictoGana:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="ConflictoPierde")]
+		static public var ConflictoPierde:Class;
+		
 		
 		[Embed(source="Embedded/Assets.swf", symbol="MensajeTurnoPropioSaquePuerta")]
 		static public var MensajeTurnoPropioSaquePuerta:Class;			// El saque de puerta no tiene un mensaje específico para el oponente

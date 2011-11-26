@@ -1,7 +1,5 @@
 package Caps
 {
-	import Embedded.Assets;
-	
 	import Framework.*;
 	
 	import com.greensock.*;
@@ -374,7 +372,7 @@ package Caps
 		//
 		// Se produce cuando el usuario termina de utilizar el control "HandleBall"
 		//
-		public function OnPlaceBall( ) : void
+		public function OnPlaceBall() : void
 		{			
 			if (!AppParams.OfflineMode)
 				Match.Ref.Connection.Invoke("OnServerPlaceBall", null, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y);
@@ -387,7 +385,7 @@ package Caps
 		
 		
 		// Indica si se acepta la entrada del usuario. Solo en un estado concreto y cuando tiene el turno el usuario local
-		public function get UserInputEnabled( ) : Boolean
+		public function get UserInputEnabled() : Boolean
 		{
 			return Match.Ref.Game.IsPlaying && Match.Ref.Game.CurTeam.IsLocalUser;
 		}
@@ -396,8 +394,7 @@ package Caps
 		// Activamos desactivamos el botón de tiro a puerta en función de si:
 		//   - El interface está activo o no
 		//   - Asegurando que durante un tiro a puerta no esté activo
-		//   - y que estés en posición válida: más del medio campo o habilidad especial "Tiroagoldesdetupropiocampo" 
-		
+		//   - y que estés en posición válida: más del medio campo o habilidad especial "Tiroagoldesdetupropiocampo"		
 		private function UpdateButtonTiroPuerta(  ) : void
 		{
 			var Gui:* = Match.Ref.Game.TheField.Visual;
@@ -467,231 +464,6 @@ package Caps
 			
 			Match.Ref.Game.EnterWaitState(GameState.WaitingCommandTiroPuerta, 
 										  Delegate.create(Match.Ref.Game.OnClientTiroPuerta, Match.Ref.Game.CurTeam.IdxTeam));
-		}
-
-		// 
-		// Ha terminado una mitad
-		//
-		public function OnFinishPart( part:int, callback:Function) : void
-		{						
-			// Reproducimos una cutscene u otra en función de si ha acabado la primera parte o el partido 
-			if( part == 1 )
-				LaunchCutScene(Embedded.Assets.MensajeFinTiempo1, 0, 210, callback); 
-			else if ( part == 2 )
-				LaunchCutScene(Embedded.Assets.MensajeFinPartido, 0, 210, callback);
-			else
-				throw new Error("Unknown part");
-		}
-		
-		// 
-		// Reproduce una animación dependiendo de si el gol es válido o no
-		//
-		public function OnGoalScored(validity:int, callback:Function) : void
-		{						
-			if( validity == Enums.GoalValid )
-				LaunchCutScene(Embedded.Assets.MensajeGol, 0, 210, callback);
-			else
-			if( validity == Enums.GoalInvalidNoDeclarado )
-				LaunchCutScene(Embedded.Assets.MensajeGolInvalido, 0, 210, callback); 
-			else
-			if( validity == Enums.GoalInvalidPropioCampo )
-				LaunchCutScene(Embedded.Assets.MensajeGolinvalidoPropioCampo, 0, 210, callback); 
-			else
-				throw new Error("Validez del gol desconocida");
-		}
-		
-		// 
-		// Reproduce una animación mostrando el turno del jugador
-		//
-		public function OnTurn(idTeam:int, reason:int) : void
-		{
-			// Creamos la cutscene adecuada en función de si el turno del jugador local o el contrario y de la razón
-			// por la que hemos cambiado de turno
-			if (idTeam == Match.Ref.IdLocalUser)	// Es el turno propio ( jugador local )
-			{
-				if (reason == Enums.TurnByLost || reason == Enums.TurnByStolen)
-				{
-					LaunchCutScene(Embedded.Assets.MensajeTurnoPropioRobo, 0, 210, null);
-				}
-				else if( reason == Enums.TurnByFault || reason == Enums.TurnBySaquePuertaByFalta )
-				{					
-					// Los nombres están al revés porque aquí representa a quien le han hecho la falta
-					var cutScene : MovieClip = LaunchCutScene(Embedded.Assets.MensajeFaltaContraria, 0, 210, null);
-					FillConflictoFault(cutScene, Match.Ref.Game.TheGamePhysics.Fault);
-				}
-				else if( reason == Enums.TurnBySaquePuerta  )		// El saque de puerta no tiene un mensaje específico para el oponente
-					LaunchCutScene(Embedded.Assets.MensajeTurnoPropioSaquePuerta, 0, 210, null);
-				else if( reason == Enums.TurnByTiroAPuerta  )
-					LaunchCutScene(Embedded.Assets.MensajeColocarPorteroPropio, 0, 210, null);
-				else if( reason == Enums.TurnByGoalKeeperSet)
-					LaunchCutScene(Embedded.Assets.MensajeTiroPuertaPropio, 0, 210, null);
-				else
-					LaunchCutScene(Embedded.Assets.MensajeTurnoPropio, 0, 210, null);
-			}
-			else 	// Es el turno del oponente
-			{
-				if (reason == Enums.TurnByLost || reason == Enums.TurnByStolen)	
-				{
-					LaunchCutScene(Embedded.Assets.MensajeTurnoContrarioRobo, 0, 210, null);
-				}
-				else if( reason == Enums.TurnByFault || reason == Enums.TurnBySaquePuertaByFalta )
-				{
-					cutScene = LaunchCutScene(Embedded.Assets.MensajeFaltaPropia, 0, 210, null);
-					FillConflictoFault(cutScene, Match.Ref.Game.TheGamePhysics.Fault );
-				}
-				else if( reason == Enums.TurnByTiroAPuerta  )
-					LaunchCutScene(Embedded.Assets.MensajeColocarPorteroContrario, 0, 210, null);
-				else if( reason == Enums.TurnByGoalKeeperSet)
-					LaunchCutScene(Embedded.Assets.MensajeTiroPuertaContrario, 0, 210, null);
-				else
-					LaunchCutScene(Embedded.Assets.MensajeTurnoContrario, 0, 210, null);
-			}
-		}
-		
-		// 
-		// Reproduce una animación mostrando el uso de una skill
-		//
-		public function ShowAniUseSkill(idSkill:int) : void
-		{
-			if( idSkill == 1 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill01, 0, 210, null);
-			else if( idSkill == 2 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill02, 0, 210, null);
-			else if( idSkill == 3 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill03, 0, 210, null);
-			else if( idSkill == 4 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill04, 0, 210, null);
-			else if( idSkill == 5 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill05, 0, 210, null);
-			else if( idSkill == 6 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill06, 0, 210, null);
-			else if( idSkill == 7 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill07, 0, 210, null);
-			else if( idSkill == 8 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill08, 0, 210, null);
-			else if( idSkill == 9 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill09, 0, 210, null);
-			else
-				throw new Error( "Identificador de skill invalido" );
-		}
-		
-		private function LaunchCutScene(cutScene:Class, x:Number, y:Number, callback:Function) : MovieClip
-		{
-			var mc:MovieClip = new cutScene() as MovieClip;
-			
-			mc.x = x;
-			mc.y = y;
-						
-			Match.Ref.Game.GUILayer.addChild(mc);
-			
-			mc.gotoAndPlay(1);
-			
-			var labelEnd:String = "EndAnim";
-			
-			if (Framework.Graphics.HasLabel( labelEnd, mc )) 
-				utils.MovieClipListener.AddFrameScript( mc, labelEnd, Delegate.create(OnEndCutScene, mc, callback) );
-			else
-				trace( "El MovieClip " + mc.name + " no tiene la etiqueta " + labelEnd );
-			
-			return mc;
-		}
-		
-		public function OnEndCutScene(mc:MovieClip, callback:Function) : void
-		{			
-			mc.gotoAndStop(1);
-			mc.visible = false;
-			
-			mc.parent.removeChild(mc);
-			
-			if( callback != null )
-				callback();
-		}
-			
-		public function OnQuedanTurnos( turnos:int ) : void
-		{
-			var itemClass:Class = null;
-			
-			if( turnos == 2 )
-				itemClass = Assets.QuedanTiros2;
-			else if( turnos == 1 )
-				itemClass = Assets.QuedanTiros1;
-
-			if (itemClass != null)
-				LaunchCutScene(itemClass, 0, 210, null);
-		}
-
-		//
-		// Se ha producido un pase al pie. Pudo haber conflicto o no, pero se resolvio SIN robo.
-		//
-		public function OnMsgPasePieConseguido(bUltimoPase:Boolean, bConConflicto:Boolean, conflicto:Object) : void
-		{
-			if (bConConflicto)
-			{
-				if (!bUltimoPase)
-					LaunchCutScene(Assets.MensajePaseAlPieNoRobo, 0, 210, null);
-				else
-					LaunchCutScene(Assets.MensajeUltimoPaseAlPieNoRobo, 0, 210, null);
-			}
-			else
-			{	
-				if (!bUltimoPase)
-					LaunchCutScene(Assets.MensajePaseAlPie, 0, 210, null);
-				else
-					LaunchCutScene(Assets.MensajeUltimoPaseAlPie, 0, 210, null);
-			}
-		}
-				
-		//
-		// Rellena los datos de un panel de conflicto utilizando un Objeto "conflicto"
-		//
-		public function FillConflicto( item:MovieClip, conflicto:Object ) : void
-		{
-			var game:Game = Match.Ref.Game;
-			var defender:Team = game.CurTeam;
-			
-			// Ponemos nombres de los equipos
-			//item.JugadorPropio.text = defender.Name;
-			//item.JugadorContrario.text = game.AgainstTeam( defender ).Name;
-			
-			// Ponemos nombres de las chapas concretas en el conflicto
-			item.JugadorPropio.text = "Jugador Propio"; //conflicto.defenserCapName;
-			item.JugadorContrario.text = "Jugador Contrario"; //conflicto.attackerCapName;
-			item.ValorPropio.text = conflicto.defense.toString();
-			item.ValorContrario.text = conflicto.attack.toString();
-			item.Probabilidad.text = Math.round(conflicto.probabilidadRobo).toString() + "%";
-		}
-		
-		//
-		// Rellena los datos de un panel de conflicto utilizando un Objeto "conflicto" cuando se ha producido una falta
-		//
-		public function FillConflictoFault( item:MovieClip, conflicto:Object ) : void
-		{
-			var game:Game = Match.Ref.Game;
-			
-			if( conflicto.YellowCard == true && conflicto.RedCard == true)		// 2 amarillas
-				item.Tarjeta.gotoAndStop( "dobleamarilla" );
-			else if( conflicto.RedCard == true )
-				item.Tarjeta.gotoAndStop( "roja" );
-			else if( conflicto.YellowCard == true )
-				item.Tarjeta.gotoAndStop( "amarilla" );
-			else
-				item.Tarjeta.gotoAndStop( 0 );
-			
-		
-			var defender:Team = game.CurTeam;
-			
-			// Ponemos nombres de los equipos
-			//item.JugadorPropio.text = defender.Name;
-			//item.JugadorContrario.text = game.AgainstTeam( defender ).Name;
-			
-			// Ponemos nombres de las chapas concretas en el conflicto
-			/*
-			item.JugadorPropio.text = "Jugador Propio"; //conflicto.defenserCapName;
-			item.JugadorContrario.text = "Jugador Contrario"; //conflicto.attackerCapName;
-			item.ValorPropio.text = conflicto.defense.toString();
-			item.ValorContrario.text = conflicto.attack.toString();
-			item.Probabilidad.text = int(conflicto.probabilidadRobo).toString() + "%";
-			*/
 		}
 		
 		// 
