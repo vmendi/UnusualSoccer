@@ -31,7 +31,7 @@
     <file relUrl="Imgs/MensajeHabilidad5Estrellas.jpg" publishTime="08/19/2011 13:07:18" />
     <file relUrl="Imgs/NavIcons.png" publishTime="08/19/2011 13:07:18" />
     <file relUrl="Imgs/MensajeHabilidadManoDeDios.jpg" publishTime="08/19/2011 13:07:18" />
-    <file relUrl="WEB-INF/flex/dynamic-remoting-config.xml" publishTime="11/25/2011 16:26:20" />
+    <file relUrl="WEB-INF/flex/dynamic-remoting-config.xml" publishTime="11/26/2011 13:27:48" />
     <file relUrl="bin/Moserware.Skills.dll" publishTime="08/18/2011 00:13:18" />
     <file relUrl="Imgs/Logo75x75.png" publishTime="08/19/2011 13:07:18" />
     <file relUrl="console/playerProductInstall.swf" publishTime="01/07/2010 14:56:46" />
@@ -79,7 +79,7 @@
     <file relUrl="Imgs/MensajeHabilidadTiempoExtra.jpg" publishTime="08/19/2011 13:07:18" />
     <file relUrl="ServerStatsGlobalMatches.aspx" publishTime="08/11/2011 15:05:08" />
     <file relUrl="WEB-INF/flex/messaging-config.xml" publishTime="06/15/2011 21:58:06" />
-    <file relUrl="bin/SoccerServer.dll" publishTime="11/25/2011 16:38:26" />
+    <file relUrl="bin/SoccerServer.dll" publishTime="11/26/2011 14:24:24" />
     <file relUrl="Web.config" publishTime="11/16/2011 15:04:16" />
   </publishProfile>
 </publishData>
