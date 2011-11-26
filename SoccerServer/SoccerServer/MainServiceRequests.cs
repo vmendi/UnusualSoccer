@@ -78,7 +78,12 @@ namespace SoccerServer
             soccerPlayer.DorsalNumber = onTeam.SoccerPlayers.Count();
             soccerPlayer.FacebookID = soccerPlayerFacebookID;
             soccerPlayer.Name = soccerPlayerName;
-
+            soccerPlayer.Power = 0;
+            soccerPlayer.Sliding = 0;
+            soccerPlayer.Weight = 0;
+            soccerPlayer.IsInjured = false;
+            soccerPlayer.LastInjuryDate = DateTime.Now;
+            
             mContext.SoccerPlayers.InsertOnSubmit(soccerPlayer);
         }
 

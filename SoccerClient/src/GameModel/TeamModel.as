@@ -88,12 +88,16 @@ package GameModel
 			{
 				// Hay que concatenar... http://developers.facebook.com/docs/reference/dialogs/requests/
 				// DELETE https://graph.facebook,.com/[<request_id>_<user_id>]?access_token=[USER or APP ACCESS TOKEN]
-				Facebook.deleteObject(request_id + "_" + SoccerClient.GetFacebookFacade().FacebookID);
+				Facebook.deleteObject(request_id + "_" + SoccerClient.GetFacebookFacade().FacebookID, onDeleted);
 			}
 			
 			// Aqui se llamara a RefreshTeam
 			if (callback != null)
 				callback();
+			
+			function onDeleted() : void
+			{
+			}
 		}
 		
 		public function CreateRequests(request_id : String, target_facebook_IDs : Array) : void

@@ -273,9 +273,9 @@ package Caps
 		//
 		// Comprueba si el equipo es el del "Usuario Local" de la máquina  
 		//
-		public function get IsLocalUser(  ) : Boolean
+		public function get IsLocalUser() : Boolean
 		{
-			return( this.IdxTeam == Match.Ref.IdLocalUser ? true : false );
+			return this.IdxTeam == Match.Ref.IdLocalUser;
 		}
 		
 		
