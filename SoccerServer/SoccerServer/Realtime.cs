@@ -371,8 +371,8 @@ namespace SoccerServer
             firstPlayer.TheMatch = theNewMatch;
             secondPlayer.TheMatch = theNewMatch;
             
-            firstPlayer.TheConnection.Invoke("PushedStartMatch", firstPlayer.ClientID, secondPlayer.ClientID);
-            secondPlayer.TheConnection.Invoke("PushedStartMatch", firstPlayer.ClientID, secondPlayer.ClientID);
+            firstPlayer.TheConnection.Invoke("PushedStartMatch", firstPlayer.ClientID, secondPlayer.ClientID, bFriendly);
+            secondPlayer.TheConnection.Invoke("PushedStartMatch", firstPlayer.ClientID, secondPlayer.ClientID, bFriendly);
         }
 
         private void ProcessMatchMaking()

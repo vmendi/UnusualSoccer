@@ -228,7 +228,7 @@ package GameModel
 		
 		// Si el comienzo de partido viene de la aceptación de un challenge, firstClientID será siempre el aceptador, y
 		// secondClientID será el que lanzó el challenge
-		public function PushedStartMatch(firstClientID : int, secondClientID : int) : void
+		public function PushedStartMatch(firstClientID : int, secondClientID : int, bFriendly : Boolean) : void
 		{
 			TheRoomModel.LogOff();
 			TheRoomModel = null;
