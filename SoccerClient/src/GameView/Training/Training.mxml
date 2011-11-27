@@ -39,7 +39,11 @@
 			var theTrainingItem : TrainingItem = (event.currentTarget as TrainingItem);
 			
 			if (theTrainingItem.currentState == "Normal")
-				mTrainingModel.Train((event.currentTarget as TrainingItem).TheTrainingDefinition.Name, null);			
+			{
+				var trainingName : String = (event.currentTarget as TrainingItem).TheTrainingDefinition.Name;
+				GameMetrics.ReportEvent(GameMetrics.DO_TRAINING + "_" + trainingName);
+				mTrainingModel.Train(trainingName, null);			
+			}
 		}
 		
 		private function RefreshItemsState(currTraining : PendingTraining) : void

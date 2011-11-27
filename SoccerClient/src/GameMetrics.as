@@ -17,6 +17,7 @@ package
 		static public const UPGRADE_PLAYER : String = "Upgrade_Player"; // 
 		static public const GET_SKILL : String = "Get_Skill"; // 
 		static public const LOOK_FOR_MATCH : String = "Look_For_Match"; // 
+		static public const DO_TRAINING : String = "Do_Training";
 		
 		static public function Init(dobject:DisplayObject) : void
 		{
