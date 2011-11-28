@@ -11,6 +11,7 @@ package Caps
 	import com.greensock.*;
 	
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Loader;
@@ -289,13 +290,23 @@ package Caps
 				if (loaderInfo.bytesLoaded != 0 && loaderInfo.bytesLoaded == loaderInfo.bytesTotal)
 				{
 					var theBitmap : Bitmap = loaderInfo.content as Bitmap;
-					
-					(Visual as DisplayObjectContainer).addChild(theBitmap);
 
-					theBitmap.scaleX = 0.7;
-					theBitmap.scaleY = 0.7;
+					theBitmap.scaleX = 0.55;
+					theBitmap.scaleY = 0.55;
+					theBitmap.x = -14;
+					theBitmap.y = -14;
 					theBitmap.smoothing = true;
 					
+					var maskSPR : Sprite = new Sprite();
+					maskSPR.graphics.beginFill(0xFF00FF, 1);
+					maskSPR.graphics.drawCircle(0, 0, 12.5);
+					maskSPR.graphics.endFill();
+					
+					(Visual as DisplayObjectContainer).addChild(theBitmap);
+					(Visual as DisplayObjectContainer).addChild(maskSPR)
+
+					theBitmap.mask = maskSPR;
+						
 					mFacebookPictureLoader = null;
 				}
 			}

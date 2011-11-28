@@ -160,23 +160,25 @@
 		
 	]]></fx:Script>
 	
-	<GameView:PopupBackground width="570" height="530" />
 	
-	<s:BitmapImage x="2" y="2" source="@Embed(source='/Assets/General.swf', symbol='FriendSelectorHeader')" fillMode="clip" />
-	
-	<s:Group x="2" y="20">
-		<s:layout>
-			<s:VerticalLayout />
-		</s:layout>
-		<s:Label width="570" text="{resourceManager.getString('main','FriendSelectorTitle')}" styleName="whiteBoldHuge" textAlign="center"/>
-		<s:Label width="570" text="{resourceManager.getString('main','FriendSelectorTxt')}" styleName="whiteBoldMedium" textAlign="center"/>
-	</s:Group>
-	
-	<s:Group includeIn="Waiting" width="570" height="500">
+	<s:Group includeIn="Waiting" width="250" height="150" horizontalCenter="0" verticalCenter="0">
+		<GameView:PopupBackground width="100%" height="100%" />
 		<s:Label horizontalCenter="0" verticalCenter="0" text="{resourceManager.getString('main','FriendSelectorSendingRequest')}" styleName="whiteBoldBig"/>
 	</s:Group>
 	
 	<s:Group includeIn="Selecting" width="570" height="530">
+		
+		<GameView:PopupBackground width="570" height="530" />
+		
+		<s:BitmapImage x="2" y="2" source="@Embed(source='/Assets/General.swf', symbol='FriendSelectorHeader')" fillMode="clip" />
+		
+		<s:Group x="2" y="20">
+			<s:layout>
+				<s:VerticalLayout />
+			</s:layout>
+			<s:Label width="570" text="{resourceManager.getString('main','FriendSelectorTitle')}" styleName="whiteBoldHuge" textAlign="center"/>
+			<s:Label width="570" text="{resourceManager.getString('main','FriendSelectorTxt')}" styleName="whiteBoldMedium" textAlign="center"/>
+		</s:Group>
 		
 		<s:Label top="95" right="280" width="200" text="{resourceManager.getString('main','FriendSelectorSearchByName')}" styleName="whiteBoldMedium" textAlign="right"/>
 		<s:TextInput id="MySearchInput" width="250" right="20" top="93" prompt="Buscar amigo" maxChars="50" change="MySearchInputChange(event)"/>
