@@ -10,7 +10,7 @@
 namespace SoccerServer {
     
     
-    public partial class DefaultPanelMahou {
+    public partial class DefaultMahou {
         
         /// <summary>
         /// MyLikePanel control.

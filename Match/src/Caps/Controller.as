@@ -11,7 +11,7 @@ package Caps
 
 	public class Controller extends EventDispatcher
 	{
-		public static const Success:int = 0;				// Finalizó terminando la operación (Habitualmente cuando se ha producido Mouse Up )
+		public static const SuccessMouseUp:int = 0;			// Finalizó terminando la operación (Mouse Up)
 		public static const Canceled:int = 1;				// Finalizó por cancelación (Llamada externa al stop)
 		
 		protected var _Target:Cap = null; 
@@ -43,10 +43,9 @@ package Caps
 		}
 		
 		//
-		// Detiene el sistema de control direccional con el ratón, lo que
-		// implica dejar de visualizarlo
+		// Detiene el sistema de control direccional con el ratón, lo que implica dejar de visualizarlo
 		//
-		public function Stop( result:int ):void
+		public function Stop( reason:int ):void
 		{
 			// Nos desregistramos de los eventos de entrada 
 			RemoveHandlers( _Target.Visual.stage );
@@ -55,7 +54,7 @@ package Caps
 			_IsStarted = false;
 			
 			// lanzamos evento
-			OnStop.dispatch( result );
+			OnStop.dispatch( reason );
 		}
 		
 		//
@@ -80,14 +79,15 @@ package Caps
 				object.stage.removeEventListener( MouseEvent.MOUSE_MOVE, MouseMove );
 			}
 		}
-
+		
 		//
 		// Verifica si el controlador tiene unos valores válidos
 		//
-		public function IsValid( ) : Boolean
+		public function IsValid() : Boolean
 		{
 			return true;
 		}
+
 		
 		//
 		// Botón del ratón presionado
@@ -101,7 +101,7 @@ package Caps
 		// 
 		public function MouseUp( e: MouseEvent ) :void
 		{
-			Stop( Success );	// Paramos el sistema de control direccional
+			Stop( SuccessMouseUp );
 		}
 		
 		public function MouseMove( e: MouseEvent ) :void

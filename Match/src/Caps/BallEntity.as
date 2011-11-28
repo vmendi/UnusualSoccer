@@ -38,7 +38,7 @@ package Caps
 			this.Visual.scaleX = 1.0;
 			this.Visual.scaleY = 1.0;
 			
-			this.SetPos(new Point(Field.CenterX, Field.CenterY));
+			this.StopMovementInPos(new Point(Field.CenterX, Field.CenterY));
 			
 			// Nos auto-añadimos al manager de entidades
 			Match.Ref.Game.TheEntityManager.AddTagged(this, "Ball");

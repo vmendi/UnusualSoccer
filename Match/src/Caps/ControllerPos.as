@@ -12,7 +12,7 @@ package Caps
 	//
 	// Se encarga del controlador para posicionar una chapa (el portero)
 	//
-	public class PosController extends Controller
+	public class ControllerPos extends Controller
 	{
 		private var canvas        : Sprite;
 		private var maxLongLine   : uint;
@@ -22,7 +22,7 @@ package Caps
 		private const BLACK    	  : uint = 0x000000;
 		
 		
-		public function PosController( canvas:Sprite, maxLongLine: uint, colorLine: uint = 0, thickness: uint = 1 )		
+		public function ControllerPos( canvas:Sprite, maxLongLine: uint, colorLine: uint = 0, thickness: uint = 1 )		
 		{
 			this.maxLongLine = maxLongLine;
 			this.canvas 	 = canvas;
@@ -60,13 +60,9 @@ package Caps
 				   Match.Ref.Game.TheField.IsCircleInsideSmallArea( EndPos, 0, this.Target.OwnerTeam.Side);
 		}
 		
-		//
-		// Detiene el sistema de control direccional con el ratón, lo que
-		// implica dejar de visualizarlo
-		//
-		public override function Stop( result:int ):void
+		public override function Stop( reason:int ):void
 		{
-			super.Stop( result );
+			super.Stop(reason);
 			
 			// Eliminamos la parte visual
 			canvas.graphics.clear( );
@@ -75,15 +71,15 @@ package Caps
 		}
 		
 		//
-		//
+		// Genera una Stop tanto si el controlador IsValid como si no
 		//
 		public override function MouseUp( e: MouseEvent ) : void
 		{
-			super.MouseUp( e );
+			super.MouseUp(e);
 		}
 		
 		//
-		// Reorientamos la pelota
+		//
 		//
 		public override function MouseMove( e: MouseEvent ) :void
 		{
@@ -105,24 +101,10 @@ package Caps
 			Target.Ghost.SetPos( EndPos ); 
 		}
 		
-		/*
-		//
-		// Obtenemos el vector de dirección de control de pelota
-		// NOTE: El vector estará normalizado a la longitud de maxLongLine 
-		// 
-		public override function get Direction(  ) : Point
-		{
-			var dir:Point = super.Direction;
-			dir.normalize( maxLongLine );
-			
-			return( dir );
-		}
-		*/
-		
 		//
 		// Obtenemos el punto final
 		// 
-		public function get EndPos(  ) : Point
+		public function get EndPos() : Point
 		{
 			// Obtenemos la dirección y la normalizamos a la distancia correcta 
 			var dir:Point = Direction;

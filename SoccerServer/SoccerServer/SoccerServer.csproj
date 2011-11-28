@@ -119,7 +119,8 @@
     <Content Include="crossdomain.xml" />
     <Content Include="Deauthorize.aspx" />
     <Content Include="Default.aspx" />
-    <Content Include="DefaultPanelMahou.ascx" />
+    <Content Include="DefaultMahou.ascx" />
+    <Content Include="DefaultUnusualSoccer.ascx" />
     <Content Include="Global.asax" />
     <Content Include="Imgs\BannerMeGustaBg.png" />
     <Content Include="Imgs\FacebookLandingPage.jpg" />
@@ -143,7 +144,6 @@
     <Content Include="Imgs\NavIconInvita.png" />
     <Content Include="Imgs\NavIconMuro.png" />
     <Content Include="Imgs\NavIcons.png" />
-    <Content Include="InviteFriends.aspx" />
     <Content Include="News.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -196,23 +196,23 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="DefaultPanelMahou.ascx.cs">
-      <DependentUpon>DefaultPanelMahou.ascx</DependentUpon>
+    <Compile Include="DefaultMahou.ascx.cs">
+      <DependentUpon>DefaultMahou.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="DefaultPanelMahou.ascx.designer.cs">
-      <DependentUpon>DefaultPanelMahou.ascx</DependentUpon>
+    <Compile Include="DefaultMahou.ascx.designer.cs">
+      <DependentUpon>DefaultMahou.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultUnusualSoccer.ascx.cs">
+      <DependentUpon>DefaultUnusualSoccer.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DefaultUnusualSoccer.ascx.designer.cs">
+      <DependentUpon>DefaultUnusualSoccer.ascx</DependentUpon>
     </Compile>
     <Compile Include="EntityDataReader.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="InviteFriends.aspx.cs">
-      <DependentUpon>InviteFriends.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="InviteFriends.aspx.designer.cs">
-      <DependentUpon>InviteFriends.aspx</DependentUpon>
     </Compile>
     <Compile Include="MainService.cs" />
     <Compile Include="MainServiceCompetition.cs" />

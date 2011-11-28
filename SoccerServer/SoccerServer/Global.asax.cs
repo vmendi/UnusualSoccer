@@ -90,7 +90,8 @@ namespace SoccerServer
                 mFBSettings.SecureCanvasUrl = "https://localhost/";
 
                 // Pondremos lo que mas nos convenga para depurar en local
-                mServerSettings["VersionID"] = "MahouLigaChapas";
+                //mServerSettings["VersionID"] = "MahouLigaChapas";
+                mServerSettings["VersionID"] = "UnusualSoccer";
                                 
                 mServerSettings["TicketingSystem"] = "false";
                 mServerSettings["SameIPAbandonsChecked"] = "false";

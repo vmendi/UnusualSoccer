@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace SoccerServer
 {
-    public partial class DefaultPanelMahou : System.Web.UI.UserControl
+    public partial class DefaultUnusualSoccer : System.Web.UI.UserControl
     {
         protected void Page_Load(object sender, EventArgs e)
         {

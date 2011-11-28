@@ -15,10 +15,10 @@ package Caps
 	
 	public class GameInterface
 	{
-		private var Shoot:ControlShoot = null;					// Control de disparo : Se encarga de pintar/gestionar la flecha de disparo
-		private var BallControl:BallController = null;			// Control para posicionar la pelota
+		private var ShootControl:ControllerShoot = null;		// Control de disparo : Se encarga de pintar/gestionar la flecha de disparo
+		private var BallControl:ControllerBall = null;			// Control para posicionar la pelota
+		private var PosControl:ControllerPos = null;			// Control para posicionar chapas (lo usamos solo para el portero)
 		private var ControllerCanvas:Sprite = null;				// El contenedor donde se pinta las flecha de direccion
-		private var PosControl:PosController = null;			// Control para posicionar chapas (lo usamos solo para el portero)
 		
 		public var TurnTime:Number = 0;							// Tiempo que representa la tartita contadora de timeout del interface
 		
@@ -39,9 +39,13 @@ package Caps
 			var lineLength:Number = Cap.Radius + BallEntity.Radius + AppParams.DistToPutBallHandling;
 			
 			// Inicializamos los controladores (disparo, balón, posición )
-			Shoot = new ControlShoot(ControllerCanvas, MAX_LONG_SHOOT, COLOR_SHOOT, THICKNESS_SHOOT);
-			BallControl = new BallController(ControllerCanvas, lineLength, COLOR_HANDLEBALL, THICKNESS_SHOOT);
-			PosControl = new PosController(ControllerCanvas, lineLength, COLOR_HANDLEBALL, THICKNESS_SHOOT);
+			ShootControl = new ControllerShoot(ControllerCanvas, MAX_LONG_SHOOT, COLOR_SHOOT, THICKNESS_SHOOT);
+			BallControl = new ControllerBall(ControllerCanvas, lineLength, COLOR_HANDLEBALL, THICKNESS_SHOOT);
+			PosControl = new ControllerPos(ControllerCanvas, lineLength, COLOR_HANDLEBALL, THICKNESS_SHOOT);
+			
+			ShootControl.OnStop.add(OnStopControllerShoot);
+			BallControl.OnStop.add(OnStopControllerBall);
+			PosControl.OnStop.add(OnStopControllerPos);
 
 			var teams:Array = Match.Ref.Game.TheTeams;
 			var Gui:* = Match.Ref.Game.TheField.Visual;			
@@ -101,6 +105,34 @@ package Caps
 			}
 		}
 		
+		private function UpdateInfoForCap(cap:Cap) : void
+		{
+			var gui:* = Match.Ref.Game.TheField.Visual;
+			
+			if( cap != null )
+			{
+				gui.SelectedCap.gotoAndStop( cap.OwnerTeam.Name );
+				gui.SelectedWeight.text = cap.Defense.toString();
+				gui.SelectedSliding.text = cap.Control.toString();
+				gui.SelectedPower.text = cap.Power.toString();
+				gui.SelectedTarjetaAmarilla.visible = cap.YellowCards ? true : false; 
+			}
+			else
+			{
+				gui.SelectedCap.gotoAndStop(1);
+				gui.SelectedWeight.text = "";
+				gui.SelectedSliding.text = "";
+				gui.SelectedPower.text = "";
+				gui.SelectedTarjetaAmarilla.visible = false; 
+			}
+		}
+		
+		// Indica si se acepta la entrada del usuario. Solo en un estado concreto y cuando tiene el turno el usuario local
+		public function get UserInputEnabled() : Boolean
+		{
+			return Match.Ref.Game.IsPlaying && Match.Ref.Game.CurTeam.IsLocalUser;
+		}
+		
 		//
 		// Actualizamos los elementos visuales del Gui que están cambiando o puedan cambiar con el tiempo
 		// 
@@ -112,7 +144,7 @@ package Caps
 			
 			var teams:Array = Match.Ref.Game.TheTeams;
 			var Gui:* = Match.Ref.Game.TheField.Visual;
-									
+
 			// Rellenamos los goles
 			var scoreText:String = teams[ Enums.Team1 ].Goals.toString() + " - " + teams[ Enums.Team2 ].Goals.toString();  
 			Gui.Score.text = scoreText; 
@@ -155,19 +187,19 @@ package Caps
 			var game:Game = Match.Ref.Game;
 			
 			// Si no estamos jugando (...no estamos en ninguna espera), ninguna habilidad disponible para nadie
-			if (!game.IsPlaying)
+			if (!UserInputEnabled)
 				return false;
 			
 			// Si estamos en el turno de colocación de portero, ninguna habilidad está disponible para nadie!
-			if (game.ReasonTurnChanged == Enums.TurnByTiroAPuerta )
-				return false;
-						
-			// Si algún controlador está activo las habilidades no están permitidas
-			if (BallControl.IsStarted || this.PosControl.IsStarted || this.Shoot.IsStarted)
+			if (game.ReasonTurnChanged == Enums.TurnByTiroAPuerta)
 				return false;
 			
-			// Ya solo queda ver si somos el jugador local (IsPlaying == true, se ha comprobado arriba)
-			return UserInputEnabled;
+			// Tampoco permitimos pulsar los botones de habilidad mientras mostramos cualquiera de los controladores,
+			// es decir, para poder clickar exigimos que el raton este "libre"
+			if (IsAnyControllerStarted())
+				return false;
+			
+			return true;
 		}
 		
 		//
@@ -178,7 +210,7 @@ package Caps
 			var Gui:* = Match.Ref.Game.TheField.Visual;
 						
 			var objectName:String = "SpecialSkill"+index.toString(); 
-			var item:MovieClip = Gui.getChildByName( objectName ) as MovieClip;
+			var item:MovieClip = Gui.getChildByName(objectName) as MovieClip;
 			
 			// No tenemos esa habilidad o no está permitida en el turno actual
 			if( !available || (!IsSkillAllowedInTurn( index )) )
@@ -218,37 +250,40 @@ package Caps
 			}
 			
 			if (!item.hasEventListener( MouseEvent.CLICK ))
-			{
 				item.addEventListener(MouseEvent.CLICK, Delegate.create(OnUseSkillButtonClick, index));
-			}
-			
+						
 			item.mouseEnabled = available;
 		}
 			
-		private function UpdateInfoForCap(cap:Cap) : void
+		// 
+		// Han pulsado un botón de "Utilizar Skill x"
+		//
+		private function OnUseSkillButtonClick(event:MouseEvent, idSkill:int) : void
 		{
-			var gui:* = Match.Ref.Game.TheField.Visual;
+			trace( "Interface: OnUseSkill: Utilizando habilidad " + idSkill.toString());
 			
-			if( cap != null )
+			// Comprobamos si está cargado y se puede utilizar en este turno
+			var team:Team = Match.Ref.Game.LocalUserTeam;
+			
+			// Dentro de IsSkillAllowedInTurn se hacen las comprobaciones pertinentes de UserInputEnabled y IsAnyControllerStarted
+			if (team.ChargedSkill(idSkill) == 100 && IsSkillAllowedInTurn(idSkill))
 			{
-				gui.SelectedCap.gotoAndStop( cap.OwnerTeam.Name );
-				gui.SelectedWeight.text = cap.Defense.toString();
-				gui.SelectedSliding.text = cap.Control.toString();
-				gui.SelectedPower.text = cap.Power.toString();
-				gui.SelectedTarjetaAmarilla.visible = cap.YellowCards ? true : false; 
+				if (!AppParams.OfflineMode)
+					Match.Ref.Connection.Invoke("OnServerUseSkill", null, idSkill);
+				
+				Match.Ref.Game.EnterWaitState(GameState.WaitingCommandUseSkill,
+					Delegate.create(Match.Ref.Game.OnClientUseSkill, Match.Ref.IdLocalUser, idSkill));
 			}
-			else
-			{
-				gui.SelectedCap.gotoAndStop(1);
-				gui.SelectedWeight.text = "";
-				gui.SelectedSliding.text = "";
-				gui.SelectedPower.text = "";
-				gui.SelectedTarjetaAmarilla.visible = false; 
-			}
-		}		
+		}
+		
 		
 		public function OnClickCap( cap:Cap ) : void
 		{
+			UpdateInfoForCap(cap);
+			
+			if (!UserInputEnabled || IsAnyControllerStarted())
+				return;
+			
 			var game:Game = Match.Ref.Game;
 			
 			// Si estamos en modo de colocación de portero :
@@ -256,76 +291,39 @@ package Caps
 			if (game.ReasonTurnChanged == Enums.TurnByTiroAPuerta)
 			{
 				if (game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
-				{
-					trace( "Interface: OnClickCap: Moviendo portero " + cap.Name + " del equipo " + cap.OwnerTeam.Name );
-					
-					// Comenzamos el controlador de movimiento del portero
-					ShowPosController( cap );
-				}
+					PosControl.Start(cap);
 			}
 			// Si estamos en modo de saque de puerta:
 			//---------------------------------------
 			else if(game.ReasonTurnChanged == Enums.TurnBySaquePuerta || game.ReasonTurnChanged == Enums.TurnBySaquePuertaByFalta)
 			{
-				if (UserInputEnabled && game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
-				{
-					trace( "Interface: OnClickCap: Saque de puerta " + cap.Name + " del equipo " + cap.OwnerTeam.Name );
-					
-					// Comenzamos el controlador visual de disparo
-					Shoot.Start( cap );
-				}
+				if (game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
+					ShootControl.Start(cap);
 			}
 			// Si estamos en modo de disparo:
 			//---------------------------------------
 			else 
 			{
-				// Comprobamos : 
-				// 	- Si la chapa es del equipo actual,
-				if (UserInputEnabled && game.CurTeam == cap.OwnerTeam)
-				{
-					trace( "Interface: OnClickCap: Mostrando controlador de disparo para " + cap.Name + " del equipo " + cap.OwnerTeam.Name );
-										
-					// Comenzamos el controlador visual de disparo
-					Shoot.Start(cap);
-				}
+				if (game.CurTeam == cap.OwnerTeam)
+					ShootControl.Start(cap);
 			}
-			
-			UpdateInfoForCap(cap);
 		}
+		
+		private function IsAnyControllerStarted() : Boolean
+		{
+			return PosControl.IsStarted || BallControl.IsStarted || ShootControl.IsStarted;
+		}
+		
 		//
 		// Activa el control de posicionamiento de pelota de la chapa indicada
 		//
-		public function ShowHandleBall( cap:Cap ) : void
+		public function ShowControllerBall(cap:Cap) : void
 		{
-			trace( "GameInterface: ShowHandleBall: " + cap.OwnerTeam.Name );
-			// Comprobamos : 
-			// 	- Si la chapa es del equipo actual,
-			//  NOTE: No se comprueba si la entrada de usuario está permitida, ya que
-			//  no es una accioón decidida por el usuario, sino una consecuencia del pase al pie
-			if (Match.Ref.Game.CurTeam == cap.OwnerTeam)
-			{
-				BallControl.Start(cap);
-								
-				// Marcamos que esta chapa tiene la posesión
-				UpdateInfoForCap(cap);
-			}
-		}
-		
-		//
-		// Activa el control de posicionamiento de chapa
-		//
-		public function ShowPosController( cap:Cap ) : void
-		{
-			trace("GameInterface: ShowPosController: " + cap.OwnerTeam.Name);
-			
 			//  NOTE: No se comprueba si la entrada de usuario está permitida, ya que
 			//  no es una acción decidida por el usuario, sino una consecuencia del pase al pie
 			if (Match.Ref.Game.CurTeam == cap.OwnerTeam)
-			{
-				PosControl.OnStop.removeAll();
-				PosControl.OnStop.add( FinishPosController );
-				
-				PosControl.Start(cap);
+			{				
+				BallControl.Start(cap);
 				
 				// Marcamos que esta chapa tiene la posesión
 				UpdateInfoForCap(cap);
@@ -333,13 +331,12 @@ package Caps
 		}
 		
 		//
-		// Se ha terminado el controlador de posicionamiento de chapa (portero)
+		// Se ha terminado el controlador de posicionamiento de chapa (portero) ControllerPos
 		//
-		public function FinishPosController(result:int) : void
+		private function OnStopControllerPos(reason:int) : void
 		{
-			// Envíamos la información al servidor de colocar al portero en la coordenada indicada
-			// Si no es válida la posición ignoramos simplemente			
-			if (result == Controller.Success && PosControl.IsValid())
+			// Si reason != SuccessSuccessMouseUp el stop se ha producido por cancelacion y simplemente ignoramos
+			if (PosControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
 			{
 				if (!AppParams.OfflineMode)
 					Match.Ref.Connection.Invoke("OnServerPosCap", null, PosControl.Target.Id, PosControl.EndPos.x, PosControl.EndPos.y);
@@ -351,119 +348,94 @@ package Caps
 			}
 		}
 		
-		// Se produce cuando el usuario termina de utilizar el control de disparo.
-		public function OnShoot() : void
+		// Se produce cuando el usuario termina de utilizar el ControllerShoot
+		private function OnStopControllerShoot(reason:int) : void
 		{
-			if (Shoot.IsValid())
+			// Siempre verificamos que la entrada este todavia activa porque es posible que hayamos cambiado de estado (entrado en un estado de espera) desde que
+			// el controlador se inicio, por ejemplo por TimeOut. 
+			if (ShootControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
 			{
 				if (!AppParams.OfflineMode)
-					Match.Ref.Connection.Invoke("OnServerShoot", null, Shoot.Target.Id, Shoot.Direction.x, Shoot.Direction.y, Shoot.Force);
+					Match.Ref.Connection.Invoke("OnServerShoot", null, ShootControl.Target.Id, ShootControl.Direction.x, ShootControl.Direction.y, ShootControl.Force);
 				
 				Match.Ref.Game.EnterWaitState(GameState.WaitingCommandShoot, 
 											  Delegate.create(Match.Ref.Game.OnClientShoot,	// Simulamos que el servidor nos ha devuelto el tiro
-															  Shoot.Target.OwnerTeam.IdxTeam, 
-															  Shoot.Target.Id, 
-															  Shoot.Direction.x, Shoot.Direction.y, Shoot.Force));
+															  ShootControl.Target.OwnerTeam.IdxTeam, 
+															  ShootControl.Target.Id, 
+															  ShootControl.Direction.x, ShootControl.Direction.y, ShootControl.Force));
 			}
 		}
 		
 		//
-		// Se produce cuando el usuario termina de utilizar el control "HandleBall"
+		// Se produce cuando el usuario termina de utilizar el control ControllerBall
 		//
-		public function OnPlaceBall() : void
-		{			
-			if (!AppParams.OfflineMode)
-				Match.Ref.Connection.Invoke("OnServerPlaceBall", null, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y);
-			
-			Match.Ref.Game.EnterWaitState(GameState.WaitingCommandPlaceBall,
-										  Delegate.create(Match.Ref.Game.OnClientPlaceBall,
-														  BallControl.Target.OwnerTeam.IdxTeam, 
-														  BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y));
-		}
-		
-		
-		// Indica si se acepta la entrada del usuario. Solo en un estado concreto y cuando tiene el turno el usuario local
-		public function get UserInputEnabled() : Boolean
-		{
-			return Match.Ref.Game.IsPlaying && Match.Ref.Game.CurTeam.IsLocalUser;
-		}
-		
-		
-		// Activamos desactivamos el botón de tiro a puerta en función de si:
-		//   - El interface está activo o no
-		//   - Asegurando que durante un tiro a puerta no esté activo
-		//   - y que estés en posición válida: más del medio campo o habilidad especial "Tiroagoldesdetupropiocampo"		
-		private function UpdateButtonTiroPuerta(  ) : void
-		{
-			var Gui:* = Match.Ref.Game.TheField.Visual;
-			var bActiveTiroPuerta:Boolean = UserInputEnabled;
-			
-			// Si ya se ha declarado tiro a puerta no permitimos pulsar el botón 
-			bActiveTiroPuerta = bActiveTiroPuerta && (!Match.Ref.Game.IsTiroPuertaDeclarado( ));
-			
-			// Posición válida para tirar a puerta o Tenemos la habilidad especial de permitir gol de más de medio campo? 
-			bActiveTiroPuerta = bActiveTiroPuerta && Match.Ref.Game.IsTeamPosValidToScore( );						
-			
-			Gui.BotonTiroPuerta.visible = bActiveTiroPuerta;
-		}		
-		
-		//
-		// Cancela cualquier operación de entrada que estuviera ocurriendo 
-		//
-		private function CancelControllers() : void
-		{
-			// Comprobamos si el usuario estaba utilizando el control de tiro,
-			// caso en el cual debemos cancelarlo
-			if( Shoot.IsStarted == true )
+		private function OnStopControllerBall(reason:int) : void
+		{	
+			// No checkeamos IsValid, ya nos viene validado desde el Controller
+			if (UserInputEnabled && reason == Controller.SuccessMouseUp)
 			{
-				Shoot.Stop( Controller.Canceled );
-			}
-			// Comprobamos si el usuario estaba utilizando el control de posicionamiento de pelota,
-			// caso en el cual debemos cancelarlo
-			if( BallControl.IsStarted == true )
-			{
-				BallControl.Stop( Controller.Canceled );
-			}
-			// Comprobamos si el usuario estaba posicionando el portero,
-			// caso en el cual debemos cancelarlo
-			if( PosControl.IsStarted == true )
-			{
-				PosControl.Stop( Controller.Canceled );
-			}
-		}
+				if (!AppParams.OfflineMode)
+					Match.Ref.Connection.Invoke("OnServerPlaceBall", null, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y);
 				
-		// 
-		// Han pulsado un botón de "Utilizar Skill x"
-		//
-		private function OnUseSkillButtonClick(event:MouseEvent, idSkill:int) : void
-		{
-			trace( "Interface: OnUseSkill: Utilizando habilidad " + idSkill.toString());
-	
-			// Comprobamos si está cargado y se puede utilizar en este turno
-			var team:Team = Match.Ref.Game.LocalUserTeam;
-			if( team.ChargedSkill( idSkill ) == 100 && IsSkillAllowedInTurn(idSkill) )
-			{
-				// Notificamos al servidor para que lo propague en los usuarios
-				if( !AppParams.OfflineMode )
-					Match.Ref.Connection.Invoke("OnServerUseSkill", null, idSkill);
-				
-				Match.Ref.Game.EnterWaitState(GameState.WaitingCommandUseSkill,
-											  Delegate.create(Match.Ref.Game.OnClientUseSkill, Match.Ref.IdLocalUser, idSkill));
+				Match.Ref.Game.EnterWaitState(GameState.WaitingCommandPlaceBall,
+											  Delegate.create(Match.Ref.Game.OnClientPlaceBall,
+															  BallControl.Target.OwnerTeam.IdxTeam, 
+															  BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y));
 			}
 		}
 		
 		// 
 		// Han pulsado en el botón de "Tiro a puerta"
 		//
-		public function OnTiroPuerta( event:Object ) : void
+		private function OnTiroPuerta(event:Object) : void
 		{
-			if (!AppParams.OfflineMode)
-				Match.Ref.Connection.Invoke("OnServerTiroPuerta", null);
-			
-			Match.Ref.Game.EnterWaitState(GameState.WaitingCommandTiroPuerta, 
-										  Delegate.create(Match.Ref.Game.OnClientTiroPuerta, Match.Ref.Game.CurTeam.IdxTeam));
+			if (UserInputEnabled)
+			{
+				if (!AppParams.OfflineMode)
+					Match.Ref.Connection.Invoke("OnServerTiroPuerta", null);
+				
+				Match.Ref.Game.EnterWaitState(GameState.WaitingCommandTiroPuerta, 
+					Delegate.create(Match.Ref.Game.OnClientTiroPuerta, Match.Ref.Game.CurTeam.IdxTeam));
+			}
 		}
 		
+		// Activamos desactivamos el botón de tiro a puerta en función de si:
+		//   - El interface está activo o no
+		//   - Asegurando que durante un tiro a puerta no esté activo
+		//   - y que estés en posición válida: más del medio campo o habilidad especial "Tiroagoldesdetupropiocampo"		
+		private function UpdateButtonTiroPuerta() : void
+		{
+			var Gui:* = Match.Ref.Game.TheField.Visual;
+			
+			var bActive:Boolean = UserInputEnabled;
+			
+			// Con cualquiera de los controladores activados ya no se podra clickar. Es decir, se puede clickar con el raton "libre"
+			bActive = bActive && !IsAnyControllerStarted(); 
+			
+			// Si ya se ha declarado tiro a puerta no permitimos pulsar el botón
+			bActive = bActive && !Match.Ref.Game.IsTiroPuertaDeclarado();
+			
+			// Posición válida para tirar a puerta o Tenemos la habilidad especial de permitir gol de más de medio campo? 
+			bActive = bActive && Match.Ref.Game.IsTeamPosValidToScore();
+			
+			Gui.BotonTiroPuerta.visible = bActive;
+		}
+		
+		//
+		// Cancela cualquier operación de entrada que estuviera ocurriendo 
+		//
+		private function CancelControllers() : void
+		{
+			if (ShootControl.IsStarted)
+				ShootControl.Stop( Controller.Canceled );
+
+			if (BallControl.IsStarted)
+				BallControl.Stop( Controller.Canceled );
+			
+			if (PosControl.IsStarted)
+				PosControl.Stop( Controller.Canceled );
+		}
+
 		// 
 		// Han pulsado en el botón de "Cerrar Partido"
 		//

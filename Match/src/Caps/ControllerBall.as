@@ -10,7 +10,7 @@ package Caps
 	//
 	// Se encarga del controlador para posicionar la pelota alrededor de la chapa
 	//
-	public class BallController extends Controller
+	public class ControllerBall extends Controller
 	{
 		private var canvas        : Sprite;
 		private var maxLongLine   : uint;
@@ -20,7 +20,7 @@ package Caps
 		private const BLACK    	  : uint = 0x000000;
 		
 		
-		public function BallController( canvas:Sprite, maxLongLine: uint, colorLine: uint = 0, thickness: uint = 1 )		
+		public function ControllerBall( canvas:Sprite, maxLongLine: uint, colorLine: uint = 0, thickness: uint = 1 )		
 		{
 			this.maxLongLine = maxLongLine;
 			this.canvas 	 = canvas;
@@ -29,18 +29,12 @@ package Caps
 			( colorLine == 0 ) ? this.colorLine = BLACK : this.colorLine = colorLine;
 		}
 		
-		//
-		// Detiene el sistema de control direccional con el ratón, lo que
-		// implica dejar de visualizarlo
-		//
-		public override function Stop( result:int ):void
+		public override function Stop( reason:int ):void
 		{
-			super.Stop( result );
+			super.Stop(reason);
 			
 			// Eliminamos la parte visual
-			canvas.graphics.clear( );
-			// @rubo:
-			//canvas.arrow.visible = false;
+			canvas.graphics.clear();
 		}
 		
 		//
@@ -50,22 +44,20 @@ package Caps
 		//
 		public override function IsValid( ) : Boolean
 		{
-			// NOTE: Inidcamos que no tenga en cuenta el balón, ya que es el mismo el que estamos colocando
+			// NOTE: Indicamos que no tenga en cuenta el balón, ya que es el mismo el que estamos colocando
 			return Match.Ref.Game.TheField.ValidatePosCap( EndPos, false, this.Target );
 		}
-			
+
 		//
 		//
 		//
-		public override function MouseUp( e: MouseEvent ) : void
+		public override function MouseUp(e: MouseEvent) : void
 		{
-			// Validamos si es una posición valida (tiene que estar dentro del campo), y si no es así ignoramos la operación
-			if( IsValid() )
+			// Tiene que estar dentro del campo. Si no es asi, continuamos como si no hubiera up, asi que no habra Stop
+			// y por lo tanto cancelacion del controlador
+			if (IsValid())
 			{
 				super.MouseUp( e );
-	
-				// Le decimos al interface de usuario que recoloque la pelota
-				Match.Ref.Game.TheInterface.OnPlaceBall();
 			}
 		}
 		
@@ -80,9 +72,7 @@ package Caps
 			var source:Point = new Point( xInit, yInit);
 			var target:Point = EndPos;
 			
-			// Seleccionamos un color para la linea diferente en función de si la posición final
-			// es válida o no
-			
+			// Seleccionamos un color para la linea diferente en función de si la posición final es válida o no			
 			var color:uint = colorLine;
 			if( !IsValid() )
 				color = 0xff0000;
@@ -91,9 +81,6 @@ package Caps
 			canvas.graphics.lineStyle( thickness, color, 0.7 );
 			canvas.graphics.moveTo( source.x, source.y );
 			canvas.graphics.lineTo( target.x, target.y );
-			
-			// Recolocamos la pelota
-			//Match.Ref.Game.Ball.SetPos( EndPos );
 		}
 		
 		//

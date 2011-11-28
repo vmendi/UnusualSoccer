@@ -521,7 +521,7 @@ package Caps
 					YieldTurnToOpponent(Enums.TurnByFault);
 					
 					if( defender.OwnerTeam.IsLocalUser )
-						TheInterface.ShowHandleBall( defender );
+						TheInterface.ShowControllerBall( defender );
 				}
 			}
 			// Si se ha producido pase al pie, debemos comprobar si alguna chapa enemiga está en el radio de robo de pelota
@@ -542,7 +542,7 @@ package Caps
 					YieldTurnToOpponent(Enums.TurnByStolen);
 					
 					if (_LastConflict.DefenderCap.OwnerTeam.IsLocalUser)
-						TheInterface.ShowHandleBall(_LastConflict.DefenderCap);
+						TheInterface.ShowControllerBall(_LastConflict.DefenderCap);
 				}
 				else
 				{
@@ -562,7 +562,7 @@ package Caps
 					
 					// Si no somos el 'LocalUser', solo esperamos la respuesta del otro cliente
 					if( paseToCap.OwnerTeam.IsLocalUser )
-						TheInterface.ShowHandleBall( paseToCap );
+						TheInterface.ShowControllerBall( paseToCap );
 				}
 			}
 			else	// No ha habido falta y no se ha producido pase al pie					
@@ -579,7 +579,7 @@ package Caps
 					// Igual que en el robo con conflicto pero con una reason distinta para que el interfaz muestre un mensaje diferente
 					YieldTurnToOpponent(Enums.TurnByLost);
 					if( potentialStealer.OwnerTeam.IsLocalUser )
-						TheInterface.ShowHandleBall( potentialStealer );
+						TheInterface.ShowControllerBall( potentialStealer );
 				}
 				else
 				{
@@ -990,7 +990,7 @@ package Caps
 			// Comprobamos si se produce el robo entre las dos chapas teniendo en cuenta sus parámetros de Defensa y Control
 			var stolen : Boolean = false;
 			
-			if (miControl > suDefensa)
+			if (miControl < suDefensa)
 				stolen = true;
 			else
 			if (miControl == suDefensa)
@@ -1093,7 +1093,7 @@ package Caps
 			EnterWaitState(GameState.WaitingEndPart, null);
 						
 			// Lanzamos la cutscene de fin de tiempo, cuando termine pasamos realmente de parte o finalizamos el partido
-			if( part == 1 )
+			if (part == 1)
 			{
 				Cutscene.ShowFinishPart(_Part, Delegate.create(ChangeState, GameState.EndPart));
 			}

@@ -67,12 +67,16 @@ namespace SoccerServer
 			}
 		}
 
-        private void InjectContentPanel(Boolean showLikePanel)
+        private void InjectContentPanel(Boolean hideLikePanel)
         {
-            MyDefaultForm = LoadControl("~/DefaultPanelMahou.ascx");
+            if (Global.Instance.ServerSettings["VersionID"] == "MahouLigaChapas")
+                MyDefaultForm = LoadControl("~/DefaultMahou.ascx");
+            else
+                MyDefaultForm = LoadControl("~/DefaultUnusualSoccer.ascx");
+
             Controls.Add(MyDefaultForm);
 
-            if (!showLikePanel)
+            if (hideLikePanel)
                 MyDefaultForm.FindControl("MyLikePanel").Visible = false;
         }
 

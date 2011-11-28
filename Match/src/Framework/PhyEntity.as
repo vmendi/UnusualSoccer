@@ -125,7 +125,7 @@ package Framework
 		//
 		// Detiene cualquier tipo de movimiento físico que esté realizando la entidad
 		//
-		public function StopMovement( ) : void
+		public function StopMovement() : void
 		{
 			PhyObject.body.SetLinearVelocity( new b2Vec2( 0, 0 ) );
 			PhyObject.body.SetAngularVelocity( 0 );

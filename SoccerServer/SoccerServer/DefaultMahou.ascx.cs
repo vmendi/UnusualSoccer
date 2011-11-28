@@ -7,11 +7,11 @@ using System.Web.UI.WebControls;
 
 namespace SoccerServer
 {
-	public partial class InviteFriends : System.Web.UI.Page
-	{
-		protected void Page_Load(object sender, EventArgs e)
-		{
+    public partial class DefaultMahou : System.Web.UI.UserControl
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
 
-		}
-	}
+        }
+    }
 }

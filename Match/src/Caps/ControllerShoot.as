@@ -4,18 +4,14 @@ package Caps
 	
 	import Framework.*;
 	
-	import com.actionsnippet.qbox.QuickBox2D;
-	
-	import flash.display.GradientType;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 
 	
-	public class ControlShoot extends Controller
+	public class ControllerShoot extends Controller
 	{		
 		protected var canvas       : Sprite;
 		protected var angle	       : Number; 
@@ -26,7 +22,7 @@ package Caps
 		
 		static protected const MIN_FORCE : Number = 0.1; // Fuerza mínima que debe tener un disparo.
 		
-		public function ControlShoot(canvas:Sprite, maxLongLine: uint, colorLine: uint = 0, thickness: uint = 1)
+		public function ControllerShoot(canvas:Sprite, maxLongLine: uint, colorLine: uint = 0, thickness: uint = 1)
 		{
 			// Campo de texto en el que indicaremos la potencia
 			var myFormat:TextFormat = new TextFormat();
@@ -63,16 +59,13 @@ package Caps
 			potenciaTiro.visible = true;
 		}
 		
-		public override function Stop( result:int ):void
+		public override function Stop(reason:int):void
 		{
-			super.Stop( result );
+			super.Stop(reason);
 				
 			// Eliminamos la parte visual
 			canvas.graphics.clear( );
-			// @rubo:
-			//canvas.arrow.visible = false;
-			
-			// Hacemos visible el campo de texto de potencia
+						
 			potenciaTiro.visible = false;
 		}
 		
@@ -82,24 +75,12 @@ package Caps
 		public override function MouseUp( e: MouseEvent ) : void
 		{
 			super.MouseUp( e );
-						
-			// Le decimos al interface de usuario que dispare
-			// TODO: El disparo no se puede aplicar aquí!! Deberíamos generar un evento
-			Match.Ref.Game.TheInterface.OnShoot();
 		}
 		
-		//
-		// Comprueba si tiene un valor válido
-		// NOTE: La flecha tiene que salir de la chapa para ser válida!
-		//
 		public override function IsValid() : Boolean
 		{
 			// Obtenemos la dirección truncada a la máxima longitud
-			var dir:Point = Direction;
-			if( dir.length < Cap.Radius )
-				return( false );
-			
-			return( true );
+			return Direction.length >= Cap.Radius;
 		}
 			
 		public override function MouseMove(e: MouseEvent) :void
