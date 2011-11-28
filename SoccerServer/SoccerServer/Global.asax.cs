@@ -75,6 +75,8 @@ namespace SoccerServer
                 mFBSettings.CanvasUrl = "http://unusualsoccerdev.unusualwonder.com/";
                 mFBSettings.SecureCanvasUrl = "https://unusualsoccerdev.unusualwonder.com/";
 
+                mServerSettings["VersionID"] = "UnusualSoccer";
+                                
                 mServerSettings["TicketingSystem"] = "false";
                 mServerSettings["SameIPAbandonsChecked"] = "true";
             }
@@ -87,6 +89,9 @@ namespace SoccerServer
                 mFBSettings.CanvasUrl = "http://localhost/";
                 mFBSettings.SecureCanvasUrl = "https://localhost/";
 
+                // Pondremos lo que mas nos convenga para depurar en local
+                mServerSettings["VersionID"] = "MahouLigaChapas";
+                                
                 mServerSettings["TicketingSystem"] = "false";
                 mServerSettings["SameIPAbandonsChecked"] = "false";
 

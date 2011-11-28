@@ -15,6 +15,8 @@ namespace SoccerServer
 {
     public partial class Default : Page
     {
+        private Control MyDefaultForm = null;
+
         protected void Page_Load(object sender, EventArgs e)
         {            
             // Cargamos nuestros settings procedurales que nos deja ahi Global.asax
@@ -46,7 +48,7 @@ namespace SoccerServer
                 theContext.SubmitChanges();
             }
 
-            DefaultForm.Visible = true;
+            InjectContentPanel(true);
         }
 
         private void ShowFacebookContent()
@@ -61,19 +63,25 @@ namespace SoccerServer
 				theContext.SubmitChanges();
 
                 // Ahora podemos hacer visible todo el contenido flash
-                DefaultForm.Visible = true;
-
-                if (player.Liked)
-                    LikePanel.Visible = false;
+                InjectContentPanel(player.Liked);
 			}
 		}
+
+        private void InjectContentPanel(Boolean showLikePanel)
+        {
+            MyDefaultForm = LoadControl("~/DefaultPanelMahou.ascx");
+            Controls.Add(MyDefaultForm);
+
+            if (!showLikePanel)
+                MyDefaultForm.FindControl("MyLikePanel").Visible = false;
+        }
 
         protected override void Render(HtmlTextWriter writer)
         {
             // Solo hacemos los reemplazos cuando todo el contenido flash esta visible (cuando ya estamos autorizados, etc)
-            if (!DefaultForm.Visible)
+            if (MyDefaultForm == null)
                 return;
-
+             
             StringBuilder pageSource = new StringBuilder();
             StringWriter sw = new StringWriter(pageSource);
             HtmlTextWriter htmlWriter = new HtmlTextWriter(sw);
@@ -108,7 +116,7 @@ namespace SoccerServer
             pageSource.Replace("${description}", serverSettings["Description"]);
             pageSource.Replace("${imageUrl}", serverSettings["ImageUrl"]);
 
-            // Parametros de entrada al SWF
+            // Parametros de entrada al SWF. Todo lo que nos viene en la QueryString mas nuestros Global.ClientSettings
             string flashVars = " { "; 
             foreach (string key in Request.QueryString.AllKeys)
                 flashVars += key + ": '" + Request.QueryString[key] + "' ,";

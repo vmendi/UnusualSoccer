@@ -119,6 +119,7 @@
     <Content Include="crossdomain.xml" />
     <Content Include="Deauthorize.aspx" />
     <Content Include="Default.aspx" />
+    <Content Include="DefaultPanelMahou.ascx" />
     <Content Include="Global.asax" />
     <Content Include="Imgs\BannerMeGustaBg.png" />
     <Content Include="Imgs\FacebookLandingPage.jpg" />
@@ -194,6 +195,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DefaultPanelMahou.ascx.cs">
+      <DependentUpon>DefaultPanelMahou.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DefaultPanelMahou.ascx.designer.cs">
+      <DependentUpon>DefaultPanelMahou.ascx</DependentUpon>
     </Compile>
     <Compile Include="EntityDataReader.cs" />
     <Compile Include="Global.asax.cs">
