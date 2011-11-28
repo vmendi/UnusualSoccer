@@ -9,11 +9,11 @@
 		public function get Division() : String { return mDivision; }
 		public function set Division(division : String) : void
 		{
+			// Lo que aqui entra es el ID de cadena tal y como viene de la BDD
 			mDivision = division;
 			
 			MyBitmap.visible = true;
-			(MyBitmap.content as MovieClip).gotoAndStop(mDivision);	
-			MyDivisionName.text = mDivision;
+			(MyBitmap.content as MovieClip).gotoAndStop(mDivision);
 		}
 
 		private var mDivision : String = "";
@@ -21,6 +21,5 @@
 	]]></fx:Script>
 	
 	<s:SWFLoader top="0" horizontalCenter="0" id="MyBitmap" visible="false" source="{resourceManager.getClass('main','CompetitionDivisionBadgeMC')}" />
-	<s:Label width="100%" horizontalCenter="0" top="57" id="MyDivisionName" text="" styleName="whiteBoldMedium" textAlign="center" />
-	
+		
 </s:Group>

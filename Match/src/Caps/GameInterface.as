@@ -319,15 +319,15 @@ package Caps
 		//
 		public function ShowControllerBall(cap:Cap) : void
 		{
+			if (Match.Ref.Game.CurTeam != cap.OwnerTeam)
+				throw new Error("Intento de mostrar ControllerBall de chapa que no es local");
+			
 			//  NOTE: No se comprueba si la entrada de usuario está permitida, ya que
 			//  no es una acción decidida por el usuario, sino una consecuencia del pase al pie
-			if (Match.Ref.Game.CurTeam == cap.OwnerTeam)
-			{				
-				BallControl.Start(cap);
-				
-				// Marcamos que esta chapa tiene la posesión
-				UpdateInfoForCap(cap);
-			}
+			BallControl.Start(cap);
+			
+			// Marcamos que esta chapa tiene la posesión
+			UpdateInfoForCap(cap);
 		}
 		
 		//
@@ -371,8 +371,7 @@ package Caps
 		//
 		private function OnStopControllerBall(reason:int) : void
 		{	
-			// No checkeamos IsValid, ya nos viene validado desde el Controller
-			if (UserInputEnabled && reason == Controller.SuccessMouseUp)
+			if (BallControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
 			{
 				if (!AppParams.OfflineMode)
 					Match.Ref.Connection.Invoke("OnServerPlaceBall", null, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y);

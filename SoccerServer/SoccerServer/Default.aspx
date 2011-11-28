@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="SoccerServer.Default" %>
+
 <%@ Reference Control="~/DefaultMahou.ascx" %>
 <%@ Reference Control="~/DefaultUnusualSoccer.ascx" %>
 
