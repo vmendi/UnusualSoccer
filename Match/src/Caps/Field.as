@@ -27,10 +27,11 @@ package Caps
 		// Coordenadas de las areas PEQUEÑAS del campo en coordenadas absolutas desde el corner superior izquierdo del movieclip
 		static public const SmallAreaLeftX:Number = 0 + OffsetX;
 		static public const SmallAreaLeftY:Number = 106 + OffsetY;
-		static public const SmallAreaRightX:Number = 604 + OffsetX;
+		static public const SmallAreaRightX:Number = 614 + OffsetX;
 		static public const SmallAreaRightY:Number = 106 + OffsetY;
-		static public const SmallSizeAreaX:Number = 64;
+		static public const SmallSizeAreaX:Number = 54;
 		static public const SmallSizeAreaY:Number = 188;
+		
 		// Coordenadas de las areas GRANDES del campo en coordenadas absolutas desde el corner superior izquierdo del movieclip
 		static public const BigAreaLeftX:Number = 0 + OffsetX;
 		static public const BigAreaLeftY:Number = 48 + OffsetY;
