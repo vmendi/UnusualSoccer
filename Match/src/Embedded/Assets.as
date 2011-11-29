@@ -119,10 +119,7 @@ package Embedded
 		
 		[Embed(source="Embedded/Assets.swf", symbol="MensajeRobo")]
 		static public var MensajeRobo:Class;
-		
-		//[Embed(source="Embedded/Assets.swf", symbol="MensajeConflicto")]
-		//static public var MensajeConflicto:Class;
-		
+				
 		// Una chapa (cada frame es un equipo diferente):
 		[Embed(source="Embedded/Assets.swf", symbol="Cap")]					// La chapa para todos los equipos
 		static public var Cap:Class;
@@ -134,10 +131,6 @@ package Embedded
 		[Embed(source="Embedded/Assets.swf", symbol="Goalkeeper2")]			// El portero para todos los equipos
 		static public var Goalkeeper2:Class;
 		
-		// El balón
-		[Embed(source="Embedded/Assets.swf", symbol="Balon")]
-		static public var Ball:Class;
-		
 		// El balón animado
 		[Embed(source="Embedded/Assets.swf", symbol="BalonAnimado")]
 		static public var BallAnimated:Class;
@@ -145,6 +138,10 @@ package Embedded
 		// La caja del chat
 		[Embed(source="Embedded/Assets.swf", symbol="Chat")]
 		static public var ChatClass:Class;
+		
+		// La caja con los detalles de la chapa (en over)
+		[Embed(source="Embedded/Assets.swf", symbol="CapDetails")]
+		static public var CapDetails:Class;
 		
 		
 		// Los sonidos

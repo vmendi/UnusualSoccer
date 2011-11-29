@@ -1,13 +1,19 @@
 package Caps
 {
+	import Embedded.Assets;
+	
 	import Framework.*;
 	
 	import com.greensock.*;
 	
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
+	import flash.display.InteractiveObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.net.SharedObject;
+	import flash.text.AntiAliasType;
 	
 	import utils.Delegate;
 	import utils.TimeUtils;
@@ -49,14 +55,11 @@ package Caps
 
 			var teams:Array = Match.Ref.Game.TheTeams;
 			var Gui:* = Match.Ref.Game.TheField.Visual;			
-			Gui.BotonTiroPuerta.addEventListener( MouseEvent.CLICK, OnTiroPuerta );
+			Gui.BotonTiroPuerta.addEventListener(MouseEvent.CLICK, OnTiroPuerta);
 			Gui.SoundButton.addEventListener(MouseEvent.CLICK, OnMute);
 			// Gui.BotonAbandonar.addEventListener( MouseEvent.CLICK, OnAbandonar );
 						
 			UpdateMuteButton();
-			
-			// Vaciamos el panel donde sale la info de la chapa
-			UpdateInfoForCap(null);
 			
 			// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el quipo
 			Gui.BadgeHome.gotoAndStop( teams[ Enums.Team1 ].Name );
@@ -102,28 +105,6 @@ package Caps
 				
 				Gui.SoundButton.BotonOn.visible = true;
 				Gui.SoundButton.BotonOff.visible = false;
-			}
-		}
-		
-		private function UpdateInfoForCap(cap:Cap) : void
-		{
-			var gui:* = Match.Ref.Game.TheField.Visual;
-			
-			if( cap != null )
-			{
-				gui.SelectedCap.gotoAndStop(cap.OwnerTeam.Name);
-				gui.SelectedWeight.text = cap.Defense.toString();
-				gui.SelectedSliding.text = cap.Control.toString();
-				gui.SelectedPower.text = cap.Power.toString();
-				gui.SelectedTarjetaAmarilla.visible = cap.YellowCards ? true : false; 
-			}
-			else
-			{
-				gui.SelectedCap.gotoAndStop(1);
-				gui.SelectedWeight.text = "";
-				gui.SelectedSliding.text = "";
-				gui.SelectedPower.text = "";
-				gui.SelectedTarjetaAmarilla.visible = false; 
 			}
 		}
 		
@@ -273,11 +254,50 @@ package Caps
 			}
 		}
 		
+		public function OnOverCap(cap : Cap) : void
+		{	
+			// Con el de BallControl (pase al pie) si que queremos mostrar valores
+			if (!UserInputEnabled || PosControl.IsStarted || ShootControl.IsStarted)
+				return;
+			
+			var panelInfo : DisplayObject = new Assets.CapDetails();
+			panelInfo.name = "PanelInfo";
+			
+			panelInfo["SelectedTraining"].text = cap.OwnerTeam.Fitness;
+			panelInfo["SelectedWeight"].text = cap.Defense;
+			panelInfo["SelectedSliding"].text = cap.Control;
+			panelInfo["SelectedPower"].text = cap.Power;
+			
+			panelInfo["BarWeightActual"].gotoAndStop(cap.Defense+1);
+			panelInfo["BarSlidingActual"].gotoAndStop(cap.Control+1);
+			panelInfo["BarPowerActual"].gotoAndStop(cap.Power+1);
+			
+			panelInfo["BarWeightBase"].gotoAndStop(cap.OriginalDefense+1);
+			panelInfo["BarSlidingBase"].gotoAndStop(cap.OriginalControl+1);
+			panelInfo["BarPowerBase"].gotoAndStop(cap.OriginalPower+1);
+			
+			panelInfo["SelectedTarjetaAmarilla"].visible = cap.YellowCards ? true : false;
+			
+			// -4 para evitar el fenomeno out-over-out-ver ad-infinitum (para evitar solapamiento cartel-chapa)
+			panelInfo.x = cap.Visual.x;			
+			panelInfo.y = cap.Visual.y - Cap.Radius - 4;
+		
+			var theLayer : DisplayObjectContainer = Match.Ref.Game.GUILayer;
+			theLayer.addChild(panelInfo);
+		}
+		
+		public function OnOutCap(cap : Cap) : void
+		{
+			var theLayer : DisplayObjectContainer = Match.Ref.Game.GUILayer;
+			var panelInfo : DisplayObject = theLayer.getChildByName("PanelInfo") as DisplayObject;
+			
+			if (panelInfo != null)
+				panelInfo.parent.removeChild(panelInfo);
+		}
+		
 		
 		public function OnClickCap( cap:Cap ) : void
-		{
-			UpdateInfoForCap(cap);
-			
+		{		
 			if (!UserInputEnabled || IsAnyControllerStarted())
 				return;
 			
@@ -322,9 +342,6 @@ package Caps
 			//  NOTE: No se comprueba si la entrada de usuario está permitida, ya que
 			//  no es una acción decidida por el usuario, sino una consecuencia del pase al pie
 			BallControl.Start(cap);
-			
-			// Marcamos que esta chapa tiene la posesión
-			UpdateInfoForCap(cap);
 		}
 		
 		//

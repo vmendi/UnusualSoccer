@@ -23,6 +23,7 @@ package Caps
 	import flash.events.SecurityErrorEvent;
 	import flash.geom.Point;
 	import flash.net.URLRequest;
+	import flash.utils.getTimer;
 	
 	public class Cap extends PhyEntity
 	{
@@ -123,6 +124,8 @@ package Caps
 
 			// Nos registramos a los eventos de entrada del ratón!
 			_Visual.addEventListener(MouseEvent.MOUSE_DOWN, OnMouseDown);
+			_Visual.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			_Visual.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
 			
 			// Creamos un Sprite linkado a la chapa, donde pintaremos los radios de influencia de la chapa
 			// Estos sprites los introducimos como hijos del campo, para asegurar que se vean debajo de las chapas 
@@ -141,13 +144,27 @@ package Caps
 			Match.Ref.Game.TheEntityManager.AddTagged(this, "Team"+(team.IdxTeam +1).toString() + "_" + _CapId.toString());
 		}
 		
-		//
-		// Han presionado el botón del ratón sobre la chapa
-		// Notificamos al interface de juego para que actúe en consecuencia 
-		//
-		private function OnMouseDown( e: MouseEvent ) : void
+		private function OnMouseDown(e : MouseEvent) : void
 		{			
-			Match.Ref.Game.TheInterface.OnClickCap( this );
+			Match.Ref.Game.TheInterface.OnClickCap(this);
+		}
+		
+		private function OnMouseOver(e : MouseEvent) : void
+		{	
+			if (TweenMax.getTweensOf(OnRealOver).length == 0)
+				TweenMax.delayedCall(0.8, OnRealOver);
+		}
+		private function OnRealOver() : void
+		{
+			Match.Ref.Game.TheInterface.OnOverCap(this);
+		}
+		private function OnMouseOut(e : MouseEvent) : void
+		{
+			// Nos aseguramos de que no hay Outs sin Overs
+			if (TweenMax.getTweensOf(OnRealOver).length > 0)
+				TweenMax.killDelayedCallsTo(OnRealOver);
+			else
+				Match.Ref.Game.TheInterface.OnOutCap(this);
 		}
 		
 		//
