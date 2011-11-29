@@ -46,10 +46,10 @@ namespace SoccerServer
 
         private void FillDisputedOrdersGridView()
         {
-            var accessToken = GetApplicationAccessToken();
+            var accessToken = FBUtils.GetApplicationAccessToken();
             string graphApiReq = String.Format("https://graph.facebook.com/{0}/payments?status=disputed&{1}", Global.Instance.FacebookSettings.AppId, accessToken);
 
-            var response = GetHttpResponse(graphApiReq, null);
+            var response = FBUtils.GetHttpResponse(graphApiReq, null);
 
             JavaScriptSerializer jss = new JavaScriptSerializer();
             Dictionary<string, object> responseDict = jss.Deserialize<Dictionary<string, object>>(response);
@@ -106,13 +106,6 @@ namespace SoccerServer
                     select p).First().Status;
         }
 
-        public static string GetApplicationAccessToken()
-        {
-            var graphApiReq = String.Format("https://graph.facebook.com/oauth/access_token?client_id={0}&client_secret={1}&grant_type=client_credentials",
-                                            Global.Instance.FacebookSettings.AppId, Global.Instance.FacebookSettings.AppSecret);
-            return GetHttpResponse(graphApiReq, null);  // Lo retorna directamente como "access_token=xxx", sin JSON
-        }
-
         private int GetTotalPurchases()
         {
             return (from p in mDC.Purchases
@@ -157,34 +150,6 @@ namespace SoccerServer
         private int GetNumExpiredTickets()
         {
             return GetNumSoldTickets() - GetNumNonExpiredTickets();
-        }
-
-        static public string GetHttpResponse(string requestUrl, byte[] data)
-        {
-            string responseData = String.Empty;
-                        
-            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(requestUrl);
-
-            // set HttpWebRequest properties here (Method, ContentType, etc)
-            if (data != null)
-                req.Method = "POST";
-
-            // in case of POST you need to post data
-            if ((data != null) && (data.Length > 0))
-            {
-                using (Stream strm = req.GetRequestStream())
-                {
-                    strm.Write(data, 0, data.Length);
-                }
-            }
-
-            using (HttpWebResponse resp = (HttpWebResponse)req.GetResponse())
-            {
-                StreamReader strmReader = new StreamReader(resp.GetResponseStream());
-                responseData = strmReader.ReadToEnd().Trim();
-            }
-            
-            return responseData;
         }
 
         protected void MyDisputedOrdersGridView_SelectedIndexChanged(object sender, EventArgs e)
@@ -243,14 +208,14 @@ namespace SoccerServer
             var refundCall = String.Format("https://graph.facebook.com/{0}?status={3}&message={1}&{2}",
                                             thePurchase.FacebookOrderID,
                                             MyMessageTextBox.Text,
-                                            GetApplicationAccessToken(), newStatus);
+                                            FBUtils.GetApplicationAccessToken(), newStatus);
 
             string resp = "";
 
             try
             {
                 // Va por POST
-                resp = GetHttpResponse(refundCall, new byte[0]);
+                resp = FBUtils.GetHttpResponse(refundCall, new byte[0]);
             }
             catch (Exception ex)
             {

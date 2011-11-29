@@ -77,12 +77,13 @@
 		</s:RichText>
 	</s:Group>
 
-	<s:Label id="MyZeroRemaining" text="You don't have any more matches for today." styleName="blackBoldMediumHN"  includeIn="NotPurchased"
+	<s:Label id="MyZeroRemaining" text="You don't have available matches for today." styleName="blackBoldMediumHN"  includeIn="NotPurchased"
 			 width="124" x="32" y="7"
 			 textAlign="center" />
 	
-	<s:Group includeIn="Purchased">
-		<s:Label id="MyTicketExpiryDate" text="Valid until: {mTeamModel.TheTeam.Ticket.TicketExpiryDate.toLocaleString()}" styleName="whiteBoldBig" x="0" y="30" />
+	<s:Group includeIn="Purchased" left="0" right="0">
+		<s:Label text="{mTeamModel.TheTeam.Ticket.TicketExpiryDate.toDateString()}" styleName="whiteBoldBig" y="5" left="0" right="0" textAlign="center" />
+		<s:Label text="{mTeamModel.TheTeam.Ticket.TicketExpiryDate.toLocaleTimeString()}" styleName="whiteBoldBig" y="20" left="0" right="0" textAlign="center" />
 	</s:Group>
 	
 	<s:Button id="MyBuyTicketsButton"

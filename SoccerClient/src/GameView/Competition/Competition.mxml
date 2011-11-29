@@ -29,7 +29,7 @@
 		
 		protected function AddedToStageHandler(event:Event):void
 		{
-			//GameMetrics.ReportEvent(GameMetrics.VIEW_RANKING);
+			GameMetrics.ReportEvent(GameMetrics.VIEW_COMPETITION);
 
 			// Se produce el AddedToStage antes q el CreationComplete (solo la primera vez, luego no se produce mas el CreationComplete, claro)
 			if (mCompetitionModel != null)
@@ -97,7 +97,7 @@
 		<s:Label id="MyGroupNameLabel" text="{mCompetitionModel.TheGroup.GroupName}" width="72" x="148" y="41" styleName="whiteBoldVeryBig" textAlign="center" />
 		
 		<s:Label width="192" x="221" y="9" text="FIN DE TEMPORADA EN:" styleName="whiteBoldMedium" textAlign="center" />
-		<s:Label width="192" x="221" y="45" text="{TimeUtils.ConvertSecondsToStringWithDays(mCompetitionModel.RemainingSeasonSeconds)}" 
+		<s:Label width="192" x="221" y="45" text="{TimeUtils.ConvertSecondsToStringVerbose(mCompetitionModel.RemainingSeasonSeconds)}" 
 				 styleName="whiteBoldBig" textAlign="center" />
 
 		<s:List id="MyCompetitionList" left="0" right="0" top="74" height="366"

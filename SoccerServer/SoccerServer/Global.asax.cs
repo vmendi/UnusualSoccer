@@ -8,6 +8,7 @@ using SoccerServer.NetEngine;
 using System.Threading;
 using Facebook;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 
 namespace SoccerServer
@@ -112,35 +113,42 @@ namespace SoccerServer
             Log.log(GLOBAL_LOG, "******************* Initialization from " + this.Server.MachineName + " Global.asax *******************");
            
             mNetEngine.Start();
-            
+
+            mStopWatch = new Stopwatch();
             mSecondsTimer = new System.Timers.Timer(1000);
             mSecondsTimer.Elapsed += new System.Timers.ElapsedEventHandler(SecondsTimer_Elapsed);
 
+            mTotalSeconds = 0;
+            mStopWatch.Start();
             mSecondsTimer.Start();
         }
 
 		void SecondsTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
-			mSecondsTimer.Stop();
-			mSeconds++;
+            float elapsed = (float)mStopWatch.Elapsed.TotalSeconds;
+            mStopWatch.Restart();
+            mTotalSeconds += elapsed;
 
-			try
-			{
+            // Lo paramos para que no se realimente en caso de que el proceso tarde mas de 1 segundo
+            mSecondsTimer.Stop();
+
+            try
+            {
                 RunHourlyProcess();
                 Run24hProcess();
                 RunWeeklyProcess();
-                                        
-				// Llamamos al tick de los partidos en curso
-                (mNetEngine.NetServer.NetClientApp as Realtime).OnSecondsTick();
-			}
-			catch (Exception excp)
-			{
-				Log.log(GLOBAL_LOG, excp);
-			}
-			finally
-			{
-				mSecondsTimer.Start();
-			}
+
+                // Llamamos al tick de los partidos en curso
+                (mNetEngine.NetServer.NetClientApp as Realtime).OnSecondsTick(elapsed, mTotalSeconds);
+            }
+            catch (Exception excp)
+            {
+                Log.log(GLOBAL_LOG, excp);
+            }
+            finally
+            {
+                mSecondsTimer.Start();
+            }
         }
 
         private void RunHourlyProcess()
@@ -219,8 +227,9 @@ namespace SoccerServer
         private NetEngineMain mNetEngine;
 
         private System.Timers.Timer mSecondsTimer;
-		private int mSeconds = 0;
-
+        private Stopwatch mStopWatch;
+        private float mTotalSeconds;
+		
         private DateTime mLast24hProcessedDateTime = DateTime.Now;
         private DateTime mLastHourlyProcessedDateTime = DateTime.Now;
 

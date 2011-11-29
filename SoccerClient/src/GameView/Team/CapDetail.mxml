@@ -7,7 +7,7 @@
 	<fx:Style source="../styles.css" />
 	
 	<fx:Script><![CDATA[
-		import GameModel.SoccerPlayerQuality;
+		import GameModel.SoccerPlayerDerived;
 		import GameModel.TeamModel;
 		
 		import SoccerServer.TransferModel.vo.SoccerPlayer;
@@ -20,12 +20,12 @@
 		public function set TheSoccerPlayer(v:SoccerPlayer) : void 
 		{ 
 			mSoccerPlayer = v;
-			TheSoccerPlayerQuality = new SoccerPlayerQuality(mSoccerPlayer);
+			TheSoccerPlayerDerived = new SoccerPlayerDerived(mSoccerPlayer);
 		}
 				
 		protected function CreationCompleteHandler(event:FlexEvent):void
 		{			
-			BindingUtils.bindSetter(OnQualityRefreshed, this, [ "TheSoccerPlayerQuality", "Quality"]);
+			BindingUtils.bindSetter(OnQualityRefreshed, this, [ "TheSoccerPlayerDerived", "Quality"]);
 		}
 		
 		private function OnQualityRefreshed(v:Number) : void
@@ -39,7 +39,7 @@
 				(MyCapMC.content as MovieClip).gotoAndStop("empty");
 			*/
 			
-			var qual : int = TheSoccerPlayerQuality.Quality;
+			var qual : int = TheSoccerPlayerDerived.Quality;
 			var mc : MovieClip = MyCapStars.content["mcStars"] as MovieClip; 
 			mc.gotoAndStop(qual+1);
 		}
@@ -47,9 +47,9 @@
 		private var mSoccerPlayer : SoccerPlayer;
 		
 		[Bindable] 
-		public function  get TheSoccerPlayerQuality() : SoccerPlayerQuality { return mSoccerPlayerQuality; }
-		private function set TheSoccerPlayerQuality(v:SoccerPlayerQuality) : void { mSoccerPlayerQuality = v; }
-		private var mSoccerPlayerQuality : SoccerPlayerQuality;
+		public function  get TheSoccerPlayerDerived() : SoccerPlayerDerived { return mSoccerPlayerDerived; }
+		private function set TheSoccerPlayerDerived(v:SoccerPlayerDerived) : void { mSoccerPlayerDerived = v; }
+		private var mSoccerPlayerDerived : SoccerPlayerDerived;
 
 	]]></fx:Script>
 	
@@ -80,6 +80,6 @@
 		
 	<s:SWFLoader left="74" top="42" id="MyCapStars" source="@Embed(source='/Assets/General.swf', symbol='CapDetailsStars')"/>
 	
-	<s:Label text="{TheSoccerPlayerQuality.Quality}" left="164" top="42" styleName="whiteBoldMedium" />
+	<s:Label text="{TheSoccerPlayerDerived.Quality}" left="164" top="42" styleName="whiteBoldMedium" />
 		
 </s:Group>

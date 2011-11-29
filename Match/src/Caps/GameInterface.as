@@ -111,7 +111,7 @@ package Caps
 			
 			if( cap != null )
 			{
-				gui.SelectedCap.gotoAndStop( cap.OwnerTeam.Name );
+				gui.SelectedCap.gotoAndStop(cap.OwnerTeam.Name);
 				gui.SelectedWeight.text = cap.Defense.toString();
 				gui.SelectedSliding.text = cap.Control.toString();
 				gui.SelectedPower.text = cap.Power.toString();
@@ -146,16 +146,13 @@ package Caps
 			var Gui:* = Match.Ref.Game.TheField.Visual;
 
 			// Rellenamos los goles
-			var scoreText:String = teams[ Enums.Team1 ].Goals.toString() + " - " + teams[ Enums.Team2 ].Goals.toString();  
-			Gui.Score.text = scoreText; 
+			Gui.Score.text = teams[ Enums.Team1 ].Goals.toString() + " - " + teams[ Enums.Team2 ].Goals.toString(); 
 			
 			// Actualizamos la parte de juego en la que estamos "gui.Period"
 			Gui.Period.text = Match.Ref.Game.Part.toString() + "T";
 			
 			// Actualizamos el tiempo del partido
-			var totalSeconds:Number = Match.Ref.Game.Time; 
-			var text:String = utils.TimeUtils.ConvertSecondsToString( totalSeconds );
-			Gui.Time.text = text;
+			Gui.Time.text = utils.TimeUtils.ConvertSecondsToString(Match.Ref.Game.Time);
 			
 			// Actualizamos el tiempo del sub-turno
 			// NOTE: Utilizamos el tiempo de turno que indica el interface, ya que se modifica cuando se utiliza la habilidad especial

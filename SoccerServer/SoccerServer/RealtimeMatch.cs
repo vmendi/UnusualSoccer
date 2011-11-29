@@ -390,7 +390,7 @@ namespace SoccerServer
             Players[idPlayer].TheConnection.Invoke(method, args);
         }
 
-        public void OnSecondsTick(float elapsed = 1.0f)
+        public void OnSecondsTick(float elapsed)
         {
             ServerTime += elapsed;      // Contabilizamos tiempo de servidor
 
@@ -414,8 +414,8 @@ namespace SoccerServer
                     // Contabilizamos el tiempo que queda de la parte actual
                     RemainingSecs -= elapsed;
 
-                    // Cada 4 segundos sincronizamos el tiempo con los clientes
-                    if (((int)RemainingSecs) % 4 == 0)
+                    // Cada X segundos sincronizamos el tiempo con los clientes
+                    if (((int)RemainingSecs) % 10 == 0)
                         this.Broadcast("SyncTime", RemainingSecs);
 
                     // Comprobamos si ha terminado el tiempo
@@ -449,7 +449,6 @@ namespace SoccerServer
                 {
                 }
                 break;
-
             }
         }
 
