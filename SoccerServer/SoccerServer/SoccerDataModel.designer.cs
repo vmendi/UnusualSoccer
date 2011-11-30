@@ -318,6 +318,8 @@ namespace SoccerServer.BDDModel
 		
 		private EntitySet<CompetitionGroup> _CompetitionGroups;
 		
+		private EntitySet<Team> _Teams;
+		
 		private EntityRef<CompetitionDivision> _CompetitionDivision1;
 		
     #region Extensibility Method Definitions
@@ -338,6 +340,7 @@ namespace SoccerServer.BDDModel
 		{
 			this._CompetitionDivisions = new EntitySet<CompetitionDivision>(new Action<CompetitionDivision>(this.attach_CompetitionDivisions), new Action<CompetitionDivision>(this.detach_CompetitionDivisions));
 			this._CompetitionGroups = new EntitySet<CompetitionGroup>(new Action<CompetitionGroup>(this.attach_CompetitionGroups), new Action<CompetitionGroup>(this.detach_CompetitionGroups));
+			this._Teams = new EntitySet<Team>(new Action<Team>(this.attach_Teams), new Action<Team>(this.detach_Teams));
 			this._CompetitionDivision1 = default(EntityRef<CompetitionDivision>);
 			OnCreated();
 		}
@@ -452,6 +455,19 @@ namespace SoccerServer.BDDModel
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CompetitionDivision_Team", Storage="_Teams", ThisKey="CompetitionDivisionID", OtherKey="LastDivisionQueriedID")]
+		public EntitySet<Team> Teams
+		{
+			get
+			{
+				return this._Teams;
+			}
+			set
+			{
+				this._Teams.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CompetitionDivision_CompetitionDivision", Storage="_CompetitionDivision1", ThisKey="ParentCompetitionDivisionID", OtherKey="CompetitionDivisionID", IsForeignKey=true)]
 		public CompetitionDivision CompetitionDivision1
 		{
@@ -525,6 +541,18 @@ namespace SoccerServer.BDDModel
 		}
 		
 		private void detach_CompetitionGroups(CompetitionGroup entity)
+		{
+			this.SendPropertyChanging();
+			entity.CompetitionDivision = null;
+		}
+		
+		private void attach_Teams(Team entity)
+		{
+			this.SendPropertyChanging();
+			entity.CompetitionDivision = this;
+		}
+		
+		private void detach_Teams(Team entity)
 		{
 			this.SendPropertyChanging();
 			entity.CompetitionDivision = null;
@@ -4363,6 +4391,8 @@ namespace SoccerServer.BDDModel
 		
 		private System.DateTime _LastFitnessUpdate;
 		
+		private System.Nullable<int> _LastDivisionQueriedID;
+		
 		private EntitySet<CompetitionGroupEntry> _CompetitionGroupEntries;
 		
 		private EntitySet<MatchParticipation> _MatchParticipations;
@@ -4378,6 +4408,8 @@ namespace SoccerServer.BDDModel
 		private EntityRef<TeamStat> _TeamStat;
 		
 		private EntityRef<Ticket> _Ticket;
+		
+		private EntityRef<CompetitionDivision> _CompetitionDivision;
 		
 		private EntityRef<Player> _Player;
 		
@@ -4411,6 +4443,8 @@ namespace SoccerServer.BDDModel
     partial void OnFitnessChanged();
     partial void OnLastFitnessUpdateChanging(System.DateTime value);
     partial void OnLastFitnessUpdateChanged();
+    partial void OnLastDivisionQueriedIDChanging(System.Nullable<int> value);
+    partial void OnLastDivisionQueriedIDChanged();
     #endregion
 		
 		public Team()
@@ -4423,6 +4457,7 @@ namespace SoccerServer.BDDModel
 			this._SpecialTrainings = new EntitySet<SpecialTraining>(new Action<SpecialTraining>(this.attach_SpecialTrainings), new Action<SpecialTraining>(this.detach_SpecialTrainings));
 			this._TeamStat = default(EntityRef<TeamStat>);
 			this._Ticket = default(EntityRef<Ticket>);
+			this._CompetitionDivision = default(EntityRef<CompetitionDivision>);
 			this._Player = default(EntityRef<Player>);
 			this._PredefinedTeam = default(EntityRef<PredefinedTeam>);
 			OnCreated();
@@ -4676,6 +4711,30 @@ namespace SoccerServer.BDDModel
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastDivisionQueriedID", DbType="Int")]
+		public System.Nullable<int> LastDivisionQueriedID
+		{
+			get
+			{
+				return this._LastDivisionQueriedID;
+			}
+			set
+			{
+				if ((this._LastDivisionQueriedID != value))
+				{
+					if (this._CompetitionDivision.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnLastDivisionQueriedIDChanging(value);
+					this.SendPropertyChanging();
+					this._LastDivisionQueriedID = value;
+					this.SendPropertyChanged("LastDivisionQueriedID");
+					this.OnLastDivisionQueriedIDChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_CompetitionGroupEntry", Storage="_CompetitionGroupEntries", ThisKey="TeamID", OtherKey="TeamID")]
 		public EntitySet<CompetitionGroupEntry> CompetitionGroupEntries
 		{
@@ -4824,6 +4883,40 @@ namespace SoccerServer.BDDModel
 						value.Team = this;
 					}
 					this.SendPropertyChanged("Ticket");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CompetitionDivision_Team", Storage="_CompetitionDivision", ThisKey="LastDivisionQueriedID", OtherKey="CompetitionDivisionID", IsForeignKey=true, DeleteRule="SET NULL")]
+		public CompetitionDivision CompetitionDivision
+		{
+			get
+			{
+				return this._CompetitionDivision.Entity;
+			}
+			set
+			{
+				CompetitionDivision previousValue = this._CompetitionDivision.Entity;
+				if (((previousValue != value) 
+							|| (this._CompetitionDivision.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CompetitionDivision.Entity = null;
+						previousValue.Teams.Remove(this);
+					}
+					this._CompetitionDivision.Entity = value;
+					if ((value != null))
+					{
+						value.Teams.Add(this);
+						this._LastDivisionQueriedID = value.CompetitionDivisionID;
+					}
+					else
+					{
+						this._LastDivisionQueriedID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("CompetitionDivision");
 				}
 			}
 		}

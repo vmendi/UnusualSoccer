@@ -257,7 +257,7 @@ package Caps
 		public function OnOverCap(cap : Cap) : void
 		{	
 			// Con el de BallControl (pase al pie) si que queremos mostrar valores
-			if (!UserInputEnabled || PosControl.IsStarted || ShootControl.IsStarted)
+			if (PosControl.IsStarted || ShootControl.IsStarted)
 				return;
 			
 			var panelInfo : DisplayObject = new Assets.CapDetails();

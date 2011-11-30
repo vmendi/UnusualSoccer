@@ -11,6 +11,8 @@ namespace SoccerServer.TransferModel
         public string DivisionName;     // Segunda Division B
         public int    MinimumPoints;    // Zona de ascenso
 
+        public bool   Promoted = false; // El equipo ha promocionado de division desde la ultima vez que se envio el grupo
+
         public List<CompetitionGroupEntry> GroupEntries = new List<CompetitionGroupEntry>();
     }
 

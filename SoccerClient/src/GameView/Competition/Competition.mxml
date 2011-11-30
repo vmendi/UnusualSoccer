@@ -20,6 +20,8 @@
 		import GameModel.CompetitionModel;
 		import GameModel.MainGameModel;
 		
+		import GameView.ImportantMessageDialog;
+		import GameView.PromotedDialog;
 		import GameView.Skins.DefaultPanelSkin;
 		
 		import mx.binding.utils.BindingUtils;
@@ -45,6 +47,7 @@
 			mCompetitionModel = mGameModel.TheCompetitionModel;
 			
 			BindingUtils.bindSetter(OnHasCreditChanged, mGameModel.TheTicketModel, ["HasCredit"]);
+			BindingUtils.bindSetter(OnPromotedChanged, mCompetitionModel, ["TheGroup", "Promoted"] );
 			
 			mCompetitionModel.RefreshGroup(OnGroupRefreshed);
 			mCompetitionModel.RefreshSeasonEndDate();
@@ -56,6 +59,16 @@
 				currentState = "AvailableCredit";
 			else
 				currentState = "OutOfCredit";
+		}
+		
+		private function OnPromotedChanged(bPromoted : Boolean) : void
+		{
+			if (bPromoted)
+			{
+				// Podemos mostrar directamente el mensaje porque el Changed no nos llegara 2 veces a true (al producirse el Refresh dentro del modelo,
+				// el server lo mandara a false la segunda vez, es decir, el server recuerda lo que nos mando la ultima vez)
+				PromotedDialog.Show();
+			}
 		}
 		
 		private function OnGroupRefreshed() : void

@@ -143,7 +143,7 @@ namespace SoccerServer
 
             if (!netEngineMain.NetServer.IsRunning)
                 netEngineMain.Start();
-            else            
+            else
                 netEngineMain.Stop();
             
             UpdateRealtimeData();
@@ -175,7 +175,7 @@ namespace SoccerServer
 
         protected void ResetSeasons_Click(object sender, EventArgs e)
         {
-            MainService.ResetSeasons(true);
+            MainService.ResetSeasons(false);
         }
 
         protected void NewSeason_Click(object sender, EventArgs e)

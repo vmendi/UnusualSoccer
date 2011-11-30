@@ -20,8 +20,6 @@ namespace SoccerServer
         [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 10000)]
         public TransferModel.CompetitionGroup RefreshGroupForTeam(long facebookID)
         {
-            var ret = new TransferModel.CompetitionGroup();
-
             using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
             {
                 con.Open();
@@ -55,11 +53,23 @@ namespace SoccerServer
                         mContext.SubmitChanges();
                     }
 
-                    ret = GetTransferCompetitionGroup(theGroupEntry.CompetitionGroup);
+                    TransferModel.CompetitionGroup ret = GetTransferCompetitionGroup(theGroupEntry.CompetitionGroup);
+
+                    // Veamos la ultima division que enviamos a este cliente. Si ha cambiado => Ha habido ascenso.
+                    if (theGroupEntry.CompetitionGroup.CompetitionDivisionID != theTeam.LastDivisionQueriedID)
+                    {
+                        // Cuando empezamos a jugar es null => estamos en la division mas baja => no es promocion en realidad
+                        if (theTeam.LastDivisionQueriedID != null)
+                            ret.Promoted = true;
+
+                        // Almacenamos que este ha sido el ultimo que hemos enviado al cliente
+                        theTeam.LastDivisionQueriedID = theGroupEntry.CompetitionGroup.CompetitionDivisionID;
+                        mContext.SubmitChanges();
+                    }
+
+                    return ret;
                 }
             }
-
-            return ret;
         }
 
         private static CompetitionGroupEntry AddInactiveTeamToCompetition(SoccerDataModelDataContext theContext, CompetitionSeason currentSeason, BDDModel.Team theTeam)
@@ -267,10 +277,10 @@ namespace SoccerServer
             List<int> currDivisionTeams = null;
             List<CompetitionGroupEntry> entries = new List<CompetitionGroupEntry>();
 
-            // Empezamos por la division mas baja, vamos subiendo en el arbol
+            // Empezamos por la division mas baja, vamos subiendo en la lista
             var currentDivision = GetLowestDivision(theContext);
 
-            while (currentDivision.ParentCompetitionDivisionID != currentDivision.CompetitionDivisionID)
+            while (true)
             {
                 // Todas las entries de esta division, temporada pasada
                 var groupEntries = (from e in theContext.CompetitionGroupEntries
@@ -333,6 +343,10 @@ namespace SoccerServer
                         });
                     }
                 }
+
+                // Si esta que acabamos de procesar es la que se tiene a si misma como padre, hemos procesado todas...
+                if (currentDivision.ParentCompetitionDivisionID == currentDivision.CompetitionDivisionID)
+                    break;
 
                 // Nueva division ya generada, pasamos al padre
                 currentDivision = currentDivision.CompetitionDivision1;

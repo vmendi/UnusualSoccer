@@ -16,6 +16,7 @@
         <field name="GroupName" type="String" fulltype="String" nativetype="String" />
         <field name="DivisionName" type="String" fulltype="String" nativetype="String" />
         <field name="MinimumPoints" type="int" fulltype="int" nativetype="int" />
+        <field name="Promoted" type="Boolean" fulltype="Boolean" nativetype="bool" />
         <field name="GroupEntries" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;SoccerServer.TransferModel.CompetitionGroupEntry&gt;" />
       </datatype>
       <datatype name="CompetitionGroupEntry" fullname="SoccerServer.TransferModel.CompetitionGroupEntry" typeNamespace="SoccerServer.TransferModel">

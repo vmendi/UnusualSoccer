@@ -8,6 +8,7 @@
 	<fx:Style source="../styles.css"/>
 		
 	<fx:Script><![CDATA[
+		import GameView.AnimatableDialog;
 		import GameModel.MatchResultUtils;
 		import GameModel.TeamModel;
 		
