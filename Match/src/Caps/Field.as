@@ -22,7 +22,7 @@ package Caps
 		
 		// Origen del campo (tener en cuenta que el gráfico tiene una zona de vallas, por eso no es 0,0)
 		static public const OffsetX:Number = 46;
-		static public const OffsetY:Number = 64;
+		static public const OffsetY:Number = 72;
 		
 		// Coordenadas de las areas PEQUEÑAS del campo en coordenadas absolutas desde el corner superior izquierdo del movieclip
 		static public const SmallAreaLeftX:Number = 0 + OffsetX;

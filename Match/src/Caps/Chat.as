@@ -36,7 +36,7 @@ package Caps
 			addChild(mcChat);
 						
 			mcChat.x = 52;
-			mcChat.y = 387;
+			mcChat.y = 400;
 			
 			mcOutput = mcChat["mcOutput"];
 			mcInput = mcChat["mcInput"];
