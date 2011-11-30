@@ -12,11 +12,12 @@ package
 	public final class GameMetrics
 	{
 		static public const TEAM_SELECTED : String = "Team_Selected"; // Al seleccionar el primer equipo y entrar al juego por primera vez
-		static public const PLAY_MATCH : String = "Play_Match"; // 
-		static public const VIEW_RANKING : String = "View_Ranking"; // 
-		static public const UPGRADE_PLAYER : String = "Upgrade_Player"; // 
-		static public const GET_SKILL : String = "Get_Skill"; // 
-		static public const LOOK_FOR_MATCH : String = "Look_For_Match"; // 
+		static public const PLAY_MATCH : String = "Play_Match";
+		static public const VIEW_RANKING : String = "View_Ranking"; 
+		static public const VIEW_COMPETITION : String = "View_Competition";
+		static public const UPGRADE_PLAYER : String = "Upgrade_Player";  
+		static public const GET_SKILL : String = "Get_Skill";
+		static public const LOOK_FOR_MATCH : String = "Look_For_Match"; 
 		static public const DO_TRAINING : String = "Do_Training";
 		
 		static public function Init(dobject:DisplayObject) : void

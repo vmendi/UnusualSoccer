@@ -44,8 +44,6 @@ namespace SoccerServer
             {
                 mRooms.Add(new Room(GetRoomNameByID(c)));
             }
-
-            mSecondsCount = 0;
         }
 
         public override void OnAppEnd()
@@ -471,7 +469,7 @@ namespace SoccerServer
         }
 
 
-        public void OnSecondsTick()
+        public void OnSecondsTick(float elapsedSeconds, float totalSeconds)
         {
             lock (mGlobalLock)
             {
@@ -480,13 +478,11 @@ namespace SoccerServer
 
                 foreach (RealtimeMatch theMatch in matchesCopy)
                 {
-                    theMatch.OnSecondsTick();
+                    theMatch.OnSecondsTick(elapsedSeconds);
                 }
                 
                 // Cada X segundos evaluamos los matcheos automaticos
-                mSecondsCount++;
-
-                if (mSecondsCount % 5 == 0)
+                if (((int)totalSeconds) % 5 == 0)
                 {
                     ProcessMatchMaking();
                 }
@@ -576,7 +572,6 @@ namespace SoccerServer
 
         private readonly object mGlobalLock = new object();
 
-        private int mSecondsCount = 0;                  // Para mirar el Match Making cada X segundos
         private bool mbAcceptingNewMatches = true;      // Parada programada
         private string mBroadcastMsg = "";
     }
@@ -649,6 +644,7 @@ namespace SoccerServer
         public int TrueSkill;							// ...Por si acaso hay que mostrarlo
         public List<int> SpecialSkillsIDs;				// Del 1 al 9
         public String Formation;						// Nombre de la formacion: "331", "322", etc..
+        public int Fitness;                             // Se multiplica en el partido
 
         // Todos los futbolistas, ordenados según la posición/formacion. Primero siempre el portero.
         public List<SoccerPlayerData> SoccerPlayers = new List<SoccerPlayerData>();

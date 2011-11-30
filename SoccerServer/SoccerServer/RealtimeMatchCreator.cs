@@ -133,14 +133,12 @@ namespace SoccerServer
                                      where s.IsCompleted
                                      select s.SpecialTrainingDefinitionID).ToList();
             data.Formation = bddPlayer.Team.Formation;
+            data.Fitness = bddPlayer.Team.Fitness;
 
             var soccerPlayers = (from p in bddPlayer.Team.SoccerPlayers
                                  where p.FieldPosition < 100
                                  orderby p.FieldPosition
                                  select p);
-
-            // Multiplicamos por el fitness (entre 0 y 1)
-            float daFitness = bddPlayer.Team.Fitness / 100.0f;
 
             foreach (SoccerPlayer sp in soccerPlayers)
             {
@@ -151,9 +149,9 @@ namespace SoccerServer
                 spData.FacebookID = sp.FacebookID;
                 spData.IsInjured = sp.IsInjured;
 
-                spData.Power = (int)Math.Round(sp.Power * daFitness);
-                spData.Control = (int)Math.Round(sp.Sliding * daFitness);
-                spData.Defense = (int)Math.Round(sp.Weight * daFitness);
+                spData.Power = sp.Power;
+                spData.Control = sp.Sliding;
+                spData.Defense = sp.Weight;
 
                 data.SoccerPlayers.Add(spData);
             }

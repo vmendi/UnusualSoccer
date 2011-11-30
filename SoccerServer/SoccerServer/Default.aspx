@@ -11,6 +11,19 @@
 <head id="TheHead">
     <title>${title}</title>
 
+    <!-- Kissmetrics -->
+    <script type="text/javascript">
+        var _kmq = _kmq || [];
+        function _kms(u) {
+            setTimeout(function () {
+                var s = document.createElement('script'); var f = document.getElementsByTagName('script')[0]; s.type = 'text/javascript'; s.async = true;
+                s.src = u; f.parentNode.insertBefore(s, f);
+            }, 1);
+        }
+        _kms('//i.kissmetrics.com/i.js'); _kms('//doug1izaerwt3.cloudfront.net/ae86ab550667e1579736f7bbf25066047d01b340.1.js');
+    </script>
+
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         
     <meta property="og:title" content="${title}"/>
@@ -59,19 +72,7 @@
 		/* JavaScript enabled so display the flashContent div in case it is not replaced with a swf object. */
 		swfobject.createCSS("#flashContent", "display:block;text-align:left;");
     </script>
-
-    <!-- Kissmetrics -->
-    <script type="text/javascript">
-        var _kmq = _kmq || [];
-        function _kms(u) {
-            setTimeout(function () {
-                var s = document.createElement('script'); var f = document.getElementsByTagName('script')[0]; s.type = 'text/javascript'; s.async = true;
-                s.src = u; f.parentNode.insertBefore(s, f);
-            }, 1);
-        }
-        _kms('//i.kissmetrics.com/i.js'); _kms('//doug1izaerwt3.cloudfront.net/ae86ab550667e1579736f7bbf25066047d01b340.1.js');
-    </script>
-
+    
     <!-- Google Analytics -->
     <script type="text/javascript">
 

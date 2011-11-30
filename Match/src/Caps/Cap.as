@@ -23,6 +23,7 @@ package Caps
 	import flash.events.SecurityErrorEvent;
 	import flash.geom.Point;
 	import flash.net.URLRequest;
+	import flash.utils.getTimer;
 	
 	public class Cap extends PhyEntity
 	{
@@ -31,9 +32,9 @@ package Caps
 		protected var _Name:String = null;						// Nombre del jugador
 		protected var _Dorsal:int = 0;							// Nº de dorsal del jugador
 						
-		protected var _Defense:int = 50;						// Valor de defensa de 0 - 100 --> (Afecta a la capacidad de evitar el robo de balón.... )
-		protected var _Power:int = 50;							// Valor de ataque (Potencia) de 0 - 100 --> (Afecta a la potencia de tiro)
-		protected var _Control:int = 50;						// Control de 0 - 100 --> (Afecta a la capacidad de robar el balón.... ) 
+		protected var _OriginalDefense:int = 50;				// Tal y como vienen del manager, sin multiplicar por Fitness
+		protected var _OriginalPower:int = 50;				
+		protected var _OriginalControl:int = 50; 
 				
 		protected var _OwnerTeam:Team = null;					// Equipo dueño de la chapa
 		
@@ -48,8 +49,25 @@ package Caps
 		
 		private var _IsInjured : Boolean = false;
 				
-		public var YellowCards:int = 0; 						// Número de tarjetas amarillas (2 = roja = expulsión)
-						
+		public var YellowCards:int = 0; 						// Número de tarjetas amarillas (2 => roja => expulsión)
+		
+		
+		public function get OwnerTeam() : Team	  { return _OwnerTeam; }
+		public function get Name() : String		  { return _Name; }
+		public function get Id() : int			  { return _CapId; }
+		
+		public function get IsInjured() : Boolean { return _IsInjured; }
+		
+		public function get Power() : int		  {	return Math.floor((OwnerTeam.Fitness / 100.0) * OriginalPower); }
+		public function get Control() : int		  {	return Math.floor((OwnerTeam.Fitness / 100.0) * OriginalControl); }
+		public function get Defense() : int		  {	return Math.floor((OwnerTeam.Fitness / 100.0) * OriginalDefense); }
+		
+		public function get OriginalPower() : int	 { return _OriginalPower; }
+		public function get OriginalControl() : int	 { return _OriginalControl; }
+		public function get OriginalDefense() : int  { return _OriginalDefense; }
+		
+		public function get Ghost() : Entity { return this.OwnerTeam.Ghost; }	// Ghost de la chapa (solo hay uno por equipo)
+								
 		//
 		// Inicializa una chapa
 		//
@@ -97,14 +115,17 @@ package Caps
 			
 			_Name = descCap.Name;
 			_Dorsal = descCap.DorsalNumber;
-			_Power = descCap.Power;
-			_Control = descCap.Control;
-			_Defense = descCap.Defense;
-			_IsInjured = descCap.IsInjured;
 			_OwnerTeam = team;
-					
+			_IsInjured = descCap.IsInjured;
+
+			_OriginalPower   = descCap.Power;
+			_OriginalControl = descCap.Control;
+			_OriginalDefense = descCap.Defense;
+
 			// Nos registramos a los eventos de entrada del ratón!
-			_Visual.addEventListener( MouseEvent.MOUSE_DOWN, OnMouseDown );
+			_Visual.addEventListener(MouseEvent.MOUSE_DOWN, OnMouseDown);
+			_Visual.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			_Visual.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
 			
 			// Creamos un Sprite linkado a la chapa, donde pintaremos los radios de influencia de la chapa
 			// Estos sprites los introducimos como hijos del campo, para asegurar que se vean debajo de las chapas 
@@ -123,13 +144,27 @@ package Caps
 			Match.Ref.Game.TheEntityManager.AddTagged(this, "Team"+(team.IdxTeam +1).toString() + "_" + _CapId.toString());
 		}
 		
-		//
-		// Han presionado el botón del ratón sobre la chapa
-		// Notificamos al interface de juego para que actúe en consecuencia 
-		//
-		private function OnMouseDown( e: MouseEvent ) : void
+		private function OnMouseDown(e : MouseEvent) : void
 		{			
-			Match.Ref.Game.TheInterface.OnClickCap( this );
+			Match.Ref.Game.TheInterface.OnClickCap(this);
+		}
+		
+		private function OnMouseOver(e : MouseEvent) : void
+		{	
+			if (TweenMax.getTweensOf(OnRealOver).length == 0)
+				TweenMax.delayedCall(0.8, OnRealOver);
+		}
+		private function OnRealOver() : void
+		{
+			Match.Ref.Game.TheInterface.OnOverCap(this);
+		}
+		private function OnMouseOut(e : MouseEvent) : void
+		{
+			// Nos aseguramos de que no hay Outs sin Overs
+			if (TweenMax.getTweensOf(OnRealOver).length > 0)
+				TweenMax.killDelayedCallsTo(OnRealOver);
+			else
+				Match.Ref.Game.TheInterface.OnOutCap(this);
 		}
 		
 		//
@@ -148,22 +183,6 @@ package Caps
 			
 			// Aplicamos el impulso al cuerpo físico
 			PhyObject.body.ApplyImpulse( new b2Vec2( vecForce.x, vecForce.y ), PhyObject.body.GetWorldCenter() );
-		}
-		
-		public function get OwnerTeam() : Team	  { return _OwnerTeam; }
-		public function get Name() : String		  { return _Name; }
-		public function get Id() : int			  { return _CapId; }
-		public function get Defense() : int		  { return _Defense; }
-		public function get Power() : int		  { return _Power; }
-		public function get Control() : int		  { return _Control; }
-		public function get IsInjured() : Boolean { return _IsInjured; }
-		
-		//
-		// Obtiene el Ghost de la chapa (solo hay uno por equipo)
-		//
-		public function get Ghost() : Entity
-		{
-			return this.OwnerTeam.Ghost;
 		}
 		
 		//

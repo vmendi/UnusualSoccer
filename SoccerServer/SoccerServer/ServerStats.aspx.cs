@@ -39,6 +39,8 @@ namespace SoccerServer
                 MyConsoleLabel.Text += "Abandoned matches: " + GetAbandonedMatchesCount() + "<br/>";
                 MyConsoleLabel.Text += "Same IP abandoned matches: " + GetSameIPAbandondedMatchesCount() + "<br/>";
                 MyConsoleLabel.Text += "Unjust matches: " + GetUnjustMatchesCount() + "<br/>";
+
+                ShowRestrictions();
 			}
 		}
 
@@ -234,6 +236,42 @@ namespace SoccerServer
                 }
                 con.Close();
             }
+        }
+
+        private void ShowRestrictions()
+        {
+            var access_token = FBUtils.GetApplicationAccessToken();
+            var response = FBUtils.GetHttpResponse(String.Format("https://graph.facebook.com/{0}?fields=restrictions&{1}", 
+                                                                  Global.Instance.FacebookSettings.AppId, access_token), null);
+
+            MyLogConsole.Text += "------------------------Restrictions------------------------<br/>" + response + 
+                            "<br/>------------------------------------------------------------<br/>";
+        }
+
+        protected void SetRestrictionsES_Click(object sender, EventArgs e)
+        {
+            SetRestrictions("ES");
+        }
+
+        protected void SetRestrictionsNone_Click(object sender, EventArgs e)
+        {
+            SetRestrictions("");
+        }
+
+        private void SetRestrictions(string lang)
+        {
+            // developers.facebook.com/docs/reference/api/application/
+            var access_token = FBUtils.GetApplicationAccessToken();
+
+            var post = String.Format("https://graph.facebook.com/{0}?restrictions={2}&{1}",
+                                     Global.Instance.FacebookSettings.AppId, access_token, "{\"location\":\"" + lang + "\"}");
+
+            // El segundo parametro fuerza el POST
+            var response = FBUtils.GetHttpResponse(post, new byte[0]);
+
+            // Logeamos, refrescamos
+            MyLogConsole.Text += "SetRestrictionsES response: " + response + "<br/>";
+            ShowRestrictions();
         }
 	}
 }

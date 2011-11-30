@@ -6,9 +6,9 @@ package GameModel
 
 	// Como no tenemos un SoccerPlayer propio sino que usamos directamente el del TransferModel, tenemos q usar un objeto derivado para
 	// calcular datos adicionales y que sean bindeables
-	public final class SoccerPlayerQuality
+	public final class SoccerPlayerDerived
 	{
-		public function SoccerPlayerQuality(s:SoccerPlayer)
+		public function SoccerPlayerDerived(s:SoccerPlayer)
 		{
 			mSoccerPlayer = s;
 		

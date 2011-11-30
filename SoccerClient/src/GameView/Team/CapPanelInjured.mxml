@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" visible="{IsInjured(TheSoccerPlayer)}">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" visible="{IsInjured(TheSoccerPlayer)}"
+		 creationComplete="CreationCompleteHandler(event)">
 	
 	<fx:Style source="../styles.css" />
 	
 	<fx:Script><![CDATA[
+		import GameModel.SoccerPlayerDerived;
+		
 		import SoccerServer.TransferModel.vo.SoccerPlayer;
+		
+		import mx.events.FlexEvent;
 		
 		import utils.TimeUtils;
 		
 		[Bindable]
 		public function get TheSoccerPlayer() : SoccerPlayer { return mSoccerPlayer; }
-		public function set TheSoccerPlayer(v:SoccerPlayer) : void { mSoccerPlayer = v;	}
+		public function set TheSoccerPlayer(v:SoccerPlayer) : void { mSoccerPlayer = v; }
 		private var mSoccerPlayer : SoccerPlayer;
 		
 		static private function IsInjured(soccerPlayer : SoccerPlayer) : Boolean
@@ -31,12 +36,28 @@
 				// Seguro que la lesion no ha caducado?
 				if (remainingMilisecs >=0)
 				{
-					ret = TimeUtils.ConvertSecondsToStringWithDays(remainingMilisecs / 1000);
+					ret = TimeUtils.ConvertSecondsToStringVerbose(remainingMilisecs / 1000);
 				}
 			}
 			
 			return ret;
 		}
+		
+		
+		protected function CreationCompleteHandler(event:FlexEvent):void
+		{
+			mTimer.addEventListener(TimerEvent.TIMER, OnTimer);
+			mTimer.start();
+			
+			OnTimer(null);
+		}
+		
+		private function OnTimer(e:TimerEvent) : void
+		{
+			MyTimeLabel.text = GetInjuryRemainingTime(TheSoccerPlayer);	
+		}
+		
+		private var mTimer : Timer = new Timer(1000, 0);
 		
 	]]></fx:Script>
 		
@@ -53,7 +74,7 @@
 			<s:Label text="{resourceManager.getString('main','CapDetailPlayerInjured')}" styleName="whiteBoldBig" />
 		</s:Group>
 		<s:Label text="{resourceManager.getString('main','CapDetailTimeToRecover')} :" styleName="whiteBoldMedium" />
-		<s:Label text="{GetInjuryRemainingTime(TheSoccerPlayer)}" styleName="whiteBoldBig" />
+		<s:Label id="MyTimeLabel" text="" styleName="whiteBoldBig" />
 	</s:Group>
 		
 </s:Group>

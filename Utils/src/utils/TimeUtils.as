@@ -24,7 +24,7 @@ package utils
 			return hours.toString() + ":" + minutesStr + ":" + secondsStr;
 		}
 		
-		static public function ConvertSecondsToStringWithDays(totalSeconds:Number) : String
+		static public function ConvertSecondsToStringVerbose(totalSeconds:Number) : String
 		{
 			if (totalSeconds < 0)
 				return "";
@@ -39,18 +39,25 @@ package utils
 			
 			var seconds : Number = Math.floor(remainderMinutes % 60);
 			
+			var daysStr	   : String = days.toString();
 			var hoursStr   : String = hours   < 10? "0"+hours.toString()   : hours.toString();
 			var minutesStr : String = minutes < 10? "0"+minutes.toString() : minutes.toString();
 			var secondsStr : String = seconds < 10? "0"+seconds.toString() : seconds.toString();
 			
-			var hoursText : String = hours == 1? " hora y " : " horas y ";
-			var daysText : String = days == 1? " dia " : " dias ";
-			var minutesText : String = minutes == 1? " minuto" : " minutos";
-			
 			if (days != 0)
-				return days.toString() + daysText + hoursStr + hoursText + minutesStr + minutesText;
+				daysStr = daysStr + (days == 1? " dia " : " dias ");
 			else
-				return hoursStr + hoursText + minutesStr + minutesText;
+				daysStr = "";
+			
+			if (hours != 0 || days != 0)
+				hoursStr = hoursStr + (hours == 1? " hora " : " horas ");
+			else
+				hoursStr = "";
+			
+			minutesStr = minutesStr + (minutes == 1? " min " : " mins ");
+			secondsStr = secondsStr + (seconds == 1? " seg " : " segs ");
+			
+			return daysStr + hoursStr + minutesStr + secondsStr;
 		}
 	}
 }

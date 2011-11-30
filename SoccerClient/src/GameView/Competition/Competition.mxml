@@ -29,7 +29,7 @@
 		
 		protected function AddedToStageHandler(event:Event):void
 		{
-			//GameMetrics.ReportEvent(GameMetrics.VIEW_RANKING);
+			GameMetrics.ReportEvent(GameMetrics.VIEW_COMPETITION);
 
 			// Se produce el AddedToStage antes q el CreationComplete (solo la primera vez, luego no se produce mas el CreationComplete, claro)
 			if (mCompetitionModel != null)
@@ -60,18 +60,15 @@
 		
 		private function OnGroupRefreshed() : void
 		{
-			/*
 			if (MyCompetitionList != null)
 			{
 				MyCompetitionList.selectedItem = mCompetitionModel.GetLocalGroupEntry();
 				MyCompetitionList.callLater(EnsureSelectedIsVisible);
 			}
-			*/
 		}
 		
 		private function EnsureSelectedIsVisible() : void
 		{
-			/*
 			var idx : int = MyCompetitionList.dataProvider.getItemIndex(mCompetitionModel.GetLocalGroupEntry());
 						
 			if (idx + 4 < MyCompetitionList.dataProvider.length)
@@ -82,7 +79,6 @@
 			try {			
 				MyCompetitionList.ensureIndexIsVisible(idx);
 			} catch(e:Error) {}
-			*/
 		}
 
 		[Bindable]
@@ -92,29 +88,24 @@
 	]]></fx:Script>
 	
 		
-	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" bottom="10" left="10" width="250" title="DIVISIÓN">
-		<!--<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraFondo')" fillMode="clip" />-->
+	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" bottom="10" left="10" width="740" title="RANKING DE TU DIVISION">
+		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraFondo')" fillMode="clip" />
 		
-		<!--<Competition:DivisionBadge x="0" y="0" width="147" height="74" Division="{mCompetitionModel.TheGroup.DivisionName}" />-->
+		<Competition:DivisionBadge x="0" y="0" width="147" height="74" Division="{mCompetitionModel.TheGroup.DivisionName}" />
 				
-		<!--<s:Label width="147" x="0" y="80" text="GRUPO: {mCompetitionModel.TheGroup.GroupName}" styleName="whiteBoldMedium" textAlign="center" />-->
-		<!--<s:Label id="MyGroupNameLabel" text="" width="72" x="148" y="41" styleName="whiteBoldVeryBig" textAlign="center" />-->
+		<s:Label width="72" x="148" y="9" text="GRUPO" styleName="whiteBoldMedium" textAlign="center" />
+		<s:Label id="MyGroupNameLabel" text="{mCompetitionModel.TheGroup.GroupName}" width="72" x="148" y="41" styleName="whiteBoldVeryBig" textAlign="center" />
 		
-		<!--
-		<s:Label width="159" x="147" y="9" text="FIN DE TEMPORADA EN:" styleName="whiteBoldMedium" textAlign="center" />
-		<s:Label width="159" x="147" y="45" text="{TimeUtils.ConvertSecondsToStringWithDays(mCompetitionModel.RemainingSeasonSeconds)}" 
+		<s:Label width="192" x="221" y="9" text="FIN DE TEMPORADA EN:" styleName="whiteBoldMedium" textAlign="center" />
+		<s:Label width="192" x="221" y="45" text="{TimeUtils.ConvertSecondsToStringVerbose(mCompetitionModel.RemainingSeasonSeconds)}" 
 				 styleName="whiteBoldBig" textAlign="center" />
-		-->
-		
-	</s:Panel>
-	
-	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" bottom="10" right="10" width="480" title="RANKING DE TU DIVISION">
-		<s:List id="MyCompetitionList" left="0" right="0" top="0" height="366"
+
+		<s:List id="MyCompetitionList" left="0" right="0" top="74" height="366"
 				dataProvider="{mCompetitionModel.TheGroup.GroupEntries}" skinClass="GameView.Competition.CompetitionListSkin"		
 				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="true"/>
 	</s:Panel>
 	
-	<!--<Competition:LookingForMatchPanel x="424" y="500" includeIn="AvailableCredit" />-->
+	<Competition:LookingForMatchPanel x="424" y="22" includeIn="AvailableCredit" />
 	
 	<s:Label id="MyOutOfCredit" right="10" y="29" text="OUT OF CREDIT BLAH BLAH" includeIn="OutOfCredit" styleName="whiteBoldMedium" />
 

@@ -211,6 +211,7 @@
       <DependentUpon>DefaultUnusualSoccer.ascx</DependentUpon>
     </Compile>
     <Compile Include="EntityDataReader.cs" />
+    <Compile Include="FBUtils.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

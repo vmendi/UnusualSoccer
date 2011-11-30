@@ -15,66 +15,22 @@ package Caps
 	import utils.Delegate;
 
 	public class Team
-	{
-		static public var Groups:Array =
-			[
-				// Grupo 1 
-				[
-					"Racing",
-					"R. Madrid",
-					"Sevilla",
-					"Valencia",
-					"Zaragoza",
-					"Rayo",
-				],
-				// Grupo 2 
-				[
-					"Getafe",
-					"Hércules",
-					"Málaga",
-					"Deportivo",
-					"Espanyol",
-					"R. Sociedad",
-					"Betis",
-				],
-				// Grupo 3 
-				[
-					"Atlético",
-					"Athletic",
-					"Almería",
-					"Sporting",
-					"Granada",
-				],
-				// Grupo 4 
-				[
-					"Barcelona",
-					"Levante",
-					"Mallorca",
-					"Osasuna",
-				],
-				// Grupo 5
-				[
-					"Villarreal",
-				]
-			]
-				
+	{				
 		public const CAPS_BY_TEAM:int = 8;						// Número de chapas que tiene cada equipo
 		
-		protected var _CapsList:Array = new Array();			// Lista de chapas
-		protected var _Name:String = null;						// El nombre del equipo
 		public var UserName:String = null;						// El nombre del equipo (puesto por el usuario)
-		
 		public var IdxTeam:int = 0;								// Identificador de equipo
 		public var Side:int = 0;								// Lado del campo en el que está el equipo
-		protected var FormationName:String = "3-3-2";			// Alineación que está utilizando el equipo
-		
-		protected var _Goals:int = 0;							// Número de goles metidos
-		
-		protected var Skill:Array = null;						// Lista de habilidades. Una entrada para cada habilidad, si no la tiene es null
-		
-		public var Ghost:Entity = null;							// Ghost utilizado para decidir donde colocarás el portero
-		
+		public var Fitness : int = 0;							// El nivel de entrenamiento, dado desde el manager
+		public var Ghost:Entity = null;							// Ghost utilizado para decidir donde colocarás el portero		
 		public var UseSecondaryEquipment:Boolean = false;		// Indica si utiliza la equipacion secundaria
+		
+		protected var _CapsList:Array = new Array();			// Lista de chapas
+		protected var _Name:String = null;						// El nombre del equipo predefinido
+		
+		protected var _FormationName:String = "3-3-2";			// Alineación que está utilizando el equipo		
+		protected var _Goals:int = 0;							// Número de goles metidos		
+		protected var _Skill:Array = null;						// Lista de habilidades. Una entrada para cada habilidad, si no la tiene es null
 		
 		//
 		// Inicializa el equipo
@@ -84,8 +40,9 @@ package Caps
 			Name = descTeam.PredefinedTeamName;
 			UserName = descTeam.Name;
 			IdxTeam = idxTeam;
-			FormationName = descTeam.Formation;
 			UseSecondaryEquipment = useSecondaryEquipment;
+			Fitness = descTeam.Fitness;
+			_FormationName = descTeam.Formation;			
 			
 			// Copiamos la lista de habilidades especiales
 			LoadSkills(descTeam.SpecialSkillsIDs);
@@ -178,7 +135,7 @@ package Caps
 		public function ResetToCurrentFormation(  ) : void
 		{
 			// Asignamos la posición inicial de cada chapa según la alineación y lado del campo en el que se encuentran
-			SetFormationPos( FormationName, Side );
+			SetFormationPos( _FormationName, Side );
 		}
 		
 		//
@@ -189,7 +146,7 @@ package Caps
 			if (GoalKeeper == null)
 				throw new Error("WTF where is my GoalKeeper?");
 			
-			var currentFormation : Array = GetFormation(FormationName);
+			var currentFormation : Array = GetFormation(_FormationName);
 			
 			// Si hay algún obstaculo en esa posicion, no podemos resetear al portero, ignoramos la orden
 			var desiredPos : Point = ConvertFormationPosToFieldPos(currentFormation[0], Side);
@@ -289,7 +246,7 @@ package Caps
 		//
 		private function LoadSkills( availableSkillsIDs:Array ) : void
 		{
-			Skill = new Array( Enums.SkillLast+1 );
+			_Skill = new Array( Enums.SkillLast+1 );
 			
 			// En modo debug: Nos damos todos los items
 			if( AppParams.Debug == true )
@@ -304,7 +261,7 @@ package Caps
 				descSkill.PercentCharged = 100;
 				descSkill.Activated = false;
 				
-				Skill[item] = descSkill;  
+				_Skill[item] = descSkill;  
 			}
 		}
 		
@@ -313,7 +270,7 @@ package Caps
 		//
 		public function HasSkill( idSkill:int ) : Boolean
 		{
-			return( Skill[ idSkill ] && Skill[ idSkill ].Available );
+			return( _Skill[ idSkill ] && _Skill[ idSkill ].Available );
 		}
 		
 		//
@@ -324,7 +281,7 @@ package Caps
 			// Cargamos las habilidades que hayan sido utilizadas
 			for( var i:int = Enums.SkillFirst; i <= Enums.SkillLast; i++ )
 			{
-				var item:Object = this.Skill[ i ];
+				var item:Object = this._Skill[ i ];
 				
 				// Skill disponible y al 100% de carga
 				if( item != null && item.Available == true && item.PercentCharged < 100 )
@@ -342,7 +299,7 @@ package Caps
 		//
 		public function ChargedSkill( idSkill:int ) : int
 		{
-			return( HasSkill( idSkill ) ? Skill[ idSkill ].PercentCharged : 0 );
+			return( HasSkill( idSkill ) ? _Skill[ idSkill ].PercentCharged : 0 );
 		}
 		
 		//
@@ -366,8 +323,8 @@ package Caps
 					trace( "Skill no cargada según los datos del cliente! Skill="+idSkill.toString()+" HasSkill="+HasSkill( idSkill ).toString()+" Charge="+ChargedSkill( idSkill).toString() );
 				}
 					
-				Skill[ idSkill ].PercentCharged = 0;
-				Skill[ idSkill ].Activated = true;
+				_Skill[ idSkill ].PercentCharged = 0;
+				_Skill[ idSkill ].Activated = true;
 			}
 		}
 		
@@ -376,7 +333,7 @@ package Caps
 		//
 		public function IsUsingSkill( idSkill:int ) : Boolean
 		{
-			return( ( HasSkill( idSkill ) && Skill[ idSkill ].Activated ) );
+			return( ( HasSkill( idSkill ) && _Skill[ idSkill ].Activated ) );
 		}
 		
 		//
@@ -385,23 +342,23 @@ package Caps
 		public function DesactiveSkills(  ) : void
 		{
 			if( HasSkill( Enums.Superpotencia ) )
-				Skill[ Enums.Superpotencia ].Activated = false;
+				_Skill[ Enums.Superpotencia ].Activated = false;
 			if( HasSkill( Enums.Furiaroja  ) )
-				Skill[ Enums.Furiaroja ].Activated = false;
+				_Skill[ Enums.Furiaroja ].Activated = false;
 			if( HasSkill( Enums.Catenaccio ) )
-				Skill[ Enums.Catenaccio ].Activated = false;
+				_Skill[ Enums.Catenaccio ].Activated = false;
 			if( HasSkill( Enums.Tiroagoldesdetupropiocampo) )
-				Skill[ Enums.Tiroagoldesdetupropiocampo ].Activated = false;
+				_Skill[ Enums.Tiroagoldesdetupropiocampo ].Activated = false;
 			if( HasSkill( Enums.Tiempoextraturno ) )
-				Skill[ Enums.Tiempoextraturno ].Activated = false;
+				_Skill[ Enums.Tiempoextraturno ].Activated = false;
 			if( HasSkill( Enums.Turnoextra ) )
-				Skill[ Enums.Turnoextra ].Activated = false;
+				_Skill[ Enums.Turnoextra ].Activated = false;
 			if( HasSkill( Enums.Verareas ) )
-				Skill[ Enums.Verareas ].Activated = false;
+				_Skill[ Enums.Verareas ].Activated = false;
 			if( HasSkill( Enums.CincoEstrellas ) )
-				Skill[ Enums.CincoEstrellas ].Activated = false;
+				_Skill[ Enums.CincoEstrellas ].Activated = false;
 			if( HasSkill( Enums.Manodedios ) )
-				Skill[ Enums.Manodedios ].Activated = false;
+				_Skill[ Enums.Manodedios ].Activated = false;
 		}
 		
 		// 
@@ -434,7 +391,7 @@ package Caps
 		static public function GroupTeam(teamName:String) : int
 		{
 			var groupIdx:int = 0;
-			for each ( var group:Array in Team.Groups )
+			for each ( var group:Array in TeamGroups.Groups )
 			{
 				groupIdx ++;
 				for each ( var name:String in group )
