@@ -25,6 +25,7 @@ package SoccerServer.TransferModel.vo
 		public var GroupName:String;
 		public var DivisionName:String;
 		public var MinimumPoints:int;
+		public var Promoted:Boolean;
 		public var GroupEntries:ArrayCollection;
 	}
 }

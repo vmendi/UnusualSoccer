@@ -168,10 +168,9 @@ package Caps
 		}
 		
 		//
-		// Dispara con una fuerza sobre una chapa
-		// La fueza debe especificarse entre 0 - 1
+		// Dispara con una fuerza sobre una chapa. La fueza debe especificarse entre 0, 1
 		//
-		public function Shoot( dir:Point, force:Number ): void
+		public function Shoot(dir:Point, force:Number) : void
 		{
 			// Calculamos el vector final
 			var vecForce:Point = new Point();
