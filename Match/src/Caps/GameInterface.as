@@ -57,8 +57,10 @@ package Caps
 			var Gui:* = Match.Ref.Game.TheField.Visual;			
 			Gui.BotonTiroPuerta.addEventListener(MouseEvent.CLICK, OnTiroPuerta);
 			Gui.SoundButton.addEventListener(MouseEvent.CLICK, OnMute);
+			
 			// Gui.BotonAbandonar.addEventListener( MouseEvent.CLICK, OnAbandonar );
-						
+			Gui.BotonAbandonar.visible = false;
+
 			UpdateMuteButton();
 			
 			// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el quipo
@@ -134,6 +136,22 @@ package Caps
 			
 			// Actualizamos el tiempo del partido
 			Gui.Time.text = utils.TimeUtils.ConvertSecondsToString(Match.Ref.Game.Time);
+			
+			// Marcamos el jugador con el turno
+			if (Match.Ref.Game.CurTeam.Side == Enums.Left_Side)
+			{
+				if (Match.Ref.Game.Part == 1)
+					Gui.MarcadorTurno.gotoAndStop("TeamHome");
+				else
+					Gui.MarcadorTurno.gotoAndStop("TeamAway");
+			}				
+			else
+			{
+				if (Match.Ref.Game.Part == 2)
+					Gui.MarcadorTurno.gotoAndStop("TeamHome");
+				else
+					Gui.MarcadorTurno.gotoAndStop("TeamAway");
+			}
 			
 			// Actualizamos el tiempo del sub-turno
 			// NOTE: Utilizamos el tiempo de turno que indica el interface, ya que se modifica cuando se utiliza la habilidad especial

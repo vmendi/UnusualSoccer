@@ -31,7 +31,7 @@ package Caps
 		private var _IdxCurTeam:int = Enums.Team1;				// Idice del equipo actual que le toca jugar
 		private var _State:int = GameState.NotInit;				// Estado inicial
 		private var _TicksInCurState:int = 0;					// Ticks en el estado actual
-		private var _Part:int = 0;								// El juego se divide en 2 partes. Parte en la que nos encontramos (1=1ª 2= 2ª)
+		private var _Part:int = 0;								// El juego se divide en 2 partes. Parte en la que nos encontramos (1=1ª 2=2ª)
 		private var _RemainingHits:int = 0;						// Nº de golpes restantes permitidos antes de perder el turno
 		private var _RemainingPasesAlPie : int = 0;				// No de pases al pie que quedan
 		private var _TimeSecs:Number = 0;						// Tiempo en segundos que queda de la "mitad" actual del partido
