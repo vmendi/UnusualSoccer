@@ -136,7 +136,7 @@
 			</s:Group>
 		</s:Group>
 
-		<s:List id="MyCompetitionList" left="0" right="0" top="105" height="366"
+		<s:List id="MyCompetitionList" left="0" right="0" top="105" bottom="10"
 				dataProvider="{mCompetitionModel.TheGroup.GroupEntries}" skinClass="GameView.Competition.CompetitionListSkin"		
 				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="true"/>
 		
