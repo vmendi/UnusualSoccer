@@ -45,17 +45,17 @@ package utils
 			var secondsStr : String = seconds < 10? "0"+seconds.toString() : seconds.toString();
 			
 			if (days != 0)
-				daysStr = daysStr + (days == 1? " dia " : " dias ");
+				daysStr = daysStr + (days == 1? "d " : "d ");
 			else
 				daysStr = "";
 			
 			if (hours != 0 || days != 0)
-				hoursStr = hoursStr + (hours == 1? " hora " : " horas ");
+				hoursStr = hoursStr + (hours == 1? "h " : "h ");
 			else
 				hoursStr = "";
 			
-			minutesStr = minutesStr + (minutes == 1? " min " : " mins ");
-			secondsStr = secondsStr + (seconds == 1? " seg " : " segs ");
+			minutesStr = minutesStr + (minutes == 1? "m " : "m ");
+			secondsStr = secondsStr + (seconds == 1? "s " : "s ");
 			
 			return daysStr + hoursStr + minutesStr + secondsStr;
 		}

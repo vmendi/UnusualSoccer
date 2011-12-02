@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*"
 		 currentState="Disabled"
-		 width="326" height="92"
+		 width="740" height="105"
 		 preinitialize="PreinitializeHandler(event)">
 	
 	<s:states>
@@ -62,29 +62,36 @@
 
 	]]></fx:Script>
 	
+	<s:Rect x="0" y="0" width="740" height="105" alpha="0.5" includeIn="LookingForMatch">
+		<s:fill>
+			<s:SolidColor color="#000000"/>
+		</s:fill>
+	</s:Rect>
+
+	<s:Rect x="0" bottom="0" width="740" height="20" alpha="0.5" includeIn="Wait">
+		<s:fill>
+			<s:SolidColor color="#000000"/>
+		</s:fill>
+	</s:Rect>	
+	
 	<s:Label horizontalCenter="0" y="46" textAlign="center" text="Estás desconectado del juego..." styleName="whiteBoldBig" includeIn="Disabled" />
 	
-	<s:Label width="218" x="10" y="27" text="{resourceManager.getString('main','LookingForMatchPanelTxt')}" styleName="whiteBoldBig"
-			 includeIn="Wait" />
-	<s:Image id="MyFindMatchButton" x="236" y="0" includeIn="Wait"
+	<s:Image id="MyFindMatchButton" top="0" horizontalCenter="0"  includeIn="Wait"
 			 alpha.Disabled="0.2" alpha.Wait="1"
 			 source="@Embed(source='/Assets/General.swf', symbol='BotonBuscarPartido')"
 			 click="MyFindMatchButton_clickHandler(event)"/>	
+	<s:Label width="100%" horizontalCenter="0" top="85" text="{resourceManager.getString('main','LookingForMatchPanelTxt')}" styleName="whiteBoldBig" textAlign="center"
+			 includeIn="Wait" />
 	
-	<s:Group includeIn="LookingForMatch" horizontalCenter="0" top="38">
+	<s:Group includeIn="LookingForMatch" horizontalCenter="0" top="10">
 		<s:layout>
-			<s:VerticalLayout gap="2" horizontalAlign="center" />
+			<s:VerticalLayout gap="10" horizontalAlign="center" />
 		</s:layout>
-		<s:SWFLoader y="0" x="0" id="MyLoadingAnim" source="@Embed(source='/Assets/General.swf', symbol='LoadingAnim')" includeIn="LookingForMatch"/>
-		<s:Group>
-			<s:layout>
-				<s:HorizontalLayout gap="10" verticalAlign="middle" />
-			</s:layout>
-			<s:Label text="{resourceManager.getString('main','LookingForMatchPanelLooking')}" styleName="whiteBoldBig"/>
-			<s:Button id="MyCancelButton"
-					  label="{resourceManager.getString('main','Cancel')}" minWidth="70" skinClass="GameView.Skins.ButtonDarkGreySkin"
-					  click="MyFindMatchButton_clickHandler(event)"/>
-		</s:Group>
+		<s:Label text="{resourceManager.getString('main','LookingForMatchPanelLooking')}" styleName="whiteBoldBig"/>
+		<s:SWFLoader id="MyLoadingAnim" source="@Embed(source='/Assets/General.swf', symbol='LoadingAnim')" includeIn="LookingForMatch"/>
+		<s:Button id="MyCancelButton"
+				  label="{resourceManager.getString('main','Cancel')}" minWidth="70" skinClass="GameView.Skins.ButtonDarkGreySkin"
+				  click="MyFindMatchButton_clickHandler(event)"/>
 	</s:Group>
 	
 </s:Group>
