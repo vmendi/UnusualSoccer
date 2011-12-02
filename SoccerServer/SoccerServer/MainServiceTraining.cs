@@ -74,8 +74,7 @@ namespace SoccerServer
                 return new TransferModel.PendingTraining(ret);
             }
 		}
-
-
+        
 		public void TrainSpecial(int specialTrainingDefinitionID)
 		{
             using (CreateDataForRequest())
@@ -116,6 +115,10 @@ namespace SoccerServer
                     theTraining.EnergyCurrent = theTraining.SpecialTrainingDefinition.EnergyTotal;
                     theTraining.IsCompleted = true;
                 }
+
+                // El 1 es un caso especial, el boton de Liked
+                if (specialTrainingDefinitionID == 1)
+                    mPlayer.Liked = true;
 
                 mContext.SubmitChanges();
             }

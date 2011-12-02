@@ -22,9 +22,12 @@ package GameModel
 		
 		private function OnRefresh(v:Object):void
 		{
-			if (mSoccerPlayer != null)
-				Quality = Math.round((mSoccerPlayer.Power + mSoccerPlayer.Sliding + mSoccerPlayer.Weight) / 3);
+			if (mSoccerPlayer == null)
+				throw new Error("Esto no debería ocurrir 27");
+			
+			Quality = Math.round((mSoccerPlayer.Power + mSoccerPlayer.Sliding + mSoccerPlayer.Weight) / 3);
 		}
+		
 		
 		[Bindable]
 		public function  get Quality() : Number { return mQuality; }

@@ -57,7 +57,7 @@
 				<s:Button label="?" width="30" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:controlBarContent>-->
 			<s:layout><s:VerticalLayout horizontalAlign="center" paddingTop="19" gap="15" /></s:layout>
-			<GameView:SpecialSkillsBrowser SpecialSkillIDs="{mSpecialTrainingModel.CompletedSpecialTrainingIDs}"/>
+			<GameView:SpecialSkillsBrowser SpecialSkillIDs="{mTeamModel.TheTeamDetails.SpecialSkillsIDs}"/>
 			<s:Label width="158" textAlign="center" maxDisplayedLines="3"
 					 text="Consigue nuevas habilidades entrenando a tu equipo" styleName="whiteBoldMediumArial" />
 			<s:Button width="168" height="27" label="ENTRENAR HABILIDADES" skinClass="GameView.Skins.ButtonGreySkin"

@@ -63,8 +63,7 @@
 			}
 			
 			// Inicializamos la clase de las estadísticas
-			GameMetrics.Init(this);
-			
+			GameMetrics.Init(this);			
 		}
 
 		private function OnCleaningShutdown() : void

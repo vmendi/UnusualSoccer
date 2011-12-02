@@ -414,9 +414,8 @@ namespace SoccerServer
                     // Contabilizamos el tiempo que queda de la parte actual
                     RemainingSecs -= elapsed;
 
-                    // Cada X segundos sincronizamos el tiempo con los clientes
-                    if (((int)RemainingSecs) % 10 == 0)
-                        this.Broadcast("SyncTime", RemainingSecs);
+                    if (RemainingSecs <= 0)
+                        RemainingSecs = 0;
 
                     // Comprobamos si ha terminado el tiempo
                     // NOTE: No permitimos que termine el tiempo durante la simulación del disparo, ni cuando estamos esperando una confirmación de gol
@@ -443,6 +442,10 @@ namespace SoccerServer
                             CurState = State.End;
                         }
                     }
+
+                    // Cada X segundos sincronizamos el tiempo con los clientes
+                    if (((int)RemainingSecs) % 10 == 0)
+                        this.Broadcast("SyncTime", RemainingSecs);
                 }
                 break;
                 case State.End:

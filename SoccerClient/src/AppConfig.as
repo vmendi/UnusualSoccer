@@ -20,8 +20,8 @@ package
 		static public function Init(parameters : Object) : void
 		{
 			// Seleccion de idioma
-			ResourceManager.getInstance().localeChain = ["es_ES", "en_US"];	// Esto selecciona ES (el primero)
-			//ResourceManager.getInstance().localeChain = ["en_US", "es_ES"];
+			//ResourceManager.getInstance().localeChain = ["es_ES", "en_US"];	// Esto selecciona ES (el primero)
+			ResourceManager.getInstance().localeChain = ["en_US", "es_ES"];
 			
 			if (parameters.hasOwnProperty("CanvasPage"))
 				CANVAS_PAGE = parameters["CanvasPage"];

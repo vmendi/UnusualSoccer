@@ -77,7 +77,7 @@
         
         remoteObject.RefreshRankingPage.addEventListener("result",RefreshRankingPageHandler);
         
-        remoteObject.RefreshSeasonEndDate.addEventListener("result",RefreshSeasonEndDateHandler);
+        remoteObject.RefreshSeasonEndDateRemainingSeconds.addEventListener("result",RefreshSeasonEndDateRemainingSecondsHandler);
         
         remoteObject.RefreshSpecialTrainingDefinitions.addEventListener("result",RefreshSpecialTrainingDefinitionsHandler);
         
@@ -224,9 +224,9 @@
 
       }
     
-      public function RefreshSeasonEndDate( responder:IResponder = null ):void
+      public function RefreshSeasonEndDateRemainingSeconds( responder:IResponder = null ):void
       {
-        var asyncToken:AsyncToken = remoteObject.RefreshSeasonEndDate();
+        var asyncToken:AsyncToken = remoteObject.RefreshSeasonEndDateRemainingSeconds();
         
         if( responder != null )
             asyncToken.addResponder( responder );
@@ -389,11 +389,11 @@
         
       }
          
-      public virtual function RefreshSeasonEndDateHandler(event:ResultEvent):void
+      public virtual function RefreshSeasonEndDateRemainingSecondsHandler(event:ResultEvent):void
       {
         
-          var returnValue:Date = event.result as Date;
-          model.RefreshSeasonEndDateResult = returnValue;
+          var returnValue:int = event.result as int;
+          model.RefreshSeasonEndDateRemainingSecondsResult = returnValue;
         
       }
          

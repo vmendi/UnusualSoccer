@@ -15,39 +15,43 @@ package GameModel
 			mMainService = mainService;
 			mMainGameModel = mainModel;
 			mTeamModel = mMainGameModel.TheTeamModel;
-			
-			// Timer de refresco que asegura que cuando el ticket expira, asi lo mostramos.
-			mTimer = new Timer(1000);
-			mTimer.addEventListener(TimerEvent.TIMER, OnTimer);
-			mTimer.start();
 		}
-
+		
 		// TeamModel nos llama cada vez que cambia el equipo. Lo queremos hacer asi y no por subscripcion para que este claro
 		// exactamente cuando se refresca. Asi desde fuera se ve estado coherente.
 		internal function UpdateTicket() : void
 		{
-			if (mTeamModel != null && mTeamModel.TheTeam != null && mTeamModel.TheTeam.Ticket != null)
+			if (mTeamModel.TheTeam != null && mTeamModel.TheTeam.Ticket != null)
 			{
-				HasCredit = (mTeamModel.TheTeam.Ticket.TicketExpiryDate > new Date()) || 
-						     mTeamModel.TheTeam.Ticket.RemainingMatches > 0;
+				mTeamModel.TheTeam.Ticket.TicketExpiryDateRemainingSeconds--;
+				
+				if (mTeamModel.TheTeam.Ticket.TicketExpiryDateRemainingSeconds < 0)
+					mTeamModel.TheTeam.Ticket.TicketExpiryDateRemainingSeconds = 0;
+				
+				HasTicket = mTeamModel.TheTeam.Ticket.TicketExpiryDateRemainingSeconds > 0;
+				HasCredit = HasTicket || mTeamModel.TheTeam.Ticket.RemainingMatches > 0;
 			}
 		}
 		
-		private function OnTimer(e:Event) : void
+		internal function OnTimerSeconds() : void
 		{
 			UpdateTicket();
 		}
 		
+		// Tiene credito o bien porque le queda tiempo de ticket o bien porque le quedan partidos restantes
 		[Bindable]
 		public function get HasCredit() : Boolean { return mHasCredit; }
 		private function set HasCredit(val : Boolean) : void { mHasCredit = val; }
 		private var mHasCredit : Boolean = false;
 		
+		[Bindable]
+		public function get HasTicket() : Boolean { return mHasTicket; }
+		private function set HasTicket(val : Boolean) : void { mHasTicket = val; }
+		private var mHasTicket : Boolean = false;
+		
 		
 		private var mMainService : MainService;
 		private var mMainGameModel : MainGameModel;
 		private var mTeamModel : TeamModel;
-		
-		private var mTimer : Timer = null;
 	}
 }

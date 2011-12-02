@@ -54,8 +54,15 @@ namespace SoccerServer.TransferModel
         public int RemainingMatches;
         public DateTime TicketPurchaseDate;
         public DateTime TicketExpiryDate;
+        public int      TicketExpiryDateRemainingSeconds;
 
-        public Ticket(BDDModel.Ticket from) { CopyHelper.Copy(from, this); }
+        public Ticket(BDDModel.Ticket from) 
+        {
+            RemainingMatches = from.RemainingMatches;
+            TicketPurchaseDate = from.TicketPurchaseDate;
+            TicketExpiryDate = from.TicketExpiryDate;
+            TicketExpiryDateRemainingSeconds = Utils.GetConservativeRemainingSeconds(TicketExpiryDate);
+        }
     }
 
 	public class SoccerPlayer
@@ -68,11 +75,35 @@ namespace SoccerServer.TransferModel
 		public int Weight;
 		public int Sliding;
 		public int Power;
-        public bool IsInjured;
-		public DateTime LastInjuryDate;
 
-		public SoccerPlayer(BDDModel.SoccerPlayer from) { CopyHelper.Copy(from, this);  }
+        public bool     IsInjured;
+		public DateTime LastInjuryDate;
+        public int      RemainingInjurySeconds;
+
+		public SoccerPlayer(BDDModel.SoccerPlayer from) 
+        { 
+            SoccerPlayerID = from.SoccerPlayerID;
+		    Name = from.Name;
+		    DorsalNumber = from.DorsalNumber;
+            FacebookID = from.FacebookID;
+		    FieldPosition = from.FieldPosition;
+		    Weight = from.Weight;
+		    Sliding = from.Sliding;
+		    Power = from.Power;
+
+            IsInjured = from.IsInjured;
+		    LastInjuryDate = from.LastInjuryDate;
+            RemainingInjurySeconds = Utils.GetConservativeRemainingSeconds(LastInjuryDate.AddDays(MainService.INJURY_DURATION_DAYS));
+        }
 	}
+
+    public class Utils
+    {
+        static public int GetConservativeRemainingSeconds(DateTime toDate)
+        {
+            return (int)Math.Ceiling((toDate - DateTime.Now).TotalSeconds);
+        }
+    }
 
 	public class SpecialTrainingDefinition
 	{
@@ -113,15 +144,17 @@ namespace SoccerServer.TransferModel
 
 	public class PendingTraining
 	{
-		public TrainingDefinition TrainingDefinition;
+        public TrainingDefinition TrainingDefinition;
 		public DateTime TimeStart;
-		public DateTime TimeEnd;       
+		public DateTime TimeEnd;
+        public int      RemainingSeconds;
 
 		public PendingTraining(BDDModel.PendingTraining from) 
 		{
+            TrainingDefinition = new TrainingDefinition(from.TrainingDefinition);
 			TimeStart = from.TimeStart;
 			TimeEnd = from.TimeEnd;
-			TrainingDefinition = new TrainingDefinition(from.TrainingDefinition);
+            RemainingSeconds = Utils.GetConservativeRemainingSeconds(TimeEnd);
 		}
 	}
 

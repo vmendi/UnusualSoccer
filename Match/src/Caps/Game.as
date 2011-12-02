@@ -99,7 +99,7 @@ package Caps
 			
 			// Creamos las capas iniciales de pintado para asegurar un orden adecuado
 			CreateLayers();
-			
+						
 			// Identificador del jugador local (a quien controlamos nosotros desde el cliente)
 			Match.Ref.IdLocalUser = idLocalPlayerTeam;
 			
@@ -212,7 +212,7 @@ package Caps
 			Match.Ref.addChild(ChatLayer);
 		}
 		
-		public function Draw( elapsed:Number ) : void
+		public function Draw(elapsed:Number) : void
 		{
 			if (_State == GameState.NotInit)
 				return;
@@ -237,10 +237,6 @@ package Caps
 			
 			TheInterface.Update();
 			
-			// Calculamos el tiempo "real" que ha pasado, independiente del frame-rate
-			var realElapsed:Number = _TimeCounter.GetElapsed();
-			realElapsed = realElapsed / 1000; 
-
 			switch(_State)
 			{
 				case GameState.Init:
@@ -296,6 +292,9 @@ package Caps
 					if (TheGamePhysics.IsSimulating)
 						throw new Error("La fisica no pueda estar simulando en estado GameState.Playing");
 					
+					// Para actualizar nuestros relojes, calculamos el tiempo "real" que ha pasado, independiente del frame-rate
+					var realElapsed:Number = _TimeCounter.GetElapsed() / 1000;
+					
 					_TimeSecs -= realElapsed;
 					
 					if (_TimeSecs <= 0)
@@ -310,6 +309,8 @@ package Caps
 					
 					if (_Timeout <= 0)
 					{
+						_Timeout = 0;
+						
 						// Al jugador que no tiene el turno simplemente le llega el Timeout, él no lo genera
 						if (this.CurTeam.IsLocalUser)
 						{
@@ -467,7 +468,7 @@ package Caps
 		{
 			// Confirmamos que estamos en el estado correcto. El servidor no permite cambios de estado mientras estamos simulando
 			if (this._State != GameState.WaitingClientsToEndShoot)
-				throw new Error(IDString + "Hemos recibido una confirmación de que todos los jugadores han simulado el disparo cuando no estábamos esperándola" );
+				throw new Error(IDString + "Hemos recibido una confirmación de que todos los jugadores han simulado el disparo cuando no estábamos esperándola");
 			
 			var result:int = 0;
 			
@@ -575,7 +576,7 @@ package Caps
 				if (potentialStealer != null && TheGamePhysics.HasTouchedBallAny(this.CurTeam))
 				{
 					result = 10;
-					
+
 					// Igual que en el robo con conflicto pero con una reason distinta para que el interfaz muestre un mensaje diferente
 					YieldTurnToOpponent(Enums.TurnByLost);
 					if( potentialStealer.OwnerTeam.IsLocalUser )
@@ -636,7 +637,7 @@ package Caps
 		public function OnClientUseSkill(idPlayer:int, idSkill:int) : void
 		{
 			VerifyStateWhenReceivingCommand(GameState.WaitingCommandUseSkill, idPlayer, "OnClientUseSkill");
-									
+
 			var team:Team = TheTeams[ idPlayer ];
 			team.UseSkill( idSkill );
 			
@@ -655,13 +656,13 @@ package Caps
 				TheInterface.TurnTime = _Timeout;
 				bInmediate = true;
 			}
-			else if( idSkill == Enums.Turnoextra )		// Obtenemos un turno extra
+			else if(idSkill == Enums.Turnoextra)		// Obtenemos un turno extra
 			{
 				_RemainingHits ++;
 				bInmediate = true;
 			}
 			
-			if( bInmediate && idPlayer != this.CurTeam.IdxTeam )
+			if (bInmediate && idPlayer != this.CurTeam.IdxTeam)
 				throw new Error(IDString + "Ha llegado una habilidad especial INMEDIATA de un jugador que no es el actual! Player="+team.Name+" Skill="+idSkill.toString());
 			
 			ChangeState(GameState.Playing);
@@ -673,7 +674,7 @@ package Caps
 		public function OnClientTiroPuerta(idPlayer:int) : void
 		{
 			VerifyStateWhenReceivingCommand(GameState.WaitingCommandTiroPuerta, idPlayer, "OnClientTiroPuerta");
-									
+			
 			// Mostramos el interface de colocación de portero al jugador contrario
 			var team:Team = TheTeams[ idPlayer ] ;
 			var enemy:Team = team.AgainstTeam();
@@ -1091,7 +1092,7 @@ package Caps
 			
 			// Nos quedamos esperando a que acabe la cut-scene (no queremos que corra el tiempo si estabamos en Playing)
 			EnterWaitState(GameState.WaitingEndPart, null);
-						
+
 			// Lanzamos la cutscene de fin de tiempo, cuando termine pasamos realmente de parte o finalizamos el partido
 			if (part == 1)
 			{

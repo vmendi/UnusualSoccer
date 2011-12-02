@@ -10,6 +10,8 @@ package GameModel
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
 	import mx.collections.ArrayCollection;
 	import mx.collections.Sort;
@@ -25,6 +27,28 @@ package GameModel
 		{
 			mMainService = mainService;
 			mMainModel = mainModel;
+		}
+		
+		internal function OnTimerSeconds() : void
+		{
+			if (TheTeam == null)
+				return;
+			
+			for each(var sp : SoccerPlayer in TheTeam.SoccerPlayers)
+			{
+				if (sp.IsInjured)
+				{
+					var remaining : int = sp.RemainingInjurySeconds - 1;
+					
+					if (remaining <= 0)
+					{			
+						sp.IsInjured = false;
+						remaining = 0;
+					}
+					
+					sp.RemainingInjurySeconds = remaining;
+				}
+			}
 		}
 		
 		public function HasTeam(response : Function):void
@@ -268,6 +292,6 @@ package GameModel
 		private var mMainModel : MainGameModel;
 		private var mMainService : MainService;
 		
-		private var mPlayerTeam : Team;	
+		private var mPlayerTeam : Team;
 	}
 }

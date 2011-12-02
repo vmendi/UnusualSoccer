@@ -16,6 +16,7 @@
 		<![CDATA[
 			import GameModel.MainGameModel;
 			import GameModel.TeamModel;
+			import GameModel.TicketModel;
 			
 			import GameView.Purchase.PurchaseBase;
 			
@@ -26,8 +27,9 @@
 			{
 				mMainGameModel = SoccerClient.GetMainGameModel();
 				mTeamModel = mMainGameModel.TheTeamModel;
+				mTicketModel = mMainGameModel.TheTicketModel;
 				
-				BindingUtils.bindSetter(OnTicketExpiryDateChanged, mTeamModel, ["TheTeam", "Ticket", "TicketExpiryDate"]);
+				BindingUtils.bindSetter(OnHasTicketChanged, mTicketModel, ["HasTicket"]);
 				BindingUtils.bindSetter(OnTicketRemainingMatchesChanged, mTeamModel, ["TheTeam", "Ticket", "RemainingMatches"]);
 			}
 			
@@ -47,9 +49,9 @@
 				}
 			}
 			
-			private function OnTicketExpiryDateChanged(newVal : Date) : void
+			private function OnHasTicketChanged(hasTicket : Boolean) : void
 			{
-				if (newVal > new Date())
+				if (hasTicket)
 					currentState = "Purchased";
 				else
 					currentState = "NotPurchased";
@@ -62,6 +64,7 @@
 			
 			[Bindable] private var mMainGameModel : MainGameModel;
 			[Bindable] private var mTeamModel : TeamModel;
+			[Bindable] private var mTicketModel : TicketModel;
 		]]>
 	</fx:Script>
 

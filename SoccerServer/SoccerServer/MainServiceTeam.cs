@@ -14,6 +14,8 @@ namespace SoccerServer
 		public const double DEFAULT_INITIAL_MEAN = 25.0;
 		public const double DEFAULT_INITIAL_STANDARD_DEVIATION = 8.333;
 
+        public const int INJURY_DURATION_DAYS = 2;
+
         [WebORBCache(CacheScope = CacheScope.Global)]
 		public List<TransferModel.PredefinedTeam> RefreshPredefinedTeams()
 		{
@@ -96,7 +98,7 @@ namespace SoccerServer
             foreach (var sp in injured)
             {
                 // Las lesiones duran N dias...
-                if ((now - sp.LastInjuryDate).TotalDays >= 2)
+                if ((now - sp.LastInjuryDate).TotalDays >= INJURY_DURATION_DAYS)
                 {
                     sp.IsInjured = false;
                     bSubmit = true;
