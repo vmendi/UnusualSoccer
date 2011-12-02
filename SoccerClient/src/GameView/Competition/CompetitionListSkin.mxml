@@ -27,7 +27,6 @@
 			</s:Group>
 		</fx:Component>
 	</fx:Declarations>	
-
 	
 	<s:Rect x="0" y="0" width="740" height="20">
 		<s:fill>
@@ -38,35 +37,35 @@
 		</s:fill>
 	</s:Rect>
 	
-	<s:Line x="424" y="0" yTo="20">
-		<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"	weight="1"/></s:stroke>
-	</s:Line>
-	<s:Label width="60" x="424" y="3" text="{resourceManager.getString('main','PPuntos')}" styleName="whiteBoldSmall" textAlign="center" />
-	
-	<s:Line x="484" y="0" yTo="20">
-		<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"	weight="1"/></s:stroke>
-	</s:Line>
-	<s:Label width="60" x="484" y="3" text="{resourceManager.getString('main','PJugados')}" styleName="whiteBoldSmall" textAlign="center" />
-	
-	<s:Line x="544" y="0" yTo="20">
-		<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"	weight="1"/>
-		</s:stroke>
-	</s:Line>
-	<s:Label width="60" x="544" y="3" text="{resourceManager.getString('main','PGanados')}" styleName="whiteBoldSmall" textAlign="center" />
-	
-	<s:Line x="604" y="0" yTo="20">
-		<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"	weight="1"/></s:stroke>
-	</s:Line>
-	<s:Label width="60" x="604" y="3" text="{resourceManager.getString('main','PEmpatados')}" styleName="whiteBoldSmall" textAlign="center" />
-	
-	<s:Line x="664" y="0" yTo="20">
-		<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"	weight="1"/></s:stroke>
-	</s:Line>
-	<s:Label width="60" x="664" y="3" text="{resourceManager.getString('main','PPerdidos')}" styleName="whiteBoldSmall" textAlign="center" />
-	
-	<s:Line x="724" y="0" yTo="20">
-		<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4" weight="1"/></s:stroke>
-	</s:Line>
+	<s:Label left="10" top="3" text="{resourceManager.getString('main','CompetitionDivision')}" styleName="whiteBoldMedium" textAlign="center" />
+	<s:Group right="15" top="0">
+		<s:layout>
+			<s:HorizontalLayout verticalAlign="middle" gap="0" />
+		</s:layout>
+		<s:Line y="0" yTo="20">
+			<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"	weight="1"/></s:stroke>
+		</s:Line>
+		<s:Label width="60" text="{resourceManager.getString('main','PPuntos')}" styleName="whiteBoldSmall" textAlign="center" />
+		<s:Line y="0" yTo="20">
+			<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"	weight="1"/></s:stroke>
+		</s:Line>
+		<s:Label width="60" text="{resourceManager.getString('main','PJugados')}" styleName="whiteBoldSmall" textAlign="center" />
+		<s:Line y="0" yTo="20">
+			<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"	weight="1"/></s:stroke>
+		</s:Line>
+		<s:Label width="60" text="{resourceManager.getString('main','PGanados')}" styleName="whiteBoldSmall" textAlign="center" />
+		<s:Line y="0" yTo="20">
+			<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"	weight="1"/></s:stroke>
+		</s:Line>
+		<s:Label width="60" text="{resourceManager.getString('main','PEmpatados')}" styleName="whiteBoldSmall" textAlign="center" />
+		<s:Line y="0" yTo="20">
+			<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4"	weight="1"/></s:stroke>
+		</s:Line>
+		<s:Label width="60" text="{resourceManager.getString('main','PPerdidos')}" styleName="whiteBoldSmall" textAlign="center" />
+		<s:Line y="0" yTo="20">
+			<s:stroke><s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4" weight="1"/></s:stroke>
+		</s:Line>		
+	</s:Group>
 
 	<s:Scroller left="0" top="20" right="0" bottom="0" id="scroller" hasFocusableChildren="false"
 				skinClass="GameView.Skins.DefaultScrollerSkin" horizontalScrollPolicy="off">
@@ -79,4 +78,5 @@
 			</s:layout>
 		</s:DataGroup>
 	</s:Scroller>
+	
 </s:SparkSkin>

@@ -20,6 +20,6 @@
 		
 	]]></fx:Script>
 	
-	<s:SWFLoader top="0" horizontalCenter="0" id="MyBitmap" visible="false" source="{resourceManager.getClass('main','CompetitionDivisionBadgeMC')}" />
+	<s:SWFLoader left="0" top="0" horizontalCenter="0" id="MyBitmap" visible="false" source="{resourceManager.getClass('main','CompetitionDivisionBadgeMC')}" />
 	
 </s:Group>

@@ -7,12 +7,6 @@
 	
 	<fx:Style source="../styles.css" />
 	
-	<s:states>
-		<s:State name="normal" />
-		<s:State name="selected"/>
-		<s:State name="hovered"/>
-	</s:states>
-	
 	<fx:Script>
 		<![CDATA[
 			import SoccerServer.TransferModel.vo.CompetitionGroupEntry;
@@ -26,19 +20,26 @@
 		]]>
 	</fx:Script>
 	
-	<s:Graphic includeIn="hovered">
-		<s:Rect x="0" y="0" width="740" height="50">
+	<s:Graphic visible="{InPromotion(data)}">
+		<s:Rect x="0" y="0" width="740" height="50" alpha="0.5">
 			<s:fill>
-				<s:SolidColor color="#666666" alpha="0.3" />
+				<s:SolidColor color="#3d5426" />
 			</s:fill>
+			<s:filters>
+				<s:GlowFilter alpha="0.5" blurX="6.0" blurY="6.0" color="#000000" inner="true"
+							  knockout="false" quality="2" strength="1"/>
+			</s:filters>
 		</s:Rect>
 	</s:Graphic>
-	
-	<s:Graphic includeIn="selected">
-		<s:Rect x="0" y="0" width="740" height="50">
+	<s:Graphic visible="{!InPromotion(data)}">
+		<s:Rect x="0" y="0" width="740" height="50" alpha="0.5">
 			<s:fill>
-				<s:SolidColor color="#999999" alpha="0.3" />
+				<s:SolidColor color="#000000" />
 			</s:fill>
+			<s:filters>
+				<s:GlowFilter alpha="0.5" blurX="6.0" blurY="6.0" color="#000000" inner="true"
+							  knockout="false" quality="2" strength="1"/>
+			</s:filters>
 		</s:Rect>
 	</s:Graphic>
 	
