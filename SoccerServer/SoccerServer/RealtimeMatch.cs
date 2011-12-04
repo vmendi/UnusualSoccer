@@ -17,8 +17,7 @@ namespace SoccerServer
         
         public class SkillState
         {
-            public bool InUse = false;                     // Indica si el skill está en uso
-            public float LastTimeUsed = 0;                 // Indica cuando fué la última vez que se utilizó el skill, para determinar si es posible utilizarlo otra vez
+            public float LastTimeUsed = 0;
         }
 
         // Define el estado de los jugadores
@@ -37,7 +36,7 @@ namespace SoccerServer
 
         enum State
         {
-            WaitingPlayers,
+            WaitingForSaque,
             Playing,
             End
         }
@@ -56,13 +55,8 @@ namespace SoccerServer
             Manodedios,
         }
         
-        // Lo hacemos con lista ya que un cliente puede no haber envíado los resultados del anterior disparo y el otro haber disparado 
-        // ya el siguiente. Esto ocurre cuando hay mucho lag y el mensaje de ResultShoot se atasca (en el cliente no hay espera tras 
-        // ua OnClientEndShoot, en ese momento se pasa a Playing (p. ejemplo, se muestra el BallController si pase al pie).
-        protected List<ClientState> TheClientState = new List<ClientState>();
-
-        // Contabiliza el numero de disparos en todo el partido
-        public int ShootCount = 0;                                   
+        private ClientState TheClientState = null;              // Debugeo de estado del cliente
+        public int TotalShootCount = 0;                         // Tiros totales que se han producido en el partido
 
         public const string PLAYER_1 = "player1";
         public const string PLAYER_2 = "player2";
@@ -90,12 +84,14 @@ namespace SoccerServer
         private float RemainingSecs = 0;		                // Tiempo en segundos que queda de la "mitad" actual del partido
         private int Part = 1;                                   // Mitad de juego en la que nos encontramos
         
-        private State CurState = State.WaitingPlayers;          // Estado actual del servidor de juego       
-        private int   CountReadyPlayers = 0;                    // Contador de jugadores listos (No empezamos el partido hasta que estén listos todos)
-        private int   CountPlayersReportGoal = 0;               // Contador de jugadores que han comunicado el gol
-        private int   CountPlayersEndShoot = 0;                 // Contador de jugadores que han terminado de simular un disparo
-        private bool  SimulatingShoot = false;                  // Estamos simulando un disparo?
+        private State CurState = State.WaitingForSaque;         // Estado actual del servidor de juego       
+        private int   CountReadyPlayersForSaque = 0;            // no continuamos con el partido hasta que estén listos todos
 
+        private bool SimulatingShoot = false;                  // Estamos simulando un disparo?
+        private int  CountPlayersEndShoot = 0;                 // Contador de jugadores que han terminado de simular un disparo
+
+        private int  CountPlayersReportGoal = 0;               // Contador de jugadores que han comunicado el gol
+        
         private float ServerTime = 0;		                    // Tiempo en segundos que lleva el servidor del partido funcionando
 
         private int ValidityGoal = Invalid;                     // Almacena la validad del gol reportado (0 = valido)
@@ -231,120 +227,25 @@ namespace SoccerServer
         {
             // Determinamos el identificador del player
             int idPlayer = GetIdPlayer(player);
-            LogEx("OnRequestData: Datos del partido solicitador por el Player: " + idPlayer + "Configuración partido: TotalTime: " + MatchLength + " TurnTime: " + TurnLength);
+            LogEx("OnRequestData: Datos del partido solicitador por el Player: " + idPlayer + " Configuración partido: TotalTime: " + MatchLength + " TurnTime: " + TurnLength);
 
             // Envía la configuración del partido al jugador, indicándole además a quien controla el (LocalUser)
             Invoke(idPlayer, "InitFromServer", this.mMatchID, PlayersData[Player1], PlayersData[Player2], idPlayer, MatchLength, TurnLength, MinClientVersion);
         }
         #endregion
 
-        #region Shoot
-        // 
-        // Un cliente ha disparado sobre una chapa
-        // 
-        public void OnServerShoot(int idPlayer, int capID, float dirX, float dirY, float force)
-        {
-            ShootCount++;               // Contabilizamos el disparo
-
-            LogEx( "OnServerShoot: " + idPlayer + " Shoot: " + ShootCount + " Cap ID: " + capID + " dir: " + dirX + ", " + dirY + " force: " + force + " CPES: " + CountPlayersEndShoot );
-            
-            if (CountPlayersEndShoot != 0)
-                throw new Exception("Match: " + MatchID + " SERVER: Hemos recibido un ServerShoot cuando todavía no todos los clientes habían confirmado la finalización de un disparo anterior");
-            
-            if (SimulatingShoot == true)
-                throw new Exception("Match: " + MatchID + " SERVER: Hemos recibido un ServerShoot mientras estamos simulando (SimulatingShoot = true)");
-
-            if (!CheckActionsAllowed())        // Estan las acciones permitidas?
-                return;
-            
-            // Creamos una nueva descripción de estado para que los clientes puedan envíarnos su estado al finalizar la simulacion
-            ClientState clientState = new ClientState();
-            clientState.ShootCount = ShootCount;
-            TheClientState.Add( clientState );
-            
-            SimulatingShoot = true;     // Indicamos que estamos simulando un disparo
-            CountPlayersEndShoot = 0;   // Reseteamos el contador de jugadores que indican que han terminado la simulación
-            Broadcast("OnClientShoot", idPlayer, capID, dirX, dirY, force);
-        }
-
-        // 
-        // Un cliente ha terminado de simular un disparo. Cuando todos hayan terminado la simulación, lo notificamos a los clientes
-        // 
-        public void OnServerEndShoot(int idPlayer)
-        {
-            LogEx("OnServerEndShoot: " + idPlayer);
-
-            if (SimulatingShoot == false)
-                throw new Exception("Match: " + MatchID + "Hemos recibido una finalización de disparo cuando no estamos simulando (SimulatingShoot = false)");
-            
-            // Contabilizamos jugadores listos 
-            CountPlayersEndShoot++;
-
-            // Si "TODOS=2" jugadores están listos notificamos a los clientes. Además reseteamos las variables de espera
-            if (CountPlayersEndShoot == 2)
-            {
-                SimulatingShoot = false;            // Indicamos que hemos terminado la simulación
-                CountPlayersEndShoot = 0;
-                Broadcast("OnClientShootSimulated");
-            }
-        }
-
-        //
-        // Comprobacion del resultado que ha calculado un cliente de un disparo que ha terminado
-        //
-        public void OnResultShoot(int idPlayer, int result, int countTouchedCaps, int paseToCapId, int framesSimulating, int reasonTurnChanged, string capListStr)
-        {            
-            string finalStr = " RCS: " + result + " Pase: " + paseToCapId + " CountTC: " + countTouchedCaps + " FS: " + framesSimulating + " RTC: "+ reasonTurnChanged + " " + capListStr;
-            
-            // Buscamos el estado vacio para ese cliente (tiene que ser el primero vacio que encontremos, pq los mensajes vienen ordenados)
-            ClientState theState = null;
-            foreach (ClientState clientState in TheClientState)
-            {
-                if (string.IsNullOrEmpty(clientState.ClientString[idPlayer]))
-                {
-                    theState = clientState;
-                    break;
-                }
-            }
-                
-            if (theState == null)
-                throw new Exception("No se ha encontrado un clientstate vacio!");
-            
-            // Almacenamos la cadena de estado del cliente
-            theState.ClientString[ idPlayer ] = finalStr;
-
-            // Si ya tenemos el estado de los dos clientes (las dos cadenas), comprobamos que son iguales, y destruimos este estado
-            if (theState.ClientString[Player1] != "" && theState.ClientString[Player2] != "")
-            {
-                if (theState.ClientString[Player1] != theState.ClientString[Player2])
-                {
-                    // Informamos a los clientes de que se ha producido una desincronia (el cliente decidira que hacer...)
-                    Broadcast( "PushedMatchUnsync" );
-
-                    LogEx( ">>>>>>FATAL ERROR UNSYNC STATE: >>>>>>>>> " + MatchID, MATCHLOG );
-                    LogEx( " STATE 1: " + theState.ClientString[ Player1 ], MATCHLOG );
-                    LogEx( " STATE 2: " + theState.ClientString[ Player2 ], MATCHLOG );
-                }
-                // Eliminamos el estado
-                TheClientState.Remove(theState);
-            }
-            
-            LogEx( "P: " + idPlayer +" SHOOT:" + theState.ShootCount + finalStr);
-        }
-        #endregion
-
         // Determina si estamos esperando a algun jugador que informe de un gol
-        public Boolean IsWaitingAnyGoal()
+        public bool IsWaitingAnyGoal()
         {
             return CountPlayersReportGoal != 0;
         }
 
         //
-        // Verifica si aceptamos acciones de los clientes, si no es así las ignoramos
+        // Verifica si aceptamos acciones de los clientes, si no es así las ignoramos.
         // EJEMPLO: Aunque el servidor ha indicado la finalización de un tiempo, es posible que el mensaje tarde en llegar a los clientes.
         // En este caso ellos mandarían un Shoot, pero el servidor lo ignorará, ya que les llegará instantaneamente un evento de finalización
         // 
-        public Boolean CheckActionsAllowed()
+        public bool CheckActionsAllowed()
         {
             if (this.CurState != State.Playing)
             {
@@ -357,7 +258,7 @@ namespace SoccerServer
 
         public void OnSecondsTick(float elapsed)
         {
-            ServerTime += elapsed;      // Contabilizamos tiempo de servidor
+            ServerTime += elapsed;
 
             // El partido ha sido marcado para finalizar. Notificamos a todos los clientes
             if (IsMarkedToFinish)
@@ -369,7 +270,7 @@ namespace SoccerServer
 
             switch (CurState)
             {
-                case State.WaitingPlayers:
+                case State.WaitingForSaque:
                 {
                 }
                 break;
@@ -382,27 +283,28 @@ namespace SoccerServer
                     if (RemainingSecs <= 0)
                         RemainingSecs = 0;
 
-                    // Comprobamos si ha terminado el tiempo
-                    // NOTE: No permitimos que termine el tiempo durante la simulación del disparo, ni cuando estamos esperando una confirmación de gol
-                    // de uno de los jugadores (el otro ya ha informado)!
-                    if (RemainingSecs <= 0 && SimulatingShoot == false && IsWaitingAnyGoal() == false)
+                    // No permitimos que termine el tiempo durante:
+                    // - La simulación del disparo
+                    // - Cuando estamos esperando una confirmación de gol de uno de los jugadores (el otro ya ha informado). Esto es discutible puesto que
+                    //   en el resto de las esperas no tenemos lo mismo (EndShoot). Visualmente desde luego quedara bien, porque siempre q vea en mi cliente
+                    //   que la pelota entra, el servidor nunca decretara fin del tiempo (aunque puede pasar que el server mande un fin de tiempo y mientras
+                    //   viaja, el cliente vea gol, que ya nunca se pitara)
+                    //
+                    if (RemainingSecs <= 0 && !SimulatingShoot && !IsWaitingAnyGoal())
                     {
-                        // Comprobamos si ha terminado la primera parte o el partido
                         if (Part == 1)
                         {
-                            // Notificamos a los clientes que ha terminado la mitad de juego
-                            LogEx("Finalización de parte!. Enviado a los clientes <FinishPart>");
+                            LogEx("Finalización de parte!. Enviado a los clientes OnClientFinishPart");
                             Broadcast("OnClientFinishPart", Part, null);
 
-                            Part++;                             // Pasamos  a la siguiente parte
+                            Part++;
                             StartPart();
                         }
                         else if (Part == 2)
                         {
-                            // Finalizamos el partido
+                            // Finalizamos el partido, obtenemos el MatchResult y se lo mandamos a los clientes
                             RealtimeMatchResult result = NotifyOwnerFinishMatch();
 
-                            // Notificamos a los clientes que ha terminado la mitad de juego y como es la segunda envíamos el resultado
                             Broadcast("OnClientFinishPart", Part, result);
                             CurState = State.End;
                         }
@@ -420,6 +322,88 @@ namespace SoccerServer
             }
         }
 
+         #region Shoot
+        // 
+        // Un cliente ha disparado sobre una chapa
+        // 
+        public void OnServerShoot(int idPlayer, int capID, float dirX, float dirY, float force)
+        {
+            // Otro disparo mas
+            TotalShootCount++;
+
+            LogEx("OnServerShoot: " + idPlayer + " Shoot: " + TotalShootCount + " Cap ID: " + capID + " dir: " + dirX + ", " + dirY + " force: " + force + " CPES: " + CountPlayersEndShoot);
+            
+            if (CountPlayersEndShoot != 0)
+                LogEx("Exception: Hemos recibido un ServerShoot cuando todavía no todos los clientes habían confirmado la finalización de un disparo anterior");
+            
+            if (SimulatingShoot)
+                LogEx("Exception: Hemos recibido un ServerShoot mientras estamos simulando");
+
+            if (!CheckActionsAllowed())        // Estan las acciones permitidas?
+                return;
+                        
+            SimulatingShoot = true;     // Indicamos que estamos simulando un disparo
+            CountPlayersEndShoot = 0;   // Reseteamos el contador de jugadores que indican que han terminado la simulación
+            Broadcast("OnClientShoot", idPlayer, capID, dirX, dirY, force);
+        }
+
+        // 
+        // Un cliente ha terminado de simular un disparo. Cuando todos hayan terminado la simulación, lo notificamos a los clientes
+        // 
+        public void OnServerEndShoot(int idPlayer)
+        {
+            LogEx("OnServerEndShoot: " + idPlayer);
+
+            if (!SimulatingShoot)
+                LogEx("Exception: Hemos recibido una finalización de disparo cuando no estamos simulando");
+            
+            // Contabilizamos jugadores listos 
+            CountPlayersEndShoot++;
+
+            // Si "TODOS=2" jugadores están listos notificamos a los clientes. Además reseteamos las variables de espera
+            if (CountPlayersEndShoot == 2)
+            {
+                // A la recepcion del OnClientShootSimulated nos van a enviar el ResultShoot                
+                TheClientState = new ClientState();
+                TheClientState.ShootCount = TotalShootCount;
+
+                SimulatingShoot = false;
+                CountPlayersEndShoot = 0;
+                Broadcast("OnClientShootSimulated");
+            }
+        }
+
+        //
+        // Comprobacion del resultado que ha calculado un cliente de un disparo que ha terminado
+        //
+        public void OnResultShoot(int idPlayer, int result, int countTouchedCaps, int paseToCapId, int framesSimulating, int reasonTurnChanged, string capListStr)
+        {            
+            string finalStr = " RCS: " + result + " Pase: " + paseToCapId + " CountTC: " + countTouchedCaps + " FS: " + framesSimulating + " RTC: "+ reasonTurnChanged + " " + capListStr;
+
+            if (TheClientState == null)
+                LogEx("Exception: Pasamos por OnResultShoot sin haber creado el ClientState, cutucrush en la siguiente?!");
+            
+            TheClientState.ClientString[idPlayer] = finalStr;
+
+            LogEx("P: " + idPlayer + " SHOOT:" + TheClientState.ShootCount + finalStr);
+
+            if (TheClientState.ClientString[Player1] != "" && TheClientState.ClientString[Player2] != "")
+            {
+                if (TheClientState.ClientString[Player1] != TheClientState.ClientString[Player2])
+                {
+                    // Informamos a los clientes de que se ha producido una desincronia (el cliente decidira que hacer...)
+                    Broadcast("PushedMatchUnsync");
+
+                    LogEx(">>>>>>FATAL ERROR UNSYNC STATE: >>>>>>>>> " + MatchID, MATCHLOG);
+                    LogEx(" STATE 1: " + TheClientState.ClientString[Player1], MATCHLOG);
+                    LogEx(" STATE 2: " + TheClientState.ClientString[Player2], MATCHLOG);
+                }
+                
+                TheClientState = null;
+            }                
+        }
+        #endregion
+
         // 
         // El cliente activo nos indica que ha alcanzado el timeout. Este mensaje solo lo envía el jugador activo!
         //
@@ -428,8 +412,8 @@ namespace SoccerServer
             LogEx("OnServerTimeout: " + idPlayer);
 
             // El tiempo se detiene al lanzar un disparo, con lo cual no puede llegar un TimeOut
-            if (SimulatingShoot == true)
-                throw new Exception("Match: " + MatchID + " Hemos recibido un TimeOut mientras estamos simulando un disparo (SimulatingShoot = true). ");
+            if (SimulatingShoot)
+                LogEx("Exception: Hemos recibido un TimeOut mientras estamos simulando un disparo");
 
             if (!CheckActionsAllowed())
                 return;
@@ -444,27 +428,31 @@ namespace SoccerServer
         {
             LogEx("Start Part: " + Part);
 
-            CurState = State.WaitingPlayers;
+            CurState = State.WaitingForSaque;
             RemainingSecs = MatchLength / 2;        // Reseteamos tiempo de juego
 
             if (CountPlayersReportGoal != 0)
-                throw new Exception("Comienza una mitad de juego y estamos esperando la notificación de un gol de un jugador! Un jugador se ha caído? CountPlayersReportGoal = " + CountPlayersReportGoal);
+                LogEx("Exception: Comienza una mitad de juego y estamos esperando la notificación de un gol de un jugador! Un jugador se ha caído? CountPlayersReportGoal = " + CountPlayersReportGoal);
         }
 
-        public void OnPlayerReady(RealtimePlayer player)
+        public void OnServerPlayerReadyForSaque(RealtimePlayer player)
         {
             int idPlayer = GetIdPlayer(player);
 
-            LogEx("OnPlayerReady: " + idPlayer);
+            LogEx("OnServerPlayerReadyForSaque: " + idPlayer);
 
-            CountReadyPlayers++;
+            if (this.CurState != State.WaitingForSaque)
+                LogEx("Exception: No estamos esperando a un saque!");
+
+            CountReadyPlayersForSaque++;
 
             // Si "TODOS=2" jugadores están listos continuamos el partido y notificamos a los clientes
-            if (CountReadyPlayers == 2)
+            if (CountReadyPlayersForSaque == 2)
             {
-                LogEx( "Todos los jugadores han indicado que están listros. Les envíamos la notificación para que continuen" );
-                Broadcast("OnAllPlayersReady");
-                CountReadyPlayers = 0;
+                LogEx("Todos los jugadores han indicado que están listos para el saque. Les envíamos la notificación para que continuen");
+                Broadcast("OnClientAllPlayersReadyForSaque");
+                CountReadyPlayersForSaque = 0;
+
                 this.CurState = State.Playing;
             }
         }
@@ -499,8 +487,7 @@ namespace SoccerServer
 
             SkillState skill = PlayersState[ idPlayer ].Skills[ idSkill ];
             skill.LastTimeUsed = ServerTime;
-            skill.InUse = true;
-
+            
             Broadcast("OnClientUseSkill", idPlayer, idSkill);
         }
 
@@ -518,10 +505,13 @@ namespace SoccerServer
         
         public void OnServerGoalScored(int idPlayer, int scoredPlayer, int validity)
         {
-            LogEx( "OnServerGoalScored: Player: " + idPlayer + " Scored player: " + scoredPlayer + " Validity: " + validity + " CountPlayersReportGoal: " + CountPlayersReportGoal );
+            LogEx( "OnServerGoalScored: Player: " + idPlayer + " Scored player: " + scoredPlayer + " Validity: " + validity + " CountPlayersReportGoal: " + CountPlayersReportGoal);
 
             if (!CheckActionsAllowed())
                 return;
+
+            if (!SimulatingShoot)
+                LogEx("Exception: OnServerGoalScored while not simulating!");
 
             // Contabilizamos el número de jugadores que han comunicado el gol. Hasta que los 2 no lo hayan hecho no lo contabilizamos
             CountPlayersReportGoal++;
@@ -530,37 +520,41 @@ namespace SoccerServer
             if (idPlayer == scoredPlayer)
             {
                 ValidityGoal = validity;
-                LogEx("Anotamos la validez del gol. Es el jugador que ha marcado! Player: " + idPlayer + " Validity: " + ValidityGoal);
+                LogEx("Anotamos la validez del gol. Player: " + idPlayer + " Validity: " + ValidityGoal);
             }
 
             // Todos los jugadores han comunicado el gol? Si es así lo procesamos
             if (CountPlayersReportGoal == 2)
             {
-                LogEx( "Todos los jugadores han informado del gol. Notificamos a los clientes." );
+                LogEx("Todos los jugadores han informado del gol. Notificamos a los clientes.");
                 CountPlayersReportGoal = 0;     // Reseteamos contador para el siguiente gol que se produzca!
                         
-                // Ponemos a 0 el contador de playes que han terminado una simulación de disparo, ya que al haber gol se va a resetear la posición de la pelota en el cliente
+                // Ponemos a 0 el contador de players que han terminado una simulación de disparo, ya que al haber gol se va a resetear la posición de la pelota en el cliente
                 CountPlayersEndShoot = 0;
 
-                // Indicamos que hemos terminado la simulación aunque esté en funcionamiento, ya que no nos enviarán los mensajes, y borramos el último estado de clientes
+                // Indicamos que hemos terminado la simulación aunque esté en funcionamiento, ya que no nos enviarán los mensajes
                 SimulatingShoot = false;
-                TheClientState.RemoveAt( TheClientState.Count - 1 );
+                TheClientState = null;
 
-                // Validamos el gol. Para que un gol sea válido el jugador tiene que haber declarado "Tiro a puerta"
-                // TODO: De momento este control lo llevamos en el cliente
-                //bValid = bValid && PlayersState[ idPlayer ].TiroPuerta;
-
-                // Contabilizamos el gol si es válido (en AS3 la validity es un enumerado y vale 0 cuando el gol ha sido valido)
+                // Contabilizamos el gol si es válido (en AS3 la ValidityGoal es un enumerado y vale 0 cuando el gol ha sido valido)
                 if (ValidityGoal == 0)
-                    PlayersState[ scoredPlayer ].ScoredGoals++;
+                    PlayersState[scoredPlayer].ScoredGoals++;
 
                 // Propagamos a los usuarios
                 Broadcast("OnClientGoalScored", scoredPlayer, ValidityGoal);
 
                 // Reseteamos validez del gol y comprobamos coherencia
-                if ( ValidityGoal == Invalid )
-                    throw new Exception( "La validez del gol es inválida" );
+                if (ValidityGoal == Invalid)
+                    LogEx("Exception: La validez del gol es inválida");
+
                 ValidityGoal = Invalid;
+
+                // De un gol siempre se sale por un saque, o de centro o de puerta. Esto ademas parara el tiempo, hasta que todos esten listos no
+                // se podra producir fin de tiempo
+                CurState = State.WaitingForSaque;
+
+                if (CountReadyPlayersForSaque != 0)
+                    LogEx("Exception: CountReadyPlayersForSaque != 0, al entrar en WaitingForSaque siempre se deberia salir por el mismo sitio, reseteando a 0 esta variable");
             }
         }
 
@@ -568,10 +562,9 @@ namespace SoccerServer
         {
             Log.log(MATCHLOG, MatchID + " Chat: " + msg);
 
-            // Solo permitos el chateo durante este estado, para evitar que cuando todavía esta cargando uno de los clientes le lleguen mensajes. Estaba pasando que se le mandaba
-            // este invoke cuando no tenía asignado el cliente de la NetConnection a Game, sino a RTMPModel, con lo que este metodo no existia => excepcion #1069
-            // Con esto, ocurrira q no se puede chatear al final de la primera parte, porque se reusa el estado WaitingState. Si realmente es un problema, se puede meter
-            // un estado adicional para el final de la primera parte y hacer q aqui lo que se compruebe sea CurState != State.WaittingState
+            // Solo permitos el chateo durante este estado, para evitar que cuando todavía esta cargando uno de los clientes le lleguen mensajes. 
+            // Con esto, ocurrira q no se puede chatear en las esperas a un saque por ejemplo. Esto es una mierda y prueba que falta un estado.
+            // Podria ser una llamada a CheckActionsAllowed, puaj.
             if (CurState == State.Playing)
                 Broadcast("OnChatMsg", msg);
         }

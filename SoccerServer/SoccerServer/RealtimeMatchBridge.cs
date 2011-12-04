@@ -23,7 +23,7 @@ namespace SoccerServer
             }
         }
 
-        public void OnPlayerReady(NetPlug plug)
+        public void OnServerPlayerReadyForSaque(NetPlug plug)
         {
             RealtimePlayer thePlayer = plug.UserData as RealtimePlayer;
 
@@ -31,7 +31,7 @@ namespace SoccerServer
             {
                 if (thePlayer.TheMatch != null)
                 {
-                    thePlayer.TheMatch.OnPlayerReady(thePlayer);
+                    thePlayer.TheMatch.OnServerPlayerReadyForSaque(thePlayer);
                 }
             }
         }

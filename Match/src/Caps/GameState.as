@@ -9,19 +9,20 @@ package Caps
 		
 		public static const Playing:int = 3;
 		public static const Simulating:int = 4;							// Simulando un tiro
-		public static const WaitingForTimeout:int = 5;
 		
-		public static const WaitingClientsToEndShoot:int = 6;			// Nuestro disparo se ha simulado, esperando a que los demás clientes terminen de simular el disparo		
+		public static const WaitingClientsToEndShoot:int = 6;			// Nuestro disparo se ha simulado, esperando a que el otro jugador tb termine.	
 		public static const WaitingGoal:int = 10;						// Hemos detectado gol. Estamos esperando a que llegue la confirmación desde el servidor
-		public static const WaitingPlayersAllReady:int = 11; 			// Estado de espera genérico (no hace nada, se usa para esperar un evento del server que desencadena un callback)	
+		public static const WaitingPlayersAllReadyForSaque:int = 11;    // Puerta o centro.
+		public static const WaitingEndPart:int = 14;					// El servidor nos ha mandado un fin de parte, esperando a que acabe cutscene para continuar
 		
-		public static const WaitingCommandPlaceBall : int = 30;			// Se ha mandado un comando y estamos esperando a que el servidor lo propage
+		// Comandos: Se desencadena unicamente en un cliente y estamos esperando a que el servidor lo propage
+		public static const WaitingCommandTimeout:int = 29;
+		public static const WaitingCommandPlaceBall : int = 30;
 		public static const WaitingCommandUseSkill : int = 31;
 		public static const WaitingCommandTiroPuerta : int = 32; 		
 		public static const WaitingCommandShoot : int = 33; 				
 		public static const WaitingCommandPosCap : int = 34; 			
 						
-		public static const WaitingEndPart:int = 14;
 		public static const EndPart:int = 15;		// Fin de una parte
 		public static const EndGame:int = 20;		// Fin de juego
 	}
