@@ -590,14 +590,10 @@ package Caps
 				}
 			}
 			
-			// Notificamos al servidor el resultado cálculado
-			//var listToSend:Array = GetListToSend( this.Teams[0]+ this.Teams[ 1 ] );
-			var capListStr:String = "T1: " + GetString( TheTeams[0].CapsList );
-			capListStr += "T2: " + GetString( TheTeams[1].CapsList );
-			capListStr += " B:" + TheBall.GetPos().toString();
-			
 			// Informamos al servidor para que compare entre los dos clientes
-			if( !AppParams.OfflineMode )
+			var capListStr:String = "T1: " + GetString(TheTeams[0].CapsList) + "T2: " + GetString(TheTeams[1].CapsList) + " B:" + TheBall.GetPos().toString(); 
+			
+			if (!AppParams.OfflineMode)
 			{
 				Match.Ref.Connection.Invoke("OnResultShoot", null, result, 
 											TheGamePhysics.NumTouchedCaps, paseToCap != null ? paseToCap.Id : -1, TheGamePhysics.NumFramesSimulated, 
