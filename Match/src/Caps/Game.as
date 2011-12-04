@@ -40,7 +40,7 @@ package Caps
 		public var ReasonTurnChanged:int = (-1);				// Razón por la que hemos cambiado al turno actual		
 		public var FireCount:int = 0;							// Contador de jugadores expulsados durante el partido.
 
-		private var _TimeCounter:Framework.Time = new Framework.Time();
+		private var _Timer:Framework.Time = new Framework.Time();
 		private var _Random:Framework.Random;
 		
 		private var _MatchResultFromServer : Object;
@@ -272,9 +272,8 @@ package Caps
 				// Nueva parte del juego! (Pasamos por aqui 2 veces, una por parte)
 				case GameState.NewPart:
 				{
-					// Reseteamos la temporizacion
-					_TimeSecs = Config.PartTime;
-					ResetTimeout();										
+					// Reseteamos el tiempo que va a durar la parte
+					_TimeSecs = Config.PartTime;					
 
 					// Espera a los jugadores y comienza del centro. Dependiendo de en que parte estamos, saca un equipo u otro. 
 					SaqueCentro(Part == 1? TheTeams[Enums.Team1] : TheTeams[Enums.Team2]);
@@ -287,7 +286,7 @@ package Caps
 						throw new Error("La fisica no pueda estar simulando en estado GameState.Playing");
 					
 					// Para actualizar nuestros relojes, calculamos el tiempo "real" que ha pasado, independiente del frame-rate
-					var realElapsed:Number = _TimeCounter.GetElapsed() / 1000;
+					var realElapsed:Number = _Timer.GetElapsed() / 1000;
 					
 					_TimeSecs -= realElapsed;
 					
@@ -391,24 +390,12 @@ package Caps
 			_OfflineWaitCall = offlineCall;
 		}
 		
-		protected function GetString( capList:Array ) : String
-		{
-			var capListStr:String = "";
-			
-			for each( var cap:Cap in capList )
-			{
-				if( cap != null )
-					capListStr += 	"[" +cap.Id + ":"+cap.GetPos().toString() + "]";
-			}
-			
-			return capListStr;
-		}
-		
 		//
 		// Resetea el tiempo del timeout
 		//
 		public function ResetTimeout() : void
 		{
+			_Timer.ResetElapsed();
 			_Timeout = Config.TurnTime;
 			TheInterface.TurnTime = _Timeout;	// Asignamos el tiempo de turno que entiende el interface, ya que este valor se modifica cuando se obtiene extratime
 		}
@@ -436,7 +423,8 @@ package Caps
 		{
 			VerifyStateWhenReceivingCommand(GameState.WaitingCommandShoot, idPlayer, "OnClientShoot");
 										
-			// Reseteamos el tiempo de juego al efectuar un lanzamiento
+			// Nada mas lanzar resetamos el tiempo. Esto hace que la tarta se rellene y que si al acabar la simulacion no hay ConsumeTurn o 
+			// YieldTurnToOpponent, por ejemplo, en una pase al pie, el tiempo este bien para ese sub-turno.
 			ResetTimeout();
 			
 			// Obtenemos la chapa que dispara
@@ -485,14 +473,14 @@ package Caps
 				// Aplicamos expulsión del jugador si hubo tarjeta roja
 				if (detectedFault.RedCard == true)
 				{
-					result = 1;
+					result |= 1;
 					
 					// Destruimos la chapa del equipo!
 					attacker.OwnerTeam.FireCap(attacker, true);
 				}
 				else	// Hacemos retroceder al jugador que ha producido la falta
 				{
-					result = 2;
+					result |= 2;
 					
 					// Calculamos el vector de dirección en el que haremos retroceder la chapa atacante
 					var dir:Point = attacker.GetPos().subtract(defender.GetPos());
@@ -504,11 +492,15 @@ package Caps
 				// Tenemos que sacar de puerta al tratarse de una falta al portero?
 				if (detectedFault.SaquePuerta == true)
 				{
+					result |= 4;
+					
 					// Directamente sin pasar por el servidor (AllReady), estamos sincronizados
 					this.SaquePuertaAllReady(defender.OwnerTeam, true);
 				}
 				else
 				{	
+					result |= 8;
+					
 					// En caso contrario, pasamos turno al otro jugador
 					YieldTurnToOpponent(Enums.TurnByFault);
 					
@@ -528,7 +520,7 @@ package Caps
 				// Si se produce el robo, activamos el controlador de pelota al usuario que ha robado el pase y pasamos el turno
 				if (theConflict != null && theConflict.Stolen)
 				{
-					result = 4;
+					result |= 16;
 					
 					// Pasamos turno al otro jugador. El cartelito de robo se pondra como cutscene en el ShowTurn
 					YieldTurnToOpponent(Enums.TurnByStolen);
@@ -541,7 +533,7 @@ package Caps
 					// Si nadie consiguió robar la pelota activamos el controlador de pelota al usuario que ha recibido el pase
 					// Además pintamos un mensaje de pase al pie adecuado (con conflicto o sin conflicto de intento de robo)
 					// NOTE: No consumimos el turno hasta que el usuario coloque la pelota!
-					result = 5;
+					result |= 32;
 					
 					// Además si era el último sub-turno le damos un sub-turno EXTRA. Mientras hagas pase al pie puedes seguir tirando
 					if (_RemainingHits == 1)
@@ -566,7 +558,7 @@ package Caps
 				
 				if (potentialStealer != null && TheGamePhysics.HasTouchedBallAny(this.CurTeam))
 				{
-					result = 10;
+					result |= 64;
 
 					// Igual que en el robo con conflicto pero con una reason distinta para que el interfaz muestre un mensaje diferente
 					YieldTurnToOpponent(Enums.TurnByLost);
@@ -576,9 +568,9 @@ package Caps
 				}
 				else
 				{
-					// simplemente consumimos uno de los 3 turnos
-					result = 11;
-					ConsumeTurn();
+					// simplemente consumimos uno de los 3 sub-turnos
+					result |= 128;
+					ConsumeSubTurn();
 				}
 			}
 			
@@ -615,7 +607,7 @@ package Caps
 			TheBall.StopMovementInPos(cap.GetPos().add(dir));
 			
 			// Consumimos un turno de lanzamiento
-			ConsumeTurn();
+			ConsumeSubTurn();
 			
 			// Salimos siempre por el estado de juego
 			ChangeState(GameState.Playing);
@@ -839,10 +831,9 @@ package Caps
 		//-----------------------------------------------------------------------------------------
 		
 		//
-		// Consumimos un turno del jugador actual
-		// Si alcanza 0 pasamos de turno
+		// Consumimos uno de los X sub-turnos del jugador actual. Si alcanza 0 => YieldTurnToOpponent
 		// 
-		private function ConsumeTurn() : void
+		private function ConsumeSubTurn() : void
 		{
 			_RemainingHits--;
 			
@@ -850,7 +841,7 @@ package Caps
 			ResetTimeout();
 			
 			// Si es el jugador local el activo mostramos los tiros que nos quedan en el interface
-			if( this.CurTeam.IsLocalUser  )
+			if (this.CurTeam.IsLocalUser )
 				Cutscene.ShowQuedanTurnos(_RemainingHits);
 			
 			// Si has declarado tiro a puerta, el jugador contrario ha colocado el portero, nuestro indicador
@@ -862,7 +853,7 @@ package Caps
 			
 			// Comprobamos si hemos consumido todos los disparos
 			// Si es así cambiamos el turno al jugador siguiente y restauramos el nº de disparos disponibles
-			if ( _RemainingHits == 0 )
+			if (_RemainingHits == 0)
 			{
 				YieldTurnToOpponent();
 			}
@@ -883,7 +874,7 @@ package Caps
 				SetTurn(Enums.Team1, reason);
 		}
 		//
-		// Asigna el turno de juego de un equipo
+		// Asigna el turno de juego de un equipo. El cambio de verdad se hace siempre aqui.
 		//
 		private function SetTurn(idTeam:int, reason:int = Enums.TurnByTurn) : void
 		{
@@ -919,14 +910,14 @@ package Caps
 			// Si cambiamos el turno por robo, perdida o falta le damos un turno extra para la colocación del balón.
 			// De esta forma luego tendrá los mismos que un turno normal
 			if( reason == Enums.TurnByStolen || reason == Enums.TurnByFault || reason == Enums.TurnByLost)
-				_RemainingHits ++;
+				_RemainingHits++;
 						
 			// Al cambiar el turno, también desactivamos las skills que se estuvieran utilizando
 			// Salvo cuando cambiamos el turno por declaración de tiro a puerta, o porque ha colocado el portero 
 			if( reason != Enums.TurnByTiroAPuerta && reason != Enums.TurnByGoalKeeperSet )
 			{
-				TheTeams[ Enums.Team1 ].DesactiveSkills();
-				TheTeams[ Enums.Team2 ].DesactiveSkills();
+				TheTeams[Enums.Team1].DesactiveSkills();
+				TheTeams[Enums.Team2].DesactiveSkills();
 			}
 		}
 		
@@ -1140,6 +1131,23 @@ package Caps
 			ChatLayer.AddLine(msg);
 		}
 				
-		private function get IDString() : String { return "MatchID: " + Config.MatchId + " LocalID: " + Match.Ref.IdLocalUser + " "; } 
+		private function get IDString() : String 
+		{ 
+			return "MatchID: " + Config.MatchId + " LocalID: " + Match.Ref.IdLocalUser + " "; 
+		}
+		
+		static private function GetString(capList:Array) : String
+		{
+			var capListStr:String = "";
+			
+			for each( var cap:Cap in capList )
+			{
+				if( cap != null )
+					capListStr += 	"[" +cap.Id + ":"+cap.GetPos().toString() + "]";
+			}
+			
+			return capListStr;
+		}
+		
 	}	
 }
