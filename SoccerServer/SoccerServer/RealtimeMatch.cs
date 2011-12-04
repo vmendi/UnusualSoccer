@@ -549,8 +549,7 @@ namespace SoccerServer
 
                 ValidityGoal = Invalid;
 
-                // De un gol siempre se sale por un saque, o de centro o de puerta. Esto ademas parara el tiempo, hasta que todos esten listos no
-                // se podra producir fin de tiempo
+                // De un gol siempre se sale por saque, o de centro o de puerta. Esto ademas parara el tiempo.
                 CurState = State.WaitingForSaque;
 
                 if (CountReadyPlayersForSaque != 0)
