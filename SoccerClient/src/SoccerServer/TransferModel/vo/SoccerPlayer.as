@@ -32,5 +32,6 @@ package SoccerServer.TransferModel.vo
 		public var Power:int;
 		public var IsInjured:Boolean;
 		public var LastInjuryDate:Date;
+		public var RemainingInjurySeconds:int;
 	}
 }

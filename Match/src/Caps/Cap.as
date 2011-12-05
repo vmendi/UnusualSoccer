@@ -9,6 +9,7 @@ package Caps
 	import Framework.PhyEntity;
 	
 	import com.greensock.*;
+	import com.greensock.plugins.RemoveTintPlugin;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -67,7 +68,7 @@ package Caps
 		public function get OriginalDefense() : int  { return _OriginalDefense; }
 		
 		public function get Ghost() : Entity { return this.OwnerTeam.Ghost; }	// Ghost de la chapa (solo hay uno por equipo)
-								
+
 		//
 		// Inicializa una chapa
 		//
@@ -127,10 +128,12 @@ package Caps
 			_Visual.addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
 			_Visual.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
 			
+			_Visual.addEventListener(Event.REMOVED_FROM_STAGE, OnRemovedFromStage);
+
 			// Creamos un Sprite linkado a la chapa, donde pintaremos los radios de influencia de la chapa
 			// Estos sprites los introducimos como hijos del campo, para asegurar que se vean debajo de las chapas 
 			_Influence = new Sprite();
-			Match.Ref.Game.TheField.Visual.addChild( _Influence );
+			Match.Ref.Game.TheField.Visual.addChild(_Influence);
 			DrawInfluence();
 			_Influence.alpha = 0.0;
 			
@@ -142,6 +145,12 @@ package Caps
 			
 			// Auto-añadimos al manager de entidades
 			Match.Ref.Game.TheEntityManager.AddTagged(this, "Team"+(team.IdxTeam +1).toString() + "_" + _CapId.toString());
+		}
+		
+		private function OnRemovedFromStage(e:Event) : void
+		{
+			_Visual.removeEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+			_Visual.removeEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
 		}
 		
 		private function OnMouseDown(e : MouseEvent) : void

@@ -171,15 +171,15 @@ namespace SoccerServer
             }
             else if (thePurchase.ItemID == "BronzeTicket")
             {
-                AwardTicketTime(theTeam.Ticket, 0, new TimeSpan(1, 0, 0, 0));
+                AwardTicketTime(theTeam.Ticket, 0, new TimeSpan(0, 0, 3, 0));
             } 
             else if (thePurchase.ItemID == "SilverTicket")
             {
-                AwardTicketTime(theTeam.Ticket, 1, new TimeSpan(7, 0, 0, 0));                
+                AwardTicketTime(theTeam.Ticket, 1, new TimeSpan(0, 1, 0, 0));                
             }
             else if (thePurchase.ItemID == "GoldTicket")
             {
-                AwardTicketTime(theTeam.Ticket, 2, new TimeSpan(31, 0, 0, 0));
+                AwardTicketTime(theTeam.Ticket, 2, new TimeSpan(1, 0, 0, 0));
             }
             else
             {

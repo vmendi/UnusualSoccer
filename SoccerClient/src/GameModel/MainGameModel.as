@@ -1,19 +1,17 @@
 package GameModel
 {	
 	import SoccerServer.MainService;
-	import SoccerServer.MainServiceModel;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.external.ExternalInterface;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
 	import mx.collections.ArrayCollection;
-	
-	import utils.Delegate;
 
 	public class MainGameModel extends EventDispatcher
 	{	
-		static public const POSSIBLE_MATCH_LENGTH_MINUTES : ArrayCollection = new ArrayCollection([ 10, 5, 15 ]);
+		static public const POSSIBLE_MATCH_LENGTH_MINUTES : ArrayCollection = new ArrayCollection([ 10, 15, 5 ]);
 		static public const POSSIBLE_TURN_LENGTH_SECONDS : ArrayCollection = new ArrayCollection([ 10, 15, 5 ]);
 		
 		public function MainGameModel()
@@ -34,12 +32,32 @@ package GameModel
 			
 			// Los submodelos se bindean a sus hermanos sin orden definido, necesitamos generar un evento de cambio
 			dispatchEvent(new Event("dummy"));
+			
+			// Timer de refresco global
+			mRefreshTimer = new Timer(1000);
+			mRefreshTimer.addEventListener(TimerEvent.TIMER, OnRefreshTimer);
+			mRefreshTimer.start();
+		}
+		
+		private function OnRefreshTimer(e:TimerEvent) : void
+		{
+			mTeamModel.OnTimerSeconds();
+			mTicketModel.OnTimerSeconds();
+			mCompetitionModel.OnTimerSeconds();
+			mTrainingModel.OnTimerSeconds();
+		}
+		
+		// No queremos que se nos queden timers cuando se produce un error y se da la OnCleaningShutdownSignal
+		public function OnCleaningShutdown() : void
+		{
+			mRefreshTimer.stop();
+			mRefreshTimer = null;
 		}
 
 		public function InitialRefresh(callback : Function) : void
 		{
 			mPredefinedTeamsModel.InitialRefresh(initialRefreshStage01Completed);
-			
+
 			function initialRefreshStage01Completed() : void
 			{
 				mTrainingModel.InitialRefresh(initialRefreshStage02Completed);
@@ -49,15 +67,6 @@ package GameModel
 			{
 				mSpecialTrainingModel.InitialRefresh(callback);	
 			}
-		}
-
-		//
-		// No queremos que se nos queden timers cuando se produce un error y se da la OnCleaningShutdownSignal
-		//
-		public function OnCleaningShutdown() : void
-		{
-			mTrainingModel.CleaningShutdown();
-			mCompetitionModel.CleaningShutdown();
 		}
 
 		[Bindable(event="dummy")]
@@ -107,5 +116,7 @@ package GameModel
 		private var mTicketModel : TicketModel;
 		private var mCompetitionModel : CompetitionModel;
 		private var mFriendsModel : FriendsModel;
+		
+		private var mRefreshTimer : Timer = null;
 	}
 }

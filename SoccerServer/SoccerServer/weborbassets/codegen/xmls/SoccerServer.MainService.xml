@@ -77,11 +77,13 @@
         <field name="RemainingMatches" type="int" fulltype="int" nativetype="int" />
         <field name="TicketPurchaseDate" type="Date" fulltype="Date" nativetype="DateTime" />
         <field name="TicketExpiryDate" type="Date" fulltype="Date" nativetype="DateTime" />
+        <field name="TicketExpiryDateRemainingSeconds" type="int" fulltype="int" nativetype="int" />
       </datatype>
       <datatype name="PendingTraining" fullname="SoccerServer.TransferModel.PendingTraining" typeNamespace="SoccerServer.TransferModel">
         <field name="TrainingDefinition" type="TrainingDefinition" fulltype="SoccerServer.TransferModel.TrainingDefinition" nativetype="SoccerServer.TransferModel.TrainingDefinition" typeNamespace="SoccerServer.TransferModel" />
         <field name="TimeStart" type="Date" fulltype="Date" nativetype="DateTime" />
         <field name="TimeEnd" type="Date" fulltype="Date" nativetype="DateTime" />
+        <field name="RemainingSeconds" type="int" fulltype="int" nativetype="int" />
       </datatype>
       <datatype name="TrainingDefinition" fullname="SoccerServer.TransferModel.TrainingDefinition" typeNamespace="SoccerServer.TransferModel">
         <field name="TrainingDefinitionID" type="int" fulltype="int" nativetype="int" />
@@ -101,6 +103,7 @@
         <field name="Power" type="int" fulltype="int" nativetype="int" />
         <field name="IsInjured" type="Boolean" fulltype="Boolean" nativetype="bool" />
         <field name="LastInjuryDate" type="Date" fulltype="Date" nativetype="DateTime" />
+        <field name="RemainingInjurySeconds" type="int" fulltype="int" nativetype="int" />
       </datatype>
       <datatype name="SpecialTraining" fullname="SoccerServer.TransferModel.SpecialTraining" typeNamespace="SoccerServer.TransferModel">
         <field name="SpecialTrainingDefinition" type="SpecialTrainingDefinition" fulltype="SoccerServer.TransferModel.SpecialTrainingDefinition" nativetype="SoccerServer.TransferModel.SpecialTrainingDefinition" typeNamespace="SoccerServer.TransferModel" />
@@ -151,7 +154,7 @@
       <method name="RefreshRankingPage" type="RankingPage" nativetype="SoccerServer.TransferModel.RankingPage" containsvalues="0">
         <arg name="pageIndex" type="int" nativetype="int" />
       </method>
-      <method name="RefreshSeasonEndDate" type="Date" nativetype="DateTime" containsvalues="0" />
+      <method name="RefreshSeasonEndDateRemainingSeconds" type="int" nativetype="int" containsvalues="0" />
       <method name="RefreshSpecialTrainingDefinitions" type="ArrayCollection" nativetype="List&lt;SoccerServer.TransferModel.SpecialTrainingDefinition&gt;" containsvalues="0" />
       <method name="RefreshTeam" type="Team" nativetype="SoccerServer.TransferModel.Team" containsvalues="0" />
       <method name="RefreshTeamDetails" type="TeamDetails" nativetype="SoccerServer.TransferModel.TeamDetails" containsvalues="0">

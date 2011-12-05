@@ -141,15 +141,10 @@ namespace SoccerServer
 
 		public int OnLiked()
 		{
-            using (CreateDataForRequest())
-            {
-                mPlayer.Liked = true;
-
-                // El mismo entrenamiento se ocupara de submitear cambios. La habilidad 1 tiene todos los requerimientos a 0, por lo que esta sola
-                // llamada provocara su consecucion.
-                TrainSpecial(1);
-            }
-
+            // El mismo entrenamiento se ocupara de submitear cambios. La habilidad 1 tiene todos los requerimientos a 0, por lo que esta sola
+            // llamada provocara su consecucion.
+            TrainSpecial(1);
+         
 			return 1;
 		}
 

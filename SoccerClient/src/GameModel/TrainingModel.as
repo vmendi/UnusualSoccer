@@ -29,30 +29,8 @@ package GameModel
 			
 			BindingUtils.bindSetter(OnPendingTrainingChanged, mMainServiceModel, "TrainResult");
 			BindingUtils.bindSetter(OnPendingTrainingChanged, mMainModel, ["TheTeamModel", "TheTeam", "PendingTraining"]);
-			
-			// Esto estaría mejor dandonos el servidor cuanto falta para el siguiente refresh, y ese es el momento en el q refrescamos
-			//TweenNano.delayedCall(600, OnFitnessUpdateDelayedCall);
 		}
-		
-		internal function CleaningShutdown() : void
-		{
-			TweenNano.killTweensOf(OnFitnessUpdateDelayedCall);
-						
-			if (mPendingTrainingTimer != null)
-			{
-				mPendingTrainingTimer.stop();
-				mPendingTrainingTimer = null;
-			}
-		}
-		
-		private function OnFitnessUpdateDelayedCall() : void
-		{
-			// Cada X tiempo el servidor quita fitness al equipo. Intentamos estar "sincronizadillos".
-			mTeamModel.RefreshTeam(null);
-			
-			TweenNano.delayedCall(600, OnFitnessUpdateDelayedCall);
-		}
-		
+				
 		public function Train(trainingName : String, response:Function):void
 		{
 			mMainService.Train(trainingName, new mx.rpc.Responder(Delegate.create(OnTrainResponse, response), ErrorMessages.Fault));
@@ -85,68 +63,48 @@ package GameModel
 			
 			mTeamModel.TheTeam.PendingTraining = newOne;
 			
-			if (mTeamModel.TheTeam.PendingTraining != null)
-				StartPendingTrainingTimer();			
-			else
-				StopPendingTrainingTimer();
+			// Nuevo entrenamiento ejecutandose
+			dispatchEvent(new Event("IsRegularTrainingAvailableChanged"));
 		}
-		
-		private function StopPendingTrainingTimer() : void
+	
+		internal function OnTimerSeconds():void
 		{
-			if (mPendingTrainingTimer != null)
+			if (mTeamModel.TheTeam != null && mTeamModel.TheTeam.PendingTraining != null)
 			{
-				mPendingTrainingTimer.stop();
-				mPendingTrainingTimer = null;
+				RemainingSeconds--;
 				
-				dispatchEvent(new Event("RemainingSecondsChanged"));
-			}
-		}
-		
-		private function StartPendingTrainingTimer():void
-		{
-			StopPendingTrainingTimer();
-
-			mPendingTrainingTimer = new Timer(1000);
-			mPendingTrainingTimer.addEventListener(TimerEvent.TIMER, OnPendingTrainingTimer);
-			mPendingTrainingTimer.start();
-		}
-				
-		private function OnPendingTrainingTimer(e:Event):void
-		{
-			if (RemainingSeconds > 1) 
-			{
-				mPendingTrainingTimer.start();
-			}
-			else
-			{	
-				if (mTeamModel.TheTeam.PendingTraining != null)
+				if (RemainingSeconds <= 0)
 				{
 					mTeamModel.TheTeam.Fitness += mTeamModel.TheTeam.PendingTraining.TrainingDefinition.FitnessDelta;
 					mTeamModel.TheTeam.PendingTraining = null;
 					
+					// Ya podemos entrenar otra vez
+					dispatchEvent(new Event("IsRegularTrainingAvailableChanged"));
+					
 					// El TeamDetails tiene una copia del Fitness, estamos forzados a actualizarlo
-					mTeamModel.UpdateTeamDetails();
+					mTeamModel.UpdateTeamDetails();	
 				}
 			}
-			
-			dispatchEvent(new Event("RemainingSecondsChanged"));
 		}
 		
-		[Bindable(event="RemainingSecondsChanged")]
+		[Bindable]
 		public function get RemainingSeconds() : int
 		{
-			var ret : int = -1;
-			
-			if (mTeamModel.TheTeam.PendingTraining != null)
-			{
-				ret = (mTeamModel.TheTeam.PendingTraining.TimeEnd.time - new Date().time) / 1000;
-			}
-								
-			return ret;
+			return mTeamModel.TheTeam.PendingTraining == null? -1 : mTeamModel.TheTeam.PendingTraining.RemainingSeconds; 
 		}
-		
-		[Bindable(event="RemainingSecondsChanged")]
-		public function get IsRegularTrainingAvailable() : Boolean { return RemainingSeconds == -1; }
+		private function set RemainingSeconds(v:int) : void
+		{
+			if (mTeamModel.TheTeam.PendingTraining == null)
+				throw new Error("Siempre debería exitir");
+			
+			mTeamModel.TheTeam.PendingTraining.RemainingSeconds = v;
+		}
+				
+		[Bindable(event="IsRegularTrainingAvailableChanged")]
+		public function get IsRegularTrainingAvailable() : Boolean 
+		{ 
+			return mTeamModel.TheTeam.PendingTraining.RemainingSeconds == -1; 
+		}
 		
 		[Bindable(event="TrainingDefinitionsChanged")]
 		public function get TrainingDefinitions() : ArrayCollection { return mTrainingDefinitions; }
@@ -155,9 +113,7 @@ package GameModel
 		private var mMainServiceModel : MainServiceModel;
 		private var mMainModel : MainGameModel;
 		private var mTeamModel : TeamModel;
-		
-		private var mPendingTrainingTimer : Timer;
-		
+				
 		private var mTrainingDefinitions : ArrayCollection;
 	}
 }

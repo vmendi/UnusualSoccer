@@ -25,5 +25,6 @@ import SoccerServer.TransferModel.vo.TrainingDefinition;
 		public var TrainingDefinition:SoccerServer.TransferModel.vo.TrainingDefinition;
 		public var TimeStart:Date;
 		public var TimeEnd:Date;
+		public var RemainingSeconds:int;
 	}
 }

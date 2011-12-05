@@ -8,13 +8,6 @@ package Framework
 	//
 	public class Entity
 	{	
-		public function Run( elapsed:Number ) : void
-		{
-		}
-		public function Draw( elapsed:Number ) : void
-		{
-		}
-		
 		//
 		// Inicializa una entidad con aspecto visual. 
 		//   - Se le pasa la clase que debe instanciar
@@ -42,6 +35,14 @@ package Framework
 				_Visual = null;
 			}
 		}
+		
+		public function Run( elapsed:Number ) : void
+		{
+		}
+		
+		public function Draw( elapsed:Number ) : void
+		{
+		}		
 
 		//
 		// Posicionamiento del objeto lógico

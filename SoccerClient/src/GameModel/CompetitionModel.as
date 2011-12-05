@@ -22,26 +22,13 @@ package GameModel
 		{
 			mMainService = mainService;
 			mMainModel = mainModel;
-					
-			mRefreshTimer = new Timer(1000);
-			mRefreshTimer.addEventListener(TimerEvent.TIMER, OnRefreshTimer);
-			mRefreshTimer.start();
 		}
-		
-		internal function CleaningShutdown() : void
+	
+		internal function OnTimerSeconds() : void
 		{
-			if (mRefreshTimer != null)
+			if (RemainingSeasonSeconds > 0)
 			{
-				mRefreshTimer.stop();
-				mRefreshTimer = null;
-			}
-		}
-		
-		public function OnRefreshTimer(e:Event) : void
-		{
-			if (SeasonEndDate != null)
-			{
-				var remaining : Number = (SeasonEndDate.getTime() - (new Date()).getTime()) / 1000;
+				var remaining : int = RemainingSeasonSeconds - 1;
 				
 				// La temporada esta caducada?
 				if (remaining < 0)
@@ -51,24 +38,21 @@ package GameModel
 			}
 		}
 		
-		public function RefreshSeasonEndDate() : void
-		{
-			mMainService.RefreshSeasonEndDate(new Responder(OnSeasonEndDateRefreshed, ErrorMessages.Fault));
-		}
-				
 		public function RefreshGroup(callback : Function) : void
 		{
+			// Refrescamos primero la fecha de fin de temporada
+			mMainService.RefreshSeasonEndDateRemainingSeconds(new Responder(Delegate.create(OnSeasonEndDateRemainingSecondsRefreshed, callback), ErrorMessages.Fault));
+		}
+		
+		private function OnSeasonEndDateRemainingSecondsRefreshed(e:ResultEvent, callback : Function):void
+		{
+			mRemainingSeconds = e.result as int;
+			
+			// Refrescamos ahora el grupo
 			mMainService.RefreshGroupForTeam(parseInt(SoccerClient.GetFacebookFacade().FacebookID), 
 											 new Responder(Delegate.create(OnGroupForTeamRefreshed, callback), ErrorMessages.Fault));
 		}
-		
-		private function OnSeasonEndDateRefreshed(e:ResultEvent):void
-		{
-			SeasonEndDate = e.result as Date;
 
-			OnRefreshTimer(null);
-		}
-				
 		private function OnGroupForTeamRefreshed(e:ResultEvent, callback : Function):void
 		{
 			TheGroup = e.result as CompetitionGroup;
@@ -97,23 +81,17 @@ package GameModel
 		}
 
 		[Bindable]
-		public function  get TheGroup() : CompetitionGroup       { return mGroup; }
+		public	function get TheGroup() : CompetitionGroup       { return mGroup; }
 		private function set TheGroup(v:CompetitionGroup) : void { mGroup = v; }
 		
 		[Bindable]
-		public function  get SeasonEndDate() : Date { return mSeasonEndDate; }
-		private function set SeasonEndDate(v:Date) : void { mSeasonEndDate = v; }
-		
-		[Bindable]
-		public function get RemainingSeasonSeconds() : Number { return mRemainingSeconds; }
+		public  function get RemainingSeasonSeconds() : Number { return mRemainingSeconds; }
 		private function set RemainingSeasonSeconds(v:Number) : void { mRemainingSeconds = v; }
 		
 		private var mMainService : MainService;
 		private var mMainModel : MainGameModel;
 
-		private var mSeasonEndDate : Date;
 		private var mGroup : CompetitionGroup;
-		private var mRefreshTimer : Timer;
-		private var mRemainingSeconds : Number = -1;
+		private var mRemainingSeconds : Number = 0;
 	}
 }

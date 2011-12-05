@@ -15,7 +15,7 @@ namespace SoccerServer.NetEngine
         // This enables buffers to be easily reused and guards against 
         // fragmenting heap memory.
         // 
-        //This buffer is a byte array which the Windows TCP buffer can copy its data to.
+        // This buffer is a byte array which the Windows TCP buffer can copy its data to.
 
 
         public BufferManager(Int32 numSAEAs, Int32 totalBufferBytesInEachSaeaObject)

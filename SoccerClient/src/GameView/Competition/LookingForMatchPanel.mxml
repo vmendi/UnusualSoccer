@@ -80,9 +80,7 @@
 			 alpha.Disabled="0.2" alpha.Wait="1"
 			 source="@Embed(source='/Assets/General.swf', symbol='BotonBuscarPartido')"
 			 click="MyFindMatchButton_clickHandler(event)"/>	
-	<s:Label width="100%" horizontalCenter="0" top="85" text="{resourceManager.getString('main','LookingForMatchPanelTxt')}" styleName="whiteBoldBig" textAlign="center"
-			 includeIn="Wait" />
-	
+
 	<s:Group includeIn="LookingForMatch" horizontalCenter="0" top="10">
 		<s:layout>
 			<s:VerticalLayout gap="10" horizontalAlign="center" />

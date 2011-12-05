@@ -156,12 +156,12 @@ namespace SoccerServer
         }
 
         [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 60000)]
-        public DateTime RefreshSeasonEndDate()
+        public int RefreshSeasonEndDateRemainingSeconds()
         {
             using (var context = new SoccerDataModelDataContext())
             {
-                // Momento pronosticado en el que se acabara la temporada
-                return GenerateTheoricalSeasonEndDate(GetCurrentSeason(context).CreationDate);
+                // Segundos restantes al momento pronosticado en el que se acabara la temporada
+                return TransferModel.Utils.GetConservativeRemainingSeconds(GenerateTheoricalSeasonEndDate(GetCurrentSeason(context).CreationDate));
             }
         }
 

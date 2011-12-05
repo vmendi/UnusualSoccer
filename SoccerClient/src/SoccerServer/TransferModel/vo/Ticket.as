@@ -25,5 +25,6 @@ package SoccerServer.TransferModel.vo
 		public var RemainingMatches:int;
 		public var TicketPurchaseDate:Date;
 		public var TicketExpiryDate:Date;
+		public var TicketExpiryDateRemainingSeconds:int;
 	}
 }
