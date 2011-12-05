@@ -70,7 +70,7 @@
 	
 	<s:Label horizontalCenter="0" y="46" textAlign="center" text="Estás desconectado del juego..." styleName="whiteBoldBig" includeIn="Disabled" />
 	
-	<s:Image id="MyFindMatchButton" top="0" horizontalCenter="0"  includeIn="Wait"
+	<mx:Image id="MyFindMatchButton" top="0" horizontalCenter="0"  includeIn="Wait"
 			 alpha.Disabled="0.2" alpha.Wait="1"
 			 source="@Embed(source='/Assets/General.swf', symbol='BotonBuscarPartido')"
 			 click="MyFindMatchButton_clickHandler(event)"/>	
@@ -80,7 +80,7 @@
 			<s:VerticalLayout gap="5" horizontalAlign="center" />
 		</s:layout>
 		<s:Label text="{resourceManager.getString('main','LookingForMatchPanelLooking')}" styleName="whiteBoldBig"/>
-		<s:SWFLoader id="MyLoadingAnim" source="@Embed(source='/Assets/General.swf', symbol='LoadingAnim')" includeIn="LookingForMatch"/>
+		<mx:Image id="MyLoadingAnim" source="@Embed(source='/Assets/General.swf', symbol='LoadingAnim')" includeIn="LookingForMatch"/>
 		<s:Button id="MyCancelButton"
 				  label="{resourceManager.getString('main','Cancel')}" minWidth="70" skinClass="GameView.Skins.ButtonDarkGreySkin"
 				  click="MyFindMatchButton_clickHandler(event)"/>

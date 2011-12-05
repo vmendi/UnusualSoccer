@@ -25,6 +25,7 @@
 		import mx.collections.ArrayCollection;
 		import mx.core.FlexGlobals;
 		import mx.core.IFlexModule;
+		import mx.core.ScrollPolicy;
 		import mx.events.FlexEvent;
 		import mx.managers.PopUpManager;
 		
@@ -181,7 +182,8 @@
 		</s:Group>
 		
 		<s:Label top="95" right="280" width="200" text="{resourceManager.getString('main','FriendSelectorSearchByName')}" styleName="whiteBoldMedium" textAlign="right"/>
-		<s:TextInput id="MySearchInput" width="250" right="20" top="93" prompt="Buscar amigo" maxChars="50" change="MySearchInputChange(event)"/>
+		<s:TextInput id="MySearchInput" width="250" right="20" top="93"
+					 maxChars="50" change="MySearchInputChange(event)"/>
 		
 		<s:Rect left="20" right="20" top="121" height="197" radiusX="4">
 			<s:stroke>
@@ -199,11 +201,12 @@
 		</s:Rect>
 		
 		<s:List id="MyFriendsList" dataProvider="{mSelectableFriends}" left="20" right="20" top="121" height="199"
-				horizontalScrollPolicy="off"
 				itemRenderer="GameView.FriendSelection.FriendItem" useVirtualLayout="true" 
 				change="OnMyFriendListChangeHandler(event)"
-				skinClass="GameView.Skins.DefaultListSkin">
-			<s:layout><s:TileLayout verticalGap="10" horizontalGap="10" columnWidth="90" rowHeight="100" paddingLeft="10" paddingRight="10" /></s:layout>
+				skinClass="GameView.Skins.DefaultListSkin"
+				creationComplete="MyFriendsList.scroller.setStyle('verticalScrollPolicy', mx.core.ScrollPolicy.ON);"
+				>
+			<s:layout><s:TileLayout verticalGap="10" horizontalGap="10" columnWidth="90" rowHeight="100" /></s:layout>
 		</s:List>
 		
 		<s:Rect left="20" right="20" bottom="50" height="120" radiusX="4">
@@ -224,18 +227,17 @@
 		<s:Label x="2" bottom="175" width="570" text="{resourceManager.getString('main','FriendSelectorSubtitle')}" styleName="whiteBoldBig" textAlign="center"/>
 		
 		<s:List id="MySelectedList" dataProvider="{mSelectedFriends}" left="20" right="20" bottom="50" height="120"
-				verticalScrollPolicy="off"
-				horizontalScrollPolicy="on"
 				itemRenderer="GameView.FriendSelection.FriendItem" useVirtualLayout="true"
 				change="OnMySelectedListChangeHandler(event)"
-				skinClass="GameView.Skins.DefaultListSkin">
-			<s:layout><s:HorizontalLayout gap="10" /></s:layout>
-		</s:List>
+				skinClass="GameView.Skins.DefaultListSkin"
+				creationComplete="MySelectedList.scroller.setStyle('horizontalScrollPolicy', mx.core.ScrollPolicy.AUTO);"
+				>
+			<s:layout><s:HorizontalLayout gap="10" columnWidth="90" /></s:layout>
+		</s:List>	
+				
 		
 		<s:Group bottom="15" horizontalCenter="0">
-			<s:layout>
-				<s:HorizontalLayout gap="20" />
-			</s:layout>
+			<s:layout><s:HorizontalLayout gap="20" /></s:layout>
 			<s:Button label="ENVIAR INVITACIÓN" click="SendClickHandler(event)" horizontalCenter="50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			<s:Button label="CERRAR" click="CloseClickHandler(event)" horizontalCenter="-50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 		</s:Group>		

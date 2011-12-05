@@ -3,7 +3,7 @@
 		 		xmlns:s="library://ns.adobe.com/flex/spark" 
 		 		autoDrawBackground="false"
 		 		creationComplete="CreationCompleteHandler(event)" 
-				xmlns:GameView="GameView.*">
+				xmlns:GameView="GameView.*" xmlns:mx="library://ns.adobe.com/flex/mx">
 
 	<fx:Style source="../styles.css" />
 	
@@ -32,7 +32,7 @@
 		</s:layout>
 		
 		<s:Group>
-			<s:SWFLoader id="MyCapMC" scaleContent="false"
+			<mx:Image id="MyCapMC" scaleContent="false"
 					  	 source="@Embed(source='/Assets/General.swf', symbol='CapBase')"/>
 			<s:Label id="MyBackNumberLabel" text="{data.DorsalNumber}" horizontalCenter="0" top="17" styleName="whiteBoldMedium" textAlign="center" filters="{DorsalNumberStrokeFilter}"/>
 			<GameView:FacebookPicture FacebookID="{data.FacebookID}" maskType="alpha" scaleX="0.67" scaleY="0.67" left="8" top="7">
@@ -67,7 +67,7 @@
 		
 	</s:Group>
 	
-	<s:Image x="38" y="0" source="@Embed(source='/Assets/General.swf', symbol='CapInjured')" visible="{data.IsInjured}" />
+	<mx:Image x="38" y="0" source="@Embed(source='/Assets/General.swf', symbol='CapInjured')" visible="{data.IsInjured}" />
 		
 	<s:filters>
 		<s:DropShadowFilter distance="10" angle="124" blurX="8" blurY="8" includeIn="selected"/>

@@ -41,7 +41,7 @@
 		<s:GlowFilter id="txtGlowFilter" blurX="10" blurY="10" color="0x000000" alpha="0.6"/>
 	</fx:Declarations>
 	
-	<s:Image source="@Embed(source='/Assets/General.swf', symbol='StatusPanelBackground')"/>
+	<mx:Image source="@Embed(source='/Assets/General.swf', symbol='StatusPanelBackground')"/>
 	
 	<GameView:BadgeTeam x="10" y="22" TeamName="{mTeamModel.PredefinedTeamName}" BigMode="true" />
 	
@@ -86,11 +86,11 @@
 				<s:layout>
 					<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
 				</s:layout>
-				<s:Image source="@Embed(source='/Assets/General.swf', symbol='IconMahouPoints')" />
+				<mx:Image source="@Embed(source='/Assets/General.swf', symbol='IconMahouPoints')" />
 				<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MyMahouPointsLabel" styleName="whiteBoldHuge" textAlign="left" filters="{txtGlowFilter}"/>
 			</s:Group>
 		</s:Group>
-		<s:Image source="@Embed(source='/Assets/General.swf', symbol='LogoMahouLFP')" x="180" y="6" />
+		<mx:Image source="@Embed(source='/Assets/General.swf', symbol='LogoMahouLFP')" x="180" y="6" />
 	</s:Group>
 		
 </s:Group>

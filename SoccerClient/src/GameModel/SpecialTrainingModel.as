@@ -6,19 +6,15 @@ package GameModel
 	
 	import com.facebook.graph.Facebook;
 	
-	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.external.ExternalInterface;
 	
 	import mx.binding.utils.BindingUtils;
 	import mx.collections.ArrayCollection;
+	import mx.collections.Sort;
 	import mx.rpc.Responder;
 	import mx.rpc.events.ResultEvent;
 	
 	import org.osflash.signals.Signal;
-	
-	import spark.collections.Sort;
-	import spark.collections.SortField;
 	
 	import utils.Delegate;
 
