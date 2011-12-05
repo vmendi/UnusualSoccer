@@ -103,7 +103,7 @@ namespace SoccerServer
             var clientSettings = Global.Instance.ClientSettings;
 
             pageSource.Replace("${version_major}", "10");
-            pageSource.Replace("${version_minor}", "0");
+            pageSource.Replace("${version_minor}", "2");
             pageSource.Replace("${version_revision}", "0");
             pageSource.Replace("${bgcolor}", "#FFFFFF");
             pageSource.Replace("${swf}", "SoccerClient/SoccerClient");

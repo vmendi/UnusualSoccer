@@ -57,7 +57,7 @@ package
 				mFBAuthResponse = result as FacebookAuthResponse;
 				
 				Facebook.setCanvasAutoResize(true);
-				
+								
 				callback();
 			}
 			else

@@ -83,7 +83,7 @@
 				</s:filters>
 			</s:Rect>
 			
-			<s:Label text="{HelpText}" left="10" right="10" top="10" bottom="10" width="200" styleName="blackBoldBig" />	
+			<s:Label text="{HelpText}" left="10" right="10" top="10" bottom="10" width="200" styleName="blackBoldBig" />
 		</s:Group>
 	</s:PopUpAnchor>
 	
