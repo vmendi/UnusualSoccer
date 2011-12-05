@@ -6,7 +6,7 @@
 		 width="100%" height="100%"
 		 addedToStage="AddedToStageHandler(event)"
 		 creationComplete="CreationCompleteHandler(event)"
-		 currentState="Empty" xmlns:Team="GameView.Team.*" xmlns:Match="GameView.Match.*">
+		 currentState="Empty" xmlns:Team="GameView.Team.*" xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*">
 	
 	<fx:Declarations>
 		<s:DropShadowFilter id="shadowNormal" distance="2" angle="90" blurX="1" blurY="1"/>
@@ -25,7 +25,6 @@
 		import GameModel.CompetitionModel;
 		import GameModel.MainGameModel;
 		
-		import GameView.ImportantMessageDialog;
 		import GameView.PromotedDialog;
 		import GameView.Skins.DefaultPanelSkin;
 		
@@ -105,13 +104,16 @@
 	]]></fx:Script>
 		
 	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" bottom="10" left="10" width="740" title="COMPETICIÓN">
+		<s:controlBarContent>
+			<GameView:HelpCallout HelpText="{resourceManager.getString('main','CompetitionHelpCallout')}"/>
+		</s:controlBarContent>
+		
 		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraFondo')" fillMode="clip" />
 		
 		<Competition:DivisionBadge x="0" y="0" Division="{mCompetitionModel.TheGroup.DivisionName}" />
 				
 		<s:Label width="72" x="112" y="53" text="GRUPO: {mCompetitionModel.TheGroup.GroupName}" styleName="whiteBoldBig" textAlign="left" />
-		<!--<s:Label id="MyGroupNameLabel" text="" width="72" x="148" y="41" styleName="whiteBoldVeryBig" textAlign="center" />-->
-		
+
 		<s:Group right="0" top="18">
 			<s:layout>
 				<s:HorizontalLayout gap="0" />
@@ -142,8 +144,6 @@
 		<Competition:LookingForMatchPanel x="0" y="0" includeIn="AvailableCredit" />
 
 	</s:Panel>
-	
-	
 	
 	<s:Label id="MyOutOfCredit" right="10" y="29" text="OUT OF CREDIT BLAH BLAH" includeIn="OutOfCredit" styleName="whiteBoldMedium" />
 
