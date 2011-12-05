@@ -67,7 +67,7 @@
 			<s:BorderContainer backgroundColor="#FF0000">
 				<s:Label text="{HelpText}" styleName="whiteBoldBig" />	
 			</s:BorderContainer>
-		</s:Group>		
+		</s:Group>
 	</s:PopUpAnchor>
 	
 	<s:filters>
