@@ -6,7 +6,6 @@ package Caps
 	
 	import flash.display.MovieClip;
 	import flash.geom.Point;
-	import flash.globalization.LastOperationStatus;
 	
 	import utils.Delegate;
 

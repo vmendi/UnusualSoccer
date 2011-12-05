@@ -2,7 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 creationComplete="CreationCompleteHandler(event)"
-		 currentState="Normal">
+		 currentState="Normal" xmlns:mx="library://ns.adobe.com/flex/mx">
 	
 	<s:states>
 		<s:State name="Normal"></s:State>
@@ -65,7 +65,7 @@
 	]]></fx:Script>
 	
 	<s:Group includeIn="Normal, Big" id="MyRootGroup">
-		<s:SWFLoader id="MyNormalBitmap" includeIn="Normal" source="@Embed(source='/Assets/General.swf', symbol='Badges')"/>
-		<s:SWFLoader id="MyBigBitmap" includeIn="Big" source="@Embed(source='/Assets/General.swf', symbol='BadgesBig')"/>
+		<mx:Image id="MyNormalBitmap" includeIn="Normal" source="@Embed(source='/Assets/General.swf', symbol='Badges')"/>
+		<mx:Image id="MyBigBitmap" includeIn="Big" source="@Embed(source='/Assets/General.swf', symbol='BadgesBig')"/>
 	</s:Group>
 </s:Group>

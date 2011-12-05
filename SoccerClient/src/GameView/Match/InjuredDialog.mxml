@@ -64,11 +64,11 @@
 		</s:filters>
 	</s:Rect>
 	
-	<s:List id="MyInjuredList" dataProvider="{mInjured}" left="20" right="20" top="102" height="72"
-			verticalScrollPolicy="off" horizontalScrollPolicy="off"
+	<s:List id="MyInjuredList" dataProvider="{mInjured}" left="20" right="20" top="102" height="72" horizontalCenter="0"
 			itemRenderer="GameView.Team.FieldCap" useVirtualLayout="false"
-			skinClass="GameView.Skins.DefaultListSkin"
-			horizontalCenter="0">
+			skinClass="GameView.Skins.DefaultListSkin"			
+			creationComplete="MyInjuredList.scroller.setStyle('horizontalScrollPolicy', mx.core.ScrollPolicy.AUTO);"
+			>
 		<s:layout><s:HorizontalLayout gap="20" /></s:layout>
 	</s:List> 
 		

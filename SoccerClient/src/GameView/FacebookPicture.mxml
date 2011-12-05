@@ -88,7 +88,7 @@
 				// Esto nos indica cuándo se ha cargado con redireccion
 				if (!mLoader.contentLoaderInfo.childAllowsParent)
 				{
-					if (mLoader.contentLoaderInfo.isURLInaccessible)
+					//if (mLoader.contentLoaderInfo.isURLInaccessible)	-> Comprobacion imposible en SDK 4.1 / Flash player 10.0
 					{
 						// oh my goodness...
 						Security.loadPolicyFile(mLoader.contentLoaderInfo.url + "crossdomain.xml");
@@ -101,12 +101,14 @@
 						// del childAllowsParent...
 						TweenNano.delayedCall(3, LoadPicture);	
 					}
+					/*
 					else
 					{
 						// Este caso no nos lo hemos encontrado, parece que el CDN de FB esta configurado siempre para que NO nos devuelva la URL completa
 						// de las fotos. De momento lo dejamos sin implementar a ver si ocurre alguna vez
 						ErrorMessages.LogToServer("Error horrible, la URL deberia ser inaccesible");
 					}
+					*/
 				}
 				else
 				{

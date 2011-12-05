@@ -18,7 +18,7 @@
 		
 	]]></fx:Script>
 		
-	<s:Image x="0" y="0" source="@Embed(source='/Assets/General.swf', symbol='CapDetailInjuredBg')" />
+	<mx:Image x="0" y="0" source="@Embed(source='/Assets/General.swf', symbol='CapDetailInjuredBg')" />
 	<s:Group x="0" y="0" width="187">
 		<s:layout>
 			<s:VerticalLayout gap="6" horizontalAlign="center" />
@@ -27,7 +27,7 @@
 			<s:layout>
 				<s:HorizontalLayout verticalAlign="middle" gap="10" />
 			</s:layout>
-			<s:Image source="@Embed(source='/Assets/General.swf', symbol='CapDetailInjuredIcon')" />
+			<mx:Image source="@Embed(source='/Assets/General.swf', symbol='CapDetailInjuredIcon')" />
 			<s:Label text="{resourceManager.getString('main','CapDetailPlayerInjured')}" styleName="whiteBoldBig" />
 		</s:Group>
 		<s:Label text="{resourceManager.getString('main','CapDetailTimeToRecover')} :" styleName="whiteBoldMedium" />

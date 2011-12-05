@@ -4,15 +4,10 @@ package GameModel
 	import SoccerServer.TransferModel.vo.CompetitionGroup;
 	import SoccerServer.TransferModel.vo.CompetitionGroupEntry;
 	
-	import flash.events.Event;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
-	
+	import mx.collections.Sort;
+	import mx.collections.SortField;
 	import mx.rpc.Responder;
 	import mx.rpc.events.ResultEvent;
-	
-	import spark.collections.Sort;
-	import spark.collections.SortField;
 	
 	import utils.Delegate;
 
