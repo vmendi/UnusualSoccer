@@ -68,7 +68,7 @@
 	</s:Group>
 
 	<s:Scroller left="0" top="20" right="0" bottom="0" id="scroller" hasFocusableChildren="false"
-				skinClass="GameView.Skins.DefaultScrollerSkin" horizontalScrollPolicy="off">
+				skinClass="GameView.Skins.DefaultScrollerSkin" horizontalScrollPolicy="off" verticalScrollPolicy="on">
 		<s:DataGroup id="dataGroup" itemRenderer="spark.skins.spark.DefaultItemRenderer" clipAndEnableScrolling="true">
 			<s:layout>
 				<!--- The default layout is vertical and measures at least for 5 rows.  

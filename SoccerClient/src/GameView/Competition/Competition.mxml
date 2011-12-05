@@ -86,7 +86,7 @@
 		private function EnsureSelectedIsVisible() : void
 		{
 			var idx : int = MyCompetitionList.dataProvider.getItemIndex(mCompetitionModel.GetLocalGroupEntry());
-						
+
 			if (idx + 4 < MyCompetitionList.dataProvider.length)
 				idx += 4;
 			else
@@ -137,9 +137,10 @@
 			</s:Group>
 		</s:Group>
 
-		<s:List id="MyCompetitionList" left="0" right="0" top="85" bottom="10"
+		<s:List id="MyCompetitionList" left="0" right="0" top="85" height="356"
 				dataProvider="{mCompetitionModel.TheGroup.GroupEntries}" skinClass="GameView.Competition.CompetitionListSkin"		
-				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="true"/>
+				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="true"
+				/>
 		
 		<Competition:LookingForMatchPanel x="0" y="0" includeIn="AvailableCredit" />
 

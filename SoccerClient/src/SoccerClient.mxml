@@ -21,7 +21,7 @@
 
 		protected function ApplicationCompleteHandler(event:FlexEvent):void
 		{
-			//FPSCounter.Init(this.stage, new Point(0,0));
+			// FPSCounter.Init(this.stage, new Point(0,0));
 			
 			// Excepciones globales capturadas
 			if (loaderInfo.hasOwnProperty("uncaughtErrorEvents"))

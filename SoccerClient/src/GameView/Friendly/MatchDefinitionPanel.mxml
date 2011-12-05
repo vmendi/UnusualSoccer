@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" 
-		 skinClass="GameView.Skins.DefaultPanelSkin" xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*" xmlns:Friendly="GameView.Friendly.*"
+		 skinClass="GameView.Skins.DefaultPanelSkin"
 		 currentState="Empty"
-		 preinitialize="PreinitializeHandler(event)" xmlns:Friendly="GameView.Friendly.*">
+		 preinitialize="PreinitializeHandler(event)">
 	
 	<s:states>
 		<s:State name="Empty" />
@@ -115,9 +116,9 @@
 			<GameView:OptionsSelector id="MyTurnLengthSelector" width="110" DataOptions="{MainGameModel.POSSIBLE_TURN_LENGTH_SECONDS}" />	
 		</s:Group>
 		
-		<s:TextInput left="0" right="0" top="60"
-					 id="MyChallengeMsgInput" text="" maxChars="50"/>	 <!-- prompt="Escribe aquí un mensaje a tu oponente..." -->
-		
+		<GameView:PromptingTextInput left="0" right="0" top="60" skinClass="GameView.Skins.PromptingTextInputSkin"
+									 id="MyChallengeMsgInput" text="" maxChars="50" prompt="Escribe aquí un mensaje a tu oponente..." />
+			
 		<s:Button left="65" right="65" top="95"
 				  skinClass="GameView.Skins.ButtonGreySkin" label="LANZAR RETO" click="LaunchChallenge_clickHandler(event)" />
 	</s:Group>

@@ -98,10 +98,9 @@ package
 			var current : String = ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
 			var domainBase : String = "";
 			
-			//if (URLUtil.hasTokens(current))		Debido al paso al SDK 4.1, perdemos esta funcion desde el 4.5
-			if (URLUtil.getServerName(current))
-				domainBase = "http://" + URLUtil.getServerName(current);
-			
+			if (AppConfig.REMOTE)
+				domainBase = "http://" + AppConfig.REMOTE_SERVER;
+						
 			var request : URLRequest = new URLRequest(domainBase + "/TestCreateSession.aspx?FakeSessionKey="+sessionKey);
 			request.method = URLRequestMethod.POST;
 			
