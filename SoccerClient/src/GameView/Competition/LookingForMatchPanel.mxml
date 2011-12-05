@@ -62,17 +62,11 @@
 
 	]]></fx:Script>
 	
-	<s:Rect x="0" y="0" width="740" height="105" alpha="0.5" includeIn="LookingForMatch">
+	<s:Rect x="0" y="0" width="740" height="85" alpha="0.5" includeIn="LookingForMatch">
 		<s:fill>
 			<s:SolidColor color="#000000"/>
 		</s:fill>
 	</s:Rect>
-
-	<s:Rect x="0" bottom="0" width="740" height="20" alpha="0.5" includeIn="Wait">
-		<s:fill>
-			<s:SolidColor color="#000000"/>
-		</s:fill>
-	</s:Rect>	
 	
 	<s:Label horizontalCenter="0" y="46" textAlign="center" text="Estás desconectado del juego..." styleName="whiteBoldBig" includeIn="Disabled" />
 	
@@ -81,9 +75,9 @@
 			 source="@Embed(source='/Assets/General.swf', symbol='BotonBuscarPartido')"
 			 click="MyFindMatchButton_clickHandler(event)"/>	
 
-	<s:Group includeIn="LookingForMatch" horizontalCenter="0" top="10">
+	<s:Group includeIn="LookingForMatch" horizontalCenter="0" top="5">
 		<s:layout>
-			<s:VerticalLayout gap="10" horizontalAlign="center" />
+			<s:VerticalLayout gap="5" horizontalAlign="center" />
 		</s:layout>
 		<s:Label text="{resourceManager.getString('main','LookingForMatchPanelLooking')}" styleName="whiteBoldBig"/>
 		<s:SWFLoader id="MyLoadingAnim" source="@Embed(source='/Assets/General.swf', symbol='LoadingAnim')" includeIn="LookingForMatch"/>
