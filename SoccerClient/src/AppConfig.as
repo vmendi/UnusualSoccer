@@ -1,11 +1,10 @@
 package
 {
 	import mx.collections.ArrayCollection;
-	import mx.resources.ResourceManager;
-	import mx.utils.URLUtil;
 
 	public final class AppConfig
 	{
+		static public var VERSION_ID : String = null; 				// "UnusualSoccer", "MahouLigaChapas"... 
 		static public var CANVAS_PAGE : String = null; 				// "http://apps.facebook.com/unusualsoccerdev";
 		static public var CANVAS_URL : String = null; 				// "http://mahouligachapas.unusualwonder.com";
 		static public var APP_ID : String = null;
@@ -19,9 +18,10 @@ package
 		
 		static public function Init(parameters : Object) : void
 		{
-			// Seleccion de idioma
-			ResourceManager.getInstance().localeChain = ["es_ES", "en_US"];	// Esto selecciona ES (el primero)
-			//ResourceManager.getInstance().localeChain = ["en_US", "es_ES"];
+			if (parameters.hasOwnProperty("VersionID"))
+				VERSION_ID = parameters["VersionID"];
+			else
+				VERSION_ID = "UnusualSoccer";
 			
 			if (parameters.hasOwnProperty("CanvasPage"))
 				CANVAS_PAGE = parameters["CanvasPage"];

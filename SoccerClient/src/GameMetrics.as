@@ -24,7 +24,7 @@ package
 		{
 			tracker = new GATracker( dobject, "UA-6476735-8", "AS3", false );
 			
-			var uid : String = SoccerClient.GetFacebookFacade().FacebookID //SoccerClient.GetFacebookFacade().FacebookID;
+			var uid : String = SoccerClient.GetFacebookFacade().FacebookID
 			ExternalInterface.call("_kmq.push", ['identify', uid]);
 		}
 		

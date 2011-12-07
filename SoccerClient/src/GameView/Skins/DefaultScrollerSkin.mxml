@@ -43,11 +43,11 @@
     <!---  A vertical scrollbar that lets you control the portion of data that is displayed 
             when there is too much data to fit vertically in a display area.
             The Scroller determines whether the vertical ScrollBar is visible. -->
-    <s:VScrollBar id="verticalScrollBar" visible="false" skinClass="GameView.Skins.DefaultVScrollBarSkin" />
+    <s:VScrollBar id="verticalScrollBar" visible="false" skinClass="GameView.Skins.DefaultVScrollBarSkin" smoothScrolling="true" />
     
     <!---  A horizontal scrollbar that lets you control the portion of data that is displayed 
             when there is too much data to fit horizontally in a display area.
             The Scroller determines whether the horizontal ScrollBar is visible. -->
-    <s:HScrollBar id="horizontalScrollBar" visible="false" skinClass="GameView.Skins.DefaultHScrollBarSkin" />
+    <s:HScrollBar id="horizontalScrollBar" visible="false" skinClass="GameView.Skins.DefaultHScrollBarSkin" smoothScrolling="true" />
 
 </s:SparkSkin>

@@ -10,15 +10,24 @@ using System.Threading;
 using System.Text;
 using System.IO;
 using System.Collections.Generic;
+using System.Web;
 
 namespace SoccerServer
 {
     public partial class Default : Page
     {
-        private Control MyDefaultForm = null;
-
         protected void Page_Load(object sender, EventArgs e)
-        {            
+        {
+            // Para las versiones no-default (Mahou) el IIS deberia estar configurado para responder con la pagina adecuada.
+            // Sin embargo, para que no haya que reconfigurar el IIS para hacer una prueba, comprobamos aqui si somos una 
+            // version no-default y hacemos un transfer.
+            if (Global.Instance.ServerSettings["VersionID"] == "MahouLigaChapas" &&
+                !HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.ToLower().Contains("defaultmahou.aspx"))
+            {
+                Server.Transfer("~/DefaultMahou.aspx");
+                return;
+            }
+
             // Cargamos nuestros settings procedurales que nos deja ahi Global.asax
             FacebookApplication.SetApplication(Global.Instance.FacebookSettings as IFacebookApplication);
 
@@ -63,27 +72,20 @@ namespace SoccerServer
 				theContext.SubmitChanges();
 
                 // Ahora podemos hacer visible todo el contenido flash
-                InjectContentPanel(player.Liked);
+                InjectContentPanel(!player.Liked);
 			}
 		}
 
-        private void InjectContentPanel(Boolean hideLikePanel)
+        private void InjectContentPanel(Boolean showLikePanel)
         {
-            if (Global.Instance.ServerSettings["VersionID"] == "MahouLigaChapas")
-                MyDefaultForm = LoadControl("~/DefaultMahou.ascx");
-            else
-                MyDefaultForm = LoadControl("~/DefaultUnusualSoccer.ascx");
-
-            Controls.Add(MyDefaultForm);
-
-            if (hideLikePanel)
-                MyDefaultForm.FindControl("MyLikePanel").Visible = false;
+            MyDefaultPanel.Visible = true;
+            MyLikePanel.Visible = showLikePanel;
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
             // Solo hacemos los reemplazos cuando todo el contenido flash esta visible (cuando ya estamos autorizados, etc)
-            if (MyDefaultForm == null)
+            if (!MyDefaultPanel.Visible)
                 return;
              
             StringBuilder pageSource = new StringBuilder();
@@ -105,7 +107,6 @@ namespace SoccerServer
             pageSource.Replace("${version_major}", "10");       // Flex SDK 4.1 => Flash Player 10.0.0
             pageSource.Replace("${version_minor}", "0");
             pageSource.Replace("${version_revision}", "0");
-            pageSource.Replace("${bgcolor}", "#FFFFFF");
             pageSource.Replace("${swf}", "SoccerClient/SoccerClient");
             pageSource.Replace("${application}", "SoccerClient");
             pageSource.Replace("${width}", "760");
