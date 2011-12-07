@@ -4,6 +4,7 @@ package
 	
 	import com.facebook.graph.Facebook;
 	import com.facebook.graph.data.FacebookAuthResponse;
+	import com.facebook.graph.data.FacebookSession;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -46,7 +47,8 @@ package
 				
 				// Esto generara una llamada a FB para conseguir un nuevo access_token, distinto al primero 
 				// que se le pasa por POST al servidor (dentro del signed_request)
-				Facebook.init(AppConfig.APP_ID, Delegate.create(OnFacebookInit, callback), { xfbml: true, oauth: true, cookie:true, frictionlessRequests:true } );
+				Facebook.init(AppConfig.APP_ID, Delegate.create(OnFacebookInit, callback), 
+							  { xfbml: true, oauth: true, cookie:true, frictionlessRequests:true });
 			}
 		}
 		
@@ -55,14 +57,28 @@ package
 			if (result != null)
 			{
 				mFBAuthResponse = result as FacebookAuthResponse;
-				
+			
+				// Querido yo del futuro: quiero que sepas que esta funcion la van a renombrar, asi que tendras que bajar un nuevo SDK y
+				// cambiar la llamada
 				Facebook.setCanvasAutoResize(true);
-								
-				callback();
+				Facebook.api('/me', onFacebookMeResponse);
 			}
 			else
 			{
 				ErrorMessages.FacebookConnectionError();
+			}
+			
+			function onFacebookMeResponse(result:Object, fail:Object) : void
+			{
+				if (fail == null)
+				{
+					mMe = result;
+					callback();
+				}
+				else
+				{
+					ErrorMessages.FacebookConnectionError();
+				}
 			}
 		}
 		
@@ -140,9 +156,15 @@ package
 			
 			return null;
 		}
-						
+		
+		public function get FacebookISOLocale() : String
+		{
+			return mMe.locale;
+		}
+								
 		private var mFakeSessionKey : String;
 		private var mFBAuthResponse:FacebookAuthResponse;						
 		private var mSessionKeyURLLoader : URLLoader;
+		private var mMe : Object;							// El objeto /me tal y como nos lo devuelve FB
 	}
 }

@@ -76,13 +76,13 @@ namespace SoccerServer
                 mFBSettings.CanvasUrl = "http://unusualsoccerdev.unusualwonder.com/";
                 mFBSettings.SecureCanvasUrl = "https://unusualsoccerdev.unusualwonder.com/";
 
-                //mServerSettings["VersionID"] = "UnusualSoccer";
-                mServerSettings["VersionID"] = "MahouLigaChapas";
-                                
+                mServerSettings["VersionID"] = "UnusualSoccer";
+                mClientSettings["VersionID"] = "UnusualSoccer";
+                
                 mServerSettings["TicketingSystem"] = "false";
                 mServerSettings["SameIPAbandonsChecked"] = "true";
             }
-            else
+            else    // localhost
             {
                 mFBSettings.AppId = "100203833418013";
                 mFBSettings.AppSecret = "bec70c821551670c027317de43a5ceae";
@@ -92,8 +92,10 @@ namespace SoccerServer
                 mFBSettings.SecureCanvasUrl = "https://localhost/";
 
                 // Pondremos lo que mas nos convenga para depurar en local
-                mServerSettings["VersionID"] = "MahouLigaChapas";
                 //mServerSettings["VersionID"] = "UnusualSoccer";
+                //mClientSettings["VersionID"] = "UnusualSoccer";
+                mServerSettings["VersionID"] = "MahouLigaChapas";
+                mClientSettings["VersionID"] = "MahouLigaChapas";
                                 
                 mServerSettings["TicketingSystem"] = "false";
                 mServerSettings["SameIPAbandonsChecked"] = "false";

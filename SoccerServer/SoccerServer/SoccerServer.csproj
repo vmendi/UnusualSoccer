@@ -119,8 +119,7 @@
     <Content Include="crossdomain.xml" />
     <Content Include="Deauthorize.aspx" />
     <Content Include="Default.aspx" />
-    <Content Include="DefaultMahou.ascx" />
-    <Content Include="DefaultUnusualSoccer.ascx" />
+    <Content Include="DefaultMahou.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Imgs\BannerMeGustaBg.png" />
     <Content Include="Imgs\FacebookLandingPage.jpg" />
@@ -196,19 +195,8 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="DefaultMahou.ascx.cs">
-      <DependentUpon>DefaultMahou.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DefaultMahou.ascx.designer.cs">
-      <DependentUpon>DefaultMahou.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DefaultUnusualSoccer.ascx.cs">
-      <DependentUpon>DefaultUnusualSoccer.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="DefaultUnusualSoccer.ascx.designer.cs">
-      <DependentUpon>DefaultUnusualSoccer.ascx</DependentUpon>
+    <Compile Include="DefaultMahou.aspx.designer.cs">
+      <DependentUpon>DefaultMahou.aspx</DependentUpon>
     </Compile>
     <Compile Include="EntityDataReader.cs" />
     <Compile Include="FBUtils.cs" />
