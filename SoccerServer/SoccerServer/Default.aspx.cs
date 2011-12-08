@@ -31,6 +31,10 @@ namespace SoccerServer
             // Cargamos nuestros settings procedurales que nos deja ahi Global.asax
             FacebookApplication.SetApplication(Global.Instance.FacebookSettings as IFacebookApplication);
 
+            // Incluso sin estar autorizados, siempre tenemos un signed_request en el que esta contenido el country (geolocalizado) y el locale
+            var fbSignedRequest = FacebookSignedRequest.Parse(Global.Instance.FacebookSettings as IFacebookApplication, HttpContext.Current.Request["signed_request"]);
+            var country = GetCountryFromSignedRequest(fbSignedRequest); // TODO: Usarlo para redireccionar si es Mahou y no es España
+
             if (Request.QueryString.AllKeys.Contains("FakeSessionKey"))
             {
                 ShowFakeSessionKeyContent();
@@ -120,6 +124,9 @@ namespace SoccerServer
             pageSource.Replace("${description}", serverSettings["Description"]);
             pageSource.Replace("${imageUrl}", serverSettings["ImageUrl"]);
 
+            // Seleccionamos por ejemplo el Javascript SDK que se cargara
+            pageSource.Replace("${locale}", GetLocaleFromSignedRequest(FacebookWebContext.Current.SignedRequest));
+
             // Parametros de entrada al SWF. Todo lo que nos viene en la QueryString mas nuestros Global.ClientSettings
             string flashVars = " { "; 
             foreach (string key in Request.QueryString.AllKeys)
@@ -132,11 +139,41 @@ namespace SoccerServer
             flashVars += "CanvasPage: '" + theFBApp.CanvasPage + "' ,";
             flashVars += "CanvasUrl: '" + theFBApp.CanvasUrl + "' ,";
 
-            flashVars += "SessionKey: '" + FacebookWebContext.Current.AccessToken + "'";
+            flashVars += "SessionKey: '" + FacebookWebContext.Current.AccessToken + "' ,";
+            flashVars += "Locale: '" + GetLocaleFromSignedRequest(FacebookWebContext.Current.SignedRequest) + "'";
                                     
             flashVars += " } ";
             
             pageSource.Replace("${flashVars}", flashVars);
+        }
+
+        private string GetCountryFromSignedRequest(FacebookSignedRequest fbSignedRequest)
+        {
+            return ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["country"] as string;
+        }
+
+        private string GetLocaleFromSignedRequest(FacebookSignedRequest fbSignedRequest)
+        {
+            var locale = ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["locale"] as string;
+
+            // MahouLigaChapas nunca puede ser otro idioma que no sea español
+            if (Global.Instance.ServerSettings["VersionID"] == "MahouLigaChapas")
+                locale = "es_ES";
+
+            string[] supportedLocales = { "es_ES", "en_US" };
+
+            if (!supportedLocales.Contains(locale))
+            {
+                // De momento:
+                //  - Todo lo español -> español de España (es_ES)
+                //  - El resto -> en_US
+                if (locale.Contains("es_"))
+                    locale = "es_ES";
+                else
+                    locale = "en_US";
+            }
+
+            return locale;
         }
 
 		static public BDDModel.Session EnsureSessionIsCreated(SoccerDataModelDataContext theContext, Player thePlayer, string sessionKey)

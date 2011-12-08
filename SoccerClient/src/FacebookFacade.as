@@ -61,7 +61,9 @@ package
 				// Querido yo del futuro: quiero que sepas que esta funcion la van a renombrar, asi que tendras que bajar un nuevo SDK y
 				// cambiar la llamada
 				Facebook.setCanvasAutoResize(true);
-				Facebook.api('/me', onFacebookMeResponse);
+				
+				// Antes obteniamos aqui el /me, ahora no hace falta puesto que el locale viene del server
+				callback();
 			}
 			else
 			{
@@ -157,11 +159,6 @@ package
 			return null;
 		}
 		
-		public function get FacebookISOLocale() : String
-		{
-			return mMe.locale;
-		}
-								
 		private var mFakeSessionKey : String;
 		private var mFBAuthResponse:FacebookAuthResponse;						
 		private var mSessionKeyURLLoader : URLLoader;

@@ -5,6 +5,7 @@ package
 	public final class AppConfig
 	{
 		static public var VERSION_ID : String = null; 				// "UnusualSoccer", "MahouLigaChapas"... 
+		static public var LOCALE : String = null; 					// "en_US", "es_ES"...
 		static public var CANVAS_PAGE : String = null; 				// "http://apps.facebook.com/unusualsoccerdev";
 		static public var CANVAS_URL : String = null; 				// "http://mahouligachapas.unusualwonder.com";
 		static public var APP_ID : String = null;
@@ -16,12 +17,16 @@ package
 		
 		static public var REQUEST_IDS : ArrayCollection = null;
 		
+		// Para por ejemplo ocultar el panel de tickets
+		static public function get IsMahouLigaChapas() : Boolean { return VERSION_ID == "MahouLigaChapas"; }
+		
 		static public function Init(parameters : Object) : void
 		{
 			if (parameters.hasOwnProperty("VersionID"))
 				VERSION_ID = parameters["VersionID"];
-			else
-				VERSION_ID = "UnusualSoccer";
+						
+			if (parameters.hasOwnProperty("Locale"))
+				LOCALE = parameters["Locale"];
 			
 			if (parameters.hasOwnProperty("CanvasPage"))
 				CANVAS_PAGE = parameters["CanvasPage"];

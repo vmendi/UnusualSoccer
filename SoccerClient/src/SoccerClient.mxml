@@ -68,26 +68,21 @@
 		
 		private function ConfigureLocale() : void
 		{
-			if (AppConfig.VERSION_ID == "MahouLigaChapas")
-				resourceManager.localeChain = GetLocaleChain("es_ES");
-			else
-			if (mFacebookFacade.FacebookISOLocale == "es_ES")
-				// Si no somos MahouLigaChapas pero el pais_Idioma es España, mutamos a es_LA (no queremos salir como Mahou)
-				resourceManager.localeChain = GetLocaleChain("es_LA");
-			else
-				resourceManager.localeChain = GetLocaleChain(mFacebookFacade.FacebookISOLocale);
+			// El servidor siempre nos pasa un locale coherente con el VERSION_ID, aqui no tenemos que hacer nada
+			resourceManager.localeChain = GetLocaleChain(AppConfig.LOCALE);
 			
 			// Selecciona en_US y usa es_ES como fallback cuando no encuentra el resource
 			//ResourceManager.getInstance().localeChain = ["en_US", "es_ES"];	
 						
 			function GetLocaleChain(locale : String) : Array
 			{
-				// El idioma que soportamos es el [0], los fallback que aplicara Flex cuando no encuentra un recurso en ese idioma estan a continuacion
+				// El idioma que soportamos es el [0], los fallback que aplicara Flex cuando no 
+				// encuentra un recurso en ese idioma estan a continuacion
 				var chains : Array = [ 
-										["en_US", "es_LA", "es_ES"],
+										["en_US", "es_ES"],
 										["es_ES", "en_US"],
-										["en_UK", "en_US", "es_LA", "es_ES"],
-										["es_LA", "en_US"]		// Cuando este hecho es_LA esto sera: ["es_LA", "es_ES", "en_US"]
+										["en_UK", "en_US", "es_ES"],	// Los dejamos por capricho, el servidor siempre nos pasa es_ES, en_US... 
+										["es_LA", "es_ES", "en_US"]		// ... o sea, locales "soportados". Nunca nos pasa en_UK o es_LA
 									];
 				
 				var ret : Array = null;
@@ -101,7 +96,7 @@
 					}
 				}
 				
-				// Si no es uno de los soportados, devolvemos nuestra cadena ingles-español favorita
+				// Por completitud: Si no es uno de los soportados, devolvemos nuestra cadena ingles-español favorita
 				if (ret == null)
 					ret = GetLocaleChain("en_US");
 				
