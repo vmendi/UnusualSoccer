@@ -24,7 +24,7 @@
 		
 		public static function Show(text : String, title : String, textAlign : String = "left") : void
 		{
-			var errorDialog : ErrorDialog = new ErrorDialog();
+			var errorDialog : ImportantMessageDialog = new ImportantMessageDialog();
 			var parent : Sprite = FlexGlobals.topLevelApplication as Sprite;
 			
 			errorDialog.Text = text;

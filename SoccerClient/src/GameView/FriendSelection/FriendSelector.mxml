@@ -134,7 +134,8 @@
 				mMainModel.TheTeamModel.CreateRequests(response.request, response.to);
 				
 				// Mensaje de exito
-				ImportantMessageDialog.Show(resourceManager.getString('main','FriendSelectorReqSuccessTxt'), resourceManager.getString('main','FriendSelectorReqSuccessTit'), "center");
+				ImportantMessageDialog.Show(resourceManager.getString('main','FriendSelectorReqSuccessTxt'), 
+											resourceManager.getString('main','FriendSelectorReqSuccessTit'), "center");
 			}
 			
 			return true;

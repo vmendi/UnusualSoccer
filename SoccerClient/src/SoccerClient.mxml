@@ -59,7 +59,7 @@
 			
 			mMainGameModel = new MainGameModel();
 			mMainGameModel.InitialRefresh(OnInitialRefreshSuccess);
-			
+						
 			function OnInitialRefreshSuccess() : void
 			{
 				mMainView = new MainView();

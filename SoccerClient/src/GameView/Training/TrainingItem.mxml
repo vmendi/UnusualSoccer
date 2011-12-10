@@ -7,7 +7,7 @@
 	<s:states>
 		<s:State name="Normal" />
 		<s:State name="NotAvailable" />
-		<s:State name="Training" />		
+		<s:State name="Training" />
 	</s:states>
 	
 	<fx:Script><![CDATA[
