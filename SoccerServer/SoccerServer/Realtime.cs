@@ -642,7 +642,7 @@ namespace SoccerServer
         public String Name;								// Nombre del equipo del player
         public String PredefinedTeamName;				// El player tiene un equipo real asociado: "Getafe"
         public int TrueSkill;							// ...Por si acaso hay que mostrarlo
-        public List<int> SpecialSkillsIDs;				// Del 1 al 9
+        public List<int> SpecialSkillsIDs;				// Habilidades disponibles, como maximo entraran 9, ID entre 1 e infinito
         public String Formation;						// Nombre de la formacion: "331", "322", etc..
         public int Fitness;                             // Se multiplica en el partido
 

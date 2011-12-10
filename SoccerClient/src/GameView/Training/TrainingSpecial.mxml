@@ -27,7 +27,7 @@
 		
 		<s:Label x="20" y="14" width="700" text="Mejora tu equipo con las siguientes habilidades especiales. Para conseguirlas tendrás que tener el nivel XP y los Puntos Mahou que se indican, excepto 'Superpotencia', que podrás conseguirla sólo con pulsar en 'Me gusta'." styleName="whiteBoldBig" textAlign="center" />
 
-		<s:SkinnableDataContainer y="64" id="MyTrainingList" 
+		<s:SkinnableDataContainer y="64" id="MyTrainingList"
 				dataProvider="{mMainGameModel.TheTeamModel.TheTeam.SpecialTrainings}" 
 				itemRenderer="GameView.Training.TrainingSpecialListItem" width="100%" height="100%"
 				skinClass="GameView.Skins.DefaultListSkin"/>

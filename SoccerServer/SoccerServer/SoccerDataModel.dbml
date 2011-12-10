@@ -179,8 +179,7 @@
   <Table Name="dbo.SpecialTrainingDefinitions" Member="SpecialTrainingDefinitions">
     <Type Name="SpecialTrainingDefinition">
       <Column Name="SpecialTrainingDefinitionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(16) NOT NULL" CanBeNull="false" />
       <Column Name="RequiredXP" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="EnergyStep" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="EnergyTotal" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />

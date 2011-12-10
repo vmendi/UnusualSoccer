@@ -109,7 +109,6 @@ namespace SoccerServer.TransferModel
 	{
 		public int SpecialTrainingDefinitionID;
 		public string Name;
-		public string Description;
 		public int RequiredXP;
 		public int EnergyStep;
 		public int EnergyTotal;

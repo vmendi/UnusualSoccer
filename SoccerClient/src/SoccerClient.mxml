@@ -7,6 +7,7 @@
 	
 	<fx:Metadata>
 		[ResourceBundle("main")]
+		[ResourceBundle("training")]
 	</fx:Metadata>
 	
 
@@ -80,9 +81,8 @@
 				// encuentra un recurso en ese idioma estan a continuacion
 				var chains : Array = [ 
 										["en_US", "es_ES"],
-										["es_ES", "en_US"],
-										["en_UK", "en_US", "es_ES"],	// Los dejamos por capricho, el servidor siempre nos pasa es_ES, en_US... 
-										["es_LA", "es_ES", "en_US"]		// ... o sea, locales "soportados". Nunca nos pasa en_UK o es_LA
+										["es_ES", "en_US"],				// Español MahouLigachapas
+										["es_LA", "es_ES", "en_US"],	// Español mundo
 									];
 				
 				var ret : Array = null;
@@ -98,7 +98,10 @@
 				
 				// Por completitud: Si no es uno de los soportados, devolvemos nuestra cadena ingles-español favorita
 				if (ret == null)
-					ret = GetLocaleChain("en_US");
+				{
+					ErrorMessages.LogToServer("WARNING: Unrecognized locale from server " + locale);
+					ret = ["en_US", "es_ES"];
+				}
 				
 				return ret;
 			}

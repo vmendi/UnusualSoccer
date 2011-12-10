@@ -17,9 +17,6 @@ package
 		
 		static public var REQUEST_IDS : ArrayCollection = null;
 		
-		// Para por ejemplo ocultar el panel de tickets
-		static public function get IsMahouLigaChapas() : Boolean { return VERSION_ID == "MahouLigaChapas"; }
-		
 		static public function Init(parameters : Object) : void
 		{
 			if (parameters.hasOwnProperty("VersionID"))

@@ -24,7 +24,6 @@ package SoccerServer.TransferModel.vo
 	
 		public var SpecialTrainingDefinitionID:int;
 		public var Name:String;
-		public var Description:String;
 		public var RequiredXP:int;
 		public var EnergyStep:int;
 		public var EnergyTotal:int;

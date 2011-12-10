@@ -54,7 +54,6 @@
       <datatype name="SpecialTrainingDefinition" fullname="SoccerServer.TransferModel.SpecialTrainingDefinition" typeNamespace="SoccerServer.TransferModel">
         <field name="SpecialTrainingDefinitionID" type="int" fulltype="int" nativetype="int" />
         <field name="Name" type="String" fulltype="String" nativetype="String" />
-        <field name="Description" type="String" fulltype="String" nativetype="String" />
         <field name="RequiredXP" type="int" fulltype="int" nativetype="int" />
         <field name="EnergyStep" type="int" fulltype="int" nativetype="int" />
         <field name="EnergyTotal" type="int" fulltype="int" nativetype="int" />

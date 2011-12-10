@@ -3921,8 +3921,6 @@ namespace SoccerServer.BDDModel
 		
 		private string _Name;
 		
-		private string _Description;
-		
 		private int _RequiredXP;
 		
 		private int _EnergyStep;
@@ -3939,8 +3937,6 @@ namespace SoccerServer.BDDModel
     partial void OnSpecialTrainingDefinitionIDChanged();
     partial void OnNameChanging(string value);
     partial void OnNameChanged();
-    partial void OnDescriptionChanging(string value);
-    partial void OnDescriptionChanged();
     partial void OnRequiredXPChanging(int value);
     partial void OnRequiredXPChanged();
     partial void OnEnergyStepChanging(int value);
@@ -3975,7 +3971,7 @@ namespace SoccerServer.BDDModel
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(16) NOT NULL", CanBeNull=false)]
 		public string Name
 		{
 			get
@@ -3991,26 +3987,6 @@ namespace SoccerServer.BDDModel
 					this._Name = value;
 					this.SendPropertyChanged("Name");
 					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(MAX)")]
-		public string Description
-		{
-			get
-			{
-				return this._Description;
-			}
-			set
-			{
-				if ((this._Description != value))
-				{
-					this.OnDescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._Description = value;
-					this.SendPropertyChanged("Description");
-					this.OnDescriptionChanged();
 				}
 			}
 		}
