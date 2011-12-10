@@ -569,8 +569,6 @@ namespace SoccerServer.BDDModel
 		
 		private string _Name;
 		
-		private string _Description;
-		
 		private int _FitnessDelta;
 		
 		private int _Time;
@@ -585,8 +583,6 @@ namespace SoccerServer.BDDModel
     partial void OnTrainingDefinitionIDChanged();
     partial void OnNameChanging(string value);
     partial void OnNameChanged();
-    partial void OnDescriptionChanging(string value);
-    partial void OnDescriptionChanged();
     partial void OnFitnessDeltaChanging(int value);
     partial void OnFitnessDeltaChanged();
     partial void OnTimeChanging(int value);
@@ -619,7 +615,7 @@ namespace SoccerServer.BDDModel
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(32) NOT NULL", CanBeNull=false)]
 		public string Name
 		{
 			get
@@ -635,26 +631,6 @@ namespace SoccerServer.BDDModel
 					this._Name = value;
 					this.SendPropertyChanged("Name");
 					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(MAX)")]
-		public string Description
-		{
-			get
-			{
-				return this._Description;
-			}
-			set
-			{
-				if ((this._Description != value))
-				{
-					this.OnDescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._Description = value;
-					this.SendPropertyChanged("Description");
-					this.OnDescriptionChanged();
 				}
 			}
 		}
@@ -3971,7 +3947,7 @@ namespace SoccerServer.BDDModel
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(16) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(32) NOT NULL", CanBeNull=false)]
 		public string Name
 		{
 			get

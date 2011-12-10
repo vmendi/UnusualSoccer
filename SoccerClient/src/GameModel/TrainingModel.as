@@ -3,16 +3,14 @@ package GameModel
 	import SoccerServer.MainService;
 	import SoccerServer.MainServiceModel;
 	import SoccerServer.TransferModel.vo.PendingTraining;
-	
-	import com.greensock.TweenNano;
+	import SoccerServer.TransferModel.vo.TrainingDefinition;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	
 	import mx.binding.utils.BindingUtils;
 	import mx.collections.ArrayCollection;
+	import mx.resources.ResourceManager;
 	import mx.rpc.Responder;
 	import mx.rpc.events.ResultEvent;
 	
@@ -108,6 +106,16 @@ package GameModel
 		
 		[Bindable(event="TrainingDefinitionsChanged")]
 		public function get TrainingDefinitions() : ArrayCollection { return mTrainingDefinitions; }
+		
+		static public function GetName(spDef : TrainingDefinition) : String
+		{
+			return spDef != null? ResourceManager.getInstance().getString('training', 'TrainingName' + spDef.TrainingDefinitionID) : "";
+		}
+		
+		static public function GetDesc(spDef : TrainingDefinition) : String
+		{
+			return spDef != null? ResourceManager.getInstance().getString('training', 'TrainingDesc' + spDef.TrainingDefinitionID) : "";
+		}
 		
 		private var mMainService : MainService;
 		private var mMainServiceModel : MainServiceModel;

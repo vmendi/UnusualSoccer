@@ -188,7 +188,7 @@ package GameModel
 		static public function GetDesc(spDef : SpecialTrainingDefinition) : String
 		{
 			return spDef != null? ResourceManager.getInstance().getString('training', 'SpecialSkillDesc' + spDef.SpecialTrainingDefinitionID) : "";
-		}		
+		}
 
 		private var mDefinitions : ArrayCollection;
 		

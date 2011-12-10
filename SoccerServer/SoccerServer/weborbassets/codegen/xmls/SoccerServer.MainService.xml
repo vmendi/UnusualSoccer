@@ -87,7 +87,6 @@
       <datatype name="TrainingDefinition" fullname="SoccerServer.TransferModel.TrainingDefinition" typeNamespace="SoccerServer.TransferModel">
         <field name="TrainingDefinitionID" type="int" fulltype="int" nativetype="int" />
         <field name="Name" type="String" fulltype="String" nativetype="String" />
-        <field name="Description" type="String" fulltype="String" nativetype="String" />
         <field name="FitnessDelta" type="int" fulltype="int" nativetype="int" />
         <field name="Time" type="int" fulltype="int" nativetype="int" />
       </datatype>

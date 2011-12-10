@@ -134,7 +134,6 @@ namespace SoccerServer.TransferModel
 	{
 		public int TrainingDefinitionID;
 		public string Name;
-		public string Description;
 		public int FitnessDelta;
 		public int Time;
 

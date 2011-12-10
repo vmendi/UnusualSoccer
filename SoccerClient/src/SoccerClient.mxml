@@ -96,7 +96,8 @@
 					}
 				}
 				
-				// Por completitud: Si no es uno de los soportados, devolvemos nuestra cadena ingles-español favorita
+				// Por completitud: Si no es uno de los soportados, devolvemos nuestra cadena ingles-español favorita,
+				// pero esto no deberia pasar jamas.
 				if (ret == null)
 				{
 					ErrorMessages.LogToServer("WARNING: Unrecognized locale from server " + locale);
