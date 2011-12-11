@@ -141,9 +141,9 @@
 	
 	<s:Group x="426" y="12" alpha.Complete="0.7" alpha.NotAvailable="0.5">
 		<s:layout><s:VerticalLayout gap="0" /></s:layout>
-		<s:Label text="REQUIERE" styleName="greyBoldMedium" />
-		<s:Label text="XP:  {data.SpecialTrainingDefinition.RequiredXP}" styleName="whiteBoldBig" />
-		<s:Label text="Puntos" styleName="whiteBoldMedium" />
+		<s:Label text="{resourceManager.getString('main','TrainingSpecialItemRequire')}" styleName="greyBoldMedium" />
+		<s:Label text="{resourceManager.getString('main','GeneralXP')}:  {data.SpecialTrainingDefinition.RequiredXP}" styleName="whiteBoldBig" />
+		<s:Label text="{resourceManager.getString('main','GeneralUnusualPoints')}" styleName="whiteBoldMedium" />
 	</s:Group>
 
 	<s:Label x="511" y="44" text="{data.SpecialTrainingDefinition.EnergyTotal}" styleName="whiteBoldMedium" />

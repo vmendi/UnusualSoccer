@@ -97,7 +97,14 @@
 		[Bindable] private var mRealtimeModel : RealtimeModel;
 	]]></fx:Script>
 
-	<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='MatchDetailLeyenda')" fillMode="clip" x="118" y="47" />
+	<s:Group x="118" y="47">
+		<s:layout>
+			<s:VerticalLayout gap="4" />
+		</s:layout>
+		<s:Label width="70" textAlign="center" text="{resourceManager.getString('main','MatchDefinitionPower')}" styleName="whiteBoldMedium"/>
+		<s:Label width="70" textAlign="center" text="{resourceManager.getString('main','MatchDefinitionControl')}" styleName="whiteBoldMedium"/>
+		<s:Label width="70" textAlign="center" text="{resourceManager.getString('main','MatchDefinitionDefense')}" styleName="whiteBoldMedium"/>
+	</s:Group>
 	
 	<Friendly:TeamDetailsPanel top="5" left="12"  TheRealtimePlayer="{mRealtimeModel.LocalRealtimePlayer}"/>
 	<Friendly:TeamDetailsPanel top="5" right="12" TheRealtimePlayer="{mRoomModel.Selected}" currentState="alignToRight" styleName="alignToRight"/>

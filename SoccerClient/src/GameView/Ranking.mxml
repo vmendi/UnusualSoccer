@@ -83,6 +83,7 @@
 			<s:layout><s:VerticalLayout /></s:layout>
 			<s:Group>
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FondoStatsHeader')" fillMode="clip" />
+				<s:Label top="2" horizontalCenter="0" text="{resourceManager.getString('main','RankingStatsHeader')}" styleName="whiteBoldMedium"/>
 				<s:Group x="7" y="32" width="100%" height="43">
 					<s:layout><s:HorizontalLayout/></s:layout>
 

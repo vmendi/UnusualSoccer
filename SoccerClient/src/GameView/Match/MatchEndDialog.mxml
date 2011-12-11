@@ -197,7 +197,18 @@
 
 	<GameView:PopupBackground width="356" height="252" />
 
-	<s:BitmapImage x="2" y="98" source="@Embed(source='/Assets/General.swf', symbol='MatchEndDialogBg')" fillMode="clip" />
+	<s:Group x="2" y="98">
+		<s:Rect x="0" y="0" width="352" height="81" alpha="1">
+			<s:fill>
+				<s:SolidColor color="#353536"/>
+			</s:fill>
+		</s:Rect>
+		<s:Line x="175" yFrom="0" yTo="80">
+			<s:stroke>
+				<s:SolidColorStroke color="0x000000" weight="1"/>
+			</s:stroke>
+		</s:Line>
+	</s:Group>
 	
 	<s:Group x="10" y="12" width="336" height="55">
 		<s:layout><s:VerticalLayout gap="2" verticalAlign="middle"/></s:layout>
@@ -217,6 +228,13 @@
 		<s:Label width="35" left="122" top="7" text="3" styleName="whiteBoldHuge" textAlign="right" id="MyGoals0"/>
 	</s:Group>	
 
+	
+	<s:Group x="22" y="134">
+		<s:layout><s:VerticalLayout gap="3"/></s:layout>
+		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralXP')}" />
+		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualPoints')}" />
+		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualSkill')}" />
+	</s:Group>	
 	<s:Group x="114" y="134">
 		<s:layout><s:VerticalLayout gap="3"/></s:layout>
 		<s:Label width="50" text="123" styleName="whiteBoldBig" textAlign="right" id="MyXP0"/>
@@ -230,7 +248,13 @@
 		<s:Label right="40" top="23" text="Equipo" styleName="greyBoldMedium" textAlign="right" id="MyPredefinedTeamName1" />
 		<s:Label width="35" top="7" text="0" styleName="whiteBoldHuge" textAlign="left" id="MyGoals1"/>
 	</s:Group>	
-	
+
+	<s:Group right="162" y="134">
+		<s:layout><s:VerticalLayout gap="3"/></s:layout>
+		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralXP')}" />
+		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualPoints')}" />
+		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualSkill')}" />
+	</s:Group>	
 	<s:Group right="21" y="134">
 		<s:layout><s:VerticalLayout gap="3"/></s:layout>
 		<s:Label width="50" text="245" styleName="whiteBoldBig" textAlign="right" id="MyXP1"/>

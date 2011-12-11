@@ -90,7 +90,7 @@
 	</s:Group>
 	
 	<s:Button id="MyBuyTicketsButton"
-			  label.NotPurchased="Buy game time"
+			  label.NotPurchased="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
 			  label.Purchased="Add game time"
 			  click="MyBuyTicketsButton_clickHandler(event)"
 			  skinClass="GameView.Skins.ButtonDarkGreySkin"
