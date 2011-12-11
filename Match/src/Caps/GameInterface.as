@@ -8,12 +8,10 @@ package Caps
 	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.display.InteractiveObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.net.SharedObject;
-	import flash.text.AntiAliasType;
 	
 	import utils.Delegate;
 	import utils.TimeUtils;
@@ -268,7 +266,7 @@ package Caps
 					Match.Ref.Connection.Invoke("OnServerUseSkill", null, idSkill);
 				
 				Match.Ref.Game.EnterWaitState(GameState.WaitingCommandUseSkill,
-					Delegate.create(Match.Ref.Game.OnClientUseSkill, Match.Ref.IdLocalUser, idSkill));
+											  Delegate.create(Match.Ref.Game.OnClientUseSkill, Match.Ref.IdLocalUser, idSkill));
 			}
 		}
 		
