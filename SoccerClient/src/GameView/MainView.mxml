@@ -12,7 +12,7 @@
 		@font-face {
 			src:url("/Assets/Fonts/HelveticaNeueLT/lte50874.ttf");
 			fontFamily: MyFontHelveticaNeueLTBold;
-			font-weight:bold;
+			font-weight: bold;
 			embedAsCFF: true;
 		}
 	</fx:Style>

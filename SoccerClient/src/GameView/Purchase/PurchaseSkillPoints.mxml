@@ -3,9 +3,13 @@
 		 			   xmlns:s="library://ns.adobe.com/flex/spark"
 		 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 		 			   xmlns:Purchase="GameView.Purchase.*"
-		 			   width="356" height="212" xmlns:GameView="GameView.*">
+		 			   width="600" height="500" xmlns:GameView="GameView.*">
 	
 	<fx:Style source="../styles.css"/>
+	
+	<fx:Declarations>
+		<s:DropShadowFilter id="shadowNormal" distance="6" angle="90" blurX="6" blurY="6"/>
+	</fx:Declarations>	
 	
 	<Purchase:states>
 		<s:State name="ChoosingItem"/>
@@ -24,28 +28,98 @@
 		
 	]]></fx:Script>
 	
-	<GameView:PopupBackground width="356" height="212" />
+	<GameView:PopupBackground width="100%" height="100%" />
 	
-	<s:Group id="MyChooseItemGroup" includeIn="ChoosingItem" horizontalCenter="0" verticalCenter="0">
-		<s:layout><s:HorizontalLayout gap="20" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-		<s:Group>
-			<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-			<s:Label id="SkillPoints100Label" styleName="whiteBoldBig" text="100 Skill Points"></s:Label>			
-			<s:Button id="SkillPoints100" label="Select"
-					  click="MySelectItemButton_clickHandler(event)"></s:Button>
+	<s:BitmapImage left="2" top="2" source="@Embed(source='/Assets/General.swf', symbol='PopupTicketCabecera')" fillMode="clip" />
+	<s:Label id="myTit" horizontalCenter="0" top="15" text="{resourceManager.getString('main','PurchaseTitTicket')}" styleName="whiteBoldHuge" /> 
+	
+	<s:Group horizontalCenter="0" top="105">	
+	
+		<s:Group horizontalCenter="0" verticalCenter="0">
+			<s:layout>
+				<s:HorizontalLayout gap="10" />
+			</s:layout>
+			<s:Rect width="106" height="230" alpha="1" radiusX="8" filters="{[shadowNormal]}">
+				<s:stroke>
+					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
+				</s:stroke>
+				<s:fill>
+					<s:SolidColor alpha="0.6" color="#242424"/>
+				</s:fill>
+			</s:Rect>
+			<s:Rect width="106" height="230" alpha="1" radiusX="8" filters="{[shadowNormal]}">
+				<s:stroke>
+					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
+				</s:stroke>
+				<s:fill>
+					<s:SolidColor alpha="0.6" color="#242424"/>
+				</s:fill>
+			</s:Rect>
+			<s:Rect width="106" height="230" alpha="1" radiusX="8" filters="{[shadowNormal]}">
+				<s:stroke>
+					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
+				</s:stroke>
+				<s:fill>
+					<s:SolidColor alpha="0.6" color="#242424"/>
+				</s:fill>
+			</s:Rect>
+			<s:Rect width="106" height="230" alpha="1" radiusX="8" filters="{[shadowNormal]}">
+				<s:stroke>
+					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
+				</s:stroke>
+				<s:fill>
+					<s:SolidColor alpha="0.6" color="#242424"/>
+				</s:fill>
+			</s:Rect>
+			<s:Rect width="106" height="230" alpha="1" radiusX="8" filters="{[shadowNormal]}">
+				<s:stroke>
+					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
+				</s:stroke>
+				<s:fill>
+					<s:SolidColor alpha="0.6" color="#242424"/>
+				</s:fill>
+			</s:Rect>
 		</s:Group>
-		<s:Group>
-			<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-			<s:Label id="SkillPoints300Label" styleName="whiteBoldBig" text="300 Skill Points"></s:Label>			
-			<s:Button id="SkillPoints300" label="Select"
-					  click="MySelectItemButton_clickHandler(event)"></s:Button>
+		
+		<s:Group id="MyChooseItemGroup" includeIn="ChoosingItem" horizontalCenter="0" verticalCenter="0">
+			<s:layout><s:HorizontalLayout gap="12" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+			<s:Group width="106">
+				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+				<s:Label id="SkillPoints100Label" styleName="whiteBoldBig" text="100 Skill Points"></s:Label>			
+				<s:Button id="SkillPoints100" label="Select"
+						  click="MySelectItemButton_clickHandler(event)"
+						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>
+			<s:Group width="106">
+				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+				<s:Label id="SkillPoints300Label" styleName="whiteBoldBig" text="300 Skill Points"></s:Label>			
+				<s:Button id="SkillPoints300" label="Select"
+						  click="MySelectItemButton_clickHandler(event)"
+						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>
+			<s:Group width="106">
+				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+				<s:Label id="SkillPoints500Label" styleName="whiteBoldBig" text="500 Skill Points"></s:Label>			
+				<s:Button id="SkillPoints500" label="Select"
+						  click="MySelectItemButton_clickHandler(event)"
+						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>
+			<s:Group width="106">
+				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+				<s:Label id="SkillPoints700Label" styleName="whiteBoldBig" text="500 Skill Points"></s:Label>			
+				<s:Button id="SkillPoints700" label="Select"
+						  click="MySelectItemButton_clickHandler(event)"
+						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>
+			<s:Group width="106">
+				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+				<s:Label id="SkillPoints1000Label" styleName="whiteBoldBig" text="500 Skill Points"></s:Label>			
+				<s:Button id="SkillPoints1000" label="Select"
+						  click="MySelectItemButton_clickHandler(event)"
+						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>				
 		</s:Group>
-		<s:Group>
-			<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-			<s:Label id="SkillPoints500Label" styleName="whiteBoldBig" text="500 Skill Points"></s:Label>			
-			<s:Button id="SkillPoints500" label="Select"
-					  click="MySelectItemButton_clickHandler(event)"></s:Button>
-		</s:Group>			
+		
 	</s:Group>
 		
 	<s:Group includeIn="Success" horizontalCenter="0" verticalCenter="0">
@@ -59,7 +133,23 @@
 				 />
 	</s:Group>
 	
-	<s:Button id="MyCloseButton" label.ChoosingItem="Cancel" label="Close" click="CloseClickHandler(event)" minWidth="80" x="138" y="170" 
+	<s:Group horizontalCenter="0" bottom="55" >
+		<s:layout>
+			<s:VerticalLayout gap="2" horizontalAlign="center" />
+		</s:layout>
+		<s:Label id="myTxtTasex" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseTxtTaxes')}"/>
+		<s:Group>
+			<s:layout>
+				<s:HorizontalLayout gap="4" verticalAlign="middle" />
+			</s:layout>
+			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='PopupPurchaseLocker')" fillMode="clip" />
+			<s:Label id="myTxtSafe" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTxtSecure')}"/>
+			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='PopupPurchaseCards')" fillMode="clip" />
+		</s:Group>
+		<s:Label id="myTxtTerms" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseTxtTerms')}"/>
+	</s:Group>
+	
+	<s:Button id="MyCloseButton" label.ChoosingItem="Cancel" label="Close" click="CloseClickHandler(event)" minWidth="80" horizontalCenter="0" bottom="20" 
 			  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 	
 </Purchase:PurchaseBase>

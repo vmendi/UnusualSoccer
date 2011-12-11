@@ -68,7 +68,15 @@
 		</s:fill>
 	</s:Rect>
 	
-	<s:Label horizontalCenter="0" y="46" textAlign="center" text="Estás desconectado del juego..." styleName="whiteBoldBig" includeIn="Disabled" />
+	<!--<s:Label horizontalCenter="0" y="46" textAlign="center" text="Estás desconectado del juego..." styleName="whiteBoldBig" includeIn="Disabled" />-->
+	
+	<s:Group includeIn="Disabled" horizontalCenter="0" top="2">
+		<s:layout>
+			<s:VerticalLayout gap="2" horizontalAlign="center" />
+		</s:layout>
+		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='WarningIcon')" fillMode="clip" />
+		<s:Label width="160" textAlign="center" text="{resourceManager.getString('main','LookingForMatchPanelDisconected')}" styleName="whiteBoldBig"/>
+	</s:Group>	
 	
 	<mx:Image id="MyFindMatchButton" top="0" horizontalCenter="0"  includeIn="Wait"
 			 alpha.Disabled="0.2" alpha.Wait="1"

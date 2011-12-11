@@ -166,7 +166,7 @@
 				<s:Label width="170" text="{resourceManager.getString('main','TicketNoAvailableTime')}" styleName="whiteBoldMedium" textAlign="center" />
 			</s:Group>
 			<s:Button id="MyBuyTicketsButton"
-					  label="Buy game time"
+					  label="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
 					  skinClass="GameView.Skins.ButtonDarkGreySkin"
 					  click="MyBuyTicketsButton_clickHandler(event)"
 					  width="110" height="18" x="40" y="41"/>
