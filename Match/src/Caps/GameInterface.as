@@ -77,7 +77,7 @@ package Caps
 		{
 			var localTeam : Team = Match.Ref.Game.LocalUserTeam;
 			
-			var BUTTON_WIDTH : Number = 56;															// Contando con el espacio a la derecha
+			var BUTTON_WIDTH : Number = 40;															// Contando con el espacio a la derecha
 			var allButtonsWidth : Number = localTeam.AvailableSkills.length * BUTTON_WIDTH - 10;	// Restamos el espacio a la derecha del ultimo			
 			var x : Number = Field.CenterX - allButtonsWidth*0.5;			
 			

@@ -9,7 +9,7 @@ package Caps
 		
 		// Opciones para depuración
 		public static const DrawBackground:Boolean = true;		// Pintar el fondo del juego ?
-		public static const DebugPhysic:Boolean = false;		// Indica si depuramos la física (pintar el mundo físico y otras cosas más )
+		public static const DebugPhysic:Boolean = false;		// Indica si depuramos la física (pintar el mundo físico y otras cosas más)
 		public static const DragPhysicObjects:Boolean = false;	// Indica si podemos arrastrar los objetos físicos con el ratón
 		
 		public static var	Debug:Boolean = false;				// Indica que estamos en modo debug. Se habilitan trucos/trazas y similares
