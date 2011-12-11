@@ -25,24 +25,38 @@ package Caps
 		public var Ghost:Entity = null;							// Ghost utilizado para decidir donde colocarás el portero		
 		public var UseSecondaryEquipment:Boolean = false;		// Indica si utiliza la equipacion secundaria
 		
-		protected var _CapsList:Array = new Array();			// Lista de chapas
-		protected var _Name:String = null;						// El nombre del equipo predefinido
+		public function get Name():String { return _Name; }
+		public function get CapsList() : Array { return _CapsList; }
+		public function get GoalKeeper() : Cap { return _CapsList[ 0 ]; }
 		
-		protected var _FormationName:String = "3-3-2";			// Alineación que está utilizando el equipo		
-		protected var _Goals:int = 0;							// Número de goles metidos		
-		protected var _Skill:Array = null;						// Lista de habilidades. Una entrada para cada habilidad, si no la tiene es null
+		public function get Goals() : int {	return _Goals; }
+		public function set Goals(value:int) : void { _Goals = value; }
 		
-		//
-		// Inicializa el equipo
-		//
+		// Array con los IDs de las Skills disponibles, las que vienen desde el manager
+		public function get AvailableSkills() : Array { return _AvailableSkills; }
+		
+		
+		private var _CapsList:Array = new Array();				// Lista de chapas
+		private var _Name:String = null;						// El nombre del equipo predefinido
+		
+		private var _FormationName:String = "3-3-2";			// Alineación que está utilizando el equipo		
+		private var _Goals:int = 0;								// Número de goles metidos		
+		private var _Skills:Object;								// Hash de habilidades. Key:ID / Value:Skill
+		private var _AvailableSkills : Array;					// Las mismas habilidades, puestas en forma de array
+		
+		
 		public function Init(descTeam:Object, idxTeam:int, useSecondaryEquipment:Boolean = false) : void
 		{
-			Name = descTeam.PredefinedTeamName;
 			UserName = descTeam.Name;
 			IdxTeam = idxTeam;
 			UseSecondaryEquipment = useSecondaryEquipment;
 			Fitness = descTeam.Fitness;
+			_Name = descTeam.PredefinedTeamName;
 			_FormationName = descTeam.Formation;			
+			
+			// En modo debug cambiamos la equipación del Sporting porque es identia a la del Atleti
+			if (AppParams.Debug && _Name == "Sporting")	 
+				_Name = "Betis";
 			
 			// Copiamos la lista de habilidades especiales
 			LoadSkills(descTeam.SpecialSkillsIDs);
@@ -50,7 +64,6 @@ package Caps
 			// Inicializamos cada una de las chapas 
 			for (var i:int = 0; i < CAPS_BY_TEAM; i++ )
 			{
-				// Creamos una chapa y la agregamos a la lista
 				CapsList.push(new Cap(this, i, descTeam.SoccerPlayers[i]));
 			}
 			
@@ -82,10 +95,10 @@ package Caps
 		//
 		public function AgainstTeam() : Team
 		{
-			if( this == Match.Ref.Game.TheTeams[ Enums.Team1 ] )
+			if (this == Match.Ref.Game.TheTeams[ Enums.Team1 ])
 				return Match.Ref.Game.TheTeams[ Enums.Team2 ];
 			
-			if( this == Match.Ref.Game.TheTeams[ Enums.Team2 ] )
+			if(this == Match.Ref.Game.TheTeams[ Enums.Team2 ])
 				return Match.Ref.Game.TheTeams[ Enums.Team1 ];
 			
 			throw new Error("WTF 27");
@@ -94,40 +107,14 @@ package Caps
 		//
 		// Ponemos al equipo en el lado invertido (es la 2ª parte)
 		//
-		public function InvertedSide(  ) : void
+		public function InvertedSide() : void
 		{
 			// El equipo 1 empieza en el lado izquierdo y el 2 en el derecho
-			if( IdxTeam == Enums.Team1 )
+			if (IdxTeam == Enums.Team1)
 				Side = Enums.Right_Side;
-			else if( IdxTeam == Enums.Team2 )
+			else if(IdxTeam == Enums.Team2)
 				Side = Enums.Left_Side;
-		}
-		
-		
-		public function get Name():String {
-			return _Name;
-		}
-		public function set Name( value:String ):void 
-		{
-			_Name = value;
-		}
-		public function get CapsList() : Array
-		{
-			return _CapsList; 
-		}
-		public function get Goals() : int
-		{
-			return _Goals; 
-		}
-		public function set Goals( value:int ) : void
-		{
-			_Goals = value; 
-		}
-		// Retornamos el portero del equipo
-		public function get GoalKeeper( ) : Cap
-		{
-			return _CapsList[ 0 ]; 
-		}
+		}		
 		
 		//
 		// Posicionamos todas las chapas del equipo según la alineación y el lado del campo en el que están
@@ -143,9 +130,6 @@ package Caps
 		//
 		public function ResetToCurrentFormationOnlyGoalKeeper() : void
 		{
-			if (GoalKeeper == null)
-				throw new Error("WTF where is my GoalKeeper?");
-			
 			var currentFormation : Array = GetFormation(_FormationName);
 			
 			// Si hay algún obstaculo en esa posicion, no podemos resetear al portero, ignoramos la orden
@@ -232,156 +216,113 @@ package Caps
 			return( inside );
 		}
 		
-		//
-		// Comprueba si el equipo es el del "Usuario Local" de la máquina  
-		//
 		public function get IsLocalUser() : Boolean
 		{
 			return this.IdxTeam == Match.Ref.IdLocalUser;
 		}
 		
-		
-		//
-		// Genera el array completo de skills a partir de un array de identificadores de habilidades disponibles 
-		//
-		private function LoadSkills( availableSkillsIDs:Array ) : void
+		private function LoadSkills(availableSkillsIDs:Array) : void
 		{
-			_Skill = new Array( Enums.SkillLast+1 );
+			_Skills = new Object();
+			_AvailableSkills = new Array();
 			
-			// En modo debug: Nos damos todos los items
-			if( AppParams.Debug == true )
-				availableSkillsIDs = new Array( 1, 2, 4, 5, 6, 7, 8, 9 );
+			if (AppParams.Debug)
+				availableSkillsIDs = new Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 13);
 			
-			// Recorremos la lista de habilidades disponibles generando la entrada para cada habilidad
-			for each (var item:int in availableSkillsIDs)
+			for each (var skillID:int in availableSkillsIDs)
 			{
-				// Skill disponible y al 100% de carga
-				var descSkill:Object = new Object();
-				descSkill.Available = true;
-				descSkill.PercentCharged = 100;
-				descSkill.Activated = false;
-				
-				_Skill[item] = descSkill;  
+				_Skills[skillID] = new Skill(skillID);
+				_AvailableSkills.push(skillID);
 			}
 		}
 		
 		//
-		// Comprueba si tiene una habilidad determinada
+		// Tenemos la habilidad entre las disponibles? (Nos las configura el manager)
 		//
-		public function HasSkill( idSkill:int ) : Boolean
+		private function HasSkill(idSkill:int) : Boolean
 		{
-			return( _Skill[ idSkill ] && _Skill[ idSkill ].Available );
+			return _AvailableSkills.indexOf(idSkill) != -1;
 		}
 		
 		//
-		// Bucle principal del equipo 
-		//		
-		public function Run(elapsed:Number) : void
+		// Obtiene el porcentaje de carga de una habilidad. Si se pide una habilidad que no se tiene se devuelve 0
+		//
+		public function GetSkillPercentCharged(idSkill:int) : int
 		{
-			// Cargamos las habilidades que hayan sido utilizadas
-			for( var i:int = Enums.SkillFirst; i <= Enums.SkillLast; i++ )
-			{
-				var item:Object = this._Skill[ i ];
-				
-				// Skill disponible y al 100% de carga
-				if( item != null && item.Available == true && item.PercentCharged < 100 )
-				{
-					item.PercentCharged += AppParams.PercentSkilLRestoredPerSec[ i ] * elapsed;
-					if( item.PercentCharged > 100 )
-						item.PercentCharged = 100;
-				}
-			}
+			return HasSkill(idSkill) ? _Skills[idSkill].PercentCharged : 0;
 		}
 		
 		//
-		// Obtiene el porcentaje de carga de una habilidad
-		// Si se pide una habilidad que no se tiene se devuelve 0
+		// Utiliza una skill! La activa y la pone a 0 de carga.
 		//
-		public function ChargedSkill( idSkill:int ) : int
+		public function UseSkill(idSkill:int) : void
 		{
-			return( HasSkill( idSkill ) ? _Skill[ idSkill ].PercentCharged : 0 );
+			if (!HasSkill(idSkill))
+				throw new Error("Skill no disponible según los datos del cliente! Skill=" + idSkill);
+			
+			// No hacemos comprobaciones de seguridad, la lanzamos y punto.
+			// El PercentCharged no coincidira en ambos clientes.
+			_Skills[idSkill].Activated = true;
+			_Skills[idSkill].PercentCharged = 0;	
 		}
 		
 		//
-		// Utiliza una skill!
-		// Lo activa y lo pone a 0 de carga!
+		// Comprueba si una habilidad está siendo utilizada. false si no la tenemos
 		//
-		public function UseSkill( idSkill:int ) : void
+		public function IsUsingSkill(idSkill:int) : Boolean
 		{
-			//if( HasSkill( idSkill ) == false || ChargedSkill( idSkill) < 100 )
-			if(!HasSkill( idSkill ))
-			{
-				throw new Error( "Skill no disponible según los datos del cliente! Skill="+idSkill.toString()+" HasSkill="+HasSkill( idSkill ).toString()+" Charge="+ChargedSkill( idSkill).toString() );
-			}
-			else
-			{
-				// NOTE: Los datos de carga de la skill de cada cliente no tienen porque ser iguales, realmente solo importan los del cliente que lanza
-				// la habilidad, con lo cual no determina si lanzar o no la skill. Simplemente lanzamos una traza para poder analizar posibles intentos
-				// de hack, ya que en situaciones sin lag deberían tener valores casi idénticos
-				if(ChargedSkill(idSkill) < 100 )
-				{
-					trace( "Skill no cargada según los datos del cliente! Skill="+idSkill.toString()+" HasSkill="+HasSkill( idSkill ).toString()+" Charge="+ChargedSkill( idSkill).toString() );
-				}
-					
-				_Skill[ idSkill ].PercentCharged = 0;
-				_Skill[ idSkill ].Activated = true;
-			}
-		}
-		
-		//
-		// Comprueba si una habilidad está siendo utilizada
-		//
-		public function IsUsingSkill( idSkill:int ) : Boolean
-		{
-			return( ( HasSkill( idSkill ) && _Skill[ idSkill ].Activated ) );
+			return HasSkill(idSkill) && _Skills[idSkill].Activated;
 		}
 		
 		//
 		// Desactiva los skills en uso
 		//
-		public function DesactiveSkills(  ) : void
+		public function DesactiveSkills() : void
 		{
-			if( HasSkill( Enums.Superpotencia ) )
-				_Skill[ Enums.Superpotencia ].Activated = false;
-			if( HasSkill( Enums.Furiaroja  ) )
-				_Skill[ Enums.Furiaroja ].Activated = false;
-			if( HasSkill( Enums.Catenaccio ) )
-				_Skill[ Enums.Catenaccio ].Activated = false;
-			if( HasSkill( Enums.Tiroagoldesdetupropiocampo) )
-				_Skill[ Enums.Tiroagoldesdetupropiocampo ].Activated = false;
-			if( HasSkill( Enums.Tiempoextraturno ) )
-				_Skill[ Enums.Tiempoextraturno ].Activated = false;
-			if( HasSkill( Enums.Turnoextra ) )
-				_Skill[ Enums.Turnoextra ].Activated = false;
-			if( HasSkill( Enums.Verareas ) )
-				_Skill[ Enums.Verareas ].Activated = false;
-			if( HasSkill( Enums.CincoEstrellas ) )
-				_Skill[ Enums.CincoEstrellas ].Activated = false;
-			if( HasSkill( Enums.Manodedios ) )
-				_Skill[ Enums.Manodedios ].Activated = false;
+			for each(var skill : Skill in _Skills)
+			{
+				skill.Activated = false;
+			}
+		}
+		
+		public function Run(elapsed:Number) : void
+		{
+			// Recargamos las habilidades
+			for each(var skill : Skill in _Skills)
+			{
+				skill.PercentCharged += skill.PercentRestoredPerSecond * elapsed;
+				
+				if (skill.PercentCharged > 100)
+					skill.PercentCharged = 100;
+			}
 		}
 		
 		// 
-		// Obtenemos el radio de pase al pie del equipo, teniendo en cuenta  las habilidades especiales.
+		// Obtenemos el radio de pase al pie del equipo, teniendo en cuenta las habilidades especiales.
 		//
-		public function get RadiusPase ( ) : int
+		public function get RadiusPase() : int
 		{
 			var radius:int = AppParams.RadiusPaseAlPie;
+			
 			// La habilidad 5 estrellas multiplica el radio
-			if( IsUsingSkill( Enums.CincoEstrellas ) ) 
-				radius *= AppParams.InfluencesMultiplier;
-			return( radius );
+			if (IsUsingSkill(Enums.CincoEstrellas)) 
+				radius *= AppParams.CincoEstrellasMultiplier;
+			
+			return radius;
 		}
+		
 		// 
-		// Obtenemos el radio de robo del equipo, teniendo en cuenta  las habilidades especiales.
+		// Obtenemos el radio de robo del equipo, teniendo en cuenta las habilidades especiales
 		//
-		public function get RadiusSteal( ) : int
+		public function get RadiusSteal() : int
 		{
 			var radius:int = AppParams.RadiusSteal;
-			// La habilidad 5 estrellas multiplica el radio
-			if( IsUsingSkill( Enums.CincoEstrellas ) ) 
-				radius *= AppParams.InfluencesMultiplier;
-			return( radius );
+			
+			// Si nuestro oponente usa MasterDribbling, tenemos que reducir nuestra area de robo
+			if (AgainstTeam().IsUsingSkill(Enums.MasterDribbling))
+				radius *= AppParams.MasterDribblingMultiplier;
+			
+			return radius;
 		}
 		
 		// 

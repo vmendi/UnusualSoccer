@@ -91,20 +91,20 @@ package Caps
 		{			
 			// Verificamos la versión mínima de cliente exigida por el servidor.
 			if( AppParams.ClientVersion < minClientVersion )
-				throw new Error("El partido no es la última versión. Limpie la caché de su navegador. ClientVersion: " + AppParams.ClientVersion + " MinClient: " + minClientVersion );
+				throw new Error("El partido no es la última versión. Por favor, limpie la caché de su navegador. ClientVersion: " + AppParams.ClientVersion + " MinClient: " + minClientVersion );
 			
 			trace("InitMatch: " + matchId + " Teams: " + descTeam1.PredefinedTeamName + " vs. " + descTeam2.PredefinedTeamName + " LocalPlayer: " + idLocalPlayerTeam);
 			
 			// Creamos las capas iniciales de pintado para asegurar un orden adecuado
 			CreateLayers();
-						
+
 			// Identificador del jugador local (a quien controlamos nosotros desde el cliente)
 			Match.Ref.IdLocalUser = idLocalPlayerTeam;
 			
 			TheEntityManager = new EntityManager();
 			TheGamePhysics = new GamePhysics(PhyLayer);
 			TheField = new Field(GameLayer);
-			TheBall = new BallEntity();
+			TheBall = new BallEntity(GameLayer);
 			
 			// Creamos las porterias al final para que se pinten por encima de todo
 			TheField.CreatePorterias(GameLayer);
@@ -146,68 +146,44 @@ package Caps
 			if (group1 == group2)
 			{
 				trace( "Los equipos pertenecen al mismo grupo de equipación. Utilizando equipación secundaria para el equipo contrario" ); 
-				if( idLocalPlayerTeam == Enums.Team1 )
+				if (idLocalPlayerTeam == Enums.Team1)
 					useSecondaryEquipment2 = true;
-				if( idLocalPlayerTeam == Enums.Team2 )
+				if (idLocalPlayerTeam == Enums.Team2)
 					useSecondaryEquipment1 = true;
 			}
 			
-			// Creamos los dos equipos (utilizando la equipación indicada)				
+			// Creamos los dos equipos (utilizando la equipación indicada)
 			TheTeams.push(new Team());
 			TheTeams.push(new Team());
 			
 			TheTeams[Enums.Team1].Init(descTeam1, Enums.Team1, useSecondaryEquipment1);			
 			TheTeams[Enums.Team2].Init(descTeam2, Enums.Team2, useSecondaryEquipment2);
 			
-			// Inicializamos el interfaz de juego. NOTE: Es necesario que estén construidos los equipos
-			TheInterface = new GameInterface();
-
 			// Lanzamos el sonido ambiente, como música para que se detenga automaticamente al finalizar 
 			Match.Ref.AudioManager.PlayMusic( "SoundAmbience", 0.3 );
-			
-			// Obtenemos variables desde la URL de invocación
-			/*
-			var debug:Boolean = FlexGlobals.topLevelApplication.parameters.debug;
-			if( debug == true )
-			{
-				// debug: Prueba de ralentizar un cliente
-				//Match.Ref.stage.frameRate = 5;
-				
-				
-				// debug: Prueba de retrasar la inicialización para encontrar errores!	
-				Initialized = false;
-				TweenMax.delayedCall (60.0, function():void 
-										   {
-												Initialized = true;
-											} ); 
-			}
-			*/
+						
+			// Inicializamos el interfaz de juego. Es necesario que todo lo demas este inicializado!
+			TheInterface = new GameInterface();
 			
 			// Indicamos que hemos terminado de cargar/inicializar
 			ChangeState(GameState.Init);
 		}
 		
 		//
-		// Crea los layers de pintado (MovieClip) para el juego, interface gráfico de usuario y física
-		// De esta forma aseguramos el orden de pintado
+		// Aseguramos el orden de pintado
 		//
 		public function CreateLayers() : void
 		{
-			GameLayer = new MovieClip();
-			GUILayer = new MovieClip();
-			PhyLayer = new MovieClip();
+			GameLayer = Match.Ref.addChild(new MovieClip()) as MovieClip;
+			PhyLayer = Match.Ref.addChild(new MovieClip()) as MovieClip;
+			GUILayer = Match.Ref.addChild(new MovieClip()) as MovieClip;
 			
-			Match.Ref.addChild( GameLayer );
-			Match.Ref.addChild( PhyLayer );
-			Match.Ref.addChild( GUILayer );
-			
-			// Nuestra caja de chat... hemos probado a anadirla a la capa de GUI (Match.Ref.Game.GUILayer), pero: 
+			// Nuestra caja de chat... hemos probado a añadirla a la capa de GUI (Match.Ref.Game.GUILayer), pero: 
 			// - Necesitamos que el chat tenga el raton desactivado puesto que se pone por encima del campo
 			// - Los movieclips hijos hacen crecer al padre, en este caso la capa de GUI.
 			// - La capa de GUI sí que está mouseEnabled, como debe de ser, así q es ésta la que no deja pasar el ratón
 			//   hasta el campo.
-			ChatLayer = new Chat();
-			Match.Ref.addChild(ChatLayer);
+			ChatLayer = Match.Ref.addChild(new Chat()) as Chat;
 		}
 		
 		public function Draw(elapsed:Number) : void
@@ -619,32 +595,29 @@ package Caps
 		{
 			VerifyStateWhenReceivingCommand(GameState.WaitingCommandUseSkill, idPlayer, "OnClientUseSkill");
 
-			var team:Team = TheTeams[ idPlayer ];
+			var team:Team = TheTeams[idPlayer];
 			team.UseSkill(idSkill);
 			
 			// Mostramos un mensaje animado de uso del skill
 			if (idPlayer != Match.Ref.IdLocalUser)
-				Cutscene.ShowUseSkill(idSkill);
+				Cutscene.ShowMensajeSkill(idSkill);
 			
-			// Algunos de los skills se aplican aquí ( son inmediatas ) otras no
-			// Las habilidades inmediatas que llegan tienen que ser del jugador activo
-			var bInmediate:Boolean = false;
+			// Hay algunas habilidades que las podemos aplicar directamente aqui, otras se evaluaran durante el resto del turno
 			if (idSkill == Enums.Tiempoextraturno)		// Obtenemos tiempo extra de turno
-			{				
+			{
 				// NOTE: Ademas modificamos lo que representa el quesito del interface, para que se adapte al tiempo que tenemos ahora,
 				// que puede ser superior al tiempo de turno del partido! Este valor se restaura al resetear el timeout
 				_Timeout += AppParams.ExtraTimeTurno;
 				TheInterface.TurnTime = _Timeout;
-				bInmediate = true;
 			}
-			else if(idSkill == Enums.Turnoextra)		// Obtenemos un turno extra
+			else if (idSkill == Enums.Turnoextra)		// Obtenemos un turno extra
 			{
 				_RemainingHits ++;
-				bInmediate = true;
 			}
-			
-			if (bInmediate && idPlayer != this.CurTeam.IdxTeam)
-				throw new Error(IDString + "Ha llegado una habilidad especial INMEDIATA de un jugador que no es el actual! Player="+team.Name+" Skill="+idSkill.toString());
+			else if (idSkill == Enums.PorteriaSegura)
+			{
+				team.ResetToCurrentFormationOnlyGoalKeeper();
+			}
 			
 			ChangeState(GameState.Playing);
 		}
@@ -953,12 +926,12 @@ package Caps
 			// Calculamos el valor de control de la chapa que tiene el turno
 			var miControl:Number = attacker.Control;
 			if( attacker.OwnerTeam.IsUsingSkill( Enums.Furiaroja ) )
-				miControl *= AppParams.ControlMultiplier;
+				miControl *= AppParams.FuriaRojaMultiplier;
 						
 			// Calculamos el valor de defensa de la chapa contraria, la que intenta robar el balón, teniendo en cuenta las habilidades especiales
 			var suDefensa:Number = stealer.Defense;
 			if( stealer.OwnerTeam.IsUsingSkill( Enums.Catenaccio ) )
-				suDefensa *= AppParams.DefenseMultiplier;
+				suDefensa *= AppParams.CatenaccioMultiplier;
 
 			// Comprobamos si se produce el robo entre las dos chapas teniendo en cuenta sus parámetros de Defensa y Control
 			var stolen : Boolean = false;

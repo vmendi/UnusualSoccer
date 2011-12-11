@@ -17,10 +17,10 @@ package Caps
 		// Ultima posicion donde se forzo la posicion o donde paro despues de una simulacion
 		public function get LastPosBallStopped() : Point { return _LastPosBallStopped; }
 		
-		public function BallEntity() : void
+		public function BallEntity(parent:MovieClip) : void
 		{
 			// Inicializamos la entidad
-			super(Embedded.Assets.BallAnimated, Match.Ref.Game.GameLayer, PhyEntity.Circle, {
+			super(Embedded.Assets.BallAnimated, parent, PhyEntity.Circle, {
 				  categoryBits:4,
 				  maskBits: 1 + 2 + 4,		// Choca con todo excepto con BackPorteria (que tiene categoryBits==8)
 				  mass: 3, 					// 0.04

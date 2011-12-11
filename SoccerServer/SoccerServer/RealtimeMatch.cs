@@ -14,24 +14,12 @@ namespace SoccerServer
             public int ShootCount = 0;
             public string[] ClientString = { "", "" };          // Estado de los clientes representado en cadena
         }
-        
-        public class SkillState
-        {
-            public float LastTimeUsed = 0;
-        }
-
+    
         // Define el estado de los jugadores
         public class PlayerState
         {
             public bool TiroPuerta = false;                                     // Ha declarado tiro a puerta?
             public int ScoredGoals = 0;                                         // Goles que ha metido el equipo
-            public SkillState[] Skills = new SkillState[SkillsCount + 1];       // El skill 0 no se  utiliza 1 - 9
-
-            public PlayerState()
-            {
-                for (int i = 1; i <= SkillsCount; i++)
-                    Skills[i] = new SkillState();
-            }
         }
 
         enum State
@@ -39,20 +27,6 @@ namespace SoccerServer
             WaitingForSaque,
             Playing,
             End
-        }
-
-        // Las diferentes habilidades especiales
-        enum SkillType
-        {
-            Superpotencia = 1,
-            Furiaroja,
-            Catenaccio,
-            Tiroagoldesdetupropiocampo,
-            Tiempoextraturno,
-            Turnoextra,
-            CincoEstrellas,
-            Verareas,
-            Manodedios,
         }
         
         private ClientState TheClientState = null;              // Debugeo de estado del cliente
@@ -69,8 +43,6 @@ namespace SoccerServer
                 
         public const int MinClientVersion = 106;                    // Versión mínima que exigimos a los clientes para jugar
         public const int ServerVersion = 101;                       // Versión del servidor
-
-        const int SkillsCount = 9;                              // Contador de habilidades especiales
 
         RealtimePlayer[] Players = new RealtimePlayer[2];             // Los jugadores en el manager
         RealtimePlayerData[] PlayersData = new RealtimePlayerData[2]; // Los jugadores en el manager
@@ -484,9 +456,6 @@ namespace SoccerServer
 
             if (!CheckActionsAllowed())
                 return;
-
-            SkillState skill = PlayersState[ idPlayer ].Skills[ idSkill ];
-            skill.LastTimeUsed = ServerTime;
             
             Broadcast("OnClientUseSkill", idPlayer, idSkill);
         }

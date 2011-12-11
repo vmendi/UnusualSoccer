@@ -56,8 +56,8 @@ package Caps
 			TheBox2D.gravity = new b2Vec2( 0, 0 );
 			TheBox2D.createStageWalls( );
 			
-			if (AppParams.DragPhysicObjects == true)
-				TheBox2D.mouseDrag( );
+			if (AppParams.DragPhysicObjects)
+				TheBox2D.mouseDrag();
 			
 			_Contacts = TheBox2D.addContactListener();
 			_Contacts.addEventListener(QuickContacts.ADD, OnContact);

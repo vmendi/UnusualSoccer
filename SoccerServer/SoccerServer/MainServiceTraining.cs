@@ -34,7 +34,13 @@ namespace SoccerServer
                 List<TransferModel.SpecialTrainingDefinition> ret = new List<TransferModel.SpecialTrainingDefinition>();
 
                 foreach (SpecialTrainingDefinition tr in mContext.SpecialTrainingDefinitions)
+                {
+                    // Desactivamos temporalmente estas dos
+                    if (tr.Name == "CATENACCIO" || tr.Name == "VER_AREAS")
+                        continue;
+
                     ret.Add(new TransferModel.SpecialTrainingDefinition(tr));
+                }
 
                 return ret;
             }

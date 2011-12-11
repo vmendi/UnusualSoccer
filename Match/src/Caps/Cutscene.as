@@ -98,31 +98,9 @@ package Caps
 			}
 		}
 		
-		// 
-		// Reproduce una animación mostrando el uso de una skill
-		//
-		static public function ShowUseSkill(idSkill:int) : void
+		static public function ShowMensajeSkill(idSkill:int) : void
 		{
-			if( idSkill == 1 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill01, 0, 210);
-			else if( idSkill == 2 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill02, 0, 210);
-			else if( idSkill == 3 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill03, 0, 210);
-			else if( idSkill == 4 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill04, 0, 210);
-			else if( idSkill == 5 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill05, 0, 210);
-			else if( idSkill == 6 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill06, 0, 210);
-			else if( idSkill == 7 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill07, 0, 210);
-			else if( idSkill == 8 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill08, 0, 210);
-			else if( idSkill == 9 )
-				LaunchCutScene(Embedded.Assets.MensajeSkill09, 0, 210);
-			else
-				throw new Error( "Identificador de skill invalido" );
+			LaunchCutScene(Assets["MensajeSkill" + idSkill] as Class, 0, 210);
 		}
 		
 		static public function ShowQuedanTurnos( turnos:int ) : void

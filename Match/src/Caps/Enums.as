@@ -1,14 +1,11 @@
 package Caps
 {
-	//
-	// Diferentes enumeraciones que utilizaremos en el juego
-	//
 	public class Enums
 	{
 		// Jugador local y remoto
 		public static const Team1:int = 0;						// Equipo 1  
 		public static const Team2:int = 1;						// Equipo 2
-		public static const Count_Team:int = 2;					//
+		public static const Count_Team:int = 2;
 		
 		// Lados del campo
 		public static const Left_Side:int = 0; 
@@ -30,19 +27,21 @@ package Caps
 		public static const TurnByLost:int = 9;						// La pelota se perdio simplemente porque quedo cerca de un contrario
 				
 		
-		// Skills (van de 1 a 9)
-		public static const Superpotencia:int = 1;					// Multiplica por X parámetro de potencia en el turno
-		public static const Furiaroja:int = 2;						// Multiplica por X parámetro de ataque en el turno
-		public static const Catenaccio:int = 3;						// Multiplica por X parámetro de defensa en el turno
-		public static const Tiroagoldesdetupropiocampo:int = 4;		// Permite disparar desde tu propio campo
+		// Los IDs de las Skills. Su origen ultimo es la DB
+		public static const Superpotencia:int = 1;
+		public static const Furiaroja:int = 2;
+		public static const Catenaccio:int = 3;
+		public static const Tiroagoldesdetupropiocampo:int = 4;		
 		public static const Tiempoextraturno:int = 5;
 		public static const Turnoextra:int = 6;
-		public static const CincoEstrellas:int = 7;					// Multiplicar por X área de influencia pase al pie / Multiplicar por X área de influencia defensa.
-		public static const Verareas:int = 8;						// Muestra todas las áreas de un jugador
-		public static const Manodedios:int = 9;						// No necesario declarar tiro a puerta
+		public static const CincoEstrellas:int = 7;	
+		public static const Verareas:int = 8;				
+		public static const Manodedios:int = 9;						
+		public static const PorteriaSegura:int = 12;
+		public static const MasterDribbling:int = 13;
 		
-		public static const SkillFirst:int = 1;						// Primera skill  
-		public static const SkillLast:int = 9;						// Última Skill
+		public static const AllSkills : Array = [ Superpotencia, Furiaroja, Catenaccio, Tiroagoldesdetupropiocampo, Tiempoextraturno,
+												  Turnoextra, CincoEstrellas, Verareas, Manodedios, PorteriaSegura, MasterDribbling ];
 		
 		
 		// Validez/invalidez de un gol
@@ -50,15 +49,10 @@ package Caps
 		public static const GoalInvalidNoDeclarado:int = 1;
 		public static const GoalInvalidPropioCampo:int = 2;		
 				
-		//
 		// Obtiene el lado contrario al especificado
-		//
-		static public function AgainstSide( side:int ) : int
+		static public function AgainstSide(side:int) : int
 		{
-			if( side == Left_Side )
-				return( Right_Side );
-						
-			return( Left_Side );
+			return side == Left_Side? Right_Side : Left_Side;
 		}
 	}
 }
