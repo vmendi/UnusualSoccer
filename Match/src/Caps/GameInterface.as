@@ -332,7 +332,7 @@ package Caps
 			
 			var game:Game = Match.Ref.Game;
 			
-			// Si estamos en modo de colocación de portero :
+			// Si estamos en modo de colocación de portero:
 			//---------------------------------------
 			if (game.ReasonTurnChanged == Enums.TurnByTiroAPuerta)
 			{
@@ -346,7 +346,7 @@ package Caps
 				if (game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
 					ShootControl.Start(cap);
 			}
-			// Si estamos en modo de disparo:
+			// Si estamos en modo normal (modo disparo):
 			//---------------------------------------
 			else 
 			{

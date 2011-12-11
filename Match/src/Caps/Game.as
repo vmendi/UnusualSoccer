@@ -145,7 +145,7 @@ package Caps
 			var group2:int = Team.GroupTeam(descTeam2.PredefinedTeamName);
 			if (group1 == group2)
 			{
-				trace( "Los equipos pertenecen al mismo grupo de equipación. Utilizando equipación secundaria para el equipo contrario" ); 
+				trace("Los equipos pertenecen al mismo grupo de equipación. Utilizando equipación secundaria para el equipo contrario"); 
 				if (idLocalPlayerTeam == Enums.Team1)
 					useSecondaryEquipment2 = true;
 				if (idLocalPlayerTeam == Enums.Team2)
@@ -236,9 +236,8 @@ package Caps
 					
 					_Part++;	// Pasamos a la segunda parte
 					
-					// Cambiamos a los equipos de lado de campo
-					TheTeams[ Enums.Team1 ].InvertedSide();
-					TheTeams[ Enums.Team2 ].InvertedSide();
+					TheTeams[Enums.Team1].SetToOppositeSide();
+					TheTeams[Enums.Team2].SetToOppositeSide();
 					 
 					ChangeState(GameState.NewPart);
 					break;
@@ -258,7 +257,7 @@ package Caps
 				case GameState.Playing:
 				{
 					if (TheGamePhysics.IsSimulating)
-						throw new Error("La fisica no pueda estar simulando en estado GameState.Playing");
+						throw new Error("La fisica no puede estar simulando en estado GameState.Playing");
 					
 					// Para actualizar nuestros relojes, calculamos el tiempo "real" que ha pasado, independiente del frame-rate
 					var realElapsed:Number = _Timer.GetElapsed() / 1000;
@@ -365,9 +364,6 @@ package Caps
 			_OfflineWaitCall = offlineCall;
 		}
 		
-		//
-		// Resetea el tiempo del timeout
-		//
 		public function ResetTimeout() : void
 		{
 			_Timer.ResetElapsed();
@@ -392,14 +388,14 @@ package Caps
 		}
 			
 		//
-		// Recibimos una "ORDEN" del servidor : "Disparar chapa" 
+		// Disparar chapa 
 		//
 		public function OnClientShoot(idPlayer:int, capID:int, dirX:Number, dirY:Number, force:Number) : void
 		{
 			VerifyStateWhenReceivingCommand(GameState.WaitingCommandShoot, idPlayer, "OnClientShoot");
 										
 			// Nada mas lanzar resetamos el tiempo. Esto hace que la tarta se rellene y que si al acabar la simulacion no hay ConsumeTurn o 
-			// YieldTurnToOpponent, por ejemplo, en una pase al pie, el tiempo este bien para ese sub-turno.
+			// YieldTurnToOpponent, por ejemplo, en una pase al pie, el tiempo este bien para el siguiente sub-turno.
 			ResetTimeout();
 			
 			// Obtenemos la chapa que dispara
@@ -425,7 +421,7 @@ package Caps
 		{
 			// Confirmamos que estamos en el estado correcto. El servidor no permite cambios de estado mientras estamos simulando
 			if (this._State != GameState.WaitingClientsToEndShoot)
-				throw new Error(IDString + "Hemos recibido una confirmación de que todos los jugadores han simulado el disparo cuando no estábamos esperándola");
+				throw new Error(IDString + "OnClientShootSimulated en estado " + this._State);
 			
 			var result:int = 0;
 			
@@ -433,7 +429,10 @@ package Caps
 			if (ReasonTurnChanged == Enums.TurnBySaquePuerta || ReasonTurnChanged == Enums.TurnBySaquePuertaByFalta)
 			{
 				this.CurTeam.ResetToCurrentFormationOnlyGoalKeeper();
-				ReasonTurnChanged = Enums.TurnByTurn;
+				ReasonTurnChanged = Enums.TurnByTurn;	// TODO: Aqui se olvida porque por ejemplo se limita la chapa clickable en el saque puerta, si no
+														//       olvidamos entonces en el siguiente subturno seguiria considerando saque de puerta.
+														// 		 Habria que buscar una forma mejor de olvidar, en realidad la ReasonTurnChanged solo
+														//		 se necesita en el subturno inmediato al cambio de turno
 			}
 			
 			var paseToCap:Cap = GetPaseAlPie();
@@ -507,13 +506,14 @@ package Caps
 				{
 					// Si nadie consiguió robar la pelota activamos el controlador de pelota al usuario que ha recibido el pase
 					// Además pintamos un mensaje de pase al pie adecuado (con conflicto o sin conflicto de intento de robo)
-					// NOTE: No consumimos el turno hasta que el usuario coloque la pelota!
+					// NOTE: No consumimos el subturno hasta que el usuario coloque la pelota!
 					result |= 32;
 					
 					// Además si era el último sub-turno le damos un sub-turno EXTRA. Mientras hagas pase al pie puedes seguir tirando
 					if (_RemainingHits == 1)
 						_RemainingHits++;
 					
+					// Si esto llega a 0, no volveremos a entrar aqui porque GetPaseAlPie() siempre retornara null -> paseToCap == null
 					_RemainingPasesAlPie--;
 					
 					// Mostramos el cartel de pase al pie en los 2 clientes!
@@ -685,16 +685,12 @@ package Caps
 		// 
 		// Un jugador ha terminado la colocación de su portero. Volvemos al turno del otro jugador para que efectúe su lanzamiento
 		//
-		private function OnGoalKeeperSet(idPlayer:int) : void
+		private function OnGoalKeeperSet(idPlayerWhoMovedTheGoalKeeper:int) : void
 		{
-			// Mostramos el interface de colocación de portero al jugador contrario
-			var team:Team = TheTeams[ idPlayer ] ;
-			var enemy:Team = team.AgainstTeam();
-
 			// Cambiamos el turno al enemigo (quien declaró que iba a tirar a puerta) para que realice el disparo
-			this.SetTurn( enemy.IdxTeam, Enums.TurnByGoalKeeperSet );
+			this.SetTurn(TheTeams[idPlayerWhoMovedTheGoalKeeper].AgainstTeam().IdxTeam, Enums.TurnByGoalKeeperSet);
 		}
-				
+
 		// 
 		// Un jugador ha marcado gol!!! Reproducimos una cut-scene
 		//
@@ -820,7 +816,7 @@ package Caps
 			// de que el turno ha sido cambiado por colocación de portero solo dura un sub-turno (Los restauramos a turno x turno).
 			// Tendrás que volver a declarar tiro a puerta para volver a disparar a porteria
 			// NOTE: Esto se hace para que un mismo turno puedas declarar varias veces tiros a puerta
-			if( ReasonTurnChanged == Enums.TurnByGoalKeeperSet )
+			if (ReasonTurnChanged == Enums.TurnByGoalKeeperSet)
 				ReasonTurnChanged = Enums.TurnByTurn;
 			
 			// Comprobamos si hemos consumido todos los disparos
@@ -840,9 +836,9 @@ package Caps
 		//
 		private function YieldTurnToOpponent(reason:int = Enums.TurnByTurn) : void
 		{
-			if( _IdxCurTeam == Enums.Team1 )
+			if (_IdxCurTeam == Enums.Team1)
 				SetTurn(Enums.Team2, reason);
-			else if( _IdxCurTeam == Enums.Team2 )
+			else if(_IdxCurTeam == Enums.Team2)
 				SetTurn(Enums.Team1, reason);
 		}
 		//
@@ -881,12 +877,12 @@ package Caps
 			
 			// Si cambiamos el turno por robo, perdida o falta le damos un turno extra para la colocación del balón.
 			// De esta forma luego tendrá los mismos que un turno normal
-			if( reason == Enums.TurnByStolen || reason == Enums.TurnByFault || reason == Enums.TurnByLost)
+			if (reason == Enums.TurnByStolen || reason == Enums.TurnByFault || reason == Enums.TurnByLost)
 				_RemainingHits++;
-						
+
 			// Al cambiar el turno, también desactivamos las skills que se estuvieran utilizando
 			// Salvo cuando cambiamos el turno por declaración de tiro a puerta, o porque ha colocado el portero 
-			if( reason != Enums.TurnByTiroAPuerta && reason != Enums.TurnByGoalKeeperSet )
+			if (reason != Enums.TurnByTiroAPuerta && reason != Enums.TurnByGoalKeeperSet)
 			{
 				TheTeams[Enums.Team1].DesactiveSkills();
 				TheTeams[Enums.Team2].DesactiveSkills();
@@ -909,8 +905,6 @@ package Caps
 		
 		//
 		// Comprobamos si alguien del equipo contrario le puede robar el balon al jugador indicado
-		// Retorna el enemigo que podría robar la pelota o NULL si no hay conflicto posible
-		// NOTE: Ademas si se devuelve un potencial ladrón, se rellena el objeto conflicto
 		//
 		private function CheckConflictoSteal(attacker:Cap) : Conflict
 		{
@@ -925,15 +919,15 @@ package Caps
 								
 			// Calculamos el valor de control de la chapa que tiene el turno
 			var miControl:Number = attacker.Control;
-			if( attacker.OwnerTeam.IsUsingSkill( Enums.Furiaroja ) )
+			if (attacker.OwnerTeam.IsUsingSkill( Enums.Furiaroja))
 				miControl *= AppParams.FuriaRojaMultiplier;
 						
 			// Calculamos el valor de defensa de la chapa contraria, la que intenta robar el balón, teniendo en cuenta las habilidades especiales
 			var suDefensa:Number = stealer.Defense;
-			if( stealer.OwnerTeam.IsUsingSkill( Enums.Catenaccio ) )
+			if (stealer.OwnerTeam.IsUsingSkill(Enums.Catenaccio))
 				suDefensa *= AppParams.CatenaccioMultiplier;
 
-			// Comprobamos si se produce el robo entre las dos chapas teniendo en cuenta sus parámetros de Defensa y Control
+			// Comprobamos si se produce el robo teniendo en cuenta sus parámetros de Defensa y Control
 			var stolen : Boolean = false;
 			
 			if (miControl < suDefensa)
@@ -991,12 +985,9 @@ package Caps
 		public function IsTeamPosValidToScore() : Boolean
 		{
 			var player:Team = this.CurTeam;
-			if( player == null )
-				return false;
-			
 			var bValid:Boolean = true;
 			
-			if( !player.IsUsingSkill( Enums.Tiroagoldesdetupropiocampo ) )
+			if (!player.IsUsingSkill(Enums.Tiroagoldesdetupropiocampo))
 			{
 				if( player.Side == Enums.Right_Side && TheBall.LastPosBallStopped.x >= Field.CenterX)
 					bValid = false;
@@ -1010,21 +1001,11 @@ package Caps
 		//
 		// Comprueba si se ha declarado tiro a puerta o si se posee la habilidad especial mano de dios
 		//  
-		public function IsTiroPuertaDeclarado( ) : Boolean
+		public function IsTiroPuertaDeclarado() : Boolean
 		{
-			var team:Team = this.CurTeam;
-			if( team == null )
-				return false;
-			
-			var bDeclared:Boolean = true;
-			
-			if( !team.IsUsingSkill(Enums.Manodedios) )
-			{
-				if( ReasonTurnChanged != Enums.TurnByGoalKeeperSet && ReasonTurnChanged != Enums.TurnByTiroAPuerta  )
-					bDeclared = false;
-			}
-			
-			return( bDeclared );
+			return CurTeam.IsUsingSkill(Enums.Manodedios) || 
+				   ReasonTurnChanged == Enums.TurnByTiroAPuerta || 
+				   ReasonTurnChanged == Enums.TurnByGoalKeeperSet;
 		}
 		
 		// 

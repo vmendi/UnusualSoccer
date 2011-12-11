@@ -1,8 +1,5 @@
 package Caps
 {
-	//
-	// Conjunto de parámetros globales a toda la aplicación
-	//
 	public class AppParams
 	{
 		public static const ClientVersion:int = 106;			// Versión del cliente

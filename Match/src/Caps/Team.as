@@ -107,14 +107,14 @@ package Caps
 		//
 		// Ponemos al equipo en el lado invertido (es la 2ª parte)
 		//
-		public function InvertedSide() : void
+		public function SetToOppositeSide() : void
 		{
 			// El equipo 1 empieza en el lado izquierdo y el 2 en el derecho
 			if (IdxTeam == Enums.Team1)
 				Side = Enums.Right_Side;
 			else if(IdxTeam == Enums.Team2)
 				Side = Enums.Left_Side;
-		}		
+		}
 		
 		//
 		// Posicionamos todas las chapas del equipo según la alineación y el lado del campo en el que están
@@ -144,7 +144,7 @@ package Caps
 		// La formación se especifica en forma de cadena. 
 		// El hash de formaciones de match debe tener un array para esa entrada de cadena
 		//
-		protected function SetFormationPos( formationName:String, side:int  ) : void
+		private function SetFormationPos(formationName:String, side:int) : void
 		{
 			var currentFormation : Array = GetFormation(formationName);
 							
