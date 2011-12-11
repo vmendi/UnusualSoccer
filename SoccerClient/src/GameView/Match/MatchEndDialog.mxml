@@ -198,7 +198,7 @@
 	<GameView:PopupBackground width="356" height="252" />
 
 	<s:Group x="2" y="98">
-		<s:Rect x="0" y="0" width="352" height="81" alpha="1" includeIn="LookingForMatch">
+		<s:Rect x="0" y="0" width="352" height="81" alpha="1">
 			<s:fill>
 				<s:SolidColor color="#353536"/>
 			</s:fill>
@@ -231,9 +231,9 @@
 	
 	<s:Group x="22" y="134">
 		<s:layout><s:VerticalLayout gap="3"/></s:layout>
-		<s:Label width="50" text="123" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralXP')}" />
-		<s:Label width="50" text="123" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualPoints')}" />
-		<s:Label width="50" text="123" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualSkill')}" />
+		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralXP')}" />
+		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualPoints')}" />
+		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualSkill')}" />
 	</s:Group>	
 	<s:Group x="114" y="134">
 		<s:layout><s:VerticalLayout gap="3"/></s:layout>
@@ -251,9 +251,9 @@
 
 	<s:Group right="162" y="134">
 		<s:layout><s:VerticalLayout gap="3"/></s:layout>
-		<s:Label width="50" text="123" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralXP')}" />
-		<s:Label width="50" text="123" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualPoints')}" />
-		<s:Label width="50" text="123" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualSkill')}" />
+		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralXP')}" />
+		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualPoints')}" />
+		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualSkill')}" />
 	</s:Group>	
 	<s:Group right="21" y="134">
 		<s:layout><s:VerticalLayout gap="3"/></s:layout>
