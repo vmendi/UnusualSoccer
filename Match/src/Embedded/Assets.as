@@ -1,12 +1,8 @@
 package Embedded
 {
 	//
-	// Librería de assets embebidos
-	// - Cualquier asset que no se encuentre se reportará en tiempo de compilación!
-	//
 	// NOTE: (IMPORTANT) Para que un asset instanciado pueda convertirse a un movieclip no es suficiente con que se le asigne el tipo MovieClip
-	// dentro del Adobe Flash, además debe contener al menos 2 frames en el timeline
-	
+	// dentro del Adobe Flash, además debe contener al menos 2 frames en el timeline	
 	public class Assets
 	{
 		// El campo:
@@ -33,27 +29,33 @@ package Embedded
 		static public var MensajeGolinvalidoPropioCampo:Class;
 		
 		// Mensajes animados de skills
-		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill01")]
-		static public var MensajeSkill01:Class;
-		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill02")]
-		static public var MensajeSkill02:Class;
-		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill03")]
-		static public var MensajeSkill03:Class;
-		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill04")]
-		static public var MensajeSkill04:Class;
-		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill05")]
-		static public var MensajeSkill05:Class;
-		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill06")]
-		static public var MensajeSkill06:Class;
-		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill07")]
-		static public var MensajeSkill07:Class;
-		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill08")]
-		static public var MensajeSkill08:Class;
-		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill09")]
-		static public var MensajeSkill09:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill1")]  static public var MensajeSkill1:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill2")]  static public var MensajeSkill2:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill3")]  static public var MensajeSkill3:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill4")]  static public var MensajeSkill4:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill5")]  static public var MensajeSkill5:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill6")]  static public var MensajeSkill6:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill7")]  static public var MensajeSkill7:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill8")]  static public var MensajeSkill8:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill9")]  static public var MensajeSkill9:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill12")] static public var MensajeSkill12:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="MensajeSkill13")] static public var MensajeSkill13:Class;
 		
-		// Diálogos final de partido
+		// Los botones de cada skill
+		[Embed(source="Embedded/Assets.swf", symbol="BotonSkill1")]	 static public var BotonSkill1:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="BotonSkill2")]  static public var BotonSkill2:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="BotonSkill3")]	 static public var BotonSkill3:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="BotonSkill4")]  static public var BotonSkill4:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="BotonSkill5")]  static public var BotonSkill5:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="BotonSkill6")]  static public var BotonSkill6:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="BotonSkill7")]  static public var BotonSkill7:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="BotonSkill8")]  static public var BotonSkill8:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="BotonSkill9")]  static public var BotonSkill9:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="BotonSkill12")] static public var BotonSkill12:Class;
+		[Embed(source="Embedded/Assets.swf", symbol="BotonSkill13")] static public var BotonSkill13:Class;
 		
+		
+		// Diálogos final de partido		
 		[Embed(source="Embedded/Assets.swf", symbol="FinalDialog")]
 		static public var FinalDialog:Class;
 		[Embed(source="Embedded/Assets.swf", symbol="FinalDialogLeave")]
@@ -144,8 +146,7 @@ package Embedded
 		static public var CapDetails:Class;
 		
 		
-		// Los sonidos
-		
+		// Los sonidos		
 		[Embed(source="Embedded/Assets.swf", symbol="CollisionCapBall")]
 		static public var SoundCollisionCapBall:Class;
 		[Embed(source="Embedded/Assets.swf", symbol="CollisionCapCap")]

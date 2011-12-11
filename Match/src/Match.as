@@ -14,6 +14,8 @@ package
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	
+	import mx.core.FlexGlobals;
+	
 	import utils.GenericEvent;
 	
 	[SWF(width="800", height="600", frameRate="30")]
@@ -21,7 +23,6 @@ package
 	{
 		static private var Instance:Match = null;				// Instancia única de la aplicación
 		
-		public var DebugArea:MovieClip = new MovieClip();		// Area de pintando de información de debug. Se posiciona por delante de todo
 		public var Formations:Object = null;					// Hash de posiciones (Points) de formaciones ["332"][idxCap]
 		public var Connection:Object = null;					// Conexión con el servidor
 		public var IdLocalUser:int = -1;						// Identificador del usuario local
@@ -38,7 +39,7 @@ package
 			Instance = this;
 			
 			_AudioManager = new Framework.AudioManager();
-
+			
 			if (stage != null)
 			{
 				stage.frameRate = 30;
@@ -46,10 +47,7 @@ package
 				stage.align = StageAlign.TOP_LEFT;
 				trace("Movie Frame Rate: " + stage.frameRate); 
 			}
-									
-			// Añadimos la zona de información de debug (por delante de todo el interface)
-			addChild(DebugArea);
-									
+
 			// Nos quedamos a la espera del siguiente Frame. Quien aquí nos llama tiene tiempo entonces para llamar a Init
 			addEventListener(Event.ENTER_FRAME, OnFrame);
 		}

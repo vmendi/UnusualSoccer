@@ -12,7 +12,7 @@ package Caps
 		public static const DebugPhysic:Boolean = false;		// Indica si depuramos la física (pintar el mundo físico y otras cosas más )
 		public static const DragPhysicObjects:Boolean = false;	// Indica si podemos arrastrar los objetos físicos con el ratón
 		
-		public static const Debug:Boolean = false;				// Indica que estamos en modo debug. Se habilitan trucos/trazas y similares
+		public static var	Debug:Boolean = false;				// Indica que estamos en modo debug. Se habilitan trucos/trazas y similares
 		public static var   OfflineMode:Boolean = false;		// Arranque directo sin manager. No se hace caso a este valor, se detecta y se settea automaticamente.
 		
 		// Configuración física
@@ -39,25 +39,28 @@ package Caps
 		public static const BallLinearDamping:int = 3;
 		
 		// Porcentaje de la skill restaurado por segundo para cada habilidad
-		// NOTE: Las skills van de 1 - 9, el primer valor del array en la linea anterior no se utiliza!
-		// 1. Superpotencia
-		// 2. Furia Roja
-		// 3. Catenaccio
-		// 4. Tiro a gol
-		// 5. Tiempo extra
-		// 6. Tiro extra
-		// 7. 5 Estrellas
-		// 8. Ver áreas
-		// 9. Mano de dios
-		public static var PercentSkilLRestoredPerSec:Array = [ 0.0, 2.0, 1.5, 1.5, 1.0, 0.2, 0.2, 0.5, 2.0, 0.01   ];
-
-		public static const PowerMultiplier:Number = 2.0;			// Multiplicador de potencia cuando tienes la habilidad especial "superpotencia"
-		public static const ControlMultiplier:Number = 2.0;			// Multiplicador de control cuando tienes la habilidad especial
-		public static const DefenseMultiplier:Number = 2.0;			// Multiplicador de defensa cuando tienes la habilidad especial
-		public static const InfluencesMultiplier:Number = 2.0;		// Multiplicador de los radios de influencia
-				
-		public static const CoeficienteRobo:Number = 1.00; //1.25;	// Se multiplica al porcentaje de probabilidad de robo
+		public static var PercentSkilLRestoredPerSec:Array = [
+																[Enums.Superpotencia, 2.0],
+																[Enums.Furiaroja, 1.5],
+																[Enums.Catenaccio, 1.5],
+																[Enums.Tiroagoldesdetupropiocampo, 1.0],
+																[Enums.Tiempoextraturno, 0.2],
+																[Enums.Turnoextra, 0.2],
+																[Enums.CincoEstrellas, 0.5],
+																[Enums.Verareas, 2.0],
+																[Enums.Manodedios, 0.01],
+																[Enums.PorteriaSegura, 2.0],
+																[Enums.MasterDribbling, 1.5]
+															  ];		
 		
+		public static const PowerMultiplier:Number = 2.0;			// Multiplicador de potencia cuando tienes la habilidad especial "superpotencia"
+		
+		public static const FuriaRojaMultiplier:Number = 2.0;		// Multiplicador Control
+		public static const CatenaccioMultiplier:Number = 2.0;		// Multiplicador Defensa
+		
+		public static const CincoEstrellasMultiplier:Number = 2.0;	// Multiplicador de los radios de pase al pie
+		public static const MasterDribblingMultiplier:Number = 0.0;	// Multiplicador de los radios de robo
+
 		public static const ExtraTimeTurno:Number = 15.0;			// Segundos extras que se obtienen en el turno con la habilidad especial
 		
 		public static const VelPossibleFault:Number = 3.0;			// Velocidad MÍNIMA que debe existir para que haya posibilidad de falta. Límite inferior de falta al portero

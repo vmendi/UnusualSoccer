@@ -2,12 +2,6 @@ package Caps
 {
 	public class InitOffline
 	{
-		// Distintos alineamientos posibles
-		static public const Defensive:int = 0;			// 
-		static public const Medium:int = 1;				// 
-		static public const Offensive:int = 2;			//
-		static public const Count:int = 3;				// Contador de alineaciones
-				
 		static private var Formations:Array =
 			[
 				// Alineación defensiva 
@@ -49,12 +43,10 @@ package Caps
 		{
 			var descTeam1:Object = { 
 				PredefinedTeamName: "Atlético",
-				SpecialSkillsIDs: [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
 				SoccerPlayers: []
 			}
 			var descTeam2:Object = { 
 				PredefinedTeamName: "Sporting",
-				SpecialSkillsIDs: [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
 				SoccerPlayers: []
 			}
 			
@@ -82,6 +74,11 @@ package Caps
 				};						
 				descTeam2.SoccerPlayers.push(descCap2);					
 			}
+			
+			// Forzosamente tienen que estar todas las habilidades disponibles para los dos equipos, por una cuestion de cómo
+			// se maneja el interfaz (es el mismo interfaz para los dos, los botones estan precreados no se conmuta segun el turno)
+			descTeam1.SpecialSkillsIDs = Enums.AllSkills;
+			descTeam2.SpecialSkillsIDs = Enums.AllSkills;
 			
 			Match.Ref.Formations = Formations;
 			Match.Ref.Game.InitFromServer((-1), descTeam1, descTeam2, Enums.Team1, 

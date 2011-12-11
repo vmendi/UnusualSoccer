@@ -49,15 +49,15 @@ package Caps
 		public var GoalLeft : QuickObject = null;
 		public var GoalRight : QuickObject = null;
 		
-		public var Visual:DisplayObjectContainer = null;					// Objeto visual del campo
+		public var Visual:DisplayObjectContainer = null;
 
 		
 		public function Field(parent:MovieClip) : void
 		{
-			// Creamos el campo
-			Visual = new Embedded.Assets.Field();
-			parent.addChild( Visual );
-			if( AppParams.DrawBackground == false)
+			// Creamos la representacion visual
+			Visual = parent.addChild(new Embedded.Assets.Field()) as DisplayObjectContainer;
+			
+			if (!AppParams.DrawBackground)
 				Visual.visible = false;
 						
 			// Crea objetos físicos para gestionar el estadio

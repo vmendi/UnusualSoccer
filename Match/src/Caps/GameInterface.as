@@ -8,12 +8,10 @@ package Caps
 	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.display.InteractiveObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.net.SharedObject;
-	import flash.text.AntiAliasType;
 	
 	import utils.Delegate;
 	import utils.TimeUtils;
@@ -37,14 +35,16 @@ package Caps
 		
 		public function GameInterface() : void
 		{
-			// Canvas de pintado compartido entre todos los controllers
-			// NOTE: Lo añadimos al principio del interface, para que se pinte encima del juego pero debajo del interface 
-			ControllerCanvas = new Sprite();
-			Match.Ref.Game.GUILayer.addChild( ControllerCanvas );
-
-			var lineLength:Number = Cap.Radius + BallEntity.Radius + AppParams.DistToPutBallHandling;
+			// Canvas de pintado compartido entre todos los controllers. Lo añadimos al principio del interface, 
+			// para que se pinte encima de la GameLayer pero por debajo de todo lo de la GUILayer
+			ControllerCanvas = Match.Ref.Game.GUILayer.addChild(new Sprite()) as Sprite;
 			
-			// Inicializamos los controladores (disparo, balón, posición )
+			// Los botones se crean tambien en la GUILayer, por debajo de Cutscenes e InfoPanel
+			CreateSpecialSkillButtons(Match.Ref.Game.GUILayer);
+
+			// Inicializamos los controladores (disparo, balón, posición)
+			var lineLength:Number = Cap.Radius + BallEntity.Radius + AppParams.DistToPutBallHandling;			
+			
 			ShootControl = new ControllerShoot(ControllerCanvas, MAX_LONG_SHOOT, COLOR_SHOOT, THICKNESS_SHOOT);
 			BallControl = new ControllerBall(ControllerCanvas, lineLength, COLOR_HANDLEBALL, THICKNESS_SHOOT);
 			PosControl = new ControllerPos(ControllerCanvas, lineLength, COLOR_HANDLEBALL, THICKNESS_SHOOT);
@@ -53,7 +53,7 @@ package Caps
 			BallControl.OnStop.add(OnStopControllerBall);
 			PosControl.OnStop.add(OnStopControllerPos);
 
-			var teams:Array = Match.Ref.Game.TheTeams;
+			// Hay parte del GUI que nos viene en el campo y no hay que instanciar
 			var Gui:* = Match.Ref.Game.TheField.Visual;			
 			Gui.BotonTiroPuerta.addEventListener(MouseEvent.CLICK, OnTiroPuerta);
 			Gui.SoundButton.addEventListener(MouseEvent.CLICK, OnMute);
@@ -64,11 +64,36 @@ package Caps
 			UpdateMuteButton();
 			
 			// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el quipo
+			var teams:Array = Match.Ref.Game.TheTeams;
+			
 			Gui.BadgeHome.gotoAndStop( teams[ Enums.Team1 ].Name );
 			Gui.BadgeAway.gotoAndStop( teams[ Enums.Team2 ].Name );
 			
 			Gui.TeamHome.text = teams[ Enums.Team1 ].Name;
 			Gui.TeamAway.text = teams[ Enums.Team2 ].Name;
+		}
+		
+		private function CreateSpecialSkillButtons(parent:DisplayObjectContainer) : void
+		{
+			var localTeam : Team = Match.Ref.Game.LocalUserTeam;
+			
+			var BUTTON_WIDTH : Number = 56;															// Contando con el espacio a la derecha
+			var allButtonsWidth : Number = localTeam.AvailableSkills.length * BUTTON_WIDTH - 10;	// Restamos el espacio a la derecha del ultimo			
+			var x : Number = Field.CenterX - allButtonsWidth*0.5;			
+			
+			for each(var skillID : int in localTeam.AvailableSkills)
+			{
+				var newButton : MovieClip = new ((Assets["BotonSkill" + skillID]) as Class)();
+				newButton.name = "BotonSkill" + skillID;
+				newButton.addEventListener(MouseEvent.CLICK, Delegate.create(OnUseSkillButtonClick, skillID));
+				
+				newButton.x = x;
+				newButton.y = 540;
+				
+				x += BUTTON_WIDTH;
+				
+				parent.addChild(newButton);					
+			}
 		}
 		
 		private function OnMute(e:MouseEvent) : void
@@ -164,30 +189,24 @@ package Caps
 			var frame:int = (1.0 - timeout) * Gui.ContadorTiempoTurno.totalFrames;
 			Gui.ContadorTiempoTurno.gotoAndStop( frame );
 			
-			// Activamos los botones de habilidades especiales en función si el equipo del jugador local las posee o no
-			var team:Team = Match.Ref.Game.LocalUserTeam;
-			for (var i:int = Enums.SkillFirst; i <= Enums.SkillLast; i++)
-			{
-				UpdateSpecialSkill(i, team.HasSkill( i ), team.ChargedSkill( i ));
-			}
-			
-			// Actualizamos el estado (enable/disable) del botón de tiro a puerta
+			UpdateSpecialSkills();
 			UpdateButtonTiroPuerta();
 		}
 		
 		//
-		// Comprobamos si la habilidad está disponible en el turno actual
+		// Comprobamos si la habilidad está disponible en el turno actual.
+		// "ForTurn": Semanticamente esta bien puesto que cuando tengamos habilidades de defensa habra que evaluar si
+		//            este skillID concreto esta disponible segun quien tenga el turno.
 		//
-		private function IsSkillAllowedInTurn(index:int) : Boolean 
+		private function IsSkillAvailableForTurn(skillID:int) : Boolean 
 		{
-			var game:Game = Match.Ref.Game;
-			
-			// Si no estamos jugando (...no estamos en ninguna espera), ninguna habilidad disponible para nadie
+			// Si no estamos jugando (...no estamos en ninguna espera), ninguna habilidad disponible para nadie.
+			// Por supuesto esto tiene en cuenta ademas que sea nuestro turno.
 			if (!UserInputEnabled)
 				return false;
 			
 			// Si estamos en el turno de colocación de portero, ninguna habilidad está disponible para nadie!
-			if (game.ReasonTurnChanged == Enums.TurnByTiroAPuerta)
+			if (Match.Ref.Game.ReasonTurnChanged == Enums.TurnByTiroAPuerta)
 				return false;
 			
 			// Tampoco permitimos pulsar los botones de habilidad mientras mostramos cualquiera de los controladores,
@@ -199,76 +218,76 @@ package Caps
 		}
 		
 		//
-		// Sincroniza el valor de una Special-Skill, por ejemplo habilitando/desabilitando el boton
+		// Sincroniza el valor de las SpecialSkills, por ejemplo habilitando/desabilitando el boton
 		//
-		private function UpdateSpecialSkill(index:int, available:Boolean, percentCharged:int) : void
+		private function UpdateSpecialSkills() : void
 		{
-			var Gui:* = Match.Ref.Game.TheField.Visual;
-						
-			var objectName:String = "SpecialSkill"+index.toString(); 
-			var item:MovieClip = Gui.getChildByName(objectName) as MovieClip;
+			var localTeam : Team = Match.Ref.Game.LocalUserTeam;
 			
-			// No tenemos esa habilidad o no está permitida en el turno actual
-			if( !available || (!IsSkillAllowedInTurn( index )) )
-			{
-				item.Icono.alpha = 0.25;	
-				item.IconoBase.alpha = 0.25;
-				item.Icono.gotoAndStop( objectName );
-				item.IconoBase.gotoAndStop( objectName );
-				item.Tiempo.gotoAndStop( 1 );
-				item.Tiempo.visible = false;
-
-				item.gotoAndStop( "NotAvailable" );	
-			}
-			// Tenemos la habilidad pero no está cargada al 100% (no se puede utilizar) 
-			else if( available && percentCharged < 100 )
-			{
-				item.gotoAndStop( "Available" );
+			for each (var skillID : int in localTeam.AvailableSkills)
+			{	
+				var objectName:String = "SpecialSkill" + skillID.toString(); 	// legacy
+				var buttonMC:MovieClip = Match.Ref.Game.GUILayer.getChildByName("BotonSkill" + skillID) as MovieClip;
 				
-				item.Icono.alpha = 0.25;	
-				item.IconoBase.alpha = 0.25;
-				item.Icono.gotoAndStop( objectName );
-				item.IconoBase.gotoAndStop( objectName );
-				item.Tiempo.gotoAndStop( percentCharged );
-				item.Tiempo.visible = true;
-			}
-			// Tenemos la habilidad y lista para ser usada
-			else if( available && percentCharged >= 100 )
-			{
-				item.gotoAndStop( "Available" );
+				var available : Boolean = IsSkillAvailableForTurn(skillID);
 				
-				item.Icono.alpha = 1.0;	
-				item.IconoBase.alpha = 1.0;
-				item.Icono.gotoAndStop( objectName );
-				item.IconoBase.gotoAndStop( objectName );
-				item.Tiempo.gotoAndStop( 1 );
-				item.Tiempo.visible = false;
-			}
-			
-			if (!item.hasEventListener( MouseEvent.CLICK ))
-				item.addEventListener(MouseEvent.CLICK, Delegate.create(OnUseSkillButtonClick, index));
+				if (!available || localTeam.GetSkillPercentCharged(skillID) < 100)
+				{
+					if (!available)
+					{
+						if (localTeam.GetSkillPercentCharged(skillID) >= 100)	// No lanzable y estamos recargados
+							buttonMC.Tiempo.visible = false;
+						else
+							buttonMC.Tiempo.visible = true;						// No lanzable y NO estamos recargados -> Mostramos el tiempo de recarga
 						
-			item.mouseEnabled = available;
+						buttonMC.gotoAndStop("NotAvailable");					// La habilidad no es lanzable, por no ser nuestro turno o por lo que sea...
+					}
+					else
+					{
+						buttonMC.Tiempo.visible = true;
+						buttonMC.gotoAndStop("Available");						// Habilidad lanzable pero no está cargada al 100%
+					}
+					
+					buttonMC.Icono.alpha = 0.25;	
+					buttonMC.IconoBase.alpha = 0.25;
+					buttonMC.Icono.gotoAndStop( objectName );
+					buttonMC.IconoBase.gotoAndStop( objectName );
+					buttonMC.Tiempo.gotoAndStop(localTeam.GetSkillPercentCharged(skillID));
+					buttonMC.mouseEnabled = false;
+				}
+				else
+				{
+					// Tenemos la habilidad y lista para ser usada
+					buttonMC.gotoAndStop("Available");
+					
+					buttonMC.Icono.alpha = 1.0;	
+					buttonMC.IconoBase.alpha = 1.0;
+					buttonMC.Icono.gotoAndStop( objectName );
+					buttonMC.IconoBase.gotoAndStop( objectName );
+					buttonMC.Tiempo.gotoAndStop(1);
+					buttonMC.Tiempo.visible = false;
+					buttonMC.mouseEnabled = true;
+				}
+			}
 		}
 			
 		// 
 		// Han pulsado un botón de "Utilizar Skill x"
 		//
 		private function OnUseSkillButtonClick(event:MouseEvent, idSkill:int) : void
-		{
-			trace( "Interface: OnUseSkill: Utilizando habilidad " + idSkill.toString());
-			
+		{			
 			// Comprobamos si está cargado y se puede utilizar en este turno
-			var team:Team = Match.Ref.Game.LocalUserTeam;
+			var localTeam:Team = Match.Ref.Game.LocalUserTeam;
 			
-			// Dentro de IsSkillAllowedInTurn se hacen las comprobaciones pertinentes de UserInputEnabled y IsAnyControllerStarted
-			if (team.ChargedSkill(idSkill) == 100 && IsSkillAllowedInTurn(idSkill))
+			// Dentro de IsSkillAllowedInTurn se hacen las comprobaciones pertinentes de UserInputEnabled y IsAnyControllerStarted.
+			// TODO: Creo que el IsSkillAvailableForTurn sobra puesto que estabamos haciendo el mouseEnabled del boton mal. Ahora no deberia llegar.
+			if (localTeam.GetSkillPercentCharged(idSkill) >= 100 && IsSkillAvailableForTurn(idSkill))
 			{
 				if (!AppParams.OfflineMode)
 					Match.Ref.Connection.Invoke("OnServerUseSkill", null, idSkill);
 				
 				Match.Ref.Game.EnterWaitState(GameState.WaitingCommandUseSkill,
-					Delegate.create(Match.Ref.Game.OnClientUseSkill, Match.Ref.IdLocalUser, idSkill));
+											  Delegate.create(Match.Ref.Game.OnClientUseSkill, Match.Ref.IdLocalUser, idSkill));
 			}
 		}
 		
@@ -475,7 +494,7 @@ package Caps
 			trace( "OnAbandonar: Cerrando cliente ...." );
 			
 			// Notificamos al servidor para que lo propague en los usuarios
-			if( Match.Ref.Connection )
+			if (Match.Ref.Connection)
 				Match.Ref.Connection.Invoke( "OnAbort", null );
 			else
 				trace( "OnAbandonar: [warning] La conexión es nula. Ya se ha cerrado el cliente" );
