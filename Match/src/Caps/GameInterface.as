@@ -225,45 +225,37 @@ package Caps
 			var localTeam : Team = Match.Ref.Game.LocalUserTeam;
 			
 			for each (var skillID : int in localTeam.AvailableSkills)
-			{	
-				var objectName:String = "SpecialSkill" + skillID.toString(); 	// legacy
+			{
 				var buttonMC:MovieClip = Match.Ref.Game.GUILayer.getChildByName("BotonSkill" + skillID) as MovieClip;
-				
-				var available : Boolean = IsSkillAvailableForTurn(skillID);
-				
-				if (!available || localTeam.GetSkillPercentCharged(skillID) < 100)
+
+				if (!IsSkillAvailableForTurn(skillID))
 				{
-					if (!available)
-					{
-						if (localTeam.GetSkillPercentCharged(skillID) >= 100)	// No lanzable y estamos recargados
-							buttonMC.Tiempo.visible = false;
-						else
-							buttonMC.Tiempo.visible = true;						// No lanzable y NO estamos recargados -> Mostramos el tiempo de recarga
-						
-						buttonMC.gotoAndStop("NotAvailable");					// La habilidad no es lanzable, por no ser nuestro turno o por lo que sea...
-					}
-					else
-					{
-						buttonMC.Tiempo.visible = true;
-						buttonMC.gotoAndStop("Available");						// Habilidad lanzable pero no está cargada al 100%
-					}
+					buttonMC.gotoAndStop("NotAvailable");					// La habilidad no es lanzable, por no ser nuestro turno o por lo que sea...
 					
-					buttonMC.Icono.alpha = 0.25;	
-					buttonMC.IconoBase.alpha = 0.25;
-					buttonMC.Icono.gotoAndStop( objectName );
-					buttonMC.IconoBase.gotoAndStop( objectName );
+					buttonMC.alpha = 0.25;	
 					buttonMC.Tiempo.gotoAndStop(localTeam.GetSkillPercentCharged(skillID));
+					buttonMC.mouseEnabled = false;
+					
+					if (localTeam.GetSkillPercentCharged(skillID) >= 100)	// Estamos recargados
+						buttonMC.Tiempo.visible = false;
+					else
+						buttonMC.Tiempo.visible = true;						// NO estamos recargados -> Mostramos el tiempo de recarga
+				}
+				else if(localTeam.GetSkillPercentCharged(skillID) < 100)
+				{
+					buttonMC.gotoAndStop("Available");						// Habilidad lanzable pero no está cargada al 100%
+					
+					buttonMC.alpha = 0.25;	
+					buttonMC.Tiempo.gotoAndStop(localTeam.GetSkillPercentCharged(skillID));
+					buttonMC.Tiempo.visible = true;
 					buttonMC.mouseEnabled = false;
 				}
 				else
 				{
-					// Tenemos la habilidad y lista para ser usada
+					// Tenemos la habilidad y esta lista para ser usada
 					buttonMC.gotoAndStop("Available");
 					
-					buttonMC.Icono.alpha = 1.0;	
-					buttonMC.IconoBase.alpha = 1.0;
-					buttonMC.Icono.gotoAndStop( objectName );
-					buttonMC.IconoBase.gotoAndStop( objectName );
+					buttonMC.alpha = 1.0;	
 					buttonMC.Tiempo.gotoAndStop(1);
 					buttonMC.Tiempo.visible = false;
 					buttonMC.mouseEnabled = true;
