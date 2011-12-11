@@ -7,13 +7,16 @@
 	<s:states>
 		<s:State name="Normal" />
 		<s:State name="NotAvailable" />
-		<s:State name="Training" />		
+		<s:State name="Training" />
 	</s:states>
 	
 	<fx:Script><![CDATA[
 		import GameModel.TrainingModel;
-		import SoccerServer.TransferModel.vo.TrainingDefinition;		
-		import mx.events.FlexEvent;		
+		
+		import SoccerServer.TransferModel.vo.TrainingDefinition;
+		
+		import mx.events.FlexEvent;
+		
 		import utils.TimeUtils;
 						
 		protected function CreationCompleteHandler(event:FlexEvent):void
@@ -52,7 +55,7 @@
 			</s:Rect>
 		</s:Graphic>
 		<s:Label id="MyTrainingName" width="152"  x="188" y="8"  styleName="whiteBoldBig" textAlign="center"
-				 text="{TheTrainingDefinition.Name}"/>
+				 text="{TrainingModel.GetName(TheTrainingDefinition)}"/>
 		
 		<s:Label id="MyTrainingFitness"  x="188" y="34" styleName="whiteBoldBig" 
 				 text="Entrenamiento: +{TheTrainingDefinition.FitnessDelta}"

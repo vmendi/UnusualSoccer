@@ -16,9 +16,23 @@
 		import GameView.Skins.ButtonGreySkin;
 		
 		import SoccerServer.TransferModel.vo.SpecialTraining;
+		import SoccerServer.TransferModel.vo.SpecialTrainingDefinition;
 		
 		import mx.binding.utils.BindingUtils;
 		
+		protected function CompleteHandler(event:Event):void
+		{
+			mTeamModel = SoccerClient.GetMainGameModel().TheTeamModel;
+			mSpecialTrainingModel = SoccerClient.GetMainGameModel().TheSpecialTrainingModel;
+			
+			BindingUtils.bindSetter(OnTeamXPChanged, mTeamModel, ["TheTeam", "XP"]);
+			BindingUtils.bindSetter(OnTeamSkillPointsChanged, mTeamModel, ["TheTeam", "SkillPoints"]);
+			BindingUtils.bindSetter(OnIsCompletedChanged, this, ["data", "IsCompleted"]);
+			
+			(MySkillMC.content as MovieClip).stop();
+		}
+		
+		// No queremos comportamiento ninguno en hovered
 		override protected function set hovered(value:Boolean):void
 		{
 		}
@@ -27,7 +41,12 @@
 		{
 			super.data = value;
 			
-			(MySkillMC.content as MovieClip).gotoAndStop("SpecialSkill" + (itemIndex + 1).toString());
+			if (data != null)
+			{
+				mSpecialTrainingDef = (data as SpecialTraining).SpecialTrainingDefinition;
+
+				(MySkillMC.content as MovieClip).gotoAndStop("SpecialSkill" + mSpecialTrainingDef.SpecialTrainingDefinitionID);
+			}
 		}
 		
 		private function OnIsCompletedChanged(newVal : Boolean) : void
@@ -48,46 +67,36 @@
 		
 		private function UpdateState() : void
 		{
+			if (mSpecialTrainingDef == null)
+				return;
+			
 			if (currentState != "Complete")
 			{			
-				if (mTeamModel.TheTeam.XP < (data as SpecialTraining).SpecialTrainingDefinition.RequiredXP ||
-					mTeamModel.TheTeam.SkillPoints < (data as SpecialTraining).SpecialTrainingDefinition.EnergyStep)
+				if (mTeamModel.TheTeam.XP < mSpecialTrainingDef.RequiredXP ||
+					mTeamModel.TheTeam.SkillPoints < mSpecialTrainingDef.EnergyStep)
 					currentState = "NotAvailable";
 				else
 					currentState = "Incomplete";
 			}
 			if (currentState == "Incomplete")
 			{
-				if ((data as SpecialTraining).SpecialTrainingDefinition.Name != "SUPERPOTENCIA")
+				if (mSpecialTrainingDef.Name != "SUPERPOTENCIA")
 					MyDoTrainButton.visible = true;
 				else
 					MyLikeText.visible = true;
 			}
 		}
 
-		protected function CompleteHandler(event:Event):void
-		{
-			mTeamModel = SoccerClient.GetMainGameModel().TheTeamModel;
-			mSpecialTrainingModel = SoccerClient.GetMainGameModel().TheSpecialTrainingModel;
-			
-			BindingUtils.bindSetter(OnTeamXPChanged, mTeamModel, ["TheTeam", "XP"]);
-			BindingUtils.bindSetter(OnTeamSkillPointsChanged, mTeamModel, ["TheTeam", "SkillPoints"]);
-			BindingUtils.bindSetter(OnIsCompletedChanged, this, ["data", "IsCompleted"]);
-			
-			(MySkillMC.content as MovieClip).stop();
-		}
-
 		protected function MyDoTrainButton_clickHandler(event:MouseEvent):void
-		{
-			var training : SpecialTraining = data as SpecialTraining;
+		{			
+			GameMetrics.ReportEvent(GameMetrics.GET_SKILL + "_" + mSpecialTrainingDef.Name) ;
 			
-			GameMetrics.ReportEvent(GameMetrics.GET_SKILL + "_" + training.SpecialTrainingDefinition.Name) ;
-			
-			mSpecialTrainingModel.TrainSpecial(training);
+			mSpecialTrainingModel.TrainSpecial(data as SpecialTraining);
 		}
 		
 		[Bindable] private var mTeamModel : TeamModel;
 		[Bindable] private var mSpecialTrainingModel : SpecialTrainingModel;
+		[Bindable] private var mSpecialTrainingDef : SpecialTrainingDefinition;
 
 	]]></fx:Script>
 	
@@ -126,8 +135,8 @@
 
 	<s:Group x="68" y="12" alpha.Complete="0.7" alpha.NotAvailable="0.5">
 		<s:layout><s:VerticalLayout gap="0" /></s:layout>
-		<s:Label text="{data.SpecialTrainingDefinition.Name}" styleName="whiteBoldBig" />
-		<s:Label text="{data.SpecialTrainingDefinition.Description}" styleName="whiteBoldMedium" width="335" />
+		<s:Label styleName="whiteBoldBig" text="{SpecialTrainingModel.GetName(mSpecialTrainingDef)}"/>
+		<s:Label styleName="whiteBoldMedium" width="335" text="{SpecialTrainingModel.GetDesc(mSpecialTrainingDef)}" />
 	</s:Group>
 	
 	<s:Group x="426" y="12" alpha.Complete="0.7" alpha.NotAvailable="0.5">

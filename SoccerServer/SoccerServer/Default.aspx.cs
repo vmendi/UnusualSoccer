@@ -124,7 +124,7 @@ namespace SoccerServer
             pageSource.Replace("${description}", serverSettings["Description"]);
             pageSource.Replace("${imageUrl}", serverSettings["ImageUrl"]);
 
-            // Seleccionamos por ejemplo el Javascript SDK que se cargara
+            // Seleccionamos por ejemplo el Javascript SDK que se cargara.
             pageSource.Replace("${locale}", GetLocaleFromSignedRequest(FacebookWebContext.Current.SignedRequest));
 
             // Parametros de entrada al SWF. Todo lo que nos viene en la QueryString mas nuestros Global.ClientSettings
@@ -152,23 +152,29 @@ namespace SoccerServer
             return ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["country"] as string;
         }
 
+        //
+        // NOTE: En el servidor, como no tenemos cadenas de fallback, tenemos que tener todo en todos los idiomas soportados!
+        //
         private string GetLocaleFromSignedRequest(FacebookSignedRequest fbSignedRequest)
         {
             var locale = ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["locale"] as string;
 
-            // MahouLigaChapas nunca puede ser otro idioma que no sea español
+            // MahouLigaChapas nunca puede ser otro idioma que no sea español de España
             if (Global.Instance.ServerSettings["VersionID"] == "MahouLigaChapas")
                 locale = "es_ES";
+            else
+            if (locale == "es_ES")  // Es un español que esta accediendo a Unusual Soccer -> Lo mutamos a es_LA
+                locale = "es_LA";
 
-            string[] supportedLocales = { "es_ES", "en_US" };
-
+            // Siempre le pasamos al cliente un locale que sabemos que soporta.
+            string[] supportedLocales = { "es_ES", "en_US", "es_LA" };
+            
             if (!supportedLocales.Contains(locale))
             {
-                // De momento:
-                //  - Todo lo español -> español de España (es_ES)
-                //  - El resto -> en_US
+                //  - Todo lo español (es_US) -> español neutro (es_LA)
+                //  - El resto (por ejemplo en_GB) -> en_US
                 if (locale.Contains("es_"))
-                    locale = "es_ES";
+                    locale = "es_LA";
                 else
                     locale = "en_US";
             }

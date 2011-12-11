@@ -5,117 +5,43 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:Team="GameView.Team.*" width="356" height="212" xmlns:GameView="GameView.*">
 	
 	<fx:Style source="../styles.css"/>
-	
-	<fx:Declarations>
-		<s:Elastic id="MyElasticEasing"/>
-		<s:Power id="MyPowerEasing" easeInFraction="1" exponent="5" />
-		<s:Animate id="MyAnimateEffect"
-				   target="{this}" repeatCount="1" 
-				   repeatBehavior="loop"
-				   duration="1500" easer="{MyElasticEasing}">
-			<s:motionPaths>
-				<s:SimpleMotionPath id="MyMotionPath" property="x"/>
-			</s:motionPaths>
-		</s:Animate>
-	</fx:Declarations>
 
 	<fx:Script><![CDATA[
+		import GameModel.SpecialTrainingModel;
+		
+		import GameView.AnimatableDialog;
+		
 		import SoccerServer.TransferModel.vo.SpecialTrainingDefinition;
-		
-		import com.greensock.TweenLite;
-		
-		import mx.controls.Alert;
-		import mx.core.FlexGlobals;
-		import mx.core.IFlexDisplayObject;
-		import mx.core.IFlexModule;
-		import mx.core.UIComponent;
-		import mx.events.EffectEvent;
-		import mx.events.FlexEvent;
-		import mx.managers.PopUpManager;
-	
-		[Bindable]
-		public function get SpecialTraining() : SpecialTrainingDefinition { return mSpecialTraining; }
-		public function set SpecialTraining(v:SpecialTrainingDefinition) : void
-		{
-			mSpecialTraining = v;
-		
-		}
-		
+			
 		public static function Show(specialTraining : SpecialTrainingDefinition) : void
 		{
-			var dialog : SpecialTrainingCompleteDialog = new SpecialTrainingCompleteDialog();
-			var parent : Sprite = FlexGlobals.topLevelApplication as Sprite;
+			var dialog : SpecialTrainingCompleteDialog = AnimatableDialog.Show(getDefinitionByName("GameView.Training::SpecialTrainingCompleteDialog") as Class) 
+														 as SpecialTrainingCompleteDialog;
 			
-			dialog.SpecialTraining = specialTraining;
-			
-			dialog.moduleFactory = IFlexModule(parent).moduleFactory;
-			dialog.addEventListener(FlexEvent.CREATION_COMPLETE, static_creationCompleteHandler);
-			
-			(parent as UIComponent).setStyle("modalTransparencyDuration", "500");
-			PopUpManager.addPopUp(dialog, parent, true, null);
+			dialog.SpecialTrainingDef = specialTraining;
 		}
 		
-		static private function static_creationCompleteHandler(event:FlexEvent) : void
+		protected function CompleteHandler(event:Event):void
 		{
-			if (event.target is IFlexDisplayObject && event.eventPhase == EventPhase.AT_TARGET)
-			{
-				var dialog:SpecialTrainingCompleteDialog= SpecialTrainingCompleteDialog(event.target);
-				dialog.removeEventListener(FlexEvent.CREATION_COMPLETE, static_creationCompleteHandler);
-				
-				dialog.MyMotionPath.valueFrom = -dialog.width*0.5 - 100;
-				dialog.MyMotionPath.valueTo = (dialog.parentApplication).width*0.5 - dialog.width*0.5;
-				dialog.y = (dialog.parentApplication).height*0.5 - dialog.height*0.5;				
-				dialog.MyAnimateEffect.startDelay = 500;
-				dialog.MyAnimateEffect.play();
-			}
+			(MySkillMC.content as MovieClip).gotoAndStop("SpecialSkill" + mSpecialTrainingDef.SpecialTrainingDefinitionID);
 		}
-		
+				
 		protected function ClickHandler(event:MouseEvent):void
 		{
-			MyMotionPath.valueFrom = x;
-			MyMotionPath.valueTo = parentApplication.width;
-			MyAnimateEffect.easer = MyPowerEasing;
-			MyAnimateEffect.startDelay = 0;
-			MyAnimateEffect.addEventListener(EffectEvent.EFFECT_END, OnEffectEnd);
-			MyAnimateEffect.play();
+			AnimatableDialog.Dismiss(this, null);
 		}
 		
 		protected function PublishHandler(event:MouseEvent) : void
 		{
 			ClickHandler(null);
 			
-			if (mSpecialTraining.Name == "SUPERPOTENCIA")
-				PublishMessages.Publish(PublishMessages.PUBLISH_MESSAGE_SUPERPOTENCIA);
-			else if (mSpecialTraining.Name == "FURIA ROJA")
-				PublishMessages.Publish(PublishMessages.PUBLISH_MESSAGE_FURIAROJA);
-			else if (mSpecialTraining.Name == "CATENACCIO")
-				PublishMessages.Publish(PublishMessages.PUBLISH_MESSAGE_CATENACCIO);
-			else if (mSpecialTraining.Name == "TIRO A GOL")
-				PublishMessages.Publish(PublishMessages.PUBLISH_MESSAGE_TIROAGOL);
-			else if (mSpecialTraining.Name == "TIEMPO EXTRA")
-				PublishMessages.Publish(PublishMessages.PUBLISH_MESSAGE_TIEMPOEXTRA);
-			else if (mSpecialTraining.Name == "TIRO EXTRA")
-				PublishMessages.Publish(PublishMessages.PUBLISH_MESSAGE_TIROEXTRA);
-			else if (mSpecialTraining.Name == "5 ESTRELLAS")
-				PublishMessages.Publish(PublishMessages.PUBLISH_MESSAGE_5ESTRELLAS);
-			else if (mSpecialTraining.Name == "VER AREAS")
-				PublishMessages.Publish(PublishMessages.PUBLISH_MESSAGE_VERAREAS);
-			else if (mSpecialTraining.Name == "MANO DE DIOS")
-				PublishMessages.Publish(PublishMessages.PUBLISH_MESSAGE_MANODEDIOS);
+			PublishMessages.Publish(PublishMessages.BuildSpecialTrainingPublish(mSpecialTrainingDef.SpecialTrainingDefinitionID));
 		}
 		
-		protected function CompleteHandler(event:Event):void
-		{
-			(MySkillMC.content as MovieClip).gotoAndStop("SpecialSkill" + (mSpecialTraining.SpecialTrainingDefinitionID).toString());
-		}
-		
-		private function OnEffectEnd(e:Event):void
-		{
-			MyAnimateEffect.removeEventListener(EffectEvent.EFFECT_END, OnEffectEnd);
-			PopUpManager.removePopUp(this);
-		}
-		
-		private var mSpecialTraining : SpecialTrainingDefinition;
+		[Bindable]
+		public function get SpecialTrainingDef() : SpecialTrainingDefinition { return mSpecialTrainingDef; }
+		public function set SpecialTrainingDef(v:SpecialTrainingDefinition) : void { mSpecialTrainingDef = v; }
+		private var mSpecialTrainingDef : SpecialTrainingDefinition;
 
 	]]></fx:Script>
 
@@ -128,8 +54,8 @@
 
 	<s:Group width="232" x="100" y="60">
 		<s:layout><s:VerticalLayout gap="0" /></s:layout>
-		<s:Label text="{SpecialTraining.Name}" styleName="whiteBoldBig" />
-		<s:Label width="232" text="{SpecialTraining.Description}" styleName="whiteBoldMedium" />
+		<s:Label styleName="whiteBoldBig" text="{SpecialTrainingModel.GetName(SpecialTrainingDef)}" />
+		<s:Label styleName="whiteBoldMedium" width="232" text="{SpecialTrainingModel.GetDesc(SpecialTrainingDef)}" />
 	</s:Group>
 	
 	<s:Label width="260" x="48" y="124" text="A partir de ahora tendrás esta habilidad disponible durante el partido." styleName="whiteBoldBig" textAlign="center" />

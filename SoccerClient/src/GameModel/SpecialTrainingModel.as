@@ -11,6 +11,7 @@ package GameModel
 	import mx.binding.utils.BindingUtils;
 	import mx.collections.ArrayCollection;
 	import mx.collections.Sort;
+	import mx.resources.ResourceManager;
 	import mx.rpc.Responder;
 	import mx.rpc.events.ResultEvent;
 	
@@ -74,7 +75,7 @@ package GameModel
 			var specialTrainings : ArrayCollection = mTeamModel.TheTeam.SpecialTrainings;
 									
 			for each(var def : SpecialTrainingDefinition in mDefinitions)
-			{												
+			{					
 				// Si el servidor no nos lo ha mandado (no esta entre los SpecialTrainings), lo añadimos
 				if (GetSpecialTrainingByDefinitionID(def.SpecialTrainingDefinitionID) == null)
 				{
@@ -85,21 +86,27 @@ package GameModel
 				}
 			}
 
-			// Ordenamos por DefinitionID
+			// Ordenamos por XP, las mas faciles las primeras. Ademas ordenamos por ID.
 			var sorter : Sort = new Sort();
 			sorter.compareFunction = compareFunc;
 			
 			specialTrainings.sort = sorter; 
 			specialTrainings.refresh();
-			
+						
 			function compareFunc(a:Object, b:Object, fields:Array = null):int
 			{
 				var defA : SpecialTrainingDefinition = a.SpecialTrainingDefinition as SpecialTrainingDefinition;
 				var defB : SpecialTrainingDefinition = b.SpecialTrainingDefinition as SpecialTrainingDefinition;
 				
-				if (defA.SpecialTrainingDefinitionID == defB.SpecialTrainingDefinitionID)
-					return 0;
-				if (defA.SpecialTrainingDefinitionID < defB.SpecialTrainingDefinitionID)
+				if (defA.RequiredXP == defB.RequiredXP)
+				{
+					if (defA.SpecialTrainingDefinitionID == defB.SpecialTrainingDefinitionID)
+						return 0;
+					if (defA.SpecialTrainingDefinitionID < defB.SpecialTrainingDefinitionID)
+						return -1;
+					return 1;
+				}
+				if (defA.RequiredXP < defB.RequiredXP)
 					return -1;
 				return 1;
 			}
@@ -139,7 +146,7 @@ package GameModel
 			if (specTraining.IsCompleted)
 				throw "WTF";
 			
-			// Hemos quitado el parametro Energia del equipo. Ahora se resta de los puntos Mahou
+			// Hemos quitado el parametro Energia del equipo. Ahora se resta de los SkillPoints
 			if (specTraining.SpecialTrainingDefinition.EnergyStep <= mMainModel.TheTeamModel.TheTeam.SkillPoints)
 			{
 				mMainService.TrainSpecial(specTraining.SpecialTrainingDefinition.SpecialTrainingDefinitionID, 
@@ -150,11 +157,11 @@ package GameModel
 				if (specTraining.EnergyCurrent >= specTraining.SpecialTrainingDefinition.EnergyTotal)
 				{
 					specTraining.EnergyCurrent = specTraining.SpecialTrainingDefinition.EnergyTotal;
-					specTraining.IsCompleted = true;				
+					specTraining.IsCompleted = true;
 					
 					// Es uno de los completados...
 					mTeamModel.TheTeamDetails.SpecialSkillsIDs.addItem(specTraining.SpecialTrainingDefinition.SpecialTrainingDefinitionID);
-										
+																				
 					// Señalamos que se completo uno nuevo (hay que hacerlo asi porq el Like puede ocurrir en cualquier momento, necesitamos un evento global)
 					SpecialTrainingCompleted.dispatch(specTraining.SpecialTrainingDefinition);
 				}
@@ -171,6 +178,16 @@ package GameModel
 		public function IsAvailableByRequiredXP(specialTraining : SpecialTraining) : Boolean
 		{
 			return specialTraining.SpecialTrainingDefinition.RequiredXP < mMainModel.TheTeamModel.TheTeam.XP;
+		}
+		
+		static public function GetName(spDef : SpecialTrainingDefinition) : String
+		{
+			return spDef != null? ResourceManager.getInstance().getString('training', 'SpecialSkillName' + spDef.SpecialTrainingDefinitionID) : "";
+		}
+		
+		static public function GetDesc(spDef : SpecialTrainingDefinition) : String
+		{
+			return spDef != null? ResourceManager.getInstance().getString('training', 'SpecialSkillDesc' + spDef.SpecialTrainingDefinitionID) : "";
 		}
 
 		private var mDefinitions : ArrayCollection;

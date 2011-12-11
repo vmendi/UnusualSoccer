@@ -24,7 +24,6 @@ package SoccerServer.TransferModel.vo
 	
 		public var TrainingDefinitionID:int;
 		public var Name:String;
-		public var Description:String;
 		public var FitnessDelta:int;
 		public var Time:int;
 	}

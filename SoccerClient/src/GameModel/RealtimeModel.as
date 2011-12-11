@@ -1,7 +1,6 @@
 package GameModel
 {
 	import GameView.ImportantMessageDialog;
-	import GameView.Match.RealtimeMatch;
 	
 	import NetEngine.InvokeResponse;
 	import NetEngine.NetPlug;
@@ -17,6 +16,7 @@ package GameModel
 	import mx.binding.utils.BindingUtils;
 	import mx.controls.Alert;
 	import mx.core.FlexGlobals;
+	import mx.resources.ResourceManager;
 	import mx.utils.URLUtil;
 	
 	import org.osflash.signals.Signal;
@@ -275,12 +275,12 @@ package GameModel
 		
 		public function PushedMatchUnsync() : void
 		{
-			Alert.show("Estado desincronizado!", "BETA");
+			Alert.show("Unsync state!", "BETA");
 		}
 		
 		public function PushedBroadcastMsg(msg : String) : void
 		{
-			ImportantMessageDialog.Show(msg, "¡Mensaje importante!", "center");
+			ImportantMessageDialog.Show(msg, ResourceManager.getInstance().getString('main','BroadcastMsgTitle'), "center");
 		}
 		
 		public function get LocalRealtimePlayer() : RealtimePlayer { return mLocalRealtimePlayer; }

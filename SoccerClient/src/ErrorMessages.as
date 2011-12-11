@@ -10,8 +10,8 @@ package
 	import flash.events.IOErrorEvent;
 	
 	import mx.controls.Alert;
+	import mx.resources.ResourceManager;
 	import mx.rpc.Responder;
-	import mx.rpc.events.FaultEvent;
 	
 	import org.osflash.signals.Signal;
 
@@ -23,32 +23,36 @@ package
 		static public function FacebookConnectionError() : void
 		{
 			OnCleaningShutdownSignal.dispatch();
-			ErrorDialog.Show("Error de conexión con facebook. Por favor recargue la página.", "Connection", "center");
+			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorFacebookConnectionMsg"),
+							 ResourceManager.getInstance().getString("main", "ErrorFacebookConnectionTit"), "center");
 		}
 		
 		static public function DuplicatedConnectionCloseHandler() : void
 		{
 			OnCleaningShutdownSignal.dispatch();
-			ErrorDialog.Show("Ha iniciado una sesión del juego en otro navegador.\n\n No se puede jugar más de una sesión simultánea.", "Sesión duplicada", "center");
+			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorDuplicatedSessionMsg"),
+							 ResourceManager.getInstance().getString("main", "ErrorDuplicatedSessionTit"), "center");
 		}
 		
 		static public function ServerShutdown() : void
 		{
 			OnCleaningShutdownSignal.dispatch();
-			ErrorDialog.Show("Breve parada de mantenimiento. Por favor recargue el juego.", "Reinicio del servidor", "center");
+			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorServerShutdownMsg"),
+							 ResourceManager.getInstance().getString("main", "ErrorServerShutdownTit"), "center");
 		}
 				
 		static public function ClosedConnection() : void
 		{
 			OnCleaningShutdownSignal.dispatch();
-			ErrorDialog.Show("Se ha producido una desconexión con el servidor", "Desconexión", "center");			
+			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorClosedConnectionMsg"),
+							 ResourceManager.getInstance().getString("main", "ErrorClosedConnectionTit"), "center");	
 		}
 		
 		static public function ServerClosedConnectionUnknownReason() : void
 		{
 			OnCleaningShutdownSignal.dispatch();		
-			Alert.show("Se ha producido una desconexión con el servidor con motivo desconocido", 
-					   "(BETA) Por favor notifique este error a vmendi@unusualwonder.com", Alert.OK);
+			Alert.show(ResourceManager.getInstance().getString("main", "ErrorClosedConnectionUnknownMsg"),
+					   ResourceManager.getInstance().getString("main", "ErrorClosedConnectionUnknownTit"), Alert.OK);
 		}		
 		
 		//
@@ -76,16 +80,16 @@ package
 		{
 			OnCleaningShutdownSignal.dispatch();			
 			
-			Alert.show("No se pudo hacer login en el servidor de partidos.", 
-					   "(BETA) Por favor notifique este error al desarrollador", Alert.OK);
+			Alert.show(ResourceManager.getInstance().getString("main", "ErrorRealtimeLoginFailedMsg"),
+					   ResourceManager.getInstance().getString("main", "ErrorRealtimeLoginFailedTit"), Alert.OK);
 			LogToServer("RealtimeLoginFailed");
 		}
 		
 		static public function RealtimeConnectionFailed() : void
 		{
 			OnCleaningShutdownSignal.dispatch();
-			ErrorDialog.Show("No se pudo conectar al servidor de partidos.\n\n" +
-							 "Posiblemente esté detrás de un Firewall demasiado restrictivo.", "Error de conexion", "center");
+			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorRealtimeConnFailedMsg"),
+							 ResourceManager.getInstance().getString("main", "ErrorRealtimeConnFailedTit"), "center");
 			LogToServer("RealtimeConnectionFailed");
 		}
 		
@@ -113,21 +117,21 @@ package
 					message = innerError.toString();
 			}
 						
-			Alert.show("UncaughtError: " + message, "(BETA) Por favor notifique este error al desarrollador");
+			Alert.show("UncaughtError: " + message, ResourceManager.getInstance().getString("main", "ErrorPleaseNotifyDeveloperTit"));
 			LogToServer("UncaughtError: " + message);
 		}
 		
 		static public function AsyncError(e:AsyncErrorEvent) : void
 		{
 			OnCleaningShutdownSignal.dispatch();
-			Alert.show("AsyncError: " + e.error.message, "(BETA) Por favor notifique este error al desarrollador");
+			Alert.show("AsyncError: " + e.error.message, ResourceManager.getInstance().getString("main", "ErrorPleaseNotifyDeveloperTit"));
 			LogToServer("AsyncError: " + e.error.message);
 		}
 		
 		static public function IOError(e:IOErrorEvent) : void
 		{
 			OnCleaningShutdownSignal.dispatch();
-			Alert.show("IOError: " + e.text, "(BETA) Por favor notifique este error al desarrollador");
+			Alert.show("IOError: " + e.text, ResourceManager.getInstance().getString("main", "ErrorPleaseNotifyDeveloperTit"));
 			LogToServer("IOError: " + e.text);
 		}
 		
@@ -139,6 +143,6 @@ package
 				facebookID = SoccerClient.GetFacebookFacade().FacebookID;
 			
 			(new MainServiceSoccer()).OnError(facebookID + " - " + message);
-		}			
+		}	
 	}
 }
