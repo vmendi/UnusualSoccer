@@ -47,21 +47,29 @@ package
 				stage.align = StageAlign.TOP_LEFT;
 				trace("Movie Frame Rate: " + stage.frameRate); 
 			}
-
-			// Nos quedamos a la espera del siguiente Frame. Quien aquí nos llama tiene tiempo entonces para llamar a Init
+			
 			addEventListener(Event.ENTER_FRAME, OnFrame);
+			
+			// Detectamos el modo offline e inicializamos en tal caso
+			if (this.loaderInfo.loaderURL.indexOf("file:") != -1)
+			{
+				AppParams.OfflineMode = true;
+				_Game = new Caps.Game();
+				InitOffline.Init();
+			}
+			else
+			{
+				// Esperamos la llamada al Init desde el manager
+				AppParams.OfflineMode = false;		
+			}
 		}
 
 		//
 		// Inicialización del juego a través de una conexión de red que conecta nuestro cliente
 		// con el servidor. Se llama desde el manager.
 		//
-		//
 		public function Init(netConnection: Object, formations : Object): void
-		{
-			// No permitimos modo Offline si entramos inicializando una conexión, es decir, desde el manager
-			AppParams.OfflineMode = false;
-			
+		{			
 			_Game = new Caps.Game();
 									
 			Formations = formations;
@@ -77,18 +85,8 @@ package
 		// Bucle principal de la aplicación
 		//
 		private function OnFrame( event:Event ):void
-		{			
-			// Lo que primero ocurra, el OnFrame o el Init, creara el Game. Se hace asi para asegurar que no inicializamos en modo offline
-			// cuando realmente nos llaman desde el manager. Es decir, decidimos cual es el modo autentico sin hacer caso de la variable
-			// en AppParams
-			if (_Game == null)
-			{
-				AppParams.OfflineMode = true;
-				_Game = new Caps.Game();
-				InitOffline.Init();
-			}
-			
-			if (stage != null)
+		{
+			if (stage != null && Game != null)
 			{
 				var elapsed:Number = 1.0 / stage.frameRate;
 				

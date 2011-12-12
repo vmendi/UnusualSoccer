@@ -85,7 +85,7 @@ namespace SoccerServer
                                    select p).First();
                 mParticipation2.Goals = ResultPlayer2.Goals;
 
-                // Competicion. Solo si abandonan en la misma IP no cuenta.
+                // Puntos de Competicion. Solo si abandonan en la misma IP no cuenta.
                 if (!mBDDMatch.IsFriendly && !WasAbandonedSameIP)
                     ProcessCompetition();
 
@@ -278,7 +278,7 @@ namespace SoccerServer
 
             if (!WasCompetition)
             {
-                // Han jugado demasiados amistosos?
+                // Han jugado demasiados partidos juntos?
                 WasTooManyTimes = GetTooManyTimes();
 
                 var ratingPlayer1 = new Moserware.Skills.Rating(mBDDPlayer1.Team.Mean, mBDDPlayer1.Team.StandardDeviation);
@@ -289,7 +289,7 @@ namespace SoccerServer
             }
             else
             {
-                // Los partidos de competicion, nunca son muchos y siempre son justos. El filtro tiene que estar en el MatchMaking
+                // Los partidos de competicion, nunca son muchos y siempre son justos. El filtro tiene que estar en el MatchMaking.
                 WasTooManyTimes = false;
                 WasJust = true;
             }

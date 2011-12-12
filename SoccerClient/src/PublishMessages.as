@@ -16,30 +16,40 @@ package
 			daCaption: ""
 		}
 
-		static public const PUBLISH_MESSAGE_PARTIDOGANADO : Object =
+		// Mensajes que se publican en Facebook al ganar un partido
+		static public function BuildMatchEndPublishMessage(bAbandoned : Boolean) : Object
 		{
-			daName: "¡Victoria!",
-			daDescription: "Acabo de ganar a CONTRARIO por RESULTADO. Entra ahora en Mahou Liga Chapas y tú también podrás competir en los partidos de fútbol online más emocionantes.",
-			daPicture: "/Imgs/MensajeVictoria.jpg",
-			daCaption: "Mahou Liga Chapas: el juego definitivo de fútbol"
+			if (!bAbandoned)
+			{
+				// Victoria normal
+				return {
+					daName: ResourceManager.getInstance().getString("main", "PublishVictoryTit"),
+					daDescription: ResourceManager.getInstance().getString("main", "PublishNormalVictoryDesc"),
+					daPicture: ResourceManager.getInstance().getString("main", "PublishVictoryImg"),
+					daCaption: ResourceManager.getInstance().getString("main", "PublishGenericCaption")
+				};
+			}
+			else
+			{
+				// Victoria porque el oponente abandono
+				return {
+					daName: ResourceManager.getInstance().getString("main", "PublishVictoryTit"),
+					daDescription: ResourceManager.getInstance().getString("main", "PublishAbandonedVictoryDesc"),
+					daPicture: ResourceManager.getInstance().getString("main", "PublishVictoryImg"),
+					daCaption: ResourceManager.getInstance().getString("main", "PublishGenericCaption")
+				};
+			}
 		}
-
-		static public const PUBLISH_MESSAGE_ABANDONO : Object =
-		{
-			daName: "¡Victoria!",
-			daDescription: "CONTRARIO no ha podido soportar la tensión y ha abandonado el partido que estábamos jugando en Mahou Liga Chapas. Entra ahora y tú también podrás competir en los partidos de fútbol online más emocionantes.",
-			daPicture: "/Imgs/MensajeVictoria.jpg",
-			daCaption: "Mahou Liga Chapas: el juego definitivo de fútbol"
-		}
-			
-		static public function BuildSpecialTrainingPublish(spDefID : int) : Object
+		
+		// Mensajes que se publican en Facebook al adquirir una habilidad especial
+		static public function BuildSpecialTrainingPublishMessage(spDefID : int) : Object
 		{
 			return {
-					daName: ResourceManager.getInstance().getString("training", "SpecialTrainingPublishName" + spDefID),
-					daDescription: ResourceManager.getInstance().getString("training", "SpecialTrainingPublishDescription" + spDefID),
-					daPicture: ResourceManager.getInstance().getString("training", "SpecialTrainingPublishPicture" + spDefID),
-					daCaption: ResourceManager.getInstance().getString("training", "SpecialTrainingPublishCaption" + spDefID)
-				   };
+				daName: ResourceManager.getInstance().getString("training", "SpecialTrainingPublishName" + spDefID),
+				daDescription: ResourceManager.getInstance().getString("training", "SpecialTrainingPublishDescription" + spDefID),
+				daPicture: ResourceManager.getInstance().getString("training", "SpecialTrainingPublishPicture" + spDefID),
+				daCaption: ResourceManager.getInstance().getString("training", "SpecialTrainingPublishCaption" + spDefID)
+			};
 		}
 		
 		static public function Publish(publishMessage : Object) : void

@@ -3,14 +3,16 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 creationComplete="CreationCompleteHandler(event)"
 		 xmlns:Team="GameView.Team.*" xmlns:GameView="GameView.*"
-		 width="356" height="212">
+		 width="356" height="212" xmlns:Competition="GameView.Competition.*">
 	
 	<fx:Style source="../styles.css"/>
 		
 	<fx:Script><![CDATA[
-		import GameView.AnimatableDialog;
+		import GameModel.CompetitionModel;
 		import GameModel.MatchResultUtils;
 		import GameModel.TeamModel;
+		
+		import GameView.AnimatableDialog;
 		
 		import mx.collections.ArrayCollection;
 		import mx.collections.ArrayList;
@@ -20,6 +22,7 @@
 			var dialog : MatchEndDialog = AnimatableDialog.Show(getDefinitionByName("GameView.Match::MatchEndDialog") as Class) as MatchEndDialog;
 	
 			dialog.mTeamModel = SoccerClient.GetMainGameModel().TheTeamModel; 
+			dialog.mCompetitionModel = SoccerClient.GetMainGameModel().TheCompetitionModel;
 			dialog.mMatchResult = matchResult;
 			dialog.mWinner =  MatchResultUtils.AmITheWinner(matchResult, dialog.mTeamModel);
 			dialog.mOpponentName = MatchResultUtils.GetOpponentResult(matchResult, dialog.mTeamModel).Name;
@@ -42,9 +45,9 @@
 		{
 			AceptarClickHandler(event);
 			
-			var msgToPublish : Object = (currentState == "WinnerAbandoned") ? 
-										PublishMessages.PUBLISH_MESSAGE_ABANDONO : PublishMessages.PUBLISH_MESSAGE_PARTIDOGANADO;
+			var msgToPublish : Object = PublishMessages.BuildMatchEndPublishMessage(currentState == "WinnerByAbandon");
 			
+			// Hacemos los reemplazos, la mismas palabras (CONTRARIO, RESULTADO) para todos los idiomas
 			msgToPublish.daDescription = (msgToPublish.daDescription as String).replace("CONTRARIO", mOpponentName);
 			msgToPublish.daDescription = (msgToPublish.daDescription as String).replace("RESULTADO", mMatchResult.ResultPlayer1.Goals + 
 																									 "-" + 
@@ -54,17 +57,18 @@
 				
 		protected function CreationCompleteHandler(event:Event):void
 		{
+			//
 			// WasTooManyTimes: Estos dos jugadores han jugado ya mas de N veces en el dia de hoy, asi que no les damos puntos.
 			// WasJust: el resultado es justo... o sea, q la diff de niveles no era exagerada, o q sí lo era pero gano o empato el de menor nivel
+			// WasAbandoned: Ha habido un abandono. Como no tenemos boton de abandonar, sera siempre el del oponente.
 			// WasAbandonedSameIP: Los dos jugadores tenían la misma IP
-			// WasAbandoned: 
-			
+			//
 			if (mMatchResult.WasAbandonedSameIP)
 			{
 				currentState = "SameIP";
-				// El abandono de mi contrario debería favorecerme a mi, pero ha sido ilegal
-				mTitular = "¡ HA HABIDO UN ABANDONO !";
-				mSpeech = "Ambos jugadores estáis en la misma red, por lo que no habrá reparto de puntos. ";
+				
+				mTitular = resourceManager.getString("main", "MatchEndGenericAbandonTit");
+				mSpeech = resourceManager.getString("main", "MatchEndAbandonSameIP");
 			}
 			else 
 			{			
@@ -77,22 +81,23 @@
 							// Mi contrincante ha abandonado y me merezco los puntos
 							if (!mMatchResult.WasTooManyTimes)
 							{
-								mTitular = "¡ TU RIVAL HA ABANDONADO !";
-								mSpeech = "Seguro que no ha podido soportar la presión.";
-								currentState = "WinnerAbandoned";
+								mTitular = resourceManager.getString("main", "MatchEndOpponentAbandonedTit");
+								mSpeech = resourceManager.getString("main", "MatchEndMsg01"); ;
+								currentState = "WinnerByAbandon";
 							}
 							else
 							{
-								mTitular = "¡ TU RIVAL HA ABANDONADO !";
-								mSpeech = "Pero no habrá reparto de puntos porque has superado el número máximo de partidos diarios que puedes jugar contra este rival.";
-								currentState = "WinnerAbandoned";
+								// Mi contrincante ha abandonado pero no hay reparto de puntos porque habeis jugado TooManyTimes
+								mTitular = resourceManager.getString("main", "MatchEndOpponentAbandonedTit");
+								mSpeech = resourceManager.getString("main", "MatchEndMsg02");
+								currentState = "WinnerByAbandon";
 							}
 						}
 						else
 						{
-							// Mi contrintante ha abandonado pero no me merezco los puntos
-							mTitular = "¡ TU RIVAL HA ABANDONADO !";
-							mSpeech = "Tu habilidad es muy superior a la suya y no habrá reparto de puntos ¡Métete con alguien de tu tamaño!";
+							// Mi contrintante ha abandonado pero no me merezco los puntos (injusto)
+							mTitular = resourceManager.getString("main", "MatchEndOpponentAbandonedTit");
+							mSpeech = resourceManager.getString("main", "MatchEndMsg03");
 							currentState = "NoJust";
 						}
 					}
@@ -103,41 +108,42 @@
 							// He ganado a mi contrincante y me merezco los puntos
 							if (!mMatchResult.WasTooManyTimes)
 							{
-								mTitular = "¡ HAS GANADO !";
-								mSpeech = "¡Enhorabuena! Estos son los puntos que obtienes.";
+								mTitular = resourceManager.getString("main", "MatchEndYouWonTit");
+								mSpeech = resourceManager.getString("main", "MatchEndMsg04");
 								currentState = "Winner";
 							}
 							else
 							{
-								mTitular = "¡ HAS GANADO !";
-								mSpeech = "Pero no habrá reparto de puntos porque has superado el número máximo de partidos diarios que puedes jugar contra este rival.";
+								// He ganado, pero ya he jugado demasiadas veces con el mismo
+								mTitular = resourceManager.getString("main", "MatchEndYouWonTit");
+								mSpeech = resourceManager.getString("main", "MatchEndMsg05");
 								currentState = "Winner";
 							}
 						}
 						else
 						{
 							// He ganado a mi contrincante pero no me merezco los puntos
-							mTitular = "¡ HAS GANADO !";
-							mSpeech = "Tu habilidad es muy superior a la suya y no habrá reparto de puntos ¡Busca rivales de tu mismo nivel!";
+							mTitular = resourceManager.getString("main", "MatchEndYouWonTit");
+							mSpeech = resourceManager.getString("main", "MatchEndMsg06");
 							currentState = "NoJust";
 						}
 					}
 				}
-				else
+				else	// Soy el perdedor
 				{
 					if (mMatchResult.WasAbandoned)
 					{
 						if (mMatchResult.WasJust)
 						{
 							// He abandonado
-							mTitular = "¡ HAS ABANDONADO !";
+							mTitular = resourceManager.getString("main", "MatchEndYouAbandonedTit");
 							mSpeech = "";
 							currentState = "Loser";
 						}
 						else
 						{
 							// He abandonado, pero nadie se lleva nada
-							mTitular = "¡ HAS ABANDONADO !";
+							mTitular = resourceManager.getString("main", "MatchEndYouAbandonedTit");
 							mSpeech = "";
 							currentState = "Loser";
 						}
@@ -147,14 +153,14 @@
 						if (mMatchResult.WasJust)
 						{
 							// Ha ganado mi contrincante y se merece los puntos	
-							mTitular = "¡ RESULTADO !";
+							mTitular = resourceManager.getString("main", "MatchEndResultTit");
 							mSpeech = "";
 							currentState = "Loser";
 						}
 						else
 						{
 							// Ha ganado mi contrincante pero no se merece ningún punto
-							mTitular = "¡ RESULTADO !";
+							mTitular = resourceManager.getString("main", "MatchEndResultTit");
 							mSpeech = "";
 							currentState = "Loser";
 						}
@@ -175,15 +181,16 @@
 				this["MyTrueSkill"+c.toString()].text = (teams[c].DiffTrueSkill <= 0? "" : "+") + teams[c].DiffTrueSkill;
 			}			
 		}		
-		
-		private var mMatchResult : Object;
-		private var mWinner : Boolean;
-		private var mOpponentName : String;
-		
+				
 		[Bindable] private var mTitular : String;
 		[Bindable] private var mSpeech : String;
 		
+		[Bindable] private var mMatchResult : Object;
+		[Bindable] private var mWinner : Boolean;
+		[Bindable] private var mOpponentName : String;
+		
 		[Bindable] private var mTeamModel : TeamModel;
+		[Bindable] private var mCompetitionModel : CompetitionModel;
 		
 	]]></fx:Script>
 	
@@ -192,8 +199,8 @@
 		<s:State name="NoJust"/>
 		<s:State name="Loser"/>
 		<s:State name="Winner"/>
-		<s:State name="WinnerAbandoned"/>
-	</s:states>		
+		<s:State name="WinnerByAbandon"/>
+	</s:states>
 
 	<GameView:PopupBackground width="356" height="252" />
 
@@ -209,6 +216,16 @@
 			</s:stroke>
 		</s:Line>
 	</s:Group>
+	
+	<s:Group visible="{MatchResultUtils.IsCompetition(mMatchResult)}">
+		<s:Label x="0" y="0" text="COMPETICION! TODO" textAlign="center" styleName="whiteBoldVeryBig" />
+		<Competition:DivisionBadge x="0" y="10" Division="{mCompetitionModel.TheGroup.DivisionName}" />
+		
+		<!-- Si empate o ganador, le damos puntos de competicion -->
+		<s:Label x="0" y="20" text="{MatchResultUtils.GetCompetitionPoints(mMatchResult, mTeamModel)}" textAlign="center" styleName="whiteBoldVeryBig" 
+				 visible="{!MatchResultUtils.AmITheLoser(mMatchResult, mTeamModel)}"/>
+	</s:Group>
+	
 	
 	<s:Group x="10" y="12" width="336" height="55">
 		<s:layout><s:VerticalLayout gap="2" verticalAlign="middle"/></s:layout>
@@ -264,8 +281,8 @@
 	
 	<s:Group left="20" right="20" y="216">
 		<s:layout><s:HorizontalLayout horizontalAlign="center" gap="20" /></s:layout>
-		<s:Button label="Publicar" click="PublicarClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" includeIn="Winner, WinnerAbandoned" />
-		<s:Button label="Continuar" label.Winner="Saltar" label.WinnerAbandoned="Saltar" 
+		<s:Button label="Publicar" click="PublicarClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" includeIn="Winner, WinnerByAbandon" />
+		<s:Button label="Continuar" label.Winner="Saltar" label.WinnerByAbandon="Saltar" 
 				  click="AceptarClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 	</s:Group>	
 	

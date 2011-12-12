@@ -29,8 +29,6 @@
 		import GameView.Purchase.PurchaseBase;
 		import GameView.Skins.DefaultPanelSkin;
 		
-		import flash.utils.getDefinitionByName;
-		
 		import mx.binding.utils.BindingUtils;
 		import mx.events.FlexEvent;
 		
@@ -100,16 +98,14 @@
 			} catch(e:Error) {}
 		}
 
+		protected function MyBuyTicketsButton_clickHandler(event:MouseEvent):void
+		{
+			PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseTicket") as Class);
+		}
+		
 		[Bindable]
 		private var mCompetitionModel : CompetitionModel;
 		private var mGameModel : MainGameModel;
-
-		protected function MyBuyTicketsButton_clickHandler(event:MouseEvent):void
-		{
-			// TODO Auto-generated method stub
-			PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseTicket") as Class);
-			//PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseTicket") as Class);
-		}
 		
 	]]></fx:Script>
 		

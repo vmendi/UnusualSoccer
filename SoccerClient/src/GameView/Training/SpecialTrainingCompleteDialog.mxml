@@ -35,7 +35,7 @@
 		{
 			ClickHandler(null);
 			
-			PublishMessages.Publish(PublishMessages.BuildSpecialTrainingPublish(mSpecialTrainingDef.SpecialTrainingDefinitionID));
+			PublishMessages.Publish(PublishMessages.BuildSpecialTrainingPublishMessage(mSpecialTrainingDef.SpecialTrainingDefinitionID));
 		}
 		
 		[Bindable]
