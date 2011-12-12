@@ -55,7 +55,7 @@ package GameModel
 			if (TheGroup != null)
 			{
 				var sorter : Sort = new Sort();
-				sorter.fields =  [new SortField("Points", true)];
+				sorter.fields =  [new SortField("Points", true, true, true)];
 				
 				TheGroup.GroupEntries.sort = sorter;
 				TheGroup.GroupEntries.refresh();
