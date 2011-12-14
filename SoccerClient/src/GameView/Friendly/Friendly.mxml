@@ -4,15 +4,14 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
 		 xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*" xmlns:Friendly="GameView.Friendly.*"
 		 creationComplete="CreationCompleteHandler(event)"
-		 currentState="Empty"
+		 currentState="AvailableCredit"
 		 >
 	
 	<fx:Style source="../styles.css"/>
 	
 	<s:states>
-		<s:State name="Empty" />
-		<s:State name="OutOfCredit" />
 		<s:State name="AvailableCredit" />
+		<s:State name="OutOfCredit" />		
 	</s:states>
 	
 

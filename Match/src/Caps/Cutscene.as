@@ -10,6 +10,8 @@ package Caps
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	
+	import mx.effects.Tween;
+	
 	import utils.Delegate;
 	
 	
@@ -60,6 +62,17 @@ package Caps
 			mcLoser.ConflictoNum.Num.text = paramLoser.toString();
 		}
 		
+		static public function ShowAreaPortero(side : int, callback:Function) : void
+		{
+			if (side == Enums.Left_Side)
+				LaunchCutScene(Assets.AreaPortero, Field.SmallAreaLeftX, Field.SmallAreaLeftY, callback);
+			else
+				LaunchCutScene(Assets.AreaPortero, Field.SmallAreaRightX, Field.SmallAreaRightY, callback);
+			
+			// Y ademas, un cartelito sin esperas
+			LaunchCutScene(Embedded.Assets.MensajeControlPortero, 0, 210);
+		}
+		
 		// 
 		// Reproduce una animación mostrando el turno del jugador
 		//
@@ -69,33 +82,45 @@ package Caps
 			// por la que hemos cambiado de turno
 			if (idTeam == Match.Ref.IdLocalUser)	// Es el turno propio ( jugador local )
 			{
-				if (reason == Enums.TurnByLost || reason == Enums.TurnByStolen)
+				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)
 					LaunchCutScene(Embedded.Assets.MensajeTurnoPropioRobo, 0, 210);
-				else if( reason == Enums.TurnByFault || reason == Enums.TurnBySaquePuertaByFalta )	
+				else 
+				if(reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaByFalta)
 					// Los nombres están al revés porque aquí representa a quien le han hecho la falta
 					FillConflictoFault(LaunchCutScene(Embedded.Assets.MensajeFaltaContraria, 0, 210), Match.Ref.Game.TheGamePhysics.TheFault);
-				else if( reason == Enums.TurnBySaquePuerta  )		// El saque de puerta no tiene un mensaje específico para el oponente
+				else 
+				if(reason == Enums.TurnSaquePuerta )		// El saque de puerta no tiene un mensaje específico para el oponente
 					LaunchCutScene(Embedded.Assets.MensajeTurnoPropioSaquePuerta, 0, 210);
-				else if( reason == Enums.TurnByTiroAPuerta  )
+				else 
+				if (reason == Enums.TurnTiroAPuerta)
 					LaunchCutScene(Embedded.Assets.MensajeColocarPorteroPropio, 0, 210);
-				else if( reason == Enums.TurnByGoalKeeperSet)
+				else 
+				if (reason == Enums.TurnGoalKeeperSet)
 					LaunchCutScene(Embedded.Assets.MensajeTiroPuertaPropio, 0, 210);
 				else
 					LaunchCutScene(Embedded.Assets.MensajeTurnoPropio, 0, 210);
 			}
 			else 	// Es el turno del oponente
 			{
-				if (reason == Enums.TurnByLost || reason == Enums.TurnByStolen)	
+				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)	
 					LaunchCutScene(Embedded.Assets.MensajeTurnoContrarioRobo, 0, 210);
-				else if( reason == Enums.TurnByFault || reason == Enums.TurnBySaquePuertaByFalta )
+				else 
+				if (reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaByFalta)
 					FillConflictoFault(LaunchCutScene(Embedded.Assets.MensajeFaltaPropia, 0, 210), Match.Ref.Game.TheGamePhysics.TheFault);
-				else if( reason == Enums.TurnByTiroAPuerta  )
+				else 
+				if (reason == Enums.TurnTiroAPuerta)
 					LaunchCutScene(Embedded.Assets.MensajeColocarPorteroContrario, 0, 210);
-				else if( reason == Enums.TurnByGoalKeeperSet)
+				else 
+				if (reason == Enums.TurnGoalKeeperSet)
 					LaunchCutScene(Embedded.Assets.MensajeTiroPuertaContrario, 0, 210);
 				else
 					LaunchCutScene(Embedded.Assets.MensajeTurnoContrario, 0, 210);
 			}
+		}
+		
+		static private function ChainWithDelay(otherMovieClipClass:Class, x:Number, y:Number, delaySeconds:Number) : Function
+		{
+			return Delegate.create(TweenLite.delayedCall, delaySeconds, LaunchCutScene, [ otherMovieClipClass, x, y ]);
 		}
 		
 		static public function ShowMensajeSkill(idSkill:int) : void
@@ -103,7 +128,7 @@ package Caps
 			LaunchCutScene(Assets["MensajeSkill" + idSkill] as Class, 0, 210);
 		}
 		
-		static public function ShowQuedanTurnos( turnos:int ) : void
+		static public function ShowQuedanTurnos(turnos:int) : void
 		{
 			var itemClass:Class = null;
 			

@@ -15,7 +15,7 @@
 			{
 				var item : CompetitionGroupEntry = theItem as CompetitionGroupEntry;
 				
-				return SoccerClient.GetMainGameModel().TheCompetitionModel.TheGroup.MinimumPoints < item.Points;
+				return SoccerClient.GetMainGameModel().TheCompetitionModel.TheGroup.MinimumPoints <= item.Points;
 			}
 		]]>
 	</fx:Script>

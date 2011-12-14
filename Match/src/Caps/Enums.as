@@ -18,13 +18,20 @@ package Caps
 		
 		// Razones por las que se cambia el turno		
 		public static const TurnByTurn:int = 0;						// Cambio de turno normal
-		public static const TurnByStolen:int = 2;					// Cambio de turno por robo de balón
-		public static const TurnByFault:int = 3;					// Cambio de turno por falta provocada
-		public static const TurnByTiroAPuerta:int = 5;				// El jugador ha declarado tiro a puerta
-		public static const TurnByGoalKeeperSet:int = 6;			// El portero del equipo se ha colocado
-		public static const TurnBySaquePuerta:int = 7;				// Cambio de turno para que el portero saque de puerta
-		public static const TurnBySaquePuertaByFalta:int = 8;		// Cambio de turno para que el portero saque de puerta debido a una falta
-		public static const TurnByLost:int = 9;						// La pelota se perdio simplemente porque quedo cerca de un contrario
+		public static const TurnStolen:int = 2;						// Cambio de turno por robo de balón
+		public static const TurnFault:int = 3;						// Cambio de turno por falta provocada
+		public static const TurnTiroAPuerta:int = 5;				// El jugador ha declarado tiro a puerta
+		public static const TurnGoalKeeperSet:int = 6;				// El portero del equipo se ha colocado
+		public static const TurnSaquePuerta:int = 7;				// Cambio de turno para que el portero saque de puerta
+		public static const TurnSaquePuertaByFalta:int = 8;			// Cambio de turno para que el portero saque de puerta debido a una falta
+		public static const TurnSaquePuertaControlPortero:int = 10;	// La pelota ha acabado en el area del portero, saque de puerta
+		public static const TurnLost:int = 9;						// La pelota se perdio simplemente porque quedo cerca de un contrario
+		
+		public static function IsSaquePuerta(enumVal:int) : Boolean
+		{
+			return enumVal == TurnSaquePuerta || enumVal == TurnSaquePuertaByFalta || enumVal == TurnSaquePuertaControlPortero;
+		}
+		
 				
 		
 		// Los IDs de las Skills. Su origen ultimo es la DB

@@ -6,6 +6,7 @@ package
 	
 	import Framework.AudioManager;
 	
+	import com.greensock.TweenLite;
 	import com.greensock.TweenMax;
 	
 	import flash.display.MovieClip;
@@ -69,9 +70,9 @@ package
 		// con el servidor. Se llama desde el manager.
 		//
 		public function Init(netConnection: Object, formations : Object): void
-		{			
+		{	
 			_Game = new Caps.Game();
-									
+
 			Formations = formations;
 			Connection = netConnection;
 			

@@ -158,9 +158,7 @@ package Caps
 			return(OffsetY + (SizeY * 0.5));
 		}
 		
-		//
 		// Obtiene el punto central de la portería indicada en coordenadas de pantalla (pixels)
-		//
 		static public function GetCenterGoal( side:int ) : Point
 		{
 			var y:Number = OffsetY + SizeY / 2;
@@ -172,40 +170,32 @@ package Caps
 			return( new Point( x, y ) );
 		}
 		
-		// 
-		// Comprobamos si una chapa está dentro de su propio area pequeña
-		//
 		public function IsCircleInsideSmallArea( pos:Point, radius:Number, side:int ) : Boolean
 		{
-			var bInside:Boolean = false;
-			
 			if( side == Enums.Left_Side )
-				bInside = MathUtils.CircleInRect( pos, radius, new Point( SmallAreaLeftX, SmallAreaLeftY ), new Point( SmallSizeAreaX, SmallSizeAreaY ) );
-			else if( side == Enums.Right_Side )
-				bInside = MathUtils.CircleInRect( pos, radius, new Point( SmallAreaRightX, SmallAreaRightY ), new Point( SmallSizeAreaX, SmallSizeAreaY ) );
-						
-			return( bInside );
+				return MathUtils.CircleInRect(pos, radius, new Point(SmallAreaLeftX, SmallAreaLeftY ), new Point(SmallSizeAreaX, SmallSizeAreaY));
+			
+			return MathUtils.CircleInRect(pos, radius, new Point(SmallAreaRightX, SmallAreaRightY ), new Point(SmallSizeAreaX, SmallSizeAreaY));
 		}
 		
-		// 
-		// 
-		//
 		public function IsCircleInsideBigArea( pos:Point, radius:Number, side:int ) : Boolean
 		{
-			var bInside:Boolean = false;
-			
 			if( side == Enums.Left_Side )
-				bInside = MathUtils.CircleInRect( pos, radius, new Point( BigAreaLeftX, BigAreaLeftY ), new Point( SizeBigAreaX, SizeBigAreaY ) );			
-			else if( side == Enums.Right_Side )
-				bInside = MathUtils.CircleInRect( pos, radius, new Point( BigAreaRightX, BigAreaRightY ), new Point( SizeBigAreaX, SizeBigAreaY ) );
-						
-			return( bInside );
-		}		
+				return MathUtils.CircleInRect( pos, radius, new Point( BigAreaLeftX, BigAreaLeftY ), new Point( SizeBigAreaX, SizeBigAreaY ) );			
+			
+			return MathUtils.CircleInRect( pos, radius, new Point( BigAreaRightX, BigAreaRightY ), new Point( SizeBigAreaX, SizeBigAreaY ) );
+		}
 		
-		// 
+		public function IsPointInsideSmallArea(pos:Point, side:int): Boolean
+		{
+			if( side == Enums.Left_Side )
+				return MathUtils.PointInRect(pos, new Point(SmallAreaLeftX, SmallAreaLeftY), new Point(SmallSizeAreaX, SmallSizeAreaY));
+			
+			return MathUtils.PointInRect(pos, new Point(SmallAreaRightX, SmallAreaRightY), new Point(SmallSizeAreaX, SmallSizeAreaY));
+		}
+		
 		// Comprobamos si el centro de una chapa está dentro del area de su propio equipo
-		//
-		public function IsCapCenterInsideSmallArea( cap:Cap ) : Boolean
+		public function IsCapCenterInsideSmallArea(cap:Cap) : Boolean
 		{
 			return( IsCircleInsideSmallArea( cap.GetPos(), 0, cap.OwnerTeam.Side ) );  	
 		}
