@@ -603,7 +603,7 @@ package Caps
 				return;
 			
 			if (this._State != GameState.WaitingControlPortero)
-				throw new Error("OnClientGoalScored: El estado debería ser 'GameState.WaitingControlPortero'. Curent State=" + this._State);
+				throw new Error("ShowAreaPorteroCutsceneEnd: El estado debería ser WaitingControlPortero. _State=" + this._State);
 			
 			this.SaquePuerta(CurTeam.AgainstTeam(), Enums.TurnSaquePuertaControlPortero);
 		}
@@ -717,7 +717,7 @@ package Caps
 		public function OnClientGoalScored(idPlayer:int, validity:int) : void
 		{
 			if (this._State != GameState.WaitingGoal)
-				throw new Error("OnClientGoalScored: El estado debería ser 'GameState.WaitingGoal'. Curent State=" + this._State);
+				throw new Error("OnClientGoalScored: El estado debería ser WaitingGoal. _State=" + this._State);
 
 			// Contabilizamos el gol
 			if (validity == Enums.GoalValid)
@@ -738,7 +738,7 @@ package Caps
 				return;
 			
 			if (this._State != GameState.WaitingGoal)
-				throw new Error("ShowGoalScoredCutsceneEnd: El estado debería ser 'GameState.WaitingGoal'. Current State=" + this._State);
+				throw new Error("ShowGoalScoredCutsceneEnd: El estado debería ser WaitingGoal. _State=" + this._State);
 						
 			var turnTeam:Team = TheTeams[idPlayer].AgainstTeam();
 			
@@ -768,7 +768,7 @@ package Caps
 		
 		private function SaquePuertaAllReady(team:Team, reason:int) : void
 		{
-			if (reason != Enums.TurnSaquePuerta && reason != Enums.TurnSaquePuertaByFalta && reason != Enums.TurnSaquePuertaControlPortero)
+			if (!Enums.IsSaquePuerta(reason))
 				throw new Error("En el saque de puerta siempre hay que dar una razon adecuada");
 			
 			TheGamePhysics.StopSimulation();
@@ -1073,7 +1073,7 @@ package Caps
 				return;
 			
 			if (_State != GameState.WaitingEndPart)
-				throw new Error("ShowFinishPartCutsceneEnd: El estado debería ser 'GameState.WaitingEndPart'. Current State=" + this._State);
+				throw new Error("ShowFinishPartCutsceneEnd: El estado debería ser WaitingEndPart. _State=" + this._State);
 			
 			if (_Part == 1)
 				ChangeState(GameState.EndPart);
