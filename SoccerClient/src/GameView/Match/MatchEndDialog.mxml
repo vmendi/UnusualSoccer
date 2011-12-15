@@ -204,7 +204,7 @@
 
 	<GameView:PopupBackground width="356" height="252" />
 
-	<s:Group x="2" y="98">
+	<s:Group x="2" y="122">
 		<s:Rect x="0" y="0" width="352" height="81" alpha="1">
 			<s:fill>
 				<s:SolidColor color="#353536"/>
@@ -220,12 +220,14 @@
 	<s:Group visible="{MatchResultUtils.IsCompetition(mMatchResult)}">
 		<s:Label x="0" y="0" text="COMPETICION! TODO" textAlign="center" styleName="whiteBoldVeryBig" />
 		<Competition:DivisionBadge x="0" y="10" Division="{mCompetitionModel.TheGroup.DivisionName}" />
-		
 		<!-- Si empate o ganador, le damos puntos de competicion -->
 		<s:Label x="0" y="20" text="{MatchResultUtils.GetCompetitionPoints(mMatchResult, mTeamModel)}" textAlign="center" styleName="whiteBoldVeryBig" 
 				 visible="{!MatchResultUtils.AmITheLoser(mMatchResult, mTeamModel)}"/>
 	</s:Group>
 	
+	<s:Group visible="{!MatchResultUtils.IsCompetition(mMatchResult)}">
+		<s:Label x="0" y="0" text="¡AMISTOSO!" textAlign="center" styleName="whiteBoldVeryBig" />
+	</s:Group>
 	
 	<s:Group x="10" y="12" width="336" height="55">
 		<s:layout><s:VerticalLayout gap="2" verticalAlign="middle"/></s:layout>
@@ -238,46 +240,47 @@
 				 textAlign="center" styleName="whiteBoldBig" id="PopupTexto" excludeFrom="Loser" />
 	</s:Group>
 	
-	<s:Group x="15" y="77">
-		<GameView:BadgeTeam id="MyBadge0" />
-		<s:Label left="40" top="7" width="100" maxDisplayedLines="1" text="Nombre" styleName="whiteBoldBig" id="MyName0"/>
-		<s:Label left="40" top="23" text="Equipo" styleName="greyBoldMedium" id="MyPredefinedTeamName0"/>
-		<s:Label width="35" left="122" top="7" text="3" styleName="whiteBoldHuge" textAlign="right" id="MyGoals0"/>
-	</s:Group>	
-
+	<s:Group width="100%" y="77">
 	
-	<s:Group x="22" y="134">
-		<s:layout><s:VerticalLayout gap="3"/></s:layout>
-		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralXP')}" />
-		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualPoints')}" />
-		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualSkill')}" />
-	</s:Group>	
-	<s:Group x="114" y="134">
-		<s:layout><s:VerticalLayout gap="3"/></s:layout>
-		<s:Label width="50" text="123" styleName="whiteBoldBig" textAlign="right" id="MyXP0"/>
-		<s:Label width="50" text="123" styleName="whiteBoldBig" textAlign="right" id="MySkillPoints0"/>
-		<s:Label width="50" text="123" styleName="whiteBoldBig" textAlign="right" id="MyTrueSkill0"/>
+		<s:Group x="15" y="0">
+			<GameView:BadgeTeam id="MyBadge0" />
+			<s:Label left="40" top="7" width="100" maxDisplayedLines="1" text="Nombre" styleName="whiteBoldBig" id="MyName0"/>
+			<s:Label left="40" top="23" text="Equipo" styleName="greyBoldMedium" id="MyPredefinedTeamName0"/>
+			<s:Label width="35" left="122" top="7" text="3" styleName="whiteBoldHuge" textAlign="right" id="MyGoals0"/>
+		</s:Group>	
+		<s:Group x="22" y="57">
+			<s:layout><s:VerticalLayout gap="3"/></s:layout>
+			<s:Label styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralXP')}" />
+			<s:Label styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualPoints')}" />
+			<s:Label styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralSkill')}" />
+		</s:Group>
+		<s:Group right="202" y="57">
+			<s:layout><s:VerticalLayout gap="3" horizontalAlign="right"/></s:layout>
+			<s:Label styleName="whiteBoldBig" textAlign="right" id="MyXP0"/>
+			<s:Label styleName="whiteBoldBig" textAlign="right" id="MySkillPoints0"/>
+			<s:Label styleName="whiteBoldBig" textAlign="right" id="MyTrueSkill0"/>
+		</s:Group>
+		
+		<s:Group width="160" x="184" y="0">
+			<GameView:BadgeTeam id="MyBadge1" right="0" />
+			<s:Label right="40" top="7" width="100" maxDisplayedLines="1" text="Nombre" styleName="whiteBoldBig" textAlign="right" id="MyName1"/>
+			<s:Label right="40" top="23" text="Equipo" styleName="greyBoldMedium" textAlign="right" id="MyPredefinedTeamName1" />
+			<s:Label width="35" top="7" text="0" styleName="whiteBoldHuge" textAlign="left" id="MyGoals1"/>
+		</s:Group>	
+		<s:Group left="198" y="57">
+			<s:layout><s:VerticalLayout gap="3"/></s:layout>
+			<s:Label styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralXP')}" />
+			<s:Label styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualPoints')}" />
+			<s:Label styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralSkill')}" />
+		</s:Group>
+		<s:Group right="21" y="57">
+			<s:layout><s:VerticalLayout gap="3" horizontalAlign="right"/></s:layout>
+			<s:Label styleName="whiteBoldBig" textAlign="right" id="MyXP1"/>
+			<s:Label styleName="whiteBoldBig" textAlign="right" id="MySkillPoints1"/>
+			<s:Label styleName="whiteBoldBig" textAlign="right" id="MyTrueSkill1"/>
+		</s:Group>
+		
 	</s:Group>
-	
-	<s:Group width="160" x="184" y="77">
-		<GameView:BadgeTeam id="MyBadge1" right="0" />
-		<s:Label right="40" top="7" width="100" maxDisplayedLines="1" text="Nombre" styleName="whiteBoldBig" textAlign="right" id="MyName1"/>
-		<s:Label right="40" top="23" text="Equipo" styleName="greyBoldMedium" textAlign="right" id="MyPredefinedTeamName1" />
-		<s:Label width="35" top="7" text="0" styleName="whiteBoldHuge" textAlign="left" id="MyGoals1"/>
-	</s:Group>	
-
-	<s:Group right="162" y="134">
-		<s:layout><s:VerticalLayout gap="3"/></s:layout>
-		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralXP')}" />
-		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualPoints')}" />
-		<s:Label width="50" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualSkill')}" />
-	</s:Group>	
-	<s:Group right="21" y="134">
-		<s:layout><s:VerticalLayout gap="3"/></s:layout>
-		<s:Label width="50" text="245" styleName="whiteBoldBig" textAlign="right" id="MyXP1"/>
-		<s:Label width="50" text="245" styleName="whiteBoldBig" textAlign="right" id="MySkillPoints1"/>
-		<s:Label width="50" text="245" styleName="whiteBoldBig" textAlign="right" id="MyTrueSkill1"/>
-	</s:Group>	
 	
 	<s:Group left="20" right="20" y="216">
 		<s:layout><s:HorizontalLayout horizontalAlign="center" gap="20" /></s:layout>
