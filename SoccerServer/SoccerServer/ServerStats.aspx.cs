@@ -189,7 +189,7 @@ namespace SoccerServer
             {
                 ticket.TicketPurchaseDate = DateTime.Now;
                 ticket.TicketExpiryDate = ticket.TicketPurchaseDate;
-                ticket.RemainingMatches = 5;
+                ticket.RemainingMatches = MainService.DEFAULT_NUM_MACHES;
             }
             mDC.SubmitChanges();
         }

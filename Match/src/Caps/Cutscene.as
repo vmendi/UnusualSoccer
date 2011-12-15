@@ -80,7 +80,7 @@ package Caps
 		{
 			// Creamos la cutscene adecuada en función de si el turno del jugador local o el contrario y de la razón
 			// por la que hemos cambiado de turno
-			if (idTeam == Match.Ref.IdLocalUser)	// Es el turno propio ( jugador local )
+			if (idTeam == Match.Ref.IdLocalUser)			// Es el turno propio (jugador local)
 			{
 				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)
 					LaunchCutScene(Embedded.Assets.MensajeTurnoPropioRobo, 0, 210);

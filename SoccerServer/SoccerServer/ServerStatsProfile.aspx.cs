@@ -123,7 +123,7 @@ namespace SoccerServer
         {
             mPlayer.Team.Ticket.TicketPurchaseDate = DateTime.Now;
             mPlayer.Team.Ticket.TicketExpiryDate = mPlayer.Team.Ticket.TicketPurchaseDate;
-            mPlayer.Team.Ticket.RemainingMatches = 5;
+            mPlayer.Team.Ticket.RemainingMatches = MainService.DEFAULT_NUM_MACHES;
             mDC.SubmitChanges();
 
             FillPurchases();
