@@ -15,6 +15,7 @@ namespace SoccerServer
 		public const double DEFAULT_INITIAL_STANDARD_DEVIATION = 8.333;
 
         public const int INJURY_DURATION_DAYS = 2;
+        public const int DEFAULT_NUM_MACHES = 5;
 
         [WebORBCache(CacheScope = CacheScope.Global)]
 		public List<TransferModel.PredefinedTeam> RefreshPredefinedTeams()
@@ -151,7 +152,7 @@ namespace SoccerServer
             theTicket.TicketID = team.TeamID;
             theTicket.TicketPurchaseDate = DateTime.Now;
             theTicket.TicketExpiryDate = theTicket.TicketPurchaseDate;
-            theTicket.RemainingMatches = 5;
+            theTicket.RemainingMatches = DEFAULT_NUM_MACHES;
 
             mContext.Tickets.InsertOnSubmit(theTicket);
         }

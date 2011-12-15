@@ -428,9 +428,9 @@ package Caps
 			
 			// Al acabar el tiro movemos el portero a su posición de formación en caso de la ultima accion fuera un saque de puerta
 			if (Enums.IsSaquePuerta(ReasonTurnChanged))
-				this.CurTeam.ResetToCurrentFormationOnlyGoalKeeper();
+				CurTeam.ResetToCurrentFormationOnlyGoalKeeper();
 			
-			var paseToCap:Cap = CheckPaseAlPie();
+			var paseToCap : Cap = CheckPaseAlPie();
 			var detectedFault : Fault = TheGamePhysics.TheFault;
 						
 			// La falta primero, prioridad maxima
@@ -479,13 +479,13 @@ package Caps
 			}
 			else if (paseToCap != null)	// Si se ha producido pase al pie, debemos comprobar si alguna chapa enemiga está en el radio de robo de pelota
 			{
-				// Comprobamos si alguien del equipo contrario puede robar el balón al jugador que le hemos pasado y obtenemos el conflicto
+				// Comprobamos si alguien del equipo contrario puede robar el balón al jugador que le hemos pasado y obtenemos el conflicto.
 				var theConflict : Conflict = CheckConflictoSteal(paseToCap);
 				
 				if (theConflict != null)
 					Cutscene.ShowConflictOverCaps(theConflict);
-								
-				// Si se produce el robo, activamos el controlador de pelota al usuario que ha robado el pase y pasamos el turno
+
+				// Si se produce el robo, activamos el controlador de pelota al usuario que ha robado el pase y pasamos el turno.
 				if (theConflict != null && theConflict.Stolen)
 				{
 					result |= 16;
@@ -500,10 +500,9 @@ package Caps
 				{
 					// Si nadie consiguió robar la pelota activamos el controlador de pelota al usuario que ha recibido el pase
 					// Además pintamos un mensaje de pase al pie adecuado (con conflicto o sin conflicto de intento de robo)
-					// NOTE: No consumimos el subturno hasta que el usuario coloque la pelota!
 					result |= 32;
 					
-					// Además si era el último sub-turno le damos un sub-turno EXTRA. Mientras hagas pase al pie puedes seguir tirando
+					// Además si era el último sub-turno le damos un sub-turno EXTRA. Mientras hagas pase al pie puedes seguir tirando.
 					if (_RemainingHits == 1)
 						_RemainingHits++;
 					
@@ -516,6 +515,8 @@ package Caps
 					// Si no somos el 'LocalUser', solo esperamos la respuesta del otro cliente
 					if (paseToCap.OwnerTeam.IsLocalUser)
 						TheInterface.ShowControllerBall(paseToCap);
+					
+					// NOTE: No consumimos el subturno hasta que el usuario coloque la pelota!
 				}
 			}
 			else	// No ha habido falta ni pase al pie			
@@ -537,8 +538,9 @@ package Caps
 				}
 				else
 				{
-					// simplemente consumimos uno de los 3 sub-turnos
 					result |= 128;
+					
+					// simplemente consumimos uno de los 3 sub-turnos
 					ConsumeSubTurn();
 				}
 			}
@@ -618,23 +620,24 @@ package Caps
 			var team:Team = TheTeams[idPlayer];
 			team.UseSkill(idSkill);
 			
-			// Mostramos un mensaje animado de uso del skill
 			if (idPlayer != Match.Ref.IdLocalUser)
 				Cutscene.ShowMensajeSkill(idSkill);
 			
 			// Hay algunas habilidades que las podemos aplicar directamente aqui, otras se evaluaran durante el resto del turno
-			if (idSkill == Enums.Tiempoextraturno)		// Obtenemos tiempo extra de turno
+			if (idSkill == Enums.Tiempoextraturno)
 			{
 				// NOTE: Ademas modificamos lo que representa el quesito del interface, para que se adapte al tiempo que tenemos ahora,
 				// que puede ser superior al tiempo de turno del partido! Este valor se restaura al resetear el timeout
 				_Timeout += AppParams.ExtraTimeTurno;
 				TheInterface.TurnTime = _Timeout;
 			}
-			else if (idSkill == Enums.Turnoextra)		// Obtenemos un turno extra
+			else 
+			if (idSkill == Enums.Turnoextra)
 			{
-				_RemainingHits ++;
+				_RemainingHits++;
 			}
-			else if (idSkill == Enums.PorteriaSegura)
+			else 
+			if (idSkill == Enums.PorteriaSegura)
 			{
 				team.ResetToCurrentFormationOnlyGoalKeeper();
 			}
@@ -871,6 +874,7 @@ package Caps
 			else if(_IdxCurTeam == Enums.Team2)
 				SetTurn(Enums.Team1, reason);
 		}
+		
 		//
 		// Asigna el turno de juego de un equipo. El cambio de verdad se hace siempre aqui.
 		//

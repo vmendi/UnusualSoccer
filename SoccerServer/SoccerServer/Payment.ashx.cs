@@ -190,7 +190,7 @@ namespace SoccerServer
         static private void AwardTicketTime(BDDModel.Ticket theTicket, int ticketKind, TimeSpan time)
         {
             // A la expiracion del ticket, estara bien
-            theTicket.RemainingMatches = 5;
+            theTicket.RemainingMatches = MainService.DEFAULT_NUM_MACHES;
 
             // Siempre marca la fecha del ultimo ticket comprado
             theTicket.TicketPurchaseDate = DateTime.Now;
