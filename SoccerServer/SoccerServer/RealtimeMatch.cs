@@ -14,8 +14,7 @@ namespace SoccerServer
             public int ShootCount = 0;
             public string[] ClientString = { "", "" };          // Estado de los clientes representado en cadena
         }
-    
-        // Define el estado de los jugadores
+
         public class PlayerState
         {
             public bool TiroPuerta = false;                                     // Ha declarado tiro a puerta?
@@ -24,14 +23,12 @@ namespace SoccerServer
 
         enum State
         {
+            WaitingForSaqueInicial,
             WaitingForSaque,
             Playing,
             End
         }
         
-        private ClientState TheClientState = null;              // Debugeo de estado del cliente
-        public int TotalShootCount = 0;                         // Tiros totales que se han producido en el partido
-
         public const string PLAYER_1 = "player1";
         public const string PLAYER_2 = "player2";
         const int Player1 = 0;                                  // identificador para el player 1
@@ -55,8 +52,8 @@ namespace SoccerServer
 
         private float RemainingSecs = 0;		                // Tiempo en segundos que queda de la "mitad" actual del partido
         private int Part = 1;                                   // Mitad de juego en la que nos encontramos
-        
-        private State CurState = State.WaitingForSaque;         // Estado actual del servidor de juego       
+
+        private State CurState = State.WaitingForSaqueInicial;  // Estado actual del servidor de juego       
         private int   CountReadyPlayersForSaque = 0;            // no continuamos con el partido hasta que estén listos todos
 
         private bool SimulatingShoot = false;                  // Estamos simulando un disparo?
@@ -70,6 +67,9 @@ namespace SoccerServer
 
         private int MatchLength = -1;                           // Segundos
         private int TurnLength = -1;
+
+        private ClientState TheClientState = null;              // Debugeo de estado del cliente
+        private int TotalShootCount = 0;                        // Tiros totales que se han producido en el partido
 
         private int mMatchID;
 
@@ -181,7 +181,6 @@ namespace SoccerServer
             MatchLength = matchLength;
             TurnLength = turnLength;
 
-            // Información del partido y versiones
             LogEx("Init Match: " + matchID + " FirstPlayer: " + firstPlayer.Name + " SecondPlayer: " + secondPlayer.Name, MATCHLOG);
             LogEx("Server Version: " + ServerVersion + " MinClientVersion required: " + MinClientVersion, MATCHLOG);
 
@@ -242,10 +241,10 @@ namespace SoccerServer
 
             switch (CurState)
             {
+                case State.WaitingForSaqueInicial:
+                    break;
                 case State.WaitingForSaque:
-                {
-                }
-                break;
+                    break;
 
                 case State.Playing:
                 {
@@ -286,11 +285,9 @@ namespace SoccerServer
                     if (((int)RemainingSecs) % 10 == 0)
                         this.Broadcast("SyncTime", RemainingSecs);
                 }
-                break;
+                    break;
                 case State.End:
-                {
-                }
-                break;
+                    break;
             }
         }
 
@@ -341,7 +338,7 @@ namespace SoccerServer
 
                 SimulatingShoot = false;
                 CountPlayersEndShoot = 0;
-                Broadcast("OnClientShootSimulated");
+                Broadcast("OnClientEndShoot");
             }
         }
 
@@ -350,7 +347,7 @@ namespace SoccerServer
         //
         public void OnResultShoot(int idPlayer, int result, int countTouchedCaps, int paseToCapId, int framesSimulating, int reasonTurnChanged, string capListStr)
         {            
-            string finalStr = " RCS: " + result + " Pase: " + paseToCapId + " CountTC: " + countTouchedCaps + " FS: " + framesSimulating + " RTC: "+ reasonTurnChanged + " " + capListStr;
+            string finalStr = " Result: " + result + " PaseToID: " + paseToCapId + " CountTouchedCaps: " + countTouchedCaps + " FramesSimulating: " + framesSimulating + " ReasonTurnChanged: "+ reasonTurnChanged + " " + capListStr;
 
             if (TheClientState == null)
                 LogEx("Exception: Pasamos por OnResultShoot sin haber creado el ClientState, cutucrush en la siguiente?!");
@@ -394,13 +391,18 @@ namespace SoccerServer
         }
 
         //
-        // Se llama cada vez que comienza una nueva mitad de juego. No comienza inmediatamente, se queda esperando que los jugados declaren que están listos
+        // Se llama cada vez que comienza una nueva mitad de juego
         //
         private void StartPart()
         {
             LogEx("Start Part: " + Part);
 
-            CurState = State.WaitingForSaque;
+            // Usamos el saque inicial como evento para indicar que el cliente se ha inicializado y esta listo para jugar
+            if (Part == 1)
+                CurState = State.WaitingForSaqueInicial;
+            else
+                CurState = State.WaitingForSaque;
+
             RemainingSecs = MatchLength / 2;        // Reseteamos tiempo de juego
 
             if (CountPlayersReportGoal != 0)
@@ -413,7 +415,7 @@ namespace SoccerServer
 
             LogEx("OnServerPlayerReadyForSaque: " + idPlayer);
 
-            if (this.CurState != State.WaitingForSaque)
+            if (this.CurState != State.WaitingForSaqueInicial || this.CurState != State.WaitingForSaque)
                 LogEx("Exception: No estamos esperando a un saque!");
 
             CountReadyPlayersForSaque++;
@@ -530,10 +532,9 @@ namespace SoccerServer
         {
             Log.log(MATCHLOG, MatchID + " Chat: " + msg);
 
-            // Solo permitos el chateo durante este estado, para evitar que cuando todavía esta cargando uno de los clientes le lleguen mensajes. 
-            // Con esto, ocurrira q no se puede chatear en las esperas a un saque por ejemplo. Esto es una mierda y prueba que falta un estado.
-            // Podria ser una llamada a CheckActionsAllowed, puaj.
-            if (CurState == State.Playing)
+            // Mientras estamos esperando al saque inicial no permitimos chateo, puede haber uno de los clientes que esta inicializando todavia.
+            // Cuando se ha acabado ya el tiempo tampoco, a un cliente le puede haber dado tiempo a salir.
+            if (CurState != State.WaitingForSaqueInicial && CurState != State.End)
                 Broadcast("OnChatMsg", msg);
         }
 
@@ -555,7 +556,8 @@ namespace SoccerServer
         public void LogEx(string message, string category = MATCHLOG_DEBUG)
         {
             string finalMessage = " M: " + MatchID + " Time: " + this.ServerTime + " " + message;
-            finalMessage += " <Vars>: SS: " + SimulatingShoot + " CountPlayersES: " + CountPlayersEndShoot + " P: " + Part + " T: " + RemainingSecs + " SC1=" + PlayersState[Player1].ScoredGoals + " SC2=" + PlayersState[Player2].ScoredGoals;
+            finalMessage += " <ServerVars>: SimulatingShoot: " + SimulatingShoot + " CountPlayersEndShoot: " + CountPlayersEndShoot + " Part: " + Part + 
+                            " RemainingSecs: " + RemainingSecs + " ScoredGoals1=" + PlayersState[Player1].ScoredGoals + " ScoredGoals2=" + PlayersState[Player2].ScoredGoals;
 
             Log.log(category, finalMessage);
         }

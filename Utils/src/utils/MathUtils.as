@@ -7,12 +7,12 @@ package utils
 		//
 		// Comprueba si un punto(pos) está contenido dentro de un rectángulo
 		//
-		static public function PointInRect( pos:Point, topLeft:Point, size:Point ) : Boolean
+		static public function PointInRect(pos:Point, topLeft:Point, size:Point) : Boolean
 		{
 			if (pos.x < (topLeft.x) || pos.y < (topLeft.y))
-				return( false );
+				return false;
 			if (pos.x >= topLeft.x+size.x || pos.y >= topLeft.y+size.y)
-				return( false );
+				return false;
 			
 			return true;
 		}

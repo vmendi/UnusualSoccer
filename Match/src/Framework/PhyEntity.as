@@ -78,13 +78,7 @@ package Framework
 		{
 			return PhyObject;
 		}
-		
-		// Cambia la velocidad lineal del solido por un factor dado
-		public function SetSpeedFactor(factor:Number) : void
-		{
-			PhyObject.body.GetLinearVelocity().Multiply(factor);
-		}
-		
+				
 		//
 		// Detiene cualquier tipo de movimiento físico que esté realizando la entidad
 		//
@@ -98,17 +92,11 @@ package Framework
 		}
 		
 		//
-		// Devuelve si la entidad está o no en movimiento
+		// Devuelve si la entidad está o no en movimiento (simulando)
 		//
 		public function get IsMoving() : Boolean
 		{
-			var vel:Number = PhyObject.body.GetLinearVelocity().LengthSquared();
-			
-			// TODO: Usar un threshold!
-			//if( vel <= 0.01 )
-			if( PhyObject.body.IsSleeping() )
-				return false;
-			return true;
+			return !PhyObject.body.IsSleeping();
 		}
 	}
 

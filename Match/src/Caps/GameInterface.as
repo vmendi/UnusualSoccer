@@ -206,7 +206,7 @@ package Caps
 				return false;
 			
 			// Si estamos en el turno de colocación de portero, ninguna habilidad está disponible para nadie!
-			if (Match.Ref.Game.ReasonTurnChanged == Enums.TurnByTiroAPuerta)
+			if (Match.Ref.Game.ReasonTurnChanged == Enums.TurnTiroAPuerta)
 				return false;
 			
 			// Tampoco permitimos pulsar los botones de habilidad mientras mostramos cualquiera de los controladores,
@@ -334,14 +334,15 @@ package Caps
 			
 			// Si estamos en modo de colocación de portero:
 			//---------------------------------------
-			if (game.ReasonTurnChanged == Enums.TurnByTiroAPuerta)
+			if (game.ReasonTurnChanged == Enums.TurnTiroAPuerta)
 			{
 				if (game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
 					PosControl.Start(cap);
 			}
 			// Si estamos en modo de saque de puerta:
 			//---------------------------------------
-			else if(game.ReasonTurnChanged == Enums.TurnBySaquePuerta || game.ReasonTurnChanged == Enums.TurnBySaquePuertaByFalta)
+			else 
+			if(Enums.IsSaquePuerta(game.ReasonTurnChanged))
 			{
 				if (game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
 					ShootControl.Start(cap);
@@ -378,7 +379,7 @@ package Caps
 		//
 		private function OnStopControllerPos(reason:int) : void
 		{
-			// Si reason != SuccessSuccessMouseUp el stop se ha producido por cancelacion y simplemente ignoramos
+			// Si reason != SuccessMouseUp el stop se ha producido por cancelacion y simplemente ignoramos
 			if (PosControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
 			{
 				if (!AppParams.OfflineMode)

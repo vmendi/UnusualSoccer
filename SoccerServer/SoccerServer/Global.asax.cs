@@ -78,6 +78,8 @@ namespace SoccerServer
 
                 mServerSettings["VersionID"] = "UnusualSoccer";
                 mClientSettings["VersionID"] = "UnusualSoccer";
+                //mServerSettings["VersionID"] = "MahouLigaChapas";
+                //mClientSettings["VersionID"] = "MahouLigaChapas";
                 
                 mServerSettings["TicketingSystem"] = "false";
                 mServerSettings["SameIPAbandonsChecked"] = "true";
@@ -179,7 +181,7 @@ namespace SoccerServer
 
                 using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
                 {
-                    theContext.ExecuteCommand("UPDATE [SoccerV2].[dbo].[Tickets] SET [RemainingMatches] = 5");
+                    theContext.ExecuteCommand("UPDATE [SoccerV2].[dbo].[Tickets] SET [RemainingMatches] = 3");
                 }               
 
                 mLast24hProcessedDateTime = now;

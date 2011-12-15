@@ -43,11 +43,19 @@ package Caps
 			// Nos auto-añadimos al manager de entidades
 			Match.Ref.Game.TheEntityManager.AddTagged(this, "Ball");
 		}
+		
+		
+		public override function Run(elapsed:Number):void
+		{
+			// Por si nos despiertan, anotamos la ultima posicion en la que estuvimos dormidos
+			if (PhyObject.body.IsSleeping())
+				_LastPosBallStopped = GetPos();
+		}		
 
 		//
 		// Se encarga de copiar el objeto físico al objeto visual
 		//
-		public override function Draw( elapsed:Number ) : void
+		public override function Draw(elapsed:Number) : void
 		{
 			var mcVisual : MovieClip = (_Visual as MovieClip);
 			var vel : b2Vec2 = PhyObject.body.GetLinearVelocity();
@@ -74,7 +82,7 @@ package Caps
 		}
 		
 		private var mCurrentFrame : Number = 1;
-				
+		
 		// 
 		// Asigna la posición de la pelota en frente de la chapa
 		// En frente quiere decir mirando a la dirección de la mitad del campo del oponente
@@ -85,33 +93,35 @@ package Caps
 			var pos:Point = cap.GetPos();
 			
 			var len:Number = Cap.Radius + BallEntity.Radius;
-			var dir:Point = new Point( len, 0 );
-			if ( cap.OwnerTeam.Side == Enums.Right_Side )
-				dir = new Point( -len, 0 );
+			var dir:Point = new Point(len, 0);
+			if (cap.OwnerTeam.Side == Enums.Right_Side)
+				dir = new Point(-len, 0);
 			
 			StopMovementInPos(pos.add(dir));
 		}
 		
-		// Asigna la posición del balón y su última posición en la que estuvo parado
+		// Asigna la posición del balón y su última posición en la que estuvo parado.
 		// Siempre que se cambia "forzadamente" la posición del balón, utilizar esta función
-		public function StopMovementInPos( pos:Point ) : void
+		public function StopMovementInPos(pos:Point) : void
 		{
-			super.StopMovement();
 			super.SetPos(pos);
-			_LastPosBallStopped = GetPos();
+			StopMovement();
 		}
 		
-		// Overrideamos porque queremos siempre tener anotado la ultima vez que nos pararon
+		// Overrideamos porque queremos asegurar siempre el tener anotado la ultima vez que nos pararon.
 		public override function StopMovement() : void
 		{
 			super.StopMovement();
+			
+			// Anotamos para asegurar que si nos sacan del Sleep entre esta llamada y el siguiente Run, 
+			// la LasPosBallStopped esta bien.
 			_LastPosBallStopped = GetPos();
 		}
 		
 		// Resetea al estado inicial el balón (en el centro, parado...)
 		public function StopMovementInFieldCenter() : void
 		{
-			StopMovementInPos( new Point( Field.CenterX, Field.CenterY ) );
+			StopMovementInPos(new Point(Field.CenterX, Field.CenterY));
 		}
 						
 		private var _LastPosBallStopped:Point = null;

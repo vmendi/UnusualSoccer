@@ -265,13 +265,13 @@ package Caps
 		}
 		
 		//
-		// Retorna true si esta ya todo quieto		
+		// Retorna true si hay algo todavia moviendose
 		//
 		private function get IsPhysicSimulating() : Boolean
 		{
 			for each (var entity:Entity in Match.Ref.Game.TheEntityManager.Items)
 			{
-				if (entity is PhyEntity && (entity as PhyEntity).IsMoving == true)
+				if (entity is PhyEntity && (entity as PhyEntity).IsMoving)
 					return true;
 			}
 			
@@ -300,12 +300,9 @@ package Caps
 			{
 				_FramesSimulating++;
 			
-				// Se acabo la simulacion? (es decir, esta todo parado?)
+				// Se acabo la simulacion? (es decir, esta todo parado?).
 				if (!IsPhysicSimulating)
-				{
 					_SimulatingShoot = false;
-					_Ball.StopMovement();		// TODO: Se hace solo para anotar la ultima posicion de parada. Estaria bien que no hicera falta
-				}
 			}
 		}
 		

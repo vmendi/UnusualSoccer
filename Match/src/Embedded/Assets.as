@@ -121,6 +121,9 @@ package Embedded
 		
 		[Embed(source="Embedded/Assets.swf", symbol="MensajeRobo")]
 		static public var MensajeRobo:Class;
+
+		[Embed(source="Embedded/Assets.swf", symbol="MensajeControlPortero")]
+		static public var MensajeControlPortero:Class;		
 				
 		// Una chapa (cada frame es un equipo diferente):
 		[Embed(source="Embedded/Assets.swf", symbol="Cap")]					// La chapa para todos los equipos
@@ -145,6 +148,9 @@ package Embedded
 		[Embed(source="Embedded/Assets.swf", symbol="CapDetails")]
 		static public var CapDetails:Class;
 		
+		//
+		[Embed(source="Embedded/Assets.swf", symbol="AreaPortero")]
+		static public var AreaPortero:Class;
 		
 		// Los sonidos		
 		[Embed(source="Embedded/Assets.swf", symbol="CollisionCapBall")]

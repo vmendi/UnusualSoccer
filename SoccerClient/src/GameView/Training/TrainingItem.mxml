@@ -58,7 +58,7 @@
 				 text="{TrainingModel.GetName(TheTrainingDefinition)}"/>
 		
 		<s:Label id="MyTrainingFitness"  x="188" y="34" styleName="whiteBoldBig" 
-				 text="Entrenamiento: +{TheTrainingDefinition.FitnessDelta}"
+				 text="Entrenamiento: +{TheTrainingDefinition.FitnessDelta}%"
 				 includeIn="Normal"/>
 		
 		<s:Label id="MyTrainingTime" x="188" y="52" 
