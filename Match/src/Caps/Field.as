@@ -159,18 +159,18 @@ package Caps
 		}
 		
 		// Obtiene el punto central de la portería indicada en coordenadas de pantalla (pixels)
-		static public function GetCenterGoal( side:int ) : Point
+		static public function GetCenterGoal(side:int) : Point
 		{
 			var y:Number = OffsetY + SizeY / 2;
 			var x:Number = OffsetX;
 			
-			if( side == Enums.Right_Side )
+			if (side == Enums.Right_Side)
 				x += SizeX;
 			
-			return( new Point( x, y ) );
+			return new Point(x, y);
 		}
 		
-		public function IsCircleInsideSmallArea( pos:Point, radius:Number, side:int ) : Boolean
+		public function IsCircleInsideSmallArea(pos:Point, radius:Number, side:int) : Boolean
 		{
 			if( side == Enums.Left_Side )
 				return MathUtils.CircleInRect(pos, radius, new Point(SmallAreaLeftX, SmallAreaLeftY ), new Point(SmallSizeAreaX, SmallSizeAreaY));
@@ -178,7 +178,7 @@ package Caps
 			return MathUtils.CircleInRect(pos, radius, new Point(SmallAreaRightX, SmallAreaRightY ), new Point(SmallSizeAreaX, SmallSizeAreaY));
 		}
 		
-		public function IsCircleInsideBigArea( pos:Point, radius:Number, side:int ) : Boolean
+		public function IsCircleInsideBigArea(pos:Point, radius:Number, side:int) : Boolean
 		{
 			if( side == Enums.Left_Side )
 				return MathUtils.CircleInRect( pos, radius, new Point( BigAreaLeftX, BigAreaLeftY ), new Point( SizeBigAreaX, SizeBigAreaY ) );			
