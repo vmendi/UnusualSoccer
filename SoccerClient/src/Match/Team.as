@@ -2,8 +2,6 @@ package Match
 {
 	import Assets.MatchAssets;
 	
-	import Match.Framework.*;
-	
 	import com.greensock.*;
 	
 	import flash.display.DisplayObject;

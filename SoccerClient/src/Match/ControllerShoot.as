@@ -2,8 +2,6 @@ package Match
 {
 	import Box2D.Common.Math.b2Math;
 	
-	import Match.Framework.*;
-	
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;

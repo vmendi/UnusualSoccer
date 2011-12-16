@@ -2,8 +2,6 @@ package Match
 {
 	import Box2D.Common.Math.b2Vec2;
 	
-	import Match.Framework.*;
-	
 	import com.actionsnippet.qbox.QuickBox2D;
 	import com.actionsnippet.qbox.QuickContacts;
 	import com.greensock.*;
