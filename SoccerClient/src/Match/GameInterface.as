@@ -44,7 +44,7 @@ package Match
 			CreateSpecialSkillButtons(MatchMain.Ref.Game.GUILayer);
 
 			// Inicializamos los controladores (disparo, balón, posición)
-			var lineLength:Number = Cap.Radius + BallEntity.Radius + AppParams.DistToPutBallHandling;			
+			var lineLength:Number = Cap.Radius + BallEntity.Radius + MatchConfig.DistToPutBallHandling;			
 			
 			ShootControl = new ControllerShoot(ControllerCanvas, MAX_LONG_SHOOT, COLOR_SHOOT, THICKNESS_SHOOT);
 			BallControl = new ControllerBall(ControllerCanvas, lineLength, COLOR_HANDLEBALL, THICKNESS_SHOOT);
@@ -60,7 +60,7 @@ package Match
 			Gui.BotonTiroPuerta.addEventListener(MouseEvent.CLICK, OnTiroPuerta);
 			Gui.SoundButton.addEventListener(MouseEvent.CLICK, OnMute);
 			
-			// Gui.BotonAbandonar.addEventListener( MouseEvent.CLICK, OnAbandonar );
+			// Gui.BotonAbandonar.addEventListener( MouseEvent.CLICK, OnAbandonarClick );
 			Gui.BotonAbandonar.visible = false;
 
 			UpdateMuteButton();
@@ -304,11 +304,11 @@ package Match
 			// TODO: Creo que el IsSkillAvailableForTurn sobra puesto que estabamos haciendo el mouseEnabled del boton mal. Ahora no deberia llegar.
 			if (localTeam.GetSkillPercentCharged(idSkill) >= 100 && IsSkillAvailableForTurn(idSkill))
 			{
-				if (!AppParams.OfflineMode)
+				if (!MatchConfig.OfflineMode)
 					MatchMain.Ref.Connection.Invoke("OnServerUseSkill", null, idSkill);
 				
 				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandUseSkill,
-											  Delegate.create(MatchMain.Ref.Game.OnClientUseSkill, MatchMain.Ref.IdLocalUser, idSkill));
+											  	  Delegate.create(MatchMain.Ref.Game.OnClientUseSkill, MatchConfig.IdLocalUser, idSkill));
 			}
 		}
 		
@@ -411,7 +411,7 @@ package Match
 			// Si reason != SuccessMouseUp el stop se ha producido por cancelacion y simplemente ignoramos
 			if (PosControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
 			{
-				if (!AppParams.OfflineMode)
+				if (!MatchConfig.OfflineMode)
 					MatchMain.Ref.Connection.Invoke("OnServerPosCap", null, PosControl.Target.Id, PosControl.EndPos.x, PosControl.EndPos.y);
 				
 				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandPosCap,
@@ -428,7 +428,7 @@ package Match
 			// el controlador se inicio, por ejemplo por TimeOut. 
 			if (ShootControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
 			{
-				if (!AppParams.OfflineMode)
+				if (!MatchConfig.OfflineMode)
 					MatchMain.Ref.Connection.Invoke("OnServerShoot", null, ShootControl.Target.Id, ShootControl.Direction.x, ShootControl.Direction.y, ShootControl.Force);
 				
 				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandShoot, 
@@ -446,7 +446,7 @@ package Match
 		{	
 			if (BallControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
 			{
-				if (!AppParams.OfflineMode)
+				if (!MatchConfig.OfflineMode)
 					MatchMain.Ref.Connection.Invoke("OnServerPlaceBall", null, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y);
 				
 				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandPlaceBall,
@@ -463,7 +463,7 @@ package Match
 		{
 			if (UserInputEnabled)
 			{
-				if (!AppParams.OfflineMode)
+				if (!MatchConfig.OfflineMode)
 					MatchMain.Ref.Connection.Invoke("OnServerTiroPuerta", null);
 				
 				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandTiroPuerta, 
@@ -511,15 +511,15 @@ package Match
 		// 
 		// Han pulsado en el botón de "Cerrar Partido"
 		//
-		public function OnAbandonar( event:Object ) : void
+		public function OnAbandonarClick(event:Object) : void
 		{
-			trace( "OnAbandonar: Cerrando cliente ...." );
+			trace("OnAbandonarClick: Cerrando cliente ....");
 			
 			// Notificamos al servidor para que lo propague en los usuarios
-			if (MatchMain.Ref.Connection)
-				MatchMain.Ref.Connection.Invoke( "OnAbort", null );
-			else
-				trace( "OnAbandonar: [warning] La conexión es nula. Ya se ha cerrado el cliente" );
+			if (MatchMain.Ref.Connection == null)
+				throw new Error("OnAbandonarClick: La conexión es nula. Ya se ha cerrado el cliente");
+				
+			MatchMain.Ref.Connection.Invoke("OnAbort", null);				
 		}		
 	}
 }

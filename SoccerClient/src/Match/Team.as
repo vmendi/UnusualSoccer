@@ -1,6 +1,7 @@
 package Match
 {
 	import Assets.MatchAssets;
+	
 	import Match.Framework.*;
 	
 	import com.greensock.*;
@@ -54,7 +55,7 @@ package Match
 			_FormationName = descTeam.Formation;			
 			
 			// En modo debug cambiamos la equipación del Sporting porque es identia a la del Atleti
-			if (AppParams.Debug && _Name == "Sporting")	 
+			if (MatchConfig.Debug && _Name == "Sporting")	 
 				_Name = "Betis";
 			
 			// Copiamos la lista de habilidades especiales
@@ -161,7 +162,7 @@ package Match
 		{
 			var formation:Array = null;
 			
-			if( AppParams.OfflineMode )
+			if( MatchConfig.OfflineMode )
 				formation = MatchMain.Ref.Formations[0];
 			else
 				formation = MatchMain.Ref.Formations[formationName];
@@ -217,7 +218,7 @@ package Match
 		
 		public function get IsLocalUser() : Boolean
 		{
-			return this.IdxTeam == MatchMain.Ref.IdLocalUser;
+			return this.IdxTeam == MatchConfig.IdLocalUser;
 		}
 		
 		private function LoadSkills(availableSkillsIDs:Array) : void
@@ -225,7 +226,7 @@ package Match
 			_Skills = new Object();
 			_AvailableSkills = new Array();
 			
-			if (AppParams.Debug)
+			if (MatchConfig.Debug)
 				availableSkillsIDs = new Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 13);
 			
 			for each (var skillID:int in availableSkillsIDs)
@@ -301,11 +302,11 @@ package Match
 		//
 		public function get RadiusPase() : int
 		{
-			var radius:int = AppParams.RadiusPaseAlPie;
+			var radius:int = MatchConfig.RadiusPaseAlPie;
 			
 			// La habilidad 5 estrellas multiplica el radio
 			if (IsUsingSkill(Enums.CincoEstrellas)) 
-				radius *= AppParams.CincoEstrellasMultiplier;
+				radius *= MatchConfig.CincoEstrellasMultiplier;
 			
 			return radius;
 		}
@@ -315,11 +316,11 @@ package Match
 		//
 		public function get RadiusSteal() : int
 		{
-			var radius:int = AppParams.RadiusSteal;
+			var radius:int = MatchConfig.RadiusSteal;
 			
 			// Si nuestro oponente usa MasterDribbling, tenemos que reducir nuestra area de robo
 			if (AgainstTeam().IsUsingSkill(Enums.MasterDribbling))
-				radius *= AppParams.MasterDribblingMultiplier;
+				radius *= MatchConfig.MasterDribblingMultiplier;
 			
 			return radius;
 		}

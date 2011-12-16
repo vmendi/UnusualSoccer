@@ -5,14 +5,9 @@ package Match
 	import Box2D.Common.*;
 	import Box2D.Common.Math.*;
 	
-	import Match.Framework.*;
-	
 	import com.greensock.*;
-	import com.greensock.plugins.RemoveTintPlugin;
 	
 	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
@@ -26,7 +21,6 @@ package Match
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.system.SecurityDomain;
-	import flash.utils.getTimer;
 	
 	public class Cap extends PhyEntity
 	{
@@ -48,7 +42,7 @@ package Match
 		private var _CapId:int = (-1);							// Identificador de la chapa
 		
 		private var _ColorInfluence:int = Enums.FriendColor; 		// Color del radio de influencia visual
-		private var _SizeInfluence:int = AppParams.RadiusPaseAlPie;	// tamaño del radio de influencia visual
+		private var _SizeInfluence:int = MatchConfig.RadiusPaseAlPie;	// tamaño del radio de influencia visual
 		
 		private var _IsInjured : Boolean = false;
 				
@@ -71,20 +65,18 @@ package Match
 		
 		public function get Ghost() : Entity { return this.OwnerTeam.Ghost; }	// Ghost de la chapa (solo hay uno por equipo)
 
-		//
-		// Inicializa una chapa
-		//
+
 		public function Cap(team:Team, id:int, descCap:Object) : void
 		{	
-			var phyInit : Object = { radius: AppParams.Screen2Physic( Radius ),
+			var phyInit : Object = { radius: MatchConfig.Screen2Physic( Radius ),
 									 isBullet: true, 				// UseCCD: Detección de colisión continua (Ninguna chapa se debe atravesar)
-									 mass: AppParams.CapMass,
+									 mass: MatchConfig.CapMass,
 									 isSleeping: true,
 									 allowSleep: true, 
 									 friction: .3, 
 									 restitution: .8,			// Fuerza que recupera en un choque (old: 0.6)
-									 linearDamping: AppParams.CapLinearDamping, 
-									 angularDamping: AppParams.CapLinearDamping }
+									 linearDamping: MatchConfig.CapLinearDamping, 
+									 angularDamping: MatchConfig.CapLinearDamping }
 				
 			var asset:Class = null;
 				
@@ -178,7 +170,7 @@ package Match
 		{
 			// Calculamos el vector final
 			var vecForce:Point = new Point();
-			dir.normalize( force * AppParams.MaxCapImpulse );
+			dir.normalize( force * MatchConfig.MaxCapImpulse );
 			
 			// El vector de fuerza lo aplicamos en el sentido contrario, ya que funciona como una goma elástica
 			vecForce.x = -dir.x; 

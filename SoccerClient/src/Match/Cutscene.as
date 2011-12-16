@@ -2,15 +2,11 @@ package Match
 {
 	import Assets.MatchAssets;
 	
-	import Match.Framework.*;
-	
 	import com.greensock.*;
 	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
-	
-	import mx.effects.Tween;
 	
 	import utils.Delegate;
 	
@@ -20,7 +16,7 @@ package Match
 		// 
 		// Ha terminado una mitad
 		//
-		static public function ShowFinishPart( part:int, callback:Function) : void
+		static public function ShowFinishPart(part:int, callback:Function) : void
 		{						
 			// Reproducimos una cutscene u otra en función de si ha acabado la primera parte o el partido 
 			if( part == 1 )
@@ -73,14 +69,10 @@ package Match
 			LaunchCutScene(MatchAssets.MensajeControlPortero, 0, 210);
 		}
 		
-		// 
-		// Reproduce una animación mostrando el turno del jugador
-		//
-		static public function ShowTurn(idTeam:int, reason:int) : void
+		
+		static public function ShowTurn(reason:int, isMyTurn:Boolean) : void
 		{
-			// Creamos la cutscene adecuada en función de si el turno del jugador local o el contrario y de la razón
-			// por la que hemos cambiado de turno
-			if (idTeam == MatchMain.Ref.IdLocalUser)			// Es el turno propio (jugador local)
+			if (isMyTurn)
 			{
 				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)
 					LaunchCutScene(MatchAssets.MensajeTurnoPropioRobo, 0, 210);
@@ -205,11 +197,13 @@ package Match
 		{
 			var game:Game = MatchMain.Ref.Game;
 			
-			if( conflicto.YellowCard == true && conflicto.RedCard == true)		// 2 amarillas
+			if (conflicto.YellowCard && conflicto.RedCard)		// 2 amarillas
 				item.Tarjeta.gotoAndStop( "dobleamarilla" );
-			else if( conflicto.RedCard == true )
+			else 
+			if (conflicto.RedCard)
 				item.Tarjeta.gotoAndStop( "roja" );
-			else if( conflicto.YellowCard == true )
+			else 
+			if (conflicto.YellowCard)
 				item.Tarjeta.gotoAndStop( "amarilla" );
 			else
 				item.Tarjeta.gotoAndStop( 0 );

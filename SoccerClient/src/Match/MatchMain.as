@@ -11,8 +11,7 @@ package Match
 	{
 		public var Formations:Object = null;					// Hash de posiciones (Points) de formaciones ["332"][idxCap]
 		public var Connection:Object = null;					// Conexión con el servidor
-		public var IdLocalUser:int = -1;						// Identificador del usuario local
-		
+				
 		public function get Game() : Match.Game { return _Game; }
 		public function get AudioManager() : Match.AudioManager { return _AudioManager; }
 		
@@ -21,53 +20,55 @@ package Match
 
 		public function MatchMain()
 		{			
-			Instance = this;
-			_AudioManager = new Match.AudioManager();
+			if (Instance != null)
+				throw new Error("WTF 3312");
 			
-			addEventListener(Event.ENTER_FRAME, OnFrame);
+			Instance = this;
 		}
 		
-		public function InitOffline() : void
-		{
-			AppParams.OfflineMode = true;
-			_Game = new Match.Game();
-			
-			Formations = InitOfflineData.Formations;
-			Game.InitFromServer((-1), InitOfflineData.GetDescTeam("Atlético"), 
-									  InitOfflineData.GetDescTeam("Sporting"),
-									  Enums.Team1, Game.Config.PartTime * 2, Game.Config.TurnTime, AppParams.ClientVersion);
-		}
-
 		//
 		// Inicialización del juego a través de una conexión de red que conecta nuestro cliente
 		// con el servidor. Se llama desde el manager.
 		//
 		public function Init(netConnection: Object, formations : Object): void
 		{
-			AppParams.OfflineMode = false;
+			MatchConfig.OfflineMode = false;
+			
 			_Game = new Match.Game();
+			_AudioManager = new Match.AudioManager();
 
 			Formations = formations;
 			Connection = netConnection;
 			
 			Connection.AddClient(Game);
 						
-			// Indicamos al servidor que nuestro cliente necesita los datos del partido para continuar. Esto llamara a InitFromServer desde el servidor 
+			// Indicamos al servidor que nuestro cliente necesita los datos del partido para continuar. Esto llamara a InitFromServer desde el servidor
 			Connection.Invoke("OnRequestData", null);
+
+			// Ya podemos subscribirnos al frame. Cuando nos llaman aqui esta garantizado que ya estamos en la stage
+			addEventListener(Event.ENTER_FRAME, OnFrame);
 		}
 		
-		//
-		// Bucle principal de la aplicación
-		//
-		private function OnFrame( event:Event ):void
+		public function InitOffline() : void
 		{
-			if (stage != null && Game != null)
-			{
-				var elapsed:Number = 1.0 / stage.frameRate;
-				
-				Game.Run(elapsed);
-				Game.Draw(elapsed);
-			}
+			MatchConfig.OfflineMode = true;
+			
+			_Game = new Match.Game();
+			_AudioManager = new Match.AudioManager();
+			
+			Formations = InitOfflineData.Formations;
+			Game.InitFromServer((-1), InitOfflineData.GetDescTeam("Atlético"), InitOfflineData.GetDescTeam("Sporting"),
+									  Enums.Team1, MatchConfig.PartTime * 2, MatchConfig.TurnTime, MatchConfig.ClientVersion);
+			
+			addEventListener(Event.ENTER_FRAME, OnFrame);
+		}
+		
+		private function OnFrame(event:Event):void
+		{
+			var elapsed:Number = 1.0 / stage.frameRate;
+			
+			Game.Run(elapsed);
+			Game.Draw(elapsed);
 		}
 		
 		
@@ -100,9 +101,8 @@ package Match
 		//
 		public function ForceMatchFinish() : void
 		{
-			// Generamos un cierre voluntario
-			if (Game.TheInterface != null)
-				Game.TheInterface.OnAbandonar(null);
+			// Generamos un cierre voluntario simulando que clickan en el boton de abandonar
+			Game.TheInterface.OnAbandonarClick(null);
 		}
 		
 		private var _Game : Match.Game;

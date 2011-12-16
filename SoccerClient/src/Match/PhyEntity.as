@@ -70,7 +70,7 @@ package Match
 		public override function SetPos( pos:Point ) : void
 		{
 			super.SetPos( pos ); 
-			PhyObject.setLoc(AppParams.Screen2Physic( pos.x ), AppParams.Screen2Physic( pos.y )); 
+			PhyObject.setLoc(MatchConfig.Screen2Physic( pos.x ), MatchConfig.Screen2Physic( pos.y )); 
 		}
 		
 		public function get PhyBody( ) : QuickObject

@@ -24,8 +24,6 @@ package Match
 		public var PhyLayer:MovieClip = null;
 		public var ChatLayer:Chat = null;
 		
-		public var Config:MatchConfig = new MatchConfig();		// Configuración del partido (Parámetros recibidos del servidor)
-				
 		// Estado lógico de la aplicación
 		private var _IdxCurTeam:int = Enums.Team1;				// Idice del equipo actual que le toca jugar
 		private var _State:int = GameState.NotInit;				// Estado inicial
@@ -49,7 +47,7 @@ package Match
 		
 		
 		public function get CurTeam() : Team { return TheTeams[_IdxCurTeam]; }
-		public function get LocalUserTeam() : Team { return TheTeams[MatchMain.Ref.IdLocalUser]; }
+		public function get LocalUserTeam() : Team { return TheTeams[MatchConfig.IdLocalUser]; }
 		public function get Part() : int { return _Part; }
 		public function get Time() : Number { return _TimeSecs; }
 		public function get Timeout() : Number { return _Timeout; }
@@ -90,16 +88,18 @@ package Match
 		public function InitFromServer(matchId:int, descTeam1:Object, descTeam2:Object, idLocalPlayerTeam:int, matchTimeSecs:int, turnTimeSecs:int, minClientVersion:int) : void
 		{			
 			// Verificamos la versión mínima de cliente exigida por el servidor.
-			if( AppParams.ClientVersion < minClientVersion )
-				throw new Error("El partido no es la última versión. Por favor, limpie la caché de su navegador. ClientVersion: " + AppParams.ClientVersion + " MinClient: " + minClientVersion );
+			if( MatchConfig.ClientVersion < minClientVersion )
+				throw new Error("El partido no es la última versión. Por favor, limpie la caché de su navegador. ClientVersion: " + MatchConfig.ClientVersion + " MinClient: " + minClientVersion );
 			
 			trace("InitMatch: " + matchId + " Teams: " + descTeam1.PredefinedTeamName + " vs. " + descTeam2.PredefinedTeamName + " LocalPlayer: " + idLocalPlayerTeam);
 			
 			// Creamos las capas iniciales de pintado para asegurar un orden adecuado
 			CreateLayers();
 
-			// Identificador del jugador local (a quien controlamos nosotros desde el cliente)
-			MatchMain.Ref.IdLocalUser = idLocalPlayerTeam;
+			MatchConfig.IdLocalUser = idLocalPlayerTeam;
+			MatchConfig.MatchId = matchId;
+			MatchConfig.PartTime = matchTimeSecs / 2;
+			MatchConfig.TurnTime = turnTimeSecs;
 			
 			TheEntityManager = new EntityManager();
 			TheGamePhysics = new GamePhysics(PhyLayer);
@@ -116,7 +116,7 @@ package Match
 			MatchMain.Ref.AudioManager.AddClass( "SoundAmbience", MatchAssets.SoundAmbience );
 
 			// Convertimos las mx.Collections.ArrayCollection que vienen por red a Arrays
-			if (!AppParams.OfflineMode)
+			if (!MatchConfig.OfflineMode)
 			{
 				descTeam1.SoccerPlayers = (descTeam1.SoccerPlayers as Object).toArray();
 				descTeam2.SoccerPlayers = (descTeam2.SoccerPlayers as Object).toArray();
@@ -128,11 +128,7 @@ package Match
 			// TODO: Deberiamos utilizar una semilla envíada desde el servidor!!!
 			_Random = new Random(123);			
 			_Timer = new Match.Time();
-
-			// Asignamos los tiempos del partido y turno
-			Config.MatchId = matchId;
-			Config.PartTime = matchTimeSecs / 2;
-			Config.TurnTime = turnTimeSecs;
+			
 												
 			// Determinamos la equipación a utilizar en cada equipo.
 			//   - Determinamos los grupos de equipación a los que pertenece cada equipo.
@@ -247,7 +243,7 @@ package Match
 				case GameState.NewPart:
 				{
 					// Reseteamos el tiempo que va a durar la parte
-					_TimeSecs = Config.PartTime;					
+					_TimeSecs = MatchConfig.PartTime;					
 
 					// Espera a los jugadores y comienza del centro. Dependiendo de en que parte estamos, saca un equipo u otro. 
 					SaqueCentro(Part == 1? TheTeams[Enums.Team1] : TheTeams[Enums.Team2]);
@@ -268,7 +264,7 @@ package Match
 					{
 						_TimeSecs = 0;
 						
-						if (AppParams.OfflineMode)	// Tenemos que simular que hemos alcanzado el fin de la parte
+						if (MatchConfig.OfflineMode)	// Tenemos que simular que hemos alcanzado el fin de la parte
 							OnClientFinishPart(_Part, null);
 					}
 
@@ -281,7 +277,7 @@ package Match
 						// Al jugador que no tiene el turno simplemente le llega el Timeout, él no lo genera
 						if (this.CurTeam.IsLocalUser)
 						{
-							if (!AppParams.OfflineMode)
+							if (!MatchConfig.OfflineMode)
 								MatchMain.Ref.Connection.Invoke("OnServerTimeout", null);
 							
 							EnterWaitState(GameState.WaitingCommandTimeout, Delegate.create(OnClientTimeout, this.CurTeam.IdxTeam)); 
@@ -311,7 +307,7 @@ package Match
 								validity = Enums.GoalInvalidNoDeclarado;
 						}
 
-						if (!AppParams.OfflineMode)
+						if (!MatchConfig.OfflineMode)
 							MatchMain.Ref.Connection.Invoke("OnServerGoalScored", null, scorerTeam.IdxTeam, validity);							
 						
 						// Cambiamos al estado esperando gol. Asi, por ejemplo cuando pare la simulacion, no haremos nada. Esperamos a que haya saque de centro
@@ -321,7 +317,7 @@ package Match
 					else
 					if (!TheGamePhysics.IsSimulating)
 					{
-						if (!AppParams.OfflineMode)
+						if (!MatchConfig.OfflineMode)
 							MatchMain.Ref.Connection.Invoke("OnServerEndShoot", null);
 						
 						// Si la física ha terminado de simular quiere decir que en nuestro cliente hemos terminado la simulación del disparo.
@@ -347,7 +343,7 @@ package Match
 				case GameState.WaitingCommandShoot: 				
 				case GameState.WaitingCommandPosCap: 	
 				{
-					if (AppParams.OfflineMode && _OfflineWaitCall != null)
+					if (MatchConfig.OfflineMode && _OfflineWaitCall != null)
 					{
 						var backup : Function = _OfflineWaitCall;
 						_OfflineWaitCall = null;
@@ -368,7 +364,7 @@ package Match
 		public function ResetTimeout() : void
 		{
 			_Timer.ResetElapsed();
-			_Timeout = Config.TurnTime;
+			_Timeout = MatchConfig.TurnTime;
 			TheInterface.TurnTime = _Timeout;	// Asignamos el tiempo de turno que entiende el interface, ya que este valor se modifica cuando se obtiene extratime
 		}
 		
@@ -404,7 +400,7 @@ package Match
 			
 			// Aplicamos habilidad especial
 			if (cap.OwnerTeam.IsUsingSkill(Enums.Superpotencia))
-				force *= AppParams.PowerMultiplier;
+				force *= MatchConfig.PowerMultiplier;
 
 			// Comienza la simulacion!
 			ChangeState(GameState.Simulating);
@@ -548,7 +544,7 @@ package Match
 			// Informamos al servidor para que compare entre los dos clientes
 			var capListStr:String = "T0: " + GetString(TheTeams[0].CapsList) + " T1: " + GetString(TheTeams[1].CapsList) + " B:" + TheBall.GetPos().toString(); 
 			
-			if (!AppParams.OfflineMode)
+			if (!MatchConfig.OfflineMode)
 			{
 				MatchMain.Ref.Connection.Invoke("OnResultShoot", null, result, 
 											TheGamePhysics.NumTouchedCaps, paseToCap != null ? paseToCap.Id : -1, TheGamePhysics.NumFramesSimulated, 
@@ -571,7 +567,7 @@ package Match
 
 			// Posicion en la que queda la pelota
 			var dir:Point = new Point(dirX, dirY);  
-			dir.normalize(Cap.Radius + BallEntity.Radius + AppParams.DistToPutBallHandling);
+			dir.normalize(Cap.Radius + BallEntity.Radius + MatchConfig.DistToPutBallHandling);
 			
 			var newPos : Point = cap.GetPos().add(dir);
 			
@@ -620,7 +616,7 @@ package Match
 			var team:Team = TheTeams[idPlayer];
 			team.UseSkill(idSkill);
 			
-			if (idPlayer != MatchMain.Ref.IdLocalUser)
+			if (idPlayer != MatchConfig.IdLocalUser)
 				Cutscene.ShowMensajeSkill(idSkill);
 			
 			// Hay algunas habilidades que las podemos aplicar directamente aqui, otras se evaluaran durante el resto del turno
@@ -628,7 +624,7 @@ package Match
 			{
 				// NOTE: Ademas modificamos lo que representa el quesito del interface, para que se adapte al tiempo que tenemos ahora,
 				// que puede ser superior al tiempo de turno del partido! Este valor se restaura al resetear el timeout
-				_Timeout += AppParams.ExtraTimeTurno;
+				_Timeout += MatchConfig.ExtraTimeTurno;
 				TheInterface.TurnTime = _Timeout;
 			}
 			else 
@@ -763,7 +759,7 @@ package Match
 		//
 		private function SaquePuerta(team:Team, reason:int) : void
 		{
-			if (!AppParams.OfflineMode)
+			if (!MatchConfig.OfflineMode)
 				this.SendPlayerReadyForSaque(Delegate.create(SaquePuertaAllReady, team, reason));
 			else
 				SaquePuertaAllReady(team, reason);
@@ -795,7 +791,7 @@ package Match
 		private function SaqueCentro(team:Team) : void
 		{
 			// Enviamos al servidor nuestro estamos listos! cuando todos estén listos nos llamarán a SaqueCentroAllReady
-			if (!AppParams.OfflineMode)
+			if (!MatchConfig.OfflineMode)
 				SendPlayerReadyForSaque(Delegate.create(SaqueCentroAllReady, team));				
 			else
 				SaqueCentroAllReady(team);
@@ -809,8 +805,8 @@ package Match
 			TheGamePhysics.StopSimulation();
 			
 			// Reseteamos el número de disparos disponibles para el jugador que tiene el turno
-			_RemainingHits = AppParams.MaxHitsPerTurn;
-			_RemainingPasesAlPie = AppParams.MaxNumPasesAlPie;
+			_RemainingHits = MatchConfig.MaxHitsPerTurn;
+			_RemainingPasesAlPie = MatchConfig.MaxNumPasesAlPie;
 			
 			// Colocamos el balón en el centro y los jugadores en la alineación correspondiente, detenemos cualquier simulación física
 			TheTeams[ Enums.Team1 ].ResetToCurrentFormation();
@@ -881,26 +877,26 @@ package Match
 		private function SetTurn(idTeam:int, reason:int) : void
 		{
 			// DEBUG: En modo offline nos convertimos en el otro jugador, para poder testear!
-			if (AppParams.OfflineMode == true)
-				MatchMain.Ref.IdLocalUser = idTeam;
+			if (MatchConfig.OfflineMode == true)
+				MatchConfig.IdLocalUser = idTeam;
 
 			// Guardamos la razón por la que hemos cambiado de turno
 			ReasonTurnChanged = reason;
 			
 			// Reseteamos el nº de subtiros
-			_RemainingHits = AppParams.MaxHitsPerTurn;
-			_RemainingPasesAlPie = AppParams.MaxNumPasesAlPie;
+			_RemainingHits = MatchConfig.MaxHitsPerTurn;
+			_RemainingPasesAlPie = MatchConfig.MaxNumPasesAlPie;
 			_IdxCurTeam = idTeam;
 			
 			// Mostramos un mensaje animado de cambio de turno
-			Cutscene.ShowTurn(idTeam, reason);
+			Cutscene.ShowTurn(reason, idTeam == MatchConfig.IdLocalUser);
 			
 			// Reseteamos el tiempo disponible para el subturno (time-out)
 			ResetTimeout();
 			
 			// Para colocar el portero solo se posee la mitad de tiempo!!
 			if (reason == Enums.TurnTiroAPuerta)
-				this._Timeout = this.Config.TimeToPlaceGoalkeeper;
+				this._Timeout = MatchConfig.TimeToPlaceGoalkeeper;
 			
 			// Para tirar a puerta solo se posee un tiro y se pierden todos los pases al pie
 			if (reason == Enums.TurnGoalKeeperSet)
@@ -954,12 +950,12 @@ package Match
 			// Calculamos el valor de control de la chapa que tiene el turno
 			var miControl:Number = attacker.Control;
 			if (attacker.OwnerTeam.IsUsingSkill(Enums.Furiaroja))
-				miControl *= AppParams.FuriaRojaMultiplier;
+				miControl *= MatchConfig.FuriaRojaMultiplier;
 						
 			// Calculamos el valor de defensa de la chapa contraria, la que intenta robar el balón, teniendo en cuenta las habilidades especiales
 			var suDefensa:Number = stealer.Defense;
 			if (stealer.OwnerTeam.IsUsingSkill(Enums.Catenaccio))
-				suDefensa *= AppParams.CatenaccioMultiplier;
+				suDefensa *= MatchConfig.CatenaccioMultiplier;
 
 			// Comprobamos si se produce el robo teniendo en cuenta sus parámetros de Defensa y Control
 			var stolen : Boolean = false;
@@ -1000,7 +996,7 @@ package Match
 			{
 				if (cap != null && cap.InsideCircle(TheBall.GetPos(), Cap.Radius + BallEntity.Radius + CurTeam.RadiusPase))
 				{
-					if (AppParams.AutoPasePermitido || cap != TheGamePhysics.ShooterCap)
+					if (MatchConfig.AutoPasePermitido || cap != TheGamePhysics.ShooterCap)
 						potential.push(cap);
 				}
 			}
@@ -1086,15 +1082,6 @@ package Match
 		}
 		
 		//
-		// Nuestro enemigo se ha desconectado en medio del partido. Nosotros hacemos una salida limpia
-		//
-		public function PushedOpponentDisconnected(result:Object) : void
-		{
-			_MatchResultFromServer = result;			
-			ChangeState(GameState.EndGame);
-		}
-		
-		//
 		// Cualquier saque (centro o puerta)
 		//
 		public function SendPlayerReadyForSaque(callbackOnAllPlayersReady:Function = null) : void
@@ -1122,26 +1109,30 @@ package Match
 			}
 		}
 		
-		//
 		// Sincronizamos el tiempo que queda de la mitad actual del partido con el servidor
-		//
-		public function SyncTime( remainingSecs:Number ) : void
+		public function OnClientSyncTime(remainingSecs:Number) : void
 		{
 			this._TimeSecs = remainingSecs;
 		}
 
-		//
-		// OnChatMsg: Recibimos un nuevo mensaje de chat desde el servidor
-		//
-		public function OnChatMsg(msg : String) : void
+		// Recibimos un nuevo mensaje de chat desde el servidor
+		public function OnClientChatMsg(msg : String) : void
 		{
 			// Simplemente dejamos que lo gestione el componente de chat
 			ChatLayer.AddLine(msg);
 		}
-				
+		
+		// Nuestro enemigo se ha desconectado en medio del partido. Nosotros hacemos una salida limpia
+		public function PushedOpponentDisconnected(result:Object) : void
+		{
+			_MatchResultFromServer = result;			
+			ChangeState(GameState.EndGame);
+		}
+		
+					
 		private function get IDString() : String 
 		{ 
-			return "MatchID: " + Config.MatchId + " LocalID: " + MatchMain.Ref.IdLocalUser + " "; 
+			return "MatchID: " + MatchConfig.MatchId + " LocalID: " + MatchConfig.IdLocalUser + " "; 
 		}
 		
 		static private function GetString(capList:Array) : String

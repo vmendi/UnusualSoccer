@@ -4,8 +4,6 @@
 		 width="50" height="50">
 		
 	<fx:Script><![CDATA[
-		import com.greensock.TweenNano;
-		
 		import spark.primitives.BitmapImage;
 				
 		[Bindable]
@@ -52,25 +50,14 @@
 			}
 		}
 		
-		// OLD OLD OLD
-		// Lo ideal sería poder hacer un clon rapido sin pasar por el mImage.source, que fuerza una recarga desde la red
-		// puesto que el source es un URLRequest. El problema es que el clon rapido implica el clonado del BitmapData, y
-		// el modelo de seguridad no lo permite a no ser que cargues un crossdomain.xml. Entonces, estas imagenes estan
-		// cargadas mediante redireccion a CDN, y solo se carga el crossdomain.xml del principal. Cargar los posibles xmls
-		// dependiendo del CDN que toque parece un movidon/error.
-		// Un tio al que le paso lo mismo:
-		// http://jessewarden.com/2009/03/handling-crossdomainxml-and-302-redirects-using-netstream.html
-		// OLD END
-		//
-		// NEW: Finalmente hemos implementado el movidon. Atencion al timer!
-		//
 		private function InnerLoad() : void
 		{	
 			mLoader = new Loader();
 			mLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, OnLoadComplete);
 			mLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, OnError);
 			mLoader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, OnError);
-			mLoader.load(new URLRequest("http://graph.facebook.com/"+mFacebookID+"/picture/?type="+mSize));
+			mLoader.load(new URLRequest("http://graph.facebook.com/"+mFacebookID+"/picture/?type="+mSize),
+						 new LoaderContext(true, ApplicationDomain.currentDomain, SecurityDomain.currentDomain));
 		}
 		
 		private function OnError(e:Event):void
@@ -85,41 +72,13 @@
 			if (loaderInfo.bytesLoaded != 0 && loaderInfo.bytesLoaded == loaderInfo.bytesTotal &&
 				mLoader != null && mLoader.contentLoaderInfo == loaderInfo)
 			{
-				// Esto nos indica cuándo se ha cargado con redireccion
-				if (!mLoader.contentLoaderInfo.childAllowsParent)
-				{
-					//if (mLoader.contentLoaderInfo.isURLInaccessible)	-> Comprobacion imposible en SDK 4.1 / Flash player 10.0
-					{
-						// oh my goodness...
-						Security.loadPolicyFile(mLoader.contentLoaderInfo.url + "crossdomain.xml");
-						
-						// Olvidamos este loader
-						ResetPreviousLoad();
-						
-						// Suponemos que 3 segundos es suficiente para que le de tiempo a cargar la policy.
-						// No, lamentablemente no hay forma de preguntarle de ninguna otra manera. En los docs sugieren hacer polling
-						// del childAllowsParent...
-						TweenNano.delayedCall(3, LoadPicture);	
-					}
-					/*
-					else
-					{
-						// Este caso no nos lo hemos encontrado, parece que el CDN de FB esta configurado siempre para que NO nos devuelva la URL completa
-						// de las fotos. De momento lo dejamos sin implementar a ver si ocurre alguna vez
-						ErrorMessages.LogToServer("Error horrible, la URL deberia ser inaccesible");
-					}
-					*/
-				}
-				else
-				{
-					mLoadersCache[mFacebookID+Size] = mLoader;
-					
-					var image : BitmapImage = new BitmapImage();					
-					image.source = mLoader.content;
-					image.smooth = true;
-					
-					addElement(image);
-				}
+				mLoadersCache[mFacebookID+Size] = mLoader;
+				
+				var image : BitmapImage = new BitmapImage();					
+				image.source = mLoader.content;
+				image.smooth = true;
+				
+				addElement(image);
 			}
 		}
 		

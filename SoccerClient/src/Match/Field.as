@@ -55,7 +55,7 @@ package Match
 			// Creamos la representacion visual
 			Visual = parent.addChild(new Assets.MatchAssets.Field()) as DisplayObjectContainer;
 			
-			if (!AppParams.DrawBackground)
+			if (!MatchConfig.DrawBackground)
 				Visual.visible = false;
 						
 			// Crea objetos físicos para gestionar el estadio
@@ -93,26 +93,26 @@ package Match
 		protected function CreatePhysicWalls() : void
 		{
 			// Todo lo que le entra a Box2D tiene que estar convertido a coords fisicas 
-			var sw:Number = AppParams.Screen2Physic( SizeX );
-			var sh:Number = AppParams.Screen2Physic( SizeY );	
-			var offsetX:Number = AppParams.Screen2Physic( OffsetX );
-			var offsetY:Number = AppParams.Screen2Physic( OffsetY );
+			var sw:Number = MatchConfig.Screen2Physic( SizeX );
+			var sh:Number = MatchConfig.Screen2Physic( SizeY );	
+			var offsetX:Number = MatchConfig.Screen2Physic( OffsetX );
+			var offsetY:Number = MatchConfig.Screen2Physic( OffsetY );
 			
 			// NOTE: La posición especificada para Box2D tanto en cajas como círculos siempre es el centro
-			var heightGoal:Number = AppParams.Screen2Physic( HeightGoal );
-			var halfHeightWithoutGoal:Number = AppParams.Screen2Physic( (SizeY - HeightGoal)/2 );
+			var heightGoal:Number = MatchConfig.Screen2Physic( HeightGoal );
+			var halfHeightWithoutGoal:Number = MatchConfig.Screen2Physic( (SizeY - HeightGoal)/2 );
 			var hc1:Number = offsetY + (halfHeightWithoutGoal/2);
-			var hc2:Number = offsetY + AppParams.Screen2Physic( SizeY ) - (halfHeightWithoutGoal/2);
+			var hc2:Number = offsetY + MatchConfig.Screen2Physic( SizeY ) - (halfHeightWithoutGoal/2);
 			var centerGoalLeft:Point = GetCenterGoal( Enums.Left_Side );
 			var centerGoalRight:Point = GetCenterGoal( Enums.Right_Side );
-			var halfBall:Number = AppParams.Screen2Physic( BallEntity.Radius/2 );
+			var halfBall:Number = MatchConfig.Screen2Physic( BallEntity.Radius/2 );
 			
-			var halfSizeSmallAreaX : Number = AppParams.Screen2Physic(SmallSizeAreaX / 2);
+			var halfSizeSmallAreaX : Number = MatchConfig.Screen2Physic(SmallSizeAreaX / 2);
 
 			var phy:QuickBox2D = MatchMain.Ref.Game.TheGamePhysics.TheBox2D;
 			var fillColor:int = 0xFF0000;
 			var fillAlpha:Number = 0;
-			if( AppParams.Debug )
+			if( MatchConfig.Debug )
 				fillAlpha = 0.5;
 			
 			// Utilizar detección de colisiones continua? Aunque son estaticos lo ponemos a true, por si acaso el motor lo tiene en cuenta
@@ -136,12 +136,12 @@ package Match
 			phy.addBox({x:offsetX + sw + halfGrosor, y:hc2, restitution:1, width:grosor, height:halfHeightWithoutGoal,  density:.0, fillColor: fillColor, fillAlpha: fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD});
 		
 			// Muros en las porterías para que sólo rebote las chapas y no el balón
-			phy.addBox({categoryBits:8, x: AppParams.Screen2Physic( centerGoalLeft.x ) - halfGrosor, y: AppParams.Screen2Physic( centerGoalLeft.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
-			phy.addBox({categoryBits:8, x: AppParams.Screen2Physic( centerGoalRight.x ) + halfGrosor, y: AppParams.Screen2Physic( centerGoalRight.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
+			phy.addBox({categoryBits:8, x: MatchConfig.Screen2Physic( centerGoalLeft.x ) - halfGrosor, y: MatchConfig.Screen2Physic( centerGoalLeft.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
+			phy.addBox({categoryBits:8, x: MatchConfig.Screen2Physic( centerGoalRight.x ) + halfGrosor, y: MatchConfig.Screen2Physic( centerGoalRight.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
 			
 			// Creamos los sensores para chequear el gol
-			GoalLeft = phy.addBox({isSensor: true, x: AppParams.Screen2Physic(centerGoalLeft.x) - halfGrosor - halfBall, y:AppParams.Screen2Physic( centerGoalLeft.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
-			GoalRight = phy.addBox({isSensor: true, x: AppParams.Screen2Physic(centerGoalRight.x) + halfGrosor + halfBall, y:AppParams.Screen2Physic( centerGoalRight.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
+			GoalLeft = phy.addBox({isSensor: true, x: MatchConfig.Screen2Physic(centerGoalLeft.x) - halfGrosor - halfBall, y:MatchConfig.Screen2Physic( centerGoalLeft.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
+			GoalRight = phy.addBox({isSensor: true, x: MatchConfig.Screen2Physic(centerGoalRight.x) + halfGrosor + halfBall, y:MatchConfig.Screen2Physic( centerGoalRight.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
 		}
 		
 		//

@@ -25,11 +25,11 @@ package Match
 				  mass: 3, 					// 0.04
 				  fixedRotation: true,		// If set to true the rigid body will not rotate.
 				  isBullet: true, 			// UseCCD: Detección de colisión continua
-				  radius:AppParams.Screen2Physic( Radius ), 
+				  radius:MatchConfig.Screen2Physic( Radius ), 
 				  isSleeping: true,
 				  allowSleep: true, 
-				  linearDamping: AppParams.BallLinearDamping, 
-				  angularDamping: AppParams.BallLinearDamping, 
+				  linearDamping: MatchConfig.BallLinearDamping, 
+				  angularDamping: MatchConfig.BallLinearDamping, 
 				  friction: .2, 
 				  restitution: .8 } );		// Fuerza que recupera en un choque (old: 0.4)
 			
@@ -59,7 +59,7 @@ package Match
 			var mcVisual : MovieClip = (_Visual as MovieClip);
 			var vel : b2Vec2 = PhyObject.body.GetLinearVelocity();
 			
-			var perimeter : Number = AppParams.Screen2Physic(Radius) * 2 * Math.PI;
+			var perimeter : Number = MatchConfig.Screen2Physic(Radius) * 2 * Math.PI;
 			var numFrames : Number = mcVisual.framesLoaded;
 			
 			mCurrentFrame += vel.Length() * elapsed * numFrames / perimeter;

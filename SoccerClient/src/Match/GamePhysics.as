@@ -52,11 +52,11 @@ package Match
 			// FRIM: Frame Rate Independent Motion
 			// True  = la velocidad de la máquina y del stage no afecta al resultado, siempre dura lo mismo
 			// False = La velocidad de la máquina y del stage afecta al resultado ya que cada iteración simplemente se avanza un paso. Buena para sincronía de red
-			TheBox2D = new QuickBox2D(parent, { debug: AppParams.DebugPhysic, iterations: AppParams.PhyFPS, timeStep: 1.0/MatchMain.Ref.stage.frameRate,frim: false });
+			TheBox2D = new QuickBox2D(parent, { debug: MatchConfig.DebugPhysic, iterations: MatchConfig.PhyFPS, timeStep: 1.0/MatchMain.Ref.stage.frameRate,frim: false });
 			TheBox2D.gravity = new b2Vec2( 0, 0 );
 			TheBox2D.createStageWalls( );
 			
-			if (AppParams.DragPhysicObjects)
+			if (MatchConfig.DragPhysicObjects)
 				TheBox2D.mouseDrag();
 			
 			_Contacts = TheBox2D.addContactListener();
@@ -205,7 +205,7 @@ package Match
 				
 				// Si excedemos la velocidad de 'falta' determinamos el tipo de falta
 				// Se considera falta sólo si el jugador ATACANTE no ha tocado previamente la pelota
-				if (vel >= AppParams.VelPossibleFault && !HasTouchedBall(attacker))
+				if (vel >= MatchConfig.VelPossibleFault && !HasTouchedBall(attacker))
 				{				
 					trace( "DETECTADA POSIBLE FALTA ENTRE 2 JUGADORES " + vel.toString());
 					
@@ -221,20 +221,20 @@ package Match
 						fault.SaquePuerta = true;
 						
 						// Evaluamos la gravedad de la falta. Para el portero la evaluación de tarjetas es más sensible!
-						if( vel < AppParams.VelFaultT1 )		// Falta normal, en el caso de al portero muy "leve"
+						if( vel < MatchConfig.VelFaultT1 )		// Falta normal, en el caso de al portero muy "leve"
 							trace ( "Resultado: falta normal" )
-						else if( vel < AppParams.VelFaultT2 )
+						else if( vel < MatchConfig.VelFaultT2 )
 							fault.AddYellowCard();				// Sacamos tarjeta amarilla (y roja si acumula 2)
 						else
 							fault.RedCard = true;				// Roja directa
 					}
 					else
 					{
-						if (vel < AppParams.VelFaultT1)			// La falta más leve en el caso general no es falta 
+						if (vel < MatchConfig.VelFaultT1)			// La falta más leve en el caso general no es falta 
 							fault = null;
-						else if( vel < AppParams.VelFaultT2 )	// falta normal. es el valor por defecto
+						else if( vel < MatchConfig.VelFaultT2 )	// falta normal. es el valor por defecto
 							trace ( "Resultado: falta normal" )
-						else if( vel < AppParams.VelFaultT3 )	// Sacamos tarjeta amarilla (y roja si acumula 2)
+						else if( vel < MatchConfig.VelFaultT3 )	// Sacamos tarjeta amarilla (y roja si acumula 2)
 							fault.AddYellowCard();
 						else									 
 							fault.RedCard = true;				// Roja directa	(maxima fuerza)	

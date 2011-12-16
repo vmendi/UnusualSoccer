@@ -13,7 +13,7 @@ package Match
 		
 		public function get PercentRestoredPerSecond() : Number
 		{
-			for each(var pairKeyVal : Array in AppParams.PercentSkilLRestoredPerSec)
+			for each(var pairKeyVal : Array in MatchConfig.PercentSkilLRestoredPerSec)
 			{
 				if (pairKeyVal[0] == SkillID)
 					return pairKeyVal[1];

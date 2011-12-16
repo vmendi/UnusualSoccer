@@ -103,7 +103,7 @@ package Match
 		{
 			// Obtenemos la dirección y la normalizamos a la distancia correcta 
 			var dir:Point = Direction;
-			dir.normalize( Cap.Radius + BallEntity.Radius + AppParams.DistToPutBallHandling );
+			dir.normalize( Cap.Radius + BallEntity.Radius + MatchConfig.DistToPutBallHandling );
 			var newPos:Point = Target.GetPos().add( dir );
 			
 			return( newPos );

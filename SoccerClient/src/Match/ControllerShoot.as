@@ -107,18 +107,18 @@ package Match
 			{
 				// Queremos calcular el lugar exacto al que llegará la chapa si no choca con nada
 				// Hacemos lo mismo que hace el Box2D
-				var impulse:Number = Force*AppParams.MaxCapImpulse;
+				var impulse:Number = Force*MatchConfig.MaxCapImpulse;
 				// Calculamos la velocidad inicial como lo hace el motor al aplicar un impulso
-				var v:Number = (1.0/AppParams.CapMass) * impulse;
+				var v:Number = (1.0/MatchConfig.CapMass) * impulse;
 				// Calculamos la modificación que la velocidad sufrirá en cada iteración por acción del linearDamping: b2Island.as line 188
-				var vmod:Number = b2Math.b2Clamp(1.0 - MatchMain.Ref.Game.TheGamePhysics.TheBox2D.timeStep * AppParams.CapLinearDamping, 0.0, 1.0);
+				var vmod:Number = b2Math.b2Clamp(1.0 - MatchMain.Ref.Game.TheGamePhysics.TheBox2D.timeStep * MatchConfig.CapLinearDamping, 0.0, 1.0);
 				var dist:Number = 0;
 				while (v > 0.01)
 				{
 					v *= vmod;
 					dist += (v * MatchMain.Ref.Game.TheGamePhysics.TheBox2D.timeStep);
 				}
-				dist *= AppParams.PixelsPerMeter;
+				dist *= MatchConfig.PixelsPerMeter;
 
 				var target : Point = Direction.clone();
 				target.normalize(dist)
@@ -153,8 +153,8 @@ package Match
 			var dir:Point = super.Direction;
 			var distance:Number = dir.length;
 			
-			var myScale : Number = maxLongLine / AppParams.MaxCapImpulse;
-			var myMaxLongLine : Number = ( AppParams.MinCapImpulse + ( (AppParams.MaxCapImpulse - AppParams.MinCapImpulse ) * ( _Target.Power / 100 ) ) ) * myScale;
+			var myScale : Number = maxLongLine / MatchConfig.MaxCapImpulse;
+			var myMaxLongLine : Number = ( MatchConfig.MinCapImpulse + ( (MatchConfig.MaxCapImpulse - MatchConfig.MinCapImpulse ) * ( _Target.Power / 100 ) ) ) * myScale;
 			
 			if ( distance > myMaxLongLine )
 			{
