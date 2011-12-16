@@ -2,13 +2,14 @@ package GameModel
 {
 	import GameView.ImportantMessageDialog;
 	
+	import Match.MatchMain;
+	
 	import NetEngine.InvokeResponse;
 	import NetEngine.NetPlug;
 	
 	import SoccerServer.MainService;
 	import SoccerServer.TransferModel.vo.Team;
 	
-	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.system.Security;
@@ -236,11 +237,11 @@ package GameModel
 			// Ya no estamos buscando
 			SwitchLookingForMatchResponded(false);
 
-			// Nosotros lanzamos la señal y alguien (RealtimeMatch.mxml) se encarga de cargarlo por fuera
+			// Nosotros lanzamos la señal y alguien (RealtimeMatch.mxml) se encarga de crearlo por fuera
 			MatchStarted.dispatch();
 		}
 		
-		public function OnMatchLoaded(match:DisplayObject) : void
+		public function OnMatchCreated(match:MatchMain) : void
 		{
 			if (mMatch != null)
 				throw "WTF";
@@ -248,14 +249,13 @@ package GameModel
 			mMatch = match;
 						
 			mMatch.addEventListener("OnMatchEnded", OnMatchEnded);					
-			(mMatch as Object).Init(mServerConnection, mMainModel.TheFormationModel.GetFormationsTransformedToMatch());
+			mMatch.Init(mServerConnection, mMainModel.TheFormationModel.GetFormationsTransformedToMatch());
 		}
 		
 		public function OnMatchEnded(e:GenericEvent) : void
 		{
 			mMatch.removeEventListener("OnMatchEnded", OnMatchEnded);
-			mMatch.root.loaderInfo.loader.unload();
-			mMatch = null;		
+			mMatch = null;
 			
 			// Refresco de por ejemplo el Ticket
 			mMainModel.TheTeamModel.RefreshTeam(null);
@@ -270,7 +270,7 @@ package GameModel
 		public function ForceMatchFinish() : void
 		{
 			if (mMatch != null)
-				(mMatch as Object).ForceMatchFinish();
+				mMatch.ForceMatchFinish();
 		}
 		
 		public function PushedMatchUnsync() : void
@@ -296,7 +296,7 @@ package GameModel
 		private var mURI : String;
 		private var mIsConnected : Boolean = false;
 		
-		private var mMatch : DisplayObject;
+		private var mMatch : MatchMain;
 		private var mRoomModel : RoomModel;
 		
 		private var mLocalRealtimePlayer : RealtimePlayer;		

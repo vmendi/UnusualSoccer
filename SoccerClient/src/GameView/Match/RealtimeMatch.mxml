@@ -3,11 +3,13 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 creationComplete="CreationCompleteHandler(event)"
-		 addedToStage="AddedToStageHandler(event)" preinitialize="PreinitializeHandler(event)">
+		 addedToStage="AddedToStageHandler(event)">
 	
 	
 	<fx:Script><![CDATA[
 		import GameModel.RealtimeModel;
+		
+		import Match.MatchMain;
 		
 		import mx.core.FlexGlobals;
 		import mx.events.FlexEvent;
@@ -20,35 +22,28 @@
 		}
 		
 		protected function AddedToStageHandler(event:Event):void
-		{	
-			mCentralLoader = new CentralLoader(CentralLoader.BaseURL());
-			mCentralLoader.Load("match.swf", true, OnMatchLoaded, FlexGlobals.topLevelApplication.loaderInfo.applicationDomain);
-		}
-		
-		protected function PreinitializeHandler(event:FlexEvent):void
-		{
-			mRealtimeModel = SoccerClient.GetMainGameModel().TheRealtimeModel;
-		}
-
-		private function OnMatchLoaded(loader:Loader) : void
 		{
 			GameMetrics.ReportEvent(GameMetrics.PLAY_MATCH);
 			
-			mMatchSWF = new UIComponentWrapper(loader);
-			this.addElement(mMatchSWF);
-		
+			mRealtimeModel = SoccerClient.GetMainGameModel().TheRealtimeModel;
+			
+			var theMatch : MatchMain = new MatchMain();
+			
+			mMatchWrapper = new UIComponentWrapper(theMatch);
+			
 			mRealtimeModel.MatchEnded.addOnce(OnMatchEnded);
-			mRealtimeModel.OnMatchLoaded(loader.content);
+			mRealtimeModel.OnMatchCreated(theMatch);
+			
+			this.addElement(mMatchWrapper);
 		}
-		
+				
 		private function OnMatchEnded(matchResult:Object):void
 		{
-			this.removeElement(mMatchSWF);
+			this.removeElement(mMatchWrapper);
 		}
 		
-		private var mMatchSWF : UIComponentWrapper = null
+		private var mMatchWrapper : UIComponentWrapper = null
 		private var mRealtimeModel : RealtimeModel;
-		private var mCentralLoader : CentralLoader;
 		
 	]]></fx:Script>
 	

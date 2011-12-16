@@ -282,9 +282,11 @@
 			
 			function onMatchLoaded(e:Event) : void
 			{
-				mMainGameModel.TheRealtimeModel.OnMatchLoaded(loader.content);
+				/*
+				mMainGameModel.TheRealtimeModel.OnMatchCreated(loader.content);
 				TweenMax.delayedCall(RandUtils.RandIntBetween(3, 5), forceMatchFinish);
 				loader = null;
+				*/
 			}
 			
 			function forceMatchFinish() : void

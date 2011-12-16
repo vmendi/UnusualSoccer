@@ -15,6 +15,7 @@
 			font-weight: bold;
 			embedAsCFF: true;
 		}
+		
 	</fx:Style>
 	<fx:Style source="styles.css" />
 	
@@ -31,6 +32,8 @@
 	</s:states>
 
 	<fx:Script><![CDATA[
+		import Assets.MatchAssets;
+		
 		import GameModel.MainGameModel;
 		
 		import GameView.Match.MatchEndDialog;

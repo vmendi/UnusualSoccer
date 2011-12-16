@@ -3,7 +3,6 @@
 	<name>SoccerClient</name>
 	<comment></comment>
 	<projects>
-		<project>Match</project>
 		<project>Utils</project>
 	</projects>
 	<buildSpec>
