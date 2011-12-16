@@ -37,7 +37,7 @@ package GameModel
 		}
 		static public function SetDefaultURI(v:String) : void { mDefaultURI = v; }
 		
-		// El partido está listo, podemos cargar match.swf, etc
+		// El partido está listo, la vista se tiene que encargar de añadirlo a la stage
 		public var MatchStarted : Signal = new Signal();
 		
 		// El partido ha acabado, el UI puede volver al manager.

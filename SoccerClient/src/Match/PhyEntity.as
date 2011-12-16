@@ -2,9 +2,7 @@ package Match
 {
 	import Box2D.Common.*;
 	import Box2D.Common.Math.*;
-	
-	
-	import com.actionsnippet.qbox.QuickObject;
+	import Box2D.actionsnippet.qbox.QuickObject;
 	
 	import flash.display.DisplayObjectContainer;
 	import flash.geom.Point;

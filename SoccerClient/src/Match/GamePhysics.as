@@ -2,8 +2,8 @@ package Match
 {
 	import Box2D.Common.Math.b2Vec2;
 	
-	import com.actionsnippet.qbox.QuickBox2D;
-	import com.actionsnippet.qbox.QuickContacts;
+	import Box2D.actionsnippet.qbox.QuickBox2D;
+	import Box2D.actionsnippet.qbox.QuickContacts;
 	import com.greensock.*;
 	
 	import flash.display.MovieClip;
