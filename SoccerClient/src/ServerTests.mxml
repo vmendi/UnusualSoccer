@@ -10,6 +10,8 @@
 		import GameModel.RealtimePlayer;
 		import GameModel.RoomModel;
 		
+		import Match.MatchMain;
+		
 		import NetEngine.InvokeResponse;
 		import NetEngine.NetPlug;
 		
@@ -28,6 +30,7 @@
 		
 		import utils.Delegate;
 		import utils.RandUtils;
+		import utils.UIComponentWrapper;
 		
 
 		public function ExecuteTest(testName : String) : void
@@ -566,6 +569,13 @@
 			{
 				SetLine(4, "Socket error: " + reason);
 			}	
+		}
+		
+		private function Test11() : void
+		{
+			var match : MatchMain = new MatchMain();
+			this.addElement(new UIComponentWrapper(match));
+			match.InitOffline();
 		}
 						
 		private function SetLine(indexOfLine : int, msg : String) : void

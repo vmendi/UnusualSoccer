@@ -2,48 +2,24 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
-		 creationComplete="CreationCompleteHandler(event)"
-		 addedToStage="AddedToStageHandler(event)">
-	
-	
+		 addedToStage="AddedToStageHandler(event)"
+		 removedFromStage="RemovedFromStageHandler(event)">
+		
 	<fx:Script><![CDATA[
-		import GameModel.RealtimeModel;
-		
-		import Match.MatchMain;
-		
-		import mx.core.FlexGlobals;
-		import mx.events.FlexEvent;
-		
-		import utils.CentralLoader;
 		import utils.UIComponentWrapper;
-
-		protected function CreationCompleteHandler(event:FlexEvent):void
-		{
-		}
-		
+	
 		protected function AddedToStageHandler(event:Event):void
 		{
 			GameMetrics.ReportEvent(GameMetrics.PLAY_MATCH);
 			
-			mRealtimeModel = SoccerClient.GetMainGameModel().TheRealtimeModel;
-			
-			var theMatch : MatchMain = new MatchMain();
-			
-			mMatchWrapper = new UIComponentWrapper(theMatch);
-			
-			mRealtimeModel.MatchEnded.addOnce(OnMatchEnded);
-			mRealtimeModel.OnMatchCreated(theMatch);
-			
-			this.addElement(mMatchWrapper);
-		}
-				
-		private function OnMatchEnded(matchResult:Object):void
-		{
-			this.removeElement(mMatchWrapper);
+			this.addElement(new UIComponentWrapper(SoccerClient.GetMainGameModel().TheRealtimeModel.TheMatch));
 		}
 		
-		private var mMatchWrapper : UIComponentWrapper = null
-		private var mRealtimeModel : RealtimeModel;
+		protected function RemovedFromStageHandler(event:Event):void
+		{
+			// Al pasar a otra pantalla queremos aseguranos que el partido es recolectado
+			this.removeAllElements();
+		}
 		
 	]]></fx:Script>
 	

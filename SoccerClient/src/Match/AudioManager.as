@@ -1,4 +1,4 @@
-package Match.Framework
+package Match
 {
 	import flash.media.Sound;
 	import flash.media.SoundChannel;

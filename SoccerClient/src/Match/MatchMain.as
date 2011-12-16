@@ -1,11 +1,5 @@
 package Match
 {	
-	import Assets.MatchAssets;
-	
-	import Match.Caps.AppParams;
-	import Match.Caps.Game;
-	import Match.Framework.AudioManager;
-	
 	import com.greensock.TweenMax;
 	
 	import flash.display.Sprite;
@@ -19,9 +13,8 @@ package Match
 		public var Connection:Object = null;					// Conexión con el servidor
 		public var IdLocalUser:int = -1;						// Identificador del usuario local
 		
-		public function get Game() : Match.Caps.Game { return _Game; }
-		public function get AudioManager() : Match.Framework.AudioManager { return _AudioManager; }
-		
+		public function get Game() : Match.Game { return _Game; }
+		public function get AudioManager() : Match.AudioManager { return _AudioManager; }
 		
 		// Unico singleton de todo el partido
 		static public function get Ref() : MatchMain {return Instance;}
@@ -29,24 +22,20 @@ package Match
 		public function MatchMain()
 		{			
 			Instance = this;
-			_AudioManager = new Match.Framework.AudioManager();
+			_AudioManager = new Match.AudioManager();
 			
 			addEventListener(Event.ENTER_FRAME, OnFrame);
+		}
+		
+		public function InitOffline() : void
+		{
+			AppParams.OfflineMode = true;
+			_Game = new Match.Game();
 			
-			/*
-			// Detectamos el modo offline e inicializamos en tal caso
-			if (this.loaderInfo.loaderURL.indexOf("file:") != -1)
-			{
-				AppParams.OfflineMode = true;
-				_Game = new Match.Caps.Game();
-				Match.Caps.InitOffline.Init();
-			}
-			else
-			{
-				// Esperamos la llamada al Init desde el manager
-				AppParams.OfflineMode = false;		
-			}
-			*/
+			Formations = InitOfflineData.Formations;
+			Game.InitFromServer((-1), InitOfflineData.GetDescTeam("Atlético"), 
+									  InitOfflineData.GetDescTeam("Sporting"),
+									  Enums.Team1, Game.Config.PartTime * 2, Game.Config.TurnTime, AppParams.ClientVersion);
 		}
 
 		//
@@ -54,8 +43,9 @@ package Match
 		// con el servidor. Se llama desde el manager.
 		//
 		public function Init(netConnection: Object, formations : Object): void
-		{	
-			_Game = new Match.Caps.Game();
+		{
+			AppParams.OfflineMode = false;
+			_Game = new Match.Game();
 
 			Formations = formations;
 			Connection = netConnection;
@@ -87,7 +77,6 @@ package Match
 		//
 		public function Shutdown(result : Object) : void
 		{
-			// Cerramos la conexión con el servidor
 			if (Connection != null)
 			{
 				Connection.RemoveClient(Game);
@@ -97,7 +86,7 @@ package Match
 			removeEventListener(Event.ENTER_FRAME, OnFrame);
 			AudioManager.Shutdown();
 			Game.TheGamePhysics.Shutdown();
-			TweenMax.killAll();			
+			TweenMax.killAll();
 
 			// Internamente nadie puede llamarnos mas
 			Instance = null;
@@ -116,8 +105,8 @@ package Match
 				Game.TheInterface.OnAbandonar(null);
 		}
 		
-		private var _Game : Match.Caps.Game;
-		private var _AudioManager : Match.Framework.AudioManager;
+		private var _Game : Match.Game;
+		private var _AudioManager : Match.AudioManager;
 		
 		static private var Instance:MatchMain = null;
 	}

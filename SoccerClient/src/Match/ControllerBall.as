@@ -1,4 +1,4 @@
-package Match.Caps
+package Match
 {
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -7,7 +7,6 @@ package Match.Caps
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
-	import Match.MatchMain;
 
 	//
 	// Se encarga del controlador para posicionar la pelota alrededor de la chapa

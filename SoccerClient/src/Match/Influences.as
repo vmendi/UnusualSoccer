@@ -1,6 +1,5 @@
-package Match.Caps
+package Match
 {
-	import Match.MatchMain;
 	
 	public final class Influences
 	{

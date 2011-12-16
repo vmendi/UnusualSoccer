@@ -1,13 +1,12 @@
-package Match.Caps
+package Match
 {
+	import Assets.MatchAssets;
+	
 	import Box2D.Common.*;
 	import Box2D.Common.Math.*;
 	
-	import Assets.MatchAssets;
-	
 	import Match.Framework.*;
-	import Match.MatchMain;
-		
+	
 	import com.greensock.*;
 	import com.greensock.plugins.RemoveTintPlugin;
 	
@@ -24,6 +23,9 @@ package Match.Caps
 	import flash.events.SecurityErrorEvent;
 	import flash.geom.Point;
 	import flash.net.URLRequest;
+	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
+	import flash.system.SecurityDomain;
 	import flash.utils.getTimer;
 	
 	public class Cap extends PhyEntity
@@ -293,14 +295,15 @@ package Match.Caps
 		}
 		
 		private function LoadFacebookPicture(facebookID : Number) : void
-		{
+		{	
 			if (facebookID != -1)
 			{
 				mFacebookPictureLoader = new Loader();
 				mFacebookPictureLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, OnLoadComplete);
 				mFacebookPictureLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, OnError);
 				mFacebookPictureLoader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, OnError);
-				mFacebookPictureLoader.load(new URLRequest("http://graph.facebook.com/"+facebookID+"/picture/?type=square"));
+				mFacebookPictureLoader.load(new URLRequest("http://graph.facebook.com/"+facebookID+"/picture/?type=square"),
+											new LoaderContext(true, ApplicationDomain.currentDomain, SecurityDomain.currentDomain));
 			}
 			
 			function OnLoadComplete(e:Event) : void

@@ -1,4 +1,4 @@
-package Match.Framework
+package Match
 {
 	//
 	// Manager de entidades. Tiene las siguientes características

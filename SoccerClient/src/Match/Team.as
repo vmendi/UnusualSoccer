@@ -1,8 +1,7 @@
-package Match.Caps
+package Match
 {
 	import Assets.MatchAssets;
 	import Match.Framework.*;
-	import Match.MatchMain;
 	
 	import com.greensock.*;
 	

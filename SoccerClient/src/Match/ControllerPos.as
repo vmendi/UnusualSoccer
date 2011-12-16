@@ -1,7 +1,5 @@
-package Match.Caps
+package Match
 {
-	import Match.Framework.Graphics;
-	import Match.MatchMain;
 	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;

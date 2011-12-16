@@ -1,10 +1,8 @@
-package Match.Caps
+package Match
 {
-	import Match.MatchMain;
-	
-	public class InitOffline
+	public class InitOfflineData
 	{
-		static private var Formations:Array =
+		static public var Formations:Array =
 			[
 				// Alineación defensiva 
 				[
@@ -41,51 +39,33 @@ package Match.Caps
 				]
 			]
 			
-		static public function Init() : void
+		static public function GetDescTeam(predefinedTeamName : String) : Object
 		{
-			var descTeam1:Object = { 
-				PredefinedTeamName: "Atlético",
+			var descTeam:Object = { 
+				PredefinedTeamName: predefinedTeamName,
 				SoccerPlayers: []
 			}
-			var descTeam2:Object = { 
-				PredefinedTeamName: "Sporting",
-				SoccerPlayers: []
-			}
-			
+						
 			for (var c:int=0; c < 8; ++c)
 			{
-				var descCap1:Object = { 
-					DorsalNumber: c+1,
-					Name: "Cap Team01 " + c,
-					Power: 100,
-					Control: 100,
-					Defense: 100,
-					FacebookID: 611084838,
-					IsInjured:c == 5
+				var descCap:Object = { 
+						DorsalNumber: c+1,
+						Name: "Cap " + predefinedTeamName + " " + c,
+						Power: 100,
+						Control: 100,
+						Defense: 100,
+						FacebookID: 611084838,
+						IsInjured:c == 5
 				};						
-				descTeam1.SoccerPlayers.push(descCap1);
-				
-				var descCap2:Object = { 
-					DorsalNumber: c+1,
-					Name: "Cap Team02 " + c,
-					Power: 100,
-					Control: 100,
-					Defense: 100,
-					FacebookID: 611084838,
-					IsInjured:c == 3
-				};						
-				descTeam2.SoccerPlayers.push(descCap2);					
+				descTeam.SoccerPlayers.push(descCap);
 			}
 			
 			// Forzosamente tienen que estar todas las habilidades disponibles para los dos equipos, por una cuestion de cómo
 			// se maneja el interfaz (es el mismo interfaz para los dos, los botones estan precreados no se conmuta segun el turno)
-			descTeam1.SpecialSkillsIDs = Enums.AllSkills;
-			descTeam2.SpecialSkillsIDs = Enums.AllSkills;
+			descTeam.SpecialSkillsIDs = Enums.AllSkills;
 			
-			MatchMain.Ref.Formations = Formations;
-			MatchMain.Ref.Game.InitFromServer((-1), descTeam1, descTeam2, Enums.Team1, 
-										  MatchMain.Ref.Game.Config.PartTime * 2, MatchMain.Ref.Game.Config.TurnTime, 
-										  AppParams.ClientVersion);
+			return descTeam;
 		}
+		
 	}
 }

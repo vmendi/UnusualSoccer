@@ -226,6 +226,8 @@ package GameModel
 		public function get LookingForMatch() : Boolean { return mLookingForMatch; }
 		public function set LookingForMatch(v:Boolean) : void { throw new Error("Use switch"); }
 		
+		// La vista necesitara añadirlo a la stage
+		public function get TheMatch() : MatchMain { return mMatch; }
 		
 		// Si el comienzo de partido viene de la aceptación de un challenge, firstClientID será siempre el aceptador, y
 		// secondClientID será el que lanzó el challenge
@@ -236,23 +238,25 @@ package GameModel
 			
 			// Ya no estamos buscando
 			SwitchLookingForMatchResponded(false);
+			
+			if (mMatch != null)
+				throw "WTF 543";
+			
+			mMatch = new MatchMain();			
+			mMatch.addEventListener("OnMatchEnded", OnMatchEnded);
+			mMatch.addEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage);
 
-			// Nosotros lanzamos la señal y alguien (RealtimeMatch.mxml) se encarga de crearlo por fuera
+			// Nosotros lanzamos la señal y alguien (RealtimeMatch.mxml) se encargara de añadirlo a la stage
 			MatchStarted.dispatch();
 		}
 		
-		public function OnMatchCreated(match:MatchMain) : void
+		private function OnMatchAddedToStage(e:Event) : void
 		{
-			if (mMatch != null)
-				throw "WTF";
-						
-			mMatch = match;
-						
-			mMatch.addEventListener("OnMatchEnded", OnMatchEnded);					
+			mMatch.removeEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage)
 			mMatch.Init(mServerConnection, mMainModel.TheFormationModel.GetFormationsTransformedToMatch());
 		}
 		
-		public function OnMatchEnded(e:GenericEvent) : void
+		private function OnMatchEnded(e:GenericEvent) : void
 		{
 			mMatch.removeEventListener("OnMatchEnded", OnMatchEnded);
 			mMatch = null;

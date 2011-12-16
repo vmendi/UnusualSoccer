@@ -1,4 +1,4 @@
-package Match.Caps
+package Match
 {
 	public final class Conflict
 	{

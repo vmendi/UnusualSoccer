@@ -1,4 +1,4 @@
-package Match.Framework
+package Match
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.geom.Point;

@@ -1,9 +1,8 @@
-package Match.Caps
+package Match
 {
 	import Assets.MatchAssets;
 	
 	import Match.Framework.*;
-	import Match.MatchMain;
 	
 	import flash.display.MovieClip;
 	import flash.geom.Point;
@@ -40,8 +39,8 @@ package Match.Caps
 		public var ReasonTurnChanged:int = (-1);				// Razón por la que hemos cambiado al turno actual		
 		public var FireCount:int = 0;							// Contador de jugadores expulsados durante el partido.
 
-		private var _Timer : Match.Framework.Time;
-		private var _Random : Match.Framework.Random;
+		private var _Timer : Match.Time;
+		private var _Random : Match.Random;
 		
 		private var _MatchResultFromServer : Object;
 		
@@ -128,7 +127,7 @@ package Match.Caps
 			
 			// TODO: Deberiamos utilizar una semilla envíada desde el servidor!!!
 			_Random = new Random(123);			
-			_Timer = new Match.Framework.Time();
+			_Timer = new Match.Time();
 
 			// Asignamos los tiempos del partido y turno
 			Config.MatchId = matchId;

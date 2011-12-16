@@ -1,10 +1,8 @@
-package Match.Framework
+package Match
 {
 	import Box2D.Common.*;
 	import Box2D.Common.Math.*;
 	
-	import Match.Caps.AppParams;
-	import Match.MatchMain;
 	
 	import com.actionsnippet.qbox.QuickObject;
 	

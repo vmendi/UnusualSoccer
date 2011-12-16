@@ -1,4 +1,4 @@
-package Match.Caps
+package Match
 {
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;

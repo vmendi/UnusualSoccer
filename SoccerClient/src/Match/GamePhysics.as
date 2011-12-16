@@ -1,9 +1,8 @@
-package Match.Caps
+package Match
 {
 	import Box2D.Common.Math.b2Vec2;
 	
 	import Match.Framework.*;
-	import Match.MatchMain;
 	
 	import com.actionsnippet.qbox.QuickBox2D;
 	import com.actionsnippet.qbox.QuickContacts;

@@ -1,8 +1,6 @@
-package Match.Caps
+package Match
 {
 	import Assets.MatchAssets;
-	import Match.MatchMain;	
-	import Match.Framework.Entity;
 	
 	import com.actionsnippet.qbox.QuickBox2D;
 	import com.actionsnippet.qbox.QuickObject;

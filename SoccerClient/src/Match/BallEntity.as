@@ -1,12 +1,10 @@
-package Match.Caps
+package Match
 {
 	import Box2D.Collision.Shapes.b2MassData;
 	import Box2D.Common.Math.b2Vec2;
 	
 	import Assets.MatchAssets;
-	import Match.MatchMain;
 	
-	import Match.Framework.PhyEntity;
 	
 	import flash.display.MovieClip;
 	import flash.geom.Point;

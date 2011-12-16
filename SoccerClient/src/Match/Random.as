@@ -1,4 +1,4 @@
-package Match.Framework
+package Match
 {
 	public class Random
 	{

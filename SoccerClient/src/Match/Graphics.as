@@ -1,4 +1,4 @@
-package Match.Framework
+package Match
 {
 	import flash.filters.BitmapFilter;
 	import flash.filters.BitmapFilterQuality;

@@ -1,9 +1,8 @@
-package Match.Caps
+package Match
 {
 	import Box2D.Common.Math.b2Math;
 	
 	import Match.Framework.*;
-	import Match.MatchMain;
 	
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;

@@ -1,9 +1,6 @@
-package Match.Caps
+package Match
 {
 	import Assets.MatchAssets;
-	
-	import Match.Framework.*;
-	import Match.MatchMain;
 	
 	import com.greensock.*;
 	
@@ -14,10 +11,6 @@ package Match.Caps
 	import flash.events.MouseEvent;
 	import flash.net.SharedObject;
 	import flash.text.Font;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
-	
-	import spark.components.Label;
 	
 	import utils.Delegate;
 	import utils.TimeUtils;
