@@ -3,7 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 creationComplete="CreationCompleteHandler(event)"
 		 xmlns:Team="GameView.Team.*" xmlns:GameView="GameView.*"
-		 width="356" height="212" xmlns:Competition="GameView.Competition.*">
+		 xmlns:Competition="GameView.Competition.*" xmlns:Match="GameView.Match.*">
 	
 	<fx:Style source="../styles.css"/>
 		
@@ -202,34 +202,46 @@
 		<s:State name="WinnerByAbandon"/>
 	</s:states>
 
-	<GameView:PopupBackground width="356" height="252" />
-
-	<s:Group x="2" y="122">
-		<s:Rect x="0" y="0" width="352" height="81" alpha="1">
-			<s:fill>
-				<s:SolidColor color="#353536"/>
-			</s:fill>
-		</s:Rect>
-		<s:Line x="175" yFrom="0" yTo="80">
-			<s:stroke>
-				<s:SolidColorStroke color="0x000000" weight="1"/>
-			</s:stroke>
-		</s:Line>
-	</s:Group>
+	<GameView:PopupBackground width="{MatchResultUtils.IsCompetition(mMatchResult) ? 500 : 352}" height="100%" />
+	<Match:EndDialogDivisionBadge x="0" y="0" Division="{mCompetitionModel.TheGroup.DivisionName}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" />
+	<s:Label y="53" horizontalCenter="0" text="{resourceManager.getString('main','MatchEndDialogCompPoints')}: {MatchResultUtils.GetCompetitionPoints(mMatchResult, mTeamModel)}" textAlign="center" styleName="yellowBoldBig" />
+	<s:Label top="15" horizontalCenter="0" text="{resourceManager.getString('main','MatchEndDialogCompetition')}" styleName="whiteBoldVeryBig" textAlign="center" />
 	
 	<s:Group visible="{MatchResultUtils.IsCompetition(mMatchResult)}">
-		<s:Label x="0" y="0" text="COMPETICION! TODO" textAlign="center" styleName="whiteBoldVeryBig" />
-		<Competition:DivisionBadge x="0" y="10" Division="{mCompetitionModel.TheGroup.DivisionName}" />
-		<!-- Si empate o ganador, le damos puntos de competicion -->
-		<s:Label x="0" y="20" text="{MatchResultUtils.GetCompetitionPoints(mMatchResult, mTeamModel)}" textAlign="center" styleName="whiteBoldVeryBig" 
-				 visible="{!MatchResultUtils.AmITheLoser(mMatchResult, mTeamModel)}"/>
+		
+		
+		<s:Group x="2" y="262">
+			<s:Rect x="0" y="0" width="352" height="81" alpha="1">
+				<s:fill>
+					<s:SolidColor color="#353536"/>
+				</s:fill>
+			</s:Rect>
+			<s:Line x="175" yFrom="0" yTo="80">
+				<s:stroke>
+					<s:SolidColorStroke color="0x000000" weight="1"/>
+				</s:stroke>
+			</s:Line>
+		</s:Group>
 	</s:Group>
 	
 	<s:Group visible="{!MatchResultUtils.IsCompetition(mMatchResult)}">
-		<s:Label x="0" y="0" text="¡AMISTOSO!" textAlign="center" styleName="whiteBoldVeryBig" />
-	</s:Group>
+		<s:Label top="15" horizontalCenter="0" text="{resourceManager.getString('main','MatchEndDialogFriendly')}" styleName="whiteBoldVeryBig" textAlign="center" />
+		<s:Group x="2" y="162">
+			<s:Rect x="0" y="0" width="352" height="81" alpha="1">
+				<s:fill>
+					<s:SolidColor color="#353536"/>
+				</s:fill>
+			</s:Rect>
+			<s:Line x="175" yFrom="0" yTo="80">
+				<s:stroke>
+					<s:SolidColorStroke color="0x000000" weight="1"/>
+				</s:stroke>
+			</s:Line>
+		</s:Group>
+	</s:Group>	
 	
-	<s:Group x="10" y="12" width="336" height="55">
+	
+	<s:Group x="10" y="{MatchResultUtils.IsCompetition(mMatchResult) ? 150 : 50}" width="336">
 		<s:layout><s:VerticalLayout gap="2" verticalAlign="middle"/></s:layout>
 		<s:Label width="100%" 
 				 text="{mTitular}" 
@@ -240,7 +252,7 @@
 				 textAlign="center" styleName="whiteBoldBig" id="PopupTexto" excludeFrom="Loser" />
 	</s:Group>
 	
-	<s:Group width="100%" y="77">
+	<s:Group width="100%" y="{MatchResultUtils.IsCompetition(mMatchResult) ? 217 : 117}">
 	
 		<s:Group x="15" y="0">
 			<GameView:BadgeTeam id="MyBadge0" />
@@ -282,7 +294,7 @@
 		
 	</s:Group>
 	
-	<s:Group left="20" right="20" y="216">
+	<s:Group left="20" right="20" bottom="15">
 		<s:layout><s:HorizontalLayout horizontalAlign="center" gap="20" /></s:layout>
 		<s:Button label="Publicar" click="PublicarClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" includeIn="Winner, WinnerByAbandon" />
 		<s:Button label="Continuar" label.Winner="Saltar" label.WinnerByAbandon="Saltar" 

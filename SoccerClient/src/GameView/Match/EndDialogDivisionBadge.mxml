@@ -21,12 +21,10 @@
 	]]></fx:Script>
 	
 	<mx:Image x="0" y="0" id="MyBitmap" visible="false" source="{resourceManager.getClass('main','CompetitionDivisionBadgeMC')}" />
-	<s:Label x="111" y="12" text="{resourceManager.getString('main','DivisionName'+Division)}" styleName="whiteBoldHuge" >
+	<s:Label y="82" width="118" horizontalCenter="0" text="{resourceManager.getString('main','DivisionName'+Division)}" styleName="whiteBoldMedium" textAlign="center" >
 		<s:filters>
-			<!--<s:DropShadowFilter angle="90" distance="1" blurX="0" blurY="0" color="0x636363" alpha="0.75" />-->
 			<s:GlowFilter id="glowNormal" strength="1" alpha="0.7" blurX="10" blurY="10" color="#FFFFFF"/>
 		</s:filters>
 	</s:Label>
-	<s:BitmapImage x="104" y="46" source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraLineaDivision')" fillMode="clip" />
 	
 </s:Group>
