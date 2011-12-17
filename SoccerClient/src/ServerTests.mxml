@@ -10,6 +10,8 @@
 		import GameModel.RealtimePlayer;
 		import GameModel.RoomModel;
 		
+		import Match.MatchMain;
+		
 		import NetEngine.InvokeResponse;
 		import NetEngine.NetPlug;
 		
@@ -28,6 +30,7 @@
 		
 		import utils.Delegate;
 		import utils.RandUtils;
+		import utils.UIComponentWrapper;
 		
 
 		public function ExecuteTest(testName : String) : void
@@ -246,52 +249,29 @@
 				
 				mMainGameModel.TheRealtimeModel.InitialConnection(onTime);
 			}
-						
+
 			function Loopa() : void
 			{
 				TweenMax.killAll();
 				TweenMax.delayedCall(1, onTime);
 			}
 			
-			function onMatchEnded(matchResult : Object) : void
-			{	
-				SetLine(2, "Partido finalizado " + numMatches);
-				numMatches++;
-				TweenMax.killDelayedCallsTo(forceMatchFinish);
-				Loopa();
-			}
-
 			function onMatchStarted() : void
 			{
 				SetLine(2, "Jugando partido " + numMatches);
 				TweenMax.killDelayedCallsTo(onTime);
-				
-				loader = new Loader();
-				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onMatchLoaded);
-				loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onError);
-				loader.load(new URLRequest("SoccerClient/Match.swf"));
+				addElementAt(new UIComponentWrapper(mMainGameModel.TheRealtimeModel.TheMatch), 0);
+				TweenMax.delayedCall(RandUtils.RandIntBetween(3, 5), mMainGameModel.TheRealtimeModel.ForceMatchFinish);
 			}
 			
-			function onError(e:Event):void
-			{
-				SetLine(2, "Error de carga");
-				mMainGameModel.TheRealtimeModel.Disconnect();
-				mMainGameModel = new MainGameModel();
-				startTest();
+			function onMatchEnded(matchResult : Object) : void
+			{	
+				SetLine(2, "Partido finalizado " + numMatches);
+				removeElementAt(0);
+				numMatches++;
+				Loopa();
 			}
 			
-			function onMatchLoaded(e:Event) : void
-			{
-				mMainGameModel.TheRealtimeModel.OnMatchLoaded(loader.content);
-				TweenMax.delayedCall(RandUtils.RandIntBetween(3, 5), forceMatchFinish);
-				loader = null;
-			}
-			
-			function forceMatchFinish() : void
-			{
-				mMainGameModel.TheRealtimeModel.ForceMatchFinish();
-			}
-
 			function onTime() : void
 			{	
 				var currentRoom : RoomModel = mMainGameModel.TheRealtimeModel.TheRoomModel;
@@ -564,6 +544,14 @@
 			{
 				SetLine(4, "Socket error: " + reason);
 			}	
+		}
+		
+		// El test del partido offline!
+		private function Test11() : void
+		{
+			var match : MatchMain = new MatchMain();
+			this.addElement(new UIComponentWrapper(match));
+			match.InitOffline();
 		}
 						
 		private function SetLine(indexOfLine : int, msg : String) : void

@@ -4,7 +4,7 @@
 puts "Hello World"
 
 $address = 'http://mahouligachapas.unusualwonder.com/TestForm.aspx'
-$address = 'http://localhost/'
+$address = 'http://apps.facebook.com/unusualsoccerlocal/'
 
 $testName = 'Test06'
 

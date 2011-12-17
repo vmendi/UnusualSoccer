@@ -2,13 +2,14 @@ package GameModel
 {
 	import GameView.ImportantMessageDialog;
 	
+	import Match.MatchMain;
+	
 	import NetEngine.InvokeResponse;
 	import NetEngine.NetPlug;
 	
 	import SoccerServer.MainService;
 	import SoccerServer.TransferModel.vo.Team;
 	
-	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.system.Security;
@@ -36,7 +37,7 @@ package GameModel
 		}
 		static public function SetDefaultURI(v:String) : void { mDefaultURI = v; }
 		
-		// El partido está listo, podemos cargar match.swf, etc
+		// El partido está listo, la vista se tiene que encargar de añadirlo a la stage
 		public var MatchStarted : Signal = new Signal();
 		
 		// El partido ha acabado, el UI puede volver al manager.
@@ -225,6 +226,8 @@ package GameModel
 		public function get LookingForMatch() : Boolean { return mLookingForMatch; }
 		public function set LookingForMatch(v:Boolean) : void { throw new Error("Use switch"); }
 		
+		// La vista necesitara añadirlo a la stage
+		public function get TheMatch() : MatchMain { return mMatch; }
 		
 		// Si el comienzo de partido viene de la aceptación de un challenge, firstClientID será siempre el aceptador, y
 		// secondClientID será el que lanzó el challenge
@@ -235,27 +238,28 @@ package GameModel
 			
 			// Ya no estamos buscando
 			SwitchLookingForMatchResponded(false);
+			
+			if (mMatch != null)
+				throw "WTF 543";
+			
+			mMatch = new MatchMain();			
+			mMatch.addEventListener("OnMatchEnded", OnMatchEnded);
+			mMatch.addEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage);
 
-			// Nosotros lanzamos la señal y alguien (RealtimeMatch.mxml) se encarga de cargarlo por fuera
+			// Nosotros lanzamos la señal y alguien (RealtimeMatch.mxml) se encargara de añadirlo a la stage
 			MatchStarted.dispatch();
 		}
 		
-		public function OnMatchLoaded(match:DisplayObject) : void
+		private function OnMatchAddedToStage(e:Event) : void
 		{
-			if (mMatch != null)
-				throw "WTF";
-						
-			mMatch = match;
-						
-			mMatch.addEventListener("OnMatchEnded", OnMatchEnded);					
-			(mMatch as Object).Init(mServerConnection, mMainModel.TheFormationModel.GetFormationsTransformedToMatch());
+			mMatch.removeEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage)
+			mMatch.Init(mServerConnection, mMainModel.TheFormationModel.GetFormationsTransformedToMatch());
 		}
 		
-		public function OnMatchEnded(e:GenericEvent) : void
+		private function OnMatchEnded(e:GenericEvent) : void
 		{
 			mMatch.removeEventListener("OnMatchEnded", OnMatchEnded);
-			mMatch.root.loaderInfo.loader.unload();
-			mMatch = null;		
+			mMatch = null;
 			
 			// Refresco de por ejemplo el Ticket
 			mMainModel.TheTeamModel.RefreshTeam(null);
@@ -270,7 +274,7 @@ package GameModel
 		public function ForceMatchFinish() : void
 		{
 			if (mMatch != null)
-				(mMatch as Object).ForceMatchFinish();
+				mMatch.ForceMatchFinish();
 		}
 		
 		public function PushedMatchUnsync() : void
@@ -296,7 +300,7 @@ package GameModel
 		private var mURI : String;
 		private var mIsConnected : Boolean = false;
 		
-		private var mMatch : DisplayObject;
+		private var mMatch : MatchMain;
 		private var mRoomModel : RoomModel;
 		
 		private var mLocalRealtimePlayer : RealtimePlayer;		

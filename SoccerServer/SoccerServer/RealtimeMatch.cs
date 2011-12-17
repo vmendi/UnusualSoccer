@@ -48,7 +48,7 @@ namespace SoccerServer
         Realtime MainRT = null;                                 // Objeto que nos ha creado
 
         int PlayerIdAbort = Invalid;                            // Jugador que ha abandonado el partido
-        bool IsMarkedToFinish = false;                          // Señal para terminar el partido
+        bool IsMarkedToAbort = false;                           // Señal para terminar el partido
 
         private float RemainingSecs = 0;		                // Tiempo en segundos que queda de la "mitad" actual del partido
         private int Part = 1;                                   // Mitad de juego en la que nos encontramos
@@ -231,12 +231,18 @@ namespace SoccerServer
         {
             ServerTime += elapsed;
 
-            // El partido ha sido marcado para finalizar. Notificamos a todos los clientes
-            if (IsMarkedToFinish)
+            // Abortar partido -> Es forzoso hacerlo dentro del tick. Notificamos a todos los clientes.
+            if (IsMarkedToAbort)
             {
-                Finish();
-                IsMarkedToFinish = false;
-                return;
+                LogEx("Match aborted");
+
+                RealtimeMatchResult result = MainRT.OnFinishMatch(this);
+
+                // Para el partido es como si el oponente se hubiera desconectado, no tiene necesidad de saber que es un OnAbort
+                Broadcast("PushedOpponentDisconnected", result);
+
+                IsMarkedToAbort = false;
+                CurState = State.End;
             }
 
             switch (CurState)
@@ -273,8 +279,7 @@ namespace SoccerServer
                         }
                         else if (Part == 2)
                         {
-                            // Finalizamos el partido, obtenemos el MatchResult y se lo mandamos a los clientes
-                            RealtimeMatchResult result = NotifyOwnerFinishMatch();
+                            RealtimeMatchResult result = MainRT.OnFinishMatch(this);
 
                             Broadcast("OnClientFinishPart", Part, result);
                             CurState = State.End;
@@ -283,7 +288,7 @@ namespace SoccerServer
 
                     // Cada X segundos sincronizamos el tiempo con los clientes
                     if (((int)RemainingSecs) % 10 == 0)
-                        this.Broadcast("SyncTime", RemainingSecs);
+                        this.Broadcast("OnClientSyncTime", RemainingSecs);
                 }
                     break;
                 case State.End:
@@ -535,7 +540,7 @@ namespace SoccerServer
             // Mientras estamos esperando al saque inicial no permitimos chateo, puede haber uno de los clientes que esta inicializando todavia.
             // Cuando se ha acabado ya el tiempo tampoco, a un cliente le puede haber dado tiempo a salir.
             if (CurState != State.WaitingForSaqueInicial && CurState != State.End)
-                Broadcast("OnChatMsg", msg);
+                Broadcast("OnClientChatMsg", msg);
         }
 
         // 
@@ -548,8 +553,8 @@ namespace SoccerServer
             // Almacenamos el jugador que abandonó el partido
             PlayerIdAbort = playerId;
 
-            // Marcamos el partido para que termine
-            MarkToFinish();
+            // Marcamos el partido para que termine en el proximo tick
+            IsMarkedToAbort = true;
         }
 
         #region Aux
@@ -571,41 +576,6 @@ namespace SoccerServer
         private void Invoke(int idPlayer, string method, params object[] args)
         {
             Players[idPlayer].TheConnection.Invoke(method, args);
-        }
-
-        //
-        // Finaliza el partido y notifica a todos los clientes y a nuestro creador
-        // NOTE: Este método no puede llamarse desde la respuesta a un evento. Debe llamarse desde el Tick
-        // NOTE: Pasamos por este finish tanto cuando un usuario aborta de forma manual, pero no cuando termina el
-        // partido de forma normal
-        //
-        private void Finish()
-        {
-            LogEx("Match finished ");
-
-            // Notificamos a nuestro creador que el partido ha terminado
-            RealtimeMatchResult result = NotifyOwnerFinishMatch();
-
-            // Notificamos a todos los clientes que el partido ha terminado y les envíamos el resultado
-            Broadcast("Finish", result);
-        }
-
-        // 
-        // Marca el partido para terminar en el próximo tick de ejecución
-        //
-        private void MarkToFinish()
-        {
-            LogEx("Match marked to finish: ");
-            IsMarkedToFinish = true;
-        }
-
-        //
-        // Notifica al owner que ha terminado el partido y retorna el resultado
-        // NOTE: Este método no puede llamarse desde la respuesta a un evento. Debe llamarse desde el Tick
-        //
-        private RealtimeMatchResult NotifyOwnerFinishMatch()
-        {
-            return (MainRT.OnFinishMatch(this));
         }
 
         #endregion
