@@ -26,7 +26,7 @@ package Match
 		public var TurnTime:Number = 0;							// Tiempo que representa la tartita contadora de timeout del interface
 		
 		// Parámetros visuales de la flecha que se pinta para disparar
-		private const MAX_LONG_SHOOT:Number = 80;
+		private const MAX_LONG_SHOOT:Number = 160;
 		private const COLOR_SHOOT:uint = 0xE97026;
 		private const COLOR_HANDLEBALL:uint = 0x2670E9;
 		private const THICKNESS_SHOOT:uint = 7;
@@ -44,11 +44,9 @@ package Match
 			CreateSpecialSkillButtons(MatchMain.Ref.Game.GUILayer);
 
 			// Inicializamos los controladores (disparo, balón, posición)
-			var lineLength:Number = Cap.Radius + BallEntity.Radius + MatchConfig.DistToPutBallHandling;			
-			
 			ShootControl = new ControllerShoot(ControllerCanvas, MAX_LONG_SHOOT, COLOR_SHOOT, THICKNESS_SHOOT);
-			BallControl = new ControllerBall(ControllerCanvas, lineLength, COLOR_HANDLEBALL, THICKNESS_SHOOT);
-			PosControl = new ControllerPos(ControllerCanvas, lineLength, COLOR_HANDLEBALL, THICKNESS_SHOOT);
+			BallControl = new ControllerBall(ControllerCanvas, Cap.Radius + BallEntity.Radius + MatchConfig.DistToPutBallHandling, COLOR_HANDLEBALL, THICKNESS_SHOOT);
+			PosControl = new ControllerPos(ControllerCanvas, COLOR_HANDLEBALL);
 			
 			ShootControl.OnStop.add(OnStopControllerShoot);
 			BallControl.OnStop.add(OnStopControllerBall);
@@ -150,14 +148,14 @@ package Match
 			var Gui:* = MatchMain.Ref.Game.TheField.Visual;
 			if (bMuted)
 			{
-				MatchMain.Ref.AudioManager.Mute(true);
+				MatchMain.Ref.Game.TheAudioManager.Mute(true);
 				
 				Gui.SoundButton.BotonOn.visible = false;
 				Gui.SoundButton.BotonOff.visible = true;
 			}
 			else
 			{
-				MatchMain.Ref.AudioManager.Mute(false);
+				MatchMain.Ref.Game.TheAudioManager.Mute(false);
 				
 				Gui.SoundButton.BotonOn.visible = true;
 				Gui.SoundButton.BotonOff.visible = false;

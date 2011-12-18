@@ -14,20 +14,16 @@ package Match
 	public class ControllerPos extends Controller
 	{
 		private var canvas        : Sprite;
-		private var maxLongLine   : uint;
 		private var colorLine	  : uint;
 		private var thickness	  : uint;
 		
 		private const BLACK    	  : uint = 0x000000;
 		
-		
-		public function ControllerPos( canvas:Sprite, maxLongLine: uint, colorLine: uint = 0, thickness: uint = 1 )		
+		public function ControllerPos(canvas:Sprite, colorLine: uint = 0)		
 		{
-			this.maxLongLine = maxLongLine;
-			this.canvas 	 = canvas;
-			this.thickness   = thickness;
-			
-			( colorLine == 0 ) ? this.colorLine = BLACK : this.colorLine = colorLine;
+			this.canvas = canvas;
+						
+			(colorLine == 0) ? this.colorLine = BLACK : this.colorLine = colorLine;
 		}
 		
 		//
@@ -38,7 +34,7 @@ package Match
 			super.Start( _cap );
 			
 			// Activamos la parte visual
-			if( Target != null && Target.Ghost != null )
+			if (Target != null && Target.Ghost != null)
 			{
 				// Recolocamos el Ghost y lo hacemos visible
 				Target.Ghost.SetPos( EndPos );
@@ -59,7 +55,7 @@ package Match
 				   MatchMain.Ref.Game.TheField.IsCircleInsideSmallArea( EndPos, 0, this.Target.OwnerTeam.Side);
 		}
 		
-		public override function Stop( reason:int ):void
+		public override function Stop(reason:int):void
 		{
 			super.Stop(reason);
 			
@@ -77,21 +73,18 @@ package Match
 			super.MouseUp(e);
 		}
 		
-		//
-		//
-		//
 		public override function MouseMove( e: MouseEvent ) :void
 		{
 			super.MouseMove( e );
 			
 			// Obtenemos punto inicial y final de la linea de dirección
-			var source:Point = new Point( xInit, yInit);
+			var source:Point = _TargetPos.clone();
 			var target:Point = EndPos;
 			
 			// Seleccionamos un color para la linea diferente en función de si la posición final
 			// es válida o no
 			var color:uint = colorLine;
-			if( !this.IsValid () )
+			if (!this.IsValid())
 				Graphics.ChangeColorMultiplier( Target.Ghost.Visual, 1.0, 0.4, 0.4 );
 			else
 				Graphics.ChangeColorMultiplier( Target.Ghost.Visual, 1.0, 1.0, 1.0 );
@@ -109,10 +102,7 @@ package Match
 			var dir:Point = Direction;
 			var newPos:Point = Target.GetPos().add( dir );
 			
-			return( newPos );
+			return newPos;
 		}
-		
-		
-		
 	}
 }

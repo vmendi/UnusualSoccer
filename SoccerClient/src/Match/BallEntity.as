@@ -1,10 +1,9 @@
 package Match
 {
-	import Box2D.Collision.Shapes.b2MassData;
-	import Box2D.Common.Math.b2Vec2;
-	
 	import Assets.MatchAssets;
 	
+	import Box2D.Collision.Shapes.b2MassData;
+	import Box2D.Common.Math.b2Vec2;
 	
 	import flash.display.MovieClip;
 	import flash.geom.Point;
@@ -21,17 +20,17 @@ package Match
 			// Inicializamos la entidad
 			super(MatchAssets.BallAnimated, parent, PhyEntity.Circle, {
 				  categoryBits:4,
-				  maskBits: 1 + 2 + 4,		// Choca con todo excepto con BackPorteria (que tiene categoryBits==8)
-				  mass: 3, 					// 0.04
-				  fixedRotation: true,		// If set to true the rigid body will not rotate.
-				  isBullet: true, 			// UseCCD: Detección de colisión continua
+				  maskBits: 1 + 2 + 4,			// Choca con todo excepto con BackPorteria (que tiene categoryBits==8)
+				  mass: MatchConfig.BallMass, 	// 0.04
+				  fixedRotation: true,			// If set to true the rigid body will not rotate.
+				  isBullet: true, 				// UseCCD: Detección de colisión continua
 				  radius:MatchConfig.Screen2Physic( Radius ), 
 				  isSleeping: true,
 				  allowSleep: true, 
 				  linearDamping: MatchConfig.BallLinearDamping, 
 				  angularDamping: MatchConfig.BallLinearDamping, 
 				  friction: .2, 
-				  restitution: .8 } );		// Fuerza que recupera en un choque (old: 0.4)
+				  restitution: .8 } );		// Fuerza que recupera en un choque
 			
 			// Reasignamos la escala del balón, ya que la física lo escala para que encaje con el radio físico asignado
 			this.Visual.scaleX = 1.0;

@@ -14,24 +14,24 @@ package Match
 		public static const SuccessMouseUp:int = 0;			// Finalizó terminando la operación (Mouse Up)
 		public static const Canceled:int = 1;				// Finalizó por cancelación (Llamada externa al stop)
 		
-		protected var _Target:Cap = null; 
-		protected var xInit:Number; 						// X origen donde han pulsado en coordenadas del stage
-		protected var yInit:Number; 						// Y origen donde han pulsado en coordenadas del stage
-		protected var _IsStarted:Boolean = false;
-		
 		// Eventos		
 		public var OnStart:Signal = new Signal();			// Evento lanzado cuanto el controlador se arranca
 		public var OnStop:Signal = new Signal( int );		// Evento lanzado cuanto el controlador se detiene por cualquier razón
+		
+		// Estamos entre un Start y un Stop?
+		public function get IsStarted() : Boolean	{	return _IsStarted; 	}
+		
+		// Chapa sobre la que se esta aplicando el controlador
+		public function get Target() : Cap	{ return _Target; }
+		
 		
 		//
 		// Arranca el sistema de control direccional con el ratón
 		//
 		public function Start(_cap: Cap): void					
 		{	
-			this._Target = _cap;
-			
-			xInit = _Target.GetPos().x;
-			yInit = _Target.GetPos().y;					
+			_Target = _cap;
+			_TargetPos = _Target.GetPos().clone();								
 			
 			// Nos registramos a los eventos de entrada de todo el flash
 			AddHandlers(_Target.Visual.stage);
@@ -39,7 +39,7 @@ package Match
 			_IsStarted = true;
 			
 			// lanzamos evento
-			OnStart.dispatch( );
+			OnStart.dispatch();
 		}
 		
 		//
@@ -48,7 +48,7 @@ package Match
 		public function Stop( reason:int ):void
 		{
 			// Nos desregistramos de los eventos de entrada 
-			RemoveHandlers( _Target.Visual.stage );
+			RemoveHandlers(_Target.Visual.stage);
 			
 			// Indicamos que estamos detenidos
 			_IsStarted = false;
@@ -80,25 +80,13 @@ package Match
 			}
 		}
 		
-		//
-		// Verifica si el controlador tiene unos valores válidos
-		//
-		public function IsValid() : Boolean
-		{
-			return true;
-		}
-
+		// Verifica si el controlador tiene unos valores válidos (para overrides en hijos)
+		public function IsValid() : Boolean	{ return true; }
 		
-		//
 		// Botón del ratón presionado
-		//
-		public function MouseDown( e: MouseEvent ) :void
-		{
-		}
+		public function MouseDown( e: MouseEvent ) :void { }
 		
-		//
 		// El botón del ratón se ha levantado
-		// 
 		public function MouseUp( e: MouseEvent ) :void
 		{
 			Stop( SuccessMouseUp );
@@ -106,40 +94,22 @@ package Match
 		
 		public function MouseMove( e: MouseEvent ) :void
 		{
-			e.updateAfterEvent( );
+			e.updateAfterEvent();
 		}
 		
-		// Indica si está funcionando el sistema de control direccional
-		public function get IsStarted( ) : Boolean
-		{
-			return _IsStarted;
-		}
-		// Indica si está funcionando el sistema de control direccional
-		public function get Target( ) : Cap
-		{
-			return _Target;
-		}
-		
-		//
-		// Obtenemos el vector de dirección del disparo
-		// NOTE: El vector estará truncado a una longitud máxima de maxLongLine 
-		// 
-		public function get Direction(  ) : Point
-		{
-			//trace( "Chapa (parent): " + _Target.Visual.parent.name + " XY Chapa: " +  _Target.Visual.x + ", " + _Target.Visual.y + "MouseXY " +  _Target.Visual.mouseX + ", " + _Target.Visual.mouseY );
-			
+		// Vector que va desde el centro del Target a las coordenadas actuales del raton
+		public function get Direction() : Point
+		{			
 			// 
 			// MouseX, MouseY es relativo a espacio de transformación del DisplayObject sobre el cual lo pedimos
-			// NOTE: Relativo a su espacio implica que tambien tiene en cuenta la ROTACIÓN, escala y posición
-			// Con lo cual para hacerlo independiente cogemos el padre de la chapa
-			//
+			// TargetPos fue pedida respecto al padre (GetPos), asi que para ambas coordenadas esten en el mismo espacio:
 			var relativeTo:DisplayObject = _Target.Visual.parent;
-			var dir:Point = new Point( (relativeTo.mouseX - xInit), (relativeTo.mouseY - yInit) );
 			
-			//var dir:Point = new Point( (_Target.Visual.mouseX - xInit), (_Target.Visual.mouseY - yInit) );
-			//var dir:Point = new Point( _Target.Visual.mouseX, _Target.Visual.mouseY );
-			return( dir );
-		}
+			return new Point((relativeTo.mouseX - _TargetPos.x), (relativeTo.mouseY - _TargetPos.y));
+		}		
 		
+		protected var _Target:Cap; 
+		protected var _TargetPos:Point;
+		protected var _IsStarted:Boolean = false;		
 	}		
 }

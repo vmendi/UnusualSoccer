@@ -5,7 +5,7 @@ package Match
 		public static var 	MatchId:int = -1;					// Identificador del partido en el servidor
 		public static var 	IdLocalUser:int = -1;				// Identificador del usuario local (a quien controlamos nosotros desde el cliente)
 		public static var 	PartTime:Number = 240.0;			// Tiempo que dura cada parte (en segundos)
-		public static var 	TurnTime:Number = 15.0;				// Tiempo máximo que dura cada sub-turno (en segundos)
+		public static var 	TurnTime:Number = 150.0;			// Tiempo máximo que dura cada sub-turno (en segundos)
 		
 		public static var	Debug:Boolean = false;				// Indica que estamos en modo debug. Se habilitan trucos/trazas y similares
 		public static var   OfflineMode:Boolean = false;		// Arranque directo sin manager. No se hace caso a este valor, se detecta y se settea automaticamente.
@@ -19,11 +19,11 @@ package Match
 		public static const PhyFPS:int = 30;					// La física se ejecuta 30 veces por segundo
 		public static const PixelsPerMeter:uint = 30;			// 30 píxeles es igual a 1 metro físico
 		
-		public static const RadiusPaseAlPie:int = 14; //30;		// El radio en el cual si se queda la pelota despúes de chocar contigo, se queda en tu pie
-		public static const RadiusSteal:int = 20; //25;			// El radio de robo  
+		public static const RadiusPaseAlPie:int = 14;			// El radio en el cual si se queda la pelota despúes de chocar contigo, se queda en tu pie
+		public static const RadiusSteal:int = 20; 				// El radio de robo  
 				
-		public static const MinCapImpulse:Number = 160.0;		// Intensidad MÁXIMA que se le aplica a una chapa cuando se dispara a la máxima potencia (con una chapa de potencia 0)
-		public static const MaxCapImpulse:Number = 225.0;		// Intensidad MÁXIMA que se le aplica a una chapa cuando se dispara a la máxima potencia (con una chapa de potencia 100)
+		public static const LowCapMaxImpulse:Number = 160.0;	// Maximo impulso para una chapa de POTENCIA 0 cuando se dispara a la máxima potencia
+		public static const HighCapMaxImpulse:Number = 225.0;	// Maximo impulso para una chapa de POTENCIA 100 cuando se dispara a la máxima potencia
 		
 		public static const MaxHitsPerTurn:int = 2;				// Nº de disparos máximos por turno si no se toca la pelota
 		public static const MaxNumPasesAlPie:int = 2;			// No de pases al pie máximos permitidos
@@ -32,10 +32,10 @@ package Match
 		
 		public static const AutoPasePermitido:Boolean = true;	// La chapa con la que se dispara puede recibir pase al pie despues de tocar el balon
 		
-		public static const CapMass:int = 4;
-		public static const CapLinearDamping:int = 5;
-		public static const BallMass:int = 3;
-		public static const BallLinearDamping:int = 3;
+		public static const CapMass:Number = 4;
+		public static const CapLinearDamping:Number = 5;
+		public static const BallMass:Number = 3;
+		public static const BallLinearDamping:Number = 3;
 		
 		// Porcentaje de la skill restaurado por segundo para cada habilidad
 		public static var PercentSkilLRestoredPerSec:Array = [

@@ -2,7 +2,6 @@ package Match
 {
 	import Assets.MatchAssets;
 	
-	
 	import com.greensock.TweenMax;
 	
 	import flash.display.DisplayObject;
@@ -11,7 +10,6 @@ package Match
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.text.TextField;
-	import flash.text.TextFormat;
 	
 	import utils.MovieClipMouseDisabler;
 

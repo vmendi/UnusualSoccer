@@ -168,16 +168,10 @@ package Match
 		//
 		public function Shoot(dir:Point, force:Number) : void
 		{
-			// Calculamos el vector final
-			var vecForce:Point = new Point();
-			dir.normalize( force * MatchConfig.MaxCapImpulse );
-			
-			// El vector de fuerza lo aplicamos en el sentido contrario, ya que funciona como una goma elástica
-			vecForce.x = -dir.x; 
-			vecForce.y = -dir.y;
-			
-			// Aplicamos el impulso al cuerpo físico
-			PhyObject.body.ApplyImpulse( new b2Vec2( vecForce.x, vecForce.y ), PhyObject.body.GetWorldCenter() );
+			dir.normalize(force * MatchConfig.HighCapMaxImpulse);
+						
+			// El impulso lo aplicamos en sentido contrario, ya que funciona como una goma elástica
+			PhyObject.body.ApplyImpulse(new b2Vec2(-dir.x, -dir.y), PhyObject.body.GetWorldCenter());
 		}
 		
 		//
