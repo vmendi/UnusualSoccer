@@ -20,8 +20,8 @@
 		
 	]]></fx:Script>
 	
-	<mx:Image x="0" y="0" id="MyBitmap" visible="false" source="{resourceManager.getClass('main','CompetitionDivisionBadgeMC')}" />
-	<s:Label y="82" width="118" horizontalCenter="0" text="{resourceManager.getString('main','DivisionName'+Division)}" styleName="whiteBoldMedium" textAlign="center" >
+	<mx:Image x="0" y="0" id="MyBitmap" visible="false" source="{resourceManager.getClass('main','CompetitionDivisionBadgeMC')}" scaleX="0.8" scaleY="0.8"  />
+	<s:Label y="82" horizontalCenter="0" text="{resourceManager.getString('main','DivisionName'+Division)}" styleName="whiteBoldMedium" textAlign="center" >
 		<s:filters>
 			<s:GlowFilter id="glowNormal" strength="1" alpha="0.7" blurX="10" blurY="10" color="#FFFFFF"/>
 		</s:filters>
