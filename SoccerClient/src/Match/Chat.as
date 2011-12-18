@@ -101,7 +101,7 @@ package Match
 		{
 			if (msg != "")
 			{
-				msg = MatchMain.Ref.Game.LocalUserTeam.UserName + "> " + msg;
+				msg = MatchMain.Ref.Game.LocalUserTeam.Name + "> " + msg;
 				MatchMain.Ref.Connection.Invoke("OnMsgToChatAdded", null, msg);
 			}
 		}

@@ -126,22 +126,37 @@ package Match
 			_Canvas.graphics.lineTo(destination.x, destination.y);
 		}
 		
-		// Obtenemos el vector de dirección del disparo, evitando que sobrepase nuestra longitud máxima: 
-		// Una chapa con 100 de power dara HighCapMaxImpulse como maximo. Una chapa con 0 de power dara LowCapMaxImpulse como maximo 
+		private const STAGE_MARGIN : Number = 15;
+		
+		// Obtenemos el vector de dirección del disparo, evitando que sobrepase nuestra longitud máxima 
 		public override function get Direction() : Point
 		{
-			// TODO: Clampeamos segun el margin
-			var dir:Point = super.Direction;
-									
+			// Clampeamos contra los 4 borders
+			var theCap : DisplayObject = _Target.Visual;
+			var theCapParent:DisplayObject = _Target.Visual.parent;
+			
+			var stageWidth : Number = theCap.stage.stageWidth;
+			var stageHeight : Number = theCap.stage.stageHeight;
+			
+			var dir : Point = new Point((theCapParent.mouseX - _TargetPos.x), (theCapParent.mouseY - _TargetPos.y));
+			var theCapPos : Point = theCap.localToGlobal(new Point(0,0));
+			
+			// Dir es el segmento que va desde la chapa hasta el raton, lo vamos clippeando contra cada uno de los bordes
+			dir = ClipAgainstBorder(theCapPos, dir, new Point(STAGE_MARGIN, STAGE_MARGIN), 			   new Point(0, 1));
+			dir = ClipAgainstBorder(theCapPos, dir, new Point(stageWidth-STAGE_MARGIN, STAGE_MARGIN),  new Point(0, 1));
+			dir = ClipAgainstBorder(theCapPos, dir, new Point(STAGE_MARGIN, STAGE_MARGIN), 			   new Point(1, 0));
+			dir = ClipAgainstBorder(theCapPos, dir, new Point(STAGE_MARGIN, stageHeight-STAGE_MARGIN), new Point(1, 0));
+								
 			// Clampeamos segun la potencia de la chapa (en 100 clampearemos a _MaxLongLine, en 0 clampearemos al ratio Low/High * _MaxLongLine)
-			var myMaxLongLine : Number = PowerAdjustedMaxLongLine;
+			if (dir.length > PowerAdjustedMaxLongLine)
+				dir.normalize(PowerAdjustedMaxLongLine);
+									
+			//trace(dir.length);
 						
-			if (dir.length > myMaxLongLine)
-				dir.normalize(myMaxLongLine);
-
 			return dir;
 		}
-		
+	
+		// Una chapa con 100 de power dara HighCapMaxImpulse como maximo. Una chapa con 0 de power dara LowCapMaxImpulse como maximo
 		private function get PowerAdjustedMaxLongLine() : Number
 		{
 			var myScale : Number = _MaxLongLine / MatchConfig.HighCapMaxImpulse;
@@ -150,53 +165,67 @@ package Match
 		
 		// Obtiene la fuerza de disparo como un valor de (0.0 - 1.0)
 		public function get Force() : Number
-		{
-			var len:Number = Direction.length - Cap.Radius;
+		{						
+			var theCap : DisplayObject = _Target.Visual as DisplayObject;
 			
-			if (len < MIN_FORCE)
-				len = MIN_FORCE;
+			var stageWidth : Number = theCap.stage.stageWidth;
+			var stageHeight : Number = theCap.stage.stageHeight;
+			
+			var theCapPos:Point = theCap.localToGlobal(new Point(0, 0));
+						
+			var dists : Array = [ GetDistanceToBorder(theCapPos, Direction, new Point(STAGE_MARGIN, STAGE_MARGIN), new Point(0, 1)),				// Left border
+								  GetDistanceToBorder(theCapPos, Direction, new Point(stageWidth-STAGE_MARGIN, STAGE_MARGIN), new Point(0, 1)),		// Right
+								  GetDistanceToBorder(theCapPos, Direction, new Point(STAGE_MARGIN, STAGE_MARGIN), new Point(1, 0)),				// Top
+								  GetDistanceToBorder(theCapPos, Direction, new Point(STAGE_MARGIN, stageHeight-STAGE_MARGIN), new Point(1, 0)) ];	// Bottom
+			dists.sort(Array.NUMERIC);
 			
 			var maxLongLine : Number = _MaxLongLine;
-			
-			/*
-			var theTarget : DisplayObject = _Target.Visual as DisplayObject;
-			
-			var stageWidth : Number = theTarget.stage.stageWidth;
-			var stageHeight : Number = theTarget.stage.stageHeight;
-			
-			var source:Point = theTarget.localToGlobal(new Point(0, 0));
-			var direct:Point = Direction.clone(); direct.normalize(1);
-			
-			const MARGIN : Number = 0;	// TODO
-			var dists : Array = [ GetDistanceToBorder(source, direct, new Point(MARGIN,MARGIN), new Point(0, 1)),					// LEFT_BORDER
-								  GetDistanceToBorder(source, direct, new Point(stageWidth-MARGIN, MARGIN), new Point(0, 1)),		// RIGHT_BORDER
-								  GetDistanceToBorder(source, direct, new Point(MARGIN, MARGIN), new Point(1, 0)),					// TOP_BORDER
-								  GetDistanceToBorder(source, direct, new Point(MARGIN, stageHeight-MARGIN), new Point(1, 0)) ];	// BOTTOM_BORDER
-			dists.sort(Array.NUMERIC);
+			var len:Number = Direction.length - Cap.Radius;
 			
 			if (dists[0] < PowerAdjustedMaxLongLine)
 			{
 				maxLongLine = dists[0];
-				len = len * PowerAdjustedMaxLongLine / _MaxLongLine; 
+				len = len * PowerAdjustedMaxLongLine / _MaxLongLine;
 			}
+						
+			//trace(len + "   " + dists[0]);
 			
-			trace(dists[0] + "   " + len);
-			*/
-									
+			if (len < MIN_FORCE)
+				len = MIN_FORCE;
+												
 			return len / (maxLongLine - Cap.Radius);
 		}
 		
+		private function ClipAgainstBorder(point : Point, dir : Point, borderPoint : Point, borderDir : Point) : Point
+		{
+			var ret : Point = dir.clone();
+			
+			// El segmento del borde va desde su 0 hasta el infinito
+			borderDir.normalize(2000);
+			
+			// Segmento-Segmento
+			var intersect : Point = MathUtils.LineIntersectLine(point, point.add(dir), borderPoint, borderPoint.add(borderDir), true);
+			
+			if (intersect != null)
+				ret = intersect.subtract(point);
+			
+			return ret;
+		}
+		
+		
 		private function GetDistanceToBorder(point : Point, direction : Point, borderPoint : Point, borderDirection : Point) : Number
 		{			
-			var infiniteDirection : Point = direction.clone(); infiniteDirection.normalize(100000);
-			var infiniteBorderDirection : Point = borderDirection.clone(); infiniteBorderDirection.normalize(100000);
+			// Hacemos infinitos los dos segmentos por el lado positivo
+			var infiniteDirection : Point = direction.clone(); 
+			infiniteDirection.normalize(2000);
+			borderDirection.normalize(2000);	
 			
 			var intersect : Point = MathUtils.LineIntersectLine(point, point.add(infiniteDirection), 
-																borderPoint, borderPoint.add(infiniteBorderDirection), true);
+																borderPoint, borderPoint.add(borderDirection), true);
 			var dist : Number = Number.MAX_VALUE;
 			
 			if (intersect != null)
-				dist = point.subtract(intersect).length;
+				dist = intersect.subtract(point).length;
 			
 			return dist;
 		}

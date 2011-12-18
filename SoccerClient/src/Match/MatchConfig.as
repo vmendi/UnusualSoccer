@@ -5,7 +5,7 @@ package Match
 		public static var 	MatchId:int = -1;					// Identificador del partido en el servidor
 		public static var 	IdLocalUser:int = -1;				// Identificador del usuario local (a quien controlamos nosotros desde el cliente)
 		public static var 	PartTime:Number = 240.0;			// Tiempo que dura cada parte (en segundos)
-		public static var 	TurnTime:Number = 150.0;			// Tiempo máximo que dura cada sub-turno (en segundos)
+		public static var 	TurnTime:Number = 15.0;				// Tiempo máximo que dura cada sub-turno (en segundos)
 		
 		public static var	Debug:Boolean = false;				// Indica que estamos en modo debug. Se habilitan trucos/trazas y similares
 		public static var   OfflineMode:Boolean = false;		// Arranque directo sin manager. No se hace caso a este valor, se detecta y se settea automaticamente.

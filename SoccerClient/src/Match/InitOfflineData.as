@@ -43,10 +43,11 @@ package Match
 		{
 			var descTeam:Object = { 
 				PredefinedTeamName: predefinedTeamName,
+				Name: "Team " + predefinedTeamName,
 				Fitness:100,
 				SoccerPlayers: []
 			}
-						
+
 			for (var c:int=0; c < 8; ++c)
 			{
 				var descCap:Object = { 

@@ -132,7 +132,6 @@ package Match
 			_Random = new Random(123);			
 			_Timer = new Match.Time();
 			
-												
 			// Determinamos la equipación a utilizar en cada equipo.
 			//   - Determinamos los grupos de equipación a los que pertenece cada equipo.
 			//	 - Si son del mismo grupo:

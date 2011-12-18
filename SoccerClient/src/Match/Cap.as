@@ -66,7 +66,7 @@ package Match
 		public function get Ghost() : Entity { return this.OwnerTeam.Ghost; }	// Ghost de la chapa (solo hay uno por equipo)
 
 
-		public function Cap(team:Team, id:int, descCap:Object) : void
+		public function Cap(team:Team, id:int, descCap:Object, useSecondaryEquipment:Boolean) : void
 		{	
 			var phyInit : Object = { radius: MatchConfig.Screen2Physic( Radius ),
 									 isBullet: true, 				// UseCCD: Detección de colisión continua (Ninguna chapa se debe atravesar)
@@ -83,12 +83,12 @@ package Match
 			// Elegimos el asset de jugador o portero (y con la equipación primaria o secundaria)
 			if (id != 0)
 			{
-				asset = team.UseSecondaryEquipment? Assets.MatchAssets.Cap2 : Assets.MatchAssets.Cap;
+				asset = useSecondaryEquipment? Assets.MatchAssets.Cap2 : Assets.MatchAssets.Cap;
 				phyInit.categoryBits = 1;			// Choca con todo	
 			}
 			else
 			{
-				asset = team.UseSecondaryEquipment? Assets.MatchAssets.Goalkeeper2 : Assets.MatchAssets.Goalkeeper;
+				asset = useSecondaryEquipment? Assets.MatchAssets.Goalkeeper2 : Assets.MatchAssets.Goalkeeper;
 				phyInit.categoryBits = 2;			// Choca con todo tb	
 			}
 			
@@ -99,7 +99,7 @@ package Match
 			this.Visual.scaleY = 1.0;
 		
 			// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el quipo
-			_Visual.gotoAndStop( team.Name );
+			_Visual.gotoAndStop(team.PredefinedName);
 			
 			_Name = descCap.Name;
 			_Dorsal = descCap.DorsalNumber;

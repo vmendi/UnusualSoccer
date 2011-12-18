@@ -23,7 +23,7 @@ package Match
 		private var PosControl:ControllerPos = null;			// Control para posicionar chapas (lo usamos solo para el portero)
 		private var ControllerCanvas:Sprite = null;				// El contenedor donde se pinta las flecha de direccion
 		
-		public var TurnTime:Number = 0;							// Tiempo que representa la tartita contadora de timeout del interface
+		public var TurnTime:Number = 0;							// Tiempo que representa la tarta contadora de timeout del interface
 		
 		// Parámetros visuales de la flecha que se pinta para disparar
 		private const MAX_LONG_SHOOT:Number = 160;
@@ -66,18 +66,18 @@ package Match
 			// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el quipo
 			var teams:Array = MatchMain.Ref.Game.TheTeams;
 			
-			Gui.BadgeHome.gotoAndStop(teams[Enums.Team1].Name);
-			Gui.BadgeAway.gotoAndStop(teams[Enums.Team2].Name);
+			Gui.BadgeHome.gotoAndStop(teams[Enums.Team1].PredefinedName);
+			Gui.BadgeAway.gotoAndStop(teams[Enums.Team2].PredefinedName);
 			
-			Gui.TeamHome.text = teams[Enums.Team1].Name;
-			Gui.TeamAway.text = teams[Enums.Team2].Name;
+			Gui.TeamHome.text = teams[Enums.Team1].PredefinedName;
+			Gui.TeamAway.text = teams[Enums.Team2].PredefinedName;
 		}
 			
 		private function SetTextFormats() : void
 		{
 			var Gui:* = MatchMain.Ref.Game.TheField.Visual;
 			
-			// Parece que el TextField no encuentra la fuente embebida for CS5 (parece que estar 
+			// Parece que el TextField no encuentra la fuente embebida por CS5 (parece que estar 
 			// está, pero con fontStyle=regular)
 			// Tenemos que embeber las fuentes a mano y luego hacer aqui el setTextFormat.
 			// Para solucionar esto, deberíamos no usar TextField exportados desde flash
@@ -334,7 +334,7 @@ package Match
 			
 			panelInfo["SelectedTarjetaAmarilla"].visible = cap.YellowCards ? true : false;
 			
-			// -4 para evitar el fenomeno out-over-out-ver ad-infinitum (para evitar solapamiento cartel-chapa)
+			// -4 para evitar el fenomeno out-over-out-over ad-infinitum (para evitar solapamiento cartel-chapa)
 			panelInfo.x = cap.Visual.x;			
 			panelInfo.y = cap.Visual.y - Cap.Radius - 4;
 		
