@@ -181,23 +181,29 @@ package Match
 			
 			var maxLongLine : Number = _MaxLongLine;
 			var len:Number = Direction.length;
+			var force : Number = 0;
 			
 			if (dists[0] < PowerAdjustedMaxLongLine)
 			{
 				maxLongLine = dists[0];
 				len *= PowerAdjustedMaxLongLine / _MaxLongLine;
+				
+				if (len >= Cap.Radius)
+				{
+					force = len / maxLongLine;
+				}
 			}
-						
-			//trace(len + "   " + dists[0]);
-
-			var force : Number = 0;
-			
-			// Una pequeña renormalizacion para tener en cuenta que queremos que la fuerza sea 0 justo en Cap.Radius
-			if (len >= Cap.Radius)
+			else
 			{
-				//force = ((len / maxLongLine) * ((PowerAdjustedMaxLongLine + Cap.Radius)/PowerAdjustedMaxLongLine)) - (Cap.Radius / maxLongLine);
-				force = len / maxLongLine;
+				if (len >= Cap.Radius)
+				{
+					// Una pequeña renormalizacion para tener en cuenta que queremos que la fuerza sea 0 justo en Cap.Radius
+					force = ((len / maxLongLine) * ((PowerAdjustedMaxLongLine + Cap.Radius)/PowerAdjustedMaxLongLine)) - (Cap.Radius / maxLongLine);
+				}
 			}
+			
+			
+			
 						
 			return force;
 		}
