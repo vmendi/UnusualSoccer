@@ -10,7 +10,10 @@ package Match
 		// Lados del campo
 		public static const Left_Side:int = 0; 
 		public static const Right_Side:int = 1;					 
-		public static const Count_Side:int = 2;					
+		public static const Count_Side:int = 2;
+		
+		// Obtiene el lado contrario al especificado
+		static public function AgainstSide(side:int) : int { return side == Left_Side? Right_Side : Left_Side;	}
 		
 		// Colores
 		public static const FriendColor:int = 0x00007e;				// Color amigo 
@@ -31,9 +34,7 @@ package Match
 		{
 			return enumVal == TurnSaquePuerta || enumVal == TurnSaquePuertaByFalta || enumVal == TurnSaquePuertaControlPortero;
 		}
-		
 				
-		
 		// Los IDs de las Skills. Su origen ultimo es la DB
 		public static const Superpotencia:int = 1;
 		public static const Furiaroja:int = 2;
@@ -55,11 +56,5 @@ package Match
 		public static const GoalValid:int = 0;
 		public static const GoalInvalidNoDeclarado:int = 1;
 		public static const GoalInvalidPropioCampo:int = 2;		
-				
-		// Obtiene el lado contrario al especificado
-		static public function AgainstSide(side:int) : int
-		{
-			return side == Left_Side? Right_Side : Left_Side;
-		}
 	}
 }

@@ -143,19 +143,19 @@ package Match
 					_TouchedCaps.push(cap);
 					_TouchedCapsLastRun.push(cap);
 										
-					MatchMain.Ref.AudioManager.Play( "SoundCollisionCapBall" );
+					MatchMain.Ref.Game.TheAudioManager.Play( "SoundCollisionCapBall" );
 				}
 				else
 				{
 					// chapa / chapa
 					if( ent1 is Cap && ent2 is Cap )
-						MatchMain.Ref.AudioManager.Play( "SoundCollisionCapCap" );
+						MatchMain.Ref.Game.TheAudioManager.Play( "SoundCollisionCapCap" );
 					// chapa / muro 
 					else if( cap != null && ( ent1 == null || ent2 == null ) ) 
-						MatchMain.Ref.AudioManager.Play( "SoundCollisionWall" );
+						MatchMain.Ref.Game.TheAudioManager.Play( "SoundCollisionWall" );
 					// balón / muro 
 					else if( ball != null && ( ent1 == null || ent2 == null ) )
-						MatchMain.Ref.AudioManager.Play( "SoundCollisionWall" );
+						MatchMain.Ref.Game.TheAudioManager.Play( "SoundCollisionWall" );
 				}
 				
 				// Posible falta

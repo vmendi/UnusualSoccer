@@ -14,6 +14,7 @@ package Match
 		public var TheField:Field;	
 		public var TheBall:BallEntity;
 		public var TheEntityManager:EntityManager;
+		public var TheAudioManager:AudioManager;
 		public var TheTeams:Array = new Array();
 		
 		// Capas de pintado
@@ -99,6 +100,7 @@ package Match
 			MatchConfig.PartTime = matchTimeSecs / 2;
 			MatchConfig.TurnTime = turnTimeSecs;
 			
+			TheAudioManager = new AudioManager();
 			TheEntityManager = new EntityManager();
 			TheGamePhysics = new GamePhysics(PhyLayer);
 			TheField = new Field(GameLayer);
@@ -108,11 +110,14 @@ package Match
 			TheField.CreatePorterias(GameLayer);
 			
 			// Registramos sonidos para lanzarlos luego 
-			MatchMain.Ref.AudioManager.AddClass( "SoundCollisionCapBall", MatchAssets.SoundCollisionCapBall );			
-			MatchMain.Ref.AudioManager.AddClass( "SoundCollisionCapCap", MatchAssets.SoundCollisionCapCap );			
-			MatchMain.Ref.AudioManager.AddClass( "SoundCollisionWall", MatchAssets.SoundCollisionWall );
-			MatchMain.Ref.AudioManager.AddClass( "SoundAmbience", MatchAssets.SoundAmbience );
-
+			TheAudioManager.AddClass("SoundCollisionCapBall", MatchAssets.SoundCollisionCapBall);			
+			TheAudioManager.AddClass("SoundCollisionCapCap", MatchAssets.SoundCollisionCapCap);			
+			TheAudioManager.AddClass("SoundCollisionWall", MatchAssets.SoundCollisionWall);
+			TheAudioManager.AddClass("SoundAmbience", MatchAssets.SoundAmbience);
+			
+			// Lanzamos el sonido ambiente como música para que se detenga automaticamente al finalizar 
+			TheAudioManager.PlayMusic("SoundAmbience", 0.3);
+			
 			// Convertimos las mx.Collections.ArrayCollection que vienen por red a Arrays
 			if (!MatchConfig.OfflineMode)
 			{
@@ -127,7 +132,6 @@ package Match
 			_Random = new Random(123);			
 			_Timer = new Match.Time();
 			
-												
 			// Determinamos la equipación a utilizar en cada equipo.
 			//   - Determinamos los grupos de equipación a los que pertenece cada equipo.
 			//	 - Si son del mismo grupo:
@@ -152,10 +156,7 @@ package Match
 			
 			TheTeams[Enums.Team1].Init(descTeam1, Enums.Team1, useSecondaryEquipment1);			
 			TheTeams[Enums.Team2].Init(descTeam2, Enums.Team2, useSecondaryEquipment2);
-			
-			// Lanzamos el sonido ambiente, como música para que se detenga automaticamente al finalizar 
-			MatchMain.Ref.AudioManager.PlayMusic("SoundAmbience", 0.3);
-						
+									
 			// Inicializamos el interfaz de juego. Es necesario que todo lo demas este inicializado!
 			TheInterface = new GameInterface();
 			

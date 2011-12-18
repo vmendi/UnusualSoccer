@@ -16,53 +16,49 @@ package Match
 	{				
 		public const CAPS_BY_TEAM:int = 8;						// Número de chapas que tiene cada equipo
 		
-		public var UserName:String = null;						// El nombre del equipo (puesto por el usuario)
 		public var IdxTeam:int = 0;								// Identificador de equipo
 		public var Side:int = 0;								// Lado del campo en el que está el equipo
-		public var Fitness : int = 0;							// El nivel de entrenamiento, dado desde el manager
-		public var Ghost:Entity = null;							// Ghost utilizado para decidir donde colocarás el portero		
-		public var UseSecondaryEquipment:Boolean = false;		// Indica si utiliza la equipacion secundaria
 		
-		public function get Name():String { return _Name; }
+		public var Ghost:Entity = null;							// Ghost utilizado para decidir donde colocarás el portero		
+				
+		public function get PredefinedName():String { return _PredefinedName; }
+		public function get Name() : String { return _Name; }					// El nombre del equipo (puesto por el usuario)
 		public function get CapsList() : Array { return _CapsList; }
-		public function get GoalKeeper() : Cap { return _CapsList[ 0 ]; }
+		public function get GoalKeeper() : Cap { return _CapsList[0]; }
 		
 		public function get Goals() : int {	return _Goals; }
 		public function set Goals(value:int) : void { _Goals = value; }
+
+		// El nivel de entrenamiento, dado desde el manager
+		public function get Fitness() : Number { return _Fitness; }
 		
 		// Array con los IDs de las Skills disponibles, las que vienen desde el manager
 		public function get AvailableSkills() : Array { return _AvailableSkills; }
 		
-		
-		private var _CapsList:Array = new Array();				// Lista de chapas
-		private var _Name:String = null;						// El nombre del equipo predefinido
-		
-		private var _FormationName:String = "3-3-2";			// Alineación que está utilizando el equipo		
-		private var _Goals:int = 0;								// Número de goles metidos		
+		private var _CapsList:Array = new Array();
+		private var _PredefinedName:String = null;
+		private var _Name:String = null;
+		private var _Goals:int = 0;
+		private var _Fitness : Number = 0;
+		private var _FormationName:String = "3-3-2";
 		private var _Skills:Object;								// Hash de habilidades. Key:ID / Value:Skill
 		private var _AvailableSkills : Array;					// Las mismas habilidades, puestas en forma de array
 		
-		
 		public function Init(descTeam:Object, idxTeam:int, useSecondaryEquipment:Boolean = false) : void
 		{
-			UserName = descTeam.Name;
 			IdxTeam = idxTeam;
-			UseSecondaryEquipment = useSecondaryEquipment;
-			Fitness = descTeam.Fitness;
-			_Name = descTeam.PredefinedTeamName;
+			_Name = descTeam.Name;
+			_PredefinedName = descTeam.PredefinedTeamName;
+			_Fitness = descTeam.Fitness;
 			_FormationName = descTeam.Formation;			
-			
-			// En modo debug cambiamos la equipación del Sporting porque es identia a la del Atleti
-			if (MatchConfig.Debug && _Name == "Sporting")	 
-				_Name = "Betis";
-			
+
 			// Copiamos la lista de habilidades especiales
 			LoadSkills(descTeam.SpecialSkillsIDs);
 			
 			// Inicializamos cada una de las chapas 
 			for (var i:int = 0; i < CAPS_BY_TEAM; i++ )
 			{
-				CapsList.push(new Cap(this, i, descTeam.SoccerPlayers[i]));
+				CapsList.push(new Cap(this, i, descTeam.SoccerPlayers[i], useSecondaryEquipment));
 			}
 			
 			// Echamos a las que esten lesionadas, excepto al portero!
@@ -73,9 +69,9 @@ package Match
 			}
 			
 			// El equipo 1 empieza en el lado izquierdo y el 2 en el derecho
-			if( IdxTeam == Enums.Team1 )
+			if (IdxTeam == Enums.Team1)
 				Side = Enums.Left_Side;
-			else if( IdxTeam == Enums.Team2 )
+			else if(IdxTeam == Enums.Team2)
 				Side = Enums.Right_Side;
 			
 			// Asignamos la posición inicial de cada chapa según la alineación y lado del campo en el que se encuentran
@@ -83,7 +79,7 @@ package Match
 						
 			// Creamos una imagen de chapa Ghost (la utilizaremos para indicar donde mover el portero)
 			Ghost = new Entity(Assets.MatchAssets.Goalkeeper, MatchMain.Ref.Game.GameLayer);
-			Ghost.Visual.gotoAndStop(Name);
+			Ghost.Visual.gotoAndStop(PredefinedName);
 			Ghost.Visual.alpha = 0.4;
 			Ghost.Visual.visible = false;
 		}
@@ -324,19 +320,18 @@ package Match
 		}
 		
 		// 
-		// Obtenemos el grupo al que pertenece el equipo 
-		// NOTE: Todos los equipos pertenecen a un grupo en función de los colores de su equipación
+		// Obtenemos el grupo al que pertenece el equipo. Todos los equipos pertenecen a un grupo en función de los colores de su equipación
 		//
 		static public function GroupTeam(teamName:String) : int
 		{
 			var groupIdx:int = 0;
-			for each ( var group:Array in TeamGroups.Groups )
+			for each (var group:Array in TeamGroups.Groups)
 			{
 				groupIdx ++;
-				for each ( var name:String in group )
+				for each (var name:String in group)
 				{
 					if( name == teamName )
-						return( groupIdx );
+						return groupIdx;
 				}
 			}
 			
@@ -363,7 +358,7 @@ package Match
 				var visual : DisplayObject = (cap.Visual as DisplayObject); 
 				var cloned : MovieClip = new (getDefinitionByName(getQualifiedClassName(cap.Visual)) as Class)();
 				visual.parent.addChild(cloned);
-				cloned.gotoAndStop(this.Name);
+				cloned.gotoAndStop(this.PredefinedName);
 				cloned.x = visual.x; 
 				cloned.y = visual.y;
 				cloned.rotationZ = cap.PhyBody.angle * 180.0 / Math.PI;

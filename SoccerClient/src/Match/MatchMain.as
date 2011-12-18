@@ -11,10 +11,9 @@ package Match
 	{
 		public var Formations:Object = null;					// Hash de posiciones (Points) de formaciones ["332"][idxCap]
 		public var Connection:Object = null;					// Conexión con el servidor
-				
+
 		public function get Game() : Match.Game { return _Game; }
-		public function get AudioManager() : Match.AudioManager { return _AudioManager; }
-		
+				
 		// Unico singleton de todo el partido
 		static public function get Ref() : MatchMain {return Instance;}
 
@@ -45,7 +44,7 @@ package Match
 			// Indicamos al servidor que nuestro cliente necesita los datos del partido para continuar. Esto llamara a InitFromServer desde el servidor
 			Connection.Invoke("OnRequestData", null);
 
-			// Ya podemos subscribirnos al frame. Cuando nos llaman aqui esta garantizado que ya estamos en la stage
+			// Podemos subscribirnos al frame. Cuando nos llaman aqui esta garantizado que ya estamos en la stage
 			addEventListener(Event.ENTER_FRAME, OnFrame);
 		}
 		
@@ -85,7 +84,7 @@ package Match
 			}
 
 			removeEventListener(Event.ENTER_FRAME, OnFrame);
-			AudioManager.Shutdown();
+			Game.TheAudioManager.Shutdown();
 			Game.TheGamePhysics.Shutdown();
 			TweenMax.killAll();
 

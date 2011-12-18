@@ -21,7 +21,7 @@ package Match
 		private const BLACK    	  : uint = 0x000000;
 		
 		
-		public function ControllerBall( canvas:Sprite, maxLongLine: uint, colorLine: uint = 0, thickness: uint = 1 )		
+		public function ControllerBall(canvas:Sprite, maxLongLine: uint, colorLine: uint = 0, thickness: uint = 1)		
 		{
 			this.maxLongLine = maxLongLine;
 			this.canvas 	 = canvas;
@@ -70,7 +70,7 @@ package Match
 			super.MouseMove( e );
 			
 			// Obtenemos punto inicial y final de la linea de dirección
-			var source:Point = new Point( xInit, yInit);
+			var source:Point = _TargetPos.clone();
 			var target:Point = EndPos;
 			
 			// Seleccionamos un color para la linea diferente en función de si la posición final es válida o no			

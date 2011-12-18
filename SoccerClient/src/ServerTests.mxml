@@ -551,6 +551,13 @@
 		{
 			var match : MatchMain = new MatchMain();
 			this.addElement(new UIComponentWrapper(match));
+			
+			// Queremos ver los margenes
+			this.y = 40;
+			this.graphics.beginFill(0xFF0000);
+			this.graphics.drawRect(0, 0, 1000, 1000);
+			this.graphics.endFill();
+			
 			match.InitOffline();
 		}
 						
