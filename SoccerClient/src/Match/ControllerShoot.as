@@ -151,8 +151,8 @@ package Match
 			if (dir.length > PowerAdjustedMaxLongLine)
 				dir.normalize(PowerAdjustedMaxLongLine);
 									
-			//trace(dir.length);
-						
+			//trace(dir.length + " " + PowerAdjustedMaxLongLine);
+
 			return dir;
 		}
 	
@@ -180,20 +180,26 @@ package Match
 			dists.sort(Array.NUMERIC);
 			
 			var maxLongLine : Number = _MaxLongLine;
-			var len:Number = Direction.length - Cap.Radius;
+			var len:Number = Direction.length;
 			
 			if (dists[0] < PowerAdjustedMaxLongLine)
 			{
 				maxLongLine = dists[0];
-				len = len * PowerAdjustedMaxLongLine / _MaxLongLine;
+				len *= PowerAdjustedMaxLongLine / _MaxLongLine;
 			}
 						
 			//trace(len + "   " + dists[0]);
+
+			var force : Number = 0;
 			
-			if (len < MIN_FORCE)
-				len = MIN_FORCE;
-												
-			return len / (maxLongLine - Cap.Radius);
+			// Una pequeña renormalizacion para tener en cuenta que queremos que la fuerza sea 0 justo en Cap.Radius
+			if (len >= Cap.Radius)
+			{
+				//force = ((len / maxLongLine) * ((PowerAdjustedMaxLongLine + Cap.Radius)/PowerAdjustedMaxLongLine)) - (Cap.Radius / maxLongLine);
+				force = len / maxLongLine;
+			}
+						
+			return force;
 		}
 		
 		private function ClipAgainstBorder(point : Point, dir : Point, borderPoint : Point, borderDir : Point) : Point
