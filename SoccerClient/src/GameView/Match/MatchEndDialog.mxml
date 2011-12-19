@@ -202,8 +202,8 @@
 		<s:State name="WinnerByAbandon"/>
 	</s:states>
 
-	<GameView:PopupBackground width="{MatchResultUtils.IsCompetition(mMatchResult) ? 500 : 352}" height="100%" />
-	<Competition:DivisionBadge x="0" y="0" Division="{mCompetitionModel.TheGroup.DivisionName}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" />
+	<GameView:PopupBackground width="{MatchResultUtils.IsCompetition(mMatchResult) ? 402 : 352}" top="-15" bottom="-15" />
+	<Competition:DivisionBadge x="-45" y="0" Division="{mCompetitionModel.TheGroup.DivisionName}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" />
 	
 	<s:Label top="15" horizontalCenter="0" 
 			 text="{MatchResultUtils.IsCompetition(mMatchResult) ? resourceManager.getString('main','MatchEndDialogCompetition') : resourceManager.getString('main','MatchEndDialogFriendly')}"
@@ -241,6 +241,10 @@
 				<s:Label width="35" top="7" text="0" styleName="whiteBoldHuge" textAlign="left" id="MyGoals1"/>
 			</s:Group>	
 		</s:Group>
+		
+		<s:Label horizontalCenter="0" text="{resourceManager.getString('main','MatchEndDialogCompPoints')}: {MatchResultUtils.GetCompetitionPoints(mMatchResult, mTeamModel)}"
+				 textAlign="center" styleName="yellowBoldVeryBig"
+				 visible="{MatchResultUtils.IsCompetition(mMatchResult)}" />	
 		
 		<s:Group width="350" >
 			<!-- FONDO -->
@@ -293,10 +297,6 @@
 				</s:Group>
 			</s:Group>
 		</s:Group>
-		
-		<s:Label horizontalCenter="0" text="{resourceManager.getString('main','MatchEndDialogCompPoints')}: {MatchResultUtils.GetCompetitionPoints(mMatchResult, mTeamModel)}"
-				 textAlign="center" styleName="yellowBoldVeryBig"
-				 visible="{!MatchResultUtils.IsCompetition(mMatchResult)}" />		
 		
 		<s:Group horizontalCenter="0">
 			<s:layout><s:HorizontalLayout horizontalAlign="center" gap="20" /></s:layout>

@@ -89,10 +89,10 @@
 
 	<s:Group includeIn="LookingForMatch" horizontalCenter="0" verticalCenter="0">
 		<s:layout>
-			<s:VerticalLayout gap="5" horizontalAlign="center" />
+			<s:VerticalLayout gap="2" horizontalAlign="center" />
 		</s:layout>
 		<s:Label text="{resourceManager.getString('main','LookingForMatchPanelLooking')}" styleName="whiteBoldBig"/>
-		<mx:Image id="MyLoadingAnim" source="@Embed(source='/Assets/General.swf', symbol='LoadingAnim')" includeIn="LookingForMatch"/>
+		<mx:Image id="MyLoadingAnim" source="@Embed(source='/Assets/General.swf', symbol='LookingForMarchAnim')" includeIn="LookingForMatch"/>
 		<s:Button id="MyCancelButton"
 				  label="{resourceManager.getString('main','Cancel')}" minWidth="70" skinClass="GameView.Skins.ButtonDarkGreySkin"
 				  click="MyFindMatchButton_clickHandler(event)"/>
