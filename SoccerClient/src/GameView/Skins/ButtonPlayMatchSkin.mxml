@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" 
+			 xmlns:fb="http://ns.adobe.com/flashbuilder/2009" minWidth="21" minHeight="21" alpha.disabled="0.5">
+	
+	<!-- host component -->
+	<fx:Metadata>
+		<![CDATA[ 
+		[HostComponent("spark.components.Button")]
+		]]>
+	</fx:Metadata>
+	
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+	<s:Ellipse x="41" y="21" width="62" height="62">
+		<s:fill>
+			<s:SolidColor color="#111414"/>
+		</s:fill>
+	</s:Ellipse>
+	<s:Ellipse id="ellipse1" x="41" y="21" width="62" height="62">
+		<s:fill>
+			<s:SolidColor color="#FFFFFF"/>
+		</s:fill>
+		<s:filters>
+			<s:GlowFilter id="glowfilter1" alpha="1.0" blurX="20" blurY="20" color="#5380d0"
+						  inner="true" knockout="true" quality="2" strength="2.8"
+						  blurX.over="30" blurY.over="30"
+						  blurX.down="30" blurY.down="30"
+						  strength.up="0.7"/>
+		</s:filters>
+	</s:Ellipse>
+
+	<s:Label id="myLabel" maxDisplayedLines="1"
+			 text="JUGAR"
+			 horizontalCenter="0" verticalCenter="0"
+			 verticalAlign="middle" textAlign="start" styleName="whiteBoldVeryBig"
+			 alpha.up="0.5"
+			 alpha.over="1"
+			 alpha.down="1" />
+
+	<!--<s:RichText id="richtext1" x="47" y="41" color="#FFFFFF" fontFamily="HelveticaNeue LT 77 BdCn"
+				fontSize="18" tabStops="S0" text="JUGAR"
+				alpha.up="0.35000000000000003">
+	</s:RichText>-->
+	
+	<s:BitmapImage x="0" y="0" smooth="true"
+				   source="@Embed(source='/Assets/General.swf', symbol='ButtonPlayMatch_Cover')"
+				   fillMode="clip"/>
+	<s:transitions>
+		<s:Transition fromState="up" toState="over">
+			<s:Parallel>
+				<s:Parallel target="{ellipse1}">
+					<s:Parallel duration="250" target="{glowfilter1}">
+						<s:AnimateColor/>
+						<s:Animate>
+							<s:SimpleMotionPath property="alpha"/>
+							<s:SimpleMotionPath property="blurX"/>
+							<s:SimpleMotionPath property="blurY"/>
+							<s:SimpleMotionPath property="strength"/>
+						</s:Animate>
+					</s:Parallel>
+				</s:Parallel>
+				<s:Fade duration="250" target="{myLabel}"/>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="over" toState="up">
+			<s:Parallel>
+				<s:Parallel target="{ellipse1}">
+					<s:Parallel duration="250" target="{glowfilter1}">
+						<s:AnimateColor/>
+						<s:Animate>
+							<s:SimpleMotionPath property="alpha"/>
+							<s:SimpleMotionPath property="blurX"/>
+							<s:SimpleMotionPath property="blurY"/>
+							<s:SimpleMotionPath property="strength"/>
+						</s:Animate>
+					</s:Parallel>
+				</s:Parallel>
+				<s:Fade duration="250" target="{myLabel}"/>
+			</s:Parallel>
+		</s:Transition>
+	</s:transitions>
+	
+</s:SparkSkin>

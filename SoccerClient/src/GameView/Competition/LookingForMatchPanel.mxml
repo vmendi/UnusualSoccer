@@ -62,7 +62,7 @@
 
 	]]></fx:Script>
 	
-	<s:Rect x="0" y="0" width="740" height="85" alpha="0.5" includeIn="LookingForMatch">
+	<s:Rect x="0" y="0" width="740" height="105" alpha="0.5" includeIn="LookingForMatch">
 		<s:fill>
 			<s:SolidColor color="#000000"/>
 		</s:fill>
@@ -70,7 +70,7 @@
 	
 	<!--<s:Label horizontalCenter="0" y="46" textAlign="center" text="Estás desconectado del juego..." styleName="whiteBoldBig" includeIn="Disabled" />-->
 	
-	<s:Group includeIn="Disabled" horizontalCenter="0" top="2">
+	<s:Group includeIn="Disabled" horizontalCenter="0" verticalCenter="0">
 		<s:layout>
 			<s:VerticalLayout gap="2" horizontalAlign="center" />
 		</s:layout>
@@ -78,12 +78,16 @@
 		<s:Label width="160" textAlign="center" text="{resourceManager.getString('main','LookingForMatchPanelDisconected')}" styleName="whiteBoldBig"/>
 	</s:Group>	
 	
-	<mx:Image id="MyFindMatchButton" top="0" horizontalCenter="0"  includeIn="Wait"
+	<!--<mx:Image id="MyFindMatchButton" top="0" horizontalCenter="0"  includeIn="Wait"
 			 alpha.Disabled="0.2" alpha.Wait="1"
 			 source="@Embed(source='/Assets/General.swf', symbol='BotonBuscarPartido')"
-			 click="MyFindMatchButton_clickHandler(event)"/>	
+			 click="MyFindMatchButton_clickHandler(event)"/>-->
+	
+	<s:Button top="0" horizontalCenter="0" skinClass="GameView.Skins.ButtonPlayMatchSkin"
+			  includeIn="Wait"
+			  click="MyFindMatchButton_clickHandler(event)"/>
 
-	<s:Group includeIn="LookingForMatch" horizontalCenter="0" top="5">
+	<s:Group includeIn="LookingForMatch" horizontalCenter="0" verticalCenter="0">
 		<s:layout>
 			<s:VerticalLayout gap="5" horizontalAlign="center" />
 		</s:layout>

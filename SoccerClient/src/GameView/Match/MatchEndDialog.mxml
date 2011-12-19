@@ -203,7 +203,7 @@
 	</s:states>
 
 	<GameView:PopupBackground width="{MatchResultUtils.IsCompetition(mMatchResult) ? 500 : 352}" height="100%" />
-	<Match:EndDialogDivisionBadge x="0" y="0" Division="{mCompetitionModel.TheGroup.DivisionName}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" />
+	<Competition:DivisionBadge x="0" y="0" Division="{mCompetitionModel.TheGroup.DivisionName}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" />
 	
 	<s:Label top="15" horizontalCenter="0" 
 			 text="{MatchResultUtils.IsCompetition(mMatchResult) ? resourceManager.getString('main','MatchEndDialogCompetition') : resourceManager.getString('main','MatchEndDialogFriendly')}"

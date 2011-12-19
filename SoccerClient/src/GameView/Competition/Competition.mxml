@@ -116,11 +116,18 @@
 		
 		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraFondo')" fillMode="clip" />
 		
-		<!--<Competition:DivisionBadge x="0" y="0" Division="{mCompetitionModel.TheGroup.DivisionName}" />-->
+		<Competition:DivisionBadge x="0" y="0" Division="{mCompetitionModel.TheGroup.DivisionName}" />
 				
-		<s:Label width="72" x="112" y="63" text="GRUPO: {mCompetitionModel.TheGroup.GroupName}" styleName="whiteBoldBig" textAlign="left" />
+		<s:Group x="116" top="22">
+			<s:layout>
+				<s:VerticalLayout horizontalAlign="left" gap="4" />
+			</s:layout>
+			<s:Label x="111" y="12" text="{resourceManager.getString('main','DivisionName'+mCompetitionModel.TheGroup.DivisionName)}" styleName="whiteBoldHuge" filters="{[glowNormal]}" />
+			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraLineaDivision')" fillMode="clip" />
+			<s:Label width="72" x="112" y="63" text="GRUPO: {mCompetitionModel.TheGroup.GroupName}" styleName="whiteBoldBig" textAlign="left" />
+		</s:Group>
 
-		<s:Group right="0" top="28">
+		<s:Group right="0" top="29">
 			<s:layout>
 				<s:HorizontalLayout gap="0" />
 			</s:layout>
@@ -148,7 +155,7 @@
 				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="true"
 				/>
 		
-		<Competition:LookingForMatchPanel x="0" y="10" includeIn="AvailableCredit" />
+		<Competition:LookingForMatchPanel x="0" y="0" includeIn="AvailableCredit" />
 		
 		<s:Group horizontalCenter="0" includeIn="OutOfCredit" top="2">
 			<s:layout>
