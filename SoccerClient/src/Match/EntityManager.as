@@ -1,103 +1,67 @@
 package Match
 {
-	//
-	// Manager de entidades. Tiene las siguientes características
-	//
-	// 	- Centralización --> Contenedor de todas las entidades del mundo; lo que permite poder realizar una acción a "todas" las entidades
-	//	- Abstracto --> Soporta cualquier tipo de entidad  
-	//  - Globalización --> Recuperar entidades desde cualquier punto de la aplicación
-	//  - Identificación --> Permite identificar las entidadas por etiquetas, para poder recuperarlas
-	//	  en cualquier momento sin la necesidad de guardar punteros 
-	//
 	public class EntityManager
 	{
-		protected var ItemList:Array = new Array();							// Lista de todos los elementos añadidos al manager
-		protected var TaggedEntities:Array = new Array();					// Lista de entidades etiquetadas
-		
-		//
-		// Retorna la lista de items
-		//
-		public function get Items( ) : Array
+		public function get Items() : Array
 		{
-			return( ItemList );
+			return ItemList;
 		}
 				
-		//
-		// Añade un elemento a la lista del manager y lo asocia con una etiqueta (identifier), de tal 
-		// forma que posteriormente podamos manejarlo a través del mismo.
 		// Si el identificador es nulo o está vacio se agregará el item sin etiqueta
 		// El identificador debe ser único.
-		//
-		public function AddTagged( item:*, identifier:String = null ) : void
+		public function AddTagged( item:*, identifier:String) : void
 		{
-			if( Find( identifier ) == null )
-			{
-				// Registramos la etiqueta asociada al identificador
-				if( identifier != null && identifier != "" )
-					TaggedEntities [ identifier ] = item;
-				
-				// Añadimos a la lista de entidades
-				Add( item );
-			}
-			else
+			if (Find(identifier) != null)
 				throw new Error("WTF 23");
+			
+			if (identifier != null && identifier != "")
+				TaggedEntities[identifier] = item;
+			
+			Add(item);
 		}
 		
-		//
-		// Obtiene un elemento a partir de su identificador
-		// NOTE: Si el elemento no existe devuelve NULL
-		//
-		public function Find( identifier:String ) : *
+		// Obtiene un elemento a partir de su identificador. Si el elemento no existe devuelve NULL
+		public function Find(identifier:String) : *
 		{
-			return( TaggedEntities [ identifier ] );
+			return TaggedEntities[identifier];
 		}
 		
-		//
-		// Añade un elemento a la lista del manager 
-		//
 		public function Add(item:*) : void
 		{
-			if (ItemList.indexOf(item) == -1)
-				ItemList.push(item);
-			else
+			if (ItemList.indexOf(item) != -1)
 				throw new Error("WTF 24");
+			
+			ItemList.push(item);
 		}
 		
-		//
-		// Retorno: Devuelve 'true' si lo elimina o 'false' si no lo encuentra
-		//
-		public function Remove( item:* ) : Boolean
+		public function Remove(item:*) : void
 		{			
 			var idx:int = ItemList.indexOf(item);
-			if (idx != -1)
-				ItemList.splice(idx, 1);
 			
-			return idx != -1;
+			if (idx == -1)
+				throw new Error("WTF 7233");
+			
+			ItemList.splice(idx, 1);
 		}
 				
-		//
-		// Se ejecuta a frecuencia constante, una vez cada tick lógic		
-		//
 		public function Run( elapsed:Number ) : void
 		{
-			// Ejecutamos todas las entidades
 			for each (var item:Entity in Items)
 			{
 				item.Run(elapsed);
 			}
 		}
 		
-		//
-		// Se ejecuta a velocidad de pintado
-		//
 		public function Draw( elapsed:Number ) : void
 		{
-			// Ejecutamos todas las entidades
-			for each (var item:Entity in Items )
+			for each (var item:Entity in Items)
 			{
 				item.Draw(elapsed);
 			}
 		}
+		
+		private var ItemList:Array = new Array();						// Lista de todos los elementos añadidos al manager
+		private var TaggedEntities:Array = new Array();					// Lista de entidades etiquetadas
 	}
 	
 }

@@ -197,17 +197,13 @@ package Match
 		{
 			var inside:Array = new Array();
 			
-			// Calculamos las chapas que están en un radio determinado
-			
-			// Iteramos por todas las chapas
-			for each( var cap:Cap in CapsList )
+			for each (var cap:Cap in CapsList)
 			{
-				if( cap != null && cap.InsideCircle( center, radius ) == true )
-					inside.push( cap );
-				
+				if (cap.InsideCircle(center, radius))
+					inside.push(cap);
 			}
 			
-			return( inside );
+			return inside;
 		}
 		
 		public function get IsLocalUser() : Boolean

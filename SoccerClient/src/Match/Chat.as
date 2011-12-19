@@ -10,6 +10,7 @@ package Match
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
 	import utils.MovieClipMouseDisabler;
 
@@ -40,9 +41,8 @@ package Match
 			mcInput = mcChat["mcInput"];
 			ctInput = mcChat["mcInput"]["ctInput"];
 									
-			ctInput.maxChars = MAX_CHARS;			
-			ctInput.defaultTextFormat = MatchAssets.HelveticaNeueTextFormat13;
-			
+			ctInput.maxChars = MAX_CHARS;	
+						
 			addEventListener(Event.ADDED_TO_STAGE, OnAddedToStage);
 		}
 		
@@ -113,7 +113,7 @@ package Match
 			text.mouseEnabled = false;
 			text.embedFonts = true;
 			text.antiAliasType = flash.text.AntiAliasType.ADVANCED;
-			text.defaultTextFormat = MatchAssets.HelveticaNeueTextFormat14;
+			text.defaultTextFormat = new TextFormat("HelveticaNeue LT 77 BdCn", 14);
 			text.textColor = 0xFFFF00;
 			text.text = msg;
 			text.width = 800;

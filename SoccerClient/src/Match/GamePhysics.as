@@ -1,9 +1,9 @@
 package Match
 {
 	import Box2D.Common.Math.b2Vec2;
-	
 	import Box2D.actionsnippet.qbox.QuickBox2D;
 	import Box2D.actionsnippet.qbox.QuickContacts;
+	
 	import com.greensock.*;
 	
 	import flash.display.MovieClip;
@@ -143,7 +143,7 @@ package Match
 					_TouchedCaps.push(cap);
 					_TouchedCapsLastRun.push(cap);
 										
-					MatchMain.Ref.Game.TheAudioManager.Play( "SoundCollisionCapBall" );
+					MatchMain.Ref.Game.TheAudioManager.Play("SoundCollisionCapBall");
 				}
 				else
 				{
@@ -162,7 +162,12 @@ package Match
 				if (ent1 is Cap && ent2 is Cap)
 				{					
 					if ((_DetectedFault = DetectFault(Cap(ent1), Cap(ent2))) != null)
-						StopSimulation();	// La detencion se detectará en el próximo tick, procesandose entonces la falta
+					{	
+						// Mandamos a detener la simulacion en el proximo Run. Aqui no podemos pararla porque
+						// estamos procesando el contacto, en este momento si haces un PutToSleep la chapa
+						// se queda en el vacio sideral
+						mbWantToStopSimulation = true;
+					}
 				}
 			}
 		}
@@ -261,7 +266,7 @@ package Match
 				}
 			}
 		}
-		
+				
 		//
 		// Retorna true si hay algo todavia moviendose
 		//
@@ -301,6 +306,16 @@ package Match
 				// Se acabo la simulacion? (es decir, esta todo parado?).
 				if (!IsPhysicSimulating)
 					_SimulatingShoot = false;
+				else 
+				if (mbWantToStopSimulation)
+				{
+					// Paramos la simulacion para que Game vea el fin y se procese la falta (o el motivo que sea por el que se ha producido
+					// el mbWantToStopSimulation) en el OnClientShootEnd
+					StopSimulation();
+					
+					_SimulatingShoot = false
+					mbWantToStopSimulation = false;
+				}
 			}
 		}
 		
@@ -322,5 +337,7 @@ package Match
 		private var _SimulatingShoot : Boolean = false;
 		private var _CapShooting : Cap = null;
 		private var _FramesSimulating:int = 0;					// Contador de frames simulando
+		
+		private var mbWantToStopSimulation : Boolean = false;
 	}
 }

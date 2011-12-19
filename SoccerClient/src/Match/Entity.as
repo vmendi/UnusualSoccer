@@ -8,10 +8,6 @@ package Match
 	//
 	public class Entity
 	{	
-		//
-		// Inicializa una entidad con aspecto visual. 
-		//   - Se le pasa la clase que debe instanciar
-		//
 		public function Entity( assetClass:Class, parent:DisplayObjectContainer  ) : void
 		{	
 			if (assetClass != null)
@@ -22,16 +18,15 @@ package Match
 			}
 		}
 		
-		//
-		// Destruye el elemento visual asociado
-		//
 		public function Destroy() : void
 		{
 			if( _Visual != null )
 			{
-				var parent:DisplayObjectContainer = _Visual.parent as DisplayObjectContainer; 
+				var parent:DisplayObjectContainer = _Visual.parent as DisplayObjectContainer;
+				
 				if( parent != null )
 					parent.removeChild( _Visual );
+				
 				_Visual = null;
 			}
 		}
@@ -44,33 +39,20 @@ package Match
 		{
 		}		
 
-		//
-		// Posicionamiento del objeto lógico
-		// TODO: Definir como funciona el pipeline físico / visual!!!
-		//
 		public function SetPos( pos:Point ) : void
 		{
 			_Visual.x = pos.x;
 			_Visual.y = pos.y;
 		}
 		
-		public function GetPos( ) : Point
+		public function GetPos() : Point
 		{
-			return new Point( _Visual.x, _Visual.y );
+			return new Point(_Visual.x, _Visual.y);
 		}
 		
-		public function get Visual( ) : *
+		public function get Visual() : *
 		{
 			return _Visual;
-		}
-		
-		public function get Visible( ) : Boolean
-		{
-			return _Visual.visible;
-		}
-		public function set Visible( value:Boolean ) : void
-		{
-			_Visual.visible = value;
 		}
 		
 		// Calcula si la posición de la entidad está dentro del circulo indicado
@@ -97,12 +79,8 @@ package Match
 			var nearestEntity:Entity = null;
 			var nearestDistance:Number = Number.MAX_VALUE;
 			
-			// Iteramos por todas las entidades
 			for each( var ent:Entity in entities )
 			{
-				// Calculamos la distancia entre las 2 entidades, 
-				// y si es menor que la más pequeña encontrada hasta ahora la guardamos
-				
 				var vDist:Point =  ent.GetPos().subtract( this.GetPos() );
 				var length:Number = vDist.length;
 				if( length < nearestDistance )
@@ -112,7 +90,7 @@ package Match
 				}
 			}
 
-			return ( nearestEntity );
+			return nearestEntity;
 		}
 		
 		protected var _Visual:* = null;

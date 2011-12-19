@@ -71,9 +71,7 @@
 		{
 			// El servidor siempre nos pasa un locale coherente con el VERSION_ID, aqui no tenemos que hacer nada
 			resourceManager.localeChain = GetLocaleChain(AppConfig.LOCALE);
-			
-			// Selecciona en_US y usa es_ES como fallback cuando no encuentra el resource
-			//ResourceManager.getInstance().localeChain = ["en_US", "es_ES"];	
+
 						
 			function GetLocaleChain(locale : String) : Array
 			{
