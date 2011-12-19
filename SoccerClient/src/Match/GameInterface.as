@@ -26,16 +26,14 @@ package Match
 		public var TurnTime:Number = 0;							// Tiempo que representa la tarta contadora de timeout del interface
 		
 		// Parámetros visuales de la flecha que se pinta para disparar
-		private const MAX_LONG_SHOOT:Number = 160;
+		private const MAX_LONG_SHOOT:Number = 130;
 		private const COLOR_SHOOT:uint = 0xE97026;
 		private const COLOR_HANDLEBALL:uint = 0x2670E9;
 		private const THICKNESS_SHOOT:uint = 7;
 		
 		
 		public function GameInterface() : void
-		{	
-			SetTextFormats();
-			
+		{		
 			// Canvas de pintado compartido entre todos los controllers. Lo añadimos al principio del interface, 
 			// para que se pinte encima de la GameLayer pero por debajo de todo lo de la GUILayer
 			ControllerCanvas = MatchMain.Ref.Game.GUILayer.addChild(new Sprite()) as Sprite;
@@ -71,33 +69,6 @@ package Match
 			
 			Gui.TeamHome.text = teams[Enums.Team1].PredefinedName;
 			Gui.TeamAway.text = teams[Enums.Team2].PredefinedName;
-		}
-			
-		private function SetTextFormats() : void
-		{
-			var Gui:* = MatchMain.Ref.Game.TheField.Visual;
-			
-			// Parece que el TextField no encuentra la fuente embebida por CS5 (parece que estar 
-			// está, pero con fontStyle=regular)
-			// Tenemos que embeber las fuentes a mano y luego hacer aqui el setTextFormat.
-			// Para solucionar esto, deberíamos no usar TextField exportados desde flash
-			// y usar componentes propios de Flex SDK
-			Gui.TeamHome.defaultTextFormat = MatchAssets.HelveticaNeueTextFormat16;
-			Gui.TeamAway.defaultTextFormat = MatchAssets.HelveticaNeueTextFormat16;
-			
-			Gui.Score.defaultTextFormat = MatchAssets.HelveticaNeueTextFormat16;
-			Gui.Time.defaultTextFormat = MatchAssets.HelveticaNeueTextFormat16;
-			Gui.Period.defaultTextFormat = MatchAssets.HelveticaNeueTextFormat16;
-			
-			// Para saber las fuentes que tienes embebidas...
-			function listFonts() : Array 
-			{
-				var fontArray:Array = Font.enumerateFonts(false);
-				for(var i:int = 0; i < fontArray.length; i++) {
-					var thisFont:Font = fontArray[i];
-				}
-				return fontArray;
-			}
 		}
 		
 		private function CreateSpecialSkillButtons(parent:DisplayObjectContainer) : void
@@ -319,7 +290,7 @@ package Match
 			var panelInfo : DisplayObject = new MatchAssets.CapDetails();
 			panelInfo.name = "PanelInfo";
 			
-			panelInfo["SelectedTraining"].text = cap.OwnerTeam.Fitness;
+			panelInfo["SelectedTraining"].text = cap.OwnerTeam.Fitness + "%";
 			panelInfo["SelectedWeight"].text = cap.Defense;
 			panelInfo["SelectedSliding"].text = cap.Control;
 			panelInfo["SelectedPower"].text = cap.Power;

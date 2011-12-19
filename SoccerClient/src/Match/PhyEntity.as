@@ -81,13 +81,10 @@ package Match
 		//
 		public function StopMovement() : void
 		{
-			PhyObject.body.SetLinearVelocity( new b2Vec2( 0, 0 ) );
-			PhyObject.body.SetAngularVelocity( 0 );
-			
 			// Dormimos el objeto inmediatamente, para que deje de simular!
 			PhyObject.body.PutToSleep();
 		}
-		
+
 		//
 		// Devuelve si la entidad está o no en movimiento (simulando)
 		//

@@ -9,6 +9,7 @@ package Match
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
 	import utils.MathUtils;
 
@@ -23,7 +24,7 @@ package Match
 			campoPotenciaTiro.mouseEnabled = false;
 			campoPotenciaTiro.embedFonts = true;
 			campoPotenciaTiro.antiAliasType = flash.text.AntiAliasType.ADVANCED;
-			campoPotenciaTiro.defaultTextFormat = MatchAssets.HelveticaNeueTextFormat14;
+			campoPotenciaTiro.defaultTextFormat = new TextFormat("HelveticaNeue LT 77 BdCn", 14);
 			campoPotenciaTiro.textColor = 0xFFFFFF;
 			campoPotenciaTiro.width = 800;
 			
@@ -80,8 +81,10 @@ package Match
 				
 				// Refrescamos el campo de texto de la potencia solo en el caso de tiro valido
 				_PotenciaTiro.text = "PO: " + Math.round(Force*100);
-				//_PotenciaTiro.x = recoil.x;
-				//_PotenciaTiro.y = recoil.y - 30;
+				/*
+				_PotenciaTiro.x = recoil.x;
+				_PotenciaTiro.y = recoil.y - 30;
+				*/
 				_PotenciaTiro.x = _Target.Visual.x;
 				_PotenciaTiro.y = _Target.Visual.y;
 			}
@@ -150,8 +153,6 @@ package Match
 			// Clampeamos segun la potencia de la chapa (en 100 clampearemos a _MaxLongLine, en 0 clampearemos al ratio Low/High * _MaxLongLine)
 			if (dir.length > PowerAdjustedMaxLengthLine)
 				dir.normalize(PowerAdjustedMaxLengthLine);
-									
-			//trace(dir.length + " " + PowerAdjustedMaxLongLine);
 
 			return dir;
 		}
@@ -236,11 +237,7 @@ package Match
 			
 			return dist;
 		}
-		
-		
-		// Fuerza mínima que tendra un disparo, independientemente de cómo de cerca este el raton de la chapa
-		static private const MIN_FORCE : Number = 0.1;
-		
+
 		private var _Canvas : Sprite;
 		private var _Angle : Number; 
 		private var _MaxLengthLine : uint;

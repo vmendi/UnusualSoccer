@@ -427,7 +427,7 @@ package Match
 			
 			var paseToCap : Cap = CheckPaseAlPie();
 			var detectedFault : Fault = TheGamePhysics.TheFault;
-						
+									
 			// La falta primero, prioridad maxima
 			if (detectedFault != null)
 			{

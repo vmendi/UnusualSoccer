@@ -4,14 +4,6 @@ package Assets
 
 	public class MatchAssets
 	{
-		static public var HelveticaNeueTextFormat16 : TextFormat = new TextFormat("HelveticaNeueLT77BdCn", 16);
-		static public var HelveticaNeueTextFormat14 : TextFormat = new TextFormat("HelveticaNeueLT77BdCn", 14);
-		static public var HelveticaNeueTextFormat13 : TextFormat = new TextFormat("HelveticaNeueLT77BdCn", 13);
-		
-		// El TextField no acepta CFF.
-		[Embed(source='/Assets/Fonts/HelveticaNeueLT/lte50874.ttf', fontFamily="HelveticaNeueLT77BdCn", fontWeight="bold", embedAsCFF="false")]
-		private var forcedEmbed2:Class;
-						
 		// El campo:
 		[Embed(source="Assets/MatchAssets.swf", symbol="Field")]
 		static public var Field:Class;
