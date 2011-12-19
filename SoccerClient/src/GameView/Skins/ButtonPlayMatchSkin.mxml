@@ -20,12 +20,23 @@
 			<s:SolidColor color="#111414"/>
 		</s:fill>
 	</s:Ellipse>
+	
+	<s:Ellipse id="ellipse0" includeIn="over" x="27" y="7" width="90" height="90">
+		<s:fill>
+			<s:SolidColor color="#FFFFFF"/>
+		</s:fill>
+		<s:filters>
+			<s:GlowFilter alpha="0.5" blurX="20" blurY="20" color="#A6C6FF" inner="false"
+						  knockout="true" quality="2" strength="3"/>
+		</s:filters>
+	</s:Ellipse>
+	
 	<s:Ellipse id="ellipse1" x="41" y="21" width="62" height="62">
 		<s:fill>
 			<s:SolidColor color="#FFFFFF"/>
 		</s:fill>
 		<s:filters>
-			<s:GlowFilter id="glowfilter1" alpha="1.0" blurX="20" blurY="20" color="#5380d0"
+			<s:GlowFilter id="glowfilter1" alpha="0.6" blurX="20" blurY="20" color="#5380d0"
 						  inner="true" knockout="true" quality="2" strength="2.8"
 						  blurX.over="30" blurY.over="30"
 						  blurX.down="30" blurY.down="30"
@@ -36,10 +47,12 @@
 	<s:Label id="myLabel" maxDisplayedLines="1"
 			 text="JUGAR"
 			 horizontalCenter="0" verticalCenter="0"
-			 verticalAlign="middle" textAlign="start" styleName="whiteBoldVeryBig"
-			 alpha.up="0.5"
-			 alpha.over="1"
-			 alpha.down="1" />
+			 verticalAlign="middle" textAlign="start" styleName="whiteBoldVeryBig">
+		<s:filters>
+			<s:GlowFilter includeIn="over" alpha="1.0" blurX="15" blurY="15" color="#FFFFFF"
+						  inner="false" knockout="false" quality="2" strength="2"/>
+		</s:filters>
+	</s:Label>
 
 	<!--<s:RichText id="richtext1" x="47" y="41" color="#FFFFFF" fontFamily="HelveticaNeue LT 77 BdCn"
 				fontSize="18" tabStops="S0" text="JUGAR"
@@ -49,9 +62,11 @@
 	<s:BitmapImage x="0" y="0" smooth="true"
 				   source="@Embed(source='/Assets/General.swf', symbol='ButtonPlayMatch_Cover')"
 				   fillMode="clip"/>
+	
 	<s:transitions>
 		<s:Transition fromState="up" toState="over">
 			<s:Parallel>
+				<s:Fade duration="250" target="{ellipse0}"/>
 				<s:Parallel target="{ellipse1}">
 					<s:Parallel duration="250" target="{glowfilter1}">
 						<s:AnimateColor/>
@@ -63,11 +78,11 @@
 						</s:Animate>
 					</s:Parallel>
 				</s:Parallel>
-				<s:Fade duration="250" target="{myLabel}"/>
 			</s:Parallel>
 		</s:Transition>
 		<s:Transition fromState="over" toState="up">
 			<s:Parallel>
+				<s:Fade duration="250" target="{ellipse0}"/>
 				<s:Parallel target="{ellipse1}">
 					<s:Parallel duration="250" target="{glowfilter1}">
 						<s:AnimateColor/>
@@ -79,7 +94,6 @@
 						</s:Animate>
 					</s:Parallel>
 				</s:Parallel>
-				<s:Fade duration="250" target="{myLabel}"/>
 			</s:Parallel>
 		</s:Transition>
 	</s:transitions>

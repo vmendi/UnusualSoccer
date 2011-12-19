@@ -4,6 +4,10 @@
 		 creationComplete="CreationCompleteHandler(event)"
 		 xmlns:Team="GameView.Team.*" xmlns:GameView="GameView.*"
 		 xmlns:Competition="GameView.Competition.*" xmlns:Match="GameView.Match.*">
+
+	<fx:Declarations>
+		<s:GlowFilter id="glowNormal" strength="1" alpha="0.7" blurX="10" blurY="10" color="#FFFFFF"/>
+	</fx:Declarations>
 	
 	<fx:Style source="../styles.css"/>
 		
@@ -202,14 +206,15 @@
 		<s:State name="WinnerByAbandon"/>
 	</s:states>
 
-	<GameView:PopupBackground width="{MatchResultUtils.IsCompetition(mMatchResult) ? 402 : 352}" top="-15" bottom="-15" />
+	<GameView:PopupBackground width="402" top="-15" bottom="-15" />
 	<Competition:DivisionBadge x="-45" y="0" Division="{mCompetitionModel.TheGroup.DivisionName}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" />
 	
 	<s:Label top="15" horizontalCenter="0" 
 			 text="{MatchResultUtils.IsCompetition(mMatchResult) ? resourceManager.getString('main','MatchEndDialogCompetition') : resourceManager.getString('main','MatchEndDialogFriendly')}"
-			 styleName="whiteBoldVeryBig" textAlign="center" />
+			 styleName="whiteBoldHuge" textAlign="center"
+			 filters="{[glowNormal]}" />
 	
-	<s:Group top="80" horizontalCenter="0">
+	<s:Group top="70" horizontalCenter="0">
 		<s:layout>
 			<s:VerticalLayout gap="15" horizontalAlign="center" />
 		</s:layout>
