@@ -29,7 +29,7 @@ package Match
 			
 			canvas.addChild(campoPotenciaTiro);
 			
-			this._MaxLongLine = maxLongLine;
+			this._MaxLengthLine = maxLongLine;
 			this._Canvas = canvas;
 			this._Thickness = thickness;
 			this._PotenciaTiro = campoPotenciaTiro;
@@ -148,8 +148,8 @@ package Match
 			dir = ClipAgainstBorder(theCapPos, dir, new Point(STAGE_MARGIN, stageHeight-STAGE_MARGIN), new Point(1, 0));
 								
 			// Clampeamos segun la potencia de la chapa (en 100 clampearemos a _MaxLongLine, en 0 clampearemos al ratio Low/High * _MaxLongLine)
-			if (dir.length > PowerAdjustedMaxLongLine)
-				dir.normalize(PowerAdjustedMaxLongLine);
+			if (dir.length > PowerAdjustedMaxLengthLine)
+				dir.normalize(PowerAdjustedMaxLengthLine);
 									
 			//trace(dir.length + " " + PowerAdjustedMaxLongLine);
 
@@ -157,9 +157,9 @@ package Match
 		}
 	
 		// Una chapa con 100 de power dara HighCapMaxImpulse como maximo. Una chapa con 0 de power dara LowCapMaxImpulse como maximo
-		private function get PowerAdjustedMaxLongLine() : Number
+		private function get PowerAdjustedMaxLengthLine() : Number
 		{
-			var myScale : Number = _MaxLongLine / MatchConfig.HighCapMaxImpulse;
+			var myScale : Number = _MaxLengthLine / MatchConfig.HighCapMaxImpulse;
 			return (MatchConfig.LowCapMaxImpulse + ((MatchConfig.HighCapMaxImpulse - MatchConfig.LowCapMaxImpulse) * (_Target.Power / 100.0))) * myScale;
 		}
 		
@@ -179,26 +179,27 @@ package Match
 								  GetDistanceToBorder(theCapPos, Direction, new Point(STAGE_MARGIN, stageHeight-STAGE_MARGIN), new Point(1, 0)) ];	// Bottom
 			dists.sort(Array.NUMERIC);
 			
-			var maxLongLine : Number = _MaxLongLine;
 			var len:Number = Direction.length;
-			
-			if (dists[0] < PowerAdjustedMaxLongLine)
-			{
-				maxLongLine = dists[0];
-				len *= PowerAdjustedMaxLongLine / _MaxLongLine;
-			}
-						
-			//trace(len + "   " + dists[0]);
-
 			var force : Number = 0;
 			
-			// Una pequeña renormalizacion para tener en cuenta que queremos que la fuerza sea 0 justo en Cap.Radius
 			if (len >= Cap.Radius)
 			{
-				//force = ((len / maxLongLine) * ((PowerAdjustedMaxLongLine + Cap.Radius)/PowerAdjustedMaxLongLine)) - (Cap.Radius / maxLongLine);
-				force = len / maxLongLine;
+				// Una pequeña renormalizacion para tener en cuenta que queremos que la fuerza en funcion de len sea:
+				// 		0 en len=Cap.Radius 
+				// 		PowerAdj/_MaxLengthLine en len=PowerAdj
+				//
+				// Montamos una linea con estas dos condiciones...
+				//
+				force = PowerAdjustedMaxLengthLine * len / ((PowerAdjustedMaxLengthLine - Cap.Radius) * _MaxLengthLine) -
+						PowerAdjustedMaxLengthLine * Cap.Radius / ((PowerAdjustedMaxLengthLine - Cap.Radius) * _MaxLengthLine);
+			
+				if (dists[0] < PowerAdjustedMaxLengthLine)
+				{
+					// Ademas tenemos que hacer una regla de 3 cuando estamos clipando
+					force *= (PowerAdjustedMaxLengthLine - Cap.Radius) / (dists[0] - Cap.Radius);	
+				}	
 			}
-						
+			
 			return force;
 		}
 		
@@ -242,7 +243,7 @@ package Match
 		
 		private var _Canvas : Sprite;
 		private var _Angle : Number; 
-		private var _MaxLongLine : uint;
+		private var _MaxLengthLine : uint;
 		private var _ColorLine : uint;
 		private var _Thickness : uint;
 		private var _PotenciaTiro : TextField;
