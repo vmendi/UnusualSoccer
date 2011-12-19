@@ -99,13 +99,13 @@ package Match
 			var offsetY:Number = MatchConfig.Screen2Physic( OffsetY );
 			
 			// NOTE: La posición especificada para Box2D tanto en cajas como círculos siempre es el centro
-			var heightGoal:Number = MatchConfig.Screen2Physic( HeightGoal );
-			var halfHeightWithoutGoal:Number = MatchConfig.Screen2Physic( (SizeY - HeightGoal)/2 );
+			var heightGoal:Number = MatchConfig.Screen2Physic(HeightGoal);
+			var halfHeightWithoutGoal:Number = MatchConfig.Screen2Physic((SizeY - HeightGoal)/2);
 			var hc1:Number = offsetY + (halfHeightWithoutGoal/2);
-			var hc2:Number = offsetY + MatchConfig.Screen2Physic( SizeY ) - (halfHeightWithoutGoal/2);
-			var centerGoalLeft:Point = GetCenterGoal( Enums.Left_Side );
-			var centerGoalRight:Point = GetCenterGoal( Enums.Right_Side );
-			var halfBall:Number = MatchConfig.Screen2Physic( BallEntity.Radius/2 );
+			var hc2:Number = offsetY + MatchConfig.Screen2Physic(SizeY) - (halfHeightWithoutGoal/2);
+			var centerGoalLeft:Point = GetCenterGoal(Enums.Left_Side);
+			var centerGoalRight:Point = GetCenterGoal(Enums.Right_Side);
+			var halfBall:Number = MatchConfig.Screen2Physic(BallEntity.Radius/2);
 			
 			var halfSizeSmallAreaX : Number = MatchConfig.Screen2Physic(SmallSizeAreaX / 2);
 
@@ -178,15 +178,15 @@ package Match
 		
 		public function IsCircleInsideBigArea(pos:Point, radius:Number, side:int) : Boolean
 		{
-			if( side == Enums.Left_Side )
-				return MathUtils.CircleInRect( pos, radius, new Point( BigAreaLeftX, BigAreaLeftY ), new Point( SizeBigAreaX, SizeBigAreaY ) );			
+			if (side == Enums.Left_Side)
+				return MathUtils.CircleInRect(pos, radius, new Point(BigAreaLeftX, BigAreaLeftY), new Point(SizeBigAreaX, SizeBigAreaY));			
 			
-			return MathUtils.CircleInRect( pos, radius, new Point( BigAreaRightX, BigAreaRightY ), new Point( SizeBigAreaX, SizeBigAreaY ) );
+			return MathUtils.CircleInRect(pos, radius, new Point(BigAreaRightX, BigAreaRightY), new Point(SizeBigAreaX, SizeBigAreaY));
 		}
 		
 		public function IsPointInsideSmallArea(pos:Point, side:int): Boolean
 		{
-			if( side == Enums.Left_Side )
+			if (side == Enums.Left_Side)
 				return MathUtils.PointInRect(pos, new Point(SmallAreaLeftX, SmallAreaLeftY), new Point(SmallSizeAreaX, SmallSizeAreaY));
 			
 			return MathUtils.PointInRect(pos, new Point(SmallAreaRightX, SmallAreaRightY), new Point(SmallSizeAreaX, SmallSizeAreaY));
@@ -195,16 +195,14 @@ package Match
 		// Comprobamos si el centro de una chapa está dentro del area de su propio equipo
 		public function IsCapCenterInsideSmallArea(cap:Cap) : Boolean
 		{
-			return( IsCircleInsideSmallArea( cap.GetPos(), 0, cap.OwnerTeam.Side ) );  	
+			return IsCircleInsideSmallArea(cap.GetPos(), 0, cap.OwnerTeam.Side);  	
 		}
 		
-		//
 		// Valida una posición (con un radio determinado) en el campo.
-		// Para ser válida debe estar contenida dentro de la zona de juego del campo,
-		//
+		// Para ser válida debe estar contenida dentro de la zona de juego del campo,		
 		public function ValidatePos( pos:Point, radius:Number = 0 ) : Boolean
 		{
-			return ( MathUtils.CircleInRect( pos, radius, new Point( OffsetX, OffsetY ), new Point( SizeX, SizeY ) ) );
+			return MathUtils.CircleInRect(pos, radius, new Point(OffsetX, OffsetY), new Point(SizeX, SizeY));
 		}
 		
 		//
@@ -214,29 +212,29 @@ package Match
 		// 		- No colisionar con ninguna chapa
 		//		- No colisionar con el balón
 		//
-		public function ValidatePosCap( pos:Point, checkAgainstBall:Boolean, ignoreCap:Cap = null  ) : Boolean
+		public function ValidatePosCap(pos:Point, checkAgainstBall:Boolean, ignoreCap:Cap = null) : Boolean
 		{
 			// Validamos contra el campo
-			var bValid:Boolean = ValidatePos( pos, Cap.Radius );
+			var bValid:Boolean = ValidatePos(pos, Cap.Radius);
 			
-			if( bValid )
+			if (bValid)
 			{
 				// Validamos contra las chapas
 				for each (var team:Team in MatchMain.Ref.Game.TheTeams)
 				{
 					for each (var cap:Cap in team.CapsList)
 					{
-						if( cap != null && cap != ignoreCap && cap.InsideCircle( pos, Cap.Radius+Cap.Radius) == true )
-							return( false );
+						if (cap != ignoreCap && cap.InsideCircle(pos, Cap.Radius+Cap.Radius))
+							return false;
 					}
 				}
 			
 				// Comprobamos que no colisionemos con el balón				
-				if (checkAgainstBall && MatchMain.Ref.Game.TheBall.InsideCircle( pos, Cap.Radius+BallEntity.Radius))
+				if (checkAgainstBall && MatchMain.Ref.Game.TheBall.InsideCircle(pos, Cap.Radius+BallEntity.Radius))
 					bValid = false;
 			}
 			
-			return( bValid );
+			return bValid;
 		}
 		
 		//

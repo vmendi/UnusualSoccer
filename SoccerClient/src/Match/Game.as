@@ -993,7 +993,7 @@ package Match
 			
 			for each (var cap:Cap in capList)
 			{
-				if (cap != null && cap.InsideCircle(TheBall.GetPos(), Cap.Radius + BallEntity.Radius + CurTeam.RadiusPase))
+				if (cap.InsideCircle(TheBall.GetPos(), Cap.Radius + BallEntity.Radius + CurTeam.RadiusPase))
 				{
 					if (MatchConfig.AutoPasePermitido || cap != TheGamePhysics.ShooterCap)
 						potential.push(cap);
@@ -1138,10 +1138,9 @@ package Match
 		{
 			var capListStr:String = "";
 			
-			for each( var cap:Cap in capList )
+			for each (var cap:Cap in capList)
 			{
-				if( cap != null )
-					capListStr += 	"[" +cap.Id + ":"+cap.GetPos().toString() + "]";
+				capListStr += "[" +cap.Id + ":"+cap.GetPos().toString() + "]";
 			}
 			
 			return capListStr;

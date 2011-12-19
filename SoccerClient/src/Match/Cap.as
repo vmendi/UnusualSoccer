@@ -69,12 +69,12 @@ package Match
 		public function Cap(team:Team, id:int, descCap:Object, useSecondaryEquipment:Boolean) : void
 		{	
 			var phyInit : Object = { radius: MatchConfig.Screen2Physic( Radius ),
-									 isBullet: true, 				// UseCCD: Detección de colisión continua (Ninguna chapa se debe atravesar)
+									 isBullet: true, 								// UseCCD: Detección de colisión continua (Ninguna chapa se debe atravesar)
 									 mass: MatchConfig.CapMass,
 									 isSleeping: true,
 									 allowSleep: true, 
 									 friction: .3, 
-									 restitution: .8,			// Fuerza que recupera en un choque (old: 0.6)
+									 restitution: .8,								// Fuerza que recupera en un choque
 									 linearDamping: MatchConfig.CapLinearDamping, 
 									 angularDamping: MatchConfig.CapLinearDamping }
 				
