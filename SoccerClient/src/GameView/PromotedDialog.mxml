@@ -2,7 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 xmlns:Team="GameView.Team.*" xmlns:GameView="GameView.*"
-		 width="400" height="226" xmlns:Competition="GameView.Competition.*">
+		 xmlns:Competition="GameView.Competition.*">
 	
 	<fx:Style source="styles.css"/>
 	
@@ -28,11 +28,34 @@
 		]]>
 	</fx:Script>
 	
-	<GameView:PopupBackground width="100%" height="100%" />
+	<GameView:PopupBackground left="-15" top="-15" right="-15" bottom="-15" />
 	
-	<Competition:DivisionBadge id="MyDivisionBadge" />
-	
-	<s:Button label="CERRAR" horizontalCenter="0" bottom="15" click="CloseClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+	<s:Group>
+		<s:layout>
+			<s:VerticalLayout gap="15" horizontalAlign="center" />
+		</s:layout>
+		<s:Group top="15" horizontalCenter="0">
+			<s:layout>
+				<s:HorizontalLayout gap="10" verticalAlign="middle" />
+			</s:layout>
+			<Competition:DivisionBadge id="MyDivisionBadge" />
+			<s:Group>
+				<s:layout>
+					<s:VerticalLayout gap="4" horizontalAlign="center" />
+				</s:layout>
+				<s:Label text="{resourceManager.getString('main','PromoteDialogTit')}"
+						 styleName="whiteBoldHuge" textAlign="center">
+					<s:filters>
+						<s:GlowFilter id="glowNormal" strength="1" alpha="0.7" blurX="10" blurY="10" color="#FFFFFF"/>
+					</s:filters>
+				</s:Label>
+				<s:Label text="{resourceManager.getString('main','PromoteDialogTxt')}" styleName="whiteBoldBig" />
+				<s:Label text="REGIONAL"
+						 styleName="yellowBoldVeryBig" />	
+			</s:Group>
+		</s:Group>
+		<s:Button label="CERRAR" horizontalCenter="0" bottom="15" click="CloseClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+	</s:Group>
 	
 </s:Group>
 

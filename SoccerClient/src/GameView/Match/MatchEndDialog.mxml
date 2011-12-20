@@ -4,10 +4,6 @@
 		 creationComplete="CreationCompleteHandler(event)"
 		 xmlns:Team="GameView.Team.*" xmlns:GameView="GameView.*"
 		 xmlns:Competition="GameView.Competition.*" xmlns:Match="GameView.Match.*">
-
-	<fx:Declarations>
-		<s:GlowFilter id="glowNormal" strength="1" alpha="0.7" blurX="10" blurY="10" color="#FFFFFF"/>
-	</fx:Declarations>
 	
 	<fx:Style source="../styles.css"/>
 		
@@ -207,12 +203,15 @@
 	</s:states>
 
 	<GameView:PopupBackground width="402" top="-15" bottom="-15" />
-	<Competition:DivisionBadge x="-45" y="0" Division="{mCompetitionModel.TheGroup.DivisionName}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" />
+	<Competition:DivisionBadge x="-60" y="0" Division="{mCompetitionModel.TheGroup.DivisionName}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" />
 	
 	<s:Label top="15" horizontalCenter="0" 
 			 text="{MatchResultUtils.IsCompetition(mMatchResult) ? resourceManager.getString('main','MatchEndDialogCompetition') : resourceManager.getString('main','MatchEndDialogFriendly')}"
-			 styleName="whiteBoldHuge" textAlign="center"
-			 filters="{[glowNormal]}" />
+			 styleName="whiteBoldHuge" textAlign="center">
+		<s:filters>
+			<s:GlowFilter id="glowNormal" strength="1" alpha="0.7" blurX="10" blurY="10" color="#FFFFFF"/>
+		</s:filters>
+	</s:Label>
 	
 	<s:Group top="70" horizontalCenter="0">
 		<s:layout>
