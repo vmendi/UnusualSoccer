@@ -81,7 +81,7 @@ package Match
 					// Los nombres están al revés porque aquí representa a quien le han hecho la falta
 					FillConflictoFault(LaunchCutScene(MatchAssets.MensajeFaltaContraria, 0, 210), MatchMain.Ref.Game.TheGamePhysics.TheFault);
 				else 
-				if(reason == Enums.TurnSaquePuerta )		// El saque de puerta no tiene un mensaje específico para el oponente
+				if(reason == Enums.TurnSaquePuerta)		// El saque de puerta no tiene un mensaje específico para el oponente
 					LaunchCutScene(MatchAssets.MensajeTurnoPropioSaquePuerta, 0, 210);
 				else 
 				if (reason == Enums.TurnTiroAPuerta)
@@ -89,8 +89,6 @@ package Match
 				else 
 				if (reason == Enums.TurnGoalKeeperSet)
 					LaunchCutScene(MatchAssets.MensajeTiroPuertaPropio, 0, 210);
-				else
-					LaunchCutScene(MatchAssets.MensajeTurnoPropio, 0, 210);
 			}
 			else 	// Es el turno del oponente
 			{
@@ -105,8 +103,6 @@ package Match
 				else 
 				if (reason == Enums.TurnGoalKeeperSet)
 					LaunchCutScene(MatchAssets.MensajeTiroPuertaContrario, 0, 210);
-				else
-					LaunchCutScene(MatchAssets.MensajeTurnoContrario, 0, 210);
 			}
 		}
 		

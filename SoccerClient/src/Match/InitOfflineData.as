@@ -44,7 +44,7 @@ package Match
 			var descTeam:Object = { 
 				PredefinedTeamName: predefinedTeamName,
 				Name: "Team " + predefinedTeamName,
-				Fitness:100,
+				Fitness:50,
 				SoccerPlayers: []
 			}
 

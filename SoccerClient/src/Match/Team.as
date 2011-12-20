@@ -373,6 +373,15 @@ package Match
 		{
 			cap.parent.removeChild(cap);
 		}
+		
+		// Pista visual de que es nuestro turno
+		public function ShowMyTurnVisualCue() : void
+		{
+			for each(var cap : Cap in CapsList)
+			{
+				cap.ShowMyTurnVisualCue();
+			}
+		}
 	}
 }
 

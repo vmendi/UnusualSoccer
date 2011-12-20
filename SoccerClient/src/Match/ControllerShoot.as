@@ -16,43 +16,41 @@ package Match
 	
 	public class ControllerShoot extends Controller
 	{		
-		public function ControllerShoot(canvas:Sprite, maxLongLine: uint, colorLine: uint = 0, thickness: uint = 1)
+		public function ControllerShoot(canvas:Sprite)
 		{
-			// Campo de texto en el que indicaremos la potencia		
-			var campoPotenciaTiro : TextField = new TextField(); 
-			campoPotenciaTiro.selectable = false;
-			campoPotenciaTiro.mouseEnabled = false;
-			campoPotenciaTiro.embedFonts = true;
-			campoPotenciaTiro.antiAliasType = flash.text.AntiAliasType.ADVANCED;
-			campoPotenciaTiro.defaultTextFormat = new TextFormat("HelveticaNeue LT 77 BdCn", 14);
-			campoPotenciaTiro.textColor = 0xFFFFFF;
-			campoPotenciaTiro.width = 800;
+			_PotenciaTiro  = new TextField(); 
+			_PotenciaTiro.selectable = false;
+			_PotenciaTiro.mouseEnabled = false;
+			_PotenciaTiro.embedFonts = true;
+			_PotenciaTiro.antiAliasType = flash.text.AntiAliasType.ADVANCED;
+			_PotenciaTiro.defaultTextFormat = new TextFormat("HelveticaNeue LT 77 BdCn", 14);
+			_PotenciaTiro.textColor = 0xFFFFFF;
+			_PotenciaTiro.width = 60;
+			_PotenciaTiro.height = 20;
 			
-			canvas.addChild(campoPotenciaTiro);
+			_Canvas = canvas;
+			_Canvas.addChild(_PotenciaTiro);
 			
-			this._MaxLengthLine = maxLongLine;
-			this._Canvas = canvas;
-			this._Thickness = thickness;
-			this._PotenciaTiro = campoPotenciaTiro;
+			_MaxLengthLine = MAX_LONG_SHOOT;
+			_Thickness = THICKNESS_SHOOT;						
 		}
 	
 		public override function Start(_cap:Cap) : void
 		{
 			super.Start(_cap);
-			
-			// Hacemos visible el campo de texto de potencia
+		
 			_PotenciaTiro.text = "";
 			_PotenciaTiro.visible = true;
+			_PotenciaTiro.x = _Target.Visual.x;
+			_PotenciaTiro.y = _Target.Visual.y;
 		}
 		
 		public override function Stop(reason:int):void
 		{
 			super.Stop(reason);
-				
-			// Eliminamos la parte visual
-			_Canvas.graphics.clear();
-						
+
 			_PotenciaTiro.visible = false;
+			_Canvas.graphics.clear();
 		}
 		
 		public override function IsValid() : Boolean
@@ -65,33 +63,24 @@ package Match
 		{			
 			super.MouseMove(e);
 			
-			_Angle = Math.atan2(-(_Canvas.mouseY - _TargetPos.y), -(_Canvas.mouseX - _TargetPos.x));
-			
 			var dir:Point = Direction.clone(); 				// Dirección truncada a la máxima longitud
 			var source:Point = _TargetPos.clone(); 			// Posición del centro de la chapa
 			var recoil:Point = source.add(dir); 			// Punto del mouse respecto a la chapa, cuando soltemos nos dará la potencia del tiro
+			var recoilColor:uint = 0xff0000;
 			
-			// Mientras que no sacas la flecha de la chapa no es un tiro válido
-			_Canvas.graphics.clear( );
-			var recoilColor:uint = this._ColorLine;
+			_Canvas.graphics.clear();			
 
+			// Mientras que no sacas la flecha de la chapa no es un tiro válido
 			if (IsValid())
 			{
 				DrawPredictiveGizmo();
 				
-				// Refrescamos el campo de texto de la potencia solo en el caso de tiro valido
 				_PotenciaTiro.text = "PO: " + Math.round(Force*100);
-				/*
-				_PotenciaTiro.x = recoil.x;
-				_PotenciaTiro.y = recoil.y - 30;
-				*/
-				_PotenciaTiro.x = _Target.Visual.x;
-				_PotenciaTiro.y = _Target.Visual.y;
+				recoilColor = _ColorLine;
 			}
 			else
 			{
-				recoilColor = 0xff0000;
-				_PotenciaTiro.text = ""	
+				_PotenciaTiro.text = "";	
 			}
 			
 			// Pintamos la parte "trasera" del disparador, que va desde el centro de la chapa hasta el raton
@@ -128,8 +117,6 @@ package Match
 			_Canvas.graphics.moveTo(_TargetPos.x, _TargetPos.y);
 			_Canvas.graphics.lineTo(destination.x, destination.y);
 		}
-		
-		private const STAGE_MARGIN : Number = 15;
 		
 		// Obtenemos el vector de dirección del disparo, evitando que sobrepase nuestra longitud máxima 
 		public override function get Direction() : Point
@@ -239,11 +226,14 @@ package Match
 		}
 
 		private var _Canvas : Sprite;
-		private var _Angle : Number; 
 		private var _MaxLengthLine : uint;
 		private var _ColorLine : uint;
 		private var _Thickness : uint;
 		private var _PotenciaTiro : TextField;
 
+		private const STAGE_MARGIN : Number = 15;
+		private const MAX_LONG_SHOOT:Number = 130;
+		private const COLOR_SHOOT:uint = 0xE97026;
+		private const THICKNESS_SHOOT:uint = 7;
 	}
 }

@@ -45,7 +45,7 @@ package Match
 		//
 		// Detiene el sistema de control direccional con el ratón, lo que implica dejar de visualizarlo
 		//
-		public function Stop( reason:int ):void
+		public function Stop(reason:int):void
 		{
 			// Nos desregistramos de los eventos de entrada 
 			RemoveHandlers(_Target.Visual.stage);
@@ -54,49 +54,29 @@ package Match
 			_IsStarted = false;
 			
 			// lanzamos evento
-			OnStop.dispatch( reason );
+			OnStop.dispatch(reason);
 		}
 		
 		//
 		// Nos registramos a los eventos de ratón del objeto indicado "stage" 
 		//
-		protected function AddHandlers (object:DisplayObject):void
+		protected function AddHandlers(object:DisplayObject):void
 		{
-			if (object != null)
-			{
-				object.stage.addEventListener( MouseEvent.MOUSE_DOWN, MouseDown );
-				object.stage.addEventListener( MouseEvent.MOUSE_UP, MouseUp );	
-				object.stage.addEventListener( MouseEvent.MOUSE_MOVE, MouseMove );
-			}
-			
+			object.stage.addEventListener(MouseEvent.MOUSE_UP, MouseUp);	
+			object.stage.addEventListener(MouseEvent.MOUSE_MOVE, MouseMove);
 		}
-		protected function RemoveHandlers( object:DisplayObject  ):void
+		protected function RemoveHandlers(object:DisplayObject):void
 		{
-			if (object != null)
-			{
-				object.stage.removeEventListener( MouseEvent.MOUSE_DOWN, MouseDown );
-				object.stage.removeEventListener( MouseEvent.MOUSE_UP, MouseUp );	
-				object.stage.removeEventListener( MouseEvent.MOUSE_MOVE, MouseMove );
-			}
+			object.stage.removeEventListener(MouseEvent.MOUSE_UP, MouseUp);	
+			object.stage.removeEventListener(MouseEvent.MOUSE_MOVE, MouseMove);
 		}
+		
+		public function MouseUp(e: MouseEvent) :void { Stop(SuccessMouseUp); }		
+		public function MouseMove(e: MouseEvent) :void { e.updateAfterEvent(); }	// updateAfterEvent -> Refresca a la velocidad del evento, no a la del framerate
 		
 		// Verifica si el controlador tiene unos valores válidos (para overrides en hijos)
 		public function IsValid() : Boolean	{ return true; }
-		
-		// Botón del ratón presionado
-		public function MouseDown( e: MouseEvent ) :void { }
-		
-		// El botón del ratón se ha levantado
-		public function MouseUp( e: MouseEvent ) :void
-		{
-			Stop( SuccessMouseUp );
-		}
-		
-		public function MouseMove( e: MouseEvent ) :void
-		{
-			e.updateAfterEvent();
-		}
-		
+				
 		// Vector que va desde el centro del Target a las coordenadas actuales del raton
 		public function get Direction() : Point
 		{			

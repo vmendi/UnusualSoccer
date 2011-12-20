@@ -13,22 +13,8 @@ package Match
 	//
 	public class ControllerPos extends Controller
 	{
-		private var canvas        : Sprite;
-		private var colorLine	  : uint;
-		private var thickness	  : uint;
-		
-		private const BLACK    	  : uint = 0x000000;
-		
-		public function ControllerPos(canvas:Sprite, colorLine: uint = 0)		
-		{
-			this.canvas = canvas;
-						
-			(colorLine == 0) ? this.colorLine = BLACK : this.colorLine = colorLine;
-		}
-		
 		//
-		// Arranca el sistema de control direccional con el ratón
-		// .... y hace visible el ghost
+		// Arranca el sistema de control direccional con el ratón... y hace visible el ghost
 		public override function Start( _cap: Cap ):void
 		{
 			super.Start( _cap );
@@ -60,7 +46,7 @@ package Match
 			super.Stop(reason);
 			
 			// Eliminamos la parte visual
-			canvas.graphics.clear( );
+			_Canvas.graphics.clear( );
 			if( Target != null && Target.Ghost != null )
 				Target.Ghost.Visual.visible = false;
 		}
@@ -75,7 +61,7 @@ package Match
 		
 		public override function MouseMove( e: MouseEvent ) :void
 		{
-			super.MouseMove( e );
+			super.MouseMove(e);
 			
 			// Obtenemos punto inicial y final de la linea de dirección
 			var source:Point = _TargetPos.clone();
@@ -83,7 +69,7 @@ package Match
 			
 			// Seleccionamos un color para la linea diferente en función de si la posición final
 			// es válida o no
-			var color:uint = colorLine;
+			var color:uint = _ColorLine;
 			if (!this.IsValid())
 				Graphics.ChangeColorMultiplier( Target.Ghost.Visual, 1.0, 0.4, 0.4 );
 			else
@@ -103,6 +89,17 @@ package Match
 			var newPos:Point = Target.GetPos().add( dir );
 			
 			return newPos;
+		}
+		
+		private var _Canvas : Sprite;
+		private var _ColorLine : uint;
+		
+		private const COLOR:uint = 0x2670E9;
+		
+		public function ControllerPos(canvas:Sprite)		
+		{
+			this._Canvas = canvas;						
+			this._ColorLine = COLOR;
 		}
 	}
 }

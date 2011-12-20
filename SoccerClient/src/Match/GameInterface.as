@@ -9,8 +9,8 @@ package Match
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.geom.ColorTransform;
 	import flash.net.SharedObject;
-	import flash.text.Font;
 	
 	import utils.Delegate;
 	import utils.TimeUtils;
@@ -23,13 +23,10 @@ package Match
 		private var PosControl:ControllerPos = null;			// Control para posicionar chapas (lo usamos solo para el portero)
 		private var ControllerCanvas:Sprite = null;				// El contenedor donde se pinta las flecha de direccion
 		
-		public var TurnTime:Number = 0;							// Tiempo que representa la tarta contadora de timeout del interface
+		private var _TotalTimeoutTime:Number = 0;				// Tiempo total que representa la tarta
+
 		
-		// Parámetros visuales de la flecha que se pinta para disparar
-		private const MAX_LONG_SHOOT:Number = 130;
-		private const COLOR_SHOOT:uint = 0xE97026;
-		private const COLOR_HANDLEBALL:uint = 0x2670E9;
-		private const THICKNESS_SHOOT:uint = 7;
+		public function set TotalTimeoutTime(val : Number) : void { _TotalTimeoutTime = val; }
 		
 		
 		public function GameInterface() : void
@@ -42,24 +39,22 @@ package Match
 			CreateSpecialSkillButtons(MatchMain.Ref.Game.GUILayer);
 
 			// Inicializamos los controladores (disparo, balón, posición)
-			ShootControl = new ControllerShoot(ControllerCanvas, MAX_LONG_SHOOT, COLOR_SHOOT, THICKNESS_SHOOT);
-			BallControl = new ControllerBall(ControllerCanvas, Cap.Radius + BallEntity.Radius + MatchConfig.DistToPutBallHandling, COLOR_HANDLEBALL, THICKNESS_SHOOT);
-			PosControl = new ControllerPos(ControllerCanvas, COLOR_HANDLEBALL);
+			ShootControl = new ControllerShoot(ControllerCanvas);
+			BallControl = new ControllerBall(ControllerCanvas);
+			PosControl = new ControllerPos(ControllerCanvas);
 			
 			ShootControl.OnStop.add(OnStopControllerShoot);
 			BallControl.OnStop.add(OnStopControllerBall);
 			PosControl.OnStop.add(OnStopControllerPos);
-			
+						
 			var Gui:* = MatchMain.Ref.Game.TheField.Visual;
 
 			// Hay parte del GUI que nos viene en el campo y no hay que instanciar
-			Gui.BotonTiroPuerta.addEventListener(MouseEvent.CLICK, OnTiroPuerta);
-			Gui.SoundButton.addEventListener(MouseEvent.CLICK, OnMute);
-			
+			Gui.SoundButton.addEventListener(MouseEvent.MOUSE_DOWN, OnMute);
+			Gui.BotonTiroPuerta.addEventListener(MouseEvent.MOUSE_DOWN, OnTiroPuerta);			
+									
 			// Gui.BotonAbandonar.addEventListener( MouseEvent.CLICK, OnAbandonarClick );
 			Gui.BotonAbandonar.visible = false;
-
-			UpdateMuteButton();
 			
 			// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el quipo
 			var teams:Array = MatchMain.Ref.Game.TheTeams;
@@ -69,6 +64,14 @@ package Match
 			
 			Gui.TeamHome.text = teams[Enums.Team1].PredefinedName;
 			Gui.TeamAway.text = teams[Enums.Team2].PredefinedName;
+			
+			UpdateMuteButton();
+		}
+		
+		public function Shutdown() : void
+		{
+			// Esto provocara la necesaria des-subscripcion de la stage
+			CancelControllers();
 		}
 		
 		private function CreateSpecialSkillButtons(parent:DisplayObjectContainer) : void
@@ -96,16 +99,21 @@ package Match
 		
 		private function OnMute(e:MouseEvent) : void
 		{
-			var so:SharedObject = SharedObject.getLocal("Match");
-			
-			var bMuted : Boolean = false;
-			if (so.data.hasOwnProperty("Muted"))
-				bMuted = so.data.Muted;
-			
-			so.data.Muted = !bMuted;
-			so.flush();
-			
-			UpdateMuteButton();
+			// Si no tenemos permisos para grabar SharedObjects, etc, consumimos la excepcion aqui
+			try {
+				
+				var so:SharedObject = SharedObject.getLocal("Match");
+				
+				var bMuted : Boolean = false;
+				if (so.data.hasOwnProperty("Muted"))
+					bMuted = so.data.Muted;
+				
+				so.data.Muted = !bMuted;
+				so.flush();
+
+				UpdateMuteButton();
+
+			} catch(e:Error) {}
 		}
 		
 		private function UpdateMuteButton() : void
@@ -142,7 +150,7 @@ package Match
 		//
 		// Actualizamos los elementos visuales del Gui que están cambiando o puedan cambiar con el tiempo
 		// 
-		public function Update() : void
+		public function Update(currTimeoutTime : Number, currMatchTime : Number) : void
 		{
 			// Aseguramos que los controladores no estan activos si no es nuestro turno o no estamos jugando
 			if (!UserInputEnabled)
@@ -152,43 +160,58 @@ package Match
 			var Gui:* = MatchMain.Ref.Game.TheField.Visual;
 
 			// Rellenamos los goles
-			Gui.Score.text = teams[ Enums.Team1 ].Goals.toString() + " - " + teams[ Enums.Team2 ].Goals.toString(); 
+			Gui.Score.text = teams[Enums.Team1].Goals.toString() + " - " + teams[Enums.Team2].Goals.toString(); 
 			
 			// Actualizamos la parte de juego en la que estamos "gui.Period"
 			Gui.Period.text = MatchMain.Ref.Game.Part.toString() + "T";
 			
 			// Actualizamos el tiempo del partido
-			Gui.Time.text = utils.TimeUtils.ConvertSecondsToString(MatchMain.Ref.Game.Time);
+			Gui.Time.text = utils.TimeUtils.ConvertSecondsToString(currMatchTime);
 			
 			// Marcamos el jugador con el turno
-			if (MatchMain.Ref.Game.CurTeam.Side == Enums.Left_Side)
-			{
-				if (MatchMain.Ref.Game.Part == 1)
-					Gui.MarcadorTurno.gotoAndStop("TeamHome");
-				else
-					Gui.MarcadorTurno.gotoAndStop("TeamAway");
-			}				
+			if (MatchMain.Ref.Game.CurTeam.IdxTeam == Enums.Team1)
+				Gui.MarcadorTurno.gotoAndStop("TeamHome");
 			else
-			{
-				if (MatchMain.Ref.Game.Part == 2)
-					Gui.MarcadorTurno.gotoAndStop("TeamHome");
-				else
-					Gui.MarcadorTurno.gotoAndStop("TeamAway");
-			}
+				Gui.MarcadorTurno.gotoAndStop("TeamAway");
 			
-			// Actualizamos el tiempo del sub-turno
-			// NOTE: Utilizamos el tiempo de turno que indica el interface, ya que se modifica cuando se utiliza la habilidad especial
-			// extra-time. Luego cada vez que se resetea el tiempo se coloca a la duración real del turno
-			var timeout:Number = MatchMain.Ref.Game.Timeout / TurnTime;
-			
-			// Clampeamos a 1.0, ya que si tenemos tiempo extra de turno podemos desbordarnos
-			if( timeout > 1.0 )
-				timeout = 1.0;
-			var frame:int = (1.0 - timeout) * Gui.ContadorTiempoTurno.totalFrames;
-			Gui.ContadorTiempoTurno.gotoAndStop( frame );
-			
+			UpdateTimeoutCounter(currTimeoutTime);
 			UpdateSpecialSkills();
 			UpdateButtonTiroPuerta();
+		}
+		
+		private function UpdateTimeoutCounter(currTimeoutTime : Number) : void
+		{
+			var Gui:* = MatchMain.Ref.Game.TheField.Visual;
+			
+			// Color de la tarta basado en si es tu turno o no
+			var colorTransform : ColorTransform = new ColorTransform(1.0, 1.0, 1.0);
+			
+			if (MatchMain.Ref.Game.CurTeam.IsLocalUser)
+			{
+				var percentTime : Number = (currTimeoutTime / _TotalTimeoutTime) * 100;
+				
+				if (percentTime > 25)
+					colorTransform = new ColorTransform(0, 1.0, 0);
+				else
+				{
+					// Un pequeño blinkeamiento sin variables externas ni tweeners, basado en la paridad del tiempo restante
+					if ((int(percentTime/2.5)) % 2 == 0)
+						colorTransform = new ColorTransform(1.0, 0, 0);
+					else
+						colorTransform = new ColorTransform(0, 0.8, 0);
+				}
+			}
+						
+			(Gui.ContadorTiempoTurno as DisplayObject).transform.colorTransform = colorTransform;
+			
+			// Actualizamos el tiempo del sub-turno
+			var timeout:Number = currTimeoutTime / _TotalTimeoutTime;
+			
+			if (timeout > 1.0)	// Just in case...
+				timeout = 1.0;
+			
+			var frame:int = (1.0 - timeout) * Gui.ContadorTiempoTurno.totalFrames;
+			Gui.ContadorTiempoTurno.gotoAndStop( frame );
 		}
 		
 		//
@@ -468,13 +491,13 @@ package Match
 		private function CancelControllers() : void
 		{
 			if (ShootControl.IsStarted)
-				ShootControl.Stop( Controller.Canceled );
+				ShootControl.Stop(Controller.Canceled);
 
 			if (BallControl.IsStarted)
-				BallControl.Stop( Controller.Canceled );
+				BallControl.Stop(Controller.Canceled);
 			
 			if (PosControl.IsStarted)
-				PosControl.Stop( Controller.Canceled );
+				PosControl.Stop(Controller.Canceled);
 		}
 
 		// 

@@ -48,8 +48,6 @@ package Match
 		public function get CurTeam() : Team { return TheTeams[_IdxCurTeam]; }
 		public function get LocalUserTeam() : Team { return TheTeams[MatchConfig.IdLocalUser]; }
 		public function get Part() : int { return _Part; }
-		public function get Time() : Number { return _TimeSecs; }
-		public function get Timeout() : Number { return _Timeout; }
 		public function get IsPlaying() : Boolean { return _State == GameState.Playing; }
 		
 		// Obtiene una chapa de un equipo determinado a partir de su identificador de equipo y chapa
@@ -203,9 +201,7 @@ package Match
 			
 			TheGamePhysics.Run();
 			TheEntityManager.Run(elapsed);
-			
-			TheInterface.Update();
-			
+						
 			switch(_State)
 			{
 				case GameState.Init:
@@ -351,6 +347,10 @@ package Match
 					break;
 				}
 			}
+			
+			// Lo ultimo, para que todo lo anterior haya refrescado el estado
+			if (_State != GameState.NotInit)
+				TheInterface.Update(_Timeout, _TimeSecs);
 		}
 				
 		public function EnterWaitState(state:int, offlineCall:Function) : void
@@ -364,7 +364,8 @@ package Match
 		{
 			_Timer.ResetElapsed();
 			_Timeout = MatchConfig.TurnTime;
-			TheInterface.TurnTime = _Timeout;	// Asignamos el tiempo de turno que entiende el interface, ya que este valor se modifica cuando se obtiene extratime
+			
+			TheInterface.TotalTimeoutTime = _Timeout;
 		}
 		
 		//
@@ -621,10 +622,10 @@ package Match
 			// Hay algunas habilidades que las podemos aplicar directamente aqui, otras se evaluaran durante el resto del turno
 			if (idSkill == Enums.Tiempoextraturno)
 			{
-				// NOTE: Ademas modificamos lo que representa el quesito del interface, para que se adapte al tiempo que tenemos ahora,
-				// que puede ser superior al tiempo de turno del partido! Este valor se restaura al resetear el timeout
 				_Timeout += MatchConfig.ExtraTimeTurno;
-				TheInterface.TurnTime = _Timeout;
+				
+				// El interfaz empieza a contar de nuevo con el 100% siendo este nuevo valor, que puede ser incluso mayor que el MatchConfig.TurnTime
+				TheInterface.TotalTimeoutTime = _Timeout;
 			}
 			else 
 			if (idSkill == Enums.Turnoextra)
@@ -887,9 +888,6 @@ package Match
 			_RemainingPasesAlPie = MatchConfig.MaxNumPasesAlPie;
 			_IdxCurTeam = idTeam;
 			
-			// Mostramos un mensaje animado de cambio de turno
-			Cutscene.ShowTurn(reason, idTeam == MatchConfig.IdLocalUser);
-			
 			// Reseteamos el tiempo disponible para el subturno (time-out)
 			ResetTimeout();
 			
@@ -916,6 +914,12 @@ package Match
 				TheTeams[Enums.Team1].DesactiveSkills();
 				TheTeams[Enums.Team2].DesactiveSkills();
 			}
+			
+			// Mostramos un mensaje animado de cambio de turno
+			Cutscene.ShowTurn(reason, idTeam == MatchConfig.IdLocalUser);
+			
+			// Y pintamos el halo alrededor de las chapas!
+			CurTeam.ShowMyTurnVisualCue();
 		}
 		
 		//
