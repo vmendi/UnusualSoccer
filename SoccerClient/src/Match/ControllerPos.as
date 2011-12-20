@@ -27,8 +27,7 @@ package Match
 		}
 		
 		//
-		// Arranca el sistema de control direccional con el ratón
-		// .... y hace visible el ghost
+		// Arranca el sistema de control direccional con el ratón... y hace visible el ghost
 		public override function Start( _cap: Cap ):void
 		{
 			super.Start( _cap );
@@ -75,7 +74,7 @@ package Match
 		
 		public override function MouseMove( e: MouseEvent ) :void
 		{
-			super.MouseMove( e );
+			super.MouseMove(e);
 			
 			// Obtenemos punto inicial y final de la linea de dirección
 			var source:Point = _TargetPos.clone();

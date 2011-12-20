@@ -131,6 +131,8 @@
     <Content Include="Imgs\MensajeHabilidadCatenaccio.jpg" />
     <Content Include="Imgs\MensajeHabilidadFuriaRoja.jpg" />
     <Content Include="Imgs\MensajeHabilidadManoDeDios.jpg" />
+    <Content Include="Imgs\MensajeHabilidadMasterDribbling.jpg" />
+    <Content Include="Imgs\MensajeHabilidadPorteriaSegura.jpg" />
     <Content Include="Imgs\MensajeHabilidadSuperPotencia.jpg" />
     <Content Include="Imgs\MensajeHabilidadTiempoExtra.jpg" />
     <Content Include="Imgs\MensajeHabilidadTiroAGol.jpg" />
@@ -143,6 +145,7 @@
     <Content Include="Imgs\NavIconInvita.png" />
     <Content Include="Imgs\NavIconMuro.png" />
     <Content Include="Imgs\NavIcons.png" />
+    <Content Include="Imgs\NavIconVisita.png" />
     <Content Include="News.xml">
       <SubType>Designer</SubType>
     </Content>

@@ -6,6 +6,7 @@ package Match
 	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.InteractiveObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -49,17 +50,15 @@ package Match
 			ShootControl.OnStop.add(OnStopControllerShoot);
 			BallControl.OnStop.add(OnStopControllerBall);
 			PosControl.OnStop.add(OnStopControllerPos);
-			
+						
 			var Gui:* = MatchMain.Ref.Game.TheField.Visual;
 
 			// Hay parte del GUI que nos viene en el campo y no hay que instanciar
-			Gui.BotonTiroPuerta.addEventListener(MouseEvent.CLICK, OnTiroPuerta);
-			Gui.SoundButton.addEventListener(MouseEvent.CLICK, OnMute);
-			
+			Gui.SoundButton.addEventListener(MouseEvent.MOUSE_DOWN, OnMute);
+			Gui.BotonTiroPuerta.addEventListener(MouseEvent.MOUSE_DOWN, OnTiroPuerta);			
+									
 			// Gui.BotonAbandonar.addEventListener( MouseEvent.CLICK, OnAbandonarClick );
 			Gui.BotonAbandonar.visible = false;
-
-			UpdateMuteButton();
 			
 			// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el quipo
 			var teams:Array = MatchMain.Ref.Game.TheTeams;
@@ -69,6 +68,8 @@ package Match
 			
 			Gui.TeamHome.text = teams[Enums.Team1].PredefinedName;
 			Gui.TeamAway.text = teams[Enums.Team2].PredefinedName;
+			
+			UpdateMuteButton();
 		}
 		
 		private function CreateSpecialSkillButtons(parent:DisplayObjectContainer) : void
@@ -96,16 +97,21 @@ package Match
 		
 		private function OnMute(e:MouseEvent) : void
 		{
-			var so:SharedObject = SharedObject.getLocal("Match");
-			
-			var bMuted : Boolean = false;
-			if (so.data.hasOwnProperty("Muted"))
-				bMuted = so.data.Muted;
-			
-			so.data.Muted = !bMuted;
-			so.flush();
-			
-			UpdateMuteButton();
+			// Si no tenemos permisos para grabar SharedObjects, etc, consumimos la excepcion aqui
+			try {
+				
+				var so:SharedObject = SharedObject.getLocal("Match");
+				
+				var bMuted : Boolean = false;
+				if (so.data.hasOwnProperty("Muted"))
+					bMuted = so.data.Muted;
+				
+				so.data.Muted = !bMuted;
+				so.flush();
+
+				UpdateMuteButton();
+
+			} catch(e:Error) {}
 		}
 		
 		private function UpdateMuteButton() : void

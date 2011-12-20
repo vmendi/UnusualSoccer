@@ -23,6 +23,9 @@ package Match
 				throw new Error("WTF 3312");
 			
 			Instance = this;
+			
+			// Nos mantenemos siempre subscritos, en la propia funcion comprobamos si estamos ok
+			addEventListener(Event.ENTER_FRAME, OnFrame);
 		}
 		
 		//
@@ -34,8 +37,7 @@ package Match
 			MatchConfig.OfflineMode = false;
 			
 			_Game = new Match.Game();
-			_AudioManager = new Match.AudioManager();
-
+			
 			Formations = formations;
 			Connection = netConnection;
 			
@@ -43,9 +45,6 @@ package Match
 						
 			// Indicamos al servidor que nuestro cliente necesita los datos del partido para continuar. Esto llamara a InitFromServer desde el servidor
 			Connection.Invoke("OnRequestData", null);
-
-			// Podemos subscribirnos al frame. Cuando nos llaman aqui esta garantizado que ya estamos en la stage
-			addEventListener(Event.ENTER_FRAME, OnFrame);
 		}
 		
 		public function InitOffline() : void
@@ -53,21 +52,23 @@ package Match
 			MatchConfig.OfflineMode = true;
 			
 			_Game = new Match.Game();
-			_AudioManager = new Match.AudioManager();
-			
+						
 			Formations = InitOfflineData.Formations;
 			Game.InitFromServer((-1), InitOfflineData.GetDescTeam("Atlético"), InitOfflineData.GetDescTeam("Sporting"),
 									  Enums.Team1, MatchConfig.PartTime * 2, MatchConfig.TurnTime, MatchConfig.ClientVersion);
-			
-			addEventListener(Event.ENTER_FRAME, OnFrame);
 		}
 		
 		private function OnFrame(event:Event):void
 		{
-			var elapsed:Number = 1.0 / stage.frameRate;
-			
-			Game.Run(elapsed);
-			Game.Draw(elapsed);
+			// Game indicara que ya estamos inicializamos. stage != null es curioso: Si se produce una sesion duplicada durante el partido,
+			// el juego sale "a lo bestia", quitando de la stage el MainView etc.
+			if (Game != null && stage != null)
+			{
+				var elapsed:Number = 1.0 / stage.frameRate;
+				
+				Game.Run(elapsed);
+				Game.Draw(elapsed);
+			}
 		}
 		
 		
@@ -105,7 +106,6 @@ package Match
 		}
 		
 		private var _Game : Match.Game;
-		private var _AudioManager : Match.AudioManager;
 		
 		static private var Instance:MatchMain = null;
 	}

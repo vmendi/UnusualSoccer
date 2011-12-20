@@ -26,14 +26,14 @@ package Match
 	{
 		static public const Radius:Number = 15;
 		
-		protected var _Name:String = null;						// Nombre del jugador
-		protected var _Dorsal:int = 0;							// Nº de dorsal del jugador
+		private var _Name:String = null;						// Nombre del jugador
+		private var _Dorsal:int = 0;							// Nº de dorsal del jugador
 						
-		protected var _OriginalDefense:int = 50;				// Tal y como vienen del manager, sin multiplicar por Fitness
-		protected var _OriginalPower:int = 50;				
-		protected var _OriginalControl:int = 50; 
+		private var _OriginalDefense:int = 50;					// Tal y como vienen del manager, sin multiplicar por Fitness
+		private var _OriginalPower:int = 50;				
+		private var _OriginalControl:int = 50; 
 				
-		protected var _OwnerTeam:Team = null;					// Equipo dueño de la chapa
+		private var _OwnerTeam:Team = null;						// Equipo dueño de la chapa
 		
 		private var _Influence:Sprite = null;					// Objeto visual para pintar la influencia de la chapa
 		private var _TimeShowingInfluence:Number = 0;			// Tiempo que se lleva mostrando el area de influencias desde la última vez que se mando pintar
@@ -41,7 +41,7 @@ package Match
 		
 		private var _CapId:int = (-1);							// Identificador de la chapa
 		
-		private var _ColorInfluence:int = Enums.FriendColor; 		// Color del radio de influencia visual
+		private var _ColorInfluence:int = Enums.FriendColor; 			// Color del radio de influencia visual
 		private var _SizeInfluence:int = MatchConfig.RadiusPaseAlPie;	// tamaño del radio de influencia visual
 		
 		private var _IsInjured : Boolean = false;

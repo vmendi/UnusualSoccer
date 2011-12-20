@@ -58,16 +58,16 @@ package Match
 			// y por lo tanto cancelacion del controlador
 			if (IsValid())
 			{
-				super.MouseUp( e );
+				super.MouseUp(e);
 			}
 		}
 		
 		//
 		// Reorientamos la pelota
 		//
-		public override function MouseMove( e: MouseEvent ) :void
+		public override function MouseMove(e: MouseEvent) :void
 		{
-			super.MouseMove( e );
+			super.MouseMove(e);
 			
 			// Obtenemos punto inicial y final de la linea de dirección
 			var source:Point = _TargetPos.clone();
@@ -75,18 +75,18 @@ package Match
 			
 			// Seleccionamos un color para la linea diferente en función de si la posición final es válida o no			
 			var color:uint = colorLine;
-			if( !IsValid() )
+			
+			if (!IsValid())
 				color = 0xff0000;
 			
-			canvas.graphics.clear( );
-			canvas.graphics.lineStyle( thickness, color, 0.7 );
-			canvas.graphics.moveTo( source.x, source.y );
-			canvas.graphics.lineTo( target.x, target.y );
+			canvas.graphics.clear();
+			canvas.graphics.lineStyle(thickness, color, 0.7);
+			canvas.graphics.moveTo(source.x, source.y);
+			canvas.graphics.lineTo(target.x, target.y);
 		}
 		
 		//
-		// Obtenemos el vector de dirección de control de pelota
-		// NOTE: El vector estará normalizado a la longitud de maxLongLine 
+		// Obtenemos el vector de dirección de control de pelota, normalizado a la longitud de maxLongLine 
 		// 
 		public override function get Direction(  ) : Point
 		{
@@ -106,7 +106,7 @@ package Match
 			dir.normalize( Cap.Radius + BallEntity.Radius + MatchConfig.DistToPutBallHandling );
 			var newPos:Point = Target.GetPos().add( dir );
 			
-			return( newPos );
+			return newPos;
 		}
 	}
 }

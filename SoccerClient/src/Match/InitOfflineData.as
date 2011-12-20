@@ -53,7 +53,7 @@ package Match
 				var descCap:Object = { 
 						DorsalNumber: c+1,
 						Name: "Cap " + predefinedTeamName + " " + c,
-						Power: 50,
+						Power: 100,
 						Control: 100,
 						Defense: 100,
 						FacebookID: 611084838,
