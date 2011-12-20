@@ -165,11 +165,11 @@ package Match
 		}
 		private function OnMouseOut(e : MouseEvent) : void
 		{
-			// Nos aseguramos de que no hay Outs sin Overs
+			// Si habia algun over pendiente, lo cancelamos
 			if (TweenMax.getTweensOf(OnRealOver).length > 0)
 				TweenMax.killDelayedCallsTo(OnRealOver);
-			else
-				MatchMain.Ref.Game.TheInterface.OnOutCap(this);
+			
+			MatchMain.Ref.Game.TheInterface.OnOutCap(this);
 		}
 		
 		//
