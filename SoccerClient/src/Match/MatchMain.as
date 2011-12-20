@@ -85,6 +85,7 @@ package Match
 			}
 
 			removeEventListener(Event.ENTER_FRAME, OnFrame);
+			Game.TheInterface.Shutdown();
 			Game.TheAudioManager.Shutdown();
 			Game.TheGamePhysics.Shutdown();
 			TweenMax.killAll();

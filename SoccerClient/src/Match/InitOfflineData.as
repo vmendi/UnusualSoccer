@@ -44,7 +44,7 @@ package Match
 			var descTeam:Object = { 
 				PredefinedTeamName: predefinedTeamName,
 				Name: "Team " + predefinedTeamName,
-				Fitness:100,
+				Fitness:50,
 				SoccerPlayers: []
 			}
 
@@ -53,7 +53,7 @@ package Match
 				var descCap:Object = { 
 						DorsalNumber: c+1,
 						Name: "Cap " + predefinedTeamName + " " + c,
-						Power: 100,
+						Power: 50,
 						Control: 100,
 						Defense: 100,
 						FacebookID: 611084838,

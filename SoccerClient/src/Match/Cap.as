@@ -11,6 +11,7 @@ package Match
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -101,6 +102,10 @@ package Match
 			// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el quipo
 			_Visual.gotoAndStop(team.PredefinedName);
 			
+			// Paramos la animacion del Halo
+			_Visual.Halo.addFrameScript(0, function():void { _Visual.Halo.stop(); });
+			
+			_CapId = id;
 			_Name = descCap.Name;
 			_Dorsal = descCap.DorsalNumber;
 			_OwnerTeam = team;
@@ -123,15 +128,19 @@ package Match
 			MatchMain.Ref.Game.TheField.Visual.addChild(_Influence);
 			DrawInfluence();
 			_Influence.alpha = 0.0;
-			
-			_CapId = id;
-			
+						
 			// Solo mostramos la foto de los amigos del equipo local (privacidad...)
 			if (team.IsLocalUser)
 				LoadFacebookPicture(descCap.FacebookID);
 			
 			// Auto-añadimos al manager de entidades
 			MatchMain.Ref.Game.TheEntityManager.AddTagged(this, "Team"+(team.IdxTeam +1).toString() + "_" + _CapId.toString());
+		}
+		
+		// Cue visual de que es el turno del equipo de la chapa
+		public function ShowMyTurnVisualCue() : void
+		{
+			_Visual.Halo.play();	
 		}
 		
 		private function OnRemovedFromStage(e:Event) : void

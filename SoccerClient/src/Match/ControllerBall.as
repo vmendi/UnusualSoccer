@@ -1,71 +1,50 @@
 package Match
 {
-	import flash.display.DisplayObject;
-	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
-
 	//
 	// Se encarga del controlador para posicionar la pelota alrededor de la chapa
 	//
 	public class ControllerBall extends Controller
 	{
-		private var canvas        : Sprite;
-		private var maxLongLine   : uint;
-		private var colorLine	  : uint;
-		private var thickness	  : uint;
-		
-		private const BLACK    	  : uint = 0x000000;
-		
-		
-		public function ControllerBall(canvas:Sprite, maxLongLine: uint, colorLine: uint = 0, thickness: uint = 1)		
+		public function ControllerBall(canvas:Sprite)		
 		{
-			this.maxLongLine = maxLongLine;
-			this.canvas 	 = canvas;
-			this.thickness   = thickness;
-			
-			( colorLine == 0 ) ? this.colorLine = BLACK : this.colorLine = colorLine;
+			_MaxLengthLine = Cap.Radius + BallEntity.Radius + MatchConfig.DistToPutBallHandling;
+			_Canvas = canvas;
+			_ColorLine = COLOR;
+			_Thickness = THICKNESS;
 		}
 		
-		public override function Stop( reason:int ):void
+		public override function Stop(reason:int):void
 		{
 			super.Stop(reason);
-			
-			// Eliminamos la parte visual
-			canvas.graphics.clear();
+
+			_Canvas.graphics.clear();
 		}
 		
 		//
 		// Validamos la posición del balón teniendo en cuenta que esté  dentro del campo
 		// y que no colisione con ninguna chapa ya existente (exceptuandola a ella)
 		// TODO: Estamos utilizando la funcion de chapa en vez de la de balón. Los radios son diferentes!
+		//		 VMG: Lo dejamos asi puesto q da un cierto margen
 		//
-		public override function IsValid( ) : Boolean
+		public override function IsValid() : Boolean
 		{
 			// NOTE: Indicamos que no tenga en cuenta el balón, ya que es el mismo el que estamos colocando
-			return MatchMain.Ref.Game.TheField.ValidatePosCap( EndPos, false, this.Target );
+			return MatchMain.Ref.Game.TheField.ValidatePosCap(EndPos, false, this.Target);
 		}
 
-		//
-		//
-		//
 		public override function MouseUp(e: MouseEvent) : void
 		{
 			// Tiene que estar dentro del campo. Si no es asi, continuamos como si no hubiera up, asi que no habra Stop
 			// y por lo tanto cancelacion del controlador
 			if (IsValid())
-			{
 				super.MouseUp(e);
-			}
 		}
 		
-		//
-		// Reorientamos la pelota
-		//
-		public override function MouseMove(e: MouseEvent) :void
+		public override function MouseMove(e : MouseEvent) : void
 		{
 			super.MouseMove(e);
 			
@@ -74,32 +53,29 @@ package Match
 			var target:Point = EndPos;
 			
 			// Seleccionamos un color para la linea diferente en función de si la posición final es válida o no			
-			var color:uint = colorLine;
+			var color:uint = _ColorLine;
 			
 			if (!IsValid())
-				color = 0xff0000;
+				color = INVALID_COLOR;
 			
-			canvas.graphics.clear();
-			canvas.graphics.lineStyle(thickness, color, 0.7);
-			canvas.graphics.moveTo(source.x, source.y);
-			canvas.graphics.lineTo(target.x, target.y);
+			_Canvas.graphics.clear();
+			_Canvas.graphics.lineStyle(_Thickness, color, 0.7);
+			_Canvas.graphics.moveTo(source.x, source.y);
+			_Canvas.graphics.lineTo(target.x, target.y);
 		}
 		
-		//
-		// Obtenemos el vector de dirección de control de pelota, normalizado a la longitud de maxLongLine 
-		// 
-		public override function get Direction(  ) : Point
+		public override function get Direction() : Point
 		{
 			var dir:Point = super.Direction;
-			dir.normalize( maxLongLine );
+			dir.normalize(_MaxLengthLine);
 			
-			return( dir );
+			return dir;
 		}
 		
 		//
 		// Obtenemos el punto final
 		// 
-		public function get EndPos(  ) : Point
+		public function get EndPos() : Point
 		{
 			// Obtenemos la dirección y la normalizamos a la distancia correcta 
 			var dir:Point = Direction;
@@ -108,5 +84,14 @@ package Match
 			
 			return newPos;
 		}
+		
+		private var _Canvas : Sprite;
+		private var _MaxLengthLine : uint;
+		private var _ColorLine : uint;
+		private var _Thickness : uint;
+		
+		private const COLOR:uint = 0x2670E9;
+		private const INVALID_COLOR:uint = 0xff0000;
+		private const THICKNESS:uint = 7;
 	}
 }

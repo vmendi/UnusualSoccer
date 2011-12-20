@@ -16,7 +16,7 @@ package Match
 	
 	public class ControllerShoot extends Controller
 	{		
-		public function ControllerShoot(canvas:Sprite, maxLongLine: uint, colorLine: uint = 0, thickness: uint = 1)
+		public function ControllerShoot(canvas:Sprite)
 		{
 			_PotenciaTiro  = new TextField(); 
 			_PotenciaTiro.selectable = false;
@@ -27,12 +27,12 @@ package Match
 			_PotenciaTiro.textColor = 0xFFFFFF;
 			_PotenciaTiro.width = 60;
 			_PotenciaTiro.height = 20;
-									
-			canvas.addChild(_PotenciaTiro);
 			
-			_MaxLengthLine = maxLongLine;
 			_Canvas = canvas;
-			_Thickness = thickness;
+			_Canvas.addChild(_PotenciaTiro);
+			
+			_MaxLengthLine = MAX_LONG_SHOOT;
+			_Thickness = THICKNESS_SHOOT;						
 		}
 	
 		public override function Start(_cap:Cap) : void
@@ -232,5 +232,8 @@ package Match
 		private var _PotenciaTiro : TextField;
 
 		private const STAGE_MARGIN : Number = 15;
+		private const MAX_LONG_SHOOT:Number = 130;
+		private const COLOR_SHOOT:uint = 0xE97026;
+		private const THICKNESS_SHOOT:uint = 7;
 	}
 }
