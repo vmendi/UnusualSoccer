@@ -65,7 +65,7 @@
 	
 	<fx:Style source="styles.css" />
 
-	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" bottom="10" left="10" width="365" title="RANKING DE JUGADORES">
+	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" height="470" left="10" width="365" title="RANKING DE JUGADORES">
 		<s:List id="MyRankingList" left="0" right="0" top="0" height="442"
 				dataProvider="{mRankingModel.TheRankingPage.Teams}" 
 				itemRenderer="GameView.RankingTeamItem" useVirtualLayout="false"
@@ -73,7 +73,7 @@
 				change="MyRankingList_changeHandler(event)"/>
 	</s:Panel>
 	
-	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" right="10" bottom="10" width="365" title="ESTADÍSTICAS">
+	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" right="10" height="470" width="365" title="ESTADÍSTICAS">
 		<s:controlBarContent>
 			<s:Button id="MyBackButton" visible="false" 
 					  label="Volver a tus estadísticas" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" 

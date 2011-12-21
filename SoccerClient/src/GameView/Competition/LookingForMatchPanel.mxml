@@ -78,11 +78,6 @@
 		<s:Label width="160" textAlign="center" text="{resourceManager.getString('main','LookingForMatchPanelDisconected')}" styleName="whiteBoldBig"/>
 	</s:Group>	
 	
-	<!--<mx:Image id="MyFindMatchButton" top="0" horizontalCenter="0"  includeIn="Wait"
-			 alpha.Disabled="0.2" alpha.Wait="1"
-			 source="@Embed(source='/Assets/General.swf', symbol='BotonBuscarPartido')"
-			 click="MyFindMatchButton_clickHandler(event)"/>-->
-	
 	<s:Button top="0" horizontalCenter="0" skinClass="GameView.Skins.ButtonPlayMatchSkin"
 			  includeIn="Wait"
 			  click="MyFindMatchButton_clickHandler(event)"/>

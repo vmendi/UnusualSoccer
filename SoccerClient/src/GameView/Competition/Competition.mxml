@@ -109,7 +109,7 @@
 		
 	]]></fx:Script>
 		
-	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" bottom="10" left="10" width="740" title="COMPETICIÓN">
+	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" height="470" left="10" width="740" title="COMPETICIÓN">
 		<s:controlBarContent>
 			<GameView:HelpCallout HelpText="{resourceManager.getString('main','CompetitionHelpCallout')}"/>
 		</s:controlBarContent>
