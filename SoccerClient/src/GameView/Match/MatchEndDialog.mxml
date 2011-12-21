@@ -218,7 +218,7 @@
 			<s:VerticalLayout gap="15" horizontalAlign="center" />
 		</s:layout>
 
-		<s:Group x="10" y="{MatchResultUtils.IsCompetition(mMatchResult) ? 150 : 50}" width="336">
+		<s:Group width="336">
 			<s:layout><s:VerticalLayout gap="2" verticalAlign="middle"/></s:layout>
 			<s:Label width="100%" 
 					 text="{mTitular}" 
