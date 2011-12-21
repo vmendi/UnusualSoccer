@@ -375,11 +375,19 @@ package Match
 		}
 		
 		// Pista visual de que es nuestro turno
-		public function ShowMyTurnVisualCue() : void
+		public function ShowMyTurnVisualCue(reason : int) : void
 		{
-			for each(var cap : Cap in CapsList)
+			// Cuando sólo se puede mover al portero sólo le flasheamos a él
+			if (Enums.IsSaquePuerta(reason) || reason == Enums.TurnTiroAPuerta)
 			{
-				cap.ShowMyTurnVisualCue();
+				GoalKeeper.ShowMyTurnVisualCue();	
+			}
+			else
+			{
+				for each(var cap : Cap in CapsList)
+				{
+					cap.ShowMyTurnVisualCue();
+				}
 			}
 		}
 	}

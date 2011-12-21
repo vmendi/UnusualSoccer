@@ -720,7 +720,7 @@ package Match
 
 			// Contabilizamos el gol
 			if (validity == Enums.GoalValid)
-				TheTeams[ idPlayer ].Goals ++;
+				TheTeams[idPlayer].Goals ++;
 									
 			Cutscene.ShowGoalScored(validity, Delegate.create(ShowGoalScoredCutsceneEnd, idPlayer, validity));
 		}
@@ -919,7 +919,7 @@ package Match
 			Cutscene.ShowTurn(reason, idTeam == MatchConfig.IdLocalUser);
 			
 			// Y pintamos el halo alrededor de las chapas!
-			CurTeam.ShowMyTurnVisualCue();
+			CurTeam.ShowMyTurnVisualCue(reason);
 		}
 		
 		//

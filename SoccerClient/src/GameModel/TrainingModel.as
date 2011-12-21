@@ -74,6 +74,10 @@ package GameModel
 				if (RemainingSeconds <= 0)
 				{
 					mTeamModel.TheTeam.Fitness += mTeamModel.TheTeam.PendingTraining.TrainingDefinition.FitnessDelta;
+					
+					if (mTeamModel.TheTeam.Fitness > 100)
+						mTeamModel.TheTeam.Fitness = 100;
+					
 					mTeamModel.TheTeam.PendingTraining = null;
 					
 					// Ya podemos entrenar otra vez

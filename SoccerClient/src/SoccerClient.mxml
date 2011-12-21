@@ -72,7 +72,6 @@
 			// El servidor siempre nos pasa un locale coherente con el VERSION_ID, aqui no tenemos que hacer nada
 			resourceManager.localeChain = GetLocaleChain(AppConfig.LOCALE);
 
-						
 			function GetLocaleChain(locale : String) : Array
 			{
 				// El idioma que soportamos es el [0], los fallback que aplicara Flex cuando no 

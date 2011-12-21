@@ -306,7 +306,7 @@ package Match
 		
 		public function OnOverCap(cap : Cap) : void
 		{	
-			// Con el de BallControl (pase al pie) si que queremos mostrar valores
+			// Con el ControllerBall (pase al pie) si que queremos mostrar valores
 			if (PosControl.IsStarted || ShootControl.IsStarted)
 				return;
 			
