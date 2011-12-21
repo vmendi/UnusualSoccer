@@ -22,7 +22,7 @@
 		protected function CreationCompleteHandler(event:FlexEvent):void
 		{
 			mTrainingModel = SoccerClient.GetMainGameModel().TheTrainingModel;
-			(MyTraining.content as MovieClip).stop();
+			//(MyTraining.content as MovieClip).stop();
 		}
 		
 		[Bindable]
@@ -31,7 +31,7 @@
 		{ 
 			mTrainingDef = value;
 			
-			(MyTraining.content as MovieClip).gotoAndStop(mTrainingDef.Name)
+			//(MyTraining.content as MovieClip).gotoAndStop(mTrainingDef.Name)
 		}
 		
 		private var mTrainingDef : TrainingDefinition;
@@ -46,7 +46,7 @@
 	</s:Graphic>
 	
 	<mx:SWFLoader x="3" y="3" id="MyTraining" scaleContent="false" alpha.NotAvailable="0.3"
-				  source="@Embed(source='/Assets/General.swf', symbol='TrainingItems')"/>	
+				  source="{resourceManager.getString('main','TrainingItemSource')}"/>	
 	
 	<s:Group left="0" right="0" top="0" bottom="0" alpha.NotAvailable="0.3">
 		<s:Graphic includeIn="NotAvailable">

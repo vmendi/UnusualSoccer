@@ -152,8 +152,7 @@
 
 		<s:List id="MyCompetitionList" left="0" right="0" top="105" height="336"
 				dataProvider="{mCompetitionModel.TheGroup.GroupEntries}" skinClass="GameView.Competition.CompetitionListSkin"		
-				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="true"
-				/>
+				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="true" />
 		
 		<Competition:LookingForMatchPanel x="0" y="0" includeIn="AvailableCredit" />
 		
