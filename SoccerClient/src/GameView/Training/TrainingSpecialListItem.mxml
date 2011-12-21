@@ -7,6 +7,10 @@
 				height="68" xmlns:GameView="GameView.*"
 				>
 	
+	<fx:Declarations>
+		<s:DropShadowFilter id="shadowNormal" distance="2" angle="90" blurX="1" blurY="1"/>
+	</fx:Declarations>		
+	
 	<fx:Style source="../styles.css" />
 	
 	<fx:Script><![CDATA[
@@ -148,7 +152,7 @@
 
 	<s:Label x="511" y="44" text="{data.SpecialTrainingDefinition.EnergyTotal}" styleName="whiteBoldMedium" />
 
-<!--	<GameView:ProgressBar width="160" x="554" y="12" 
+	<!--<GameView:ProgressBar width="160" x="554" y="12" 
 						  Percent="{100*data.EnergyCurrent/data.SpecialTrainingDefinition.EnergyTotal}" 
 						  includeIn="Incomplete" />-->
 		
@@ -158,23 +162,18 @@
 	<s:Label id="MyLikeText" x="554" y="20" width="160" visible="false"
 			 includeIn="Incomplete" text="Consigue esta habilidad pulsando el botón de 'Me Gusta'" styleName="whiteBoldMedium" textAlign="center" />
 	
-	<s:Graphic includeIn="Complete">
-		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='SpecialSkillsWon')" fillMode="clip"
-					   x="553" y="8"/>
-	</s:Graphic>
+	<s:Group x="553" y="8" includeIn="Complete">
+		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='SpecialSkillsWon')" fillMode="clip" />
+		<s:Label left="50" width="105" verticalCenter="0" textAlign="center" text="{resourceManager.getString('main','TrainingSpecialObtained')}" styleName="whiteBoldBig" filters="{[shadowNormal]}" />
+	</s:Group>
 	
-	<s:Graphic includeIn="NotAvailable">
-		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='SpecialSkillsNotAvailable')" fillMode="clip"
-					   x="553" y="8"/>
-	</s:Graphic>
-	
-	<s:Graphic includeIn="Complete">
-		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='SpecialSkillsWonTip')" fillMode="clip"
-					   x="5" y="5"/>
-	</s:Graphic>	
+	<s:Group x="553" y="8" includeIn="NotAvailable">
+		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='SpecialSkillsNotAvailable')" fillMode="clip" />
+		<s:Label left="50" width="105" verticalCenter="0" textAlign="center" text="{resourceManager.getString('main','TrainingSpecialNotAvailable')}" styleName="whiteBoldBig" filters="{[shadowNormal]}" />
+	</s:Group>
 
-	<s:Graphic includeIn="NotAvailable">
-		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='SpecialSkillsNotAvailableTip')" fillMode="clip"
-					   x="478" y="8"/>
-	</s:Graphic>
+	<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='SpecialSkillsWonTip')" fillMode="clip" x="5" y="5" includeIn="Complete" />
+
+	<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='SpecialSkillsNotAvailableTip')" fillMode="clip" x="478" y="8" includeIn="NotAvailable" />
+	
 </s:ItemRenderer>

@@ -47,7 +47,6 @@
 		<s:layout><s:HorizontalLayout gap="0"/></s:layout>
 		
 		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionDivisionUp')" fillMode="clip" visible="{InPromotion(data)}" />
-		<!-- <s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionDivisionStay')" fillMode="clip" /> -->
 		
 		<GameView:FacebookPicture FacebookID="{data.FacebookID}" />
 		
