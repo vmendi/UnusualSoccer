@@ -153,6 +153,8 @@
 	
 	<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='LoginBg')" fillMode="clip"/>
 	
+	<mx:Image x="0" y="0" source="{resourceManager.getString('main','LoginLogoSource')}" />
+	
 	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" x="352" y="40" width="365" height="570" title="1. SELECCIONA TU EQUIPO">
 		<s:List width="365" height="280" id="MyPredefinedTeamList" 
 				top="0" left="0"
