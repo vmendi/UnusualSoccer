@@ -14,15 +14,15 @@ package Match
 
 	public class Team
 	{				
-		public const CAPS_BY_TEAM:int = 8;						// Número de chapas que tiene cada equipo
+		public const CAPS_BY_TEAM : int = 8;										// Número de chapas que tiene cada equipo
 		
-		public var IdxTeam:int = 0;								// Identificador de equipo
-		public var Side:int = 0;								// Lado del campo en el que está el equipo
+		public var IdxTeam:int = 0;													// Identificador de equipo
+		public var Side:int = 0;													// Lado del campo en el que está el equipo
 		
-		public var Ghost:Entity = null;							// Ghost utilizado para decidir donde colocarás el portero		
-				
-		public function get PredefinedName():String { return _PredefinedName; }
-		public function get Name() : String { return _Name; }					// El nombre del equipo (puesto por el usuario)
+		public var Ghost:Entity = null;												// Ghost utilizado para decidir donde colocarás el portero		
+		
+		public function get Name() : String { return _Name; }						// El nombre del equipo (puesto por el usuario)
+		public function get PredefinedName():String { return _PredefinedName; }		
 		public function get CapsList() : Array { return _CapsList; }
 		public function get GoalKeeper() : Cap { return _CapsList[0]; }
 		
@@ -369,7 +369,7 @@ package Match
 			cap.SetPos( pos );			
 		}
 		
-		private function OnFinishTween( cap:DisplayObject  ) : void
+		private function OnFinishTween(cap:DisplayObject) : void
 		{
 			cap.parent.removeChild(cap);
 		}

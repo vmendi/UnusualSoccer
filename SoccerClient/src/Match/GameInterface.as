@@ -18,10 +18,10 @@ package Match
 	
 	public class GameInterface
 	{
-		private var ShootControl:ControllerShoot = null;		// Control de disparo : Se encarga de pintar/gestionar la flecha de disparo
-		private var BallControl:ControllerBall = null;			// Control para posicionar la pelota
-		private var PosControl:ControllerPos = null;			// Control para posicionar chapas (lo usamos solo para el portero)
-		private var ControllerCanvas:Sprite = null;				// El contenedor donde se pinta las flecha de direccion
+		private var _ShootControl:ControllerShoot = null;		// Control de disparo : Se encarga de pintar/gestionar la flecha de disparo
+		private var _BallControl:ControllerBall = null;			// Control para posicionar la pelota
+		private var _PosControl:ControllerPos = null;			// Control para posicionar chapas (lo usamos solo para el portero)
+		private var _ControllerCanvas:Sprite = null;			// El contenedor donde se pinta las flecha de direccion
 		
 		private var _TotalTimeoutTime:Number = 0;				// Tiempo total que representa la tarta
 
@@ -33,19 +33,19 @@ package Match
 		{		
 			// Canvas de pintado compartido entre todos los controllers. Lo añadimos al principio del interface, 
 			// para que se pinte encima de la GameLayer pero por debajo de todo lo de la GUILayer
-			ControllerCanvas = MatchMain.Ref.Game.GUILayer.addChild(new Sprite()) as Sprite;
+			_ControllerCanvas = MatchMain.Ref.Game.GUILayer.addChild(new Sprite()) as Sprite;
 			
 			// Los botones se crean tambien en la GUILayer, por debajo de Cutscenes e InfoPanel
 			CreateSpecialSkillButtons(MatchMain.Ref.Game.GUILayer);
 
 			// Inicializamos los controladores (disparo, balón, posición)
-			ShootControl = new ControllerShoot(ControllerCanvas);
-			BallControl = new ControllerBall(ControllerCanvas);
-			PosControl = new ControllerPos(ControllerCanvas);
+			_ShootControl = new ControllerShoot(_ControllerCanvas);
+			_BallControl = new ControllerBall(_ControllerCanvas);
+			_PosControl = new ControllerPos(_ControllerCanvas);
 			
-			ShootControl.OnStop.add(OnStopControllerShoot);
-			BallControl.OnStop.add(OnStopControllerBall);
-			PosControl.OnStop.add(OnStopControllerPos);
+			_ShootControl.OnStop.add(OnStopControllerShoot);
+			_BallControl.OnStop.add(OnStopControllerBall);
+			_PosControl.OnStop.add(OnStopControllerPos);
 						
 			var Gui:* = MatchMain.Ref.Game.TheField.Visual;
 
@@ -307,7 +307,7 @@ package Match
 		public function OnOverCap(cap : Cap) : void
 		{	
 			// Con el ControllerBall (pase al pie) si que queremos mostrar valores
-			if (PosControl.IsStarted || ShootControl.IsStarted)
+			if (_PosControl.IsStarted || _ShootControl.IsStarted)
 				return;
 			
 			var panelInfo : DisplayObject = new MatchAssets.CapDetails();
@@ -358,7 +358,7 @@ package Match
 			if (game.ReasonTurnChanged == Enums.TurnTiroAPuerta)
 			{
 				if (game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
-					PosControl.Start(cap);
+					_PosControl.Start(cap);
 			}
 			// Si estamos en modo de saque de puerta:
 			//---------------------------------------
@@ -366,20 +366,20 @@ package Match
 			if(Enums.IsSaquePuerta(game.ReasonTurnChanged))
 			{
 				if (game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
-					ShootControl.Start(cap);
+					_ShootControl.Start(cap);
 			}
 			// Si estamos en modo normal (modo disparo):
 			//---------------------------------------
 			else 
 			{
 				if (game.CurTeam == cap.OwnerTeam)
-					ShootControl.Start(cap);
+					_ShootControl.Start(cap);
 			}
 		}
 		
 		private function IsAnyControllerStarted() : Boolean
 		{
-			return PosControl.IsStarted || BallControl.IsStarted || ShootControl.IsStarted;
+			return _PosControl.IsStarted || _BallControl.IsStarted || _ShootControl.IsStarted;
 		}
 		
 		//
@@ -392,7 +392,7 @@ package Match
 			
 			//  NOTE: No se comprueba si la entrada de usuario está permitida, ya que
 			//  no es una acción decidida por el usuario, sino una consecuencia del pase al pie
-			BallControl.Start(cap);
+			_BallControl.Start(cap);
 		}
 		
 		//
@@ -401,15 +401,15 @@ package Match
 		private function OnStopControllerPos(reason:int) : void
 		{
 			// Si reason != SuccessMouseUp el stop se ha producido por cancelacion y simplemente ignoramos
-			if (PosControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
+			if (_PosControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
 			{
 				if (!MatchConfig.OfflineMode)
-					MatchMain.Ref.Connection.Invoke("OnServerPosCap", null, PosControl.Target.Id, PosControl.EndPos.x, PosControl.EndPos.y);
+					MatchMain.Ref.Connection.Invoke("OnServerPosCap", null, _PosControl.Target.Id, _PosControl.EndPos.x, _PosControl.EndPos.y);
 				
 				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandPosCap,
 											  Delegate.create(MatchMain.Ref.Game.OnClientPosCap,
 															  MatchMain.Ref.Game.CurTeam.IdxTeam, 
-															  PosControl.Target.Id, PosControl.EndPos.x, PosControl.EndPos.y)); 
+															  _PosControl.Target.Id, _PosControl.EndPos.x, _PosControl.EndPos.y)); 
 			}
 		}
 		
@@ -418,16 +418,16 @@ package Match
 		{
 			// Siempre verificamos que la entrada este todavia activa porque es posible que hayamos cambiado de estado (entrado en un estado de espera) desde que
 			// el controlador se inicio, por ejemplo por TimeOut. 
-			if (ShootControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
+			if (_ShootControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
 			{
 				if (!MatchConfig.OfflineMode)
-					MatchMain.Ref.Connection.Invoke("OnServerShoot", null, ShootControl.Target.Id, ShootControl.Direction.x, ShootControl.Direction.y, ShootControl.Force);
+					MatchMain.Ref.Connection.Invoke("OnServerShoot", null, _ShootControl.Target.Id, _ShootControl.Direction.x, _ShootControl.Direction.y, _ShootControl.Force);
 				
 				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandShoot, 
 											  Delegate.create(MatchMain.Ref.Game.OnClientShoot,	// Simulamos que el servidor nos ha devuelto el tiro
-															  ShootControl.Target.OwnerTeam.IdxTeam, 
-															  ShootControl.Target.Id, 
-															  ShootControl.Direction.x, ShootControl.Direction.y, ShootControl.Force));
+															  _ShootControl.Target.OwnerTeam.IdxTeam, 
+															  _ShootControl.Target.Id, 
+															  _ShootControl.Direction.x, _ShootControl.Direction.y, _ShootControl.Force));
 			}
 		}
 		
@@ -436,15 +436,15 @@ package Match
 		//
 		private function OnStopControllerBall(reason:int) : void
 		{	
-			if (BallControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
+			if (_BallControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
 			{
 				if (!MatchConfig.OfflineMode)
-					MatchMain.Ref.Connection.Invoke("OnServerPlaceBall", null, BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y);
+					MatchMain.Ref.Connection.Invoke("OnServerPlaceBall", null, _BallControl.Target.Id, _BallControl.Direction.x, _BallControl.Direction.y);
 				
 				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandPlaceBall,
 											  Delegate.create(MatchMain.Ref.Game.OnClientPlaceBall,
-															  BallControl.Target.OwnerTeam.IdxTeam, 
-															  BallControl.Target.Id, BallControl.Direction.x, BallControl.Direction.y));
+															  _BallControl.Target.OwnerTeam.IdxTeam, 
+															  _BallControl.Target.Id, _BallControl.Direction.x, _BallControl.Direction.y));
 			}
 		}
 		
@@ -490,14 +490,14 @@ package Match
 		//
 		private function CancelControllers() : void
 		{
-			if (ShootControl.IsStarted)
-				ShootControl.Stop(Controller.Canceled);
+			if (_ShootControl.IsStarted)
+				_ShootControl.Stop(Controller.Canceled);
 
-			if (BallControl.IsStarted)
-				BallControl.Stop(Controller.Canceled);
+			if (_BallControl.IsStarted)
+				_BallControl.Stop(Controller.Canceled);
 			
-			if (PosControl.IsStarted)
-				PosControl.Stop(Controller.Canceled);
+			if (_PosControl.IsStarted)
+				_PosControl.Stop(Controller.Canceled);
 		}
 
 		// 

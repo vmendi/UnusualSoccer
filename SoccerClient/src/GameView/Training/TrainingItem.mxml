@@ -11,33 +11,33 @@
 	</s:states>
 	
 	<fx:Script><![CDATA[
-		import GameModel.TrainingModel;
-		
-		import SoccerServer.TransferModel.vo.TrainingDefinition;
-		
-		import mx.events.FlexEvent;
-		
+		import GameModel.TrainingModel;		
+		import SoccerServer.TransferModel.vo.TrainingDefinition;		
+		import mx.events.FlexEvent;		
 		import utils.TimeUtils;
 						
 		protected function CreationCompleteHandler(event:FlexEvent):void
 		{
 			mTrainingModel = SoccerClient.GetMainGameModel().TheTrainingModel;
-			//(MyTraining.content as MovieClip).stop();
 		}
 		
 		[Bindable]
 		public function get TheTrainingDefinition(): TrainingDefinition	{return mTrainingDef;}
-		public function set TheTrainingDefinition(value:TrainingDefinition):void 
+		public function set TheTrainingDefinition(value:TrainingDefinition):void
 		{ 
 			mTrainingDef = value;
 			
-			//(MyTraining.content as MovieClip).gotoAndStop(mTrainingDef.Name)
+			Refresh();
+		}
+		
+		private function Refresh() : void
+		{
+			if (MyTraining.content != null && mTrainingDef != null)
+				(MyTraining.content as MovieClip).gotoAndStop(mTrainingDef.Name)
 		}
 		
 		private var mTrainingDef : TrainingDefinition;
-		
-		[Bindable]
-		private var mTrainingModel : TrainingModel;
+		[Bindable] private var mTrainingModel : TrainingModel;
 		
 	]]></fx:Script>
 	
@@ -45,9 +45,9 @@
 		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='TrainingRegularBg')" fillMode="clip" />
 	</s:Graphic>
 	
-	<mx:SWFLoader x="3" y="3" id="MyTraining" scaleContent="false" alpha.NotAvailable="0.3"
-				  source="{resourceManager.getString('main','TrainingItemSource')}"/>	
-	
+	<mx:Image x="3" y="3" id="MyTraining" scaleContent="false" alpha.NotAvailable="0.3"
+				  source="{resourceManager.getString('main','TrainingItemSource')}" complete="Refresh()"/>
+		
 	<s:Group left="0" right="0" top="0" bottom="0" alpha.NotAvailable="0.3">
 		<s:Graphic includeIn="NotAvailable">
 			<s:Rect width="100%" height="100%">
@@ -75,6 +75,4 @@
 		
 		<s:Button id="MyDoTrainButton" label="ENTRENAR" x="188" y="78" width="154" height="24" skinClass="GameView.Skins.ButtonGreySkin" includeIn="Normal"/>	
 	</s:Group>
-	
-	
 </s:Group>

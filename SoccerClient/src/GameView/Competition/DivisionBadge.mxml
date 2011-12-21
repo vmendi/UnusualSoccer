@@ -13,16 +13,22 @@
 			// Lo que aqui entra es el ID de cadena tal y como viene de la BDD
 			mDivision = division;
 			
-			MyBitmap.visible = true;
-			//(MyBitmap.content as MovieClip).gotoAndStop(mDivision);
+			Refresh();
 		}
 		
-		private var mDivision : String = "";
+		private function Refresh():void
+		{
+			if (MyBitmap.content != null && mDivision != null)
+			{
+				MyBitmap.visible = true;
+				(MyBitmap.content as MovieClip).gotoAndStop(mDivision);
+			}
+		}
 		
+		private var mDivision : String = null;
+				
 	]]></fx:Script>
 	
-	<!--<mx:Image x="0" y="0" id="MyBitmap" visible="false" source="{resourceManager.getClass('main','CompetitionDivisionBadgeMC')}" />-->
-	<mx:SWFLoader id="MyBitmap" visible="false" source="{resourceManager.getString('main','CompetitionDivisionBadgeSource')}" />
-	
+	<mx:Image id="MyBitmap" visible="false" complete="Refresh()" source="{resourceManager.getString('main','CompetitionDivisionBadgeSource')}"/>
 	
 </s:Group>
