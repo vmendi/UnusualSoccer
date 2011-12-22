@@ -5,7 +5,8 @@
 		 xmlns:Team="GameView.Team.*"
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 width="100%" height="100%"
-		 creationComplete="CreationCompleteHandler(event)" >
+		 creationComplete="CreationCompleteHandler(event)"
+		 addedToStage="addedToStageHandler(event)">
 	
 	<fx:Style source="../styles.css"/>
 	
@@ -19,6 +20,12 @@
 		
 		import mx.events.FlexEvent;
 
+		protected function addedToStageHandler(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			GameMetrics.ReportEvent(GameMetrics.VIEW_TEAM,null);
+		}
+		
 		protected function CreationCompleteHandler(event:FlexEvent):void
 		{
 			mTeamModel = SoccerClient.GetMainGameModel().TheTeamModel;

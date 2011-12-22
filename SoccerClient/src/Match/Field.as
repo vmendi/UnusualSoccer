@@ -41,7 +41,7 @@ package Match
 		// Coordenadas de las porterias
 		private var X_GOAL_LEFT:Number = 0;
 		private var X_GOAL_RIGHT:Number = 713;
-		private var Y_GOAL:Number = 191;
+		private var Y_GOAL:Number = 201;
 		
 		// Sensores de gol colocados en cada portería para detectar el gol
 		public var GoalLeft : QuickObject = null;

@@ -69,6 +69,7 @@ package
 				if (response && response.post_id)
 				{
 					//alert('Post was published.');
+					//GameMetrics.ReportEvent(GameMetrics.VIEW_COMPETITION);
 				} 
 				else 
 				{

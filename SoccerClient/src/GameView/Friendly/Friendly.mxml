@@ -5,6 +5,7 @@
 		 xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*" xmlns:Friendly="GameView.Friendly.*"
 		 creationComplete="CreationCompleteHandler(event)"
 		 currentState="AvailableCredit"
+		 addedToStage="addedToStageHandler(event)"
 		 >
 	
 	<fx:Style source="../styles.css"/>
@@ -26,6 +27,11 @@
 		
 		import spark.events.IndexChangeEvent;
 
+		
+		protected function addedToStageHandler(event:Event):void
+		{
+			GameMetrics.ReportEvent(GameMetrics.VIEW_FRIENDLY,null);
+		}
 		
 		protected function CreationCompleteHandler(event:FlexEvent):void
 		{			
@@ -63,7 +69,7 @@
 		
 		[Bindable] private var mMainGameModel : MainGameModel;
 		[Bindable] private var mRoomModel : RoomModel;
-
+		
 	]]></fx:Script>
 
 	<s:Group left="0" right="0" top="0" includeIn="OutOfCredit">

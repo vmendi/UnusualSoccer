@@ -5,7 +5,8 @@
 		 xmlns:GameView="GameView.*"
 		 xmlns:Training="GameView.Training.*"
 		 width="100%" height="100%"
-		 creationComplete="CreationCompleteHandler(event)">
+		 creationComplete="CreationCompleteHandler(event)"
+		 addedToStage="addedToStageHandler(event)">
 	
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
@@ -17,6 +18,11 @@
 		
 		import mx.binding.utils.BindingUtils;
 		import mx.events.FlexEvent;
+		
+		protected function addedToStageHandler(event:Event):void
+		{
+			GameMetrics.ReportEvent(GameMetrics.VIEW_TRAINING,{'Entre':'Nando'});
+		}
 		
 		protected function CreationCompleteHandler(event:FlexEvent):void
 		{
@@ -41,7 +47,7 @@
 			if (theTrainingItem.currentState == "Normal")
 			{
 				var trainingName : String = (event.currentTarget as TrainingItem).TheTrainingDefinition.Name;
-				GameMetrics.ReportEvent(GameMetrics.DO_TRAINING + "_" + trainingName);
+				GameMetrics.ReportEvent(GameMetrics.DO_TRAINING, {'Training':trainingName});
 				mTrainingModel.Train(trainingName, null);			
 			}
 		}
