@@ -67,7 +67,7 @@ namespace SoccerServer
             // og:description
             mServerSettings["Description"] = "Unusual Soccer Description";
 
-            if (this.Server.MachineName == "UNUSUALTWO")
+            if (this.Server.MachineName == "UNUSUALTWO")    // UnusualSoccerDev
             {
                 mFBSettings.AppId = "191393844257355";
                 mFBSettings.AppSecret = "a06a6bf1080247ed87ba203422dcbb30";
@@ -81,6 +81,22 @@ namespace SoccerServer
                 mServerSettings["VersionID"] = "MahouLigaChapas";
                 mClientSettings["VersionID"] = "MahouLigaChapas";
                 
+                mServerSettings["TicketingSystem"] = "false";
+                mServerSettings["SameIPAbandonsChecked"] = "true";
+            }
+            else
+            if (this.Server.MachineName == "UNUSUALFOUR")   // MahouLigaChapas
+            {
+                mFBSettings.AppId = "129447350433277";
+                mFBSettings.AppSecret = "bdc5e672a1447f4d917fbf847981cb0d";
+
+                mFBSettings.CanvasPage = "http://apps.facebook.com/mahouligachapas/";
+                mFBSettings.CanvasUrl = "http://mahouligachapas.unusualwonder.com/";
+                mFBSettings.SecureCanvasUrl = "https://mahouligachapas.unusualwonder.com/";
+
+                mServerSettings["VersionID"] = "MahouLigaChapas";
+                mClientSettings["VersionID"] = "MahouLigaChapas";
+
                 mServerSettings["TicketingSystem"] = "false";
                 mServerSettings["SameIPAbandonsChecked"] = "true";
             }
@@ -98,7 +114,7 @@ namespace SoccerServer
                 //mClientSettings["VersionID"] = "UnusualSoccer";
                 mServerSettings["VersionID"] = "MahouLigaChapas";
                 mClientSettings["VersionID"] = "MahouLigaChapas";
-                                
+
                 mServerSettings["TicketingSystem"] = "false";
                 mServerSettings["SameIPAbandonsChecked"] = "false";
 

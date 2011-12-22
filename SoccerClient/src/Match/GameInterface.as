@@ -12,6 +12,8 @@ package Match
 	import flash.geom.ColorTransform;
 	import flash.net.SharedObject;
 	
+	import mx.resources.ResourceManager;
+	
 	import utils.Delegate;
 	import utils.TimeUtils;
 
@@ -84,7 +86,7 @@ package Match
 			
 			for each(var skillID : int in localTeam.AvailableSkills)
 			{
-				var newButton : MovieClip = new ((MatchAssets["BotonSkill" + skillID]) as Class)();
+				var newButton : MovieClip = new (ResourceManager.getInstance().getClass("match", "BotonSkill" + skillID))();
 				newButton.name = "BotonSkill" + skillID;
 				newButton.addEventListener(MouseEvent.CLICK, Delegate.create(OnUseSkillButtonClick, skillID));
 				
@@ -93,7 +95,7 @@ package Match
 				
 				x += BUTTON_WIDTH;
 				
-				parent.addChild(newButton);					
+				parent.addChild(newButton);
 			}
 		}
 		

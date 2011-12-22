@@ -5,9 +5,11 @@ package Match
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
+	import mx.core.UIComponent;
+	
 	import utils.GenericEvent;
 	
-	public class MatchMain extends Sprite
+	public class MatchMain extends UIComponent
 	{
 		public var Formations:Object = null;					// Hash de posiciones (Points) de formaciones ["332"][idxCap]
 		public var Connection:Object = null;					// Conexión con el servidor
@@ -18,7 +20,7 @@ package Match
 		static public function get Ref() : MatchMain {return Instance;}
 
 		public function MatchMain()
-		{			
+		{
 			if (Instance != null)
 				throw new Error("WTF 3312");
 			

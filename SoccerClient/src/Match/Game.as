@@ -11,7 +11,7 @@ package Match
 	{
 		public var TheInterface:GameInterface;
 		public var TheGamePhysics:GamePhysics;
-		public var TheField:Field;	
+		public var TheField:Field;
 		public var TheBall:BallEntity;
 		public var TheEntityManager:EntityManager;
 		public var TheAudioManager:AudioManager;

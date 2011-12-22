@@ -550,7 +550,7 @@
 		private function Test11() : void
 		{
 			var match : MatchMain = new MatchMain();
-			this.addElement(new UIComponentWrapper(match));
+			this.addElement(match);
 			
 			// Queremos ver los margenes
 			this.y = 40;

@@ -13,7 +13,7 @@ package Assets
 		[Embed(source="Assets/MatchAssets.swf", symbol="GoalRight")]
 		static public var GoalRight:Class; 
 		
-		// Mensajes de eventos del juego (Cut-Scenes)
+		// Mensajes de fin de tiempo (parte y final del partido)
 		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeFinPartido")]
 		static public var MensajeFinPartido:Class;
 		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeFinTiempo1")]
@@ -26,32 +26,6 @@ package Assets
 		static public var MensajeGolInvalido:Class;
 		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeGolinvalidoPropioCampo")]
 		static public var MensajeGolinvalidoPropioCampo:Class;
-		
-		// Mensajes animados de skills
-		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeSkill1")]  static public var MensajeSkill1:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeSkill2")]  static public var MensajeSkill2:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeSkill3")]  static public var MensajeSkill3:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeSkill4")]  static public var MensajeSkill4:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeSkill5")]  static public var MensajeSkill5:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeSkill6")]  static public var MensajeSkill6:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeSkill7")]  static public var MensajeSkill7:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeSkill8")]  static public var MensajeSkill8:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeSkill9")]  static public var MensajeSkill9:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeSkill12")] static public var MensajeSkill12:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeSkill13")] static public var MensajeSkill13:Class;
-		
-		// Los botones de cada skill
-		[Embed(source="Assets/MatchAssets.swf", symbol="BotonSkill1")]	static public var BotonSkill1:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="BotonSkill2")]  static public var BotonSkill2:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="BotonSkill3")]	static public var BotonSkill3:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="BotonSkill4")]  static public var BotonSkill4:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="BotonSkill5")]  static public var BotonSkill5:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="BotonSkill6")]  static public var BotonSkill6:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="BotonSkill7")]  static public var BotonSkill7:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="BotonSkill8")]  static public var BotonSkill8:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="BotonSkill9")]  static public var BotonSkill9:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="BotonSkill12")] static public var BotonSkill12:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="BotonSkill13")] static public var BotonSkill13:Class;
 		
 		// Mensajes animados de cambio de turno
 		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeTurnoContrario")]
@@ -74,7 +48,6 @@ package Assets
 		[Embed(source="Assets/MatchAssets.swf", symbol="ConflictoPierde")]
 		static public var ConflictoPierde:Class;
 		
-		
 		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeTurnoPropioSaquePuerta")]
 		static public var MensajeTurnoPropioSaquePuerta:Class;			// El saque de puerta no tiene un mensaje específico para el oponente
 		
@@ -91,7 +64,6 @@ package Assets
 		// (aparece al jugador que va a realizar el tiro cuando el contrario ha colocado el portero o si no puede colocarlo)
 		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeTiroPuertaRecepcion2")]
 		static public var MensajeTiroPuertaContrario:Class;
-		
 		
 		// Nº de disparos que le quedan al jugador
 		[Embed(source="Assets/MatchAssets.swf", symbol="QuedanTiros1")]
@@ -133,7 +105,7 @@ package Assets
 		[Embed(source="Assets/MatchAssets.swf", symbol="CapDetails")]
 		static public var CapDetails:Class;
 		
-		//
+		// Blinko blinko cuando se produce un control del portero
 		[Embed(source="Assets/MatchAssets.swf", symbol="AreaPortero")]
 		static public var AreaPortero:Class;
 		

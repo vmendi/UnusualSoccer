@@ -12,7 +12,7 @@
 		{
 			GameMetrics.ReportEvent(GameMetrics.PLAY_MATCH);
 			
-			this.addElement(new UIComponentWrapper(SoccerClient.GetMainGameModel().TheRealtimeModel.TheMatch));
+			this.addElement(SoccerClient.GetMainGameModel().TheRealtimeModel.TheMatch);
 		}
 		
 		protected function RemovedFromStageHandler(event:Event):void

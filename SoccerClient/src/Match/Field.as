@@ -69,11 +69,11 @@ package Match
 		{
 			var goalLeft:Entity = new Entity(MatchAssets.GoalLeft, parent);
 			MatchMain.Ref.Game.TheEntityManager.Add( goalLeft );
-			goalLeft.SetPos( new Point( X_GOAL_LEFT, Y_GOAL ) );
+			goalLeft.SetPos(new Point(X_GOAL_LEFT, Y_GOAL));
 			
 			var goalRight:Entity = new Entity(MatchAssets.GoalRight, parent);
 			MatchMain.Ref.Game.TheEntityManager.Add( goalRight );
-			goalRight.SetPos( new Point( X_GOAL_RIGHT, Y_GOAL ) );
+			goalRight.SetPos(new Point(X_GOAL_RIGHT, Y_GOAL));
 		}
 		
 		/* 

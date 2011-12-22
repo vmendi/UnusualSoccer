@@ -8,6 +8,8 @@ package Match
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	
+	import mx.resources.ResourceManager;
+	
 	import utils.Delegate;
 	
 	
@@ -113,7 +115,7 @@ package Match
 		
 		static public function ShowMensajeSkill(idSkill:int) : void
 		{
-			LaunchCutScene(MatchAssets["MensajeSkill" + idSkill] as Class, 0, 210);
+			LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeSkill" + idSkill), 0, 210);
 		}
 		
 		static public function ShowQuedanTurnos(turnos:int) : void

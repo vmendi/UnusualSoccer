@@ -79,11 +79,15 @@ package Match
 						
 			// Creamos una imagen de chapa Ghost (la utilizaremos para indicar donde mover el portero)
 			Ghost = new Entity(Assets.MatchAssets.Cap, MatchMain.Ref.Game.GameLayer);
-			Ghost.Visual.First.gotoAndStop(PredefinedName);
-			Ghost.Visual.Second.visible = false;
-			Ghost.Visual.Regular.visible = false;
 			Ghost.Visual.alpha = 0.4;
 			Ghost.Visual.visible = false;
+			Cap.PrepareVisualCap(Ghost.Visual, PredefinedName, useSecondaryEquipment, true);			
+		}
+		
+		
+		public function get IsLocalUser() : Boolean
+		{
+			return this.IdxTeam == MatchConfig.IdLocalUser;
 		}
 		
 		//
@@ -91,11 +95,11 @@ package Match
 		//
 		public function AgainstTeam() : Team
 		{
-			if (this == MatchMain.Ref.Game.TheTeams[ Enums.Team1 ])
-				return MatchMain.Ref.Game.TheTeams[ Enums.Team2 ];
+			if (this == MatchMain.Ref.Game.TheTeams[Enums.Team1])
+				return MatchMain.Ref.Game.TheTeams[Enums.Team2];
 			
-			if(this == MatchMain.Ref.Game.TheTeams[ Enums.Team2 ])
-				return MatchMain.Ref.Game.TheTeams[ Enums.Team1 ];
+			if(this == MatchMain.Ref.Game.TheTeams[Enums.Team2])
+				return MatchMain.Ref.Game.TheTeams[Enums.Team1];
 			
 			throw new Error("WTF 27");
 		}
@@ -110,12 +114,14 @@ package Match
 				Side = Enums.Right_Side;
 			else if(IdxTeam == Enums.Team2)
 				Side = Enums.Left_Side;
+			else
+				throw new Error("WTF 2732");
 		}
 		
 		//
 		// Posicionamos todas las chapas del equipo según la alineación y el lado del campo en el que están
 		//
-		public function ResetToCurrentFormation(  ) : void
+		public function ResetToCurrentFormation() : void
 		{
 			// Asignamos la posición inicial de cada chapa según la alineación y lado del campo en el que se encuentran
 			SetFormationPos( _FormationName, Side );
@@ -175,7 +181,7 @@ package Match
 			var pos : Point = ConvertFormationPosToFieldPos(formationPos, side);	
 			
 			// Asignamos la posición y detenemos cualquier movimiento que estuviera realizando la chapa
-			cap.SetPos ( pos );
+			cap.SetPos(pos);
 			cap.StopMovement();
 		}
 		
@@ -190,12 +196,11 @@ package Match
 			
 			return pos;
 		}
-		
-		
+				
 		//
 		// Calcula la lista de chapas que están dentro del circulo indicado
 		//
-		public function InsideCircle( center:Point, radius:Number  ) : Array
+		public function InsideCircle(center:Point, radius:Number) : Array
 		{
 			var inside:Array = new Array();
 			
@@ -206,11 +211,6 @@ package Match
 			}
 			
 			return inside;
-		}
-		
-		public function get IsLocalUser() : Boolean
-		{
-			return this.IdxTeam == MatchConfig.IdLocalUser;
 		}
 		
 		private function LoadSkills(availableSkillsIDs:Array) : void

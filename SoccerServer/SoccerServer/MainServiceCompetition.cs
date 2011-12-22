@@ -411,7 +411,7 @@ namespace SoccerServer
 
 
         static private int COMPETITION_GROUP_ENTRIES = 100;             // 100 entradas en cada grupo
-        static private int SEASON_DURATION_DAYS = 3;                    // Las competiciones duran 3 dias
+        static private int SEASON_DURATION_DAYS = 4;                    // Las competiciones duran N dias
         static private int SEASON_HOUR_STARTTIME = 0;                   // Hora de comienzo y fin (teorica). Entre 0 y 23. Actualmente, a las 00:00.
     }
 }

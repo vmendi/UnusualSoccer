@@ -22,7 +22,7 @@ package
 		
 		static public function Init(dobject:DisplayObject) : void
 		{
-			tracker = new GATracker( dobject, "UA-6476735-8", "AS3", false );
+			tracker = new GATracker(dobject, "UA-6476735-8", "AS3", false);
 			
 			var uid : String = SoccerClient.GetFacebookFacade().FacebookID
 			ExternalInterface.call("_kmq.push", ['identify', uid]);
