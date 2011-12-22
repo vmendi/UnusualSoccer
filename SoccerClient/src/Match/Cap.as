@@ -11,7 +11,6 @@ package Match
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
-	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -78,32 +77,18 @@ package Match
 									 restitution: .8,								// Fuerza que recupera en un choque
 									 linearDamping: MatchConfig.CapLinearDamping, 
 									 angularDamping: MatchConfig.CapLinearDamping }
-				
-			var asset:Class = null;
-				
-			// Elegimos el asset de jugador o portero (y con la equipación primaria o secundaria)
-			if (id != 0)
-			{
-				asset = useSecondaryEquipment? Assets.MatchAssets.Cap2 : Assets.MatchAssets.Cap;
-				phyInit.categoryBits = 1;			// Choca con todo	
-			}
-			else
-			{
-				asset = useSecondaryEquipment? Assets.MatchAssets.Goalkeeper2 : Assets.MatchAssets.Goalkeeper;
-				phyInit.categoryBits = 2;			// Choca con todo tb	
-			}
 			
-			super(asset, MatchMain.Ref.Game.GameLayer, PhyEntity.Circle, phyInit);
+			super(Assets.MatchAssets.Cap, MatchMain.Ref.Game.GameLayer, PhyEntity.Circle, phyInit);
+			
+			// Choca con todo
+			phyInit.categoryBits = 1;
+			
+			// Elegimos el asset de jugador o portero y con la equipación primaria o secundaria
+			PrepareVisualCap(_Visual, team.PredefinedName, useSecondaryEquipment, id == 0) 
 			
 			// Reasignamos la escala de la chapa, ya que la física la escala para que encaje con el radio físico asignado
-			this.Visual.scaleX = 1.0;
-			this.Visual.scaleY = 1.0;
-		
-			// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el quipo
-			_Visual.gotoAndStop(team.PredefinedName);
-			
-			// Paramos la animacion del Halo
-			_Visual.Halo.addFrameScript(0, function():void { _Visual.Halo.stop(); });
+			_Visual.scaleX = 1.0;
+			_Visual.scaleY = 1.0;
 			
 			_CapId = id;
 			_Name = descCap.Name;
@@ -135,6 +120,24 @@ package Match
 			
 			// Auto-añadimos al manager de entidades
 			MatchMain.Ref.Game.TheEntityManager.AddTagged(this, "Team"+(team.IdxTeam +1).toString() + "_" + _CapId.toString());
+		}
+		
+		static public function PrepareVisualCap(visualCap : *, predefinedTeamName : String, useSecondary : Boolean, isGoalKeeper : Boolean) : void
+		{
+			if (useSecondary)
+				visualCap.First.visible = false;
+			visualCap.Second.visible = !visualCap.First.visible;
+			
+			if (isGoalKeeper)
+				visualCap.Regular.visible = false;
+			visualCap.Goalkeeper.visible = !visualCap.Regular.visible;
+			
+			// Mandamos al frame de la equipacion
+			visualCap.First.gotoAndStop(predefinedTeamName);
+			visualCap.Second.gotoAndStop(predefinedTeamName);
+			
+			// Paramos la animacion del Halo
+			visualCap.Halo.addFrameScript(0, function():void { visualCap.Halo.stop(); });
 		}
 		
 		// Cue visual de que es el turno del equipo de la chapa

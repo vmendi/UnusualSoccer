@@ -78,8 +78,10 @@ package Match
 			ResetToCurrentFormation();
 						
 			// Creamos una imagen de chapa Ghost (la utilizaremos para indicar donde mover el portero)
-			Ghost = new Entity(Assets.MatchAssets.Goalkeeper, MatchMain.Ref.Game.GameLayer);
-			Ghost.Visual.gotoAndStop(PredefinedName);
+			Ghost = new Entity(Assets.MatchAssets.Cap, MatchMain.Ref.Game.GameLayer);
+			Ghost.Visual.First.gotoAndStop(PredefinedName);
+			Ghost.Visual.Second.visible = false;
+			Ghost.Visual.Regular.visible = false;
 			Ghost.Visual.alpha = 0.4;
 			Ghost.Visual.visible = false;
 		}
@@ -351,13 +353,13 @@ package Match
 			// Hacemos un clon visual que es el que realmente desvanecemos
 			if (withFadeOut)
 			{
-				var visual : DisplayObject = (cap.Visual as DisplayObject); 
 				var cloned : MovieClip = new (getDefinitionByName(getQualifiedClassName(cap.Visual)) as Class)();
-				visual.parent.addChild(cloned);
-				cloned.gotoAndStop(this.PredefinedName);
-				cloned.x = visual.x; 
-				cloned.y = visual.y;
+				cap.Visual.parent.addChild(cloned);
+				cloned.x = cap.Visual.x; 
+				cloned.y = cap.Visual.y;
 				cloned.rotationZ = cap.PhyBody.angle * 180.0 / Math.PI;
+				
+				Cap.PrepareVisualCap(cloned, PredefinedName, cap.Visual.Second.visible, cap.Visual.Goalkeeper.visible);
 				
 				// Hacemos desvanecer el clon
 				TweenMax.to(cloned, 2, {alpha:0, onComplete: Delegate.create(OnFinishTween, cloned) });
@@ -368,7 +370,7 @@ package Match
 			pos.x -= MatchMain.Ref.Game.FireCount * ((Cap.Radius * 2) * 5);
 			cap.SetPos( pos );			
 		}
-		
+				
 		private function OnFinishTween(cap:DisplayObject) : void
 		{
 			cap.parent.removeChild(cap);
@@ -390,6 +392,7 @@ package Match
 				}
 			}
 		}
+		
 	}
 }
 

@@ -53,13 +53,6 @@ package Assets
 		[Embed(source="Assets/MatchAssets.swf", symbol="BotonSkill12")] static public var BotonSkill12:Class;
 		[Embed(source="Assets/MatchAssets.swf", symbol="BotonSkill13")] static public var BotonSkill13:Class;
 		
-		
-		// Diálogos final de partido		
-		[Embed(source="Assets/MatchAssets.swf", symbol="FinalDialog")]
-		static public var FinalDialog:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="FinalDialogLeave")]
-		static public var FinalDialogLeave:Class;
-		
 		// Mensajes animados de cambio de turno
 		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeTurnoContrario")]
 		static public var MensajeTurnoContrario:Class;
@@ -123,18 +116,11 @@ package Assets
 
 		[Embed(source="Assets/MatchAssets.swf", symbol="MensajeControlPortero")]
 		static public var MensajeControlPortero:Class;		
-				
-		// Una chapa (cada frame es un equipo diferente):
-		[Embed(source="Assets/MatchAssets.swf", symbol="Cap")]					// La chapa para todos los equipos
+
+		// Una chapa
+		[Embed(source="Assets/MatchAssets.swf", symbol="Cap")]
 		static public var Cap:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="Cap2")]					// La chapa para todos los equipos
-		static public var Cap2:Class;
-		
-		[Embed(source="Assets/MatchAssets.swf", symbol="Goalkeeper")]			// El portero para todos los equipos
-		static public var Goalkeeper:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="Goalkeeper2")]			// El portero para todos los equipos
-		static public var Goalkeeper2:Class;
-		
+				
 		// El balón animado
 		[Embed(source="Assets/MatchAssets.swf", symbol="BalonAnimado")]
 		static public var BallAnimated:Class;
@@ -160,6 +146,5 @@ package Assets
 		static public var SoundCollisionWall:Class;
 		[Embed(source="Assets/MatchAssets.swf", symbol="Ambience")]
 		static public var SoundAmbience:Class;
-		
 	}
 }
