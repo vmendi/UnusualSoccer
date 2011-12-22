@@ -353,7 +353,7 @@ package Match
 			// Hacemos un clon visual que es el que realmente desvanecemos
 			if (withFadeOut)
 			{
-				var cloned : MovieClip = new (getDefinitionByName(getQualifiedClassName(cap.Visual)) as Class)();
+				var cloned : DisplayObject = new (getDefinitionByName(getQualifiedClassName(cap.Visual)) as Class)();
 				cap.Visual.parent.addChild(cloned);
 				cloned.x = cap.Visual.x; 
 				cloned.y = cap.Visual.y;

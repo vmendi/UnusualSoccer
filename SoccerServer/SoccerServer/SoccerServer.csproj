@@ -125,6 +125,7 @@
     <Content Include="Imgs\DivisionBadge-es_ES.swf" />
     <Content Include="Imgs\FacebookLandingPage.jpg" />
     <Content Include="Imgs\HeaderLinks.gif" />
+    <Content Include="Imgs\LoginLogo-es_ES.swf" />
     <Content Include="Imgs\Logo100x100.png" />
     <Content Include="Imgs\Logo75x75.png" />
     <Content Include="Imgs\MainHeader.jpg" />

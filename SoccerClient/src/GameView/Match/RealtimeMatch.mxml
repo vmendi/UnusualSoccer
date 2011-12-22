@@ -10,7 +10,7 @@
 	
 		protected function AddedToStageHandler(event:Event):void
 		{
-			GameMetrics.ReportEvent(GameMetrics.PLAY_MATCH);
+			GameMetrics.ReportEvent(GameMetrics.PLAY_MATCH, null);
 			
 			this.addElement(SoccerClient.GetMainGameModel().TheRealtimeModel.TheMatch);
 		}

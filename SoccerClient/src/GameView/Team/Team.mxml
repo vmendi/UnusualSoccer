@@ -5,7 +5,8 @@
 		 xmlns:Team="GameView.Team.*"
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 width="100%" height="100%"
-		 creationComplete="CreationCompleteHandler(event)" >
+		 creationComplete="CreationCompleteHandler(event)"
+		 addedToStage="AddedToStageHandler(event)">
 	
 	<fx:Style source="../styles.css"/>
 	
@@ -18,7 +19,13 @@
 		import GameView.Skins.ButtonGreySkin;
 		
 		import mx.events.FlexEvent;
-
+		
+		protected function AddedToStageHandler(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			GameMetrics.ReportEvent(GameMetrics.VIEW_TEAM, null);
+		}
+		
 		protected function CreationCompleteHandler(event:FlexEvent):void
 		{
 			mTeamModel = SoccerClient.GetMainGameModel().TheTeamModel;
@@ -38,7 +45,7 @@
 		private var mSpecialTrainingModel : SpecialTrainingModel;
 		
 	]]></fx:Script>
-
+	
 	<s:Group top="10" bottom="10" left="10">
 		<s:layout><s:VerticalLayout gap="10"/></s:layout>
 		
@@ -48,7 +55,7 @@
 			<s:Label width="168" text="Desbloquea nuevas alineaciones aumentando tu nivel de XP" 
 					 maxDisplayedLines="3" textAlign="center" styleName="whiteBoldMediumArial" />
 		</s:Panel>
-
+		
 		<s:Panel title="HABILIDADES" skinClass="GameView.Skins.DefaultPanelSkin" controlBarVisible="true" width="188" height="318">
 			<s:layout><s:VerticalLayout horizontalAlign="center" paddingTop="19" gap="15" /></s:layout>
 			<GameView:SpecialSkillsBrowser SpecialSkillIDs="{mTeamModel.TheTeamDetails.SpecialSkillsIDs}"/>
@@ -58,7 +65,7 @@
 					  click="TrainClickHandler(event)"/>
 		</s:Panel>
 	</s:Group>	
-
+	
 	<Team:Field top="0" horizontalCenter="0" /> 
 	<Team:Substitutes top="364" horizontalCenter="0" />
 	

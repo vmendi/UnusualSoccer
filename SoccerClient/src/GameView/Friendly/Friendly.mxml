@@ -5,6 +5,7 @@
 		 xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*" xmlns:Friendly="GameView.Friendly.*"
 		 creationComplete="CreationCompleteHandler(event)"
 		 currentState="AvailableCredit"
+		 addedToStage="AddedToStageHandler(event)"
 		 >
 	
 	<fx:Style source="../styles.css"/>
@@ -14,7 +15,7 @@
 		<s:State name="OutOfCredit" />		
 	</s:states>
 	
-
+	
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
 		import GameModel.RoomModel;
@@ -25,7 +26,12 @@
 		import mx.events.FlexEvent;
 		
 		import spark.events.IndexChangeEvent;
-
+		
+		
+		protected function AddedToStageHandler(event:Event):void
+		{
+			GameMetrics.ReportEvent(GameMetrics.VIEW_FRIENDLY,null);
+		}
 		
 		protected function CreationCompleteHandler(event:FlexEvent):void
 		{			
@@ -63,9 +69,9 @@
 		
 		[Bindable] private var mMainGameModel : MainGameModel;
 		[Bindable] private var mRoomModel : RoomModel;
-
+		
 	]]></fx:Script>
-
+	
 	<s:Group left="0" right="0" top="0" includeIn="OutOfCredit">
 		<s:Label text="TODO: Launch challenge not possible. 0 Remaining matches" styleName="whiteBoldBig" />
 	</s:Group>
@@ -86,7 +92,7 @@
 					dataProvider="{mRoomModel.ReceivedChallenges}" itemRenderer="GameView.Friendly.ChallengeItem" change="MyChallengesList_changeHandler(event)"/>
 		</s:Panel>
 		<Friendly:MatchDefinitionPanel id="MyMatchDefitionPanel" right="10" top="10" width="306" height="470" 
-									title="CONFIGURACIÓN DEL PARTIDO"/>		
+									   title="CONFIGURACIÓN DEL PARTIDO"/>		
 	</s:Group>
 	
 </s:Group>

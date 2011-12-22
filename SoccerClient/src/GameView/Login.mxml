@@ -108,7 +108,7 @@
 			{
 				if (!mWaitingForNameValidity)
 				{
-					GameMetrics.ReportEvent(GameMetrics.TEAM_SELECTED);
+					GameMetrics.ReportEvent(GameMetrics.TEAM_SELECTED, null);
 					mMainGameModel.TheTeamModel.CreateTeam(MyTeamNameInput.text, 
 														   mMainGameModel.ThePredefinedTeamsModel.GetIDByName(MyPredefinedTeamList.selectedItem), 
 													   	   OnTeamCreatedResponse, OnTeamCreationFailed);

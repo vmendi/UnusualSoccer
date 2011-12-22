@@ -37,7 +37,7 @@
 		// Queremos refrescar la competicion cada vez que se recarga la pestaña
 		protected function AddedToStageHandler(event:Event):void
 		{
-			GameMetrics.ReportEvent(GameMetrics.VIEW_COMPETITION);
+			GameMetrics.ReportEvent(GameMetrics.VIEW_COMPETITION,null);
 			
 			// Se produce el AddedToStage antes q el CreationComplete (solo la primera vez, luego no se produce mas el CreationComplete, claro)
 			if (mCompetitionModel != null)
@@ -87,7 +87,7 @@
 		private function EnsureSelectedIsVisible() : void
 		{
 			var idx : int = MyCompetitionList.dataProvider.getItemIndex(mCompetitionModel.GetLocalGroupEntry());
-
+			
 			if (idx + 4 < MyCompetitionList.dataProvider.length)
 				idx += 4;
 			else
@@ -97,7 +97,7 @@
 				MyCompetitionList.ensureIndexIsVisible(idx);
 			} catch(e:Error) {}
 		}
-
+		
 		protected function MyBuyTicketsButton_clickHandler(event:MouseEvent):void
 		{
 			PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseTicket") as Class);
@@ -108,7 +108,7 @@
 		private var mGameModel : MainGameModel;
 		
 	]]></fx:Script>
-		
+	
 	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" height="470" left="10" width="740" title="COMPETICIÓN">
 		<s:controlBarContent>
 			<GameView:HelpCallout HelpText="{resourceManager.getString('main','CompetitionHelpCallout')}"/>
@@ -117,7 +117,7 @@
 		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraFondo')" fillMode="clip" />
 		
 		<Competition:DivisionBadge x="0" y="0" Division="{mCompetitionModel.TheGroup.DivisionName}" />
-				
+		
 		<s:Group x="116" top="22">
 			<s:layout>
 				<s:VerticalLayout horizontalAlign="left" gap="4" />
@@ -126,7 +126,7 @@
 			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraLineaDivision')" fillMode="clip" />
 			<s:Label width="72" x="112" y="63" text="GRUPO: {mCompetitionModel.TheGroup.GroupName}" styleName="whiteBoldBig" textAlign="left" />
 		</s:Group>
-
+		
 		<s:Group right="0" top="29">
 			<s:layout>
 				<s:HorizontalLayout gap="0" />
@@ -149,7 +149,7 @@
 				<s:Label width="120" text="{mCompetitionModel.TheGroup.MinimumPoints} Ptos" styleName="whiteBoldVeryBig" textAlign="center" filters="{[glowNormal]}" />	
 			</s:Group>
 		</s:Group>
-
+		
 		<s:List id="MyCompetitionList" left="0" right="0" top="105" height="336"
 				dataProvider="{mCompetitionModel.TheGroup.GroupEntries}" skinClass="GameView.Competition.CompetitionListSkin"		
 				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="true" />
@@ -173,7 +173,7 @@
 					  click="MyBuyTicketsButton_clickHandler(event)"
 					  width="110" height="18" x="40" y="41"/>
 		</s:Group>
-
+		
 	</s:Panel>
 	
 </s:Group>

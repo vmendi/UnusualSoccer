@@ -33,7 +33,7 @@
 				
 		protected function MyAcceptButton_clickHandler(event:MouseEvent):void
 		{
-			GameMetrics.ReportEvent(GameMetrics.UPGRADE_PLAYER);
+			GameMetrics.ReportEvent(GameMetrics.UPGRADE_PLAYER, null);
 			
 			// Esto provoca un OnSkillPointsChanged en el CapPanel
 			mTeamModel.AssignSkillPoints(mSkillPointAssignerPM.DiffWeight, 

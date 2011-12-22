@@ -43,7 +43,7 @@
 		{
 			if (looking)
 			{
-				GameMetrics.ReportEvent(GameMetrics.LOOK_FOR_MATCH);
+				GameMetrics.ReportEvent(GameMetrics.LOOK_FOR_MATCH, null);
 				currentState = "LookingForMatch";
 			}
 			else
