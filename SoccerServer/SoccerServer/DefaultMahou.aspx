@@ -102,7 +102,7 @@
 
     <div id="fb-root"></div>
 				
-    <div style="margin-bottom:10px;width:760px;height:74px;"><img src="Imgs/MainHeader.jpg" alt= "" width="760" height="74" style="display:block;border:0;" /></div>
+    <div style="margin-bottom:10px;margin-top:10px;width:760px;height:74px;"><img src="Imgs/MainHeader.jpg" alt= "" width="760" height="74" style="display:block;border:0;" /></div>
 
     <!-- Banner y botón Like mecanismo XFBML -->
     <asp:Panel id="MyLikePanel" style="width:760px; height:38px; background:url(Imgs/BannerMeGustaBg.png); margin-bottom:10px;" runat="server">
