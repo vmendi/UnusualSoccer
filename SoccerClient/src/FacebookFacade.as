@@ -11,7 +11,9 @@ package
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
+	import flash.xml.XMLNode;
 	
+	import mx.core.FlexGlobals;
 	import mx.messaging.Channel;
 	import mx.messaging.ChannelSet;
 	import mx.messaging.config.ServerConfig;
@@ -96,17 +98,21 @@ package
 		
 		public function SetWeborbSessionKey() : void
 		{
+			// En caso de entrar por https, hay que asegurar que el channel es del tipo SecureAMFChannel
+			if (FlexGlobals.topLevelApplication.url.indexOf("https") != -1)
+				ServerConfig.xml[0].channels.channel.(@id=='my-amf').@type = "mx.messaging.channels.SecureAMFChannel";
+							
 			var current : String = ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
 			
 			// Cuando nos llaman una segunda vez debido a un Fault o a un ServerTest
 			if (current.indexOf("?") != -1)
 				current = current.substr(0, current.indexOf("?"));
-
+			
 			ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri = current + "?SessionKey=" + SessionKey;
 
 			var channelSet : ChannelSet = ServerConfig.getChannelSet("GenericDestination");
 			channelSet.disconnectAll();
-			
+						
 			var theChannel : Channel = ServerConfig.getChannel("my-amf");
 			theChannel.uri = ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
 		}

@@ -32,8 +32,6 @@
 	</s:states>
 
 	<fx:Script><![CDATA[
-		import Assets.MatchAssets;
-		
 		import GameModel.MainGameModel;
 		
 		import GameView.Match.MatchEndDialog;

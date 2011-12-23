@@ -11,6 +11,7 @@ using System.Text;
 using System.IO;
 using System.Collections.Generic;
 using System.Web;
+using Weborb.Util.Logging;
 
 namespace SoccerServer
 {
@@ -25,6 +26,13 @@ namespace SoccerServer
                 !HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.ToLower().Contains("defaultmahou.aspx"))
             {
                 Server.Transfer("~/DefaultMahou.aspx");
+                return;
+            }
+
+            if (HttpContext.Current.Request["signed_request"] == null)
+            {
+                Log.log(Global.GLOBAL_LOG, "Intento de carga de Default.aspx sin signed_request");
+                Response.Write("Missing Facebook signed_request " + HttpContext.Current.Request.Url);
                 return;
             }
 

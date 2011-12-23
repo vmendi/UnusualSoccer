@@ -95,7 +95,7 @@
 	
 <body>
 
-<asp:Panel id="MyDefaultPanel" runat="server">
+<asp:Panel id="MyDefaultPanel" runat="server" Visible="false">
 
     <div id="fb-root"></div>
 				

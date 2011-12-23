@@ -420,7 +420,7 @@ namespace SoccerServer
 
             LogEx("OnServerPlayerReadyForSaque: " + idPlayer);
 
-            if (this.CurState != State.WaitingForSaqueInicial || this.CurState != State.WaitingForSaque)
+            if (this.CurState != State.WaitingForSaqueInicial && this.CurState != State.WaitingForSaque)
                 LogEx("Exception: No estamos esperando a un saque!");
 
             CountReadyPlayersForSaque++;
