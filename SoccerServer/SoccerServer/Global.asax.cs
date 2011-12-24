@@ -112,6 +112,9 @@ namespace SoccerServer
                 mServerSettings["VersionID"] = "MahouLigaChapas";
                 mClientSettings["VersionID"] = "MahouLigaChapas";
 
+                mServerSettings["Title"] = "localhost";
+                mServerSettings["ImageUrl"] = "";
+                mServerSettings["Description"] = "";                
                 mServerSettings["TicketingSystem"] = "false";
                 mServerSettings["SameIPAbandonsChecked"] = "false";
 
