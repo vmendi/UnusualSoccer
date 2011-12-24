@@ -113,7 +113,7 @@ package Caps
 			Match.Ref.AudioManager.AddClass( "SoundCollisionCapBall", Assets.SoundCollisionCapBall );			
 			Match.Ref.AudioManager.AddClass( "SoundCollisionCapCap", Assets.SoundCollisionCapCap );			
 			Match.Ref.AudioManager.AddClass( "SoundCollisionWall", Assets.SoundCollisionWall );
-			Match.Ref.AudioManager.AddClass( "SoundAmbience", Assets.SoundAmbience );
+			//Match.Ref.AudioManager.AddClass( "SoundAmbience", Assets.SoundAmbience );
 
 			// Convertimos las mx.Collections.ArrayCollection que vienen por red a Arrays
 			if (!AppParams.OfflineMode)
@@ -160,7 +160,7 @@ package Caps
 			TheTeams[Enums.Team2].Init(descTeam2, Enums.Team2, useSecondaryEquipment2);
 			
 			// Lanzamos el sonido ambiente, como música para que se detenga automaticamente al finalizar 
-			Match.Ref.AudioManager.PlayMusic("SoundAmbience", 0.3);
+			//Match.Ref.AudioManager.PlayMusic("SoundAmbience", 0.3);
 						
 			// Inicializamos el interfaz de juego. Es necesario que todo lo demas este inicializado!
 			TheInterface = new GameInterface();
