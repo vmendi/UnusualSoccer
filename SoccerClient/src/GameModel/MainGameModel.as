@@ -47,11 +47,14 @@ package GameModel
 			mTrainingModel.OnTimerSeconds();
 		}
 		
-		// No queremos que se nos queden timers cuando se produce un error y se da la OnCleaningShutdownSignal
+		// No queremos que se nos queden timers and stuff cuando se produce un error y se da la OnCleaningShutdownSignal
 		public function OnCleaningShutdown() : void
 		{
 			mRefreshTimer.stop();
 			mRefreshTimer = null;
+			
+			// Tambien tenemos que para el partido si lo hubiera
+			mRealtimeModel.OnCleaningShutdown();
 		}
 
 		public function InitialRefresh(callback : Function) : void

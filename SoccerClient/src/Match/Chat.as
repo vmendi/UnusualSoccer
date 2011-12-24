@@ -19,7 +19,7 @@ package Match
 		private const MAX_CHARS : int = 50;
 		private const MAX_LINES : int = 3;
 		private const LINE_HEIGHT : int = 20;
-		private const TIME_BEFORE_FADEOUT : int = 5;
+		private const TIME_BEFORE_FADEOUT : int = 7;
 		private const TIME_FADEOUT : int = 1;
 		
 		private var mcChat : DisplayObject = null;

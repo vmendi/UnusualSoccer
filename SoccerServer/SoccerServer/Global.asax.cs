@@ -58,15 +58,6 @@ namespace SoccerServer
             // Puede que haya más cancelaciones. Si la dejas vacia, te manda a facebook.com
             mFBSettings.CancelUrlPath = "Cancelled.aspx";
 
-            // De momento igual para todas las versiones
-            mServerSettings["Title"] = "Unusual Soccer";
-
-            // Tiene que ser absoluto pq va en los Meta de facebook
-            mServerSettings["ImageUrl"] = "http://unusualsoccerdev.unusualwonder.com/Imgs/Logo75x75.png";
-
-            // og:description
-            mServerSettings["Description"] = "Unusual Soccer Description";
-
             if (this.Server.MachineName == "UNUSUALTWO")    // UnusualSoccerDev
             {
                 mFBSettings.AppId = "191393844257355";
@@ -76,11 +67,14 @@ namespace SoccerServer
                 mFBSettings.CanvasUrl = "http://unusualsoccerdev.unusualwonder.com/";
                 mFBSettings.SecureCanvasUrl = "https://unusualsoccerdev.unusualwonder.com/";
 
-                //mServerSettings["VersionID"] = "UnusualSoccer";
-                //mClientSettings["VersionID"] = "UnusualSoccer";
-                mServerSettings["VersionID"] = "MahouLigaChapas";
-                mClientSettings["VersionID"] = "MahouLigaChapas";
-                
+                mClientSettings["VersionID"] = "UnusualSoccer";
+                mServerSettings["VersionID"] = "UnusualSoccer";                
+                //mClientSettings["VersionID"] = "MahouLigaChapas";
+                //mServerSettings["VersionID"] = "MahouLigaChapas";
+
+                mServerSettings["Title"] = "Unusual Soccer";
+                mServerSettings["ImageUrl"] = "http://unusualsoccerdev.unusualwonder.com/Imgs/Logo75x75.png";   // Tiene que ser absoluto pq va en los Meta de facebook
+                mServerSettings["Description"] = "Unusual Soccer Description";                                  // og:description
                 mServerSettings["TicketingSystem"] = "false";
                 mServerSettings["SameIPAbandonsChecked"] = "true";
             }
@@ -94,9 +88,12 @@ namespace SoccerServer
                 mFBSettings.CanvasUrl = "http://mahouligachapas.unusualwonder.com/";
                 mFBSettings.SecureCanvasUrl = "https://mahouligachapas.unusualwonder.com/";
 
-                mServerSettings["VersionID"] = "MahouLigaChapas";
                 mClientSettings["VersionID"] = "MahouLigaChapas";
-
+                mServerSettings["VersionID"] = "MahouLigaChapas";
+                
+                mServerSettings["Title"] = "Mahou Liga Chapas";
+                mServerSettings["ImageUrl"] = "http://mahouligachapas.unusualwonder.com/Imgs/Logo75x75.png";
+                mServerSettings["Description"] = "Mahou Liga Chapas";
                 mServerSettings["TicketingSystem"] = "false";
                 mServerSettings["SameIPAbandonsChecked"] = "true";
             }

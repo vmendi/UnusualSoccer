@@ -30,7 +30,7 @@
 				IEventDispatcher(loaderInfo["uncaughtErrorEvents"]).addEventListener("uncaughtError", ErrorMessages.UncaughtErrorHandler);
 			
 			// Si se dispara esta señal, la dispare quien la dispare, nos quedamos en blanco
-			ErrorMessages.OnCleaningShutdownSignal.addOnce(RemoveMainView);
+			ErrorMessages.OnCleaningShutdownSignal.addOnce(OnCleaningShutdown);
 			
 			// Carga de parametros y configuracion global
 			AppConfig.Init(parameters);
@@ -108,21 +108,17 @@
 		
 		private function OnCleaningShutdown() : void
 		{
-			RemoveMainView();
-			
 			if (mMainGameModel != null)
 			{
 				mMainGameModel.OnCleaningShutdown();
 				mMainGameModel = null;
 			}
-		}
-		
-		private function RemoveMainView() : void
-		{
+			
 			if (mMainView != null)
 				removeElement(mMainView);
 			mMainView = null;
 		}
+		
 		
 		private var mMainView : MainView;
 		

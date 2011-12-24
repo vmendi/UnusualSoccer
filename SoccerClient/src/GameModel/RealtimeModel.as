@@ -61,6 +61,12 @@ package GameModel
 			BindingUtils.bindSetter(OnTeamRefreshed, mMainModel, ["TheTeamModel", "TheTeam"]);
 		}
 		
+		public function OnCleaningShutdown() : void
+		{
+			if (mMatch != null)
+				mMatch.Shutdown(null);	// Esto provocara un MatchEnded con result == null
+		}
+		
 		private function OnHasCreditChanged(hasCredit:Boolean) : void
 		{
 			if (!hasCredit)
@@ -261,14 +267,18 @@ package GameModel
 			mMatch.removeEventListener("OnMatchEnded", OnMatchEnded);
 			mMatch = null;
 			
-			// Refresco de por ejemplo el Ticket
-			mMainModel.TheTeamModel.RefreshTeam(null);
-			
-			// De vuelta a nuestra habitación, el servidor nos deja en el limbo, como si acabáramos de conectar
-			LogInToDefaultRoom(null);
-			
-			// Informamos a la vista
-			MatchEnded.dispatch(e.Data);
+			// Si el resultado es null, se ha producido algun tipo de abort sobre el partido, no tenemos que hacer nada mas (OnCleaningShutdown...)
+			if (e.Data != null)
+			{				
+				// Refresco de por ejemplo el Ticket
+				mMainModel.TheTeamModel.RefreshTeam(null);
+				
+				// De vuelta a nuestra habitación, el servidor nos deja en el limbo, como si acabáramos de conectar
+				LogInToDefaultRoom(null);
+				
+				// Informamos a la vista
+				MatchEnded.dispatch(e.Data);
+			}
 		}
 		
 		public function ForceMatchFinish() : void

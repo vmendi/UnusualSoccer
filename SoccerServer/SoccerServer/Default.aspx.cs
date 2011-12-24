@@ -128,6 +128,7 @@ namespace SoccerServer
             pageSource.Replace("${facebookCanvasUrl}", theFBApp.CanvasUrl);
             pageSource.Replace("${facebookAppId}", theFBApp.AppId);
 
+            pageSource.Replace("${title}", serverSettings["Title"]);
             pageSource.Replace("${siteName}", serverSettings["Title"]);
             pageSource.Replace("${description}", serverSettings["Description"]);
             pageSource.Replace("${imageUrl}", serverSettings["ImageUrl"]);
