@@ -93,7 +93,7 @@ namespace SoccerServer
                 
                 mServerSettings["Title"] = "Mahou Liga Chapas";
                 mServerSettings["ImageUrl"] = "http://mahouligachapas.unusualwonder.com/Imgs/Logo75x75.png";
-                mServerSettings["Description"] = "Mahou Liga Chapas";
+                mServerSettings["Description"] = "Mahou Liga Chapas es el juego definitivo de fútbol en Facebook. Configura tu equipo, entrena a tus jugadores, consigue habilidades especiales y compite con tus amigos en partidos llenos de emoción. ¡Bienvenido a Mahou Liga Chapas!";
                 mServerSettings["TicketingSystem"] = "false";
                 mServerSettings["SameIPAbandonsChecked"] = "true";
             }

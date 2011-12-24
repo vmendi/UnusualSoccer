@@ -32,7 +32,6 @@ namespace SoccerServer
             if (HttpContext.Current.Request["signed_request"] == null)
             {
                 Log.log(Global.GLOBAL_LOG, "Intento de carga de Default.aspx sin signed_request");
-                Response.Write("Missing Facebook signed_request " + HttpContext.Current.Request.Url);
                 return;
             }
 
@@ -96,10 +95,6 @@ namespace SoccerServer
 
         protected override void Render(HtmlTextWriter writer)
         {
-            // Solo hacemos los reemplazos cuando todo el contenido flash esta visible (cuando ya estamos autorizados, etc)
-            if (!MyDefaultPanel.Visible)
-                return;
-             
             StringBuilder pageSource = new StringBuilder();
             StringWriter sw = new StringWriter(pageSource);
             HtmlTextWriter htmlWriter = new HtmlTextWriter(sw);
@@ -107,10 +102,33 @@ namespace SoccerServer
 
             RunGlobalReplacements(pageSource);
 
+            // Reemplazos del panel donde va el swf (cuando ya estamos autorizados, etc)
+            if (MyDefaultPanel.Visible)
+                RunDefaultPanelReplacements(pageSource);
+            
             writer.Write(pageSource.ToString());
         }
 
         protected void RunGlobalReplacements(StringBuilder pageSource)
+        {
+            var serverSettings = Global.Instance.ServerSettings;
+            var theFBApp = Global.Instance.FacebookSettings;
+
+            // Todo los meta (og:xxxx) queremos que esten OK para cuando pase el linter
+            pageSource.Replace("${title}", serverSettings["Title"]);
+            pageSource.Replace("${siteName}", serverSettings["Title"]);
+            pageSource.Replace("${description}", serverSettings["Description"]);
+            pageSource.Replace("${imageUrl}", serverSettings["ImageUrl"]);
+
+            pageSource.Replace("${facebookCanvasPage}", theFBApp.CanvasPage);
+            pageSource.Replace("${facebookCanvasUrl}", theFBApp.CanvasUrl);
+            pageSource.Replace("${facebookAppId}", theFBApp.AppId);
+
+            // El {locale} no podemos reemplazarlo a pesar de estar fuera del panel, puesto que aqui operamos
+            // como si no tuvieramos signed_request (por ejemplo, para cuando pase el linter)
+        }
+
+        protected void RunDefaultPanelReplacements(StringBuilder pageSource)
         {
             var theFBApp = Global.Instance.FacebookSettings;
             var serverSettings = Global.Instance.ServerSettings;
@@ -124,15 +142,6 @@ namespace SoccerServer
             pageSource.Replace("${width}", "760");
             pageSource.Replace("${height}", "650");
             
-            pageSource.Replace("${facebookCanvasPage}", theFBApp.CanvasPage);
-            pageSource.Replace("${facebookCanvasUrl}", theFBApp.CanvasUrl);
-            pageSource.Replace("${facebookAppId}", theFBApp.AppId);
-
-            pageSource.Replace("${title}", serverSettings["Title"]);
-            pageSource.Replace("${siteName}", serverSettings["Title"]);
-            pageSource.Replace("${description}", serverSettings["Description"]);
-            pageSource.Replace("${imageUrl}", serverSettings["ImageUrl"]);
-
             // Seleccionamos por ejemplo el Javascript SDK que se cargara.
             pageSource.Replace("${locale}", GetLocaleFromSignedRequest(FacebookWebContext.Current.SignedRequest));
 

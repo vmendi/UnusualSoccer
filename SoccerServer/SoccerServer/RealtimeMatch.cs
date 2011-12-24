@@ -420,8 +420,12 @@ namespace SoccerServer
 
             LogEx("OnServerPlayerReadyForSaque: " + idPlayer);
 
-            if (this.CurState != State.WaitingForSaqueInicial && this.CurState != State.WaitingForSaque)
-                LogEx("Exception: No estamos esperando a un saque!");
+            /* 
+             * Como usamos el mismo mensaje (OnServerPlayerReadyForSaque) para el saque de puerta y el de centro, no podemos aqui hacer esto:
+                if (this.CurState != State.WaitingForSaqueInicial && this.CurState != State.WaitingForSaque)
+                    LogEx("Exception: No estamos esperando a un saque!");
+             * 
+             */
 
             CountReadyPlayersForSaque++;
 
