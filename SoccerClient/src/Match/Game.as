@@ -111,10 +111,10 @@ package Match
 			TheAudioManager.AddClass("SoundCollisionCapBall", MatchAssets.SoundCollisionCapBall);			
 			TheAudioManager.AddClass("SoundCollisionCapCap", MatchAssets.SoundCollisionCapCap);			
 			TheAudioManager.AddClass("SoundCollisionWall", MatchAssets.SoundCollisionWall);
-			TheAudioManager.AddClass("SoundAmbience", MatchAssets.SoundAmbience);
+			//TheAudioManager.AddClass("SoundAmbience", MatchAssets.SoundAmbience);
 			
 			// Lanzamos el sonido ambiente como música para que se detenga automaticamente al finalizar 
-			TheAudioManager.PlayMusic("SoundAmbience", 0.3);
+			//heAudioManager.PlayMusic("SoundAmbience", 0.3);
 			
 			// Convertimos las mx.Collections.ArrayCollection que vienen por red a Arrays
 			if (!MatchConfig.OfflineMode)

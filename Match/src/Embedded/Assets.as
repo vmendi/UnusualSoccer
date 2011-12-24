@@ -159,8 +159,8 @@ package Embedded
 		static public var SoundCollisionCapCap:Class;
 		[Embed(source="Embedded/Assets.swf", symbol="CollisionWall")]
 		static public var SoundCollisionWall:Class;
-		[Embed(source="Embedded/Assets.swf", symbol="Ambience")]
-		static public var SoundAmbience:Class;
+		//[Embed(source="Embedded/Assets.swf", symbol="Ambience")]
+		//static public var SoundAmbience:Class;
 		
 	}
 }

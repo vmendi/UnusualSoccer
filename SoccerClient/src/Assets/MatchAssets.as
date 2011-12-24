@@ -116,7 +116,7 @@ package Assets
 		static public var SoundCollisionCapCap:Class;
 		[Embed(source="Assets/MatchAssets.swf", symbol="CollisionWall")]
 		static public var SoundCollisionWall:Class;
-		[Embed(source="Assets/MatchAssets.swf", symbol="Ambience")]
-		static public var SoundAmbience:Class;
+		//[Embed(source="Assets/MatchAssets.swf", symbol="Ambience")]
+		//static public var SoundAmbience:Class;
 	}
 }
