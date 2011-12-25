@@ -72,11 +72,21 @@
 		
 	]]></fx:Script>
 	
-	<s:Group left="0" right="0" top="0" includeIn="OutOfCredit">
-		<s:Label text="TODO: Launch challenge not possible. 0 Remaining matches" styleName="whiteBoldBig" />
-	</s:Group>
 	
 	<s:Group left="0" right="0" top="0" bottom="0" includeIn="AvailableCredit">
+		<s:Panel id="MyPlayersInRoomPanelFake" skinClass="GameView.Skins.DefaultPanelSkin" title="JUGADORES ONLINE"
+				 width="423" height="303" left="10" top="10" controlBarVisible="true" />
+		<s:Panel id="MyChallengesPanelFake" skinClass="GameView.Skins.DefaultPanelSkin" title="RETOS RECIBIDOS"
+				 width="423" height="157" left="10" top="323" controlBarVisible="false" />
+		<s:Panel id="MyMatchDefitionPanelFake" skinClass="GameView.Skins.DefaultPanelSkin" title="CONFIGURACIÓN DEL PARTIDO"
+				 right="10" top="10" width="306" height="470" />
+		<s:Group horizontalCenter="0" verticalCenter="0">
+			<GameView:PopupBackground width="350" height="250" />
+			<s:Label width="300" text="TODO: Launch challenge not possible. 0 Remaining matches" styleName="whiteBoldBig" horizontalCenter="0" verticalCenter="0" />
+		</s:Group>
+	</s:Group>
+	
+	<s:Group left="0" right="0" top="0" bottom="0" includeIn="OutOfCredit">
 		<s:Panel id="MyPlayersInRoomPanel" skinClass="GameView.Skins.DefaultPanelSkin" title="JUGADORES ONLINE"
 				 width="423" height="303" left="10" top="10" controlBarVisible="true">
 			<s:List id="MyPlayersInRoomList" width="100%" height="100%" skinClass="GameView.Skins.DefaultListSkin"
