@@ -21,7 +21,7 @@
 		
 		protected function AddedToStageHandler(event:Event):void
 		{
-			GameMetrics.ReportEvent(GameMetrics.VIEW_TRAINING,{'Entre':'Nando'});
+			GameMetrics.ReportPageView(GameMetrics.VIEW_TRAINING);
 		}
 		
 		protected function CreationCompleteHandler(event:FlexEvent):void

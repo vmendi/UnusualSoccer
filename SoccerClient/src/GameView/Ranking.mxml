@@ -19,7 +19,7 @@
 		
 		protected function AddedToStageHandler(event:Event):void
 		{
-			GameMetrics.ReportEvent(GameMetrics.VIEW_RANKING, null);
+			GameMetrics.ReportPageView(GameMetrics.VIEW_RANKING);
 			
 			mGameModel = SoccerClient.GetMainGameModel();
 			

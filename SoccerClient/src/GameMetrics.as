@@ -41,9 +41,13 @@ package
 			
 			// Kissmetrics
 			ExternalInterface.call("_kmq.push", ['record', event, properties]);
-			
+
+		}
+		
+		static public function ReportPageView(page:String) : void
+		{
 			// Google Analytics
-			tracker.trackEvent("Manager", event);
+			tracker.trackEvent("Manager", page);
 		}
 		
 		static private var tracker : AnalyticsTracker;

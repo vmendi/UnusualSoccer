@@ -12,7 +12,7 @@
 		
 		protected function AddedToStageHandler(event:Event):void
 		{
-			GameMetrics.ReportEvent(GameMetrics.VIEW_TRAININGSPECIAL,null);
+			GameMetrics.ReportPageView(GameMetrics.VIEW_TRAININGSPECIAL);
 		}
 		
 		protected function CreationCompleteHandler(event:FlexEvent):void
