@@ -1,0 +1,1 @@
+set path=%path%;"C:\Program Files (x86)\Adobe\Adobe Flash Builder 4.5\sdks\4.1.0.16076A\bin"

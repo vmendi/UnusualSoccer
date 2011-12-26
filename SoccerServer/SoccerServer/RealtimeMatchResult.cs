@@ -3,6 +3,7 @@ using System.Linq;
 using SoccerServer;
 using SoccerServer.BDDModel;
 using System.Collections.Generic;
+using Weborb.Util.Logging;
 
 namespace SoccerServer
 {
@@ -146,9 +147,15 @@ namespace SoccerServer
         {
             var currentSeason = MainService.GetCurrentSeason(mContext);
 
-            // Excepcion por el problema del paralelismo entre el SeasonEnd y el añadir equipo a competicion
-            var entryPlayer1 = mBDDPlayer1.Team.CompetitionGroupEntries.Single(entry => entry.CompetitionGroup.CompetitionSeason == currentSeason);
-            var entryPlayer2 = mBDDPlayer2.Team.CompetitionGroupEntries.Single(entry => entry.CompetitionGroup.CompetitionSeason == currentSeason);
+            // Excepcion (...OrDefault) por el problema del paralelismo entre el SeasonEnd y el añadir equipo a competicion
+            var entryPlayer1 = mBDDPlayer1.Team.CompetitionGroupEntries.SingleOrDefault(entry => entry.CompetitionGroup.CompetitionSeason == currentSeason);
+            var entryPlayer2 = mBDDPlayer2.Team.CompetitionGroupEntries.SingleOrDefault(entry => entry.CompetitionGroup.CompetitionSeason == currentSeason);
+
+            if (entryPlayer1 == null || entryPlayer2 == null)
+            {
+                Log.log(Realtime.REALTIME, "Descartando partido de competicion por problema de paralelismo SeasonEnd, partido " + mBDDMatch.MatchID);
+                return;
+            }
 
             // Procesamos estadisticas y puntos
             entryPlayer1.NumMatchesPlayed++;

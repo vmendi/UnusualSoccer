@@ -64,8 +64,8 @@ package Match
 			Gui.BadgeHome.gotoAndStop(teams[Enums.Team1].PredefinedName);
 			Gui.BadgeAway.gotoAndStop(teams[Enums.Team2].PredefinedName);
 			
-			Gui.TeamHome.text = teams[Enums.Team1].PredefinedName;
-			Gui.TeamAway.text = teams[Enums.Team2].PredefinedName;
+			Gui.TeamHome.text = teams[Enums.Team1].Name;
+			Gui.TeamAway.text = teams[Enums.Team2].Name;
 			
 			UpdateMuteButton();
 		}
