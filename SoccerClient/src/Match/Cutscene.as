@@ -22,9 +22,9 @@ package Match
 		{						
 			// Reproducimos una cutscene u otra en función de si ha acabado la primera parte o el partido 
 			if( part == 1 )
-				LaunchCutScene(Assets.MatchAssets.MensajeFinTiempo1, 0, 210, callback); 
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeFinTiempo1"), 0, 210, callback); 
 			else if ( part == 2 )
-				LaunchCutScene(Assets.MatchAssets.MensajeFinPartido, 0, 210, callback);
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeFinPartido"), 0, 210, callback);
 			else
 				throw new Error("Unknown part");
 		}
@@ -35,13 +35,13 @@ package Match
 		static public function ShowGoalScored(validity:int, callback:Function) : void
 		{						
 			if( validity == Enums.GoalValid )
-				LaunchCutScene(Assets.MatchAssets.MensajeGol, 0, 210, callback);
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeGol"), 0, 210, callback);
 			else
 			if( validity == Enums.GoalInvalidNoDeclarado )
-				LaunchCutScene(Assets.MatchAssets.MensajeGolInvalido, 0, 210, callback); 
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeGolinvalido"), 0, 210, callback); 
 			else
 			if( validity == Enums.GoalInvalidPropioCampo )
-				LaunchCutScene(Assets.MatchAssets.MensajeGolinvalidoPropioCampo, 0, 210, callback); 
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeGolinvalidoPropioCampo"), 0, 210, callback); 
 			else
 				throw new Error("Validez del gol desconocida");
 		}
@@ -68,7 +68,7 @@ package Match
 				LaunchCutScene(MatchAssets.AreaPortero, Field.SmallAreaRightX, Field.SmallAreaRightY, callback);
 			
 			// Y ademas, un cartelito sin esperas
-			LaunchCutScene(MatchAssets.MensajeControlPortero, 0, 210);
+			LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeControlPortero"), 0, 210);
 		}
 		
 		
@@ -77,34 +77,34 @@ package Match
 			if (isMyTurn)
 			{
 				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)
-					LaunchCutScene(MatchAssets.MensajeTurnoPropioRobo, 0, 210);
+					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTurnoPropioRobo"), 0, 210);
 				else 
 				if(reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaByFalta)
 					// Los nombres están al revés porque aquí representa a quien le han hecho la falta
-					FillConflictoFault(LaunchCutScene(MatchAssets.MensajeFaltaContraria, 0, 210), MatchMain.Ref.Game.TheGamePhysics.TheFault);
+					FillConflictoFault(LaunchCutScene(ResourceManager.getInstance().getClass("match", "FaltaContraria"), 0, 210), MatchMain.Ref.Game.TheGamePhysics.TheFault);
 				else 
 				if(reason == Enums.TurnSaquePuerta)		// El saque de puerta no tiene un mensaje específico para el oponente
-					LaunchCutScene(MatchAssets.MensajeTurnoPropioSaquePuerta, 0, 210);
+					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTurnoPropioSaquePuerta"), 0, 210);
 				else 
 				if (reason == Enums.TurnTiroAPuerta)
-					LaunchCutScene(MatchAssets.MensajeColocarPorteroPropio, 0, 210);
+					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTiroPuertaRecepcion"), 0, 210);
 				else 
 				if (reason == Enums.TurnGoalKeeperSet)
-					LaunchCutScene(MatchAssets.MensajeTiroPuertaPropio, 0, 210);
+					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTiroPuertaConfirmacion"), 0, 210);
 			}
 			else 	// Es el turno del oponente
 			{
 				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)	
-					LaunchCutScene(MatchAssets.MensajeTurnoContrarioRobo, 0, 210);
+					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTurnoContrarioRobo"), 0, 210);
 				else 
 				if (reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaByFalta)
-					FillConflictoFault(LaunchCutScene(MatchAssets.MensajeFaltaPropia, 0, 210), MatchMain.Ref.Game.TheGamePhysics.TheFault);
+					FillConflictoFault(LaunchCutScene(ResourceManager.getInstance().getClass("match", "FaltaPropia"), 0, 210), MatchMain.Ref.Game.TheGamePhysics.TheFault);
 				else 
 				if (reason == Enums.TurnTiroAPuerta)
-					LaunchCutScene(MatchAssets.MensajeColocarPorteroContrario, 0, 210);
+					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTiroPuertaAnuncio"), 0, 210);
 				else 
 				if (reason == Enums.TurnGoalKeeperSet)
-					LaunchCutScene(MatchAssets.MensajeTiroPuertaContrario, 0, 210);
+					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTiroPuertaRecepcion2"), 0, 210);
 			}
 		}
 		
@@ -123,9 +123,9 @@ package Match
 			var itemClass:Class = null;
 			
 			if( turnos == 2 )
-				itemClass = MatchAssets.QuedanTiros2;
+				itemClass = ResourceManager.getInstance().getClass("match", "QuedanTiros2");
 			else if( turnos == 1 )
-				itemClass = MatchAssets.QuedanTiros1;
+				itemClass = ResourceManager.getInstance().getClass("match", "QuedanTiros1");
 			
 			if (itemClass != null)
 				LaunchCutScene(itemClass, 0, 210);
@@ -139,16 +139,16 @@ package Match
 			if (conflicto != null)
 			{
 				if (!bUltimoPase)
-					LaunchCutScene(MatchAssets.MensajePaseAlPieNoRobo, 0, 210);
+					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajePaseAlPieNoRobo"), 0, 210);
 				else
-					LaunchCutScene(MatchAssets.MensajeUltimoPaseAlPieNoRobo, 0, 210);
+					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeUltimoPaseAlPieNoRobo"), 0, 210);
 			}
 			else
 			{	
 				if (!bUltimoPase)
-					LaunchCutScene(MatchAssets.MensajePaseAlPie, 0, 210);
+					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajePaseAlPie"), 0, 210);
 				else
-					LaunchCutScene(MatchAssets.MensajeUltimoPaseAlPie, 0, 210);
+					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeUltimoPaseAlPie"), 0, 210);
 			}
 		}
 		
