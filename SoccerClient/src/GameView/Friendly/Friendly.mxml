@@ -20,6 +20,7 @@
 		import GameModel.MainGameModel;
 		import GameModel.RoomModel;
 		
+		import GameView.Purchase.PurchaseBase;
 		import GameView.Skins.DefaultPanelSkin;
 		
 		import mx.binding.utils.BindingUtils;
@@ -67,26 +68,43 @@
 			MyPlayersInRoomList.selectedItem = null;
 		}
 		
+		protected function MyBuyTicketsButton_clickHandler(event:MouseEvent):void
+		{
+		 	PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseTicket") as Class);
+		}
+		
 		[Bindable] private var mMainGameModel : MainGameModel;
 		[Bindable] private var mRoomModel : RoomModel;
 		
 	]]></fx:Script>
 	
 	
-	<s:Group left="0" right="0" top="0" bottom="0" includeIn="AvailableCredit">
+	<s:Group x="10" y="10" width="740" height="470" includeIn="OutOfCredit">
 		<s:Panel id="MyPlayersInRoomPanelFake" skinClass="GameView.Skins.DefaultPanelSkin" title="JUGADORES ONLINE"
-				 width="423" height="303" left="10" top="10" controlBarVisible="true" />
+				 width="423" height="303" left="0" top="0" controlBarVisible="true" />
 		<s:Panel id="MyChallengesPanelFake" skinClass="GameView.Skins.DefaultPanelSkin" title="RETOS RECIBIDOS"
-				 width="423" height="157" left="10" top="323" controlBarVisible="false" />
+				 width="423" height="157" left="0" top="313" controlBarVisible="false" />
 		<s:Panel id="MyMatchDefitionPanelFake" skinClass="GameView.Skins.DefaultPanelSkin" title="CONFIGURACIÓN DEL PARTIDO"
-				 right="10" top="10" width="306" height="470" />
+				 right="0" top="0" width="306" height="470" />
 		<s:Group horizontalCenter="0" verticalCenter="0">
-			<GameView:PopupBackground width="350" height="250" />
-			<s:Label width="300" text="TODO: Launch challenge not possible. 0 Remaining matches" styleName="whiteBoldBig" horizontalCenter="0" verticalCenter="0" />
+			<GameView:PopupBackground width="230" height="180" />
+			<s:Group verticalCenter="0" horizontalCenter="0">
+				<s:layout>
+					<s:VerticalLayout horizontalAlign="center" gap="10" />
+				</s:layout>
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='WarningIcon')" fillMode="clip" />
+				<s:Label width="170" text="{resourceManager.getString('main','TicketNoAvailableTime')}" styleName="whiteBoldBig" textAlign="center" />
+				<s:Button id="MyBuyTicketsButton"
+						  label="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
+						  skinClass="GameView.Skins.ButtonDarkGreySkin"
+						  click="MyBuyTicketsButton_clickHandler(event)"
+						  width="110" height="18" x="40" y="41"/>
+			</s:Group>
+			
 		</s:Group>
 	</s:Group>
 	
-	<s:Group left="0" right="0" top="0" bottom="0" includeIn="OutOfCredit">
+	<s:Group left="0" right="0" top="0" bottom="0" includeIn="AvailableCredit">
 		<s:Panel id="MyPlayersInRoomPanel" skinClass="GameView.Skins.DefaultPanelSkin" title="JUGADORES ONLINE"
 				 width="423" height="303" left="10" top="10" controlBarVisible="true">
 			<s:List id="MyPlayersInRoomList" width="100%" height="100%" skinClass="GameView.Skins.DefaultListSkin"
