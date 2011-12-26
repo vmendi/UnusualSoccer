@@ -48,7 +48,7 @@ package Match
 		//
 		static public function LoadMatchResources(callback : Function) : void
 		{
-			var dispatcher : IEventDispatcher = ResourceManager.getInstance().loadResourceModule("../Imgs/Match_es_ES.swf");
+			var dispatcher : IEventDispatcher = ResourceManager.getInstance().loadResourceModule("../Imgs/Match_en_US.swf");
 			dispatcher.addEventListener(ResourceEvent.ERROR, onError);
 			
 			// Solo se llamara al ultimo listener subscrito. Hemos comprobado que no es porque siempre le estamos pasando el mismo onComplete. Para ello
