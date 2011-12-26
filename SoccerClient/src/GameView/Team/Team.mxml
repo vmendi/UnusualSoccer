@@ -23,7 +23,7 @@
 		protected function AddedToStageHandler(event:Event):void
 		{
 			// TODO Auto-generated method stub
-			GameMetrics.ReportEvent(GameMetrics.VIEW_TEAM, null);
+			GameMetrics.ReportPageView(GameMetrics.VIEW_TEAM);
 		}
 		
 		protected function CreationCompleteHandler(event:FlexEvent):void
