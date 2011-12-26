@@ -8,7 +8,6 @@
 	<fx:Metadata>
 		[ResourceBundle("main")]
 		[ResourceBundle("training")]
-		[ResourceBundle("match")]
 	</fx:Metadata>
 	
 
@@ -17,14 +16,17 @@
 		
 		import GameView.MainView;
 		
+		import Match.MatchMain;
+		
 		import SoccerServer.DataTypeInitializer;
 		
 		import mx.events.FlexEvent;
+		import mx.events.ResourceEvent;
 
 		protected function ApplicationCompleteHandler(event:FlexEvent):void
 		{
 			// FPSCounter.Init(this.stage, new Point(0,0));
-			
+						
 			// Excepciones globales capturadas
 			if (loaderInfo.hasOwnProperty("uncaughtErrorEvents"))
 				IEventDispatcher(loaderInfo["uncaughtErrorEvents"]).addEventListener("uncaughtError", ErrorMessages.UncaughtErrorHandler);
@@ -34,6 +36,9 @@
 			
 			// Carga de parametros y configuracion global
 			AppConfig.Init(parameters);
+						
+			// Podemos ir cargando recursos que luego necesitaremos
+			MatchMain.LoadMatchResources(null);
 			
 			// Para que las estructuras creadas por weborb existan
 			var dataTypeInit : DataTypeInitializer = new DataTypeInitializer();

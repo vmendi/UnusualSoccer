@@ -93,6 +93,14 @@ package
 			LogToServer("RealtimeConnectionFailed");
 		}
 		
+		static public function ResourceLoadFailed() : void
+		{
+			OnCleaningShutdownSignal.dispatch();
+			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorResourceLoadFailedMsg"),
+							 ResourceManager.getInstance().getString("main", "ErrorResourceLoadFailedTit"), "center");
+			LogToServer("ResourceLoadFailed");
+		}
+		
 		static public function UncaughtErrorHandler(e:Event):void
 		{			
 			OnCleaningShutdownSignal.dispatch();
