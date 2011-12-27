@@ -239,10 +239,10 @@
 		
 		<s:Group bottom="15" horizontalCenter="0">
 			<s:layout><s:HorizontalLayout gap="20" /></s:layout>
-			<s:Button label="ENVIAR INVITACIÓN" click="SendClickHandler(event)" horizontalCenter="50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
-			<s:Button label="CERRAR" click="CloseClickHandler(event)" horizontalCenter="-50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			<s:Button label="{resourceManager.getString('main','SendRequest')}" click="SendClickHandler(event)" horizontalCenter="50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			<s:Button label="{resourceManager.getString('main','Close')}" click="CloseClickHandler(event)" horizontalCenter="-50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 		</s:Group>		
-
+		
 	</s:Group>
 	
 </s:Group>

@@ -58,21 +58,21 @@
 				 text="{TrainingModel.GetName(TheTrainingDefinition)}"/>
 		
 		<s:Label id="MyTrainingFitness"  x="188" y="34" styleName="whiteBoldBig" 
-				 text="Entrenamiento: +{TheTrainingDefinition.FitnessDelta}%"
+				 text="{resourceManager.getString('main','TrainingPanelTraining')}: +{TheTrainingDefinition.FitnessDelta}%"
 				 includeIn="Normal"/>
 		
 		<s:Label id="MyTrainingTime" x="188" y="52" 
-				 text="Tiempo: {TimeUtils.ConvertSecondsToStringWithHours(TheTrainingDefinition.Time)}" styleName="whiteBoldBig"
+				 text="{resourceManager.getString('main','TrainingPanelTime')}: {TimeUtils.ConvertSecondsToStringWithHours(TheTrainingDefinition.Time)}" styleName="whiteBoldBig"
 				 includeIn="Normal" />
 		
 		<s:Label id="MyTrainingStatus"  x="188" y="46"  styleName="whiteBoldBig" width="154" textAlign="center"
-				 text="¡ENTRENANDO!"
+				 text="{resourceManager.getString('main','TrainingPanelInProgress')}"
 				 includeIn="Training"/>		
 		
-		<s:Label id="MyTrainingReaminingTime" x="205" y="70"
-				 text="Tiempo restante: {TimeUtils.ConvertSecondsToStringWithHours(mTrainingModel.RemainingSeconds)}" styleName="whiteBoldBig" 
+		<s:Label id="MyTrainingReaminingTime" x="178" y="70" width="174" textAlign="center"
+				 text="{resourceManager.getString('main','TrainingPanelRemaining')}: {TimeUtils.ConvertSecondsToStringWithHours(mTrainingModel.RemainingSeconds)}" styleName="whiteBoldBig" 
 				 includeIn="Training" />
 		
-		<s:Button id="MyDoTrainButton" label="ENTRENAR" x="188" y="78" width="154" height="24" skinClass="GameView.Skins.ButtonGreySkin" includeIn="Normal"/>	
+		<s:Button id="MyDoTrainButton" label="{resourceManager.getString('main','TrainingPanelDoTraining')}" x="188" y="78" width="154" height="24" skinClass="GameView.Skins.ButtonGreySkin" includeIn="Normal"/>	
 	</s:Group>
 </s:Group>

@@ -88,7 +88,7 @@
 	<s:Group id="MyUnassignedGroup" y="210" x="0" width="188" includeIn="Unassigned">
 		<s:layout><s:VerticalLayout horizontalAlign="center"/></s:layout>
 		<s:Group>
-			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='TeamMahouPoints')" fillMode="clip" />
+			<s:BitmapImage source="{resourceManager.getClass('main','TeamPanelPlayerPoints')}" fillMode="clip" />
 			<s:Label top="6" left="22" width="26" id="MyUnassignedSkillPointsLabel" text="{mTeamModel.TheTeam.SkillPoints}"
 					 textAlign="center" styleName="whiteBoldMedium"/>
 		</s:Group>

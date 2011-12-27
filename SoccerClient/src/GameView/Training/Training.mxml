@@ -86,9 +86,9 @@
 		
 	]]></fx:Script>
 	
-	<s:Panel title="ENTRENAMIENTOS" skinClass="GameView.Skins.DefaultPanelSkin" top="10" left="10" width="740" height="470">
+	<s:Panel title="{resourceManager.getString('main','TrainingPanelTitle')}" skinClass="GameView.Skins.DefaultPanelSkin" top="10" left="10" width="740" height="470">
 		
-		<s:Label x="20" y="14" width="700" text="Es importante tener tu equipo bien entrenado: un valor entrenamiento bajo modificará negativamente los valores medios de tu equipo. Accede aquí periódicamente y selecciona el entrenamiento que quieres que realicen tus jugadores." styleName="whiteBoldBig" textAlign="center" />
+		<s:Label x="20" y="14" width="700" text="{resourceManager.getString('main','TrainingPanelTxt')}" styleName="whiteBoldBig" textAlign="center" />
 		
 		<s:Group x="10" y="64" id="MyTrainingItemsGroup">
 			<s:layout>

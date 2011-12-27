@@ -160,7 +160,7 @@
 			  includeIn="Incomplete" x="554" y="21" width="160" height="24" skinClass="GameView.Skins.ButtonGreySkin"/>
 	
 	<s:Label id="MyLikeText" x="554" y="20" width="160" visible="false"
-			 includeIn="Incomplete" text="Consigue esta habilidad pulsando el botón de 'Me Gusta'" styleName="whiteBoldMedium" textAlign="center" />
+			 includeIn="Incomplete" text="{resourceManager.getString('main','TrainingSpecialSuperPowerTxt')}" styleName="whiteBoldMedium" textAlign="center" />
 	
 	<s:Group x="553" y="8" includeIn="Complete">
 		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='SpecialSkillsWon')" fillMode="clip" />
