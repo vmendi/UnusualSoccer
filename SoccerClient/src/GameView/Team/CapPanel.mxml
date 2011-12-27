@@ -77,11 +77,11 @@
 	<s:Group x="12" y="91">	
 		<s:layout><s:VerticalLayout horizontalAlign="left" gap="0"/></s:layout>
 					
-		<GameView:AssignerSpinner width="164" excludeFrom="Assigning, Empty" DisplayName="POTENCIA:" 
+		<GameView:AssignerSpinner width="164" excludeFrom="Assigning, Empty" DisplayName="{resourceManager.getString('main','MatchDefinitionPower')}:" 
 								  Val="{mTeamModel.SelectedSoccerPlayer.Power}" Max="100" Min="0" ShowSpinner="false"/>
-		<GameView:AssignerSpinner width="164" excludeFrom="Assigning, Empty" DisplayName="CONTROL:" 
+		<GameView:AssignerSpinner width="164" excludeFrom="Assigning, Empty" DisplayName="{resourceManager.getString('main','MatchDefinitionControl')}:" 
 								  Val="{mTeamModel.SelectedSoccerPlayer.Sliding}" Max="100" Min="0" ShowSpinner="false"/>
-		<GameView:AssignerSpinner width="164" excludeFrom="Assigning, Empty" DisplayName="DEFENSA:" 
+		<GameView:AssignerSpinner width="164" excludeFrom="Assigning, Empty" DisplayName="{resourceManager.getString('main','MatchDefinitionDefense')}:" 
 								  Val="{mTeamModel.SelectedSoccerPlayer.Weight}" Max="100" Min="0" ShowSpinner="false"/>
 	</s:Group>	
 
@@ -92,7 +92,7 @@
 			<s:Label top="6" left="22" width="26" id="MyUnassignedSkillPointsLabel" text="{mTeamModel.TheTeam.SkillPoints}"
 					 textAlign="center" styleName="whiteBoldMedium"/>
 		</s:Group>
-		<s:Button id="MyAssignButton" label="ASIGNAR" width="150"
+		<s:Button id="MyAssignButton" label="{resourceManager.getString('main','Assign')}" width="150"
 				  skinClass="GameView.Skins.ButtonGreySkin" click="MyAssignButton_clickHandler(event)"/>
 	</s:Group>
 	

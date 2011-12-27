@@ -27,7 +27,7 @@
 		</s:filters>
 	</s:Ellipse>
 	
-	<mx:SWFLoader id="botonbase" smoothBitmapContent="true" source="@Embed(source='/Assets/General.swf', symbol='ButtonPlayMatch_Bg')" />
+	<mx:SWFLoader id="botonbase" smoothBitmapContent="true" source="{resourceManager.getClass('main','ButtonPlayMatchBg')}" />
 	<!--<s:BitmapImage id="bitmapimage2" x="0" y="0" smooth="true"
 				   source="@Embed(source='/Assets/General.swf', symbol='ButtonPlayMatch_Bg')">-->
 	
