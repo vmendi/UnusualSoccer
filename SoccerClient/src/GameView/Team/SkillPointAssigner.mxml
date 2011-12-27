@@ -76,8 +76,8 @@
 		</s:Group>
 		<s:Group>
 			<s:layout><s:HorizontalLayout gap="10"/></s:layout>
-			<s:Button label="ACEPTAR" click="MyAcceptButton_clickHandler(event)" skinClass="GameView.Skins.ButtonGreySkin" width="80"/>
-			<s:Button label="CANCELAR" click="MyCancelButton_clickHandler(event)" skinClass="GameView.Skins.ButtonGreySkin" width="80"/>
+			<s:Button label="{resourceManager.getString('main','Accept')}" click="MyAcceptButton_clickHandler(event)" skinClass="GameView.Skins.ButtonGreySkin" width="80"/>
+			<s:Button label="{resourceManager.getString('main','Cancel')}" click="MyCancelButton_clickHandler(event)" skinClass="GameView.Skins.ButtonGreySkin" width="80"/>
 		</s:Group>		
 	</s:Group>
 </s:Group>

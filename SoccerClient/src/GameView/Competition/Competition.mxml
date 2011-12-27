@@ -109,7 +109,7 @@
 		
 	]]></fx:Script>
 	
-	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" height="470" left="10" width="740" title="COMPETICIÓN">
+	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" height="470" left="10" width="740" title="{resourceManager.getString('main','CompetitionPanelTitle')}">
 		<s:controlBarContent>
 			<GameView:HelpCallout HelpText="{resourceManager.getString('main','CompetitionHelpCallout')}"/>
 		</s:controlBarContent>
@@ -135,7 +135,7 @@
 				<s:layout>
 					<s:VerticalLayout horizontalAlign="center" gap="4" />
 				</s:layout>
-				<s:Label width="142" text="FIN DE TEMPORADA EN:" styleName="whiteBoldMedium" textAlign="center" color="#c3c3c3" filters="{[shadowNormal]}" />
+				<s:Label width="142" text="{resourceManager.getString('main','CompetitionSeasonEnd')}" styleName="whiteBoldMedium" textAlign="center" color="#c3c3c3" filters="{[shadowNormal]}" />
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraLinea')" fillMode="clip" />
 				<s:Label width="142" text="{TimeUtils.ConvertSecondsToStringVerbose(mCompetitionModel.RemainingSeasonSeconds)}" 
 						 styleName="whiteBoldVeryBig" textAlign="center" filters="{[glowNormal]}" />	
@@ -144,7 +144,7 @@
 				<s:layout>
 					<s:VerticalLayout horizontalAlign="center" gap="4" />
 				</s:layout>
-				<s:Label width="120" text="ASCENSO A PARTIR DE:" styleName="whiteBoldMedium" textAlign="center" color="#c3c3c3" filters="{[shadowNormal]}" />
+				<s:Label width="120" text="{resourceManager.getString('main','CompetitionPromotionThreshold')}" styleName="whiteBoldMedium" textAlign="center" color="#c3c3c3" filters="{[shadowNormal]}" />
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraLinea')" fillMode="clip" />
 				<s:Label width="120" text="{mCompetitionModel.TheGroup.MinimumPoints} Ptos" styleName="whiteBoldVeryBig" textAlign="center" filters="{[glowNormal]}" />	
 			</s:Group>

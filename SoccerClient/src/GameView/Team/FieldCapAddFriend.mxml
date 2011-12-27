@@ -28,8 +28,8 @@
 	</s:states>
 	
 	<s:BitmapImage x="14" top="0" horizontalCenter="0" source="@Embed(source='/Assets/General.swf', symbol='CapBaseAddFriend')" fillMode="clip" />
-	<s:Label width="75" top="39" text="¡Ficha a un amigo!" styleName="whiteBoldMedium" textAlign="center" filters="{NumberStrokeFilter}" />
-		
+	<s:Label width="75" top="39" text="{resourceManager.getString('main','FieldCapSignFriendTxt')}" styleName="whiteBoldMedium" textAlign="center" filters="{NumberStrokeFilter}" />
+	
 	<s:filters>
 		<s:DropShadowFilter distance="10" angle="124" blurX="8" blurY="8" includeIn="selected"/>
 		<s:DropShadowFilter distance="4" angle="124" blurX="6" blurY="6" includeIn="hovered"/>

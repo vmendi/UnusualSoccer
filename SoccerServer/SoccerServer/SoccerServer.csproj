@@ -123,6 +123,7 @@
     <Content Include="Global.asax" />
     <Content Include="Imgs\BannerMeGustaBg.png" />
     <Content Include="Imgs\DivisionBadge-es_ES.swf" />
+    <Content Include="Imgs\DivisionBadge_en_US.swf" />
     <Content Include="Imgs\FacebookLandingPage.jpg" />
     <Content Include="Imgs\HeaderLinks.gif" />
     <Content Include="Imgs\LoginLogo-es_ES.swf" />

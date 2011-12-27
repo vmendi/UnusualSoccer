@@ -49,19 +49,19 @@
 	<s:Group top="10" bottom="10" left="10">
 		<s:layout><s:VerticalLayout gap="10"/></s:layout>
 		
-		<s:Panel title="TÁCTICAS" skinClass="GameView.Skins.DefaultPanelSkin" controlBarVisible="true" width="188" height="142">
+		<s:Panel title="{resourceManager.getString('main','TeamPanelTacticsTitle')}" skinClass="GameView.Skins.DefaultPanelSkin" controlBarVisible="true" width="188" height="142">
 			<s:layout><s:VerticalLayout paddingTop="15" gap="15" horizontalAlign="center"  /></s:layout>
 			<Team:FormationSelector />
-			<s:Label width="168" text="Desbloquea nuevas alineaciones aumentando tu nivel de XP" 
+			<s:Label width="168" text="{resourceManager.getString('main','TeamPanelTacticsTxt')}" 
 					 maxDisplayedLines="3" textAlign="center" styleName="whiteBoldMediumArial" />
 		</s:Panel>
 		
-		<s:Panel title="HABILIDADES" skinClass="GameView.Skins.DefaultPanelSkin" controlBarVisible="true" width="188" height="318">
+		<s:Panel title="{resourceManager.getString('main','TeamPanelSpecialSkillsTitle')}" skinClass="GameView.Skins.DefaultPanelSkin" controlBarVisible="true" width="188" height="318">
 			<s:layout><s:VerticalLayout horizontalAlign="center" paddingTop="19" gap="15" /></s:layout>
 			<GameView:SpecialSkillsBrowser SpecialSkillIDs="{mTeamModel.TheTeamDetails.SpecialSkillsIDs}"/>
 			<s:Label width="158" textAlign="center" maxDisplayedLines="3"
-					 text="Consigue nuevas habilidades entrenando a tu equipo" styleName="whiteBoldMediumArial" />
-			<s:Button width="168" height="27" label="ENTRENAR HABILIDADES" skinClass="GameView.Skins.ButtonGreySkin"
+					 text="{resourceManager.getString('main','TeamPanelSpecialSkillsTxt')}" styleName="whiteBoldMediumArial" />
+			<s:Button width="168" height="27" label="{resourceManager.getString('main','TeamPanelSpecialSkillsButton')}" skinClass="GameView.Skins.ButtonGreySkin"
 					  click="TrainClickHandler(event)"/>
 		</s:Panel>
 	</s:Group>	
@@ -69,6 +69,6 @@
 	<Team:Field top="0" horizontalCenter="0" /> 
 	<Team:Substitutes top="364" horizontalCenter="0" />
 	
-	<Team:CapPanel width="188" right="10" top="10" bottom="10" title="JUGADOR"/>
+	<Team:CapPanel width="188" right="10" top="10" bottom="10" title="{resourceManager.getString('main','TeamPanelPlayerTitle')}"/>
 	
 </s:Group>

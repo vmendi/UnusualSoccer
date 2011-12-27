@@ -40,10 +40,10 @@
 							  			   MaxPercent="{TheRealtimePlayer.TheTeamDetails.AverageWeight}"/>
 	</s:Group>
 	
-	<s:Label top="100" text="Entrenamiento: {TheRealtimePlayer.TheTeamDetails.Fitness}%" styleName="yellowBoldMedium" left.alignToLeft="0" right.alignToRight="0" />
-	<s:Label id="MyMessageLabel" top="117" width="286" text="Los valores medios de tu equipo se modifican según tu nivel de entrenamiento" styleName="greyBoldMedium" textAlign="center" includeIn="alignToLeft" />
+	<s:Label top="100" text="{resourceManager.getString('main','TeamDetailsPanelTraining')}: {TheRealtimePlayer.TheTeamDetails.Fitness}%" styleName="yellowBoldMedium" left.alignToLeft="0" right.alignToRight="0" />
+	<s:Label id="MyMessageLabel" top="117" width="286" text="{resourceManager.getString('main','TeamDetailsPanelTrainingTxt')}" styleName="greyBoldMedium" textAlign="center" includeIn="alignToLeft" />
 	
-	<s:Label text="ESPECIALES" top="150" styleName="whiteBoldBig" left.alignToLeft="0" right.alignToRight="0"/>
+	<s:Label text="{resourceManager.getString('main','GeneralSpecialSkills')}" top="150" styleName="whiteBoldBig" left.alignToLeft="0" right.alignToRight="0"/>
 	
 	<GameView:SpecialSkillsBrowser top="170" scaleX="0.8" scaleY="0.8" 
 								   left.alignToLeft="0" right.alignToRight="0"

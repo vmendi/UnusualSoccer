@@ -109,43 +109,43 @@
 	<Friendly:TeamDetailsPanel top="5" left="12"  TheRealtimePlayer="{mRealtimeModel.LocalRealtimePlayer}"/>
 	<Friendly:TeamDetailsPanel top="5" right="12" TheRealtimePlayer="{mRoomModel.Selected}" currentState="alignToRight" styleName="alignToRight"/>
 			
-	<s:Label width="110" x="185" y="54" text="¡SELECCIONA UN CONTRINCANTE!" includeIn="Empty" styleName="whiteBoldMedium" textAlign="center" />
-			
+	<s:Label width="110" x="185" y="54" text="{resourceManager.getString('main','FriendlyDefinitionSelect')}" includeIn="Empty" styleName="whiteBoldMedium" textAlign="center" />
+		
 	<s:Group left="25" right="25" top="310" includeIn="LaunchChallengePossible">
 		<s:Group>
 			<s:layout><s:VerticalLayout horizontalAlign="center" /></s:layout>
-			<s:Label text="DURACIÓN PARTIDO (Min)" styleName="whiteBoldMedium" />
+			<s:Label text="{resourceManager.getString('main','FriendlyDefinitionDuration')} {resourceManager.getString('main','FriendlyDefinitionMin')}" styleName="whiteBoldMedium" />
 			<GameView:OptionsSelector id="MyMatchLengthSelector" width="110" DataOptions="{MainGameModel.POSSIBLE_MATCH_LENGTH_MINUTES}" />	
 		</s:Group>
 		<s:Group right="0">
 			<s:layout><s:VerticalLayout horizontalAlign="center" /></s:layout>
-			<s:Label text="DURACIÓN TURNO (Seg)" styleName="whiteBoldMedium" />
+			<s:Label text="{resourceManager.getString('main','FriendlyDefinitionTurn')} {resourceManager.getString('main','FriendlyDefinitionSec')}" styleName="whiteBoldMedium" />
 			<GameView:OptionsSelector id="MyTurnLengthSelector" width="110" DataOptions="{MainGameModel.POSSIBLE_TURN_LENGTH_SECONDS}" />	
 		</s:Group>
 		
 		<GameView:PromptingTextInput left="0" right="0" top="60" skinClass="GameView.Skins.PromptingTextInputSkin"
-									 id="MyChallengeMsgInput" text="" maxChars="50" prompt="Escribe aquí un mensaje a tu oponente..." />
-			
-		<s:Button left="65" right="65" top="95"
-				  skinClass="GameView.Skins.ButtonGreySkin" label="LANZAR RETO" click="LaunchChallenge_clickHandler(event)" />
+									 id="MyChallengeMsgInput" text="" maxChars="50" prompt="{resourceManager.getString('main','FriendlyDefinitionMessage')}" />
+		
+		<s:Button horizontalCenter="0" top="95"
+				  skinClass="GameView.Skins.ButtonGreySkin" label="{resourceManager.getString('main','FriendlyDefinitionChallenge')}" click="LaunchChallenge_clickHandler(event)" />
 	</s:Group>
 	
 	<s:Group left="20" right="20" top="310" includeIn="ChallengeSource">
 		<s:Group>
 			<s:layout><s:VerticalLayout horizontalAlign="center" /></s:layout>
-			<s:Label width="265" text="¡{mRoomModel.Selected.Name} te ha enviado un reto!" styleName="whiteBoldBig" textAlign="center" />
+			<s:Label width="265" text="¡{mRoomModel.Selected.Name} {resourceManager.getString('main','FriendlyDefinitionReceivedTxt')}" styleName="whiteBoldBig" textAlign="center" />
 			<s:Label width="265" maxDisplayedLines="2" text="{mRoomModel.SelectedChallenge.Message}" styleName="whiteArial" textAlign="center" />
 		</s:Group>
 		
-		<s:Label left="0" top="65" text="DURACIÓN PARTIDO: {mRoomModel.SelectedChallenge.MatchLengthSeconds/60}" styleName="whiteBoldBig" textAlign="left" />
-		<s:Label right="0" top="65" text="DURACIÓN TURNO: {mRoomModel.SelectedChallenge.TurnLengthSeconds}" styleName="whiteBoldBig" />
+		<s:Label left="0" top="65" text="{resourceManager.getString('main','FriendlyDefinitionDuration')}: {mRoomModel.SelectedChallenge.MatchLengthSeconds/60}" styleName="whiteBoldBig" textAlign="left" />
+		<s:Label right="0" top="65" text="{resourceManager.getString('main','FriendlyDefinitionTurn')}: {mRoomModel.SelectedChallenge.TurnLengthSeconds}" styleName="whiteBoldBig" />
 		
 		<s:Button left="65" right="65" top="95"
-				  skinClass="GameView.Skins.ButtonGreySkin" label="ACEPTAR RETO" click="MyAcceptChallenge_clickHandler(event)" textAlignLast="right" />
+				  skinClass="GameView.Skins.ButtonGreySkin" label="{resourceManager.getString('main','FriendlyDefinitionAccept')}" click="MyAcceptChallenge_clickHandler(event)" textAlignLast="right" />
 	</s:Group>	
 	
 	<s:Group left="25" right="25" top="340" includeIn="ChallengeTarget">
-		<s:Label left="0" right="0" text="RETO ENVIADO" styleName="whiteBoldVeryBig" textAlign="center" />
+		<s:Label left="0" right="0" text="{resourceManager.getString('main','FriendlyDefinitionExtended')}" styleName="whiteBoldVeryBig" textAlign="center" />
 	</s:Group>
 
 </s:Panel>

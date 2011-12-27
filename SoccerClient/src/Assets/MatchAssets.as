@@ -15,7 +15,6 @@ package Assets
 		static public var GoalRight:Class; 
 		
 		// Mensajes animados de cambio de turno
-		
 		[Embed(source="Assets/MatchAssets.swf", symbol="ConflictoGana")]
 		static public var ConflictoGana:Class;
 		[Embed(source="Assets/MatchAssets.swf", symbol="ConflictoPierde")]
@@ -48,7 +47,5 @@ package Assets
 		static public var SoundCollisionCapCap:Class;
 		[Embed(source="Assets/MatchAssets.swf", symbol="CollisionWall")]
 		static public var SoundCollisionWall:Class;
-		//[Embed(source="Assets/MatchAssets.swf", symbol="Ambience")]
-		//static public var SoundAmbience:Class;
 	}
 }
