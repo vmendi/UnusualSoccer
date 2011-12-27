@@ -122,10 +122,10 @@
     <Content Include="DefaultMahou.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Imgs\BannerMeGustaBg.png" />
-    <Content Include="Imgs\DivisionBadge-es_ES.swf" />
+    <Content Include="Imgs\DivisionBadge_es_ES.swf" />
     <Content Include="Imgs\FacebookLandingPage.jpg" />
     <Content Include="Imgs\HeaderLinks.gif" />
-    <Content Include="Imgs\LoginLogo-es_ES.swf" />
+    <Content Include="Imgs\LoginLogo_es_ES.swf" />
     <Content Include="Imgs\Logo100x100.png" />
     <Content Include="Imgs\Logo75x75.png" />
     <Content Include="Imgs\MainHeader.jpg" />
@@ -148,7 +148,7 @@
     <Content Include="Imgs\NavIconMuro.png" />
     <Content Include="Imgs\NavIcons.png" />
     <Content Include="Imgs\NavIconVisita.png" />
-    <Content Include="Imgs\TrainingItem-es_ES.swf" />
+    <Content Include="Imgs\TrainingItem_es_ES.swf" />
     <Content Include="News.xml">
       <SubType>Designer</SubType>
     </Content>

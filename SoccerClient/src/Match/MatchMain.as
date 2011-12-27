@@ -67,12 +67,6 @@ package Match
 			}
 		}
 		
-		static private function onComplete(e:Event, callback : Function) : void
-		{
-			if (callback != null)
-				callback();
-		}
-		
 		//
 		// Inicialización del juego a través de una conexión de red que conecta nuestro cliente
 		// con el servidor. Se llama desde el manager.

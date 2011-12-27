@@ -457,7 +457,16 @@ namespace SoccerServer
 
         internal RealtimeMatchResult OnFinishMatch(RealtimeMatch realtimeMatch)
         {
-            RealtimeMatchResult matchResult = new RealtimeMatchResult(realtimeMatch);
+            RealtimeMatchResult matchResult = null;
+
+            try
+            {
+                matchResult = new RealtimeMatchResult(realtimeMatch);
+            }
+            catch(Exception e)
+            {
+                Log.log(REALTIME, "Exception creando el resultado del partido: " + e.ToString());
+            }
 
             RealtimePlayer player1 = realtimeMatch.GetRealtimePlayer(RealtimeMatch.PLAYER_1);
             RealtimePlayer player2 = realtimeMatch.GetRealtimePlayer(RealtimeMatch.PLAYER_2);
@@ -476,13 +485,23 @@ namespace SoccerServer
         {
             lock (mGlobalLock)
             {
-                // El borrado del partido (OnFinishMatch) se produce siempre dentro del tick, asi que modificara la coleccion -> tenemos que hacer una copia
-                var matchesCopy = new List<RealtimeMatch>(mMatches);
-
-                foreach (RealtimeMatch theMatch in matchesCopy)
+                try
                 {
-                    theMatch.OnSecondsTick(elapsedSeconds);
+                    // El borrado del partido (OnFinishMatch) se produce siempre dentro del tick, asi que modificara la coleccion -> tenemos que hacer una copia
+                    var matchesCopy = new List<RealtimeMatch>(mMatches);
+
+                    foreach (RealtimeMatch theMatch in matchesCopy)
+                    {
+                        theMatch.OnSecondsTick(elapsedSeconds);
+                    }
                 }
+                catch (Exception e)
+                {
+                    // No queremos que falle el matchmaking si se produce algun error dentro del partido (o incluso como ya ha ocurrido, dentro
+                    // del OnFinishMatch)
+                    Log.log(REALTIME, "OnSecondsTick Exception: " + e.ToString());
+                }
+
                 
                 // Cada X segundos evaluamos los matcheos automaticos
                 if (((int)totalSeconds) % 5 == 0)
