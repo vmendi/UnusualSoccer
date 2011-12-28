@@ -113,7 +113,7 @@ package Match
 			text.mouseEnabled = false;
 			text.embedFonts = true;
 			text.antiAliasType = flash.text.AntiAliasType.ADVANCED;
-			text.defaultTextFormat = new TextFormat("HelveticaNeue LT 77 BdCn", 14);
+			text.defaultTextFormat = new TextFormat("HelveticaNeue LT 77 BdCn", 14, null, true);
 			text.textColor = 0xFFFF00;
 			text.text = msg;
 			text.width = 800;
