@@ -122,6 +122,7 @@
     <Content Include="DefaultMahou.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Imgs\BannerMeGustaBg.png" />
+    <Content Include="Imgs\DivisionBadge_en_US.swf" />
     <Content Include="Imgs\DivisionBadge_es_ES.swf" />
     <Content Include="Imgs\FacebookLandingPage.jpg" />
     <Content Include="Imgs\HeaderLinks.gif" />
@@ -129,6 +130,9 @@
     <Content Include="Imgs\Logo100x100.png" />
     <Content Include="Imgs\Logo75x75.png" />
     <Content Include="Imgs\MainHeader.jpg" />
+    <Content Include="Imgs\Match_en_US.swf" />
+    <Content Include="Imgs\Match_es_ES.swf" />
+    <Content Include="Imgs\Match_es_LA.swf" />
     <Content Include="Imgs\MensajeHabilidad5Estrellas.jpg" />
     <Content Include="Imgs\MensajeHabilidadCatenaccio.jpg" />
     <Content Include="Imgs\MensajeHabilidadFuriaRoja.jpg" />

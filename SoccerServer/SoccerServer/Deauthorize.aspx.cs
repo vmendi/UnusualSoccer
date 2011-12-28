@@ -27,7 +27,7 @@ namespace SoccerServer
                 // DeleteUser(sig.UserId);
             }
             catch (Exception exc)
-            {
+            {                
                 Log.log(Global.GLOBAL_LOG, "Exception while deauthorizing: " + exc);
             }
 		}
@@ -40,12 +40,16 @@ namespace SoccerServer
             {
                 var player = (from p in theContext.Players
                               where p.FacebookID == facebookID
-                              select p).Single();
+                              select p).SingleOrDefault();
 
-                // Al borrar el player el TeamID en MatchParticipations se pone a null. Por lo tanto, seguimos conservando la 
-                // informacion de los partidos en los que participo
-                theContext.Players.DeleteOnSubmit(player);
-                theContext.SubmitChanges();
+                // Es posible que el usuario sea antiguo y por algun motivo hayamos resetado la DB
+                if (player != null)
+                {
+                    // Al borrar el player el TeamID en MatchParticipations se pone a null. Por lo tanto, seguimos conservando la 
+                    // informacion de los partidos en los que participo
+                    theContext.Players.DeleteOnSubmit(player);
+                    theContext.SubmitChanges();
+                }
             }
         }
 	}

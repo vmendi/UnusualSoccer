@@ -53,8 +53,8 @@ package Match
 		// Obtiene una chapa de un equipo determinado a partir de su identificador de equipo y chapa
 		public function GetCap(teamId:int, capId:int) : Cap
 		{
-			if( teamId != Enums.Team1 && teamId != Enums.Team2 )
-				throw new Error( "Identificador invalido" );
+			if (teamId != Enums.Team1 && teamId != Enums.Team2)
+				throw new Error(IDString + "Identificador invalido");
 			
 			return TheTeams[teamId].CapsList[ capId ]; 
 		}
@@ -86,10 +86,8 @@ package Match
 		{			
 			// Verificamos la versión mínima de cliente exigida por el servidor.
 			if( MatchConfig.ClientVersion < minClientVersion )
-				throw new Error("El partido no es la última versión. Por favor, limpie la caché de su navegador. ClientVersion: " + MatchConfig.ClientVersion + " MinClient: " + minClientVersion );
-			
-			trace("InitMatch: " + matchId + " Teams: " + descTeam1.PredefinedTeamName + " vs. " + descTeam2.PredefinedTeamName + " LocalPlayer: " + idLocalPlayerTeam);
-			
+				throw new Error(IDString + "El partido no es la última versión. Por favor, limpie la caché de su navegador. ClientVersion: " + MatchConfig.ClientVersion + " MinClient: " + minClientVersion );
+						
 			// Creamos las capas iniciales de pintado para asegurar un orden adecuado
 			CreateLayers();
 
@@ -248,7 +246,7 @@ package Match
 				case GameState.Playing:
 				{
 					if (TheGamePhysics.IsSimulating)
-						throw new Error("La fisica no puede estar simulando en estado GameState.Playing");
+						throw new Error(IDString + "La fisica no puede estar simulando en estado GameState.Playing");
 					
 					// Para actualizar nuestros relojes, calculamos el tiempo "real" que ha pasado, independiente del frame-rate
 					var realElapsed:Number = _Timer.GetElapsed() / 1000;
@@ -601,7 +599,7 @@ package Match
 				return;
 			
 			if (this._State != GameState.WaitingControlPortero)
-				throw new Error("ShowAreaPorteroCutsceneEnd: El estado debería ser WaitingControlPortero. _State=" + this._State);
+				throw new Error(IDString + "ShowAreaPorteroCutsceneEnd: El estado debería ser WaitingControlPortero. _State=" + this._State);
 			
 			this.SaquePuerta(CurTeam.AgainstTeam(), Enums.TurnSaquePuertaControlPortero);
 		}
@@ -649,7 +647,7 @@ package Match
 			VerifyStateWhenReceivingCommand(GameState.WaitingCommandTiroPuerta, idPlayer, "OnClientTiroPuerta");
 			
 			// Mostramos el interface de colocación de portero al jugador contrario
-			var team:Team = TheTeams[ idPlayer ] ;
+			var team:Team = TheTeams[idPlayer];
 			var enemy:Team = team.AgainstTeam();
 
 			// Si el portero del enemigo está dentro del area, cambiamos el turno al enemigo para que coloque el portero
@@ -716,7 +714,7 @@ package Match
 		public function OnClientGoalScored(idPlayer:int, validity:int) : void
 		{
 			if (this._State != GameState.WaitingGoal)
-				throw new Error("OnClientGoalScored: El estado debería ser WaitingGoal. _State=" + this._State);
+				throw new Error(IDString + "OnClientGoalScored: El estado debería ser WaitingGoal. _State=" + this._State);
 
 			// Contabilizamos el gol
 			if (validity == Enums.GoalValid)
@@ -737,7 +735,7 @@ package Match
 				return;
 			
 			if (this._State != GameState.WaitingGoal)
-				throw new Error("ShowGoalScoredCutsceneEnd: El estado debería ser WaitingGoal. _State=" + this._State);
+				throw new Error(IDString + "ShowGoalScoredCutsceneEnd: El estado debería ser WaitingGoal. _State=" + this._State);
 						
 			var turnTeam:Team = TheTeams[idPlayer].AgainstTeam();
 			
@@ -768,7 +766,7 @@ package Match
 		private function SaquePuertaAllReady(team:Team, reason:int) : void
 		{
 			if (!Enums.IsSaquePuerta(reason))
-				throw new Error("En el saque de puerta siempre hay que dar una razon adecuada");
+				throw new Error(IDString + "En el saque de puerta siempre hay que dar una razon adecuada");
 			
 			TheGamePhysics.StopSimulation();
 			
@@ -1071,12 +1069,12 @@ package Match
 		
 		private function ShowFinishPartCutsceneEnd() : void
 		{
-			// El juego puede haberse shutdowneado por abandono del oponente. Es el mismo caso que ShowGoalScoredCutsceneEnd
+			// El juego puede haberse shutdowneado por abandono del oponente, reseteo del servidor, etc. Es el mismo caso que ShowGoalScoredCutsceneEnd
 			if (MatchMain.Ref == null)
 				return;
 			
 			if (_State != GameState.WaitingEndPart)
-				throw new Error("ShowFinishPartCutsceneEnd: El estado debería ser WaitingEndPart. _State=" + this._State);
+				throw new Error(IDString + "ShowFinishPartCutsceneEnd: El estado debería ser WaitingEndPart. _State=" + this._State);
 			
 			if (_Part == 1)
 				ChangeState(GameState.EndPart);
@@ -1102,7 +1100,7 @@ package Match
 		public function OnClientAllPlayersReadyForSaque() : void
 		{
 			if (_State != GameState.WaitingPlayersAllReadyForSaque)
-				throw new Error("OnClientAllPlayersReadyForSaque en estado: " + _State);
+				throw new Error(IDString + "OnClientAllPlayersReadyForSaque en estado: " + _State);
 			
 			if (_CallbackOnAllPlayersReady != null)
 			{
@@ -1132,7 +1130,6 @@ package Match
 			ChangeState(GameState.EndGame);
 		}
 		
-					
 		private function get IDString() : String 
 		{ 
 			return "MatchID: " + MatchConfig.MatchId + " LocalID: " + MatchConfig.IdLocalUser + " "; 

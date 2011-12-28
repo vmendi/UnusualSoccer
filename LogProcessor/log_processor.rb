@@ -16,11 +16,16 @@ class Log_processor
     # A good regular expression tester: http://www.rubular.com/
     all_lines.each { |line|
       # Exceptions in the server
-      match_data = line.match(/TargetInvocationException:.*Match: (\d+)/)
+      match_data = line.match(/TargetInvocationException:.*MatchID: (\d+)/)
+
+      # Exceptions in the server, alternate method
+      if match_data == nil
+        match_data = line.match(/ServerException:.*MatchID: (\d+)/)
+      end
 
       # UNSYNCS
       if match_data == nil
-        match_data = line.match(/>{9} (\d+)/)
+        match_data = line.match(/>{6} (\d+)/)
       end
 
       # Exceptions in the client
@@ -29,9 +34,9 @@ class Log_processor
       end
 
       if match_data != nil
-        # We always the num_match into the first group
-        num_match = match_data[1]
-        matches.push num_match
+        # We always have the matchID into the first group
+        matchID = match_data[1]
+        matches.push matchID
       end
     }
 

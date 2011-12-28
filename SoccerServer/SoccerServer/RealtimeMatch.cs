@@ -271,7 +271,7 @@ namespace SoccerServer
                     {
                         if (Part == 1)
                         {
-                            LogEx("Finalización de parte!. Enviado a los clientes OnClientFinishPart");
+                            LogEx("Finalización de parte!");
                             Broadcast("OnClientFinishPart", Part, null);
 
                             Part++;
@@ -279,6 +279,7 @@ namespace SoccerServer
                         }
                         else if (Part == 2)
                         {
+                            LogEx("Finalización de partido!");
                             RealtimeMatchResult result = MainRT.OnFinishMatch(this);
 
                             Broadcast("OnClientFinishPart", Part, result);
@@ -308,10 +309,10 @@ namespace SoccerServer
             LogEx("OnServerShoot: " + idPlayer + " Shoot: " + TotalShootCount + " Cap ID: " + capID + " dir: " + dirX + ", " + dirY + " force: " + force + " CPES: " + CountPlayersEndShoot);
             
             if (CountPlayersEndShoot != 0)
-                LogEx("Exception: Hemos recibido un ServerShoot cuando todavía no todos los clientes habían confirmado la finalización de un disparo anterior");
+                LogEx("ServerException: Hemos recibido un ServerShoot cuando todavía no todos los clientes habían confirmado la finalización de un disparo anterior");
             
             if (SimulatingShoot)
-                LogEx("Exception: Hemos recibido un ServerShoot mientras estamos simulando");
+                LogEx("ServerException: Hemos recibido un ServerShoot mientras estamos simulando");
 
             if (!CheckActionsAllowed())        // Estan las acciones permitidas?
                 return;
@@ -329,7 +330,7 @@ namespace SoccerServer
             LogEx("OnServerEndShoot: " + idPlayer);
 
             if (!SimulatingShoot)
-                LogEx("Exception: Hemos recibido una finalización de disparo cuando no estamos simulando");
+                LogEx("ServerException: Hemos recibido una finalización de disparo cuando no estamos simulando");
             
             // Contabilizamos jugadores listos 
             CountPlayersEndShoot++;
@@ -355,7 +356,7 @@ namespace SoccerServer
             string finalStr = " Result: " + result + " PaseToID: " + paseToCapId + " CountTouchedCaps: " + countTouchedCaps + " FramesSimulating: " + framesSimulating + " ReasonTurnChanged: "+ reasonTurnChanged + " " + capListStr;
 
             if (TheClientState == null)
-                LogEx("Exception: Pasamos por OnResultShoot sin haber creado el ClientState, cutucrush en la siguiente?!");
+                LogEx("ServerException: Pasamos por OnResultShoot sin haber creado el ClientState, cutucrush en la siguiente?!");
             
             TheClientState.ClientString[idPlayer] = finalStr;
 
@@ -368,7 +369,7 @@ namespace SoccerServer
                     // Informamos a los clientes de que se ha producido una desincronia (el cliente decidira que hacer...)
                     Broadcast("PushedMatchUnsync");
 
-                    LogEx(">>>>>>FATAL ERROR UNSYNC STATE: >>>>>>>>> " + MatchID, MATCHLOG);
+                    LogEx(">>>>>> FATAL ERROR UNSYNC STATE >>>>>> " + MatchID, MATCHLOG);
                     LogEx(" STATE 1: " + TheClientState.ClientString[Player1], MATCHLOG);
                     LogEx(" STATE 2: " + TheClientState.ClientString[Player2], MATCHLOG);
                 }
@@ -387,7 +388,7 @@ namespace SoccerServer
 
             // El tiempo se detiene al lanzar un disparo, con lo cual no puede llegar un TimeOut
             if (SimulatingShoot)
-                LogEx("Exception: Hemos recibido un TimeOut mientras estamos simulando un disparo");
+                LogEx("ServerException: Hemos recibido un TimeOut mientras estamos simulando un disparo");
 
             if (!CheckActionsAllowed())
                 return;
@@ -411,7 +412,7 @@ namespace SoccerServer
             RemainingSecs = MatchLength / 2;        // Reseteamos tiempo de juego
 
             if (CountPlayersReportGoal != 0)
-                LogEx("Exception: Comienza una mitad de juego y estamos esperando la notificación de un gol de un jugador! Un jugador se ha caído? CountPlayersReportGoal = " + CountPlayersReportGoal);
+                LogEx("ServerException: Comienza una mitad de juego y estamos esperando la notificación de un gol de un jugador! Un jugador se ha caído? CountPlayersReportGoal = " + CountPlayersReportGoal);
         }
 
         public void OnServerPlayerReadyForSaque(RealtimePlayer player)
@@ -423,7 +424,7 @@ namespace SoccerServer
             /* 
              * Como usamos el mismo mensaje (OnServerPlayerReadyForSaque) para el saque de puerta y el de centro, no podemos aqui hacer esto:
                 if (this.CurState != State.WaitingForSaqueInicial && this.CurState != State.WaitingForSaque)
-                    LogEx("Exception: No estamos esperando a un saque!");
+                    LogEx("ServerException: No estamos esperando a un saque!");
              * 
              */
 
@@ -491,7 +492,7 @@ namespace SoccerServer
                 return;
 
             if (!SimulatingShoot)
-                LogEx("Exception: OnServerGoalScored while not simulating!");
+                LogEx("ServerException: OnServerGoalScored while not simulating!");
 
             // Contabilizamos el número de jugadores que han comunicado el gol. Hasta que los 2 no lo hayan hecho no lo contabilizamos
             CountPlayersReportGoal++;
@@ -525,7 +526,7 @@ namespace SoccerServer
 
                 // Reseteamos validez del gol y comprobamos coherencia
                 if (ValidityGoal == Invalid)
-                    LogEx("Exception: La validez del gol es inválida");
+                    LogEx("ServerException: La validez del gol es inválida");
 
                 ValidityGoal = Invalid;
 
@@ -533,7 +534,7 @@ namespace SoccerServer
                 CurState = State.WaitingForSaque;
 
                 if (CountReadyPlayersForSaque != 0)
-                    LogEx("Exception: CountReadyPlayersForSaque != 0, al entrar en WaitingForSaque siempre se deberia salir por el mismo sitio, reseteando a 0 esta variable");
+                    LogEx("ServerException: CountReadyPlayersForSaque != 0, al entrar en WaitingForSaque siempre se deberia salir por el mismo sitio, reseteando a 0 esta variable");
             }
         }
 
@@ -564,7 +565,7 @@ namespace SoccerServer
         #region Aux
         public void LogEx(string message, string category = MATCHLOG_DEBUG)
         {
-            string finalMessage = " M: " + MatchID + " Time: " + this.ServerTime + " " + message;
+            string finalMessage = " MatchID: " + MatchID + " Time: " + this.ServerTime + " " + message;
             finalMessage += " <ServerVars>: SimulatingShoot: " + SimulatingShoot + " CountPlayersEndShoot: " + CountPlayersEndShoot + " Part: " + Part + 
                             " RemainingSecs: " + RemainingSecs + " ScoredGoals1=" + PlayersState[Player1].ScoredGoals + " ScoredGoals2=" + PlayersState[Player2].ScoredGoals;
 

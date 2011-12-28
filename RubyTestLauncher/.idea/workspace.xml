@@ -26,7 +26,7 @@
       <file leaf-file-name="main.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/main.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="30" selection-start="357" selection-end="357" vertical-scroll-proportion="0.32740742">
+            <state line="21" column="49" selection-start="727" selection-end="727" vertical-scroll-proportion="0.35">
               <folding />
             </state>
           </provider>
@@ -76,6 +76,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Favorites" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -111,16 +112,15 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="org.jetbrains.plugins.ruby.settings.RubyIdeSdkConfigurable" />
-    <property name="options.searchVisible" value="true" />
+    <property name="recentsLimit" value="5" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager" selected="Ruby.main">
     <configuration default="false" name="main" type="RubyRunConfigurationType" factoryName="Ruby" temporary="true">
@@ -250,7 +250,7 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/lib/main.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="30" selection-start="357" selection-end="357" vertical-scroll-proportion="0.32740742">
+        <state line="21" column="49" selection-start="727" selection-end="727" vertical-scroll-proportion="0.35">
           <folding />
         </state>
       </provider>

@@ -289,7 +289,7 @@ package GameModel
 		
 		public function PushedMatchUnsync() : void
 		{
-			Alert.show("Unsync state!", "BETA");
+			//Alert.show("Unsync state!", "BETA");
 		}
 		
 		public function PushedBroadcastMsg(msg : String) : void
