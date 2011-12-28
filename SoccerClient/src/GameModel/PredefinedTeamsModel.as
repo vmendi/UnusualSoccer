@@ -25,7 +25,7 @@ package GameModel
 		public function InitialRefresh(callback : Function) : void
 		{
 			mMainService.RefreshPredefinedTeams(new Responder(Delegate.create(OnRefreshPredefinedTeamsResponse, callback), ErrorMessages.Fault));
-		}		
+		}
 		
 		private function OnRefreshPredefinedTeamsResponse(e : ResultEvent, callback : Function):void
 		{
