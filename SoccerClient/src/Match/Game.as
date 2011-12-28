@@ -1,7 +1,5 @@
 package Match
 {
-	import Assets.MatchAssets;
-	
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	

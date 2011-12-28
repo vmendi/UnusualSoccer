@@ -1,7 +1,5 @@
 package Match
 {
-	import Assets.MatchAssets;
-	
 	import Box2D.Collision.Shapes.b2MassData;
 	import Box2D.Common.Math.b2Vec2;
 	

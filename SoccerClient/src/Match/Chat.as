@@ -1,7 +1,5 @@
 package Match
 {
-	import Assets.MatchAssets;
-	
 	import com.greensock.TweenMax;
 	
 	import flash.display.DisplayObject;
@@ -115,7 +113,7 @@ package Match
 			text.mouseEnabled = false;
 			text.embedFonts = true;
 			text.antiAliasType = flash.text.AntiAliasType.ADVANCED;
-			text.defaultTextFormat = new TextFormat("HelveticaNeue LT 67 MdCn", 14);
+			text.defaultTextFormat = new TextFormat("HelveticaNeue LT 77 BdCn", 14, null, true);
 			text.textColor = 0xFFFF00;
 			text.width = 800;
 			text.text = msg;

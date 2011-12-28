@@ -24,7 +24,7 @@ package Match
 			_PotenciaTiro.mouseEnabled = false;
 			_PotenciaTiro.embedFonts = true;
 			_PotenciaTiro.antiAliasType = flash.text.AntiAliasType.ADVANCED;
-			_PotenciaTiro.defaultTextFormat = new TextFormat("HelveticaNeue LT 67 MdCn", 14, null);			
+			_PotenciaTiro.defaultTextFormat = new TextFormat("HelveticaNeue LT 77 BdCn", 14, null, true);			
 			_PotenciaTiro.textColor = 0xFFFFFF;
 			_PotenciaTiro.width = 60;
 			_PotenciaTiro.height = 20;

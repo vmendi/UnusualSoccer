@@ -1,7 +1,5 @@
 package Match
 {
-	import Assets.MatchAssets;
-	
 	import Box2D.actionsnippet.qbox.QuickBox2D;
 	import Box2D.actionsnippet.qbox.QuickObject;
 	

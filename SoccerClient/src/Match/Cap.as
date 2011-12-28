@@ -1,7 +1,5 @@
 package Match
 {
-	import Assets.MatchAssets;
-	
 	import Box2D.Common.*;
 	import Box2D.Common.Math.*;
 	

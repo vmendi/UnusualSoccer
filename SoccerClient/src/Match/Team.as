@@ -1,11 +1,8 @@
 package Match
 {
-	import Assets.MatchAssets;
-	
 	import com.greensock.*;
 	
 	import flash.display.DisplayObject;
-	import flash.display.MovieClip;
 	import flash.geom.Point;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
