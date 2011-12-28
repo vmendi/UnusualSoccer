@@ -9,6 +9,8 @@ package Match
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
+	import mx.resources.ResourceManager;
+	
 	import utils.MathUtils;
 	
 	public class Field
@@ -41,7 +43,7 @@ package Match
 		// Coordenadas de las porterias
 		private var X_GOAL_LEFT:Number = 0;
 		private var X_GOAL_RIGHT:Number = 713;
-		private var Y_GOAL:Number = 201;
+		private var Y_GOAL:Number = 200;
 		
 		// Sensores de gol colocados en cada portería para detectar el gol
 		public var GoalLeft : QuickObject = null;
@@ -53,7 +55,7 @@ package Match
 		public function Field(parent:MovieClip) : void
 		{
 			// Creamos la representacion visual
-			Visual = parent.addChild(new Assets.MatchAssets.Field()) as DisplayObjectContainer;
+			Visual = parent.addChild(ResourceManager.getInstance().getClass("match", "Field") as MovieClip) as DisplayObjectContainer;
 			
 			if (!MatchConfig.DrawBackground)
 				Visual.visible = false;

@@ -312,7 +312,7 @@ package Match
 			if (_PosControl.IsStarted || _ShootControl.IsStarted)
 				return;
 			
-			var panelInfo : DisplayObject = new MatchAssets.CapDetails();
+			var panelInfo : DisplayObject = ResourceManager.getInstance().getClass("match", "CapDetails") as MovieClip;
 			panelInfo.name = "PanelInfo";
 			
 			panelInfo["SelectedTraining"].text = cap.OwnerTeam.Fitness + "%";

@@ -65,7 +65,7 @@
 	
 	<fx:Style source="styles.css" />
 
-	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" height="470" left="10" width="365" title="RANKING DE JUGADORES">
+	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" height="470" left="10" width="365" title="{resourceManager.getString('main','RankingPanelPlayerListTitle')}">
 		<s:List id="MyRankingList" left="0" right="0" top="0" height="442"
 				dataProvider="{mRankingModel.TheRankingPage.Teams}" 
 				itemRenderer="GameView.RankingTeamItem" useVirtualLayout="false"
@@ -73,10 +73,10 @@
 				change="MyRankingList_changeHandler(event)"/>
 	</s:Panel>
 	
-	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" right="10" height="470" width="365" title="ESTADÍSTICAS">
+	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" right="10" height="470" width="365" title="{resourceManager.getString('main','RankingPanelStatsTitle')}">
 		<s:controlBarContent>
 			<s:Button id="MyBackButton" visible="false" 
-					  label="Volver a tus estadísticas" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" 
+					  label="{resourceManager.getString('main','RankingPanelStatsBack')}" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" 
 					  click="MyBackButton_clickHandler(event)"/>
 		</s:controlBarContent>		
 		<s:Group>
@@ -121,12 +121,12 @@
 					<s:Group>
 						<s:layout><s:HorizontalLayout verticalAlign="middle" /></s:layout>
 						<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='StatsTitTip')" fillMode="clip" />
-						<s:Label text="ESTADÍSTICAS DE PARTIDOS" styleName="whiteBoldBig" />						
+						<s:Label text="{resourceManager.getString('main','RankingPanelStatsSubtitle')}" styleName="whiteBoldBig" />						
 					</s:Group>
 				</s:Group>
 				
 				<s:Group>
-					<s:Label text="PARTIDOS JUGADOS" styleName="whiteBoldMedium" textAlign="left" x="23" />
+					<s:Label text="{resourceManager.getString('main','RankingPanelStatsPlayed')}" styleName="whiteBoldMedium" textAlign="left" x="23" />
 					<s:Label text="{mRankingModel.SelectedRankingTeamMatchStats.NumMatches} " styleName="whiteBoldMedium" x="290" width="60" textAlign="right" />
 				</s:Group>
 				<s:Line xFrom="0" xTo="365">
@@ -135,7 +135,7 @@
 					</s:stroke>
 				</s:Line>
 				<s:Group>
-					<s:Label text="PARTIDOS GANADOS" styleName="whiteBoldMedium" x="23" />
+					<s:Label text="{resourceManager.getString('main','RankingPanelStatsWon')}" styleName="whiteBoldMedium" x="23" />
 					<s:Label text="{mRankingModel.SelectedRankingTeamMatchStats.NumWonMatches} " styleName="whiteBoldMedium" x="290" width="60" textAlign="right" />
 				</s:Group>
 				<s:Line xFrom="0" xTo="365">
@@ -144,7 +144,7 @@
 					</s:stroke>
 				</s:Line>
 				<s:Group>
-					<s:Label text="PARTIDOS PERDIDOS" styleName="whiteBoldMedium" x="23" />
+					<s:Label text="{resourceManager.getString('main','RankingPanelStatsLost')}" styleName="whiteBoldMedium" x="23" />
 					<s:Label text="{mRankingModel.SelectedRankingTeamMatchStats.NumLostMatches} " styleName="whiteBoldMedium" x="290" width="60" textAlign="right" />
 				</s:Group>
 				<s:Line xFrom="0" xTo="365">
@@ -153,7 +153,7 @@
 					</s:stroke>
 				</s:Line>
 				<s:Group>
-					<s:Label text="PARTIDOS EMPATADOS" styleName="whiteBoldMedium" x="23" />
+					<s:Label text="{resourceManager.getString('main','RankingPanelStatsDrawn')}" styleName="whiteBoldMedium" x="23" />
 					<s:Label text="{mRankingModel.SelectedRankingTeamMatchStats.NumMatches - 
 							 		mRankingModel.SelectedRankingTeamMatchStats.NumWonMatches - 
 							 		mRankingModel.SelectedRankingTeamMatchStats.NumLostMatches} " 
@@ -175,12 +175,12 @@
 					<s:Group>
 						<s:layout><s:HorizontalLayout verticalAlign="middle" /></s:layout>
 						<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='StatsTitTip')" fillMode="clip" />
-						<s:Label text="ESTADÍSTICAS DE GOLES" styleName="whiteBoldBig" />						
+						<s:Label text="{resourceManager.getString('main','RankingPanelStatsSubtitleGoals')}" styleName="whiteBoldBig" />						
 					</s:Group>
 				</s:Group>
 				
 				<s:Group>
-					<s:Label text="GOLES A FAVOR" styleName="whiteBoldMedium" x="23" />
+					<s:Label text="{resourceManager.getString('main','RankingPanelStatsGoalsFor')}" styleName="whiteBoldMedium" x="23" />
 					<s:Label text="{mRankingModel.SelectedRankingTeamMatchStats.NumGoalsScored} " styleName="whiteBoldMedium" x="290" width="60" textAlign="right" />
 				</s:Group>
 				<s:Line xFrom="0" xTo="365">
@@ -189,7 +189,7 @@
 					</s:stroke>
 				</s:Line>
 				<s:Group>
-					<s:Label text="GOLES EN CONTRA" styleName="whiteBoldMedium" x="23" />
+					<s:Label text="{resourceManager.getString('main','RankingPanelStatsGoalsAgainst')}" styleName="whiteBoldMedium" x="23" />
 					<s:Label text="{mRankingModel.SelectedRankingTeamMatchStats.NumGoalsReceived} " styleName="whiteBoldMedium" x="290" width="60" textAlign="right" />
 				</s:Group>
 			</s:Group>
