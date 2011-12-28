@@ -55,7 +55,7 @@ package Match
 		public function Field(parent:MovieClip) : void
 		{
 			// Creamos la representacion visual
-			Visual = parent.addChild(ResourceManager.getInstance().getClass("match", "Field") as MovieClip) as DisplayObjectContainer;
+			Visual = parent.addChild(new (ResourceManager.getInstance().getClass("match", "Field") as Class)()) as DisplayObjectContainer;
 			
 			if (!MatchConfig.DrawBackground)
 				Visual.visible = false;
