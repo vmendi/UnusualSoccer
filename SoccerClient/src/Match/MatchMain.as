@@ -51,8 +51,8 @@ package Match
 			var dispatcher : IEventDispatcher = ResourceManager.getInstance().loadResourceModule("../Imgs/Match_es_ES.swf");
 			dispatcher.addEventListener(ResourceEvent.ERROR, onError);
 			
-			// Solo se llamara al ultimo listener subscrito. Hemos comprobado que no es porque siempre le estamos pasando el mismo onComplete. Para ello
-			// usamos Delegate para asegurar que cada vez le pasabamos una direccion de funcion distinta. Pero no, siempre llama sólo a la ultima subscripcion.
+			// Solo se llamara al ultimo listener subscrito. Hemos comprobado que no es porque siempre le estamos pasando el mismo onComplete. En la comprobacion
+			// usabamos un Delegate para asegurar que cada vez le pasabamos una direccion de funcion distinta. Pero no, siempre llama sólo a la ultima subscripcion.
 			dispatcher.addEventListener(ResourceEvent.COMPLETE, onComplete);
 			
 			function onComplete(e:Event) : void
