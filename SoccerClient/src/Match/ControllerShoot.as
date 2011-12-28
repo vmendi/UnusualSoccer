@@ -1,7 +1,5 @@
 package Match
 {
-	import Assets.MatchAssets;
-	
 	import Box2D.Common.Math.b2Math;
 	
 	import flash.display.DisplayObject;
@@ -10,7 +8,6 @@ package Match
 	import flash.geom.Point;
 	import flash.text.Font;
 	import flash.text.TextField;
-	import flash.text.TextFieldType;
 	import flash.text.TextFormat;
 	
 	import utils.MathUtils;
@@ -22,14 +19,13 @@ package Match
 		{
 			var array : Array = Font.enumerateFonts(false);
 			
-			_PotenciaTiro  = new TextField();
-			_PotenciaTiro.defaultTextFormat = new TextFormat("HelveticaNeue LT 77 BdCn", 14, null, true);
-			_PotenciaTiro.type = TextFieldType.DYNAMIC;
-			_PotenciaTiro.antiAliasType = flash.text.AntiAliasType.ADVANCED;
-			_PotenciaTiro.textColor = 0xFFFFFF;
+			_PotenciaTiro  = new TextField();			
 			_PotenciaTiro.selectable = false;
 			_PotenciaTiro.mouseEnabled = false;
 			_PotenciaTiro.embedFonts = true;
+			_PotenciaTiro.antiAliasType = flash.text.AntiAliasType.ADVANCED;
+			_PotenciaTiro.defaultTextFormat = new TextFormat("HelveticaNeue LT 67 MdCn", 14, null);			
+			_PotenciaTiro.textColor = 0xFFFFFF;
 			_PotenciaTiro.width = 60;
 			_PotenciaTiro.height = 20;
 			

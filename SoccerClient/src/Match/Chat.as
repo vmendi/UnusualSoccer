@@ -113,10 +113,10 @@ package Match
 			text.mouseEnabled = false;
 			text.embedFonts = true;
 			text.antiAliasType = flash.text.AntiAliasType.ADVANCED;
-			text.defaultTextFormat = new TextFormat("HelveticaNeue LT 77 BdCn", 14, null, true);
+			text.defaultTextFormat = new TextFormat("HelveticaNeue LT 67 MdCn", 14);
 			text.textColor = 0xFFFF00;
-			text.text = msg;
 			text.width = 800;
+			text.text = msg;
 			
 			if (mcOutput.numChildren > MAX_LINES)
 			{
