@@ -69,11 +69,11 @@ package Match
 		// 
 		public function CreatePorterias(parent:MovieClip) : void
 		{
-			var goalLeft:Entity = new Entity(MatchAssets.GoalLeft, parent);
+			var goalLeft:Entity = new Entity(ResourceManager.getInstance().getClass("match", "GoalLeft"), parent);
 			MatchMain.Ref.Game.TheEntityManager.Add( goalLeft );
 			goalLeft.SetPos(new Point(X_GOAL_LEFT, Y_GOAL));
 			
-			var goalRight:Entity = new Entity(MatchAssets.GoalRight, parent);
+			var goalRight:Entity = new Entity(ResourceManager.getInstance().getClass("match", "GoalRight"), parent);
 			MatchMain.Ref.Game.TheEntityManager.Add( goalRight );
 			goalRight.SetPos(new Point(X_GOAL_RIGHT, Y_GOAL));
 		}

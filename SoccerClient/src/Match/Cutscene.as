@@ -53,19 +53,19 @@ package Match
 			var paramWinner : Number = conflict.Stolen? conflict.Defense : conflict.Control;
 			var paramLoser : Number = conflict.Stolen? conflict.Control : conflict.Defense;
 
-			var mcWinner : MovieClip = LaunchCutScene(MatchAssets.ConflictoGana, winner.Visual.x, winner.Visual.y);		
+			var mcWinner : MovieClip = LaunchCutScene(ResourceManager.getInstance().getClass("match", "ConflictoGana"), winner.Visual.x, winner.Visual.y);		
 			mcWinner.ConflictoNum.Num.text = paramWinner.toString();
 			
-			var mcLoser : MovieClip = LaunchCutScene(MatchAssets.ConflictoPierde, loser.Visual.x, loser.Visual.y);
+			var mcLoser : MovieClip = LaunchCutScene(ResourceManager.getInstance().getClass("match", "ConflictoPierde"), loser.Visual.x, loser.Visual.y);
 			mcLoser.ConflictoNum.Num.text = paramLoser.toString();
 		}
 		
 		static public function ShowAreaPortero(side : int, callback:Function) : void
 		{
 			if (side == Enums.Left_Side)
-				LaunchCutScene(MatchAssets.AreaPortero, Field.SmallAreaLeftX, Field.SmallAreaLeftY, callback);
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaLeftX, Field.SmallAreaLeftY, callback);
 			else
-				LaunchCutScene(MatchAssets.AreaPortero, Field.SmallAreaRightX, Field.SmallAreaRightY, callback);
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaRightX, Field.SmallAreaRightY, callback);
 			
 			// Y ademas, un cartelito sin esperas
 			LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeControlPortero"), 0, 210);

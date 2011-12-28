@@ -5,6 +5,8 @@ package Match
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
+	import mx.resources.ResourceManager;
+	
 	import utils.Delegate;
 
 	public class Game
@@ -106,9 +108,9 @@ package Match
 			TheField.CreatePorterias(GameLayer);
 			
 			// Registramos sonidos para lanzarlos luego 
-			TheAudioManager.AddClass("SoundCollisionCapBall", MatchAssets.SoundCollisionCapBall);			
-			TheAudioManager.AddClass("SoundCollisionCapCap", MatchAssets.SoundCollisionCapCap);			
-			TheAudioManager.AddClass("SoundCollisionWall", MatchAssets.SoundCollisionWall);
+			TheAudioManager.AddClass("SoundCollisionCapBall", ResourceManager.getInstance().getClass("match", "SoundCollisionCapBall"));			
+			TheAudioManager.AddClass("SoundCollisionCapCap", ResourceManager.getInstance().getClass("match", "SoundCollisionCapCap"));			
+			TheAudioManager.AddClass("SoundCollisionWall", ResourceManager.getInstance().getClass("match", "SoundCollisionWall"));
 			//TheAudioManager.AddClass("SoundAmbience", MatchAssets.SoundAmbience);
 			
 			// Lanzamos el sonido ambiente como música para que se detenga automaticamente al finalizar 
