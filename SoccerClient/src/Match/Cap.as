@@ -22,6 +22,8 @@ package Match
 	import flash.system.LoaderContext;
 	import flash.system.SecurityDomain;
 	
+	import mx.resources.ResourceManager;
+	
 	public class Cap extends PhyEntity
 	{
 		static public const Radius:Number = 15;
@@ -78,7 +80,7 @@ package Match
 									 linearDamping: MatchConfig.CapLinearDamping, 
 									 angularDamping: MatchConfig.CapLinearDamping }
 			
-			super(Assets.MatchAssets.Cap, MatchMain.Ref.Game.GameLayer, PhyEntity.Circle, phyInit);
+			super(ResourceManager.getInstance().getClass("match", "Cap"), MatchMain.Ref.Game.GameLayer, PhyEntity.Circle, phyInit);
 			
 			// Choca con todo
 			phyInit.categoryBits = 1;

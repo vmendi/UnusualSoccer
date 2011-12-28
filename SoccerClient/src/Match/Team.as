@@ -10,6 +10,8 @@ package Match
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
+	import mx.resources.ResourceManager;
+	
 	import utils.Delegate;
 
 	public class Team
@@ -78,7 +80,7 @@ package Match
 			ResetToCurrentFormation();
 						
 			// Creamos una imagen de chapa Ghost (la utilizaremos para indicar donde mover el portero)
-			Ghost = new Entity(Assets.MatchAssets.Cap, MatchMain.Ref.Game.GameLayer);
+			Ghost = new Entity(ResourceManager.getInstance().getClass("match", "Cap"), MatchMain.Ref.Game.GameLayer);
 			Ghost.Visual.alpha = 0.4;
 			Ghost.Visual.visible = false;
 			Cap.PrepareVisualCap(Ghost.Visual, PredefinedName, useSecondaryEquipment, true);			
