@@ -12,6 +12,8 @@ package Match
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
+	import mx.resources.ResourceManager;
+	
 	import utils.MovieClipMouseDisabler;
 
 	public final class Chat extends Sprite
@@ -31,7 +33,7 @@ package Match
 		
 		public function Chat()
 		{
-			mcChat = new Assets.MatchAssets.ChatClass() as DisplayObject;
+			mcChat = new (ResourceManager.getInstance().getClass("match", "Chat") as Class) as DisplayObject;
 			addChild(mcChat);
 						
 			mcChat.x = 52;

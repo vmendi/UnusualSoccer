@@ -7,6 +7,8 @@ package Match
 	
 	import flash.display.MovieClip;
 	import flash.geom.Point;
+	
+	import mx.resources.ResourceManager;
 
 	public class BallEntity extends PhyEntity
 	{
@@ -18,7 +20,7 @@ package Match
 		public function BallEntity(parent:MovieClip) : void
 		{
 			// Inicializamos la entidad
-			super(MatchAssets.BallAnimated, parent, PhyEntity.Circle, {
+			super(ResourceManager.getInstance().getClass("match", "BalonAnimado"), parent, PhyEntity.Circle, {
 				  categoryBits:4,
 				  maskBits: 1 + 2 + 4,			// Choca con todo excepto con BackPorteria (que tiene categoryBits==8)
 				  mass: MatchConfig.BallMass, 	// 0.04
