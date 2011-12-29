@@ -554,7 +554,7 @@ package Match
 		}
 
 		//
-		// Se colaca el balon en un pase al pie
+		// Se coloca el balon en un pase al pie
 		//	
 		public function OnClientPlaceBall(idPlayer:int, capID:int, dirX:Number, dirY:Number) : void
 		{
