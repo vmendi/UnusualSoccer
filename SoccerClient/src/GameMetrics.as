@@ -15,6 +15,7 @@ package
 		static public const VIEW_TRAINING : String = "View_Training";
 		static public const VIEW_TRAININGSPECIAL : String = "View_TrainingSpecial";
 		static public const VIEW_RANKING : String = "View_Ranking"; 
+		static public const VIEW_LOGIN : String = "View_Login"; 
 		
 		// Acciones
 		static public const TEAM_SELECTED : String = "Team_Selected"; // Al seleccionar el primer equipo y entrar al juego por primera vez

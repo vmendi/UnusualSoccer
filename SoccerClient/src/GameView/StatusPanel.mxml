@@ -60,7 +60,7 @@
 	<s:Label x="410" y="63" text="{mTeamModel.TheTeam.TrueSkill}" width="46" id="MyTrueSkillLabel" styleName="whiteBoldMedium" textAlign="right"/>
 	
 	<s:Group right="0" y="0" visible="{resourceManager.getBoolean('main','TicketsPanelVisible')}"> 
-		<s:Group x="0" y="23" width="100">
+		<s:Group right="180" y="23" width="100">
 			<s:layout>
 				<s:VerticalLayout horizontalAlign="center" gap="0" />
 			</s:layout>
@@ -74,7 +74,7 @@
 				<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="Add" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
 		</s:Group>
-		<GameView:TicketsPanel x="100" y="6" />
+		<GameView:TicketsPanel right="0" y="6" />
 	</s:Group>
 	
 	<s:Group right="10" y="0" visible="{!resourceManager.getBoolean('main','TicketsPanelVisible')}">

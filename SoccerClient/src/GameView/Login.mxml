@@ -3,6 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
 		 creationComplete="CreationCompleteHandler(event)"
+		 addedToStage="addedToStageHandler(event)"
 		 >
 	
 	<fx:Script>
@@ -131,6 +132,13 @@
 			private var mWaitingForNameValidity : Boolean = false;
 			private var mNameValidity : Boolean = false;
 			private var mAgeValidity : Boolean = false;
+			
+			protected function addedToStageHandler(event:Event):void
+			{
+				GameMetrics.ReportEvent(GameMetrics.VIEW_LOGIN,null);
+				GameMetrics.ReportPageView(GameMetrics.VIEW_LOGIN);
+			}
+			
 		]]>
 	</fx:Script>
 	

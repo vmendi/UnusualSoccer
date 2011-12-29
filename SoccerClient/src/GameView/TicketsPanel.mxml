@@ -3,7 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 creationComplete="CreationCompleteHandler(event)" 
-		 width="186" height="65">
+		 width="170" height="65">
 	
 	<fx:Style source="styles.css"/>
 	
@@ -91,7 +91,7 @@
 	
 	<s:Button id="MyBuyTicketsButton"
 			  label.NotPurchased="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
-			  label.Purchased="Add game time"
+			  label.Purchased="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
 			  click="MyBuyTicketsButton_clickHandler(event)"
 			  skinClass="GameView.Skins.ButtonDarkGreySkin"
 			  width="110" height="18" x="40" y="41"/>

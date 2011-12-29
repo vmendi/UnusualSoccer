@@ -67,10 +67,10 @@ namespace SoccerServer
                 mFBSettings.CanvasUrl = "http://unusualsoccerdev.unusualwonder.com/";
                 mFBSettings.SecureCanvasUrl = "https://unusualsoccerdev.unusualwonder.com/";
 
-                //mClientSettings["VersionID"] = "UnusualSoccer";
-                //mServerSettings["VersionID"] = "UnusualSoccer";                
-                mClientSettings["VersionID"] = "MahouLigaChapas";
-                mServerSettings["VersionID"] = "MahouLigaChapas";
+                mClientSettings["VersionID"] = "UnusualSoccer";
+                mServerSettings["VersionID"] = "UnusualSoccer";                
+                //mClientSettings["VersionID"] = "MahouLigaChapas";
+                //mServerSettings["VersionID"] = "MahouLigaChapas";
 
                 mServerSettings["Title"] = "Unusual Soccer";
                 mServerSettings["ImageUrl"] = "http://unusualsoccerdev.unusualwonder.com/Imgs/Logo75x75.png";   // Tiene que ser absoluto pq va en los Meta de facebook
