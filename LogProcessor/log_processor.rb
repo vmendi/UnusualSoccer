@@ -1,14 +1,8 @@
 #!/usr/bin/env ruby
 
-class Log_processor
+class Error_Extractor
 
-  def run input_filename, output_path
-
-    puts 'Reading file ' + input_filename
-
-    # aFile is an IO object
-    all_lines = IO.readlines input_filename
-    puts all_lines.length.to_s + ' lines read'
+  def run all_lines, output_path
 
     # Matches with any error
     matches = []
@@ -34,7 +28,7 @@ class Log_processor
       end
 
       if match_data != nil
-        # We always have the matchID into the first group
+        # We always have the matchID in the first group
         matchID = match_data[1]
         matches.push matchID
       end
@@ -46,7 +40,7 @@ class Log_processor
 
     # We generate a file for each match with error
     matches.each { |num_match|
-      File.open(output_path + num_match + '.txt', 'w') { |io|
+      File.open(output_path + "_" + num_match + '.txt', 'w') { |io|
         get_lines_for_match(all_lines, num_match).each { |line| io.puts line }
       }
     }
@@ -63,6 +57,43 @@ class Log_processor
     ret
   end
 
+end
+
+class Chat_Extractor
+  def run all_lines, output_filename
+
+    # Hash with key == match_id, value == Array with every chat line for that match
+    chat_lines_per_match = {}
+
+    all_lines.each { |line|
+      # 443086 Chat:
+      chat_match = line.match(/(\d+) Chat:/)
+
+      if chat_match != nil
+        match_id = chat_match[1]   # matchID is always in the first group
+
+        # Create the array for the given match if not created yet
+        unless chat_lines_per_match.has_key? match_id
+          chat_lines_per_match[match_id] = []
+        end
+
+        # Add new chat line to the match
+        chat_lines_per_match[match_id].push line
+      end
+    }
+
+    # Write all the matches chats to one file
+    File.open(output_filename, 'w') { |io|
+      chat_lines_per_match.each_key { |match_id|
+        io.puts "========== Chat for match " + match_id + "=========="
+
+        chat_lines_per_match[match_id].each { |line| io.puts line }
+
+        io.puts ""
+      }
+    }
+
+  end
 end
 
 def look_for_recent_log
@@ -82,6 +113,7 @@ def look_for_recent_log
   newest_file
 end
 
+
 input = ARGV[0]
 
 if input == nil || !File.exists?(input)
@@ -92,21 +124,29 @@ if input == nil || !File.exists?(input)
   end
 end
 
-output = './log_processor/'
+output_path = './log_processor_output/'
 
 unless ARGV[1] == nil
-  output = ARGV[1]
+  output_path = ARGV[1]
 end
 
-unless output.end_with?('/') || output.end_with?('\\')
-output += '/'
+unless output_path.end_with?('/') || output_path.end_with?('\\')
+output_path += '/'
 end
 
-unless File.directory? output
-  Dir::mkdir output
+unless File.directory? output_path
+  Dir::mkdir output_path
 end
 
-the_processor = Log_processor.new
-the_processor.run(input, output)
+puts 'Reading file ' + input
+
+all_lines = IO.readlines input
+puts all_lines.length.to_s + ' lines read'
+
+the_processor = Error_Extractor.new
+the_processor.run(all_lines, output_path + input)
+
+the_chat_processor = Chat_Extractor.new
+the_chat_processor.run(all_lines, output_path + input + '_chat.txt')
 
 puts 'done'
