@@ -30,7 +30,7 @@ package GameModel
 			// hay q refrescarlo mediante bindeo. Los demas campos son estaticos y no cambian durante el juego
 			mSelfRankingTeam.Name = mMainGameModel.TheTeamModel.TheTeam.Name;
 			mSelfRankingTeam.FacebookID = parseFloat(SoccerClient.GetFacebookFacade().FacebookID);
-			mSelfRankingTeam.PredefinedTeamName = mMainGameModel.TheTeamModel.PredefinedTeamName;
+			mSelfRankingTeam.PredefinedTeamNameID = mMainGameModel.TheTeamModel.TheTeam.PredefinedTeamNameID;
 			mSelfRankingTeam.TrueSkill = mMainGameModel.TheTeamModel.TheTeam.TrueSkill;
 			
 			// Primero mandamos a refrescar toda la primera pagina

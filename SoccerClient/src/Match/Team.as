@@ -13,15 +13,15 @@ package Match
 
 	public class Team
 	{				
-		public const CAPS_BY_TEAM : int = 8;										// Número de chapas que tiene cada equipo
+		public const CAPS_BY_TEAM : int = 8;												// Número de chapas que tiene cada equipo
 		
-		public var IdxTeam:int = 0;													// Identificador de equipo
-		public var Side:int = 0;													// Lado del campo en el que está el equipo
+		public var IdxTeam:int = 0;															// Identificador de equipo
+		public var Side:int = 0;															// Lado del campo en el que está el equipo
 		
-		public var Ghost:Entity = null;												// Ghost utilizado para decidir donde colocarás el portero		
+		public var Ghost:Entity = null;														// Ghost utilizado para decidir donde colocarás el portero		
 		
-		public function get Name() : String { return _Name; }						// El nombre del equipo (puesto por el usuario)
-		public function get PredefinedName():String { return _PredefinedName; }		
+		public function get Name() : String { return _Name; }								// El nombre del equipo (puesto por el usuario)
+		public function get PredefinedTeamNameID():String { return _PredefinedTeamNameID; }		
 		public function get CapsList() : Array { return _CapsList; }
 		public function get GoalKeeper() : Cap { return _CapsList[0]; }
 		
@@ -35,7 +35,7 @@ package Match
 		public function get AvailableSkills() : Array { return _AvailableSkills; }
 		
 		private var _CapsList:Array = new Array();
-		private var _PredefinedName:String = null;
+		private var _PredefinedTeamNameID:String = null;
 		private var _Name:String = null;
 		private var _Goals:int = 0;
 		private var _Fitness : Number = 0;
@@ -47,7 +47,7 @@ package Match
 		{
 			IdxTeam = idxTeam;
 			_Name = descTeam.Name;
-			_PredefinedName = descTeam.PredefinedTeamName;
+			_PredefinedTeamNameID = descTeam.PredefinedTeamNameID;
 			_Fitness = descTeam.Fitness;
 			_FormationName = descTeam.Formation;			
 
@@ -80,7 +80,7 @@ package Match
 			Ghost = new Entity(ResourceManager.getInstance().getClass("match", "Cap"), MatchMain.Ref.Game.GameLayer);
 			Ghost.Visual.alpha = 0.4;
 			Ghost.Visual.visible = false;
-			Cap.PrepareVisualCap(Ghost.Visual, PredefinedName, useSecondaryEquipment, true);			
+			Cap.PrepareVisualCap(Ghost.Visual, PredefinedTeamNameID, useSecondaryEquipment, true);			
 		}
 		
 		
@@ -319,7 +319,7 @@ package Match
 		// 
 		// Obtenemos el grupo al que pertenece el equipo. Todos los equipos pertenecen a un grupo en función de los colores de su equipación
 		//
-		static public function GroupTeam(teamName:String) : int
+		static public function GroupTeam(teamNameID:String) : int
 		{
 			var groupIdx:int = 0;
 			for each (var group:Array in TeamGroups.Groups)
@@ -327,12 +327,12 @@ package Match
 				groupIdx ++;
 				for each (var name:String in group)
 				{
-					if( name == teamName )
+					if (name == teamNameID)
 						return groupIdx;
 				}
 			}
 			
-			throw new Error("El equipo " + teamName + " no está en ninguna de las listas de equipacion. Estan mal escritos los nombres? ");
+			throw new Error("El equipo " + teamNameID + " no está en ninguna de las listas de equipacion. Estan mal escritos los nombres? ");
 		}
 		
 		// 
@@ -358,7 +358,7 @@ package Match
 				cloned.y = cap.Visual.y;
 				cloned.rotationZ = cap.PhyBody.angle * 180.0 / Math.PI;
 				
-				Cap.PrepareVisualCap(cloned, PredefinedName, cap.Visual.Second.visible, cap.Visual.Goalkeeper.visible);
+				Cap.PrepareVisualCap(cloned, PredefinedTeamNameID, cap.Visual.Second.visible, cap.Visual.Goalkeeper.visible);
 				
 				// Hacemos desvanecer el clon
 				TweenMax.to(cloned, 2, {alpha:0, onComplete: Delegate.create(OnFinishTween, cloned) });

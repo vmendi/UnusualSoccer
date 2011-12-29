@@ -41,7 +41,7 @@ namespace SoccerServer
             foreach (BDDModel.Team team in ranking)
             {
                 RankingTeam rankingTeam = new RankingTeam();
-                rankingTeam.PredefinedTeamName = team.PredefinedTeam.Name;
+                rankingTeam.PredefinedTeamNameID = team.PredefinedTeamNameID;
                 rankingTeam.FacebookID = team.Player.FacebookID;
                 rankingTeam.Name = team.Name;
                 rankingTeam.TrueSkill = team.TrueSkill;

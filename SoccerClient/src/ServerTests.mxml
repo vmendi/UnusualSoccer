@@ -64,7 +64,9 @@
 				if (hasTeam)
 					AppendLine("El equipo ya existia");
 				else
-					mMainGameModel.TheTeamModel.CreateTeam("TestTeam" + rand, RandUtils.RandIntBetween(1, 20), OnCreateTeamSuccess, OnFailed);
+					mMainGameModel.TheTeamModel.CreateTeam("TestTeam" + rand, 
+														   mMainGameModel.ThePredefinedTeamsModel.PredefinedTeamNameIDs[RandUtils.RandIntBetween(1, 20)], 
+														   OnCreateTeamSuccess, OnFailed);
 			}
 			
 			function OnCreateTeamSuccess() : void
@@ -106,7 +108,9 @@
 					InitTest();
 				}
 				else
-					mMainGameModel.TheTeamModel.CreateTeam("TestTeam" + currentTeam, RandUtils.RandIntBetween(1, 20), OnCreateTeamSuccess, OnFailed);
+					mMainGameModel.TheTeamModel.CreateTeam("TestTeam" + currentTeam, 
+														   mMainGameModel.ThePredefinedTeamsModel.PredefinedTeamNameIDs[RandUtils.RandIntBetween(1, 20)], 
+														   OnCreateTeamSuccess, OnFailed);
 			}
 			
 			function OnCreateTeamSuccess() : void

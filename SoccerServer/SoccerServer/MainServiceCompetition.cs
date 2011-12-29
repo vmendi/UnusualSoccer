@@ -27,7 +27,7 @@ namespace SoccerServer
                 using (mContext = new SoccerDataModelDataContext(con))
                 {
                     // Cada vez que traigas una GroupEntry a memoria, traete tambien el equipo y el player. 
-                    // Pasamos de 3 queries por groupentry (si hay 100 entries => 300 queries) a 1 sola para todo (+ la traida de los PredefinedTeamName)
+                    // Pasamos de 3 queries por groupentry (si hay 100 entries => 300 queries) a 1 sola para todo
                     DataLoadOptions options = new DataLoadOptions();
                     options.LoadWith<Team>(t => t.Player);
                     options.LoadWith<CompetitionGroupEntry>(entry => entry.Team);
@@ -103,7 +103,7 @@ namespace SoccerServer
                                 {
                                     Name = e.Team.Name,
                                     FacebookID = e.Team.Player.FacebookID,
-                                    PredefinedTeamName = e.Team.PredefinedTeam.Name,
+                                    PredefinedTeamNameID = e.Team.PredefinedTeamNameID,
                                     Points = e.Points,
                                     NumMatchesPlayed = e.NumMatchesPlayed,
                                     NumMatchesWon = e.NumMatchesWon,

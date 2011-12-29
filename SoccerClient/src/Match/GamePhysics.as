@@ -59,7 +59,7 @@ package Match
 			
 			_Contacts = TheBox2D.addContactListener();
 			_Contacts.addEventListener(QuickContacts.ADD, OnContact);
-			_Contacts.addEventListener(QuickContacts.RESULT, OnContact);
+			//_Contacts.addEventListener(QuickContacts.RESULT, OnContact);
 			
 			// Para poder hacer proceso (olvidar contactos) antes que el RENDER, que es donde se calcula la simulacion
 			TheBox2D.main.addEventListener(Event.ENTER_FRAME, OnPhysicsEnterFrame);
@@ -108,7 +108,7 @@ package Match
 			if (IsGoal || IsFault)
 				return;
 			
-			if (e.type == QuickContacts.ADD)
+			//if (e.type == QuickContacts.ADD)
 			{
 				// Detectamos GOL: Para ello comprobamos si ha habido un contacto entre los sensores de las porterías y el balón				
 				if( _Contacts.isCurrentContact( _Ball.PhyBody, _Field.GoalLeft ) )
@@ -117,28 +117,25 @@ package Match
 					_SideGoal = Enums.Right_Side;
 			}
 			
-			// ------------------------------------------------------------------------------------------
-			// Generamos un historial de contactos entre chapas, para despues determinar pase al pie
-			// ------------------------------------------------------------------------------------------			
-			if( e.type == QuickContacts.RESULT )
+			//if( e.type == QuickContacts.RESULT )
 			{
 				// Obtenemos las entidades que han colisionado (están dentro del userData de las shapes)
-				var ent1:PhyEntity = _Contacts.currentResult.shape1.m_userData as PhyEntity;
-				var ent2:PhyEntity = _Contacts.currentResult.shape2.m_userData as PhyEntity;
+				var ent1:PhyEntity = _Contacts.currentPoint.shape1.m_userData as PhyEntity;
+				var ent2:PhyEntity = _Contacts.currentPoint.shape2.m_userData as PhyEntity;
 				
 				var ball:BallEntity = null;
 				var cap:Cap = null;
 				
 				// Determinamos si una de las entidades colisionadas es el balón
-				if( ent1 is BallEntity ) ball = ent1 as BallEntity;
-				if( ent2 is BallEntity ) ball = ent2 as BallEntity;
+				if(ent1 is BallEntity) ball = ent1 as BallEntity;
+				if(ent2 is BallEntity) ball = ent2 as BallEntity;
 				
 				// Determinamos si una de las entidades colisionadas es una chapa
-				if( ent1 is Cap ) cap = ent1 as Cap;
-				if( ent2 is Cap ) cap = ent2 as Cap;
+				if(ent1 is Cap) cap = ent1 as Cap;
+				if(ent2 is Cap) cap = ent2 as Cap;
 				
 				// Tenemos una colisión entre una chapa y el balón?
-				if( cap != null && ball != null )
+				if (cap != null && ball != null)
 				{
 					_TouchedCaps.push(cap);
 					_TouchedCapsLastRun.push(cap);
@@ -148,14 +145,14 @@ package Match
 				else
 				{
 					// chapa / chapa
-					if( ent1 is Cap && ent2 is Cap )
-						MatchMain.Ref.Game.TheAudioManager.Play( "SoundCollisionCapCap" );
+					if (ent1 is Cap && ent2 is Cap)
+						MatchMain.Ref.Game.TheAudioManager.Play("SoundCollisionCapCap");
 					// chapa / muro 
-					else if( cap != null && ( ent1 == null || ent2 == null ) ) 
-						MatchMain.Ref.Game.TheAudioManager.Play( "SoundCollisionWall" );
+					else if(cap != null && (ent1 == null || ent2 == null)) 
+						MatchMain.Ref.Game.TheAudioManager.Play( "SoundCollisionWall");
 					// balón / muro 
-					else if( ball != null && ( ent1 == null || ent2 == null ) )
-						MatchMain.Ref.Game.TheAudioManager.Play( "SoundCollisionWall" );
+					else if(ball != null && (ent1 == null || ent2 == null))
+						MatchMain.Ref.Game.TheAudioManager.Play("SoundCollisionWall");
 				}
 				
 				// Posible falta
@@ -186,12 +183,12 @@ package Match
 				// Detectamos que chapa es de las dos
 				var attacker:Cap = null;
 				var defender:Cap = null;
-				if( cap1.OwnerTeam ==  MatchMain.Ref.Game.CurTeam )
+				if (cap1.OwnerTeam ==  MatchMain.Ref.Game.CurTeam)
 				{
 					attacker = cap1;
 					defender = cap2;
 				}
-				else if( cap2.OwnerTeam == MatchMain.Ref.Game.CurTeam )
+				else if(cap2.OwnerTeam == MatchMain.Ref.Game.CurTeam)
 				{
 					attacker = cap2;
 					defender = cap1;
@@ -225,7 +222,7 @@ package Match
 						
 						// Evaluamos la gravedad de la falta. Para el portero la evaluación de tarjetas es más sensible!
 						if( vel < MatchConfig.VelFaultT1 )		// Falta normal, en el caso de al portero muy "leve"
-							trace ( "Resultado: falta normal" )
+							trace( "Resultado: falta normal" )
 						else if( vel < MatchConfig.VelFaultT2 )
 							fault.AddYellowCard();				// Sacamos tarjeta amarilla (y roja si acumula 2)
 						else

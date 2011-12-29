@@ -12,7 +12,7 @@ namespace SoccerServer
         public class RealtimeMatchResultPlayer
         {
             public String Name;
-            public String PredefinedTeamName;
+            public String PredefinedTeamNameID;
 
             public int Goals;
 
@@ -49,11 +49,11 @@ namespace SoccerServer
                              select m).FirstOrDefault();
 
                 ResultPlayer1.Name = mRealtimePlayer1.Name;
-                ResultPlayer1.PredefinedTeamName = mRealtimePlayer1.PredefinedTeamName;
+                ResultPlayer1.PredefinedTeamNameID = mRealtimePlayer1.PredefinedTeamNameID;
                 ResultPlayer1.Goals = mMatch.GetGoals(mRealtimePlayer1);
 
                 ResultPlayer2.Name = mRealtimePlayer2.Name;
-                ResultPlayer2.PredefinedTeamName = mRealtimePlayer2.PredefinedTeamName;
+                ResultPlayer2.PredefinedTeamNameID = mRealtimePlayer2.PredefinedTeamNameID;
                 ResultPlayer2.Goals = mMatch.GetGoals(mRealtimePlayer2);
 
                 UpdateFlags();

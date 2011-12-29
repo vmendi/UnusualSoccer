@@ -26,7 +26,6 @@
         public var OnLikedResult:int;     
         public var RefreshGroupForTeamResult:CompetitionGroup;     
         public var RefreshMatchStatsForTeamResult:TeamMatchStats;     
-        public var RefreshPredefinedTeamsResult:ArrayCollection;     
         public var RefreshRankingPageResult:RankingPage;     
         public var RefreshSeasonEndDateRemainingSecondsResult:int;     
         public var RefreshSpecialTrainingDefinitionsResult:ArrayCollection;     

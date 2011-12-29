@@ -13,11 +13,7 @@
 			
 			import SoccerServer.enum.VALID_NAME;
 			
-			import flash.net.sendToURL;
-			
 			import mx.events.FlexEvent;
-			import mx.rpc.Responder;
-			import mx.rpc.events.ResultEvent;
 			
 			import spark.events.IndexChangeEvent;
 			import spark.events.TextOperationEvent;
@@ -111,9 +107,9 @@
 				{
 					GameMetrics.ReportEvent(GameMetrics.TEAM_SELECTED, null);
 					mMainGameModel.TheTeamModel.CreateTeam(MyTeamNameInput.text, 
-														   mMainGameModel.ThePredefinedTeamsModel.GetIDByName(MyPredefinedTeamList.selectedItem), 
+														   MyPredefinedTeamList.selectedItem, 
 													   	   OnTeamCreatedResponse, OnTeamCreationFailed);
-				}			
+				}
 			}
 			
 			private function OnTeamCreationFailed() : void
@@ -166,7 +162,7 @@
 	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" x="352" y="40" width="365" height="570" title="1. SELECCIONA TU EQUIPO">
 		<s:List width="365" height="280" id="MyPredefinedTeamList" 
 				top="0" left="0"
-				dataProvider="{mMainGameModel.ThePredefinedTeamsModel.PredefinedTeamNames}"
+				dataProvider="{mMainGameModel.ThePredefinedTeamsModel.PredefinedTeamNameIDs}"
 				itemRenderer="GameView.PredefinedTeamItem"
 				skinClass="GameView.Skins.DefaultListSkin" tabEnabled="false" tabFocusEnabled="false">
 		</s:List>	

@@ -13,10 +13,10 @@
 		import mx.events.FlexEvent;
 				
 		[Bindable]
-		public function get TeamName() : String { return mTeamName; }
-		public function set TeamName(v : String) : void
+		public function get TeamNameID() : String { return mTeamNameID; }
+		public function set TeamNameID(v : String) : void
 		{ 
-			mTeamName = v;			
+			mTeamNameID = v;			
 			Refresh();
 		}
 		
@@ -27,7 +27,7 @@
 		
 		private function Refresh() : void
 		{
-			if (mTeamName == null || mTeamName == "")
+			if (mTeamNameID == null || mTeamNameID == "")
 			{
 				if (MyRootGroup != null)
 					MyRootGroup.visible = false;
@@ -38,10 +38,10 @@
 					MyRootGroup.visible = true;
 				
 				if (MyNormalBitmap != null)
-					(MyNormalBitmap.content as MovieClip).gotoAndStop(mTeamName);
+					(MyNormalBitmap.content as MovieClip).gotoAndStop(mTeamNameID);
 				
 				if (MyBigBitmap != null)
-					(MyBigBitmap.content as MovieClip).gotoAndStop(mTeamName);
+					(MyBigBitmap.content as MovieClip).gotoAndStop(mTeamNameID);
 			}
 		}
 		
@@ -60,7 +60,7 @@
 		}
 		
 		private var mBigMode : Boolean;
-		private var mTeamName : String;			
+		private var mTeamNameID : String;			
 		
 	]]></fx:Script>
 	

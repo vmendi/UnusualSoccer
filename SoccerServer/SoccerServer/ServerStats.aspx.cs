@@ -210,32 +210,11 @@ namespace SoccerServer
 
         protected void MisticalRefresh_Click(object sender, EventArgs e)
         {
-            using (SqlConnection con = new SqlConnection(mDC.Connection.ConnectionString))
+            foreach (var team in mDC.Teams)
             {
-                con.Open();
-                using (SqlTransaction tran = con.BeginTransaction())
-                {
-                    var teamStats = from t in mDC.Teams
-                                    where t.TeamStat == null
-                                    select new 
-                                    {
-                                        TeamStatsID = t.TeamID,
-                                        NumPlayedMatches = 0,
-                                        NumMatchesWon = 0,
-                                        NumMatchesDraw = 0,
-                                        ScoredGoals = 0,
-                                        ReceivedGoals = 0
-                                    };
-
-                    SqlBulkCopy bc = new SqlBulkCopy(con, SqlBulkCopyOptions.Default, tran);
-
-                    bc.DestinationTableName = "TeamStats";
-                    bc.WriteToServer(teamStats.AsDataReader());
-
-                    tran.Commit();
-                }
-                con.Close();
+                //team.PredefinedTeamNameID = team.PredefinedTeam.Name;
             }
+            mDC.SubmitChanges();
         }
 
         private void ShowRestrictions()
@@ -275,3 +254,36 @@ namespace SoccerServer
         }
 	}
 }
+
+
+/*
+protected void MisticalRefresh_Click(object sender, EventArgs e)
+{
+    using (SqlConnection con = new SqlConnection(mDC.Connection.ConnectionString))
+    {
+        con.Open();
+        using (SqlTransaction tran = con.BeginTransaction())
+        {
+            var teamStats = from t in mDC.Teams
+                            where t.TeamStat == null
+                            select new 
+                            {
+                                TeamStatsID = t.TeamID,
+                                NumPlayedMatches = 0,
+                                NumMatchesWon = 0,
+                                NumMatchesDraw = 0,
+                                ScoredGoals = 0,
+                                ReceivedGoals = 0
+                            };
+
+            SqlBulkCopy bc = new SqlBulkCopy(con, SqlBulkCopyOptions.Default, tran);
+
+            bc.DestinationTableName = "TeamStats";
+            bc.WriteToServer(teamStats.AsDataReader());
+
+            tran.Commit();
+        }
+        con.Close();
+    }
+}
+*/

@@ -39,11 +39,11 @@ package Match
 				]
 			]
 			
-		static public function GetDescTeam(predefinedTeamName : String) : Object
+		static public function GetDescTeam(predefinedTeamNameID : String) : Object
 		{
 			var descTeam:Object = { 
-				PredefinedTeamName: predefinedTeamName,
-				Name: "Team " + predefinedTeamName,
+				PredefinedTeamNameID: predefinedTeamNameID,
+				Name: "Team " + predefinedTeamNameID,
 				Fitness:50,
 				SoccerPlayers: []
 			}
@@ -52,7 +52,7 @@ package Match
 			{
 				var descCap:Object = { 
 						DorsalNumber: c+1,
-						Name: "Cap " + predefinedTeamName + " " + c,
+						Name: "Cap " + predefinedTeamNameID + " " + c,
 						Power: 50,
 						Control: 100,
 						Defense: 100,

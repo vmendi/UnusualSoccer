@@ -200,7 +200,7 @@ package GameModel
 			{
 				var localRealtimePlayer : RealtimePlayer = new RealtimePlayer(null);
 				localRealtimePlayer.ClientID = -1;
-				localRealtimePlayer.PredefinedTeamName = mMainModel.TheTeamModel.PredefinedTeamName;
+				localRealtimePlayer.PredefinedTeamNameID = mMainModel.TheTeamModel.TheTeam.PredefinedTeamNameID;
 				localRealtimePlayer.Name = mMainModel.TheTeamModel.TheTeam.Name;
 				
 				// Los detalles del equipo local los tiene siempre sincronizados el TeamModel

@@ -127,7 +127,7 @@ namespace SoccerServer
             RealtimePlayerData data = new RealtimePlayerData();
 
             data.Name = bddPlayer.Team.Name;
-            data.PredefinedTeamName = bddPlayer.Team.PredefinedTeam.Name;
+            data.PredefinedTeamNameID = bddPlayer.Team.PredefinedTeamNameID;
             data.TrueSkill = bddPlayer.Team.TrueSkill;
             data.SpecialSkillsIDs = (from s in bddPlayer.Team.SpecialTrainings
                                      where s.IsCompleted

@@ -91,14 +91,14 @@
 					
 					<s:Group>
 						<s:layout><s:VerticalLayout paddingTop="4" /></s:layout>
-						<GameView:BadgeTeam TeamName="{mRankingModel.SelectedRankingTeam.PredefinedTeamName}" />
+						<GameView:BadgeTeam TeamNameID="{mRankingModel.SelectedRankingTeam.PredefinedTeamNameID}" />
 					</s:Group>
 										
 					<s:Group width="70%" height="50">
 						<s:layout><s:VerticalLayout paddingTop="7" gap="3"/></s:layout>
 						<s:Label width="100%" text="{mRankingModel.SelectedRankingTeam.Name}" styleName="whiteBoldBig" 
 								 maxDisplayedLines="1" toolTip="{mRankingModel.SelectedRankingTeam.Name}"/>
-						<s:Label text="{mRankingModel.SelectedRankingTeam.PredefinedTeamName}" styleName="greyBoldMedium"/>
+						<s:Label text="{mRankingModel.SelectedRankingTeam.PredefinedTeamNameID}" styleName="greyBoldMedium"/>
 					</s:Group>
 				</s:Group>
 			</s:Group>

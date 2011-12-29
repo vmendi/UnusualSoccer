@@ -59,14 +59,9 @@ package GameModel
 
 		public function InitialRefresh(callback : Function) : void
 		{
-			mPredefinedTeamsModel.InitialRefresh(initialRefreshStage01Completed);
-
+			mTrainingModel.InitialRefresh(initialRefreshStage01Completed);
+						
 			function initialRefreshStage01Completed() : void
-			{
-				mTrainingModel.InitialRefresh(initialRefreshStage02Completed);
-			}
-			
-			function initialRefreshStage02Completed() : void
 			{
 				mSpecialTrainingModel.InitialRefresh(callback);	
 			}
