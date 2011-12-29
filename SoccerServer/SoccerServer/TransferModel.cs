@@ -12,7 +12,7 @@ namespace SoccerServer.TransferModel
 	public class Team
 	{
 		public string Name;
-		public int PredefinedTeamID;
+		public string PredefinedTeamNameID;
 		public string Formation;
 		public int TrueSkill;
 		public int XP;
@@ -28,7 +28,7 @@ namespace SoccerServer.TransferModel
 		public Team(BDDModel.Team from) 
 		{
 			Name = from.Name;
-			PredefinedTeamID = from.PredefinedTeamID;
+			PredefinedTeamNameID = from.PredefinedTeamNameID;
 			Formation = from.Formation;
 			TrueSkill = from.TrueSkill;
 			XP = from.XP;
@@ -51,7 +51,7 @@ namespace SoccerServer.TransferModel
 
     public class Ticket
     {
-        public int RemainingMatches;
+        public int      RemainingMatches;
         public DateTime TicketPurchaseDate;
         public DateTime TicketExpiryDate;
         public int      TicketExpiryDateRemainingSeconds;
@@ -156,14 +156,6 @@ namespace SoccerServer.TransferModel
 		}
 	}
 
-	public class PredefinedTeam
-	{
-		public int PredefinedTeamID;
-		public string Name;
-
-		public PredefinedTeam(BDDModel.PredefinedTeam from) { CopyHelper.Copy(from, this); }
-	}
-
     public class RankingPage
     {
         static public int RANKING_TEAMS_PER_PAGE = 50;
@@ -183,7 +175,7 @@ namespace SoccerServer.TransferModel
 	{
 		public string Name;
 		public long   FacebookID;
-		public string PredefinedTeamName;
+		public string PredefinedTeamNameID;
 		public int TrueSkill;
 	}
 

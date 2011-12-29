@@ -20,7 +20,7 @@ namespace SoccerServer.TransferModel
     {
         public string   Name;
         public long     FacebookID;
-        public string   PredefinedTeamName;
+        public string   PredefinedTeamNameID;
         public int      Points;
         public int      NumMatchesPlayed;
         public int      NumMatchesWon;

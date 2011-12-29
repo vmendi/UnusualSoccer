@@ -16,20 +16,6 @@ namespace SoccerServer
 
         public const int INJURY_DURATION_DAYS = 2;
         public const int DEFAULT_NUM_MACHES = 5;
-
-        [WebORBCache(CacheScope = CacheScope.Global)]
-		public List<TransferModel.PredefinedTeam> RefreshPredefinedTeams()
-		{
-            using (CreateDataForRequest())
-            {
-                List<TransferModel.PredefinedTeam> ret = new List<TransferModel.PredefinedTeam>();
-
-                foreach (BDDModel.PredefinedTeam predef in mContext.PredefinedTeams)
-                    ret.Add(new TransferModel.PredefinedTeam(predef));
-
-                return ret;
-            }
-		}
 	
 		public TransferModel.Team RefreshTeam()
 		{
@@ -109,7 +95,7 @@ namespace SoccerServer
             return bSubmit;
         }
 
-		public bool CreateTeam(string name, int predefinedTeamID)
+		public bool CreateTeam(string name, string predefinedTeamNameID)
 		{
             using (CreateDataForRequest())
             {
@@ -124,11 +110,11 @@ namespace SoccerServer
                     if (mPlayer.Team != null)
                         throw new Exception("Already existing team for " + PlayerToString(mPlayer));
 
-                    theNewTeam = GenerateTeamFromPredefinedTeamID(predefinedTeamID);
+                    theNewTeam = GenerateTeam();
                     theNewTeam.Player = mPlayer;
                     theNewTeam.Name = name;
-                    theNewTeam.LastFitnessUpdate = DateTime.Now;
-
+                    theNewTeam.PredefinedTeamNameID = predefinedTeamNameID;
+                    
                     // Uno por equipo, siempre. No se puede forzar 1:1 desde la BDD
                     GenerateTicket(theNewTeam);
                     GenerateTeamStats(theNewTeam);
@@ -162,15 +148,8 @@ namespace SoccerServer
             mContext.TeamStats.InsertOnSubmit(new TeamStat { Team = team });
         }
 
-		private Team GenerateTeamFromPredefinedTeamID(int predefinedTeamID)
+		private Team GenerateTeam()
 		{
-			var predefinedTeam = (from pr in mContext.PredefinedTeams
-								  where pr.PredefinedTeamID == predefinedTeamID
-								  select pr).FirstOrDefault();
-
-			if (predefinedTeam == null)
-				throw new Exception("Unknown predefinedTeamID: " + predefinedTeamID.ToString());
-
 			Team ret = new Team();
             var now = DateTime.Now;
 
@@ -201,9 +180,8 @@ namespace SoccerServer
 			ret.SkillPoints = 200;
 			ret.Energy = 100;
 			ret.Fitness = 50;
+            ret.LastFitnessUpdate = now;
 			
-			ret.PredefinedTeamID = predefinedTeamID;
-
 			return ret;
 		}
 

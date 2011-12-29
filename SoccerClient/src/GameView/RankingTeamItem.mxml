@@ -36,13 +36,13 @@
 
 		<s:Group>
 			<s:layout><s:VerticalLayout paddingTop="4" /></s:layout>
-			<GameView:BadgeTeam TeamName="{data.PredefinedTeamName}" />
+			<GameView:BadgeTeam TeamName="{data.PredefinedTeamNameID}" />
 		</s:Group>
 		
 		<s:Group width="70%" height="50">
 		 	<s:layout><s:VerticalLayout paddingTop="7" gap="3"/></s:layout>
 			<s:Label width="100%" text="{data.Name}" styleName="whiteBoldBig" maxDisplayedLines="1" toolTip="{data.Name}"/>
-			<s:Label text="{data.PredefinedTeamName}" styleName="greyBoldMedium"/>
+			<s:Label text="{data.PredefinedTeamNameID}" styleName="greyBoldMedium"/>
 		</s:Group>
 		
 		<GameView:BadgeCategory width="64" TrueSkill="{data.TrueSkill}" />

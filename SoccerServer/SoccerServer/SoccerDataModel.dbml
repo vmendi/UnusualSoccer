@@ -113,13 +113,6 @@
       <Association Name="Player_Team" Member="Team" ThisKey="PlayerID" OtherKey="TeamID" Type="Team" Cardinality="One" />
     </Type>
   </Table>
-  <Table Name="dbo.PredefinedTeams" Member="PredefinedTeams">
-    <Type Name="PredefinedTeam">
-      <Column Name="PredefinedTeamID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Association Name="PredefinedTeam_Team" Member="Teams" ThisKey="PredefinedTeamID" OtherKey="PredefinedTeamID" Type="Team" />
-    </Type>
-  </Table>
   <Table Name="dbo.Purchases" Member="Purchases">
     <Type Name="Purchase">
       <Column Name="PurchaseID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -199,7 +192,7 @@
   <Table Name="dbo.Teams" Member="Teams">
     <Type Name="Team">
       <Column Name="TeamID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="PredefinedTeamID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PredefinedTeamNameID" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
       <Column Name="Formation" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
       <Column Name="TrueSkill" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -221,7 +214,6 @@
       <Association Name="Team_Ticket" Member="Ticket" ThisKey="TeamID" OtherKey="TicketID" Type="Ticket" Cardinality="One" />
       <Association Name="CompetitionDivision_Team" Member="CompetitionDivision" ThisKey="LastDivisionQueriedID" OtherKey="CompetitionDivisionID" Type="CompetitionDivision" IsForeignKey="true" DeleteRule="SET NULL" />
       <Association Name="Player_Team" Member="Player" ThisKey="TeamID" OtherKey="PlayerID" Type="Player" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="PredefinedTeam_Team" Member="PredefinedTeam" ThisKey="PredefinedTeamID" OtherKey="PredefinedTeamID" Type="PredefinedTeam" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.TeamStats" Member="TeamStats">

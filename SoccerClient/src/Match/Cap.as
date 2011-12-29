@@ -84,7 +84,7 @@ package Match
 			phyInit.categoryBits = 1;
 			
 			// Elegimos el asset de jugador o portero y con la equipación primaria o secundaria
-			PrepareVisualCap(_Visual, team.PredefinedName, useSecondaryEquipment, id == 0) 
+			PrepareVisualCap(_Visual, team.PredefinedTeamNameID, useSecondaryEquipment, id == 0) 
 			
 			// Reasignamos la escala de la chapa, ya que la física la escala para que encaje con el radio físico asignado
 			_Visual.scaleX = 1.0;
@@ -122,7 +122,7 @@ package Match
 			MatchMain.Ref.Game.TheEntityManager.AddTagged(this, "Team"+(team.IdxTeam +1).toString() + "_" + _CapId.toString());
 		}
 		
-		static public function PrepareVisualCap(visualCap : *, predefinedTeamName : String, useSecondary : Boolean, isGoalKeeper : Boolean) : void
+		static public function PrepareVisualCap(visualCap : *, predefinedTeamNameID : String, useSecondary : Boolean, isGoalKeeper : Boolean) : void
 		{
 			if (useSecondary)
 				visualCap.First.visible = false;
@@ -133,8 +133,8 @@ package Match
 			visualCap.Goalkeeper.visible = !visualCap.Regular.visible;
 			
 			// Mandamos al frame de la equipacion
-			visualCap.First.gotoAndStop(predefinedTeamName);
-			visualCap.Second.gotoAndStop(predefinedTeamName);
+			visualCap.First.gotoAndStop(predefinedTeamNameID);
+			visualCap.Second.gotoAndStop(predefinedTeamNameID);
 			
 			// Paramos la animacion del Halo
 			visualCap.Halo.addFrameScript(0, function():void { visualCap.Halo.stop(); });

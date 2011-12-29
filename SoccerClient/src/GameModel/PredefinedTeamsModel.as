@@ -1,77 +1,47 @@
 package GameModel
 {
-	import SoccerServer.MainService;
-	import SoccerServer.MainServiceModel;
-	import SoccerServer.TransferModel.vo.PredefinedTeam;
-	
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	
+	import SoccerServer.MainService;	
+	import flash.events.EventDispatcher;	
 	import mx.collections.ArrayCollection;
-	import mx.rpc.Responder;
-	import mx.rpc.events.ResultEvent;
-	
-	import utils.Delegate;
 
 	public final class PredefinedTeamsModel extends EventDispatcher
 	{
 		public function PredefinedTeamsModel(mainService : MainService, mainModel : MainGameModel)
 		{
 			mMainService = mainService;
-			mMainServiceModel = mMainService.GetModel();
 			mMainModel = mainModel;
+			
+			var teamIDs : ArrayCollection = new ArrayCollection();
+			teamIDs.addItem("Athletic");
+			teamIDs.addItem("Atlético");
+			teamIDs.addItem("Barcelona");
+			teamIDs.addItem("Betis");
+			teamIDs.addItem("Espanyol");
+			teamIDs.addItem("Getafe");
+			teamIDs.addItem("Granada");
+			teamIDs.addItem("Levante");
+			teamIDs.addItem("Málaga");
+			teamIDs.addItem("Mallorca");
+			teamIDs.addItem("Osasuna");
+			teamIDs.addItem("Racing");
+			teamIDs.addItem("Rayo");
+			teamIDs.addItem("R. Madrid");
+			teamIDs.addItem("R. Sociedad");
+			teamIDs.addItem("Sevilla");
+			teamIDs.addItem("Sporting");
+			teamIDs.addItem("Valencia");
+			teamIDs.addItem("Villarreal");
+			teamIDs.addItem("Zaragoza");
+			
+			PredefinedTeamNameIDs = teamIDs;
 		}
 		
-		public function InitialRefresh(callback : Function) : void
-		{
-			mMainService.RefreshPredefinedTeams(new Responder(Delegate.create(OnRefreshPredefinedTeamsResponse, callback), ErrorMessages.Fault));
-		}
-		
-		private function OnRefreshPredefinedTeamsResponse(e : ResultEvent, callback : Function):void
-		{
-			mPredefinedTeams = e.result as ArrayCollection;
-			mPredefinedTeamNames = new ArrayCollection();
-			
-			for each(var predefTeam : PredefinedTeam in mPredefinedTeams)
-			{
-				mPredefinedTeamNames.addItem(predefTeam.Name);
-			}
-			
-			if (callback != null)
-				callback();
-			
-			dispatchEvent(new Event("PredefinedTeamNamesChanged"));
-		}
-				
-		public function GetIDByName(name : String) : int
-		{
-			for each(var team : PredefinedTeam in mPredefinedTeams)
-			{
-				if (team.Name == name)
-					return team.PredefinedTeamID;
-			}
-			return -1;
-		}
-		
-		public function GetNameByID(predefinedTeamID : int) : String
-		{
-			for each(var team : PredefinedTeam in mPredefinedTeams)
-			{
-				if (team.PredefinedTeamID == predefinedTeamID)
-					return team.Name;
-			}
-			return null;
-		}
-			
-		[Bindable(event="PredefinedTeamNamesChanged")]
-		public function get PredefinedTeamNames() : ArrayCollection { return mPredefinedTeamNames; }
-		
+		[Bindable]
+		public function get PredefinedTeamNameIDs() : ArrayCollection { return mPredefinedTeamNameIDs; }
+		public function set PredefinedTeamNameIDs(v:ArrayCollection) : void { mPredefinedTeamNameIDs = v; }	// En 4.1 no se puede poner privado todavia
+		private var mPredefinedTeamNameIDs : ArrayCollection;		
 
 		private var mMainModel : MainGameModel;
 		private var mMainService : MainService;
-		private var mMainServiceModel : MainServiceModel;
-		
-		private var mPredefinedTeams : ArrayCollection;
-		private var mPredefinedTeamNames : ArrayCollection;
 	}
 }

@@ -58,9 +58,6 @@ namespace SoccerServer
     partial void InsertPlayer(SoccerServer.BDDModel.Player instance);
     partial void UpdatePlayer(SoccerServer.BDDModel.Player instance);
     partial void DeletePlayer(SoccerServer.BDDModel.Player instance);
-    partial void InsertPredefinedTeam(SoccerServer.BDDModel.PredefinedTeam instance);
-    partial void UpdatePredefinedTeam(SoccerServer.BDDModel.PredefinedTeam instance);
-    partial void DeletePredefinedTeam(SoccerServer.BDDModel.PredefinedTeam instance);
     partial void InsertPurchase(SoccerServer.BDDModel.Purchase instance);
     partial void UpdatePurchase(SoccerServer.BDDModel.Purchase instance);
     partial void DeletePurchase(SoccerServer.BDDModel.Purchase instance);
@@ -200,14 +197,6 @@ namespace SoccerServer
 			get
 			{
 				return this.GetTable<SoccerServer.BDDModel.Player>();
-			}
-		}
-		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.PredefinedTeam> PredefinedTeams
-		{
-			get
-			{
-				return this.GetTable<SoccerServer.BDDModel.PredefinedTeam>();
 			}
 		}
 		
@@ -2671,120 +2660,6 @@ namespace SoccerServer.BDDModel
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PredefinedTeams")]
-	public partial class PredefinedTeam : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _PredefinedTeamID;
-		
-		private string _Name;
-		
-		private EntitySet<Team> _Teams;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnPredefinedTeamIDChanging(int value);
-    partial void OnPredefinedTeamIDChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    #endregion
-		
-		public PredefinedTeam()
-		{
-			this._Teams = new EntitySet<Team>(new Action<Team>(this.attach_Teams), new Action<Team>(this.detach_Teams));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PredefinedTeamID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int PredefinedTeamID
-		{
-			get
-			{
-				return this._PredefinedTeamID;
-			}
-			set
-			{
-				if ((this._PredefinedTeamID != value))
-				{
-					this.OnPredefinedTeamIDChanging(value);
-					this.SendPropertyChanging();
-					this._PredefinedTeamID = value;
-					this.SendPropertyChanged("PredefinedTeamID");
-					this.OnPredefinedTeamIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PredefinedTeam_Team", Storage="_Teams", ThisKey="PredefinedTeamID", OtherKey="PredefinedTeamID")]
-		public EntitySet<Team> Teams
-		{
-			get
-			{
-				return this._Teams;
-			}
-			set
-			{
-				this._Teams.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Teams(Team entity)
-		{
-			this.SendPropertyChanging();
-			entity.PredefinedTeam = this;
-		}
-		
-		private void detach_Teams(Team entity)
-		{
-			this.SendPropertyChanging();
-			entity.PredefinedTeam = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Purchases")]
 	public partial class Purchase : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -4321,7 +4196,7 @@ namespace SoccerServer.BDDModel
 		
 		private int _TeamID;
 		
-		private int _PredefinedTeamID;
+		private string _PredefinedTeamNameID;
 		
 		private string _Name;
 		
@@ -4365,16 +4240,14 @@ namespace SoccerServer.BDDModel
 		
 		private EntityRef<Player> _Player;
 		
-		private EntityRef<PredefinedTeam> _PredefinedTeam;
-		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
     partial void OnTeamIDChanging(int value);
     partial void OnTeamIDChanged();
-    partial void OnPredefinedTeamIDChanging(int value);
-    partial void OnPredefinedTeamIDChanged();
+    partial void OnPredefinedTeamNameIDChanging(string value);
+    partial void OnPredefinedTeamNameIDChanged();
     partial void OnNameChanging(string value);
     partial void OnNameChanged();
     partial void OnFormationChanging(string value);
@@ -4411,7 +4284,6 @@ namespace SoccerServer.BDDModel
 			this._Ticket = default(EntityRef<Ticket>);
 			this._CompetitionDivision = default(EntityRef<CompetitionDivision>);
 			this._Player = default(EntityRef<Player>);
-			this._PredefinedTeam = default(EntityRef<PredefinedTeam>);
 			OnCreated();
 		}
 		
@@ -4439,26 +4311,22 @@ namespace SoccerServer.BDDModel
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PredefinedTeamID", DbType="Int NOT NULL")]
-		public int PredefinedTeamID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PredefinedTeamNameID", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string PredefinedTeamNameID
 		{
 			get
 			{
-				return this._PredefinedTeamID;
+				return this._PredefinedTeamNameID;
 			}
 			set
 			{
-				if ((this._PredefinedTeamID != value))
+				if ((this._PredefinedTeamNameID != value))
 				{
-					if (this._PredefinedTeam.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnPredefinedTeamIDChanging(value);
+					this.OnPredefinedTeamNameIDChanging(value);
 					this.SendPropertyChanging();
-					this._PredefinedTeamID = value;
-					this.SendPropertyChanged("PredefinedTeamID");
-					this.OnPredefinedTeamIDChanged();
+					this._PredefinedTeamNameID = value;
+					this.SendPropertyChanged("PredefinedTeamNameID");
+					this.OnPredefinedTeamNameIDChanged();
 				}
 			}
 		}
@@ -4903,40 +4771,6 @@ namespace SoccerServer.BDDModel
 						this._TeamID = default(int);
 					}
 					this.SendPropertyChanged("Player");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PredefinedTeam_Team", Storage="_PredefinedTeam", ThisKey="PredefinedTeamID", OtherKey="PredefinedTeamID", IsForeignKey=true)]
-		public PredefinedTeam PredefinedTeam
-		{
-			get
-			{
-				return this._PredefinedTeam.Entity;
-			}
-			set
-			{
-				PredefinedTeam previousValue = this._PredefinedTeam.Entity;
-				if (((previousValue != value) 
-							|| (this._PredefinedTeam.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._PredefinedTeam.Entity = null;
-						previousValue.Teams.Remove(this);
-					}
-					this._PredefinedTeam.Entity = value;
-					if ((value != null))
-					{
-						value.Teams.Add(this);
-						this._PredefinedTeamID = value.PredefinedTeamID;
-					}
-					else
-					{
-						this._PredefinedTeamID = default(int);
-					}
-					this.SendPropertyChanged("PredefinedTeam");
 				}
 			}
 		}

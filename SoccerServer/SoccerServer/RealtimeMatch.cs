@@ -260,6 +260,10 @@ namespace SoccerServer
                     if (RemainingSecs <= 0)
                         RemainingSecs = 0;
 
+                    // Cada X segundos sincronizamos el tiempo con los clientes
+                    if (((int)RemainingSecs) % 10 == 0)
+                        this.Broadcast("OnClientSyncTime", RemainingSecs);
+
                     // No permitimos que termine el tiempo durante:
                     // - La simulación del disparo
                     // - Cuando estamos esperando una confirmación de gol de uno de los jugadores (el otro ya ha informado). Esto es discutible puesto que
@@ -286,10 +290,6 @@ namespace SoccerServer
                             CurState = State.End;
                         }
                     }
-
-                    // Cada X segundos sincronizamos el tiempo con los clientes
-                    if (((int)RemainingSecs) % 10 == 0)
-                        this.Broadcast("OnClientSyncTime", RemainingSecs);
                 }
                     break;
                 case State.End:

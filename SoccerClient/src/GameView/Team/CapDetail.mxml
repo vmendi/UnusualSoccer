@@ -31,10 +31,10 @@
 		private function OnQualityRefreshed(v:Number) : void
 		{
 			// [Fran] Si la chapa tiene amigo asignado, no mostramos la equipación
-			(MyCapMC.content as MovieClip).gotoAndStop(SoccerClient.GetMainGameModel().TheTeamModel.PredefinedTeamName);
+			(MyCapMC.content as MovieClip).gotoAndStop(SoccerClient.GetMainGameModel().TheTeamModel.TheTeam.PredefinedTeamNameID);
 			/*
 			if (TheSoccerPlayer != null && TheSoccerPlayer.FacebookID < 0)
-				(MyCapMC.content as MovieClip).gotoAndStop(SoccerClient.GetMainGameModel().TheTeamModel.PredefinedTeamName);
+				(MyCapMC.content as MovieClip).gotoAndStop(SoccerClient.GetMainGameModel().TheTeamModel.TheTeam.PredefinedTeamNameID);
 			else
 				(MyCapMC.content as MovieClip).gotoAndStop("empty");
 			*/

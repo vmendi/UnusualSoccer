@@ -23,7 +23,7 @@ import SoccerServer.TransferModel.vo.Ticket;import SoccerServer.TransferModel.vo
 		public function Team(){}
 	
 		public var Name:String;
-		public var PredefinedTeamID:int;
+		public var PredefinedTeamNameID:String;
 		public var Formation:String;
 		public var TrueSkill:int;
 		public var XP:int;

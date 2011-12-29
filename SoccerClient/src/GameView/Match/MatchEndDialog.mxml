@@ -173,8 +173,8 @@
 			for (var c:int = 0; c < 2; c++)
 			{
 				this["MyName"+c.toString()].text = teams[c].Name;
-				this["MyPredefinedTeamName"+c.toString()].text = teams[c].PredefinedTeamName;
-				(this["MyBadge" + c.toString()] as BadgeTeam).TeamName = teams[c].PredefinedTeamName;
+				this["MyPredefinedTeamName"+c.toString()].text = teams[c].PredefinedTeamNameID;
+				(this["MyBadge" + c.toString()] as BadgeTeam).TeamName = teams[c].PredefinedTeamNameID;
 				this["MyGoals"+c.toString()].text = teams[c].Goals;				
 				this["MyXP"+c.toString()].text = (teams[c].DiffXP <= 0? "" : "+") + teams[c].DiffXP;
 				this["MySkillPoints"+c.toString()].text = (teams[c].DiffSkillPoints <= 0? "" : "+") + teams[c].DiffSkillPoints;

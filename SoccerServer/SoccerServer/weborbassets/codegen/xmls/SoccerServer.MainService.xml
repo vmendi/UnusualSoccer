@@ -22,7 +22,7 @@
       <datatype name="CompetitionGroupEntry" fullname="SoccerServer.TransferModel.CompetitionGroupEntry" typeNamespace="SoccerServer.TransferModel">
         <field name="Name" type="String" fulltype="String" nativetype="String" />
         <field name="FacebookID" type="Number" fulltype="Number" nativetype="long" />
-        <field name="PredefinedTeamName" type="String" fulltype="String" nativetype="String" />
+        <field name="PredefinedTeamNameID" type="String" fulltype="String" nativetype="String" />
         <field name="Points" type="int" fulltype="int" nativetype="int" />
         <field name="NumMatchesPlayed" type="int" fulltype="int" nativetype="int" />
         <field name="NumMatchesWon" type="int" fulltype="int" nativetype="int" />
@@ -35,10 +35,6 @@
         <field name="NumGoalsScored" type="int" fulltype="int" nativetype="int" />
         <field name="NumGoalsReceived" type="int" fulltype="int" nativetype="int" />
       </datatype>
-      <datatype name="PredefinedTeam" fullname="SoccerServer.TransferModel.PredefinedTeam" typeNamespace="SoccerServer.TransferModel">
-        <field name="PredefinedTeamID" type="int" fulltype="int" nativetype="int" />
-        <field name="Name" type="String" fulltype="String" nativetype="String" />
-      </datatype>
       <datatype name="RankingPage" fullname="SoccerServer.TransferModel.RankingPage" typeNamespace="SoccerServer.TransferModel">
         <field name="PageIndex" type="int" fulltype="int" nativetype="int" />
         <field name="TotalPageCount" type="int" fulltype="int" nativetype="int" />
@@ -48,7 +44,7 @@
       <datatype name="RankingTeam" fullname="SoccerServer.TransferModel.RankingTeam" typeNamespace="SoccerServer.TransferModel">
         <field name="Name" type="String" fulltype="String" nativetype="String" />
         <field name="FacebookID" type="Number" fulltype="Number" nativetype="long" />
-        <field name="PredefinedTeamName" type="String" fulltype="String" nativetype="String" />
+        <field name="PredefinedTeamNameID" type="String" fulltype="String" nativetype="String" />
         <field name="TrueSkill" type="int" fulltype="int" nativetype="int" />
       </datatype>
       <datatype name="SpecialTrainingDefinition" fullname="SoccerServer.TransferModel.SpecialTrainingDefinition" typeNamespace="SoccerServer.TransferModel">
@@ -60,7 +56,7 @@
       </datatype>
       <datatype name="Team" fullname="SoccerServer.TransferModel.Team" typeNamespace="SoccerServer.TransferModel">
         <field name="Name" type="String" fulltype="String" nativetype="String" />
-        <field name="PredefinedTeamID" type="int" fulltype="int" nativetype="int" />
+        <field name="PredefinedTeamNameID" type="String" fulltype="String" nativetype="String" />
         <field name="Formation" type="String" fulltype="String" nativetype="String" />
         <field name="TrueSkill" type="int" fulltype="int" nativetype="int" />
         <field name="XP" type="int" fulltype="int" nativetype="int" />
@@ -132,7 +128,7 @@
       </method>
       <method name="CreateTeam" type="Boolean" nativetype="bool" containsvalues="0">
         <arg name="name" type="String" nativetype="String" />
-        <arg name="predefinedTeamID" type="int" nativetype="int" />
+        <arg name="predefinedTeamNameID" type="String" nativetype="String" />
       </method>
       <method name="HasTeam" type="Boolean" nativetype="bool" containsvalues="0" />
       <method name="IsNameValid" type="String" nativetype="SoccerServer.VALID_NAME" containsvalues="0">
@@ -148,7 +144,6 @@
       <method name="RefreshMatchStatsForTeam" type="TeamMatchStats" nativetype="SoccerServer.TransferModel.TeamMatchStats" containsvalues="0">
         <arg name="facebookID" type="Number" nativetype="long" />
       </method>
-      <method name="RefreshPredefinedTeams" type="ArrayCollection" nativetype="List&lt;SoccerServer.TransferModel.PredefinedTeam&gt;" containsvalues="0" />
       <method name="RefreshRankingPage" type="RankingPage" nativetype="SoccerServer.TransferModel.RankingPage" containsvalues="0">
         <arg name="pageIndex" type="int" nativetype="int" />
       </method>

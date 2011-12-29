@@ -66,8 +66,8 @@ package Match
 			// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el quipo
 			var teams:Array = MatchMain.Ref.Game.TheTeams;
 			
-			Gui.BadgeHome.gotoAndStop(teams[Enums.Team1].PredefinedName);
-			Gui.BadgeAway.gotoAndStop(teams[Enums.Team2].PredefinedName);
+			Gui.BadgeHome.gotoAndStop(teams[Enums.Team1].PredefinedTeamNameID);
+			Gui.BadgeAway.gotoAndStop(teams[Enums.Team2].PredefinedTeamNameID);
 			
 			Gui.TeamHome.text = teams[Enums.Team1].Name;
 			Gui.TeamAway.text = teams[Enums.Team2].Name;

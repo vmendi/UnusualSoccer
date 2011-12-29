@@ -72,9 +72,9 @@ package GameModel
 			mMainService.RefreshTeam(new Responder(Delegate.create(OnRefreshTeamResponse, callback), ErrorMessages.Fault));
 		}
 		
-		public function CreateTeam(name : String, predefinedTeamID : int, success : Function, failed : Function):void
+		public function CreateTeam(name : String, predefinedTeamNameID : String, success : Function, failed : Function):void
 		{
-			mMainService.CreateTeam(name, predefinedTeamID,
+			mMainService.CreateTeam(name, predefinedTeamNameID,
 									new Responder(Delegate.create(OnTeamCreatedResponse, success, failed), ErrorMessages.Fault));	
 		}
 		private function OnTeamCreatedResponse(e:ResultEvent, success:Function, failed:Function):void
@@ -209,22 +209,6 @@ package GameModel
 		
 		[Bindable(event="PlayerTeamChanged")]
 		public function get TheTeam() : Team { return mPlayerTeam; }
-				
-		[Bindable(event="PlayerTeamChanged")]
-		public function get PredefinedTeamName() : String 
-		{
-			if (mPlayerTeam != null)
-				return mMainModel.ThePredefinedTeamsModel.GetNameByID(mPlayerTeam.PredefinedTeamID);
-			return null;
-		}
-		
-		[Bindable(event="PlayerTeamChanged")]
-		public function get PredefinedTeamID() : int 
-		{
-			if (mPlayerTeam != null)
-				return mPlayerTeam.PredefinedTeamID;
-			return -1;
-		}
 		
 		[Bindable(event="FieldSoccerPlayersChanged")]
 		public function get FieldSoccerPlayers() : ArrayCollection { return mFieldSoccerPlayers; }

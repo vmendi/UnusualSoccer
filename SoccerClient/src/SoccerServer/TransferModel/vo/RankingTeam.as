@@ -24,7 +24,7 @@ package SoccerServer.TransferModel.vo
 	
 		public var Name:String;
 		public var FacebookID:Number;
-		public var PredefinedTeamName:String;
+		public var PredefinedTeamNameID:String;
 		public var TrueSkill:int;
 	}
 }

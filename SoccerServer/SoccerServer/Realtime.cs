@@ -173,7 +173,7 @@ namespace SoccerServer
                     theRealtimePlayer.ClientID = myConnection.ID;
                     theRealtimePlayer.FacebookID = theCurrentPlayer.FacebookID;
                     theRealtimePlayer.Name = theCurrentTeam.Name;
-                    theRealtimePlayer.PredefinedTeamName = theCurrentTeam.PredefinedTeam.Name;
+                    theRealtimePlayer.PredefinedTeamNameID = theCurrentTeam.PredefinedTeamNameID;
                     theRealtimePlayer.TrueSkill = theCurrentTeam.TrueSkill;
 
                     myConnection.UserData = theRealtimePlayer;
@@ -625,7 +625,7 @@ namespace SoccerServer
         public int ClientID = -1;                       // El del NetEngine
 
         public String Name;
-        public String PredefinedTeamName;
+        public String PredefinedTeamNameID;
         public long   FacebookID;        
         public int    TrueSkill;
 
@@ -662,7 +662,7 @@ namespace SoccerServer
         }
 
         public String Name;								// Nombre del equipo del player
-        public String PredefinedTeamName;				// El player tiene un equipo real asociado: "Getafe"
+        public String PredefinedTeamNameID;				// El player tiene un equipo real asociado: "Getafe", "USA"
         public int TrueSkill;							// ...Por si acaso hay que mostrarlo
         public List<int> SpecialSkillsIDs;				// Habilidades disponibles, como maximo entraran 9, ID entre 1 e infinito
         public String Formation;						// Nombre de la formacion: "331", "322", etc..

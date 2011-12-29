@@ -135,8 +135,8 @@ package Match
 			var useSecondaryEquipment1:Boolean = false;
 			var useSecondaryEquipment2:Boolean = false;
 			
-			var group1:int = Team.GroupTeam(descTeam1.PredefinedTeamName);
-			var group2:int = Team.GroupTeam(descTeam2.PredefinedTeamName);
+			var group1:int = Team.GroupTeam(descTeam1.PredefinedTeamNameID);
+			var group2:int = Team.GroupTeam(descTeam2.PredefinedTeamNameID);
 			if (group1 == group2)
 			{
 				trace("Los equipos pertenecen al mismo grupo de equipación. Utilizando equipación secundaria para el equipo contrario"); 

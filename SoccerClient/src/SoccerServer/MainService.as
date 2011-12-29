@@ -73,8 +73,6 @@
         
         remoteObject.RefreshMatchStatsForTeam.addEventListener("result",RefreshMatchStatsForTeamHandler);
         
-        remoteObject.RefreshPredefinedTeams.addEventListener("result",RefreshPredefinedTeamsHandler);
-        
         remoteObject.RefreshRankingPage.addEventListener("result",RefreshRankingPageHandler);
         
         remoteObject.RefreshSeasonEndDateRemainingSeconds.addEventListener("result",RefreshSeasonEndDateRemainingSecondsHandler);
@@ -143,9 +141,9 @@
 
       }
     
-      public function CreateTeam(name:String,predefinedTeamID:int, responder:IResponder = null ):void
+      public function CreateTeam(name:String,predefinedTeamNameID:String, responder:IResponder = null ):void
       {
-        var asyncToken:AsyncToken = remoteObject.CreateTeam(name,predefinedTeamID);
+        var asyncToken:AsyncToken = remoteObject.CreateTeam(name,predefinedTeamNameID);
         
         if( responder != null )
             asyncToken.addResponder( responder );
@@ -200,15 +198,6 @@
       public function RefreshMatchStatsForTeam(facebookID:Number, responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.RefreshMatchStatsForTeam(facebookID);
-        
-        if( responder != null )
-            asyncToken.addResponder( responder );
-
-      }
-    
-      public function RefreshPredefinedTeams( responder:IResponder = null ):void
-      {
-        var asyncToken:AsyncToken = remoteObject.RefreshPredefinedTeams();
         
         if( responder != null )
             asyncToken.addResponder( responder );
@@ -370,14 +359,6 @@
         
           var returnValue:TeamMatchStats = event.result as TeamMatchStats;
           model.RefreshMatchStatsForTeamResult = returnValue;
-        
-      }
-         
-      public virtual function RefreshPredefinedTeamsHandler(event:ResultEvent):void
-      {
-        
-          var returnValue:ArrayCollection = event.result as ArrayCollection;
-          model.RefreshPredefinedTeamsResult = returnValue;
         
       }
          

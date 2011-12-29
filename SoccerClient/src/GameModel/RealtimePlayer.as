@@ -12,7 +12,7 @@ package GameModel
 		public var ClientID : int;
 		public var FacebookID : Number;
 		public var Name : String;
-		public var PredefinedTeamName : String;
+		public var PredefinedTeamNameID : String;
 		public var TrueSkill : Number;
 		
 		public var TheTeamDetails : TeamDetails;

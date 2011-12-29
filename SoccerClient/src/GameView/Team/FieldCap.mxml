@@ -100,10 +100,10 @@
 			mTeamModel = SoccerClient.GetMainGameModel().TheTeamModel;
 			
 			// [Fran] Si la chapa tiene amigo asignado, no mostramos la equipación 
-			(MyCapMC.content as MovieClip).gotoAndStop(mTeamModel.PredefinedTeamName);
+			(MyCapMC.content as MovieClip).gotoAndStop(mTeamModel.TheTeam.PredefinedTeamNameID);
 			/*
 			if (data.FacebookID == -1)
-				(MyCapMC.content as MovieClip).gotoAndStop(mTeamModel.PredefinedTeamName);
+				(MyCapMC.content as MovieClip).gotoAndStop(mTeamModel.TheTeam.PredefinedTeamNameID);
 			else
 				(MyCapMC.content as MovieClip).gotoAndStop("empty");
 			*/

@@ -13,7 +13,6 @@ package SoccerServer
 	import SoccerServer.TransferModel.vo.CompetitionGroup;
 	import SoccerServer.TransferModel.vo.CompetitionGroupEntry;
 	import SoccerServer.TransferModel.vo.TeamMatchStats;
-	import SoccerServer.TransferModel.vo.PredefinedTeam;
 	import SoccerServer.TransferModel.vo.RankingPage;
 	import SoccerServer.TransferModel.vo.RankingTeam;
 	import SoccerServer.TransferModel.vo.SpecialTrainingDefinition;
@@ -32,7 +31,6 @@ package SoccerServer
 			new SoccerServer.TransferModel.vo.CompetitionGroup();	
 			new SoccerServer.TransferModel.vo.CompetitionGroupEntry();	
 			new SoccerServer.TransferModel.vo.TeamMatchStats();	
-			new SoccerServer.TransferModel.vo.PredefinedTeam();	
 			new SoccerServer.TransferModel.vo.RankingPage();	
 			new SoccerServer.TransferModel.vo.RankingTeam();	
 			new SoccerServer.TransferModel.vo.SpecialTrainingDefinition();	
