@@ -62,7 +62,7 @@ package Match
 
 		public static const ExtraTimeTurno:Number = 15.0;			// Segundos extras que se obtienen en el turno con la habilidad especial
 		
-		public static const VelPossibleFault:Number = 3.0;			// Velocidad MÍNIMA que debe existir para que haya posibilidad de falta. Límite inferior de falta al portero
+		public static const VelPossibleFault:Number = 8.0;			// Velocidad MÍNIMA que debe existir para que haya posibilidad de falta. Límite inferior de falta al portero
 		public static const VelFaultT1:Number = 18.0;				// 5 // Límite inferior de falta a un jugador (no portero) y límite inferior de tarjeta amarilla al portero
 		public static const VelFaultT2:Number = 25.0;				// Límite inferior de tarjeta amarilla a un jugador y límite inferior de tarjeta roja al portero 
 		public static const VelFaultT3:Number = 32.0;				// Límite inferior de tarjeta roja a un jugador
