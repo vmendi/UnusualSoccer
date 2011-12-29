@@ -30,7 +30,7 @@
 		</s:Rect>
 	</s:Graphic>
 	
-	<GameView:BadgeTeam TeamName="{data}" />
+	<GameView:BadgeTeam TeamNameID="{data}" />
 	<s:Label text="{data}" styleName="whiteBoldVeryBig" x="50" y="9"/>	
 	
 	<s:Graphic>

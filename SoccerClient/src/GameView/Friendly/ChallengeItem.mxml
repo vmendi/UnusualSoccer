@@ -45,7 +45,7 @@
 		
 		<s:Group>
 			<s:layout><s:VerticalLayout paddingTop="4" /></s:layout>
-			<GameView:BadgeTeam TeamName="{data.SourcePlayer.PredefinedTeamNameID}" />
+			<GameView:BadgeTeam TeamNameID="{data.SourcePlayer.PredefinedTeamNameID}" />
 		</s:Group>
 		
 		<s:Group width="90" height="50">

@@ -43,7 +43,7 @@
 	
 	<mx:Image source="@Embed(source='/Assets/General.swf', symbol='StatusPanelBackground')"/>
 	
-	<GameView:BadgeTeam x="10" y="22" TeamName="{mTeamModel.TheTeam.PredefinedTeamNameID}" BigMode="true" />
+	<GameView:BadgeTeam x="10" y="22" TeamNameID="{mTeamModel.TheTeam.PredefinedTeamNameID}" BigMode="true" />
 	
 	<s:Label x="62" y="25" text="{mTeamModel.TheTeam.Name}" styleName="whiteBoldBig" id="MyTeamNameLabel" filters="{txtGlowFilter}"/>
 	<s:Label x="62" y="44" text="{mTeamModel.TheTeam.PredefinedTeamNameID}" styleName="whiteBoldVeryBig" id="MyPredefinedTeamLabel" filters="{txtGlowFilter}"/> 
