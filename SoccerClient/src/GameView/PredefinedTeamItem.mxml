@@ -31,7 +31,7 @@
 	</s:Graphic>
 	
 	<GameView:BadgeTeam TeamNameID="{data}" />
-	<s:Label text="{data}" styleName="whiteBoldVeryBig" x="50" y="9"/>	
+	<s:Label text="{resourceManager.getString('teams',data.toString())}" styleName="whiteBoldVeryBig" x="50" y="9"/>	
 	
 	<s:Graphic>
 		<s:Line xFrom="0" xTo="410" yFrom="43" yTo="43">
