@@ -75,10 +75,11 @@ package GameModel
 			
 			PredefinedTeamNameIDs = teamIDs;
 		}
-		
+
+		// Estos seran los que ofertamos en la pantalla de Login, pero en ningun sitio forzamos a que los que nos vienen de la DB sea alguno de estos.
 		[Bindable]
 		public function get PredefinedTeamNameIDs() : ArrayCollection { return mPredefinedTeamNameIDs; }
-		public function set PredefinedTeamNameIDs(v:ArrayCollection) : void { mPredefinedTeamNameIDs = v; }	// En 4.1 no se puede poner privado todavia
+		public function set PredefinedTeamNameIDs(v:ArrayCollection) : void { mPredefinedTeamNameIDs = v; }	// En Flex 4.1 no se puede poner privado todavia
 		private var mPredefinedTeamNameIDs : ArrayCollection;		
 
 		private var mMainModel : MainGameModel;
