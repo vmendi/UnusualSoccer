@@ -5,6 +5,7 @@ package GameModel
 	import flash.events.EventDispatcher;
 	
 	import mx.collections.ArrayCollection;
+	import mx.resources.ResourceManager;
 
 	public final class PredefinedTeamsModel extends EventDispatcher
 	{
@@ -74,6 +75,15 @@ package GameModel
 			}
 			
 			PredefinedTeamNameIDs = teamIDs;
+		}
+		
+		static public function Localize(predefinedTeamNameID : String) : String
+		{
+			// En la version Mahou los IDs son directamente los nombres que mostramos a los jugadores, van sin localizar
+			if (AppConfig.VERSION_ID == "MahouLigaChapas")
+				return predefinedTeamNameID;
+			else
+				return ResourceManager.getInstance().getString("teams", predefinedTeamNameID);
 		}
 
 		// Estos seran los que ofertamos en la pantalla de Login, pero en ningun sitio forzamos a que los que nos vienen de la DB sea alguno de estos.
