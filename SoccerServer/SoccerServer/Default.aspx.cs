@@ -19,6 +19,19 @@ namespace SoccerServer
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Cargamos nuestros settings procedurales que nos deja ahi Global.asax
+            FacebookApplication.SetApplication(Global.Instance.FacebookSettings as IFacebookApplication);
+
+            // Asumimos que si no tenemos signed_request es porque nos están intendo cargar desde fuera del canvas: redireccionamos al canvas.
+            // Hemos comprobado que el SignedRequest tb se puede obtener a partir de la cookie. En ese caso, despues de haber cargado los settings
+            // con un FacebookApplication.SetApplication, el signed request se obtendria igual q abajo. Sin embargo, queremos forzar a estar siempre 
+            // en el canvas, asi que lo dejamos redireccionando
+            if (HttpContext.Current.Request["signed_request"] == null)
+            {
+                Log.log(Global.GLOBAL_LOG, "Intento de carga de Default.aspx sin signed_request");
+                Response.Redirect(Global.Instance.FacebookSettings.CanvasPage, true);
+            }
+
             // Para las versiones no-default (Mahou) el IIS deberia estar configurado para responder con la pagina adecuada.
             // Sin embargo, para que no haya que reconfigurar el IIS para hacer una prueba, comprobamos aqui si somos una 
             // version no-default y hacemos un transfer.
@@ -26,21 +39,16 @@ namespace SoccerServer
                 !HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.ToLower().Contains("defaultmahou.aspx"))
             {
                 Server.Transfer("~/DefaultMahou.aspx");
-                return;
             }
-
-            if (HttpContext.Current.Request["signed_request"] == null)
-            {
-                Log.log(Global.GLOBAL_LOG, "Intento de carga de Default.aspx sin signed_request");
-                return;
-            }
-
-            // Cargamos nuestros settings procedurales que nos deja ahi Global.asax
-            FacebookApplication.SetApplication(Global.Instance.FacebookSettings as IFacebookApplication);
 
             // Incluso sin estar autorizados, siempre tenemos un signed_request en el que esta contenido el country (geolocalizado) y el locale
-            var fbSignedRequest = FacebookSignedRequest.Parse(Global.Instance.FacebookSettings as IFacebookApplication, HttpContext.Current.Request["signed_request"]);
-            var country = GetCountryFromSignedRequest(fbSignedRequest); // TODO: Usarlo para redireccionar si es Mahou y no es España
+            // TODO: Usarlo para redireccionar si es Mahou y no es España            
+            /*
+             * OLD: Cogiendo el parametro de la query string y parseando. Asumimos que es mejor coger el del Context y que el SDK decida.
+             *      var fbSignedRequest = FacebookSignedRequest.Parse(Global.Instance.FacebookSettings as IFacebookApplication, 
+             *                                                        HttpContext.Current.Request["signed_request"]);
+             */
+            var country = GetCountryFromSignedRequest(FacebookWebContext.Current.SignedRequest);
 
             if (Request.QueryString.AllKeys.Contains("FakeSessionKey"))
             {
@@ -48,8 +56,8 @@ namespace SoccerServer
             }
             else
             {
-                var auth = new CanvasAuthorizer();
-
+                var auth = new CanvasAuthorizer(); // { Permissions = new[] { "publish_actions" } };
+                                                
                 // Si no estamos logeados o autorizados, nos redireccionara automaticamente a la pagina de login/autorizacion
                 // En el web.config hay un handler de facebookredirect.axd, a traves de el se hacen las redirecciones
                 if (auth.Authorize())
