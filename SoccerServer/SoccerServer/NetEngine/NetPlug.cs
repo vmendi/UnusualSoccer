@@ -273,6 +273,7 @@ namespace SoccerServer.NetEngine
                     try
                     {
                         // http://msdn.microsoft.com/en-us/library/system.net.sockets.socket.shutdown.aspx
+                        // http://www.sockets.com/err_lst1.htm#WSAECONNRESET
                         mSocket.Shutdown(SocketShutdown.Both);
                     }
                     catch (Exception ex)
