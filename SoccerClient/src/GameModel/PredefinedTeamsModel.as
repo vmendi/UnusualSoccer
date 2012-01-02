@@ -16,7 +16,7 @@ package GameModel
 			
 			var teamIDs : ArrayCollection = new ArrayCollection();
 			
-			if (AppConfig.VERSION_ID == "MahouLigaChapas")
+			if (AppConfig.IsMahouLigaChapas)
 			{			
 				teamIDs.addItem("Athletic");
 				teamIDs.addItem("Atlético");
@@ -80,7 +80,7 @@ package GameModel
 		static public function Localize(predefinedTeamNameID : String) : String
 		{
 			// En la version Mahou los IDs son directamente los nombres que mostramos a los jugadores, van sin localizar
-			if (AppConfig.VERSION_ID == "MahouLigaChapas")
+			if (AppConfig.IsMahouLigaChapas)
 				return predefinedTeamNameID;
 			else
 				return ResourceManager.getInstance().getString("teams", predefinedTeamNameID);

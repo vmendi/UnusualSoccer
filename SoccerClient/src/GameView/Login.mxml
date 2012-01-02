@@ -3,7 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
 		 creationComplete="CreationCompleteHandler(event)"
-		 addedToStage="addedToStageHandler(event)"
+		 addedToStage="AddedToStageHandler(event)"
 		 >
 	
 	<fx:Script>
@@ -76,7 +76,7 @@
 			
 			private function SetValidity() : void
 			{
-				if (AppConfig.VERSION_ID=="MahouLigaChapas" && mNameValidity && mAgeValidity)
+				if (AppConfig.IsMahouLigaChapas && mNameValidity && mAgeValidity)
 				{
 					MyButtonNext.enabled = true;
 				}
@@ -137,7 +137,7 @@
 			private var mNameValidity : Boolean = false;
 			private var mAgeValidity : Boolean = false;
 			
-			protected function addedToStageHandler(event:Event):void
+			protected function AddedToStageHandler(event:Event):void
 			{
 				GameMetrics.ReportEvent(GameMetrics.VIEW_LOGIN,null);
 				GameMetrics.ReportPageView(GameMetrics.VIEW_LOGIN);
@@ -201,7 +201,7 @@
 			<s:Label x="32" y="126" width="300" color="#0DBF00" height="40" id="MyValidityLabel" styleName="whiteBoldBig" textAlign="center"/>
 		</s:Group>
 		
-		<s:Group x="0" visible="{AppConfig.VERSION_ID=='MahouLigaChapas'}" includeInLayout="{AppConfig.VERSION_ID=='MahouLigaChapas'}">
+		<s:Group x="0" visible="{AppConfig.IsMahouLigaChapas}" includeInLayout="{AppConfig.IsMahouLigaChapas}">
 			<s:Rect id="tbFill2" x="0" y="0" width="100%" height="27">
 				<s:fill>
 					<s:LinearGradient rotation="90">

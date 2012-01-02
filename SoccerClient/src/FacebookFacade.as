@@ -50,7 +50,7 @@ package
 				// Esto generara una llamada a FB para conseguir un nuevo access_token, distinto al primero 
 				// que se le pasa por POST al servidor (dentro del signed_request)
 				Facebook.init(AppConfig.APP_ID, Delegate.create(OnFacebookInit, callback), 
-							  { xfbml: true, oauth: true, cookie:true, frictionlessRequests:true });
+							  { status:true, xfbml: true, oauth: true, cookie:true,	frictionlessRequests:true });
 			}
 		}
 		
@@ -64,8 +64,9 @@ package
 				// cambiar la llamada
 				Facebook.setCanvasAutoResize(true);
 				
+				// Aseguramos que tenemos los permisos frescos
 				// Antes obteniamos aqui el /me, ahora no hace falta puesto que el locale viene del server
-				callback();
+				RefreshPermisions(callback);
 			}
 			else
 			{
@@ -87,7 +88,7 @@ package
 		}
 		
 		private function SetFakeSessionKey(callback:Function, requestedFakeSessionKey : String) : void
-		{			
+		{
 			mFakeSessionKey = requestedFakeSessionKey;
 			
 			SetWeborbSessionKey();
@@ -165,9 +166,78 @@ package
 			return null;
 		}
 		
+		private function RefreshPermisions(callback : Function) : void
+		{
+			// http://facebook.stackoverflow.com/questions/3388367/check-for-extended-permissions-with-new-facebook-javascript-sdk
+			Facebook.api("/me/permissions", onPermissions);
+			
+			function onPermissions(result:Object, fail:Object) : void
+			{
+				mPermissions = (result as Array)[0];
+				
+				if (callback != null)
+					callback();
+			}
+		}
+		
+		// Permisos para publicar en el ticker achivements & scores
+		public function HasPublishActionsPermission() : Boolean 
+		{ 
+			if (mPermissions == null)
+				throw new Error("Call RefreshPermissions first");
+			
+			return mPermissions.hasOwnProperty("publish_actions") && mPermissions["publish_actions"] == 1;
+		}
+		
+		// Permisos para publicar en la News Feed (wall) del usuario en su nombre.
+		public function HasPublishStreamPermission() : Boolean
+		{
+			if (mPermissions == null)
+				throw new Error("Call RefreshPermissions first");
+			
+			return mPermissions.hasOwnProperty("publish_stream") && mPermissions["publish_stream"] == 1;
+		}
+		
+		// Te llama con un true si ya teniamos los permisos o el usuario response "Allow". false si "Don't Allow"
+		// Llamad siempre dentro de un click!
+		public function EnsurePublishStreamPermission(callback : Function) : void
+		{
+			InnerEnsure(HasPublishStreamPermission, "publish_stream", callback);	
+		}
+		
+		public function EnsurePublishActionsPermission(callback : Function) : void
+		{
+			InnerEnsure(HasPublishActionsPermission, "publish_actions", callback);
+		}		
+		
+		private function InnerEnsure(checker : Function, permisionName : String, callback : Function) : void
+		{
+			// Si no los teniamos ya, los pedimos en este momento (popup)
+			if (!checker())
+			{
+				Facebook.login(onAskResponse, { scope: permisionName } );
+				
+				function onAskResponse(result : Object, fail : Object) : void
+				{
+					// Como no sabemos cómo sacar del result as FacebookAuthResponse si ha sido "Allow" or "Don't Allow", refrescamos
+					RefreshPermisions(onRefresh);
+					
+					function onRefresh() : void
+					{
+						callback(checker());
+					}
+				}
+			}
+			else
+			{
+				callback(true);
+			}
+		}
+		
 		private var mFakeSessionKey : String;
 		private var mFBAuthResponse:FacebookAuthResponse;						
 		private var mSessionKeyURLLoader : URLLoader;
 		private var mMe : Object;							// El objeto /me tal y como nos lo devuelve FB
+		private var mPermissions : Object;
 	}
 }
