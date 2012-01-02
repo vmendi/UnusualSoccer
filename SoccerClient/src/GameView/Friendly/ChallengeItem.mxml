@@ -6,6 +6,11 @@
 				toolTip="{data.Message}" xmlns:GameView="GameView.*">
 	
 	<fx:Style source="../styles.css" />
+	<fx:Script>
+		<![CDATA[
+			import GameModel.PredefinedTeamsModel;
+		]]>
+	</fx:Script>
 	
 	<s:states>
 		<s:State name="normal" />
@@ -51,7 +56,7 @@
 		<s:Group width="90" height="50">
 			<s:layout><s:VerticalLayout paddingTop="7" gap="3"/></s:layout>
 			<s:Label text="{data.SourcePlayer.Name}" styleName="whiteBoldBig" width="85" maxDisplayedLines="1"/>
-			<s:Label text="{resourceManager.getString('teams',data.SourcePlayer.PredefinedTeamNameID)}" styleName="whiteBoldMedium"/>
+			<s:Label text="{PredefinedTeamsModel.Localize(data.SourcePlayer.PredefinedTeamNameID)}" styleName="whiteBoldMedium"/>
 		</s:Group>
 
 		<s:Label width="119" height="50" verticalAlign="middle"

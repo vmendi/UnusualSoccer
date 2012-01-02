@@ -9,6 +9,8 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import GameModel.PredefinedTeamsModel;
+			
 			import SoccerServer.TransferModel.vo.CompetitionGroupEntry;
 			
 			private function InPromotion(theItem : Object) : Boolean
@@ -58,7 +60,7 @@
 		<s:Group width="306" height="50">
 			<s:layout><s:VerticalLayout paddingTop="7" gap="3"/></s:layout>
 			<s:Label width="100%" text="{data.Name}" styleName="whiteBoldBig" maxDisplayedLines="1" toolTip="{data.Name}"/>
-			<s:Label text="{resourceManager.getString('teams',data.PredefinedTeamNameID)}" styleName="greyBoldMedium"/>
+			<s:Label text="{PredefinedTeamsModel.Localize(data.PredefinedTeamNameID)}" styleName="greyBoldMedium"/>
 		</s:Group>
 
 		<s:Label width="60" height="50" styleName="whiteBoldBig" verticalAlign="middle" textAlign="center"

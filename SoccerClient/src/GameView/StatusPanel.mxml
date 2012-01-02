@@ -8,6 +8,7 @@
 
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
+		import GameModel.PredefinedTeamsModel;
 		import GameModel.TeamModel;
 		
 		import GameView.Purchase.PurchaseBase;
@@ -46,7 +47,7 @@
 	<GameView:BadgeTeam x="10" y="22" TeamNameID="{mTeamModel.TheTeam.PredefinedTeamNameID}" BigMode="true" />
 	
 	<s:Label x="62" y="25" text="{mTeamModel.TheTeam.Name}" styleName="whiteBoldBig" id="MyTeamNameLabel" filters="{txtGlowFilter}"/>
-	<s:Label x="62" y="44" text="{resourceManager.getString('teams',mTeamModel.TheTeam.PredefinedTeamNameID)}" styleName="whiteBoldVeryBig" id="MyPredefinedTeamLabel" filters="{txtGlowFilter}"/> 
+	<s:Label x="62" y="44" text="{PredefinedTeamsModel.Localize(mTeamModel.TheTeam.PredefinedTeamNameID)}" styleName="whiteBoldVeryBig" id="MyPredefinedTeamLabel" filters="{txtGlowFilter}"/> 
 	
 	<GameView:BadgeCategory width="64" height="43" left="209" top="24" TrueSkill="{mTeamModel.TheTeam.TrueSkill}" />
 	

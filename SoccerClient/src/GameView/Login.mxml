@@ -39,25 +39,25 @@
 				if (MyPredefinedTeamList.selectedIndex != -1)
 				{
 					if (validity == VALID_NAME.VALID)
-						SetNameValidity(true, "Nombre disponible");	
+						SetNameValidity(true, resourceManager.getString('main','LoginNameAvailable'));	
 					else if (validity == VALID_NAME.EMPTY)
-						SetNameValidity(false, "Por favor, escribe tu nombre de jugador");	
+						SetNameValidity(false, resourceManager.getString('main','LoginEnterName'));	
 					else if (validity == VALID_NAME.DUPLICATED)
-						SetNameValidity(false, "Nombre no disponible");	
+						SetNameValidity(false, resourceManager.getString('main','LoginNotAvailable'));	
 					else if (validity == VALID_NAME.INAPPROPIATE)
-						SetNameValidity(false, "Nombre inapropiado");
+						SetNameValidity(false, resourceManager.getString('main','LoginInappropriateName'));
 					else if (validity == VALID_NAME.TOO_SHORT)
-						SetNameValidity(false, "Nombre demasiado corto");
+						SetNameValidity(false, resourceManager.getString('main','LoginNameTooShort'));
 					else if (validity == VALID_NAME.WHITE_SPACE_TRIM)
-						SetNameValidity(false, "Nombre no puede empezar o acabar en blanco");
+						SetNameValidity(false, resourceManager.getString('main','LoginNameBlank'));
 					else if (validity == VALID_NAME.TOO_MANY_WHITESPACES)
-						SetNameValidity(false, "Demasiados espacios en blanco (máximo 3)");
+						SetNameValidity(false, resourceManager.getString('main','LoginNameBlankSpaces'));
 					else
-						SetNameValidity(false, "Nombre invalido");
+						SetNameValidity(false, resourceManager.getString('main','LoginInvalidName'));
 				}
 				else
 				{
-					SetNameValidity(false, "Antes de nada, selecciona un equipo");
+					SetNameValidity(false, resourceManager.getString('main','LoginSelectName'));
 				}
 			}
 			
@@ -76,10 +76,18 @@
 			
 			private function SetValidity() : void
 			{
-				if (mNameValidity && mAgeValidity)
+				if (AppConfig.VERSION_ID=="MahouLigaChapas" && mNameValidity && mAgeValidity)
+				{
 					MyButtonNext.enabled = true;
+				}
+				else if (mNameValidity)
+				{
+					MyButtonNext.enabled = true;
+				}
 				else
+				{
 					MyButtonNext.enabled = false;
+				}
 			}
 			
 			protected function MyRadioButtonYes_changeHandler(event:Event):void
@@ -159,60 +167,72 @@
 	
 	<mx:Image x="0" y="0" source="{resourceManager.getString('main','LoginLogoSource')}" />
 	
-	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" x="352" y="40" width="365" height="570" title="1. SELECCIONA TU EQUIPO">
+	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" x="352" y="40" width="365" title="{resourceManager.getString('main','Login01SelectTeam')}">
+		<s:layout>
+			<s:VerticalLayout gap="0" />
+		</s:layout>
 		<s:List width="365" height="280" id="MyPredefinedTeamList" 
 				top="0" left="0"
 				dataProvider="{mMainGameModel.ThePredefinedTeamsModel.PredefinedTeamNameIDs}"
 				itemRenderer="GameView.PredefinedTeamItem"
 				skinClass="GameView.Skins.DefaultListSkin" tabEnabled="false" tabFocusEnabled="false">
-		</s:List>	
+		</s:List>
 		
-		<s:Rect id="tbFill" x="0" y="280" width="100%" height="27">
-			<s:fill>
-				<s:LinearGradient rotation="90">
-					<s:GradientEntry color="#fe0001" ratio="0" alpha="1"/>
-					<s:GradientEntry color="#8c1304" ratio="1.0" alpha="1"/>
-				</s:LinearGradient>
-			</s:fill>
-		</s:Rect>
-		<s:Label id="myStep2Label" maxDisplayedLines="1"
-				 x="10" y="280" width="350" height="27"
-				 verticalAlign="middle" textAlign="start" styleName="headerBox" filters="{MyTextDropShadowFilter}"
-				 text="2. ELIGE TU NOMBRE DE ENTRENADOR"></s:Label>
+		<s:Group>
+			<s:Rect id="tbFill" x="0" y="0" width="100%" height="27">
+				<s:fill>
+					<s:LinearGradient rotation="90">
+						<s:GradientEntry color="#fe0001" ratio="0" alpha="1"/>
+						<s:GradientEntry color="#8c1304" ratio="1.0" alpha="1"/>
+					</s:LinearGradient>
+				</s:fill>
+			</s:Rect>
+			<s:Label id="myStep2Label" maxDisplayedLines="1"
+					 x="10" y="0" width="350" height="27"
+					 verticalAlign="middle" textAlign="start" styleName="headerBox" filters="{MyTextDropShadowFilter}"
+					 text="{resourceManager.getString('main','Login02EnterName')}"></s:Label>
+			
+			<s:Label id="myStep2Txt" x="10" y="35" width="350"
+					 verticalAlign="middle" textAlign="center" styleName="whiteBoldBig"
+					 text="{resourceManager.getString('main','Login02EnterNameTxt')}"></s:Label>
+			
+			
+			<s:TextInput x="82" y="97" change="MyTeamNameInput_changeHandler(event)" id="MyTeamNameInput" width="200" styleName="blackBoldMediumHN" maxChars="30"/>
+			<s:Label x="32" y="126" width="300" color="#0DBF00" height="40" id="MyValidityLabel" styleName="whiteBoldBig" textAlign="center"/>
+		</s:Group>
 		
-		<s:Label id="myStep2Txt" x="10" y="315" width="350"
-				 verticalAlign="middle" textAlign="center" styleName="whiteBoldBig"
-				 text="Este será el nombre que aparecerá en el juego, el que verán los otros jugadores. De esta forma tu nombre de usuario de Facebook permanecerá oculto."></s:Label>
+		<s:Group x="0" visible="{AppConfig.VERSION_ID=='MahouLigaChapas'}" includeInLayout="{AppConfig.VERSION_ID=='MahouLigaChapas'}">
+			<s:Rect id="tbFill2" x="0" y="0" width="100%" height="27">
+				<s:fill>
+					<s:LinearGradient rotation="90">
+						<s:GradientEntry color="#fe0001" ratio="0" alpha="1"/>
+						<s:GradientEntry color="#8c1304" ratio="1.0" alpha="1"/>
+					</s:LinearGradient>
+				</s:fill>
+			</s:Rect>
+			<s:Label id="myStep3Label" maxDisplayedLines="1"
+					 x="10" y="0" width="350" height="27"
+					 verticalAlign="middle" textAlign="start" styleName="headerBox" filters="{MyTextDropShadowFilter}"
+					 text="3. ACEPTA LAS CONDICIONES LEGALES"></s:Label>
+			
+			<s:Label id="myStep3Txt" x="10" y="32" width="350"
+					 verticalAlign="middle" textAlign="center" styleName="whiteBoldBig"
+					 text="Para jugar a este juego debes ser mayor de edad."></s:Label>
+			
+			<s:Label id="myStep4Txt" x="100" y="56"
+					 verticalAlign="middle" textAlign="center" styleName="whiteBoldBig"
+					 text="¿Lo eres?"></s:Label>
+			
+			<s:RadioButton x="170" y="52" id="myRadioButtonYes" change="MyRadioButtonYes_changeHandler(event)" label="Sí" groupName="SoyMayorEdad" styleName="whiteBoldBig"/>
+			<s:RadioButton x="210" y="52" id="myRadioButtonNo" change="MyRadioButtonNo_changeHandler(event)" label="No" groupName="SoyMayorEdad" styleName="whiteBoldBig"/>
+			
+		</s:Group>
 		
-		<s:BitmapImage x="0" bottom="0" source="@Embed(source='/Assets/General.swf', symbol='LoginBottomBg')" fillMode="clip" />
-		<s:TextInput x="82" y="377" change="MyTeamNameInput_changeHandler(event)" id="MyTeamNameInput" width="200" styleName="blackBoldMediumHN" maxChars="30"/>
-		<s:Label x="32" y="406" width="300" color="#0DBF00" height="40" id="MyValidityLabel" styleName="whiteBoldBig" textAlign="center"/>
+		<s:Group>
+			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='LoginBottomBg')" fillMode="clip" />
+			<s:Button id="MyButtonNext" label="{resourceManager.getString('main','Continue')}" click="MyButtonNext_clickHandler(event)" x="98" top="4" width="160" height="24" skinClass="GameView.Skins.ButtonGreySkin"/>
+		</s:Group>
 		
-		<s:Rect id="tbFill2" x="0" y="430" width="100%" height="27">
-			<s:fill>
-				<s:LinearGradient rotation="90">
-					<s:GradientEntry color="#fe0001" ratio="0" alpha="1"/>
-					<s:GradientEntry color="#8c1304" ratio="1.0" alpha="1"/>
-				</s:LinearGradient>
-			</s:fill>
-		</s:Rect>
-		<s:Label id="myStep3Label" maxDisplayedLines="1"
-				 x="10" y="430" width="350" height="27"
-				 verticalAlign="middle" textAlign="start" styleName="headerBox" filters="{MyTextDropShadowFilter}"
-				 text="3. ACEPTA LAS CONDICIONES LEGALES"></s:Label>
-		
-		<s:Label id="myStep3Txt" x="10" y="462" width="350"
-				 verticalAlign="middle" textAlign="center" styleName="whiteBoldBig"
-				 text="Para jugar a este juego debes ser mayor de edad."></s:Label>
-		
-		<s:Label id="myStep4Txt" x="100" y="486"
-				 verticalAlign="middle" textAlign="center" styleName="whiteBoldBig"
-				 text="¿Lo eres?"></s:Label>
-		
-		<s:RadioButton x="170" y="482" id="myRadioButtonYes" change="MyRadioButtonYes_changeHandler(event)" label="Sí" groupName="SoyMayorEdad" styleName="whiteBoldBig"/>
-		<s:RadioButton x="210" y="482" id="myRadioButtonNo" change="MyRadioButtonNo_changeHandler(event)" label="No" groupName="SoyMayorEdad" styleName="whiteBoldBig"/>
-		
-		<s:Button id="MyButtonNext" label="CONTINUAR" click="MyButtonNext_clickHandler(event)" x="98" y="512" width="160" height="24" skinClass="GameView.Skins.ButtonGreySkin"/>
 	</s:Panel>
 
 </s:Group>

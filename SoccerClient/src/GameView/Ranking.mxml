@@ -6,6 +6,7 @@
 	
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
+		import GameModel.PredefinedTeamsModel;
 		import GameModel.RankingModel;
 		
 		import GameView.Skins.DefaultListSkin;
@@ -98,7 +99,7 @@
 						<s:layout><s:VerticalLayout paddingTop="7" gap="3"/></s:layout>
 						<s:Label width="100%" text="{mRankingModel.SelectedRankingTeam.Name}" styleName="whiteBoldBig" 
 								 maxDisplayedLines="1" toolTip="{mRankingModel.SelectedRankingTeam.Name}"/>
-						<s:Label text="{resourceManager.getString('teams',mRankingModel.SelectedRankingTeam.PredefinedTeamNameID)}" styleName="greyBoldMedium"/>
+						<s:Label text="{PredefinedTeamsModel.Localize(mRankingModel.SelectedRankingTeam.PredefinedTeamNameID)}" styleName="greyBoldMedium"/>
 					</s:Group>
 				</s:Group>
 			</s:Group>
