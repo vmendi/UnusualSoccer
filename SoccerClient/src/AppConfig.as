@@ -17,6 +17,10 @@ package
 		
 		static public var REQUEST_IDS : ArrayCollection = null;
 		
+		// Una pregunta que nos hacemos en varios sitios, por tenerla centralizada
+		static public function get IsMahouLigaChapas() : Boolean { return VERSION_ID=='MahouLigaChapas'; }
+		
+		
 		static public function Init(parameters : Object) : void
 		{
 			if (parameters.hasOwnProperty("VersionID"))
