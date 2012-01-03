@@ -208,7 +208,7 @@ package
 		public function EnsurePublishActionsPermission(callback : Function) : void
 		{
 			InnerEnsure(HasPublishActionsPermission, "publish_actions", callback);
-		}		
+		}
 		
 		private function InnerEnsure(checker : Function, permisionName : String, callback : Function) : void
 		{

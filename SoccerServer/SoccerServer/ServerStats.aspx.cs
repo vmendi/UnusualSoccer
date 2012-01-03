@@ -210,11 +210,13 @@ namespace SoccerServer
 
         protected void MisticalRefresh_Click(object sender, EventArgs e)
         {
+            /*
             foreach (var team in mDC.Teams)
             {
-                //team.PredefinedTeamNameID = team.PredefinedTeam.Name;
+                team.PredefinedTeamNameID = team.PredefinedTeam.Name;
             }
             mDC.SubmitChanges();
+             */
         }
 
         private void ShowRestrictions()
