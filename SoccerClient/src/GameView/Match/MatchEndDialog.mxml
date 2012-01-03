@@ -203,7 +203,11 @@
 		<s:State name="WinnerByAbandon"/>
 	</s:states>
 
-	<GameView:PopupBackground width="402" top="-15" bottom="-15" />
+	<GameView:PopupBackground width="402" top="-15" bottom="-15" left="-15" right="-15" />
+	
+	<s:Button top="0" right="0" label="X" label.Winner="X" label.WinnerByAbandon="X" 
+			  click="AceptarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+	
 	<Competition:DivisionBadge x="-60" y="0" Division="{mCompetitionModel.TheGroup.DivisionName}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" />
 	
 	<s:Label top="15" horizontalCenter="0" 
@@ -298,9 +302,7 @@
 		
 		<s:Group horizontalCenter="0">
 			<s:layout><s:HorizontalLayout horizontalAlign="center" gap="20" /></s:layout>
-			<s:Button label="Publicar" click="PublicarClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" includeIn="Winner, WinnerByAbandon" />
-			<s:Button label="Continuar" label.Winner="Saltar" label.WinnerByAbandon="Saltar" 
-					  click="AceptarClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			<s:Button label="{resourceManager.getString('main','Publish')}" click="PublicarClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" includeIn="Winner, WinnerByAbandon" />
 		</s:Group>
 		
 	</s:Group>
