@@ -50,7 +50,10 @@ package Match
 		//
 		static public function LoadMatchResources(callback : Function) : void
 		{
-			var dispatcher : IEventDispatcher = ResourceManager.getInstance().loadResourceModule("../Imgs/Match_es_ES.swf", true, 
+			// Cogemos el primer locale de la cadena. Los assets del partido no tienen fallbacks, cargamos un unico fichero donde tiene que estar todo.
+			var firstLocale : String = ResourceManager.getInstance().localeChain[0]; 
+			var fileURL : String = "../Imgs/Match_" + firstLocale + ".swf";
+			var dispatcher : IEventDispatcher = ResourceManager.getInstance().loadResourceModule(fileURL, true,
 																								 ApplicationDomain.currentDomain, SecurityDomain.currentDomain);
 			dispatcher.addEventListener(ResourceEvent.ERROR, onError);
 			
