@@ -30,12 +30,6 @@
 		
 		[Bindable] private var mMainGameModel : MainGameModel;
 		[Bindable] private var mTeamModel : TeamModel;
-		
-		protected function OnHallOfFameClickHandler(event:MouseEvent):void
-		{
-			(HierarchyUtils.FindParentOfType(this, "GameView::MainView") as MainView).ChangeStateToRanking();			
-		}
-		
 	]]></fx:Script>
 	
 	<fx:Declarations>
