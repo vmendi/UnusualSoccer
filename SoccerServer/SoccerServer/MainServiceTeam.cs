@@ -256,5 +256,49 @@ namespace SoccerServer
 
             return ret;
         }
+
+        public bool GetExtraRewardForMatch(int matchID)
+        {
+            bool bRet = false;
+
+            using (CreateDataForRequest())
+            {
+                var theMatchParticipation = (from p in mContext.MatchParticipations
+                                             where p.TeamID == mPlayer.Team.TeamID && p.MatchID == matchID
+                                             select p).First();
+
+                // Evitamos llamadas duplicadas
+                if (!theMatchParticipation.GotExtraReward)
+                {
+                    var otherParticipation = theMatchParticipation.Match.MatchParticipations.Single(p => p.MatchParticipationID != theMatchParticipation.MatchParticipationID);
+
+                    // Ganador o empate? En cualquier caso, duplicamos lo que ya hemos dado en RealtimeMatchResult.GiveRewards
+                    if (theMatchParticipation.Goals > otherParticipation.Goals)
+                    {
+                        mPlayer.Team.XP += 6;
+                        mPlayer.Team.SkillPoints += 30;
+                        bRet = true;
+                    }
+                    else
+                    if (theMatchParticipation.Goals == otherParticipation.Goals)
+                    {
+                        mPlayer.Team.XP += 2;
+                        mPlayer.Team.SkillPoints += 10;
+                        bRet = true;
+                    }
+                    else
+                    {
+                        Log.log(MAINSERVICE, "El perdedor no puede solicitar GetExtraRewardForMatch " + mPlayer.PlayerID + " " + matchID);
+                    }
+                }
+
+                if (bRet)
+                {
+                    mContext.SubmitChanges();
+                }
+            }
+
+            return bRet;
+        }
 	}
 }

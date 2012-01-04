@@ -21,6 +21,7 @@
       public class MainServiceModel
       {     
         public var CreateTeamResult:Boolean;     
+        public var GetExtraRewardForMatchResult:Boolean;     
         public var HasTeamResult:Boolean;     
         public var IsNameValidResult:String;     
         public var OnLikedResult:int;     

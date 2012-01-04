@@ -267,9 +267,10 @@ package GameModel
 			mMatch.removeEventListener("OnMatchEnded", OnMatchEnded);
 			mMatch = null;
 			
-			// Si el resultado es null, se ha producido algun tipo de abort sobre el partido, no tenemos que hacer nada mas (OnCleaningShutdown...)
+			// Si el resultado es null es porque se ha producido algun tipo de abort sobre el partido -> no tenemos que hacer nada mas.
+			// Esto ocurre cuando se produce un Shutdown debido a un OnCleaningShutdown.
 			if (e.Data != null)
-			{				
+			{
 				// Refresco de por ejemplo el Ticket
 				mMainModel.TheTeamModel.RefreshTeam(null);
 				

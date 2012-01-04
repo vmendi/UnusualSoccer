@@ -16,7 +16,6 @@
 		import GameView.AnimatableDialog;
 		
 		import mx.collections.ArrayCollection;
-		import mx.collections.ArrayList;
 		
 		public static function Show(matchResult : Object) : void
 		{
@@ -43,17 +42,31 @@
 		}
 		
 		protected function PublicarClickHandler(event:MouseEvent):void
-		{
-			AceptarClickHandler(event);
-			
-			var msgToPublish : Object = PublishMessages.BuildMatchEndPublishMessage(currentState == "WinnerByAbandon");
+		{			
+			var msgToPublish : Object = PublishMessages.BuildMatchEndPublishMessage();
 			
 			// Hacemos los reemplazos, la mismas palabras (CONTRARIO, RESULTADO) para todos los idiomas
 			msgToPublish.daDescription = (msgToPublish.daDescription as String).replace("CONTRARIO", mOpponentName);
 			msgToPublish.daDescription = (msgToPublish.daDescription as String).replace("RESULTADO", mMatchResult.ResultPlayer1.Goals + 
 																									 "-" + 
-																									 mMatchResult.ResultPlayer2.Goals);			
-			PublishMessages.Publish(msgToPublish);
+																									 mMatchResult.ResultPlayer2.Goals);
+			// Esto por dentro vera si ya tenemos los permisos o intentara adquirirlos...
+			PublishMessages.TryPermissionsAndPublish(msgToPublish, onPublishCallback);
+			
+			function onPublishCallback(published : Boolean) : void
+			{
+				if (published)
+				{
+					if (MatchResultUtils.GotRewards(mMatchResult, mTeamModel))
+					{
+						// Le pedimos al servidor que nos conceda los rewards extras... esto por dentro hará un TeamRefresh
+						mTeamModel.GetExtraRewardForMatch(mMatchResult.MatchID);
+					}
+				}
+				
+				// Cerramos el dialogo por el flujo normal
+				AceptarClickHandler(event);
+			}
 		}
 				
 		protected function CreationCompleteHandler(event:Event):void

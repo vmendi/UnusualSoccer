@@ -63,5 +63,11 @@ package GameModel
 			return matchResult.WasCompetition;
 		}
 		
+		static public function GotRewards(matchResult : Object, teamModel : TeamModel) : Boolean
+		{
+			var myResult : Object = GetMyResult(matchResult, teamModel);
+			
+			return myResult.DiffXP > 0 || myResult.DiffSkillPoints > 0;
+		}		
 	}
 }

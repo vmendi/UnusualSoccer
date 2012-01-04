@@ -51,8 +51,8 @@ package Match
 			_Fitness = descTeam.Fitness;
 			_FormationName = descTeam.Formation;			
 
-			// Copiamos la lista de habilidades especiales
-			LoadSkills(descTeam.SpecialSkillsIDs);
+			// Copiamos la lista de habilidades especiales, teniendo en cuenta que nos puede entrar un Array o un ArrayCollection
+			LoadSkills(descTeam.SpecialSkillsIDs is Array? descTeam.SpecialSkillsIDs : descTeam.SpecialSkillsIDs.toArray());
 			
 			// Inicializamos cada una de las chapas 
 			for (var i:int = 0; i < CAPS_BY_TEAM; i++ )

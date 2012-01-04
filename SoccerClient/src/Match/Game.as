@@ -109,21 +109,11 @@ package Match
 			TheAudioManager.AddClass("SoundCollisionCapBall", ResourceManager.getInstance().getClass("match", "SoundCollisionCapBall"));			
 			TheAudioManager.AddClass("SoundCollisionCapCap", ResourceManager.getInstance().getClass("match", "SoundCollisionCapCap"));			
 			TheAudioManager.AddClass("SoundCollisionWall", ResourceManager.getInstance().getClass("match", "SoundCollisionWall"));
+						
+			// Lanzamos el sonido ambiente como música para que se detenga automaticamente al finalizar
 			//TheAudioManager.AddClass("SoundAmbience", MatchAssets.SoundAmbience);
-			
-			// Lanzamos el sonido ambiente como música para que se detenga automaticamente al finalizar 
 			//heAudioManager.PlayMusic("SoundAmbience", 0.3);
-			
-			// Convertimos las mx.Collections.ArrayCollection que vienen por red a Arrays
-			if (!MatchConfig.OfflineMode)
-			{
-				descTeam1.SoccerPlayers = (descTeam1.SoccerPlayers as Object).toArray();
-				descTeam2.SoccerPlayers = (descTeam2.SoccerPlayers as Object).toArray();
-			
-				descTeam1.SpecialSkillsIDs = (descTeam1.SpecialSkillsIDs as Object).toArray();
-				descTeam2.SpecialSkillsIDs = (descTeam2.SpecialSkillsIDs as Object).toArray();
-			}
-			
+						
 			// TODO: Deberiamos utilizar una semilla envíada desde el servidor!!!
 			_Random = new Random(123);			
 			_Timer = new Match.Time();
@@ -205,7 +195,7 @@ package Match
 				case GameState.Init:
 				{
 					_Part = 1;
-					TheGamePhysics.Start();					
+					TheGamePhysics.Start();	
 					ChangeState(GameState.NewPart);
 					break;
 				}

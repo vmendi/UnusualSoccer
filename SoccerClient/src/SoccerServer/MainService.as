@@ -61,6 +61,8 @@
         
         remoteObject.CreateTeam.addEventListener("result",CreateTeamHandler);
         
+        remoteObject.GetExtraRewardForMatch.addEventListener("result",GetExtraRewardForMatchHandler);
+        
         remoteObject.HasTeam.addEventListener("result",HasTeamHandler);
         
         remoteObject.IsNameValid.addEventListener("result",IsNameValidHandler);
@@ -144,6 +146,15 @@
       public function CreateTeam(name:String,predefinedTeamNameID:String, responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.CreateTeam(name,predefinedTeamNameID);
+        
+        if( responder != null )
+            asyncToken.addResponder( responder );
+
+      }
+    
+      public function GetExtraRewardForMatch(matchID:int, responder:IResponder = null ):void
+      {
+        var asyncToken:AsyncToken = remoteObject.GetExtraRewardForMatch(matchID);
         
         if( responder != null )
             asyncToken.addResponder( responder );
@@ -314,6 +325,14 @@
         
           var returnValue:Boolean = event.result as Boolean;
           model.CreateTeamResult = returnValue;
+        
+      }
+         
+      public virtual function GetExtraRewardForMatchHandler(event:ResultEvent):void
+      {
+        
+          var returnValue:Boolean = event.result as Boolean;
+          model.GetExtraRewardForMatchResult = returnValue;
         
       }
          

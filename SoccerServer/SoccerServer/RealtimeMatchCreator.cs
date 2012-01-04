@@ -116,6 +116,7 @@ namespace SoccerServer
             part.AsHome = asHome;
             part.Goals = 0;
             part.TurnsPlayed = 0;
+            part.GotExtraReward = false;
             part.Team = bddPlayer.Team;
 
             return part;

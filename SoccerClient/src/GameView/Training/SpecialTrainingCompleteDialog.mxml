@@ -21,21 +21,26 @@
 			dialog.SpecialTrainingDef = specialTraining;
 		}
 		
-		protected function CompleteHandler(event:Event):void
+		protected function CompleteHandler(event:Event) : void
 		{
 			(MySkillMC.content as MovieClip).gotoAndStop("SpecialSkill" + mSpecialTrainingDef.SpecialTrainingDefinitionID);
 		}
 				
-		protected function ClickHandler(event:MouseEvent):void
+		protected function ClickHandler(event:MouseEvent) : void
 		{
 			AnimatableDialog.Dismiss(this, null);
 		}
 		
 		protected function PublishHandler(event:MouseEvent) : void
 		{
-			ClickHandler(null);
+			// Esto por dentro vera si ya tenemos los permisos o intentara adquirirlos...
+			PublishMessages.TryPermissionsAndPublish(PublishMessages.BuildSpecialTrainingPublishMessage(mSpecialTrainingDef.SpecialTrainingDefinitionID), onPublishCallback);
 			
-			PublishMessages.Publish(PublishMessages.BuildSpecialTrainingPublishMessage(mSpecialTrainingDef.SpecialTrainingDefinitionID));
+			function onPublishCallback(published : Boolean) : void
+			{				
+				// Cerramos el dialogo por el flujo normal
+				ClickHandler(null);
+			}
 		}
 		
 		[Bindable]

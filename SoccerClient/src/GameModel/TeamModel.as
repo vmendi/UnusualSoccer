@@ -262,6 +262,16 @@ package GameModel
 						
 			TheTeamDetails = teamDetails;
 		}
+		
+		public function GetExtraRewardForMatch(matchID : int) : void
+		{
+			mMainService.GetExtraRewardForMatch(matchID, new mx.rpc.Responder(onGetExtraRewardForMatchResult, ErrorMessages.Fault));
+			
+			function onGetExtraRewardForMatchResult(rewarded : Boolean) : void
+			{
+				RefreshTeam(null);
+			}
+		}
 
 		// En realidad esta instancia de TeamDetails es una comodidad para mostrar el SelfTeam de forma simetrica a los demas
 		[Bindable]

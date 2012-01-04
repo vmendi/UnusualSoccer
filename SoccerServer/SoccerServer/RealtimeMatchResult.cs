@@ -23,6 +23,7 @@ namespace SoccerServer
             public List<int> InjuredSoccerPlayers;  // SoccerPlayerID. Los lesionados solo debido a este partido
         }
 
+        public int     MatchID = -1;
         public Boolean WasCompetition = false;
         public Boolean WasJust = true;
         public Boolean WasTooManyTimes = false;				// Se han jugado hoy mas de N partidos
@@ -32,11 +33,16 @@ namespace SoccerServer
         public RealtimeMatchResultPlayer ResultPlayer1 = new RealtimeMatchResultPlayer();
         public RealtimeMatchResultPlayer ResultPlayer2 = new RealtimeMatchResultPlayer();
 
+        public bool WonPlayer1 { get { return ResultPlayer1.Goals > ResultPlayer2.Goals; } }
+        public bool WonPlayer2 { get { return ResultPlayer1.Goals < ResultPlayer2.Goals; } }
+        public bool Draw       { get { return ResultPlayer1.Goals == ResultPlayer2.Goals; } }
+
         public RealtimeMatchResult(RealtimeMatch realtimeMatch)
         {
             using (mContext = new SoccerDataModelDataContext())
             {
                 mMatch = realtimeMatch;
+                MatchID = mMatch.MatchID;
 
                 mRealtimePlayer1 = mMatch.GetRealtimePlayer(RealtimeMatch.PLAYER_1);
                 mRealtimePlayer2 = mMatch.GetRealtimePlayer(RealtimeMatch.PLAYER_2);
@@ -204,11 +210,11 @@ namespace SoccerServer
 
             if (ResultPlayer1.Goals == ResultPlayer2.Goals)
             {
-                mBDDPlayer1.Team.XP += 4;
-                mBDDPlayer2.Team.XP += 4;
+                mBDDPlayer1.Team.XP += 2;
+                mBDDPlayer2.Team.XP += 2;
 
-                mBDDPlayer1.Team.SkillPoints += 20;
-                mBDDPlayer2.Team.SkillPoints += 20;
+                mBDDPlayer1.Team.SkillPoints += 10;
+                mBDDPlayer2.Team.SkillPoints += 10;
             }
             else
             {
@@ -220,8 +226,8 @@ namespace SoccerServer
                     loser = mBDDPlayer1;
                 }
 
-                winner.Team.XP += 12;
-                winner.Team.SkillPoints += 60;
+                winner.Team.XP += 6;
+                winner.Team.SkillPoints += 30;
             }
 
             ResultPlayer1.DiffXP = mBDDPlayer1.Team.XP - oldPlayer1XP;
@@ -344,10 +350,6 @@ namespace SoccerServer
             // ...por eso, si ya se han jugado 3, este sera el 4o y eso es TooManyTimes
             return times >= 3;
         }
-
-        public bool WonPlayer1 { get { return ResultPlayer1.Goals > ResultPlayer2.Goals; } }
-        public bool WonPlayer2 { get { return ResultPlayer1.Goals < ResultPlayer2.Goals; } }
-        public bool Draw       { get { return ResultPlayer1.Goals == ResultPlayer2.Goals; } }
 
         private SoccerDataModelDataContext mContext;
 

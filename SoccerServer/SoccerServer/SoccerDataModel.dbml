@@ -86,6 +86,7 @@
       <Column Name="AsHome" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="Goals" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="TurnsPlayed" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GotExtraReward" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="MatchParticipation_CompetitionMatchParticipation" Member="CompetitionMatchParticipation" ThisKey="MatchParticipationID" OtherKey="MatchParticipationID" Type="CompetitionMatchParticipation" Cardinality="One" />
       <Association Name="Match_MatchParticipation" Member="Match" ThisKey="MatchID" OtherKey="MatchID" Type="Match" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="Team_MatchParticipation" Member="Team" ThisKey="TeamID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="SET NULL" />

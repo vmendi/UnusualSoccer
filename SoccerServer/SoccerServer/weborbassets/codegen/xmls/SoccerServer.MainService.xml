@@ -130,6 +130,9 @@
         <arg name="name" type="String" nativetype="String" />
         <arg name="predefinedTeamNameID" type="String" nativetype="String" />
       </method>
+      <method name="GetExtraRewardForMatch" type="Boolean" nativetype="bool" containsvalues="0">
+        <arg name="matchID" type="int" nativetype="int" />
+      </method>
       <method name="HasTeam" type="Boolean" nativetype="bool" containsvalues="0" />
       <method name="IsNameValid" type="String" nativetype="SoccerServer.VALID_NAME" containsvalues="0">
         <arg name="name" type="String" nativetype="String" />

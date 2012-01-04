@@ -2,6 +2,8 @@ package
 {
 	import com.facebook.graph.Facebook;
 	
+	import flash.net.URLRequestMethod;
+	
 	import mx.core.Application;
 	import mx.resources.ResourceManager;
 
@@ -10,71 +12,96 @@ package
 		static public const PUBLISH_MESSAGE_EXAMPLE : Object =
 		{
 			daName: "Mahou Liga Chapas (Name)",
+			daMsg: "Mahou Liga Chapas (Name)",
 			daDescription: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." +
 						   "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-			daPicture: "/Imgs/Logo100x100.png",
-			daCaption: ""
+			daCaption: "",
+			daPicture: "/Imgs/Logo100x100.png"			
 		}
 
-		// Mensajes que se publican en Facebook al ganar un partido
-		static public function BuildMatchEndPublishMessage(bAbandoned : Boolean) : Object
+		// Mensaje que se publica en el wall al ganar un partido
+		static public function BuildMatchEndPublishMessage() : Object
 		{
-			if (!bAbandoned)
-			{
-				// Victoria normal
-				return {
-					daName: ResourceManager.getInstance().getString("main", "PublishVictoryTit"),
-					daDescription: ResourceManager.getInstance().getString("main", "PublishNormalVictoryDesc"),
-					daPicture: ResourceManager.getInstance().getString("main", "PublishVictoryImg"),
-					daCaption: ResourceManager.getInstance().getString("main", "PublishGenericCaption")
-				};
-			}
-			else
-			{
-				// Victoria porque el oponente abandono
-				return {
-					daName: ResourceManager.getInstance().getString("main", "PublishVictoryTit"),
-					daDescription: ResourceManager.getInstance().getString("main", "PublishAbandonedVictoryDesc"),
-					daPicture: ResourceManager.getInstance().getString("main", "PublishVictoryImg"),
-					daCaption: ResourceManager.getInstance().getString("main", "PublishGenericCaption")
-				};
-			}
+			var ret : Object = new Object();
+			
+			ret.daName = ResourceManager.getInstance().getString("main", "PublishVictoryTit");
+			ret.daMsg = ResourceManager.getInstance().getString("main", "PublishVictoryMsg");
+			ret.daDescription = ResourceManager.getInstance().getString("main", "PublishNormalVictoryDesc");
+			ret.daCaption = ResourceManager.getInstance().getString("main", "PublishGenericCaption");
+			ret.daPicture = ResourceManager.getInstance().getString("main", "PublishVictoryImg");
+			
+			return ret;
 		}
 		
-		// Mensajes que se publican en Facebook al adquirir una habilidad especial
+		// Mensajes que se publican en el wall al adquirir una habilidad especial
 		static public function BuildSpecialTrainingPublishMessage(spDefID : int) : Object
 		{
-			return {
-				daName: ResourceManager.getInstance().getString("training", "SpecialTrainingPublishName" + spDefID),
-				daDescription: ResourceManager.getInstance().getString("training", "SpecialTrainingPublishDescription" + spDefID),
-				daPicture: ResourceManager.getInstance().getString("training", "SpecialTrainingPublishPicture" + spDefID),
-				daCaption: ResourceManager.getInstance().getString("training", "SpecialTrainingPublishCaption" + spDefID)
-			};
+			var ret : Object = new Object();
+			
+			ret.daName = ResourceManager.getInstance().getString("training", "SpecialTrainingPublishName" + spDefID);
+			ret.daMsg = ResourceManager.getInstance().getString("training", "SpecialTrainingPublishName" + spDefID);
+			ret.daDescription = ResourceManager.getInstance().getString("training", "SpecialTrainingPublishDescription" + spDefID);
+			ret.daCaption = ResourceManager.getInstance().getString("training", "SpecialTrainingPublishCaption" + spDefID);
+			ret.daPicture = ResourceManager.getInstance().getString("training", "SpecialTrainingPublishPicture" + spDefID);
+			
+			return ret;
 		}
 		
-		static public function Publish(publishMessage : Object) : void
+		// directPublish: Intento de publicacion directa sin pasar por el ui de Facebook, usando el Graph API. Para ello, es neceario
+		//				  tener el permiso stream_publish ya concecido. Si no lo tuvieramos, la llamada fallara silenciosamente.
+		//
+		// La dejamos privada pq se ha convertido en un servicio interno para TryPermissionsAndPublish.
+		//
+		static private function Publish(publishMessage : Object, directPublish : Boolean) : void
 		{				
 			var data : Object = {
 									link:AppConfig.CANVAS_PAGE,
 									picture: AppConfig.CANVAS_URL + publishMessage.daPicture,
 									name:publishMessage.daName,
+									message:publishMessage.daMsg,
 									caption:publishMessage.daCaption,
 									description:publishMessage.daDescription
 								};
 			
-			Facebook.ui('feed', data, streamPublishResponse);
-						
-			function streamPublishResponse(response : Object) : void
+			// Publicacion asumiendo que tenemos el permiso?
+			if (directPublish)
 			{
-				if (response && response.post_id)
+				Facebook.api("/me/feed", onPublishResponse, data, URLRequestMethod.POST);
+				
+				function onPublishResponse(response : Object, fail : Object) : void
 				{
-					//alert('Post was published.');
-				} 
-				else 
+				}
+			}
+			else
+			{
+				// Popup modal en un IFrame sobre el flash
+				Facebook.ui('feed', data, streamPublishResponse);
+				
+				function streamPublishResponse(response : Object) : void
 				{
-					//alert('Post was not published.');
+					//if (response && response.post_id) { alert('Post was published.'); } 
+					//else { alert('Post was not published.'); }
 				}
 			}
 		}
+		
+		// Intento de obtener permisos y publicar. Como lo hacemos al menos en dos sitios (MatchEndDialog y SpecialTrainingCompleteDialog), 
+		// lo estandiramos aqui
+		static public function TryPermissionsAndPublish(publishMessage : Object, callback : Function) : void
+		{
+			// Vamos a ver si ya tenemos los permisos o intentamos adquirirlos...
+			SoccerClient.GetFacebookFacade().EnsurePublishStreamPermission(onPermissions);
+			
+			function onPermissions(gotPermissions : Boolean) : void
+			{
+				if (gotPermissions)
+				{
+					// A publicar directamente
+					PublishMessages.Publish(publishMessage, true);
+				}
+				
+				callback(gotPermissions);
+			}
+		}		
 	}
 }

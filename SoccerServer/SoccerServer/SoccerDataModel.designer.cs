@@ -1924,6 +1924,8 @@ namespace SoccerServer.BDDModel
 		
 		private int _TurnsPlayed;
 		
+		private bool _GotExtraReward;
+		
 		private EntityRef<CompetitionMatchParticipation> _CompetitionMatchParticipation;
 		
 		private EntityRef<Match> _Match;
@@ -1946,6 +1948,8 @@ namespace SoccerServer.BDDModel
     partial void OnGoalsChanged();
     partial void OnTurnsPlayedChanging(int value);
     partial void OnTurnsPlayedChanged();
+    partial void OnGotExtraRewardChanging(bool value);
+    partial void OnGotExtraRewardChanged();
     #endregion
 		
 		public MatchParticipation()
@@ -2080,6 +2084,26 @@ namespace SoccerServer.BDDModel
 					this._TurnsPlayed = value;
 					this.SendPropertyChanged("TurnsPlayed");
 					this.OnTurnsPlayedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GotExtraReward", DbType="Bit NOT NULL")]
+		public bool GotExtraReward
+		{
+			get
+			{
+				return this._GotExtraReward;
+			}
+			set
+			{
+				if ((this._GotExtraReward != value))
+				{
+					this.OnGotExtraRewardChanging(value);
+					this.SendPropertyChanging();
+					this._GotExtraReward = value;
+					this.SendPropertyChanged("GotExtraReward");
+					this.OnGotExtraRewardChanged();
 				}
 			}
 		}

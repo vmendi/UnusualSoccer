@@ -29,11 +29,12 @@ package
 			if (parameters.hasOwnProperty("Locale"))
 				LOCALE = parameters["Locale"];
 			
+			// Quitamos la / final, nos conviene para que luego quien sea concatene respecto al root (/Imgs/...)
 			if (parameters.hasOwnProperty("CanvasPage"))
-				CANVAS_PAGE = parameters["CanvasPage"];
+				CANVAS_PAGE = parameters["CanvasPage"].substr(0, parameters["CanvasPage"].length-1);
 			
 			if (parameters.hasOwnProperty("CanvasUrl"))
-				CANVAS_URL = parameters["CanvasUrl"];
+				CANVAS_URL = parameters["CanvasUrl"].substr(0, parameters["CanvasUrl"].length-1);
 						
 			if (parameters.hasOwnProperty("AppId"))
 				APP_ID = parameters["AppId"];

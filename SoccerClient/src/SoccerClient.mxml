@@ -37,7 +37,7 @@
 			
 			// Carga de parametros y configuracion global
 			AppConfig.Init(parameters);
-						
+
 			// Podemos ir cargando recursos que luego necesitaremos
 			MatchMain.LoadMatchResources(null);
 			

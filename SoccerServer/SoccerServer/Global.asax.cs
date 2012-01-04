@@ -76,7 +76,7 @@ namespace SoccerServer
                 mServerSettings["ImageUrl"] = "http://unusualsoccerdev.unusualwonder.com/Imgs/Logo75x75.png";   // Tiene que ser absoluto pq va en los Meta de facebook
                 mServerSettings["Description"] = "Unusual Soccer Description";                                  // og:description
                 mServerSettings["TicketingSystem"] = "false";
-                mServerSettings["SameIPAbandonsChecked"] = "true";
+                mServerSettings["SameIPAbandonsChecked"] = "false";
             }
             else
             if (this.Server.MachineName == "UNUSUALFOUR")   // MahouLigaChapas
