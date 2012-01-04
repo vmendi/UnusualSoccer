@@ -219,7 +219,8 @@
 	<GameView:PopupBackground width="402" top="-15" bottom="-15" left="-15" right="-15" />
 	
 	<s:Button top="0" right="0" label="X" 
-			  click="AceptarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonDarkGreySkin" visible="{mReward}" />
+			  click="AceptarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonDarkGreySkin" 
+			  visible="{MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}" />
 	
 	<Competition:DivisionBadge x="-60" y="-60" Division="{mCompetitionModel.TheGroup.DivisionName}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" />
 	
@@ -324,7 +325,8 @@
 			-->
 		</s:Group>
 		
-		<s:Group width="334" height="90" visible="{mReward}" includeInLayout="{mReward}">
+		<s:Group width="334" height="90" 
+				 visible="{MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}" includeInLayout="{MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}">
 			<GameView:PopupBackground left="0" right="0" top="0" bottom="0" />
 			<s:Rect left="0" right="0" top="0" bottom="0" alpha="0.7" radiusX="10" blendMode="colorburn">
 				<s:fill>
@@ -345,7 +347,8 @@
 		</s:Group>
 		
 		<s:Button top="0" right="0" label="{resourceManager.getString('main','Close')}" 
-				  click="AceptarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonGreySkin" visible="{!mReward}" includeInLayout="{!mReward}" />
+				  click="AceptarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonGreySkin" 
+				  visible="{!MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}" includeInLayout="{!MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}" />
 		
 	</s:Group>
 	
