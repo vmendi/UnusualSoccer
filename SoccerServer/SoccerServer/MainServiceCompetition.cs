@@ -183,9 +183,8 @@ namespace SoccerServer
                     var currentSeason = CreateNewSeason(theContext, DateTime.Now);
                     var newGroups = new List<CompetitionGroup>();
 
-                    // Con 1000 nuevos al dia, durando 3 dias la competicion, tendriamos 3000/2 = 1500 por grupo.
-                    // Pero al principio no van a entrar tantos... hasta que se creen bastantes mas de 2 grupos...
-                    for (int c = 0; c < 2; c++)
+                    // Con 1000 nuevos al dia, durando 4 dias la competicion, tendriamos 4000/4 = 1000 por grupo.
+                    for (int c = 0; c < 4; c++)
                     {
                         CompetitionGroup newGroup = new CompetitionGroup();
                         newGroup.CompetitionDivision = lowestDivision;

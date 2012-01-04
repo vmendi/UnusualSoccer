@@ -37,7 +37,7 @@
     <file relUrl="weborb.config" publishTime="08/11/2011 19:01:34" />
     <file relUrl="Imgs/NavIcons.png" publishTime="08/19/2011 13:07:18" />
     <file relUrl="Imgs/TrainingItem_es_ES.swf" publishTime="12/26/2011 17:34:18" />
-    <file relUrl="WEB-INF/flex/dynamic-remoting-config.xml" publishTime="01/04/2012 14:46:36" />
+    <file relUrl="WEB-INF/flex/dynamic-remoting-config.xml" publishTime="01/04/2012 16:16:04" />
     <file relUrl="bin/Moserware.Skills.dll" publishTime="08/18/2011 00:13:18" />
     <file relUrl="Imgs/Logo75x75.png" publishTime="08/19/2011 13:07:18" />
     <file relUrl="console/playerProductInstall.swf" publishTime="01/07/2010 14:56:46" />
@@ -91,7 +91,7 @@
     <file relUrl="Imgs/MensajeHabilidadTiempoExtra.jpg" publishTime="12/19/2011 19:41:00" />
     <file relUrl="ServerStatsGlobalMatches.aspx" publishTime="08/11/2011 15:05:08" />
     <file relUrl="WEB-INF/flex/messaging-config.xml" publishTime="06/15/2011 21:58:06" />
-    <file relUrl="bin/SoccerServer.dll" publishTime="01/04/2012 16:10:10" />
+    <file relUrl="bin/SoccerServer.dll" publishTime="01/04/2012 16:57:32" />
     <file relUrl="Web.config" publishTime="12/24/2011 00:16:38" />
   </publishProfile>
   <publishProfile publishUrl="ftp://mahouligachapas.unusualwonder.com/wwwsoccerserverv2" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="MahouLigaChapas" publishMethod="FTP" replaceMatchingFiles="True" userName="ftpuser" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAASZAbhtV0oUWqq9gwm+ur2QAAAAACAAAAAAAQZgAAAAEAACAAAADTBPyTYNNSc/xnEsWe13hEBj035UUTVqg0hyEwNRtctQAAAAAOgAAAAAIAACAAAAD+BotHc6pEAKRcyIfgp0sliLQ6YU1jm1xHHtHXSsd3+jAAAAAx5x0n4LAfgEVYzQBbEx7nPZ73MJmF6N0CC23vVZIsJqdKK9Ltmy+OAcG26nR1AhBAAAAAyGoAl4dlOdDd/iIUYc167i6KU7zLaLvGMpvFE5eLv3v6tsGjMbuK1QGnpa0PC3oSyojNeyW1y36Hd+zfriGRhw==" SelectedForPublish="False">

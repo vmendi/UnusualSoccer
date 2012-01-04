@@ -1,5 +1,8 @@
-#Fri Dec 09 21:39:39 CET 2011
+#Wed Jan 04 17:26:46 CET 2012
 eclipse.preferences.version=1
 encoding//locale/es_ES/main.properties=UTF-8
 encoding//locale/es_ES/training.properties=UTF-8
+encoding//locale/es_LA/main.properties=UTF-8
+encoding//locale/es_LA/match.properties=UTF-8
+encoding//locale/es_LA/teams.properties=UTF-8
 encoding/<project>=utf-8
