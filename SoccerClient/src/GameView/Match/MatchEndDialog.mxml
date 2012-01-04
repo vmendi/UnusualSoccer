@@ -354,21 +354,20 @@
 				</s:Group>
 			</s:Group>
 		</s:Group>
-		
-		<s:Button top="0" right="0" label="X" 
-				  click="AceptarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonDarkGreySkin" 
-				  includeIn="Winner, WinnerByAbandon" />
-		
-		<s:Button top="0" right="0" label="{resourceManager.getString('main','Close')}" 
+			
+		<s:Button label="{resourceManager.getString('main','Close')}" 
 				  click="AceptarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonGreySkin"
 				  includeIn="Loser, NoJust, SameIP"
 				  visible="{!MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}" includeInLayout="{!MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}" />
 		
-		<s:Button top="0" right="0" label="{resourceManager.getString('main','Publish')}" 
+		<s:Button label="{resourceManager.getString('main','Publish')}" 
 				  click="PublicarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonGreySkin"
 				  includeIn="Winner, WinnerByAbandon"
 				  visible="{!MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}" includeInLayout="{!MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}" />
 		
 	</s:Group>
 	
+	<s:Button top="0" right="0" label="X" 
+			  click="AceptarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+		
 </s:Group>
