@@ -47,7 +47,6 @@
 	</fx:Script>
 	
 	<GameView:PopupBackground width="100%" height="100%" />
-	<s:Button label="X" top="15" right="15" click="CloseClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 	
 	<s:Group x="0" y="20">
 		<s:layout>
@@ -80,6 +79,7 @@
 	</s:List> 
 	
 	<s:Label width="400" text="{resourceManager.getString('main','InjuredSignUpTxt')}" bottom="47" styleName="yellowBoldMedium" textAlign="center"/>	
-	<s:Button label="{resourceManager.getString('main','FriendSelectorTitle')}" horizontalCenter="0" bottom="15" click="SignUpClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+	<s:Button label="{resourceManager.getString('main','FriendSelectorTitle')}" horizontalCenter="0" bottom="15" click="SignUpClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonGreySkin" />
+	<s:Button label="X" top="15" right="15" click="CloseClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 	
 </s:Group>
