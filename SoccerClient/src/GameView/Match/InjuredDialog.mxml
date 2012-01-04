@@ -2,15 +2,17 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 xmlns:Team="GameView.Team.*" xmlns:GameView="GameView.*"
-		 width="400" height="226">
+		 width="400" height="265">
 	
 	<fx:Style source="../styles.css"/>
 	
 	<fx:Script>
 		<![CDATA[
-			import GameView.AnimatableDialog;
 			import GameModel.MatchResultUtils;
 			import GameModel.TeamModel;
+			
+			import GameView.AnimatableDialog;
+			import GameView.FriendSelection.FriendSelector;
 			
 			import mx.collections.ArrayCollection;
 			
@@ -34,6 +36,12 @@
 				AnimatableDialog.Dismiss(this, null);
 			}
 			
+			protected function SignUpClickHandler(event:MouseEvent):void
+			{
+				AnimatableDialog.Dismiss(this, null);
+				FriendSelector.Show();
+			}
+			
 			[Bindable] private var mInjured : ArrayCollection = new ArrayCollection();
 		]]>
 	</fx:Script>
@@ -47,9 +55,8 @@
 		<s:Label width="400" text="{resourceManager.getString('main','InjuredDialogTitle')}" styleName="whiteBoldHuge" textAlign="center"/>
 		<s:Label width="400" text="{resourceManager.getString('main','InjuredDialogTxt')}" styleName="whiteBoldMedium" textAlign="center"/>
 	</s:Group>
-
 	
-	<s:Rect left="20" right="20" top="92" height="82" radiusX="4">
+	<s:Rect top="92" width="90" height="90" radiusX="4" horizontalCenter="0">
 		<s:stroke>
 			<s:SolidColorStroke caps="none" color="#CCCCCC" joints="miter" miterLimit="4"
 								weight="2"/>
@@ -64,14 +71,15 @@
 		</s:filters>
 	</s:Rect>
 	
-	<s:List id="MyInjuredList" dataProvider="{mInjured}" left="20" right="20" top="102" height="72" horizontalCenter="0"
+	<s:List id="MyInjuredList" dataProvider="{mInjured}" top="102" width="82" height="85" horizontalCenter="0"
 			itemRenderer="GameView.Team.FieldCap" useVirtualLayout="false"
 			skinClass="GameView.Skins.DefaultListSkin"			
-			creationComplete="MyInjuredList.scroller.setStyle('horizontalScrollPolicy', mx.core.ScrollPolicy.AUTO);"
-			>
+			creationComplete="MyInjuredList.scroller.setStyle('horizontalScrollPolicy', mx.core.ScrollPolicy.AUTO);">
 		<s:layout><s:HorizontalLayout gap="20" /></s:layout>
 	</s:List> 
-		
-	<s:Button label="CERRAR" horizontalCenter="0" bottom="15" click="CloseClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+	
+	<s:Label width="400" text="{resourceManager.getString('main','InjuredSignUpTxt')}" bottom="47" styleName="yellowBoldMedium" textAlign="center"/>	
+	<s:Button label="{resourceManager.getString('main','FriendSelectorTitle')}" horizontalCenter="0" bottom="15" click="SignUpClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonGreySkin" />
+	<s:Button label="X" top="15" right="15" click="CloseClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 	
 </s:Group>

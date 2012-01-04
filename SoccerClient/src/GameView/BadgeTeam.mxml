@@ -65,7 +65,7 @@
 	]]></fx:Script>
 	
 	<s:Group includeIn="Normal, Big" id="MyRootGroup">
-		<mx:Image id="MyNormalBitmap" includeIn="Normal" source="@Embed(source='/Assets/General.swf', symbol='Badges')"/>
-		<mx:Image id="MyBigBitmap" includeIn="Big" source="@Embed(source='/Assets/General.swf', symbol='BadgesBig')"/>
+		<mx:Image id="MyNormalBitmap" includeIn="Normal" source="{resourceManager.getClass('main','Badges')}"/>
+		<mx:Image id="MyBigBitmap" includeIn="Big" source="{resourceManager.getClass('main','BadgesBig')}"/>
 	</s:Group>
 </s:Group>

@@ -27,7 +27,7 @@
 		<s:State name="hovered" />
 	</s:states>
 	
-	<s:BitmapImage x="14" top="0" horizontalCenter="0" source="@Embed(source='/Assets/General.swf', symbol='CapBaseAddFriend')" fillMode="clip" />
+	<s:BitmapImage x="14" top="0" horizontalCenter="0" source="{resourceManager.getClass('main','CapBaseAddFriend')}" fillMode="clip" />
 	<s:Label width="75" top="39" text="{resourceManager.getString('main','FieldCapSignFriendTxt')}" styleName="whiteBoldMedium" textAlign="center" filters="{NumberStrokeFilter}" />
 	
 	<s:filters>

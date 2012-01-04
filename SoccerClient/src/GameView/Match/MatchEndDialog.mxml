@@ -184,7 +184,7 @@
 			
 			var teams : Array = [ mMatchResult.ResultPlayer1, mMatchResult.ResultPlayer2 ];
 			
-			for (var c:int = 0; c < 2; c++)
+			for (var c:int = 0; c < 1; c++) //for (var c:int = 0; c < 2; c++)
 			{
 				this["MyName"+c.toString()].text = teams[c].Name;
 				this["MyPredefinedTeamName"+c.toString()].text = PredefinedTeamsModel.Localize(teams[c].PredefinedTeamNameID);
@@ -216,8 +216,12 @@
 		<s:State name="WinnerByAbandon"/>
 	</s:states>
 
-	<GameView:PopupBackground width="402" top="-15" bottom="-15" />
-	<Competition:DivisionBadge x="-60" y="0" Division="{mCompetitionModel.TheGroup.DivisionName}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" />
+	<GameView:PopupBackground width="402" top="-15" bottom="-15" left="-15" right="-15" />
+	
+	<s:Button top="0" right="0" label="X" 
+			  click="AceptarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonDarkGreySkin" visible="{mReward}" />
+	
+	<Competition:DivisionBadge x="-60" y="-60" Division="{mCompetitionModel.TheGroup.DivisionName}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" />
 	
 	<s:Label top="15" horizontalCenter="0" 
 			 text="{MatchResultUtils.IsCompetition(mMatchResult) ? resourceManager.getString('main','MatchEndDialogCompetition') : resourceManager.getString('main','MatchEndDialogFriendly')}"
@@ -227,22 +231,22 @@
 		</s:filters>
 	</s:Label>
 	
-	<s:Group top="70" horizontalCenter="0">
+	<s:Group top="50" horizontalCenter="0">
 		<s:layout>
 			<s:VerticalLayout gap="15" horizontalAlign="center" />
 		</s:layout>
-
+		
 		<s:Group width="336">
 			<s:layout><s:VerticalLayout gap="2" verticalAlign="middle"/></s:layout>
 			<s:Label width="100%" 
 					 text="{mTitular}" 
-					 textAlign="center" styleName="whiteBoldVeryBig" id="PopupTitular" />
+					 textAlign="center" styleName="whiteBoldBig" id="PopupTitular" />
 			
 			<s:Label width="100%"
 					 text="{mSpeech}" 
-					 textAlign="center" styleName="whiteBoldBig" id="PopupTexto" excludeFrom="Loser" />
+					 textAlign="center" styleName="whiteBoldMedium" id="PopupTexto" excludeFrom="Loser" />
 		</s:Group>
-		
+
 		<s:Group width="350">
 			<!-- LEFT TEAM -->
 			<s:Group left="0">
@@ -259,37 +263,47 @@
 				<s:Label width="35" top="7" text="0" styleName="whiteBoldHuge" textAlign="left" id="MyGoals1"/>
 			</s:Group>	
 		</s:Group>
-
+		
+		<!--
 		<s:Label horizontalCenter="0" textAlign="center" styleName="yellowBoldVeryBig" 
 				 text="{resourceManager.getString('main','MatchEndDialogCompPoints')} : {MatchResultUtils.GetCompetitionPoints(mMatchResult, mTeamModel)}"
 				 visible="{MatchResultUtils.IsCompetition(mMatchResult)}" includeInLayout="{MatchResultUtils.IsCompetition(mMatchResult)}"  />
-		
-		<s:Group width="350">
+		-->
+		<s:Group horizontalCenter="0">
 			<!-- FONDO -->
-			<s:Rect top="-10" left="-10" right="-10" bottom="-10" alpha="1">
+			<s:Rect top="-4" left="-4" right="-4" bottom="-4" alpha="1">
 				<s:fill>
 					<s:SolidColor color="#000000" alpha="0.7"/>
 				</s:fill>
 			</s:Rect>
 			<!-- LEFT TEAM -->
-			<s:Group left="0">
+			<s:Label horizontalCenter="0" text="{resourceManager.getString('main','MatchEndDialogReward')}"
+					 styleName="whiteBoldVeryBig" textAlign="center">
+				<s:filters>
+					<s:GlowFilter id="glowNormal2" strength="1" alpha="0.7" blurX="10" blurY="10" color="#FFFFFF"/>
+				</s:filters>
+			</s:Label>
+			<s:Group top="30">
 				<s:layout>
 					<s:HorizontalLayout gap="10" />
 				</s:layout>
 				<s:Group>
 					<s:layout><s:VerticalLayout gap="3"/></s:layout>
-					<s:Label width="120" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralXP')}" />
-					<s:Label width="120" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualPoints')}" />
-					<s:Label width="120" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralSkill')}" />
+					<s:Label width="160" styleName="yellowBoldBig" textAlign="left" text="{resourceManager.getString('main','MatchEndDialogCompPoints')}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" includeInLayout="{MatchResultUtils.IsCompetition(mMatchResult)}" />
+					<s:Label width="160" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralXP')}" />
+					<s:Label width="160" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralUnusualPoints')}" />
+					<s:Label width="160" styleName="whiteBoldBig" textAlign="left" text="{resourceManager.getString('main','GeneralSkill')}" />
 				</s:Group>
-				<s:Group right="202">
+				<s:Group>
 					<s:layout><s:VerticalLayout gap="3" horizontalAlign="right"/></s:layout>
+					<s:Label width="30" styleName="yellowBoldBig" textAlign="right" text="{MatchResultUtils.GetCompetitionPoints(mMatchResult, mTeamModel)}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" includeInLayout="{MatchResultUtils.IsCompetition(mMatchResult)}" />
 					<s:Label width="30" styleName="whiteBoldBig" textAlign="right" id="MyXP0"/>
 					<s:Label width="30" styleName="whiteBoldBig" textAlign="right" id="MySkillPoints0"/>
 					<s:Label width="30" styleName="whiteBoldBig" textAlign="right" id="MyTrueSkill0"/>
 				</s:Group>
 			</s:Group>
 			<!-- RIGHT TEAM -->
+			<!--
 			<s:Group right="10">
 				<s:layout>
 					<s:HorizontalLayout gap="10" />
@@ -307,14 +321,31 @@
 					<s:Label width="30" styleName="whiteBoldBig" textAlign="right" id="MyTrueSkill1"/>
 				</s:Group>
 			</s:Group>
+			-->
 		</s:Group>
 		
-		<s:Group horizontalCenter="0">
-			<s:layout><s:HorizontalLayout horizontalAlign="center" gap="20" /></s:layout>
-			<s:Button label="Publicar" click="PublicarClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" includeIn="Winner, WinnerByAbandon" />
-			<s:Button label="Continuar" label.Winner="Saltar" label.WinnerByAbandon="Saltar" 
-					  click="AceptarClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+		<s:Group width="334" height="90" visible="{mReward}" includeInLayout="{mReward}">
+			<GameView:PopupBackground left="0" right="0" top="0" bottom="0" />
+			<s:Rect left="0" right="0" top="0" bottom="0" alpha="0.7" radiusX="10" blendMode="colorburn">
+				<s:fill>
+					<s:SolidColor color="#ffff92"/>
+				</s:fill>
+			</s:Rect>
+			<s:Group horizontalCenter="0" verticalCenter="0">
+				<s:layout><s:HorizontalLayout verticalAlign="middle" gap="20" /></s:layout>
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='x2_icon')" fillMode="clip" />
+				<s:Group>
+					<s:layout>
+						<s:VerticalLayout gap="8" horizontalAlign="center" />
+					</s:layout>
+					<s:Label width="200" text="{resourceManager.getString('main','MatchEndDialogX2Txt')}" styleName="whiteBoldBig" textAlign="center" />
+					<s:Button label="{resourceManager.getString('main','ShareReward')}" click="PublicarClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonGreySkin" includeIn="Winner, WinnerByAbandon" />
+				</s:Group>
+			</s:Group>
 		</s:Group>
+		
+		<s:Button top="0" right="0" label="{resourceManager.getString('main','Close')}" 
+				  click="AceptarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonGreySkin" visible="{!mReward}" includeInLayout="{!mReward}" />
 		
 	</s:Group>
 	

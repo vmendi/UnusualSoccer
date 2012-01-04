@@ -33,7 +33,7 @@
 		
 		<s:Group>
 			<mx:Image id="MyCapMC" scaleContent="false"
-					  	 source="@Embed(source='/Assets/General.swf', symbol='CapBase')"/>
+					  	 source="{resourceManager.getClass('main','CapBase')}"/>
 			<s:Label id="MyBackNumberLabel" text="{data.DorsalNumber}" horizontalCenter="0" top="17" styleName="whiteBoldMedium" textAlign="center" filters="{DorsalNumberStrokeFilter}"/>
 			<GameView:FacebookPicture FacebookID="{data.FacebookID}" maskType="alpha" scaleX="0.67" scaleY="0.67" left="8" top="7">
 				<GameView:mask>
