@@ -219,10 +219,6 @@
 
 	<GameView:PopupBackground width="402" top="-15" bottom="-15" left="-15" right="-15" />
 	
-	<s:Button top="0" right="0" label="X" 
-			  click="AceptarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonDarkGreySkin" 
-			  visible="{MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}" />
-	
 	<Competition:DivisionBadge x="-60" y="-60" Division="{mCompetitionModel.TheGroup.DivisionName}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" />
 	
 	<s:Label top="15" horizontalCenter="0" 
@@ -358,6 +354,10 @@
 				</s:Group>
 			</s:Group>
 		</s:Group>
+		
+		<s:Button top="0" right="0" label="X" 
+				  click="AceptarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonDarkGreySkin" 
+				  includeIn="Winner, WinnerByAbandon" />
 		
 		<s:Button top="0" right="0" label="{resourceManager.getString('main','Close')}" 
 				  click="AceptarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonGreySkin"
