@@ -65,13 +65,13 @@ package Match
 			}
 		}		
 	
-		public override function SetPos( pos:Point ) : void
+		public override function SetPos(pos:Point) : void
 		{
-			super.SetPos( pos ); 
-			PhyObject.setLoc(MatchConfig.Screen2Physic( pos.x ), MatchConfig.Screen2Physic( pos.y )); 
+			super.SetPos(pos); 
+			PhyObject.setLoc(MatchConfig.Screen2Physic(pos.x), MatchConfig.Screen2Physic(pos.y)); 
 		}
 		
-		public function get PhyBody( ) : QuickObject
+		public function get PhyBody() : QuickObject
 		{
 			return PhyObject;
 		}

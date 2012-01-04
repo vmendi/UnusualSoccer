@@ -313,6 +313,21 @@ package Match
 					_SimulatingShoot = false
 					mbWantToStopSimulation = false;
 				}
+				
+				// Si nos paramos en este Run, redondeamos las posiciones
+				// HACK anti UNSYNC! qué pasa en los bordes con las colisiones?
+				if (!_SimulatingShoot)
+				{
+					for each (var entity:Entity in MatchMain.Ref.Game.TheEntityManager.Items)
+					{
+						if (entity is PhyEntity)
+						{
+							var phyEntity:PhyEntity = entity as PhyEntity;
+							var currPos : Point = phyEntity.GetPos();
+							phyEntity.SetPos(new Point(Math.round(currPos.x), Math.round(currPos.y)));
+						}
+					}
+				}
 			}
 		}
 		

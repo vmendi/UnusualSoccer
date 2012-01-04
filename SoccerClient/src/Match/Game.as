@@ -23,7 +23,6 @@ package Match
 		public var PhyLayer:MovieClip = null;
 		public var ChatLayer:Chat = null;
 		
-		// Estado lógico de la aplicación
 		private var _IdxCurTeam:int = Enums.Team1;				// Idice del equipo actual que le toca jugar
 		private var _State:int = GameState.NotInit;				// Estado inicial
 		private var _TicksInCurState:int = 0;					// Ticks en el estado actual
@@ -562,7 +561,7 @@ package Match
 			if (!CheckGoalkeeperControl(newPos))
 			{
 				// Caso normal
-				TheBall.StopMovementInPos(newPos);
+				TheBall.SetPos(newPos);
 				
 				// Hemos esperado hasta ahora para consumir el subturno. Es ahora cuando se muestra los carteles, etc.
 				ConsumeSubTurn();
@@ -765,7 +764,7 @@ package Match
 			TheTeams[ Enums.Team2 ].ResetToCurrentFormation();
 			
 			// Colocamos el balón delante del portero que va a sacar de puerta (mirando al centro del campo)
-			TheBall.StopMovementInFrontOf(team.GoalKeeper);
+			TheBall.SetPosInFrontOf(team.GoalKeeper);
 
 			// Asignamos el turno al equipo que debe sacar de puerta
 			SetTurn(team.IdxTeam, reason);
@@ -800,7 +799,7 @@ package Match
 			TheTeams[ Enums.Team1 ].ResetToCurrentFormation();
 			TheTeams[ Enums.Team2 ].ResetToCurrentFormation();
 			
-			TheBall.StopMovementInFieldCenter();
+			TheBall.SetPosInFieldCenter();
 			
 			// Es ahora cuando se muestra el cartel de turno, etc. No necesitamos una ReasonTurnChanged especial, no hay logica particularizada.
 			SetTurn(team.IdxTeam, Enums.TurnByTurn);

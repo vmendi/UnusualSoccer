@@ -36,8 +36,8 @@ package Match
 			this.Visual.scaleX = 1.0;
 			this.Visual.scaleY = 1.0;
 			
-			this.StopMovementInPos(new Point(Field.CenterX, Field.CenterY));
-			
+			this.SetPosInFieldCenter();
+						
 			// Nos auto-añadimos al manager de entidades
 			MatchMain.Ref.Game.TheEntityManager.AddTagged(this, "Ball");
 		}
@@ -61,12 +61,12 @@ package Match
 			var perimeter : Number = MatchConfig.Screen2Physic(Radius) * 2 * Math.PI;
 			var numFrames : Number = mcVisual.framesLoaded;
 			
-			mCurrentFrame += vel.Length() * elapsed * numFrames / perimeter;
+			_CurrentFrame += vel.Length() * elapsed * numFrames / perimeter;
 						
-			if (mCurrentFrame >= numFrames)
-				mCurrentFrame = mCurrentFrame - numFrames;
+			if (_CurrentFrame >= numFrames)
+				_CurrentFrame = _CurrentFrame - numFrames;
 			
-			mcVisual.gotoAndStop(int(mCurrentFrame) + 1);
+			mcVisual.gotoAndStop(int(_CurrentFrame) + 1);
 									
 			if (vel.Length() > Number.MIN_VALUE)
 			{
@@ -78,15 +78,13 @@ package Match
 				PhyObject.angle = angle;
 			}
 		}
-		
-		private var mCurrentFrame : Number = 1;
-		
+				
 		// 
 		// Asigna la posición de la pelota en frente de la chapa
 		// En frente quiere decir mirando a la dirección de la mitad del campo del oponente
 		// NOTE: No se valida la posición!
 		//
-		public function StopMovementInFrontOf(cap:Cap) : void
+		public function SetPosInFrontOf(cap:Cap) : void
 		{
 			var pos:Point = cap.GetPos();
 			
@@ -95,18 +93,19 @@ package Match
 			if (cap.OwnerTeam.Side == Enums.Right_Side)
 				dir = new Point(-len, 0);
 			
-			StopMovementInPos(pos.add(dir));
+			SetPos(pos.add(dir));
 		}
 		
-		// Asigna la posición del balón y su última posición en la que estuvo parado.
-		// Siempre que se cambia "forzadamente" la posición del balón, utilizar esta función
-		public function StopMovementInPos(pos:Point) : void
+		// Aseguramos que cuando nos fijan la posicion estamos parados => tenemos bien anotada nuestra LastPosBallStopped
+		override public function SetPos(pos:Point) : void
 		{
-			super.SetPos(pos);
-			StopMovement();
+			if (!PhyObject.body.IsSleeping())
+				throw new Error("Posicionamiento del balon sin estar parado!")
+				
+			super.SetPos(pos);				
+			_LastPosBallStopped = GetPos();
 		}
 		
-		// Overrideamos porque queremos asegurar siempre el tener anotado la ultima vez que nos pararon.
 		public override function StopMovement() : void
 		{
 			super.StopMovement();
@@ -116,12 +115,13 @@ package Match
 			_LastPosBallStopped = GetPos();
 		}
 		
-		// Resetea al estado inicial el balón (en el centro, parado...)
-		public function StopMovementInFieldCenter() : void
+		// Resetea al estado inicial el balón (en el centro)
+		public function SetPosInFieldCenter() : void
 		{
-			StopMovementInPos(new Point(Field.CenterX, Field.CenterY));
+			SetPos(new Point(Field.CenterX, Field.CenterY));
 		}
 						
 		private var _LastPosBallStopped:Point = null;
+		private var _CurrentFrame : Number = 1;
 	}
 }
