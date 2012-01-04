@@ -56,6 +56,8 @@
 			mLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, OnLoadComplete);
 			mLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, OnError);
 			mLoader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, OnError);
+			
+			// http://yourpalmark.com/2011/12/28/updated-solution-as3-security-error-2122-with-300-redirects/
 			mLoader.load(new URLRequest("http://graph.facebook.com/"+mFacebookID+"/picture/?type="+mSize),
 						 new LoaderContext(true, ApplicationDomain.currentDomain, SecurityDomain.currentDomain));
 		}

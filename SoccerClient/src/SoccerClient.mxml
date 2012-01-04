@@ -23,6 +23,7 @@
 		
 		import mx.events.FlexEvent;
 		import mx.events.ResourceEvent;
+		import mx.managers.PopUpManager;
 
 		protected function ApplicationCompleteHandler(event:FlexEvent):void
 		{
@@ -120,8 +121,8 @@
 				mMainGameModel = null;
 			}
 			
-			if (mMainView != null)
-				removeElement(mMainView);
+			// Quitamos la mMainView pero tb todos los posibles popups q hubiera
+			removeAllElements();
 			mMainView = null;
 		}
 		

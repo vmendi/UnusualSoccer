@@ -57,6 +57,7 @@
 			{
 				if (published)
 				{
+					// Aqui nos llaman tanto en el caso del boton con rewards (X2...) como en el de publicar a secas
 					if (MatchResultUtils.GotRewards(mMatchResult, mTeamModel))
 					{
 						// Le pedimos al servidor que nos conceda los rewards extras... esto por dentro hará un TeamRefresh
@@ -68,7 +69,7 @@
 				AceptarClickHandler(event);
 			}
 		}
-				
+
 		protected function CreationCompleteHandler(event:Event):void
 		{
 			//
@@ -352,7 +353,8 @@
 						<s:VerticalLayout gap="8" horizontalAlign="center" />
 					</s:layout>
 					<s:Label width="200" text="{resourceManager.getString('main','MatchEndDialogX2Txt')}" styleName="whiteBoldBig" textAlign="center" />
-					<s:Button label="{resourceManager.getString('main','ShareReward')}" click="PublicarClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonGreySkin" includeIn="Winner, WinnerByAbandon" />
+					<s:Button label="{resourceManager.getString('main','ShareReward')}" 
+							  click="PublicarClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonGreySkin" includeIn="Winner, WinnerByAbandon" />
 				</s:Group>
 			</s:Group>
 		</s:Group>
@@ -363,7 +365,7 @@
 				  visible="{!MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}" includeInLayout="{!MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}" />
 		
 		<s:Button top="0" right="0" label="{resourceManager.getString('main','Publish')}" 
-				  click="AceptarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonGreySkin"
+				  click="PublicarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonGreySkin"
 				  includeIn="Winner, WinnerByAbandon"
 				  visible="{!MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}" includeInLayout="{!MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}" />
 		
