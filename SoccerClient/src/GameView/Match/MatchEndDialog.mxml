@@ -367,7 +367,6 @@
 				  includeIn="Winner, WinnerByAbandon"
 				  visible="{!MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}" includeInLayout="{!MatchResultUtils.GotRewards(mMatchResult, mTeamModel)}" />
 		
-		
 	</s:Group>
 	
 </s:Group>

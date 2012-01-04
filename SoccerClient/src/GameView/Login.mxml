@@ -76,9 +76,16 @@
 			
 			private function SetValidity() : void
 			{
-				if (AppConfig.IsMahouLigaChapas && mNameValidity && mAgeValidity)
+				if (AppConfig.IsMahouLigaChapas)
 				{
-					MyButtonNext.enabled = true;
+					if  (mNameValidity && mAgeValidity)
+					{
+						MyButtonNext.enabled = true;
+					}
+					else
+					{
+						MyButtonNext.enabled = false;
+					}
 				}
 				else if (mNameValidity)
 				{
@@ -230,7 +237,7 @@
 		
 		<s:Group>
 			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='LoginBottomBg')" fillMode="clip" />
-			<s:Button id="MyButtonNext" label="{resourceManager.getString('main','Continue')}" click="MyButtonNext_clickHandler(event)" x="98" top="4" width="160" height="24" skinClass="GameView.Skins.ButtonGreySkin"/>
+			<s:Button id="MyButtonNext" enabled="false" label="{resourceManager.getString('main','Continue')}" click="MyButtonNext_clickHandler(event)" x="98" top="4" width="160" height="24" skinClass="GameView.Skins.ButtonGreySkin"/>
 		</s:Group>
 		
 	</s:Panel>
