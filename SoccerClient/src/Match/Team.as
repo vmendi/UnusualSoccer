@@ -161,13 +161,8 @@ package Match
 		
 		private function GetFormation(formationName : String) : Array
 		{
-			var formation:Array = null;
-			
-			if( MatchConfig.OfflineMode )
-				formation = MatchMain.Ref.Formations[0];
-			else
-				formation = MatchMain.Ref.Formations[formationName];
-			
+			var formation : Array = Formations.TheFormationsTransformedToMatch[formationName];
+
 			if (formation == null)
 				throw new Error( "No existe la formación solicitada " + formationName);
 

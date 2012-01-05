@@ -95,6 +95,7 @@
   <ItemGroup>
     <Content Include="App_Data\Backup.sql" />
     <Content Include="Cancelled.aspx" />
+    <Content Include="channel.html" />
     <Content Include="console\AC_OETags.js" />
     <Content Include="console\configtrouble.htm" />
     <Content Include="console\console.swf" />

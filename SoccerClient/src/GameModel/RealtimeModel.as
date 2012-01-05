@@ -259,7 +259,7 @@ package GameModel
 		private function OnMatchAddedToStage(e:Event) : void
 		{
 			mMatch.removeEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage)
-			mMatch.Init(mServerConnection, mMainModel.TheFormationModel.GetFormationsTransformedToMatch());
+			mMatch.Init(mServerConnection);
 		}
 		
 		private function OnMatchEnded(e:GenericEvent) : void

@@ -1,50 +1,14 @@
 package Match
 {
 	public class InitOfflineData
-	{
-		static public var Formations:Array =
-			[
-				// Alineación defensiva 
-				[
-					{ x:18.85, y:215.45*0.93  },
-					{ x:96.85*0.93, y:170.45*0.93  },
-					{ x:96.85*0.93, y:271.45*0.93  },
-					{ x:198.85*0.93, y:57.5*0.93    },
-					{ x:202.8*0.93, y:219.45*0.93  },
-					{ x:202.8*0.93, y:383.45*0.93  },
-					{ x:277.85*0.93, y:151.45*0.93  },
-					{ x:276.85*0.93, y:284.45*0.93  }
-				],
-				// Alineación media
-				[
-					{ x:18.85, 	y:215.45  },
-					{ x:96.85, 	y:170.45  },
-					{ x:96.85, 	y:271.45  },
-					{ x:198.85, y:57.5    },
-					{ x:202.8, 	y:219.45  },
-					{ x:202.8, 	y:383.45  },
-					{ x:277.85, y:151.45  },
-					{ x:276.85, y:284.45  }
-				],
-				// Alineación ofensiva
-				[
-					{ x:18.85, 	y:215.45  },
-					{ x:96.85, 	y:170.45  },
-					{ x:96.85, 	y:271.45  },
-					{ x:198.85, y:57.5    },
-					{ x:202.8, 	y:219.45  },
-					{ x:202.8, 	y:383.45  },
-					{ x:277.85, y:151.45  },
-					{ x:276.85, y:284.45  }
-				]
-			]
-			
+	{			
 		static public function GetDescTeam(predefinedTeamNameID : String) : Object
 		{
 			var descTeam:Object = { 
 				PredefinedTeamNameID: predefinedTeamNameID,
 				Name: "Team " + predefinedTeamNameID,
 				Fitness:50,
+				Formation:"3-1-3",
 				SoccerPlayers: []
 			}
 

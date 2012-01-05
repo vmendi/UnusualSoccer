@@ -37,12 +37,7 @@
 			PopUpManager.addPopUp(errorDialog, parent, true, null);
 			PopUpManager.centerPopUp(errorDialog);
 		}
-		
-		protected function ClickHandler(event:MouseEvent):void
-		{
-			PopUpManager.removePopUp(this);	
-		}
-		
+			
 		private var mText : String;
 		private var mTitle : String;
 		private var mTextAlign : String = "left";
@@ -53,8 +48,5 @@
 
 	<s:Label text="{Title}" styleName="whiteBoldVeryBig" x="28" y="26" width="300" textAlign="center" />
 	<s:Label text="{Text}" styleName="whiteBoldMedium" x="28" y="64" width="300" textAlign="{TextAlign}" />
-	
-	<s:Button label="ACEPTAR" click="ClickHandler(event)" minWidth="80" x="138" y="170" skinClass="GameView.Skins.ButtonDarkGreySkin" />
-	
-	
+		
 </s:Group>

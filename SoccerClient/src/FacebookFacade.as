@@ -50,7 +50,8 @@ package
 				// Esto generara una llamada a FB para conseguir un nuevo access_token, distinto al primero 
 				// que se le pasa por POST al servidor (dentro del signed_request)
 				Facebook.init(AppConfig.APP_ID, Delegate.create(OnFacebookInit, callback), 
-							  { status:true, xfbml: true, oauth: true, cookie:true,	frictionlessRequests:true });
+							  { status:true, xfbml: true, oauth: true, cookie:true,	frictionlessRequests:true,
+								channelUrl: AppConfig.CANVAS_URL + "/channel.html" });
 			}
 		}
 		
