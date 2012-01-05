@@ -52,7 +52,7 @@
 
 	<GameView:PopupBackground width="356" height="212" />
 
-	<s:Label text="¡HABILIDAD CONSEGUIDA!" styleName="whiteBoldVeryBig" x="28" y="20" width="300" textAlign="center" />
+	<s:Label text="{resourceManager.getString('main','TrainingSpecialCompleteTit')}" styleName="whiteBoldVeryBig" x="28" y="20" width="300" textAlign="center" />
 	
 	<mx:SWFLoader scaleX="1.4" scaleY="1.4" x="30" y="57" id="MySkillMC" scaleContent="false"
 				  source="@Embed(source='/Assets/General.swf', symbol='SpecialSkills')"/>
@@ -63,12 +63,9 @@
 		<s:Label styleName="whiteBoldMedium" width="232" text="{SpecialTrainingModel.GetDesc(SpecialTrainingDef)}" />
 	</s:Group>
 	
-	<s:Label width="260" x="48" y="124" text="A partir de ahora tendrás esta habilidad disponible durante el partido." styleName="whiteBoldBig" textAlign="center" />
+	<s:Label width="260" x="48" y="124" text="{resourceManager.getString('main','TrainingSpecialCompleteTxt')}" styleName="whiteBoldBig" textAlign="center" />
 	
-	<s:Group left="20" right="20" y="170">
-		<s:layout><s:HorizontalLayout gap="20" horizontalAlign="center" /></s:layout>
-		<s:Button label="ACEPTAR" click="ClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />
-		<s:Button label="Publicar Logro" click="PublishHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />	
-	</s:Group>	
+	<s:Button y="170" horizontalCenter="0" label="{resourceManager.getString('main','Publish')}" click="PublishHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />	
+	<s:Button top="15" right="15" label="X" click="ClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 	
 </s:Group>
