@@ -144,7 +144,7 @@
 						}
 					}
 				}
-				else	// Soy el perdedor
+				else	// No soy el ganador
 				{
 					if (mMatchResult.WasAbandoned)
 					{
@@ -167,7 +167,7 @@
 					{
 						if (mMatchResult.WasJust)
 						{
-							// Ha ganado mi contrincante y se merece los puntos	
+							// Ha ganado mi contrincante o empatado y se merece los puntos	
 							mTitular = resourceManager.getString("main", "MatchEndResultTit");
 							mSpeech = "";
 							currentState = "Loser";
@@ -350,7 +350,7 @@
 					</s:layout>
 					<s:Label width="200" text="{resourceManager.getString('main','MatchEndDialogX2Txt')}" styleName="whiteBoldBig" textAlign="center" />
 					<s:Button label="{resourceManager.getString('main','ShareReward')}" 
-							  click="PublicarClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonGreySkin" includeIn="Winner, WinnerByAbandon" />
+							  click="PublicarClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonGreySkin" />
 				</s:Group>
 			</s:Group>
 		</s:Group>
@@ -367,7 +367,7 @@
 		
 	</s:Group>
 	
-	<s:Button top="0" right="0" label="X" 
-			  click="AceptarClickHandler(event)" minWidth="23" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+	<s:Button minHeight="23" minWidth="23" top="0" right="0" label="X" 
+			  click="AceptarClickHandler(event)" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 		
 </s:Group>

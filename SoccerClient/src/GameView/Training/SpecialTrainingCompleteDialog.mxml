@@ -66,6 +66,6 @@
 	<s:Label width="260" x="48" y="124" text="{resourceManager.getString('main','TrainingSpecialCompleteTxt')}" styleName="whiteBoldBig" textAlign="center" />
 	
 	<s:Button y="170" horizontalCenter="0" label="{resourceManager.getString('main','Publish')}" click="PublishHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />	
-	<s:Button top="15" right="15" label="X" click="ClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+	<s:Button top="15" right="15" minWidth="23" minHeight="23" label="X" click="ClickHandler(event)" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 	
 </s:Group>
