@@ -184,8 +184,9 @@ package
 		// Permisos para publicar en el ticker achivements & scores
 		public function HasPublishActionsPermission() : Boolean 
 		{ 
+			// En caso de FakeSessionKey, no tenemos permissions...
 			if (mPermissions == null)
-				throw new Error("Call RefreshPermissions first");
+				return false;
 			
 			return mPermissions.hasOwnProperty("publish_actions") && mPermissions["publish_actions"] == 1;
 		}
@@ -194,7 +195,7 @@ package
 		public function HasPublishStreamPermission() : Boolean
 		{
 			if (mPermissions == null)
-				throw new Error("Call RefreshPermissions first");
+				return false;
 			
 			return mPermissions.hasOwnProperty("publish_stream") && mPermissions["publish_stream"] == 1;
 		}
