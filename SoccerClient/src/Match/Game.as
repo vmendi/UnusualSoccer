@@ -367,8 +367,6 @@ package Match
 				OnGoalKeeperSet(idPlayer);					// ... damos por finalizada la colocacion, pasamos el turno al q va a tirar
 			else
 				YieldTurnToOpponent(Enums.TurnByTurn);		// Caso normal, cuando se acaba el tiempo simplemente pasamos el turno al jugador siguiente
-			
-			ChangeState(GameState.Playing);
 		}
 			
 		//
@@ -499,7 +497,8 @@ package Match
 					if (paseToCap.OwnerTeam.IsLocalUser)
 						TheInterface.ShowControllerBall(paseToCap);
 					
-					// NOTE: No consumimos el subturno hasta que el usuario coloque la pelota!
+					// No consumimos el subturno hasta que el usuario coloque la pelota!
+					ChangeState(GameState.Playing);
 				}
 			}
 			else	// No ha habido falta ni pase al pie			
@@ -537,9 +536,6 @@ package Match
 											TheGamePhysics.NumTouchedCaps, paseToCap != null ? paseToCap.Id : -1, TheGamePhysics.NumFramesSimulated, 
 											ReasonTurnChanged, capListStr);
 			}
-
-			// De aqui ahora siempre se sale por playing, pero no tendria por que ser asi, podría salirse por un nuevo comando que genera una espera
-			ChangeState(GameState.Playing);
 		}
 
 		//
@@ -560,13 +556,17 @@ package Match
 			
 			if (!CheckGoalkeeperControl(newPos))
 			{
-				// Caso normal
-				TheBall.SetPos(newPos);
+				try 
+				{
+					TheBall.SetPos(newPos);
+				} 
+				catch(e : Error) 
+				{ 
+					ErrorMessages.LogToServer(IDString + "CLIENT_ERROR: Es aqui 01"); 
+				}
 				
 				// Hemos esperado hasta ahora para consumir el subturno. Es ahora cuando se muestra los carteles, etc.
 				ConsumeSubTurn();
-				
-				ChangeState(GameState.Playing);
 			}
 			else
 			{
@@ -644,15 +644,13 @@ package Match
 			if (TheField.IsCapCenterInsideSmallArea(enemy.GoalKeeper))
 			{
 				// Una vez que se termine su TURNO por TimeOut se llamará a OnGoalKeeperSet
-				this.SetTurn(enemy.IdxTeam, Enums.TurnTiroAPuerta);
+				SetTurn(enemy.IdxTeam, Enums.TurnTiroAPuerta);
 			}
 			else
 			{
 				// El portero no está en el area, saltamos directamente a portero colocado 
 				OnGoalKeeperSet(enemy.IdxTeam);	
 			}
-			
-			ChangeState(GameState.Playing);
 		}
 		
 		//
@@ -734,7 +732,7 @@ package Match
 				SaqueCentro(turnTeam);
 			}
 			else
-			{				
+			{
 				// Ponemos en estado de saque de puerta
 				SaquePuerta(turnTeam, Enums.TurnSaquePuerta);
 			}
@@ -768,8 +766,6 @@ package Match
 
 			// Asignamos el turno al equipo que debe sacar de puerta
 			SetTurn(team.IdxTeam, reason);
-			
-			this.ChangeState(GameState.Playing);
 		}
 		
 		//
@@ -803,8 +799,6 @@ package Match
 			
 			// Es ahora cuando se muestra el cartel de turno, etc. No necesitamos una ReasonTurnChanged especial, no hay logica particularizada.
 			SetTurn(team.IdxTeam, Enums.TurnByTurn);
-			
-			ChangeState(GameState.Playing);
 		}
 		
 		//-----------------------------------------------------------------------------------------
@@ -845,6 +839,10 @@ package Match
 			// Comprobamos si hemos consumido todos los disparos. Si es así, pasamos el turno al oponente.
 			if (_RemainingHits == 0)
 				YieldTurnToOpponent(Enums.TurnByTurn);
+			else
+				ChangeState(GameState.Playing);
+			
+			// De aqui siempre se sale por GameState.Playing
 		}
 		
 		//
@@ -907,6 +905,9 @@ package Match
 			
 			// Y pintamos el halo alrededor de las chapas!
 			CurTeam.ShowMyTurnVisualCue(reason);
+			
+			// De aqui siempre se sale por GameState.Playing
+			ChangeState(GameState.Playing);			
 		}
 		
 		//
@@ -1119,7 +1120,7 @@ package Match
 			ChangeState(GameState.EndGame);
 		}
 		
-		private function get IDString() : String 
+		public function get IDString() : String 
 		{ 
 			return "MatchID: " + MatchConfig.MatchId + " LocalID: " + MatchConfig.IdLocalUser + " "; 
 		}
