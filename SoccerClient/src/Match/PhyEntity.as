@@ -19,7 +19,7 @@ package Match
 		protected var PhyObject:QuickObject = null	// Box2D
 		
 			
-		public function PhyEntity(assetClass:Class, parent:DisplayObjectContainer, primitiveType:Number, params:Object  ) : void
+		public function PhyEntity(assetClass:Class, parent:DisplayObjectContainer, primitiveType:Number, params:Object) : void
 		{
 			// Nosotros nos encargamos de inicializar, nuestro padre no hace nada
 			super(null,null);
@@ -32,21 +32,17 @@ package Match
 				params.allowSleep = true;
 				
 			// Creamos la primitiva física indicada
-			if( primitiveType == Circle )
-			{
-				PhyObject = MatchMain.Ref.Game.TheGamePhysics.TheBox2D.addCircle( params );
-			}
-			else if( primitiveType == Box )
-			{
-				PhyObject = MatchMain.Ref.Game.TheGamePhysics.TheBox2D.addBox( params );
-			}
-			
+			if (primitiveType == Circle)
+				PhyObject = MatchMain.Ref.Game.TheGamePhysics.TheBox2D.addCircle(params);
+			else if(primitiveType == Box)
+				PhyObject = MatchMain.Ref.Game.TheGamePhysics.TheBox2D.addBox(params);
+						
 			// Cogemos el objeto visual desde el objeto físico
 			// NOTE: No tenemos control de cuando se está actualizando
 			_Visual = PhyObject.userData;
 			
 			// Si nos han indicado un padre al que linkar lo linkamos
-			if( _Visual != null && parent != null )
+			if (_Visual != null && parent != null)
 				parent.addChild(_Visual);
 			
 			// Asignamos al userData del "shape" del objeto físico a una referencia a la entidad

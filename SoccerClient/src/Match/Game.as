@@ -758,14 +758,14 @@ package Match
 				throw new Error(IDString + "En el saque de puerta siempre hay que dar una razon adecuada");
 			
 			TheGamePhysics.StopSimulation();
-			
+						
 			// Colocamos los jugadores en la alineación correspondiente
-			TheTeams[ Enums.Team1 ].ResetToCurrentFormation();
-			TheTeams[ Enums.Team2 ].ResetToCurrentFormation();
+			TheTeams[Enums.Team1].ResetToCurrentFormation();
+			TheTeams[Enums.Team2].ResetToCurrentFormation();
 			
 			// Colocamos el balón delante del portero que va a sacar de puerta (mirando al centro del campo)
 			TheBall.SetPosInFrontOf(team.GoalKeeper);
-
+		
 			// Asignamos el turno al equipo que debe sacar de puerta
 			SetTurn(team.IdxTeam, reason);
 			
@@ -790,14 +790,10 @@ package Match
 		private function SaqueCentroAllReady(team:Team) : void
 		{
 			TheGamePhysics.StopSimulation();
-			
-			// Reseteamos el número de disparos disponibles para el jugador que tiene el turno
-			_RemainingHits = MatchConfig.MaxHitsPerTurn;
-			_RemainingPasesAlPie = MatchConfig.MaxNumPasesAlPie;
-			
+						
 			// Colocamos el balón en el centro y los jugadores en la alineación correspondiente, detenemos cualquier simulación física
-			TheTeams[ Enums.Team1 ].ResetToCurrentFormation();
-			TheTeams[ Enums.Team2 ].ResetToCurrentFormation();
+			TheTeams[Enums.Team1].ResetToCurrentFormation();
+			TheTeams[Enums.Team2].ResetToCurrentFormation();
 			
 			TheBall.SetPosInFieldCenter();
 			
