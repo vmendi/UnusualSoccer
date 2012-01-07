@@ -38,9 +38,8 @@ namespace SoccerServer
         public const String MATCHLOG = "MATCH";
         public const String MATCHLOG_DEBUG = "MATCH DEBUG";
                 
-        public const int MinClientVersion = 106;                    // Versión mínima que exigimos a los clientes para jugar
-        public const int ServerVersion = 101;                       // Versión del servidor
-
+        public const int MinClientVersion = 200;                    // Versión mínima que exigimos a los clientes para jugar
+        
         RealtimePlayer[] Players = new RealtimePlayer[2];             // Los jugadores en el manager
         RealtimePlayerData[] PlayersData = new RealtimePlayerData[2]; // Los jugadores en el manager
         PlayerState[] PlayersState = new PlayerState[2];              // Estado de los jugadores
@@ -55,13 +54,13 @@ namespace SoccerServer
         private int CountReadyPlayersForInit = 0;
         private int CountPlayersReportGoal = 0;
         private int CountPlayersSetTurn = 0;                    // Un nuevo approach os doy...
-        
-        private float ServerTime = 0;		                    // Tiempo en segundos que lleva el servidor del partido funcionando
+
         private int MatchLength = -1;                           // Segundos
         private int TurnLength = -1;
+        private float ServerTime = 0;		                    // Tiempo en segundos que lleva el servidor del partido funcionando
         private float RemainingSecs = 0;		                // Tiempo en segundos que queda de la "mitad" actual del partido
         private int Part = 1;                                   // Mitad de juego en la que nos encontramos
-
+                
         private int ValidityGoal = Invalid;                     // Almacena la valided del gol reportado (0 = valido)
 
         private ClientState TheClientState = null;              // Debugeo de estado del cliente
@@ -168,15 +167,14 @@ namespace SoccerServer
             TurnLength = turnLength;
             RemainingSecs = MatchLength / 2;
 
-            LogEx("Init Match: " + matchID + " FirstPlayer: " + firstPlayer.Name + " SecondPlayer: " + secondPlayer.Name, MATCHLOG);
-            LogEx("Server Version: " + ServerVersion + " MinClientVersion required: " + MinClientVersion, MATCHLOG);
-
-            // NOTE : En este momento la conexión todavía no puede utilizarse, todavía el cliente simulador no ha tomado el control            
+            LogEx("Init Match: FirstPlayer: " + firstPlayer.Name + " - " + firstPlayer.FacebookID + 
+                  " SecondPlayer: " + secondPlayer.Name + " - " + secondPlayer.FacebookID + 
+                  " MinClientVersion required " + MinClientVersion, MATCHLOG);
+            
+            // NOTE : En este momento la conexión todavía no puede utilizarse, todavía el cliente no ha tomado el control            
         }
 
-        //
         // Uno de los jugadores ha indicado que necesita los datos del partido. Cuando ambos lo han indicado, estamos listos para empezar
-        //
         public void OnRequestData(RealtimePlayer player)
         {
             int idPlayer = GetIdPlayer(player);
@@ -401,9 +399,10 @@ namespace SoccerServer
                 }
                 else
                 {
+                    // Descongelamos en caso de estarlo
                     CurState = State.Playing;
 
-                    LogEx("OnServerPlayerReadySetTurn: Continuamos mandando OnClientAllPlayersReadyForSetTurn");
+                    LogEx("OnServerPlayerReadySetTurn: Continuamos");
                     Broadcast("OnClientAllPlayersReadyForSetTurn");
                 }
             }

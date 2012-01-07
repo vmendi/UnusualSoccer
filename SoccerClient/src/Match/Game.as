@@ -84,8 +84,8 @@ package Match
 		public function InitFromServer(matchId:int, descTeam1:Object, descTeam2:Object, idLocalPlayerTeam:int, matchTimeSecs:int, turnTimeSecs:int, minClientVersion:int) : void
 		{			
 			// Verificamos la versión mínima de cliente exigida por el servidor.
-			if( MatchConfig.ClientVersion < minClientVersion )
-				throw new Error(IDString + "El partido no es la última versión. Por favor, limpie la caché de su navegador. ClientVersion: " + MatchConfig.ClientVersion + " MinClient: " + minClientVersion );
+			if (MatchConfig.ClientVersion < minClientVersion)
+				throw new Error(IDString + "El partido no es la última versión. Por favor, limpie la caché de su navegador. ClientVersion: " + MatchConfig.ClientVersion + " MinClient: " + minClientVersion);
 						
 			// Creamos las capas iniciales de pintado para asegurar un orden adecuado
 			CreateLayers();
@@ -225,7 +225,7 @@ package Match
 				case GameState.NewPart:
 				{
 					_TimeSecs = MatchConfig.PartTime;
-					SaqueCentro(Part == 1? TheTeams[Enums.Team1] : TheTeams[Enums.Team2]);
+					SaqueCentro(Part == 1? TheTeams[Enums.Team1] : TheTeams[Enums.Team2], Enums.TurnSaqueCentroNewPart);
 					break;
 				}
 
@@ -435,7 +435,7 @@ package Match
 				{
 					result |= 4;
 					
-					SaquePuerta(defender.OwnerTeam, Enums.TurnSaquePuertaByFalta);
+					SaquePuerta(defender.OwnerTeam, Enums.TurnSaquePuertaFalta);
 				}
 				else
 				{	
@@ -458,7 +458,7 @@ package Match
 				{
 					result |= 16;
 					
-					// Pasamos turno al otro jugador. El cartelito de robo se pondra como cutscene en el SetTurn
+					// Pasamos turno al otro jugador. El cartel de robo se pondra como cutscene en el SetTurn
 					OponenteControlaPie(theConflict.DefenderCap, Enums.TurnStolen);
 				}
 				else
@@ -689,9 +689,9 @@ package Match
 			var turnTeam:Team = TheTeams[idPlayer].AgainstTeam();
 			
 			if (validity == Enums.GoalValid)
-				SaqueCentro(turnTeam);
+				SaqueCentro(turnTeam, Enums.TurnSaqueCentroGoal);
 			else
-				SaquePuerta(turnTeam, Enums.TurnSaquePuerta);
+				SaquePuerta(turnTeam, Enums.TurnSaquePuertaInvalidGoal);
 		}
 
 		private function SaquePuerta(team:Team, reason:int) : void
@@ -710,7 +710,7 @@ package Match
 			SetTurn(team.IdxTeam, reason);
 		}
 		
-		private function SaqueCentro(team:Team) : void
+		private function SaqueCentro(team:Team, reason:int) : void
 		{
 			TheGamePhysics.StopSimulation();
 			
@@ -719,8 +719,7 @@ package Match
 			
 			TheBall.SetPosInFieldCenter();
 			
-			// No necesitamos una ReasonTurnChanged especial, no hay nada particularizado
-			SetTurn(team.IdxTeam, Enums.TurnByTurn);
+			SetTurn(team.IdxTeam, reason);
 		}
 		
 		private function OponenteControlaPie(cap : Cap, reason : int) : void
@@ -728,15 +727,16 @@ package Match
 			if (cap.OwnerTeam != CurTeam.AgainstTeam())
 				throw new Error(IDString + "La chapa parametro debe ser la que controla, es decir, de mi oponente");
 			
-			SetTurn(cap.OwnerTeam, reason, onTurnCallback);
+			// Cambiamos el turno al oponente, al propietario de la chapa que controla. Como es un control con el pie,
+			// al volver del SetTurn tenemos que mostrar el controlador
+			SetTurn(cap.OwnerTeam.IdxTeam, reason, onTurnCallback);
 			
 			function onTurnCallback() : void
 			{
 				if (cap.OwnerTeam.IsLocalUser)
 					TheInterface.ShowControllerBall(cap);
 			}
-		}
-	
+		}	
 		
 		//-----------------------------------------------------------------------------------------
 		//							CONTROL DE TURNOS
@@ -792,14 +792,35 @@ package Match
 		
 		private function SetTurn(idTeam:int, reason:int, callback : Function = null) : void
 		{
+			ChangeState(GameState.WaitingPlayersAllReadyForSetTurn);
+			
 			if (!MatchConfig.OfflineMode)
-				SendPlayerReadyForSetTurn(Delegate.create(SetTurnAllReady, idTeam, reason, callback));
+			{
+				// Función a llamar cuando todos los players estén listos
+				_CallbackOnAllPlayersReady = Delegate.create(SetTurnAllReady, idTeam, reason, callback);
+				
+				// Mandamos nuestro 'estamos listos'
+				MatchMain.Ref.Connection.Invoke("OnServerPlayerReadyForSetTurn", null, idTeam, reason);
+			}
 			else
 			{
 				if (_TimeSecs <= 0)
 					OnClientFinishPart(_Part, null);	// Tenemos que simular que hemos alcanzado el fin de la parte
 				else
 					SetTurnAllReady(idTeam, reason, callback);
+			}
+		}
+
+		public function OnClientAllPlayersReadyForSetTurn() : void
+		{
+			if (_State != GameState.WaitingPlayersAllReadyForSetTurn)
+				throw new Error(IDString + "OnClientAllPlayersReadyForSetTurn en estado: " + _State);
+			
+			if (_CallbackOnAllPlayersReady != null)
+			{
+				var callback:Function = _CallbackOnAllPlayersReady;
+				_CallbackOnAllPlayersReady = null;
+				callback();
 			}
 		}
 		
@@ -858,33 +879,7 @@ package Match
 			
 			// De aqui siempre se sale por GameState.Playing
 			ChangeState(GameState.Playing);			
-		}
-		
-		public function SendPlayerReadyForSetTurn(callbackOnAllPlayersReady:Function = null) : void
-		{			
-			// Función a llamar cuando todos los players estén listos
-			_CallbackOnAllPlayersReady = callbackOnAllPlayersReady;
-			
-			// Pasamos al estado de espera hasta que nos llegue la confirmación "OnClientAllPlayersReadyForSetTurn" desde el servidor
-			ChangeState(GameState.WaitingPlayersAllReadyForSetTurn);
-			
-			// Mandamos nuestro 'estamos listos'
-			MatchMain.Ref.Connection.Invoke("OnServerPlayerReadyForSetTurn", null);
-		}
-		
-		public function OnClientAllPlayersReadyForSetTurn() : void
-		{
-			if (_State != GameState.WaitingPlayersAllReadyForSetTurn)
-				throw new Error(IDString + "OnClientAllPlayersReadyForSetTurn en estado: " + _State);
-			
-			if (_CallbackOnAllPlayersReady != null)
-			{
-				var callback:Function = _CallbackOnAllPlayersReady;
-				_CallbackOnAllPlayersReady = null;
-				callback();
-			}
-		}
-		
+		}	
 				
 		//
 		// El enemigo más capaz de robarme el balon. De momento consideramos que es el más cercano.
