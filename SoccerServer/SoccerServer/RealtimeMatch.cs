@@ -121,9 +121,8 @@ namespace SoccerServer
 
             if (player == Players[Player1])
                 ret = PLAYER_1;
-            else
-                if (player == Players[Player2])
-                    ret = PLAYER_2;
+            else if (player == Players[Player2])
+                ret = PLAYER_2;
 
             return ret;
         }
@@ -136,23 +135,14 @@ namespace SoccerServer
                 return Players[Player2];
         }
 
-
-        //
-        // Obtiene el identificador del player a partir de su objeto
-        //
         public int GetIdPlayer(RealtimePlayer player)
         {
-            // Determinamos el identificador del player
-
-            int idPlayer = Invalid;
             if (Players[Player1] == player)
-                idPlayer = Player1;
+                return Player1;
             else if (Players[Player2] == player)
-                idPlayer = Player2;
+                return Player2;
             else
-                Debug.Assert(true, "GetIdPlayer: El player pasado no es ninguno de los jugadores actuales!");
-
-            return (idPlayer);
+                throw new Exception("GetIdPlayer: El player pasado no es ninguno de los jugadores actuales!");
         }
 
         #endregion
@@ -185,26 +175,16 @@ namespace SoccerServer
         }
 
         //
-        // Uno de los jugadores ha indicado que necesita los datos del partido. Esto quiere decir que la conexion esta lista, 
-        // le mandamos el primer mensaje de vuelta (InitFromServer)
+        // Uno de los jugadores ha indicado que necesita los datos del partido. Cuando ambos lo han indicado, estamos listos para empezar
         //
         public void OnRequestData(RealtimePlayer player)
         {
             int idPlayer = GetIdPlayer(player);
+
             LogEx("OnRequestData: Datos del partido solicitador por el Player: " + idPlayer + " Configuración partido: TotalTime: " + MatchLength + " TurnTime: " + TurnLength);
-
-            // Envía la configuración del partido al jugador, indicándole además a quien controla el (LocalUser)
-            Invoke(idPlayer, "InitFromServer", this.mMatchID, PlayersData[Player1], PlayersData[Player2], idPlayer, MatchLength, TurnLength, MinClientVersion);
-        }
-
-        public void OnServerPlayerReadyForMatchStart(RealtimePlayer player)
-        {
-            int idPlayer = GetIdPlayer(player);
 
             if (CurState != State.WaitingForMatchStart)
                 LogEx("ServerException: Fallo en OnServerPlayerReadyForMatchStart " + idPlayer);
-
-            LogEx("OnServerPlayerReadyForMatchStart: " + idPlayer);
 
             CountReadyPlayersForInit++;
 
@@ -214,8 +194,11 @@ namespace SoccerServer
                 CurState = State.Playing;
 
                 LogEx("Todos los jugadores estan listos para empezar el partido");
-                Broadcast("OnClientAllPlayersReadyForMatchStart");
-            }
+
+                // Envía la configuración del partido al jugador a ambos jugadores
+                Invoke(Player1, "InitFromServer", this.mMatchID, PlayersData[Player1], PlayersData[Player2], Player1, MatchLength, TurnLength, MinClientVersion);
+                Invoke(Player2, "InitFromServer", this.mMatchID, PlayersData[Player1], PlayersData[Player2], Player2, MatchLength, TurnLength, MinClientVersion);
+            }            
         }
         #endregion
 
@@ -380,7 +363,7 @@ namespace SoccerServer
             }
         }
 
-        public void OnServerPlayerReadySetTurn(RealtimePlayer player, int idPlayerReceivingTurn, int reason)
+        public void OnServerPlayerReadyForSetTurn(RealtimePlayer player, int idPlayerReceivingTurn, int reason)
         {
             int idPlayer = GetIdPlayer(player);
 
@@ -505,8 +488,12 @@ namespace SoccerServer
         public void LogEx(string message, string category = MATCHLOG_DEBUG)
         {
             string finalMessage = " MatchID: " + MatchID + " Time: " + this.ServerTime + " " + message;
-            finalMessage += " <ServerVars>: SimulatingShoot: " + SimulatingShoot + " CountPlayersEndShoot: " + CountPlayersEndShoot + " Part: " + Part + 
-                            " RemainingSecs: " + RemainingSecs + " ScoredGoals1=" + PlayersState[Player1].ScoredGoals + " ScoredGoals2=" + PlayersState[Player2].ScoredGoals;
+            finalMessage += " <ServerVars>: CurState=" + CurState + 
+                            " CountPlayersEndShoot=" + CountPlayersEndShoot + 
+                            " CountPlayersSetTurn=" + CountPlayersSetTurn +
+                            " CountPlayersReportGoal=" + CountPlayersReportGoal + 
+                            " Part=" + Part + " RemainingSecs=" + RemainingSecs + 
+                            " ScoredGoals1=" + PlayersState[Player1].ScoredGoals + " ScoredGoals2=" + PlayersState[Player2].ScoredGoals;
 
             Log.log(category, finalMessage);
         }
