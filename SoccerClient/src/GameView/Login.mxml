@@ -170,7 +170,7 @@
 		<s:DropShadowFilter id="MyTextDropShadowFilter" angle="270" distance="1" blurX="1" blurY="1" color="0x444444" />
 	</fx:Declarations>	
 	
-	<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='LoginBg')" fillMode="clip"/>
+	<s:BitmapImage source="{resourceManager.getClass('main','LoginBg')}" fillMode="clip"/>
 	
 	<mx:Image x="0" y="0" source="{resourceManager.getString('main','LoginLogoSource')}" />
 	
@@ -186,24 +186,26 @@
 		</s:List>
 		
 		<s:Group>
-			<s:Rect id="tbFill" x="0" y="0" width="100%" height="27">
-				<s:fill>
-					<s:LinearGradient rotation="90">
-						<s:GradientEntry color="#fe0001" ratio="0" alpha="1"/>
-						<s:GradientEntry color="#8c1304" ratio="1.0" alpha="1"/>
-					</s:LinearGradient>
-				</s:fill>
-			</s:Rect>
-			<s:Label id="myStep2Label" maxDisplayedLines="1"
-					 x="10" y="0" width="350" height="27"
-					 verticalAlign="middle" textAlign="start" styleName="headerBox" filters="{MyTextDropShadowFilter}"
-					 text="{resourceManager.getString('main','Login02EnterName')}"></s:Label>
-			
+			<s:layout>
+				<s:VerticalLayout gap="6" horizontalAlign="center" />
+			</s:layout>
+			<s:Group>
+				<s:Rect id="tbFill" x="0" y="0" width="100%" height="27">
+					<s:fill>
+						<s:LinearGradient rotation="90">
+							<s:GradientEntry color="#fe0001" ratio="0" alpha="1"/>
+							<s:GradientEntry color="#8c1304" ratio="1.0" alpha="1"/>
+						</s:LinearGradient>
+					</s:fill>
+				</s:Rect>
+				<s:Label id="myStep2Label" maxDisplayedLines="1"
+						 x="10" y="0" width="350" height="27"
+						 verticalAlign="middle" textAlign="start" styleName="headerBox" filters="{MyTextDropShadowFilter}"
+						 text="{resourceManager.getString('main','Login02EnterName')}"></s:Label>
+			</s:Group>
 			<s:Label id="myStep2Txt" x="10" y="35" width="350"
 					 verticalAlign="middle" textAlign="center" styleName="whiteBoldBig"
 					 text="{resourceManager.getString('main','Login02EnterNameTxt')}"></s:Label>
-			
-			
 			<s:TextInput x="82" y="97" change="MyTeamNameInput_changeHandler(event)" id="MyTeamNameInput" width="200" styleName="blackBoldMediumHN" maxChars="30"/>
 			<s:Label x="32" y="126" width="300" color="#0DBF00" height="40" id="MyValidityLabel" styleName="whiteBoldBig" textAlign="center"/>
 		</s:Group>
