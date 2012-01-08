@@ -102,8 +102,9 @@ package
 		}
 		
 		static public function UncaughtErrorHandler(e:Event):void
-		{			
-			OnCleaningShutdownSignal.dispatch();
+		{	
+			// Vamos a dejar que continue
+			// OnCleaningShutdownSignal.dispatch();
 			
 			var innerError : Object = (e as Object).error;
 			var message : String = "";

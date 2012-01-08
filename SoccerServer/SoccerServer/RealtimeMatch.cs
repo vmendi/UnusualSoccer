@@ -394,15 +394,13 @@ namespace SoccerServer
                         CurState = State.End;
 
                         LogEx("OnServerPlayerReadySetTurn: Finalización de partido!");
-                        Broadcast("OnClientFinishPart", Part, result);                        
+                        Broadcast("OnClientFinishPart", Part, result);             
                     }
                 }
                 else
                 {
                     // Descongelamos en caso de estarlo
                     CurState = State.Playing;
-
-                    LogEx("OnServerPlayerReadySetTurn: Continuamos");
                     Broadcast("OnClientAllPlayersReadyForSetTurn");
                 }
             }

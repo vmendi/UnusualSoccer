@@ -716,9 +716,9 @@ package Match
 			
 			TheTeams[Enums.Team1].ResetToCurrentFormation();
 			TheTeams[Enums.Team2].ResetToCurrentFormation();
-			
+
 			TheBall.SetPosInFieldCenter();
-			
+						
 			SetTurn(team.IdxTeam, reason);
 		}
 		
