@@ -127,10 +127,11 @@ namespace SoccerServer
             RealtimeMatch theMatch = who.TheMatch;
             RealtimePlayer opp = theMatch.GetOpponentOf(who);
 
-            // Simulamos la pulsación del botón de abortar...
+            // Informamos al partido del Abort. Es como si pulsaran el boton "abandonar partido", pero nunca llegaremos a procesar
+            // otro OnSecondsTick de este partido.
             theMatch.OnAbort(theMatch.GetIdPlayer(who));
 
-            // Y continuamos por el procedimiento normal...
+            // Somos nosotros aqui los que cerramos el partido...
             RealtimeMatchResult matchResult = OnFinishMatch(theMatch);
 
             // Hay que notificar al oponente de que ha habido cancelacion

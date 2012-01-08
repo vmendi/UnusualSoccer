@@ -301,6 +301,7 @@ namespace SoccerServer
 
                 if (bRet)
                 {
+                    theMatchParticipation.GotExtraReward = true;
                     mContext.SubmitChanges();
                 }
             }

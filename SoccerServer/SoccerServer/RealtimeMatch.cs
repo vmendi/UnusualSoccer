@@ -46,8 +46,8 @@ namespace SoccerServer
 
         Realtime MainRT = null;                                 // Objeto que nos ha creado
 
+        bool IsMarkedToAbort = false;                           // Mecanismo que permiter abortar un partido por parte de un player (antiguo boton "abondanar partido")
         int PlayerIdAbort = Invalid;                            // Jugador que ha abandonado el partido
-        bool IsMarkedToAbort = false;                           // Señal para abortar el partido
 
         private State CurState = State.WaitingForMatchStart;   // Estado actual del servidor de juego       
         private int CountPlayersEndShoot = 0;
@@ -467,9 +467,7 @@ namespace SoccerServer
                 Broadcast("OnClientChatMsg", msg);
         }
 
-        // 
-        // Marca el partido para terminar en el próximo tick de ejecución
-        //
+        // Marca el partido para terminar en el próximo tick de ejecución (antiguo boton de "abandonar partido")
         public void OnAbort(int playerId)
         {
             LogEx("OnAbort: Player: " + playerId);

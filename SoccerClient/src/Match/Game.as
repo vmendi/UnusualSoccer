@@ -111,24 +111,19 @@ package Match
 						
 			// Lanzamos el sonido ambiente como música para que se detenga automaticamente al finalizar
 			//TheAudioManager.AddClass("SoundAmbience", MatchAssets.SoundAmbience);
-			//heAudioManager.PlayMusic("SoundAmbience", 0.3);
+			//TheAudioManager.PlayMusic("SoundAmbience", 0.3);
 						
 			// TODO: Deberiamos utilizar una semilla envíada desde el servidor!!!
 			_Random = new Random(123);			
 			_Timer = new Match.Time();
 			
-			// Determinamos la equipación a utilizar en cada equipo.
-			//   - Determinamos los grupos de equipación a los que pertenece cada equipo.
-			//	 - Si son del mismo grupo:
-			//		   - El jugador que NO es el LocalPlayer utiliza la equipación secundaria			
+			// - Determinamos los grupos de equipación a los que pertenece cada equipo.
+			// - Si son del mismo grupo: El jugador que NO es el LocalPlayer utiliza la equipación secundaria			
 			var useSecondaryEquipment1:Boolean = false;
 			var useSecondaryEquipment2:Boolean = false;
 			
-			var group1:int = Team.GroupTeam(descTeam1.PredefinedTeamNameID);
-			var group2:int = Team.GroupTeam(descTeam2.PredefinedTeamNameID);
-			if (group1 == group2)
+			if (Team.GroupTeam(descTeam1.PredefinedTeamNameID) == Team.GroupTeam(descTeam2.PredefinedTeamNameID))
 			{
-				trace("Los equipos pertenecen al mismo grupo de equipación. Utilizando equipación secundaria para el equipo contrario"); 
 				if (idLocalPlayerTeam == Enums.Team1)
 					useSecondaryEquipment2 = true;
 				if (idLocalPlayerTeam == Enums.Team2)
@@ -728,7 +723,8 @@ package Match
 				throw new Error(IDString + "La chapa parametro debe ser la que controla, es decir, de mi oponente");
 			
 			// Cambiamos el turno al oponente, al propietario de la chapa que controla. Como es un control con el pie,
-			// al volver del SetTurn tenemos que mostrar el controlador
+			// al volver del SetTurn tenemos que mostrar el controlador.
+			// Es el unico punto donde usamos este mecanismo de callback, y lo odio.
 			SetTurn(cap.OwnerTeam.IdxTeam, reason, onTurnCallback);
 			
 			function onTurnCallback() : void
@@ -1054,13 +1050,6 @@ package Match
 		{
 			// Simplemente dejamos que lo gestione el componente de chat
 			ChatLayer.AddLine(msg);
-		}
-		
-		// Nuestro enemigo se ha desconectado en medio del partido. Nosotros hacemos una salida limpia
-		public function PushedOpponentDisconnected(result:Object) : void
-		{
-			_MatchResultFromServer = result;			
-			ChangeState(GameState.EndGame);
 		}
 		
 		public function get IDString() : String 
