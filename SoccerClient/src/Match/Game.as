@@ -695,12 +695,12 @@ package Match
 				throw new Error(IDString + "En el saque de puerta siempre hay que dar una razon adecuada");
 			
 			TheGamePhysics.StopSimulation();
-			
+
 			TheTeams[Enums.Team1].ResetToCurrentFormation();
 			TheTeams[Enums.Team2].ResetToCurrentFormation();
 			
 			TheBall.SetPosInFrontOf(team.GoalKeeper);
-			
+
 			// Asignamos el turno al equipo que debe sacar de puerta
 			SetTurn(team.IdxTeam, reason);
 		}
@@ -711,7 +711,7 @@ package Match
 			
 			TheTeams[Enums.Team1].ResetToCurrentFormation();
 			TheTeams[Enums.Team2].ResetToCurrentFormation();
-
+			
 			TheBall.SetPosInFieldCenter();
 						
 			SetTurn(team.IdxTeam, reason);
