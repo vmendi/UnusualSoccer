@@ -264,6 +264,7 @@ package GameModel
 		
 		private function OnMatchEnded(e:GenericEvent) : void
 		{
+			mMatch.removeEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage);	// No problemo, es necesario cuando PushedOpponentDisconnected
 			mMatch.removeEventListener("OnMatchEnded", OnMatchEnded);
 			mMatch = null;
 			
@@ -291,6 +292,21 @@ package GameModel
 		public function PushedMatchUnsync() : void
 		{
 			//Alert.show("Unsync state!", "BETA");
+		}
+		
+		// Nuestro enemigo se ha desconectado en medio del partido. Nosotros hacemos una salida limpia. Lo controlamos
+		// desde aqui y no desde el partido porque el partido puede no estar inicializado todavia.
+		public function PushedOpponentDisconnected(result:Object) : void
+		{
+			if (mMatch == null)
+			{
+				ErrorMessages.LogToServer("WTF 4192: Ha llegado un PushedOpponentDisconnected sin tener partido!");
+			}
+			else
+			{
+				// Esto provocara un OnMatchEnded
+				mMatch.Shutdown(result);
+			}
 		}
 		
 		public function PushedBroadcastMsg(msg : String) : void
