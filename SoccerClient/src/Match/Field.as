@@ -240,34 +240,29 @@ package Match
 		//
 		// Mueve una chapa en una dirección validando que la posición sea correcta.
 		// Si no lo consigue opcionalmente intenta situarla en intervalos dentro del vector de dirección
-		// Se harán 'stepsToTry' comprobaciones
-		// NOTE: stepsToTry debe ser >=1
 		//
 		// Devolvemos el 'intento' que fué existoso
 		//   0 		-> No conseguimos situar chapa (se queda en la posición que está)
-		//   1 		-> Justo en el primer intento
 		//  '+n'	-> El nº de intento en el que hemos conseguido situar la chapa
 		//
-		public function MoveCapInDir( cap:Cap, dir:Point, amount:Number, checkAgainstBall:Boolean, stepsToTry:int = 1 ) : int		
+		public function MoveCapInDir(cap:Cap, dir:Point, amount:Number, checkAgainstBall:Boolean, stepsToTry:int = 1) : int		
 		{
-			// TODO: Assertar si stepsToTry<1
-			
 			var trySuccess:int = 0;		// por defecto no hemos conseguido situar la chapa 
 			
-			dir.normalize( 1.0 );
+			dir.normalize(1.0);
 			
 			// Intentaremos posicionar la chapa en la posición indicada, si no es válida vamos probando
 			// en posiciones intermedias de la dirección indicada 
-			for( var i:int = 0; i < stepsToTry; i++ )
+			for (var i:int = 0; i < stepsToTry; i++)
 			{
 				// Calculamos la posición a la que mover la chapa
 				var tryFactor:Number = 1.0 - (i / stepsToTry); 
-				var dirTry:Point = new Point( dir.x * (amount * tryFactor), dir.y * (amount * tryFactor) );  
-				var endPos:Point = cap.GetPos().add( dirTry );
+				var dirTry:Point = new Point(dir.x * (amount * tryFactor), dir.y * (amount * tryFactor));  
+				var endPos:Point = cap.GetPos().add(dirTry);
 				
 				// Validamos la posición de la chapa, teniendonos en cuenta a nosotros mismos
-				//  Validamos contra bandas y otras chapas, ...
-				if( ValidatePosCap( endPos, checkAgainstBall, cap ) )
+				// Validamos contra bandas y otras chapas, ...
+				if (ValidatePosCap(endPos, checkAgainstBall, cap))
 				{
 					// Movemos la chapa a la posición y terminamos
 					cap.SetPos( endPos );
@@ -278,9 +273,8 @@ package Match
 			
 			// Devolvemos el 'intento' que fué existoso
 			//   0 		-> No conseguimos situar chapa
-			//   1 		-> Justo en el primer intento
 			//  '+n'	-> El nº de intento en el que hemos conseguido situar la chapa
-			return( trySuccess );
+			return trySuccess;
 		}
 		
 	}

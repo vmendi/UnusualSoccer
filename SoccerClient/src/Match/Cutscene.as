@@ -77,11 +77,10 @@ package Match
 				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)
 					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTurnoPropioRobo"), 0, 210);
 				else 
-				if(reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaByFalta)
-					// Los nombres están al revés porque aquí representa a quien le han hecho la falta
+				if(reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaFalta)
 					FillConflictoFault(LaunchCutScene(ResourceManager.getInstance().getClass("match", "FaltaContraria"), 0, 210), MatchMain.Ref.Game.TheGamePhysics.TheFault);
 				else 
-				if(reason == Enums.TurnSaquePuerta)		// El saque de puerta no tiene un mensaje específico para el oponente
+				if(reason == Enums.TurnSaquePuertaInvalidGoal)
 					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTurnoPropioSaquePuerta"), 0, 210);
 				else 
 				if (reason == Enums.TurnTiroAPuerta)
@@ -90,12 +89,12 @@ package Match
 				if (reason == Enums.TurnGoalKeeperSet)
 					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTiroPuertaConfirmacion"), 0, 210);
 			}
-			else 	// Es el turno del oponente
+			else
 			{
 				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)	
 					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTurnoContrarioRobo"), 0, 210);
 				else 
-				if (reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaByFalta)
+				if (reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaFalta)
 					FillConflictoFault(LaunchCutScene(ResourceManager.getInstance().getClass("match", "FaltaPropia"), 0, 210), MatchMain.Ref.Game.TheGamePhysics.TheFault);
 				else 
 				if (reason == Enums.TurnTiroAPuerta)

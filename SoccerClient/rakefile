@@ -4,8 +4,8 @@ require 'fileutils'
 BUILD_OUTPUT_DIR = 'build/'
 SRC_DIR = '../SoccerServer/SoccerServer/SoccerClient/'
 
-REMOTE_DIR = '/cygdrive/c/inetpub/wwwsoccerserverv2/SoccerClient'
 REMOTE_HOST = 'unusualsoccerdev.unusualwonder.com'
+REMOTE_DIR = '/cygdrive/c/inetpub/wwwsoccerserverv2/SoccerClient'
 
 REMOTE_USER = 'Administrator' 
 
@@ -69,16 +69,23 @@ task :assetCopy => [:prepareBuildOutputDir] do
   	# TODO: Cuando el juego tenga assets...
 end
 
-task :publish do
-	puts 'RSyncing...'
+#
+# La sintaxis para pasar parametro a una tarea concreta es:
+# rake publish[daRemoteHost, daRemoteThir]
+#
+# http://rake.rubyforge.org/files/doc/rakefile_rdoc.html
+#
+task :publish, [:remote_host_param, :remote_dir_param] do |t, args|
+	args.with_defaults(:remote_host_param => REMOTE_HOST, :remote_dir_param => REMOTE_DIR)
+	
+	remote_final_target = REMOTE_USER + '@' + args.remote_host_param + ':' + args.remote_dir_param
+	
+	puts 'RSyncing to ' + remote_final_target + '...'
 
 	rsync_cmd = 'rsync -avz --rsync-path=\'CYGWIN=nontsec rsync\' --rsh=\'ssh -o StrictHostKeyChecking=no -o CheckHostIP=no\' ' +
-             	 BUILD_OUTPUT_DIR + ' ' + REMOTE_USER + '@' +
-             	 REMOTE_HOST + ':' + REMOTE_DIR
-
+             	 BUILD_OUTPUT_DIR + ' ' + remote_final_target
 	system rsync_cmd
 end
-
 
 task :default => [:assetCopy, :exeCopy, :publish] do
 	puts 'End default build'

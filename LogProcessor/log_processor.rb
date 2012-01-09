@@ -46,7 +46,7 @@ class Error_Extractor
     }
   end
 
-  # Returns only  the lines for 'num_match'
+  # Returns only the lines for 'num_match'
   def get_lines_for_match (global_lines, num_match)
     ret = []
     global_lines.each { |line|

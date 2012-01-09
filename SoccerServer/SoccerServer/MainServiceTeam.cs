@@ -271,8 +271,15 @@ namespace SoccerServer
                 if (!theMatchParticipation.GotExtraReward)
                 {
                     var otherParticipation = theMatchParticipation.Match.MatchParticipations.Single(p => p.MatchParticipationID != theMatchParticipation.MatchParticipationID);
+                    var match = theMatchParticipation.Match;
 
-                    // Ganador o empate? En cualquier caso, duplicamos lo que ya hemos dado en RealtimeMatchResult.GiveRewards
+                    // Miramos si el partido ha acabado, fue justo/toomanytimes, etc..
+                    if (match.DateEnded == null ||  match.WasTooManyTimes.Value || !match.WasJust.Value || match.WasAbandonedSameIP.Value)
+                    {
+                        Log.log(MAINSERVICE, "GetExtraRewardForMatch: Se ha pedido recompensa de un partido que no puede tenerla! " + mPlayer.PlayerID + " " + matchID);
+                    }
+                    else
+                    // Ganador o empate? En cualquier caso, duplicamos lo que ya hemos dado en RealtimeMatchResult.GiveRewards                    
                     if (theMatchParticipation.Goals > otherParticipation.Goals)
                     {
                         mPlayer.Team.XP += 6;
@@ -294,6 +301,7 @@ namespace SoccerServer
 
                 if (bRet)
                 {
+                    theMatchParticipation.GotExtraReward = true;
                     mContext.SubmitChanges();
                 }
             }

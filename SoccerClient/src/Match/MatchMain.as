@@ -82,7 +82,10 @@ package Match
 			LoadMatchResources(innerInit);	
 
 			function innerInit() : void
-			{			
+			{
+				if (_Instance == null)	// Es posible que el oponente se haya desconectado en este tiempo...
+					return;
+				
 				_Game = new Match.Game();
 				
 				Connection = netConnection;			
@@ -110,6 +113,9 @@ package Match
 		
 		private function OnFrame(event:Event):void
 		{
+			if (_Instance == null)
+				throw new Error("WTF 9533");
+			
 			// Game indicara que ya estamos inicializamos. stage != null es curioso: Si se produce una sesion duplicada durante el partido,
 			// el juego sale "a lo bestia", quitando de la stage el MainView etc.
 			if (Game != null && stage != null)
@@ -121,24 +127,25 @@ package Match
 			}
 		}
 		
-		
-		// Nos llaman desde Game al acabar (siempre: por abandono, por fin del partido...).
-		// Desde aqui nos ocupamos de destruir todo, especialmente los listeners (globales) 
-		// para no perder memoria
-		//
+		// Desde aqui nos ocupamos de destruir todo, especialmente los listeners (globales) para no perder memoria.
+		// Nos llaman siempre: por fin del partido normal, por PushedOpponentDisconnected y por OnCleaningSignalShutdown.
 		public function Shutdown(result : Object) : void
 		{
-			if (Connection != null)
-			{
-				Connection.RemoveClient(Game);
-				Connection = null;
-			}
-
 			removeEventListener(Event.ENTER_FRAME, OnFrame);
-			Game.TheInterface.Shutdown();
-			Game.TheAudioManager.Shutdown();
-			Game.TheGamePhysics.Shutdown();
-			TweenMax.killAll();
+			
+			// Es posible que nos llegue este Shutdown antes de estar inicializados (OnPushedOpponentDisconnected)
+			if (_Game != null)
+			{
+				Connection.RemoveClient(_Game);
+				Connection = null;
+								
+				_Game.TheInterface.Shutdown();
+				_Game.TheAudioManager.Shutdown();
+				_Game.TheGamePhysics.Shutdown();
+				TweenMax.killAll();
+				
+				_Game = null;
+			}
 
 			// Internamente nadie puede llamarnos mas
 			_Instance = null;

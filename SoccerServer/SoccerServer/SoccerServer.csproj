@@ -155,6 +155,7 @@
     <Content Include="Imgs\NavIconMuro.png" />
     <Content Include="Imgs\NavIcons.png" />
     <Content Include="Imgs\NavIconVisita.png" />
+    <Content Include="Imgs\PopupAppOffline.jpg" />
     <Content Include="Imgs\TrainingItem_es_ES.swf" />
     <Content Include="News.xml">
       <SubType>Designer</SubType>
@@ -185,6 +186,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="weborbconsole.html" />
+    <Content Include="_App_Offline.htm" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cancelled.aspx.cs">

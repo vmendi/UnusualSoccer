@@ -98,12 +98,15 @@ package
 			OnCleaningShutdownSignal.dispatch();
 			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorResourceLoadFailedMsg"),
 							 ResourceManager.getInstance().getString("main", "ErrorResourceLoadFailedTit"), "center");
-			LogToServer("ResourceLoadFailed");
+			
+			// No nos molestamos en logearlo al servidor. Esto pasa habitualmente cuando paran la carga del juego dandole a "Stop"
+			// en el browser
 		}
 		
 		static public function UncaughtErrorHandler(e:Event):void
-		{			
-			OnCleaningShutdownSignal.dispatch();
+		{	
+			// Vamos a dejar que continue
+			// OnCleaningShutdownSignal.dispatch();
 			
 			var innerError : Object = (e as Object).error;
 			var message : String = "";
@@ -145,7 +148,7 @@ package
 		
 		static public function LogToServer(message : String) : void
 		{
-			var facebookID : String = "Unknown";
+			var facebookID : String = "Unknown FacebookID";
 			
 			if (SoccerClient.GetFacebookFacade() != null && SoccerClient.GetFacebookFacade().FacebookID != null)
 				facebookID = SoccerClient.GetFacebookFacade().FacebookID;

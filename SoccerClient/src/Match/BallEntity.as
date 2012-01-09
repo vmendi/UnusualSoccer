@@ -99,10 +99,8 @@ package Match
 		// Aseguramos que cuando nos fijan la posicion estamos parados => tenemos bien anotada nuestra LastPosBallStopped
 		override public function SetPos(pos:Point) : void
 		{
-			if (!PhyObject.body.IsSleeping())
-				throw new Error("Posicionamiento del balon sin estar parado!")
-				
-			super.SetPos(pos);				
+			super.StopMovement();
+			super.SetPos(pos);
 			_LastPosBallStopped = GetPos();
 		}
 		
