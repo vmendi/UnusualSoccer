@@ -25,6 +25,6 @@ package Match
 		public static const WaitingCommandPosCap : int = 34; 			
 						
 		public static const EndPart:int = 15;		// Fin de una parte
-		public static const EndGame:int = 20;		// Fin de juego
+		public static const EndMatch:int = 20;		// Fin de juego
 	}
 }

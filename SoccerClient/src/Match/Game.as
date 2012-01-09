@@ -41,7 +41,7 @@ package Match
 		private var _MatchResultFromServer : Object;
 		
 		private var _OfflineWaitCall : Function;				// Llamada para emular q el servidor nos ha enviado su respuesta en todos los estados de espera
-		private var _CallbackOnAllPlayersReady:Function = null 	// Llamar cuando todos los jugadores están listos
+		private var _CallbackOnAllPlayersReady:Function = null;	// Llamar cuando todos los jugadores están listos
 		
 		
 		public function get CurTeam() : Team { return TheTeams[_IdxCurTeam]; }
@@ -194,10 +194,10 @@ package Match
 					break;
 				}
 					
-				case GameState.EndGame:
+				case GameState.EndMatch:
 				{
+					// Notificamos hacia afuera y se encargaran de llamarnos a Shutdown
 					MatchMain.Ref.Shutdown(_MatchResultFromServer);
-					ChangeState(GameState.NotInit);
 					break;
 				}
 					
@@ -1032,9 +1032,21 @@ package Match
 			if (_Part == 1)
 				ChangeState(GameState.EndPart);
 			else
-				ChangeState(GameState.EndGame);
+				ChangeState(GameState.EndMatch);
 		}
 		
+		// Nos llaman siempre desde MatchMain
+		public function Shutdown() : void
+		{
+			if (_State != GameState.NotInit)
+			{
+				TheInterface.Shutdown();
+				TheAudioManager.Shutdown();
+				TheGamePhysics.Shutdown();
+				
+				ChangeState(GameState.NotInit);
+			}
+		}		
 		
 		// Sincronizamos el tiempo que queda de la mitad actual del partido con el servidor
 		public function OnClientSyncTime(remainingSecs:Number) : void

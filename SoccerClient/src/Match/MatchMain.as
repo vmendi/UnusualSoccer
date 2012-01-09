@@ -19,9 +19,6 @@ package Match
 	{
 		static public function get Ref() : MatchMain
 		{
-			if (_Instance == null)
-				ErrorMessages.LogToServer("Nos llaman con MatchMain._Instance == null... mirar si justo despues hay excepcion.");
-			
 			return _Instance;
 		}
 		
@@ -108,7 +105,7 @@ package Match
 			LoadMatchResources(innerInit);
 			
 			function innerInit() : void
-			{			
+			{
 				_Game = new Match.Game();
 
 				Game.InitFromServer((-1), InitOfflineData.GetDescTeam("Atlético"), InitOfflineData.GetDescTeam("Sporting"),
@@ -123,14 +120,16 @@ package Match
 			
 			try {
 			
-				// Game indicara que ya estamos inicializamos. stage != null es curioso: Si se produce una sesion duplicada durante el partido,
-				// el juego sale "a lo bestia", quitando de la stage el MainView etc.
-				if (Game != null && stage != null)
+				// _Game indicara que ya estamos inicializamos
+				if (_Game != null)
 				{
 					var elapsed:Number = 1.0 / stage.frameRate;
 					
-					Game.Run(elapsed);	// Esto puede provocar un Shutdown por dentro
-					Game.Draw(elapsed);
+					// Dentro del Run se produce el Shutdown por EndMatch, siendo un estado mas del partido. Queremos que sea asi y 
+					// no en un listener de una cutscene porque hemos comprobado que a estos listeners se les llama en momentos fatales, 
+					// por ejemplo, en un TheInterface.Update.gotoAndStop, con lo que, justo despues del gotoAndStop, todo revienta.
+					_Game.Run(elapsed);
+					_Game.Draw(elapsed);
 				}
 			}
 			catch(e:Error)
@@ -149,31 +148,9 @@ package Match
 				// Es posible que nos llegue este Shutdown antes de estar inicializados (OnPushedOpponentDisconnected)
 				if (_Game != null)
 				{
-					if (Connection != null)
-					{
-						Connection.RemoveClient(_Game);
-						Connection = null;
-					}
-					else
-					{
-						ErrorMessages.LogToServer("WTF 812: MatchMain.Connection == null");
-					}
-					
-					try {
-						_Game.TheInterface.Shutdown();
-					} 
-					catch(e:Error) {ErrorMessages.LogToServer("En Shutdown01! " + e.message);}
-					
-					try {
-						_Game.TheAudioManager.Shutdown();
-					} 
-					catch(e:Error) {ErrorMessages.LogToServer("En Shutdown02! " + e.message);}
-					
-					try {
-						_Game.TheGamePhysics.Shutdown();
-					} 
-					catch(e:Error) {ErrorMessages.LogToServer("En Shutdown03! " + e.message);}
-					
+					Connection.RemoveClient(_Game);
+					_Game.Shutdown();
+										
 					TweenMax.killAll();
 				}
 	
