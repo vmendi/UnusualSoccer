@@ -116,9 +116,9 @@
     <div align="center" style="width:760px; height:33px; background:url(Imgs/NavBg.png);" >
         <table border="0" cellpadding="0" cellspacing="0">
             <tr>
-                <td><a href="#" onclick="sendRequestViaMultiFriendSelector(); return false;"  ><img alt="" src="Imgs/NavIconInvita_en_US.png" hspace="20" /></a></td>
-                <td><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=wall" target="_parent"><img alt="" src="Imgs/NavIconMuro_en_US.png" hspace="20" /></a></td>
-                <td><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=info" target="_parent"><img alt="" src="Imgs/NavIconInfo_en_US.png" hspace="20" /></a></td>
+                <td><a href="#" onclick="sendRequestViaMultiFriendSelector(); return false;"  ><img alt="" src="Imgs/NavIconInvita_${locale}.png" hspace="20" border="0" /></a></td>
+                <td><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=wall" target="_parent"><img alt="" src="Imgs/NavIconMuro_${locale}.png" hspace="20" border="0" /></a></td>
+                <td><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=info" target="_parent"><img alt="" src="Imgs/NavIconInfo_${locale}.png" hspace="20" border="0" /></a></td>
             </tr>
         </table>
     </div>
