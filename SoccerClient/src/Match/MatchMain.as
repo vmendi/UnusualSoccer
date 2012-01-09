@@ -149,17 +149,31 @@ package Match
 				// Es posible que nos llegue este Shutdown antes de estar inicializados (OnPushedOpponentDisconnected)
 				if (_Game != null)
 				{
-					if (Connection == null)
-						ErrorMessages.LogToServer("WTF 812: MatchMain.Connection == null");
-					else
+					if (Connection != null)
 					{
 						Connection.RemoveClient(_Game);
 						Connection = null;
 					}
+					else
+					{
+						ErrorMessages.LogToServer("WTF 812: MatchMain.Connection == null");
+					}
 					
-					_Game.TheInterface.Shutdown();
-					_Game.TheAudioManager.Shutdown();
-					_Game.TheGamePhysics.Shutdown();
+					try {
+						_Game.TheInterface.Shutdown();
+					} 
+					catch(e:Error) {ErrorMessages.LogToServer("En Shutdown01! " + e.message);}
+					
+					try {
+						_Game.TheAudioManager.Shutdown();
+					} 
+					catch(e:Error) {ErrorMessages.LogToServer("En Shutdown02! " + e.message);}
+					
+					try {
+						_Game.TheGamePhysics.Shutdown();
+					} 
+					catch(e:Error) {ErrorMessages.LogToServer("En Shutdown03! " + e.message);}
+					
 					TweenMax.killAll();
 				}
 	
@@ -169,10 +183,7 @@ package Match
 				// ... y notificamos hacia afuera (al RealtimeModel)
 				dispatchEvent(new utils.GenericEvent("OnMatchEnded", result));
 			}
-			catch(e:Error)
-			{
-				ErrorMessages.LogToServer("En Shutdown! " + e.message);
-			}
+			catch(e:Error) { ErrorMessages.LogToServer("En Shutdown04! " + e.message);}
 		}
 		
 		//

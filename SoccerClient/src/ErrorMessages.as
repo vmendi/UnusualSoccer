@@ -20,6 +20,13 @@ package
 		// Se lanza para indicar que se ha producido cualquier error, y que cualquiera que tenga por ejemplo un timer, debe desengancharse
 		static public var OnCleaningShutdownSignal : Signal = new Signal();
 		
+		static public function IncorrectMatchVersion() : void
+		{
+			OnCleaningShutdownSignal.dispatch();
+			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorIncorrectMatchVersionMsg"),
+							 ResourceManager.getInstance().getString("main", "ErrorIncorrectMatchVersionTit"), "center");
+		}
+		
 		static public function FacebookConnectionError() : void
 		{
 			OnCleaningShutdownSignal.dispatch();

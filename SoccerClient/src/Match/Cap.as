@@ -148,12 +148,13 @@ package Match
 		
 		private function OnRemovedFromStage(e:Event) : void
 		{
+			_Visual.removeEventListener(MouseEvent.MOUSE_OVER, OnMouseDown);
 			_Visual.removeEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
 			_Visual.removeEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
 		}
 		
 		private function OnMouseDown(e : MouseEvent) : void
-		{			
+		{
 			MatchMain.Ref.Game.TheInterface.OnClickCap(this);
 		}
 		
@@ -175,9 +176,7 @@ package Match
 			MatchMain.Ref.Game.TheInterface.OnOutCap(this);
 		}
 		
-		//
 		// Dispara con una fuerza sobre una chapa. La fueza debe especificarse entre 0, 1
-		//
 		public function Shoot(dir:Point, force:Number) : void
 		{
 			dir.normalize(force * MatchConfig.HighCapMaxImpulse);
@@ -186,15 +185,13 @@ package Match
 			PhyObject.body.ApplyImpulse(new b2Vec2(-dir.x, -dir.y), PhyObject.body.GetWorldCenter());
 		}
 		
-		//
 		// Obtiene el vector de dirección desde la chapa que apunta hacia la portería contraria
-		//
 		public function get DirToGoal() : Point
 		{
 			// Obtenemos el punto donde está la portería contraria
 			var target:Point = Field.GetCenterGoal( Enums.AgainstSide( OwnerTeam.Side ) );
 			// Retornamos el vector de direccion
-			return( target.subtract( GetPos() ) );
+			return target.subtract(GetPos());
 		}
 		
 		//
@@ -221,13 +218,12 @@ package Match
 		}
 		
 		//
-		// Cambia el color del radio de influencia
-		// NOTE: Esto no quiere decir que se pinte!
+		// Cambia el color del radio de influencia. NOTE: Esto no quiere decir que se pinte!
 		//
 		public function SetInfluenceAspect( color:int, size:Number ) : void
 		{
 			// Si algo cambia, reasignamos
-			if( color != _ColorInfluence || size != _SizeInfluence )
+			if (color != _ColorInfluence || size != _SizeInfluence)
 			{
 				_ColorInfluence = color;
 				_SizeInfluence = size;
@@ -239,7 +235,7 @@ package Match
 		//
 		// Pinta las influencias
 		//
-		protected function DrawInfluence( ) : void
+		protected function DrawInfluence() : void
 		{
 			_Influence.graphics.clear( );
 			_Influence.graphics.lineStyle( 1, _ColorInfluence, 0.4 );
@@ -271,7 +267,7 @@ package Match
 			return _ShowInfluence;
 		}		
 		
-		public override function Draw( elapsed:Number ) : void
+		public override function Draw(elapsed:Number) : void
 		{
 			super.Draw( elapsed );
 			
