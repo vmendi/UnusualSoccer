@@ -17,11 +17,16 @@ package Match
 	
 	public class MatchMain extends UIComponent
 	{
-		static public function get Ref() : MatchMain {return _Instance;}
+		static public function get Ref() : MatchMain
+		{
+			if (_Instance == null)
+				ErrorMessages.LogToServer("Nos llaman con MatchMain._Instance == null... mirar si justo despues hay excepcion.");
+			
+			return _Instance;
+		}
 		
 		public var Connection : Object = null;						// Netplug
 		public function get Game() : Match.Game { return _Game; }
-				
 
 		public function MatchMain()
 		{
@@ -116,14 +121,21 @@ package Match
 			if (_Instance == null)
 				throw new Error("WTF 9533");
 			
-			// Game indicara que ya estamos inicializamos. stage != null es curioso: Si se produce una sesion duplicada durante el partido,
-			// el juego sale "a lo bestia", quitando de la stage el MainView etc.
-			if (Game != null && stage != null)
+			try {
+			
+				// Game indicara que ya estamos inicializamos. stage != null es curioso: Si se produce una sesion duplicada durante el partido,
+				// el juego sale "a lo bestia", quitando de la stage el MainView etc.
+				if (Game != null && stage != null)
+				{
+					var elapsed:Number = 1.0 / stage.frameRate;
+					
+					Game.Run(elapsed);	// Esto puede provocar un Shutdown por dentro
+					Game.Draw(elapsed);
+				}
+			}
+			catch(e:Error)
 			{
-				var elapsed:Number = 1.0 / stage.frameRate;
-				
-				Game.Run(elapsed);
-				Game.Draw(elapsed);
+				ErrorMessages.LogToServer("En OnFrame! " + e.message);
 			}
 		}
 		
@@ -131,27 +143,47 @@ package Match
 		// Nos llaman siempre: por fin del partido normal, por PushedOpponentDisconnected y por OnCleaningSignalShutdown.
 		public function Shutdown(result : Object) : void
 		{
-			removeEventListener(Event.ENTER_FRAME, OnFrame);
-			
-			// Es posible que nos llegue este Shutdown antes de estar inicializados (OnPushedOpponentDisconnected)
-			if (_Game != null)
-			{
-				Connection.RemoveClient(_Game);
-				Connection = null;
-								
-				_Game.TheInterface.Shutdown();
-				_Game.TheAudioManager.Shutdown();
-				_Game.TheGamePhysics.Shutdown();
-				TweenMax.killAll();
+			try {
+				removeEventListener(Event.ENTER_FRAME, OnFrame);
 				
-				_Game = null;
+				// Es posible que nos llegue este Shutdown antes de estar inicializados (OnPushedOpponentDisconnected)
+				if (_Game != null)
+				{
+					if (Connection != null)
+					{
+						Connection.RemoveClient(_Game);
+						Connection = null;
+					}
+					else
+					{
+						ErrorMessages.LogToServer("WTF 812: MatchMain.Connection == null");
+					}
+					
+					try {
+						_Game.TheInterface.Shutdown();
+					} 
+					catch(e:Error) {ErrorMessages.LogToServer("En Shutdown01! " + e.message);}
+					
+					try {
+						_Game.TheAudioManager.Shutdown();
+					} 
+					catch(e:Error) {ErrorMessages.LogToServer("En Shutdown02! " + e.message);}
+					
+					try {
+						_Game.TheGamePhysics.Shutdown();
+					} 
+					catch(e:Error) {ErrorMessages.LogToServer("En Shutdown03! " + e.message);}
+					
+					TweenMax.killAll();
+				}
+	
+				// Internamente nadie puede llamarnos mas
+				_Instance = null;
+				
+				// ... y notificamos hacia afuera (al RealtimeModel)
+				dispatchEvent(new utils.GenericEvent("OnMatchEnded", result));
 			}
-
-			// Internamente nadie puede llamarnos mas
-			_Instance = null;
-			
-			// ... y notificamos hacia afuera (al RealtimeModel)
-			dispatchEvent(new utils.GenericEvent("OnMatchEnded", result));
+			catch(e:Error) { ErrorMessages.LogToServer("En Shutdown04! " + e.message);}
 		}
 		
 		//

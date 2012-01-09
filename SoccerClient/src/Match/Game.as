@@ -78,16 +78,16 @@ package Match
 			}
 		}
 						
-		//
 		// Inicialización de los datos del partido. Invocado desde el servidor
-		//
 		public function InitFromServer(matchId:int, descTeam1:Object, descTeam2:Object, idLocalPlayerTeam:int, matchTimeSecs:int, turnTimeSecs:int, minClientVersion:int) : void
-		{			
-			// Verificamos la versión mínima de cliente exigida por el servidor.
+		{
 			if (MatchConfig.ClientVersion < minClientVersion)
-				throw new Error(IDString + "El partido no es la última versión. Por favor, limpie la caché de su navegador. ClientVersion: " + MatchConfig.ClientVersion + " MinClient: " + minClientVersion);
+			{
+				ErrorMessages.IncorrectMatchVersion();
+				return;
+			}
 						
-			// Creamos las capas iniciales de pintado para asegurar un orden adecuado
+			// Creamos las capas iniciales de pintado para asegurar el orden
 			CreateLayers();
 
 			MatchConfig.IdLocalUser = idLocalPlayerTeam;
@@ -643,18 +643,16 @@ package Match
 				throw new Error(IDString + fromServerCall + " sin estar en Playing. Nuestro estado es: " + _State +" RTC: " + ReasonTurnChanged);
 		}
 		
-		// 
+		
 		// Un jugador ha terminado la colocación de su portero. Volvemos al turno del otro jugador para que efectúe su lanzamiento
-		//
 		private function OnGoalKeeperSet(idPlayerWhoMovedTheGoalKeeper:int) : void
 		{
 			// Cambiamos el turno al enemigo (quien declaró que iba a tirar a puerta) para que realice el disparo
 			SetTurn(TheTeams[idPlayerWhoMovedTheGoalKeeper].AgainstTeam().IdxTeam, Enums.TurnGoalKeeperSet);
 		}
 
-		// 
+		
 		// Un jugador ha marcado gol!!! Reproducimos una cut-scene
-		//
 		public function OnClientGoalScored(idPlayer:int, validity:int) : void
 		{
 			if (this._State != GameState.WaitingGoal)
@@ -667,9 +665,8 @@ package Match
 			Cutscene.ShowGoalScored(validity, Delegate.create(ShowGoalScoredCutsceneEnd, idPlayer, validity));
 		}
 		
-		//
+		
 		// Invocado cuando termina la cutscene de celebración de gol (tanto válido como inválido)
-		//
 		protected function ShowGoalScoredCutsceneEnd(idPlayer:int, validity:int) : void
 		{
 			// En el caso del goal, el servidor deja de contar el tiempo con lo cual no se pueden producir fines. Sin embargo,
@@ -696,9 +693,9 @@ package Match
 			
 			TheGamePhysics.StopSimulation();
 
-			TheTeams[Enums.Team1].ResetToCurrentFormation();
-			TheTeams[Enums.Team2].ResetToCurrentFormation();
-			
+			team.ResetToSaquePuerta();
+			team.AgainstTeam().ResetToCurrentFormation();
+						
 			TheBall.SetPosInFrontOf(team.GoalKeeper);
 
 			// Asignamos el turno al equipo que debe sacar de puerta

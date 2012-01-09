@@ -34,7 +34,7 @@ package Match
 			_TargetPos = _Target.GetPos().clone();								
 			
 			// Nos registramos a los eventos de entrada de todo el flash
-			AddHandlers(_Target.Visual.stage);
+			AddHandlers();
 			
 			_IsStarted = true;
 			
@@ -48,7 +48,7 @@ package Match
 		public function Stop(reason:int):void
 		{
 			// Nos desregistramos de los eventos de entrada 
-			RemoveHandlers(_Target.Visual.stage);
+			RemoveHandlers();
 			
 			// Indicamos que estamos detenidos
 			_IsStarted = false;
@@ -60,15 +60,15 @@ package Match
 		//
 		// Nos registramos a los eventos de ratón del objeto indicado "stage" 
 		//
-		protected function AddHandlers(object:DisplayObject):void
+		protected function AddHandlers():void
 		{
-			object.stage.addEventListener(MouseEvent.MOUSE_UP, MouseUp);	
-			object.stage.addEventListener(MouseEvent.MOUSE_MOVE, MouseMove);
+			_Target.Visual.stage.addEventListener(MouseEvent.MOUSE_UP, MouseUp);	
+			_Target.Visual.stage.addEventListener(MouseEvent.MOUSE_MOVE, MouseMove);
 		}
-		protected function RemoveHandlers(object:DisplayObject):void
+		protected function RemoveHandlers():void
 		{
-			object.stage.removeEventListener(MouseEvent.MOUSE_UP, MouseUp);	
-			object.stage.removeEventListener(MouseEvent.MOUSE_MOVE, MouseMove);
+			_Target.Visual.stage.removeEventListener(MouseEvent.MOUSE_UP, MouseUp);	
+			_Target.Visual.stage.removeEventListener(MouseEvent.MOUSE_MOVE, MouseMove);
 		}
 		
 		public function MouseUp(e: MouseEvent) :void { Stop(SuccessMouseUp); }		

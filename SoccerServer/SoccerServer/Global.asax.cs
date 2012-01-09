@@ -37,16 +37,27 @@ namespace SoccerServer
             // Unica instancia global
             mInstance = this;
 
+            ConfigureDB();
+
             // Todos nuestros settings se configuran aqui, dependiendo de version, idioma, etc
             ConfigureSettings();
 
-            // Inicializacion del motor de red
             mNetEngine = new NetEngineMain(new Realtime());
             
             var starterThread = new Thread(StarterThread);
             starterThread.Name = "StarterThread";
             starterThread.Start();
 		}
+
+        private void ConfigureDB()
+        {
+            using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
+            {
+                // Si todavia no tenemos ninguna temporada, es que la DB esta limpia => tenemos que empezar!
+                if (theContext.CompetitionSeasons.Count() == 0)
+                    MainService.ResetSeasons(false);
+            }
+        }
 
         private void ConfigureSettings()
         {
@@ -67,10 +78,10 @@ namespace SoccerServer
                 mFBSettings.CanvasUrl = "http://unusualsoccerdev.unusualwonder.com/";
                 mFBSettings.SecureCanvasUrl = "https://unusualsoccerdev.unusualwonder.com/";
 
-                //mClientSettings["VersionID"] = "UnusualSoccer";
-                //mServerSettings["VersionID"] = "UnusualSoccer";                
-                mClientSettings["VersionID"] = "MahouLigaChapas";
-                mServerSettings["VersionID"] = "MahouLigaChapas";
+                mClientSettings["VersionID"] = "UnusualSoccer";
+                mServerSettings["VersionID"] = "UnusualSoccer";                
+                //mClientSettings["VersionID"] = "MahouLigaChapas";
+                //mServerSettings["VersionID"] = "MahouLigaChapas";
 
                 mServerSettings["Title"] = "Unusual Soccer";
                 mServerSettings["ImageUrl"] = "http://unusualsoccerdev.unusualwonder.com/Imgs/Logo75x75_en_US.png";   // Tiene que ser absoluto pq va en los Meta de facebook
@@ -132,7 +143,7 @@ namespace SoccerServer
             Log.startLogging(MainService.CLIENT_ERROR);
 
             Log.log(GLOBAL_LOG, "******************* Initialization from " + this.Server.MachineName + " Global.asax *******************");
-           
+
             mNetEngine.Start();
 
             mStopWatch = new Stopwatch();

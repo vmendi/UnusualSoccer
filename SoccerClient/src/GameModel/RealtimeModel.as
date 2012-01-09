@@ -246,7 +246,7 @@ package GameModel
 			SwitchLookingForMatchResponded(false);
 			
 			if (mMatch != null)
-				throw "WTF 543";
+				throw new Error("WTF 543");
 			
 			mMatch = new MatchMain();			
 			mMatch.addEventListener("OnMatchEnded", OnMatchEnded);
@@ -264,7 +264,8 @@ package GameModel
 		
 		private function OnMatchEnded(e:GenericEvent) : void
 		{
-			mMatch.removeEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage);	// No problemo, es necesario cuando PushedOpponentDisconnected
+			// No problemo, a un remove se le puede llamar dos veces. Es necesario cuando PushedOpponentDisconnected y no estabamos añadidos a la stage todavía.
+			mMatch.removeEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage);
 			mMatch.removeEventListener("OnMatchEnded", OnMatchEnded);
 			mMatch = null;
 			
@@ -298,14 +299,14 @@ package GameModel
 		// desde aqui y no desde el partido porque el partido puede no estar inicializado todavia.
 		public function PushedOpponentDisconnected(result:Object) : void
 		{
-			if (mMatch == null)
-			{
-				ErrorMessages.LogToServer("WTF 4192: Ha llegado un PushedOpponentDisconnected sin tener partido!");
-			}
-			else
+			if (mMatch != null)
 			{
 				// Esto provocara un OnMatchEnded
 				mMatch.Shutdown(result);
+			}
+			else
+			{
+				ErrorMessages.LogToServer("WTF 4192: Ha llegado un PushedOpponentDisconnected sin tener partido!");
 			}
 		}
 		

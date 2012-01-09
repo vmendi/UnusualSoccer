@@ -1,10 +1,9 @@
 package
 {
-	import com.google.analytics.AnalyticsTracker;
-	import com.google.analytics.GATracker;
-	
 	import flash.display.DisplayObject;
 	import flash.external.ExternalInterface;
+	
+	import mx.utils.StringUtil;
 	
 	public final class GameMetrics
 	{
@@ -26,9 +25,7 @@ package
 		static public const DO_TRAINING : String = "Do_Training";
 		
 		static public function Init(dobject:DisplayObject) : void
-		{
-			tracker = new GATracker( dobject, "UA-6476735-9", "AS3", false );
-			
+		{			
 			var uid : String = SoccerClient.GetFacebookFacade().FacebookID
 			ExternalInterface.call("_kmq.push", ['identify', uid]);
 		}
@@ -42,15 +39,13 @@ package
 			
 			// Kissmetrics
 			ExternalInterface.call("_kmq.push", ['record', event, properties]);
-
 		}
 		
 		static public function ReportPageView(page:String) : void
 		{
-			// Google Analytics
-			tracker.trackEvent("Manager", page);
+			// Unicamente a Google Analytics
+			// ExternalInterface.call("_gaq.push(['_trackEvent', CATEGORY, ACTION, Opt_LABEL, Opt_VALUE])");
+			ExternalInterface.call(StringUtil.substitute("_gaq.push(['_trackEvent', {0}, {1}])", "Manager", page));
 		}
-		
-		static private var tracker : AnalyticsTracker;
 	}
 }
