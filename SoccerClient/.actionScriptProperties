@@ -31,7 +31,6 @@
           </libraryPathEntry>
         </excludedEntries>
       </libraryPathEntry>
-      <libraryPathEntry kind="3" linkType="1" path="${DOCUMENTS}/Utils/gaforflash/analytics.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>

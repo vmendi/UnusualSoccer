@@ -61,9 +61,10 @@ namespace SoccerServer
             if (theTeam.PendingTraining == null && theTeam.Fitness > 0)
             {
                 var secondsSinceLastUpdate = (now - theTeam.LastFitnessUpdate).TotalSeconds;
-                var fitnessToSubstract = secondsSinceLastUpdate / 864;
+                var fitnessToSubstract = secondsSinceLastUpdate / 1800;
 
-                // 1 de fitness cada 864 secs => cada 14.4 minutos => 100 de fitness cada 1440 minutos == 24h
+                // 1 de fitness cada 1728 secs => cada 28.8 minutos => 100 de fitness cada 2880 minutos == 48h
+                // 1 de fitness cada 1800 secs => cada 30   minutos => 100 de fitness cada 3000 minutos == 50h
                 if (fitnessToSubstract > 1)
                 {
                     // Perderemos algo de substraccion puesto q redondeamos hacia abajo... no importa.
