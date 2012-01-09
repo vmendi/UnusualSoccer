@@ -135,7 +135,7 @@
 <!-- CONTENIDO -->	
 
 	<mx:SWFLoader scaleX="1.09" scaleY="1.09" x="10" y="10" id="MySkillMC" scaleContent="false"
-				  source="@Embed(source='/Assets/General.swf', symbol='SpecialSkills')"/>
+				  source="{resourceManager.getClass('main','SpecialSkills')}"/>
 
 	<s:Group x="68" y="12" alpha.Complete="0.7" alpha.NotAvailable="0.5">
 		<s:layout><s:VerticalLayout gap="0" /></s:layout>

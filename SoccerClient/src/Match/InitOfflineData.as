@@ -8,7 +8,7 @@ package Match
 				PredefinedTeamNameID: predefinedTeamNameID,
 				Name: "Team " + predefinedTeamNameID,
 				Fitness:50,
-				Formation:"3-1-3",
+				Formation:"2-2-3",
 				SoccerPlayers: []
 			}
 

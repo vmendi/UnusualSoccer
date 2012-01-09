@@ -7,7 +7,7 @@
 	<s:layout><s:TileLayout columnWidth="46" rowHeight="46" /></s:layout>
 		
 	<mx:Image visible="false" id="MySpecialSkillTemplate" includeInLayout="false"
-			 source="@Embed(source='/Assets/General.swf', symbol='SpecialSkills')"/>
+			 source="{resourceManager.getClass('main','SpecialSkills')}"/>
 	
 	<fx:Script><![CDATA[
 		import mx.binding.utils.BindingUtils;

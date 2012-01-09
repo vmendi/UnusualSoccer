@@ -12,7 +12,7 @@
         <s:State name="disabled" />
     </s:states>
 
-	<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='TeamField')" fillMode="clip" />    
+	<s:BitmapImage source="{resourceManager.getClass('main','TeamField')}" fillMode="clip" />    
 	
 	<s:DataGroup id="dataGroup"
 				 left="0" top="0" right="0" bottom="0" 

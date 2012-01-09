@@ -55,7 +55,7 @@
 	<s:Label text="{resourceManager.getString('main','TrainingSpecialCompleteTit')}" styleName="whiteBoldVeryBig" x="28" y="20" width="300" textAlign="center" />
 	
 	<mx:SWFLoader scaleX="1.4" scaleY="1.4" x="30" y="57" id="MySkillMC" scaleContent="false"
-				  source="@Embed(source='/Assets/General.swf', symbol='SpecialSkills')"/>
+				  source="{resourceManager.getClass('main','SpecialSkills')}"/>
 
 	<s:Group width="232" x="100" y="60">
 		<s:layout><s:VerticalLayout gap="0" /></s:layout>
