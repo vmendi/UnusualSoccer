@@ -113,12 +113,21 @@
     </asp:Panel>
 
     <!-- Navegación -->		
-    <div style="width:760px; height:33px; background:url(Imgs/NavBg.png);" >
+    <div align="center" style="width:760px; height:33px; background:url(Imgs/NavBg.png);" >
+        <table border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td><a href="#" onclick="sendRequestViaMultiFriendSelector(); return false;"  ><img alt="" src="Imgs/NavIconInvita_en_US.png" hspace="20" /></a></td>
+                <td><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=wall" target="_parent"><img alt="" src="Imgs/NavIconMuro_en_US.png" hspace="20" /></a></td>
+                <td><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=info" target="_parent"><img alt="" src="Imgs/NavIconInfo_en_US.png" hspace="20" /></a></td>
+            </tr>
+        </table>
+    </div>
+
+<!--
 	    <div style="padding-left:39px; float:left; width:203px;"><a href="#" onclick="sendRequestViaMultiFriendSelector(); return false;"  ><img alt="" src="Imgs/NavIconInvita_en_US.png" width="142" height="33" /></a></div>
 	    <div style="float:left; width:130px;"><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=wall" target="_parent"><img alt="" src="Imgs/NavIconMuro.png" width="60" height="33"  /></a></div>
 	    <div style="float:left; width:250px;"><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=info" target="_parent"><img alt="" src="Imgs/NavIconInfo.png" width="178" height="33" /></a></div>
-	    <div style="float:left;"><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=app_2373072738" target="_parent"><img alt="" src="Imgs/NavIconForo.png" width="71" height="33" /></a></div>
-    </div>
+-->
 
     <div id="flashContent">
         <p>

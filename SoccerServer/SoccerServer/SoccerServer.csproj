@@ -167,10 +167,17 @@
     <Content Include="Imgs\MensajeVictoria.jpg" />
     <Content Include="Imgs\MensajeVictoria_en_US.jpg" />
     <Content Include="Imgs\NavBg.png" />
+    <Content Include="Imgs\NavIconBase_en_US.png" />
     <Content Include="Imgs\NavIconForo.png" />
     <Content Include="Imgs\NavIconInfo.png" />
+    <Content Include="Imgs\NavIconInfo_en_US.png" />
+    <Content Include="Imgs\NavIconInfo_es_LA.png" />
     <Content Include="Imgs\NavIconInvita.png" />
+    <Content Include="Imgs\NavIconInvita_en_US.png" />
+    <Content Include="Imgs\NavIconInvita_es_LA.png" />
     <Content Include="Imgs\NavIconMuro.png" />
+    <Content Include="Imgs\NavIconMuro_en_US.png" />
+    <Content Include="Imgs\NavIconMuro_es_LA.png" />
     <Content Include="Imgs\NavIcons.png" />
     <Content Include="Imgs\NavIconVisita.png" />
     <Content Include="Imgs\PopupAppOffline.jpg" />

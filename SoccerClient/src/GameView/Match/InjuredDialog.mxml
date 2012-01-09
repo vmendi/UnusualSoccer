@@ -76,10 +76,10 @@
 			skinClass="GameView.Skins.DefaultListSkin"			
 			creationComplete="MyInjuredList.scroller.setStyle('horizontalScrollPolicy', mx.core.ScrollPolicy.AUTO);">
 		<s:layout><s:HorizontalLayout gap="20" /></s:layout>
-	</s:List> 
+	</s:List>
 	
-	<s:Label width="400" text="{resourceManager.getString('main','InjuredSignUpTxt')}" bottom="47" styleName="yellowBoldMedium" textAlign="center"/>	
+	<s:Label width="400" text="{resourceManager.getString('main','InjuredSignUpTxt')}" bottom="47" styleName="yellowBoldBig" textAlign="center"/>	
 	<s:Button label="{resourceManager.getString('main','FriendSelectorTitle')}" horizontalCenter="0" bottom="15" click="SignUpClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonGreySkin" />
-	<s:Button label="X" minHeight="23" minWidth="23" top="15" right="15" click="CloseClickHandler(event)" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+	<s:Button label="X" minHeight="23" minWidth="23" top="15" right="15" click="CloseClickHandler(event)" skinClass="GameView.Skins.ButtonGreySkin" />
 	
 </s:Group>
