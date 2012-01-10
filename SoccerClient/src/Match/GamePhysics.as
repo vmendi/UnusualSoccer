@@ -14,14 +14,16 @@ package Match
 	{
 		public var TheBox2D:QuickBox2D;
 		
+		public function get IsSimulating() : Boolean { return _SimulatingShoot;	}
+		
 		public function get IsGoal()   : Boolean { return _SideGoal != -1; }
 		public function get SideGoal() : int	 { return _SideGoal; }					// Enums.Left_Side, Enums.Right_Side. Porteria donde entro el gol
 				
 		public function get IsFault()  : Boolean { return _DetectedFault != null; }
 		public function get TheFault() : Fault   { return _DetectedFault; }
 		
-		public function get ShooterCap()   : Cap	 { return _CapShooting; }
-		public function get IsSimulating() : Boolean { return _SimulatingShoot;	}
+		// Chapa del equipo atacante que ha ejecutado un disparo (distincion relevante en los tiros paralelos con el portero, el cual es del equipo defensor)
+		public function get AttackingTeamShooterCap()  : Cap { return _AttackingTeamShooterCap; }
 		
 		public function get NumTouchedCaps() : int 	 	{ return _TouchedCaps.length; }
 		public function get NumFramesSimulated() : int	{ return _FramesSimulating; }
@@ -33,7 +35,7 @@ package Match
 			if (!IsGoal)
 				throw new Error("No deberias preguntar por el IsSelfGoal cuando no ha sido Goal");
 			
-			return _CapShooting.OwnerTeam == MatchMain.Ref.Game.TeamInSide(SideGoal);
+			return _AttackingTeamShooterCap.OwnerTeam == MatchMain.Ref.Game.TeamInSide(SideGoal);
 		}
 		
 		// Equipo que ha marcado el gol
@@ -59,8 +61,7 @@ package Match
 			
 			_Contacts = TheBox2D.addContactListener();
 			_Contacts.addEventListener(QuickContacts.ADD, OnContact);
-			//_Contacts.addEventListener(QuickContacts.RESULT, OnContact);
-			
+						
 			// Para poder hacer proceso (olvidar contactos) antes que el RENDER, que es donde se calcula la simulacion
 			TheBox2D.main.addEventListener(Event.ENTER_FRAME, OnPhysicsEnterFrame);
 		}
@@ -79,22 +80,23 @@ package Match
 				TheBox2D.destroy();
 		}
 		
-		public function Shoot(cap : Cap, dir : Point, force : Number) : void
+		public function Shoot(cap : Cap, shootInfo : ShootInfo) : void
 		{
-			// Tenemos memoria de todo lo que ocurrio en la ultima simulacion hasta que vuelven a disparar
-			_DetectedFault = null;
-			_SideGoal = -1;
-			_FramesSimulating = 0;
-			_TouchedCaps.length = 0;
-			
-			_CapShooting = cap;
-			_SimulatingShoot = true;
-			
-			// Aseguramos que la posición del balón esta guardada (para detectar goles desde tu campo)
-			if (_Ball.GetPos().x != _Ball.LastPosBallStopped.x || _Ball.GetPos().y != _Ball.LastPosBallStopped.y)
-				throw new Error("Esta desincronizacion no deberia ocurrir. Se paro la pelota sin anotarlo en LastPosBallStopped");
+			if (shootInfo != null)
+			{
+				// Tenemos memoria de todo lo que ocurrio en la ultima simulacion hasta que vuelven a disparar
+				_DetectedFault = null;
+				_SideGoal = -1;
+				_FramesSimulating = 0;
+				_TouchedCaps.length = 0;
+				
+				if (cap.OwnerTeam.IsAttackingTeam)
+					_AttackingTeamShooterCap = cap;
 
-			cap.Shoot(dir, force);
+				cap.Shoot(shootInfo.Dir, shootInfo.Force);
+				
+				_SimulatingShoot = true;
+			}
 		}
 		
 		//
@@ -347,7 +349,7 @@ package Match
 		private var _DetectedFault:Fault = null;				// Bandera que indica Falta detectada (además objeto que describe la falta)
 		
 		private var _SimulatingShoot : Boolean = false;
-		private var _CapShooting : Cap = null;
+		private var _AttackingTeamShooterCap : Cap = null;
 		private var _FramesSimulating:int = 0;					// Contador de frames simulando
 		
 		private var mbWantToStopSimulation : Boolean = false;

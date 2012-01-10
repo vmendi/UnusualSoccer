@@ -25,6 +25,9 @@ package Match
 		public function get CapsList() : Array { return _CapsList; }
 		public function get GoalKeeper() : Cap { return _CapsList[0]; }
 		
+		public function get IsLocalUser() : Boolean	{ return this.IdxTeam == MatchConfig.IdLocalUser; }
+		public function get IsAttackingTeam() : Boolean { return this == MatchMain.Ref.Game.CurTeam; }
+		
 		public function get Goals() : int {	return _Goals; }
 		public function set Goals(value:int) : void { _Goals = value; }
 
@@ -83,11 +86,6 @@ package Match
 			Cap.PrepareVisualCap(Ghost.Visual, PredefinedTeamNameID, useSecondaryEquipment, true);			
 		}
 		
-		
-		public function get IsLocalUser() : Boolean
-		{
-			return this.IdxTeam == MatchConfig.IdLocalUser;
-		}
 		
 		//
 		// Obtiene el equipo adversario a nosotros

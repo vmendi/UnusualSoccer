@@ -44,7 +44,7 @@ package Match
 			{
 				// Si los subturnos o los pases al pie estan agotados, no mostramos ninguna influencia amiga.
 				// Además, el pase al pie sólo empieza a ser posible cuando la chapa que lanza ha tocado la pelota.
-				if (remainingHits != 0 && remainingPasesAlPie != 0 && _Game.TheGamePhysics.HasTouchedBall(_Game.TheGamePhysics.ShooterCap))
+				if (remainingHits != 0 && remainingPasesAlPie != 0 && _Game.TheGamePhysics.HasTouchedBall(_Game.TheGamePhysics.AttackingTeamShooterCap))
 				{
 					var potential:Array = _Game.GetPotentialPaseAlPie();
 					

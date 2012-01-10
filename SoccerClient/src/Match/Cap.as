@@ -45,6 +45,7 @@ package Match
 		private var _SizeInfluence:int = MatchConfig.RadiusPaseAlPie;	// tamaño del radio de influencia visual
 		
 		private var _IsInjured : Boolean = false;
+		private var _ParallelShoot : ShootInfo;
 				
 		public var YellowCards:int = 0; 						// Número de tarjetas amarillas (2 => roja => expulsión)
 		
@@ -64,6 +65,9 @@ package Match
 		public function get OriginalDefense() : int  { return _OriginalDefense; }
 		
 		public function get Ghost() : Entity { return this.OwnerTeam.Ghost; }	// Ghost de la chapa (solo hay uno por equipo)
+		
+		public function get ParallelShoot() : ShootInfo { return _ParallelShoot; }
+		public function set ParallelShoot(v:ShootInfo) : void { _ParallelShoot = v; }
 
 
 		public function Cap(team:Team, id:int, descCap:Object, useSecondaryEquipment:Boolean) : void
@@ -332,9 +336,7 @@ package Match
 			{
 				// Poco podemos hacer... No merece la pena mandarlo al servidor, fallara mucho y no sabremos distinguir por qué
 			}
-			
 		}
-		
 		private var mFacebookPictureLoader : Loader;
 	}
 }
