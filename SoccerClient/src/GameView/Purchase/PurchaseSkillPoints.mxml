@@ -3,7 +3,7 @@
 		 			   xmlns:s="library://ns.adobe.com/flex/spark"
 		 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 		 			   xmlns:Purchase="GameView.Purchase.*"
-		 			   width="600" height="500" xmlns:GameView="GameView.*">
+		 			   width="600" height="455" xmlns:GameView="GameView.*">
 	
 	<fx:Style source="../styles.css"/>
 	
@@ -35,7 +35,7 @@
 	
 	<s:Group horizontalCenter="0" top="105">	
 	
-		<s:Group horizontalCenter="0" verticalCenter="0">
+		<s:Group horizontalCenter="0" verticalCenter="0" includeIn="ChoosingItem">
 			<s:layout>
 				<s:HorizontalLayout gap="10" />
 			</s:layout>
@@ -86,35 +86,35 @@
 			<s:Group width="106">
 				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
 				<s:Label id="SkillPoints100Label" styleName="whiteBoldBig" text="100 Skill Points"></s:Label>			
-				<s:Button id="SkillPoints100" label="Select"
+				<s:Button id="SkillPoints100" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
 			<s:Group width="106">
 				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
 				<s:Label id="SkillPoints300Label" styleName="whiteBoldBig" text="300 Skill Points"></s:Label>			
-				<s:Button id="SkillPoints300" label="Select"
+				<s:Button id="SkillPoints300" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
 			<s:Group width="106">
 				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
 				<s:Label id="SkillPoints500Label" styleName="whiteBoldBig" text="500 Skill Points"></s:Label>			
-				<s:Button id="SkillPoints500" label="Select"
+				<s:Button id="SkillPoints500" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
 			<s:Group width="106">
 				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
 				<s:Label id="SkillPoints700Label" styleName="whiteBoldBig" text="500 Skill Points"></s:Label>			
-				<s:Button id="SkillPoints700" label="Select"
+				<s:Button id="SkillPoints700" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
 			<s:Group width="106">
 				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
 				<s:Label id="SkillPoints1000Label" styleName="whiteBoldBig" text="500 Skill Points"></s:Label>			
-				<s:Button id="SkillPoints1000" label="Select"
+				<s:Button id="SkillPoints1000" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>				
@@ -128,28 +128,14 @@
 	
 	<s:Group includeIn="Failure, Canceled" horizontalCenter="0" verticalCenter="-10">
 		<s:Label id="MyFailureLabel" maxDisplayedLines="3" styleName="whiteBoldBig" width="300" textAlign="center"
-				 text.Failure="Failed purchase. If your account has been charged, please use the Report button below and submit a Dispute. We will promptly respond to it."
-				 text.Canceled="Order correctly Canceled"
+				 text.Failure="{resourceManager.getString('main','PurchaseTxtFailure')}"
+				 text.Canceled="{resourceManager.getString('main','PurchaseTxtCanceled')}"
 				 />
 	</s:Group>
+
+	<s:Label id="myTxtTerms" horizontalCenter="0" bottom="65" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTxtTerms')}" includeIn="ChoosingItem"/>
 	
-	<s:Group horizontalCenter="0" bottom="55" >
-		<s:layout>
-			<s:VerticalLayout gap="2" horizontalAlign="center" />
-		</s:layout>
-		<s:Label id="myTxtTasex" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseTxtTaxes')}"/>
-		<s:Group>
-			<s:layout>
-				<s:HorizontalLayout gap="4" verticalAlign="middle" />
-			</s:layout>
-			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='PopupPurchaseLocker')" fillMode="clip" />
-			<s:Label id="myTxtSafe" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTxtSecure')}"/>
-			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='PopupPurchaseCards')" fillMode="clip" />
-		</s:Group>
-		<s:Label id="myTxtTerms" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseTxtTerms')}"/>
-	</s:Group>
-	
-	<s:Button id="MyCloseButton" label.ChoosingItem="Cancel" label="Close" click="CloseClickHandler(event)" minWidth="80" horizontalCenter="0" bottom="20" 
+	<s:Button id="MyCloseButton" label.ChoosingItem="{resourceManager.getString('main','Cancel')}" label="Close" click="CloseClickHandler(event)" minWidth="80" horizontalCenter="0" bottom="20" 
 			  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 	
 </Purchase:PurchaseBase>
