@@ -15,7 +15,6 @@ package GameModel
 	import flash.system.Security;
 	
 	import mx.binding.utils.BindingUtils;
-	import mx.controls.Alert;
 	import mx.core.FlexGlobals;
 	import mx.resources.ResourceManager;
 	import mx.utils.URLUtil;
@@ -64,7 +63,10 @@ package GameModel
 		public function OnCleaningShutdown() : void
 		{
 			if (mMatch != null)
+			{
 				mMatch.Shutdown(null);	// Esto provocara un MatchEnded con result == null
+				Disconnect();
+			}
 		}
 		
 		private function OnHasCreditChanged(hasCredit:Boolean) : void
@@ -234,7 +236,7 @@ package GameModel
 		
 		// La vista necesitara añadirlo a la stage
 		public function get TheMatch() : MatchMain { return mMatch; }
-		
+				
 		// Si el comienzo de partido viene de la aceptación de un challenge, firstClientID será siempre el aceptador, y
 		// secondClientID será el que lanzó el challenge
 		public function PushedStartMatch(firstClientID : int, secondClientID : int, bFriendly : Boolean) : void
@@ -315,7 +317,7 @@ package GameModel
 			ImportantMessageDialog.Show(msg, ResourceManager.getInstance().getString('main','BroadcastMsgTitle'), "center");
 		}
 		
-		public function get LocalRealtimePlayer() : RealtimePlayer { return mLocalRealtimePlayer; }
+		public function  get LocalRealtimePlayer() : RealtimePlayer { return mLocalRealtimePlayer; }
 		private function set LocalRealtimePlayer(v:RealtimePlayer) : void { mLocalRealtimePlayer = v; }
 						
 		public function  get TheRoomModel() : RoomModel { return mRoomModel; }

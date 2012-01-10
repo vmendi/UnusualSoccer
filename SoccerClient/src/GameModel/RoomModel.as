@@ -88,7 +88,7 @@ package GameModel
 			newChallenge.SourcePlayer = FindPlayerInRoom(fromServer.SourcePlayer);
 			
 			if (newChallenge.SourcePlayer == null)
-				throw "Challenge from player not in room";
+				throw new Error("Challenge from player not in room");
 			
 			mReceivedChallenges.addItem(newChallenge);
 			newChallenge.SourcePlayer.IsChallengeSource = true;
@@ -199,7 +199,7 @@ package GameModel
 			if (callback != null)
 				callback(bSuccess);
 		}
-		
+				
 		private var mMainService : MainService;
 		private var mMainModel : MainGameModel;
 		

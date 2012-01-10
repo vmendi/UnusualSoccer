@@ -118,10 +118,10 @@ namespace SoccerServer
                 mFBSettings.SecureCanvasUrl = "https://localhost/";
 
                 // Pondremos lo que mas nos convenga para depurar en local
-                mServerSettings["VersionID"] = "UnusualSoccer";
-                mClientSettings["VersionID"] = "UnusualSoccer";
-                //mServerSettings["VersionID"] = "MahouLigaChapas";
-                //mClientSettings["VersionID"] = "MahouLigaChapas";
+                //mServerSettings["VersionID"] = "UnusualSoccer";
+                //mClientSettings["VersionID"] = "UnusualSoccer";
+                mServerSettings["VersionID"] = "MahouLigaChapas";
+                mClientSettings["VersionID"] = "MahouLigaChapas";
 
                 mServerSettings["Title"] = "localhost";
                 mServerSettings["ImageUrl"] = "";
@@ -130,7 +130,8 @@ namespace SoccerServer
                 mServerSettings["SameIPAbandonsChecked"] = "false";
 
                 // Nuestro servidor remoto favorito cuando depuramos en local
-                mClientSettings["RemoteServer"] = "unusualsoccerdev.unusualwonder.com";
+                //mClientSettings["RemoteServer"] = "unusualsoccerdev.unusualwonder.com";
+                mClientSettings["RemoteServer"] = "mahouligachapas.unusualwonder.com";
             }
         }
 
