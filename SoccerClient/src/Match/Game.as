@@ -55,7 +55,7 @@ package Match
 			if (teamId != Enums.Team1 && teamId != Enums.Team2)
 				throw new Error(IDString + "Identificador invalido");
 			
-			return TheTeams[teamId].CapsList[ capId ]; 
+			return TheTeams[teamId].CapsList[capId]; 
 		}
 		
 		// Obtiene el equipo que está en un lado del campo
@@ -356,30 +356,46 @@ package Match
 		}
 			
 		//
-		// Disparar chapa 
+		// Disparar chapa
 		//
 		public function OnClientShoot(idPlayer:int, capID:int, dirX:Number, dirY:Number, force:Number) : void
 		{
 			VerifyStateWhenReceivingCommand(GameState.WaitingCommandShoot, idPlayer, "OnClientShoot");
-										
-			// Nada mas lanzar resetamos el tiempo. Esto hace que la tarta se rellene y que si al acabar la simulacion no hay ConsumeSubTurn o 
-			// YieldTurnToOpponent, por ejemplo, en una pase al pie, el tiempo este bien para el siguiente sub-turno.
-			ResetTimeout();
 			
 			// Obtenemos la chapa que dispara
 			var cap:Cap = GetCap(idPlayer, capID);
 			
-			// Aplicamos habilidad especial
-			if (cap.OwnerTeam.IsUsingSkill(Enums.Superpotencia))
-				force *= MatchConfig.PowerMultiplier;
-
-			// Comienza la simulacion!
-			ChangeState(GameState.Simulating);
-			
-			// Ejecutamos el disparo en la dirección/fuerza recibida
-			TheGamePhysics.Shoot(cap, new Point(dirX, dirY), force);
-			
-			// ... el turno de lanzamiento no se consume hasta que se detenga la pelota
+			if (ReasonTurnChanged == Enums.TurnTiroAPuerta)
+			{
+				if (capID != 0)
+					throw new Error(IDString + "En un tiro a puerta el defensor solo puede mover al portero!");
+				
+				// Almacenamos el tiro para ejecutarlo en paralelo con el del atacante
+				cap.ParallelShoot = new ShootInfo(new Point(dirX, dirY), force);
+				
+				// Y pasamos el turno al atacante!
+				OnGoalKeeperSet(idPlayer);
+			}
+			else
+			{
+				// Tenemos que ejecutar el tiro paralelo del portero (si lo hubiera)
+				if(ReasonTurnChanged == Enums.TurnGoalKeeperSet)
+					TheGamePhysics.Shoot(CurTeam.AgainstTeam().GoalKeeper, CurTeam.AgainstTeam().GoalKeeper.ParallelShoot);
+				
+				// Nada mas lanzar resetamos el tiempo. Esto hace que la tarta se rellene y que si al acabar la simulacion no hay ConsumeSubTurn o 
+				// YieldTurnToOpponent, por ejemplo, en una pase al pie, el tiempo este bien para el siguiente sub-turno.
+				ResetTimeout();
+				
+				// Aplicamos habilidad especial
+				if (cap.OwnerTeam.IsUsingSkill(Enums.Superpotencia))
+					force *= MatchConfig.PowerMultiplier;
+				
+				// Comienza la simulacion!
+				ChangeState(GameState.Simulating);
+				
+				// Ejecucion del tiro del atacante
+				TheGamePhysics.Shoot(cap, new ShootInfo(new Point(dirX, dirY), force));
+			}
 		}
 		
 		//
@@ -396,7 +412,7 @@ package Match
 			// Al acabar el tiro movemos el portero a su posición de formación en caso de la ultima accion fuera un saque de puerta
 			if (Enums.IsSaquePuerta(ReasonTurnChanged))
 				CurTeam.ResetToCurrentFormationOnlyGoalKeeper();
-			
+						
 			var paseToCap : Cap = CheckPaseAlPie();
 			var detectedFault : Fault = TheGamePhysics.TheFault;
 									
@@ -595,22 +611,14 @@ package Match
 		{
 			VerifyStateWhenReceivingCommand(GameState.WaitingCommandTiroPuerta, idPlayer, "OnClientTiroPuerta");
 			
-			// Mostramos el interface de colocación de portero al jugador contrario
 			var team:Team = TheTeams[idPlayer];
 			var enemy:Team = team.AgainstTeam();
 
-			// Si el portero del enemigo está dentro del area, cambiamos el turno al enemigo para que coloque el portero
-			// Puede moverlo múltiples veces HASTA que se consuma su turno 
+			// Si el portero del enemigo está dentro del area, cambiamos el turno al enemigo...
 			if (TheField.IsCapCenterInsideSmallArea(enemy.GoalKeeper))
-			{
-				// Una vez que se termine su TURNO por TimeOut se llamará a OnGoalKeeperSet
-				SetTurn(enemy.IdxTeam, Enums.TurnTiroAPuerta);
-			}
+				SetTurn(enemy.IdxTeam, Enums.TurnTiroAPuerta);		// ... y una vez que se termine su turno se llamará a OnGoalKeeperSet
 			else
-			{
-				// El portero no está en el area, saltamos directamente a portero colocado 
-				OnGoalKeeperSet(enemy.IdxTeam);	
-			}
+				OnGoalKeeperSet(enemy.IdxTeam);						// El portero no está en el area, saltamos directamente a portero colocado	
 		}
 		
 		public function OnClientPosCap(idPlayer:int, capId:int, posX:Number, posY:Number) : void
@@ -710,7 +718,7 @@ package Match
 			TheTeams[Enums.Team2].ResetToCurrentFormation();
 			
 			TheBall.SetPosInFieldCenter();
-						
+
 			SetTurn(team.IdxTeam, reason);
 		}
 		
@@ -835,7 +843,7 @@ package Match
 			
 			ResetTimeout();
 			
-			// Para colocar el portero solo se posee la mitad de tiempo!!
+			// Para colocar el portero sólo se posee la mitad de tiempo!!
 			if (reason == Enums.TurnTiroAPuerta)
 				this._Timeout = MatchConfig.TimeToPlaceGoalkeeper;
 			
@@ -859,6 +867,10 @@ package Match
 				TheTeams[Enums.Team1].DesactiveSkills();
 				TheTeams[Enums.Team2].DesactiveSkills();
 			}
+			
+			// Nos olvidamos del potencial tiro paralelo que hubiera en el turno anterior
+			// Como para tirar a puerta solo hay 1 turno, no necesitamos hacer esto mismo en el ConsumeSubTurn
+			CurTeam.GoalKeeper.ParallelShoot = null;	
 			
 			// Mostramos un mensaje animado de cambio de turno
 			Cutscene.ShowTurn(reason, idTeam == MatchConfig.IdLocalUser);
@@ -934,7 +946,7 @@ package Match
 				return null;
 			
 			// Si la chapa que hemos lanzado no ha tocado la pelota no puede haber pase al pie
-			if(!TheGamePhysics.HasTouchedBall(TheGamePhysics.ShooterCap))
+			if(!TheGamePhysics.HasTouchedBall(TheGamePhysics.AttackingTeamShooterCap))
 				return null;
 						
 			// La más cercana de todas las potenciales
@@ -951,14 +963,14 @@ package Match
 			{
 				if (cap.InsideCircle(TheBall.GetPos(), Cap.Radius + BallEntity.Radius + CurTeam.RadiusPase))
 				{
-					if (MatchConfig.AutoPasePermitido || cap != TheGamePhysics.ShooterCap)
+					if (MatchConfig.AutoPasePermitido || cap != TheGamePhysics.AttackingTeamShooterCap)
 						potential.push(cap);
 				}
 			}
 			
 			// Si hay más de una chapa candidata evitamos hacer autopase, el jugador querrá pasar al resto de chapas
-			if (potential.length > 1 && potential.indexOf(TheGamePhysics.ShooterCap) != -1)
-				potential.splice(potential.indexOf(TheGamePhysics.ShooterCap), 1);
+			if (potential.length > 1 && potential.indexOf(TheGamePhysics.AttackingTeamShooterCap) != -1)
+				potential.splice(potential.indexOf(TheGamePhysics.AttackingTeamShooterCap), 1);
 			
 			return potential;
 		}
