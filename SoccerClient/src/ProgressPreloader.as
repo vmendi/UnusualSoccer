@@ -55,7 +55,16 @@ package
 			if (mPreloaderMovieclip == null)
 			{
 				mPreloaderMovieclip = new mcLoading();
-				mPreloaderMovieclip.gotoAndStop(1);
+				
+				if (AppConfig.IsMahouLigaChapas)
+				{
+					mPreloaderMovieclip.gotoAndStop(1);
+				}
+				else
+				{
+					mPreloaderMovieclip.gotoAndStop(2);
+				}
+				//mPreloaderMovieclip.gotoAndStop(1);
 				
 				mPreloaderMovieclip.x = 0;
 				mPreloaderMovieclip.y = 0;
