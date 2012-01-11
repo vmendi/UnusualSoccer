@@ -79,6 +79,7 @@ package NetEngine
 			mSocket.connect(serverName, port);
 		}
 
+		// After calling this, the ClientList is still retained, but we won't dispatch any other event until you call Connect again
 		public function Disconnect() : void
 		{
 			if (mSocket != null)

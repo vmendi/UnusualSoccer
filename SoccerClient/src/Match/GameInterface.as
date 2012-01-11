@@ -361,14 +361,12 @@ package Match
 			var game:Game = MatchMain.Ref.Game;
 			
 			// Si estamos en modo de colocación de portero:
-			//---------------------------------------
 			if (game.ReasonTurnChanged == Enums.TurnTiroAPuerta)
 			{
 				if (game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
 					_ShootControl.Start(cap);
 			}
 			// Si estamos en modo de saque de puerta:
-			//---------------------------------------
 			else 
 			if(Enums.IsSaquePuerta(game.ReasonTurnChanged))
 			{
@@ -376,7 +374,6 @@ package Match
 					_ShootControl.Start(cap);
 			}
 			// Si estamos en modo normal (modo disparo):
-			//---------------------------------------
 			else 
 			{
 				if (game.CurTeam == cap.OwnerTeam)
@@ -397,8 +394,6 @@ package Match
 			if (MatchMain.Ref.Game.CurTeam != cap.OwnerTeam)
 				throw new Error("Intento de mostrar ControllerBall de chapa que no es local");
 			
-			//  NOTE: No se comprueba si la entrada de usuario está permitida, ya que
-			//  no es una acción decidida por el usuario, sino una consecuencia del pase al pie
 			_BallControl.Start(cap);
 		}
 		

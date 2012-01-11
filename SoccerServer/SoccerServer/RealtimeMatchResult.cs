@@ -124,14 +124,18 @@ namespace SoccerServer
         {
             var ret = new List<int>();
 
-            // Los alineados
+            // Los lesionables (los que han jugado el partido)
             var soccerPlayers = (from p in theTeam.SoccerPlayers
                                  where p.FieldPosition < 100 && !p.IsInjured
                                  orderby p.FieldPosition
                                  select p).ToArray();
 
-            // Si ya hay 3 lesionados entre los alineados, no lesionamos a nadie mas.
-            if (soccerPlayers.Count() > 5)
+            var numInjured = (from p in theTeam.SoccerPlayers
+                              where p.IsInjured
+                              select p).Count();
+
+            // Si ya hay 3 lesionados en todo el equipo no lesionamos a nadie mas.
+            if (numInjured < 3)
             {
                 var rand = new Random();
 

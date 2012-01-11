@@ -86,7 +86,7 @@ package Match
 				ErrorMessages.IncorrectMatchVersion();
 				return;
 			}
-						
+
 			// Creamos las capas iniciales de pintado para asegurar el orden
 			CreateLayers();
 
@@ -193,7 +193,7 @@ package Match
 					ChangeState(GameState.NewPart);
 					break;
 				}
-					
+
 				case GameState.EndMatch:
 				{
 					// Notificamos hacia afuera y se encargaran de llamarnos a Shutdown

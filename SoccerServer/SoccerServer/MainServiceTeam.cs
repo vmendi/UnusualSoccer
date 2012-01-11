@@ -14,7 +14,7 @@ namespace SoccerServer
 		public const double DEFAULT_INITIAL_MEAN = 25.0;
 		public const double DEFAULT_INITIAL_STANDARD_DEVIATION = 8.333;
 
-        public const int INJURY_DURATION_DAYS = 2;
+        public const int INJURY_DURATION_DAYS = 1;
         public const int DEFAULT_NUM_MACHES = 5;
 	
 		public TransferModel.Team RefreshTeam()

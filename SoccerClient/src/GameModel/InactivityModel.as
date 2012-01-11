@@ -8,46 +8,69 @@ package GameModel
 
 	public final class InactivityModel
 	{
-		private const INACTIVITY_TIME : Number = 60000;
+		private const INACTIVITY_TIME : Number = 5000;
+		
+		[Bindable]
+		public function  get IsActive() : Boolean { return mIsActive; }
+		private function set IsActive(v:Boolean) : void { mIsActive = v; }
+		private var mIsActive : Boolean = true;
+		
 		
 		public function InactivityModel(mainService : MainService, gameModel : MainGameModel)
 		{
 			mRealtimeModel = gameModel.TheRealtimeModel;
-			
-			if (mRealtimeModel.TheMatch != null)
-				throw new Error("WTF 97874"); 
-			
+						
 			mRealtimeModel.MatchStarted.add(OnMatchStarted);
 			mRealtimeModel.MatchEnded.add(OnMatchEnded);
 			
+			CreateAndStartTimer();
+		}
+		
+		private function CreateAndStartTimer() : void
+		{
+			// TODO: Fuera este timer! OnTimerSeconds please!
 			mTimer = new Timer(INACTIVITY_TIME);
 			mTimer.addEventListener(TimerEvent.TIMER, OnTimer);
+			mTimer.start();
 		}
 		
 		public function LogNewActivity() : void
 		{
-			if (mTimer.running)
+			// Estamos durante el partido? Durante el partido no hay timer.
+			if (mTimer != null)
 			{
+				// Pasamos a la actividad
+				IsActive = true;
+				
+				// Y arrancamos el timer
 				mTimer.reset();
-				mTimer.stop();
+				mTimer.start();
 			}
 		}
 		
 		private function OnTimer(e:Event) : void
 		{
-			// Decretamos inactividad!			
+			// Decretamos inactividad!
+			//IsActive = false;
+			
+			// Paramos el timer hasta que haya nueva actividad
+			mTimer.reset();
 		}
 		
 		private function OnMatchStarted() : void
 		{
-			mTimer.reset();
+			if (!IsActive)
+				throw new Error("WTF 6578");
+			
+			mTimer.stop();
+			mTimer = null;			
 		}
 		
 		private function OnMatchEnded(result:Object) : void
 		{
-			mTimer.start();
+			CreateAndStartTimer();
 		}
-
+		
 		private var mTimer : Timer;
 		private var mRealtimeModel : RealtimeModel;
 	}

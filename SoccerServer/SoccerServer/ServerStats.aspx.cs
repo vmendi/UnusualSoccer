@@ -210,6 +210,13 @@ namespace SoccerServer
 
         protected void MisticalRefresh_Click(object sender, EventArgs e)
         {
+            var now = DateTime.Now;
+            foreach (SoccerPlayer sp in mDC.SoccerPlayers)
+            {
+                sp.IsInjured = false;
+                sp.LastInjuryDate = now;
+            }
+            mDC.SubmitChanges();                
         }
 
         private void ShowRestrictions()

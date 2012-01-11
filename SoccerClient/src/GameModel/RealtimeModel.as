@@ -53,8 +53,11 @@ package GameModel
 			
 			mIsConnected = false;
 			
-			// Basamos nuestra conexion/desconexion en la disponibilidad de credito
-			BindingUtils.bindSetter(OnHasCreditChanged, mMainModel, ["TheTicketModel", "HasCredit"]);
+			// Basamos nuestra conexion/desconexion en la disponibilidad de credito...
+			BindingUtils.bindSetter(OnConnectionConditionsChanged, mMainModel, ["TheTicketModel", "HasCredit"]);
+			
+			// ...y tambien en funcion de la inactividad
+			BindingUtils.bindSetter(OnConnectionConditionsChanged, mMainModel, ["TheInactivityModel", "IsActive"]);
 			
 			// La generacion del LocalRealtimePlayer depende de que haya equipo refrescado
 			BindingUtils.bindSetter(OnTeamRefreshed, mMainModel, ["TheTeamModel", "TheTeam"]);
@@ -62,6 +65,7 @@ package GameModel
 		
 		public function OnCleaningShutdown() : void
 		{
+			// Nos aseguramos de dejar el partido limpio y de cerrar el socket
 			if (mMatch != null)
 			{
 				mMatch.Shutdown(null);	// Esto provocara un MatchEnded con result == null
@@ -69,15 +73,18 @@ package GameModel
 			}
 		}
 		
-		private function OnHasCreditChanged(hasCredit:Boolean) : void
+		private function OnConnectionConditionsChanged(v:Boolean) : void
 		{
-			if (!hasCredit)
+			if (mMainModel.TheTicketModel == null || mMainModel.TheInactivityModel == null)
+				return;
+			
+			if (!mMainModel.TheTicketModel.HasCredit || !mMainModel.TheInactivityModel.IsActive)
 				Disconnect();
 			else
 			if (!IsConnected)
-				InitialConnection(null);				
+				InitialConnection(null);
 		}
-		
+
 		public function InitialConnection(callback : Function) : void
 		{
 			Connect(Delegate.create(RTMPConnectionSuccess, callback));
@@ -87,6 +94,10 @@ package GameModel
 		{
 			if (IsConnected)
 				throw new Error("Already connected");
+			
+			// Estamos conectando ya? (solo llamaremos de vuelta al primer callback que nos hayan pasado)
+			if (mServerConnection != null)
+				return;
 			
 			mURI = GetDefaultURI();
 			
@@ -127,26 +138,37 @@ package GameModel
 				
 		private function NetPlugClosed() : void
 		{
-			IsConnected=false;
-			
+			IsConnected = false;
+
+			// Primero nos llegara la llamada desde el servidor diciendonos que nos desconecta, ahora nos llega el NetPlugClosed, evitamos
+			// mostrar al jugador un mensaje duplicado mediante mLegitCloseFromServer.
 			if (!mLegitCloseFromServer)
 				ErrorMessages.ClosedConnection();
+			
+			// NOTE01: Dejamos nuestro estado como estuviere, de una desconexion forzada el programa no sale "bien", siempre sale por mensaje popup definitivo.
 		}
 				
 		private function NetPlugError(reason : String) : void
 		{
 			ErrorMessages.RealtimeConnectionFailed();
+			
+			// NOTE01: Idem
 		}
 		
+		// Podria ser privada si no fuera por los tests
 		public function Disconnect() : void
 		{
 			LocalRealtimePlayer = null;
 			TheRoomModel = null;
 			
+			if (TheMatch != null)
+				ErrorMessages.LogToServer("Disconnect sin haber cerrado el partido?!");
+						
 			if (mServerConnection != null)
 			{
-				mServerConnection.RemoveClient(this);
-				mServerConnection.Disconnect();	// Won't dispatch NetPlugClosed
+				// No hace falta quitarnos de la lista de clientes de la conexion porque no dispatcha ningun mensaje mas, y ademas no la reusamos.
+				// Ademas, esta llamada no dispatchara una señal NetPlugClosed.
+				mServerConnection.Disconnect();	
 				mServerConnection = null;
 			}
 
@@ -160,7 +182,7 @@ package GameModel
 			if (reason == "Duplicated")
 			{
 				ErrorMessages.DuplicatedConnectionCloseHandler();
-				mLegitCloseFromServer = true;
+				mLegitCloseFromServer = true;	// Para que cuando llegue el NetPlugClosed no mostremos otro mensaje mas!
 			}
 			else
 			if (reason == "ServerShutdown")

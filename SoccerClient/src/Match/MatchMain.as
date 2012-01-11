@@ -1,8 +1,9 @@
 package Match
 {	
+	import NetEngine.NetPlug;
+	
 	import com.greensock.TweenMax;
 	
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.system.ApplicationDomain;
@@ -12,7 +13,6 @@ package Match
 	import mx.events.ResourceEvent;
 	import mx.resources.ResourceManager;
 	
-	import utils.Delegate;
 	import utils.GenericEvent;
 	
 	public class MatchMain extends UIComponent
@@ -22,7 +22,7 @@ package Match
 			return _Instance;
 		}
 		
-		public var Connection : Object = null;						// Netplug
+		public var Connection : NetPlug = null;
 		public function get Game() : Match.Game { return _Game; }
 
 		public function MatchMain()
@@ -77,24 +77,27 @@ package Match
 		// Inicialización del juego a través de una conexión de red que conecta nuestro cliente
 		// con el servidor. Se llama desde el manager.
 		//
-		public function Init(netConnection: Object): void
+		public function Init(netConnection: NetPlug) : void
 		{
 			MatchConfig.OfflineMode = false;
 			
-			LoadMatchResources(innerInit);	
+			LoadMatchResources(innerInit);
 
 			function innerInit() : void
 			{
-				if (_Instance == null)	// Es posible que el oponente se haya desconectado en este tiempo...
-					return;
-				
-				_Game = new Match.Game();
-				
-				Connection = netConnection;			
-				Connection.AddClient(Game);
-							
-				// Indicamos al servidor que nuestro cliente necesita los datos del partido para continuar. Esto llamara a InitFromServer desde el servidor
-				Connection.Invoke("OnRequestData", null);
+				try {
+					if (_Instance == null)	// Es posible que el oponente se haya desconectado en este tiempo...
+						return;
+					
+					_Game = new Match.Game();
+					
+					Connection = netConnection;			
+					Connection.AddClient(Game);
+								
+					// Indicamos al servidor que nuestro cliente necesita los datos del partido para continuar. Esto llamara a InitFromServer desde el servidor
+					Connection.Invoke("OnRequestData", null);
+				}
+				catch(e:Error) { ErrorMessages.LogToServer("En innerInit! " + e.message); }
 			}
 		}
 		
@@ -118,11 +121,13 @@ package Match
 			if (_Instance == null)
 				throw new Error("WTF 9533");
 			
-			try {
-			
+			try {			
 				// _Game indicara que ya estamos inicializamos
 				if (_Game != null)
 				{
+					if (stage == null)
+						throw new Error("WTF 6789");
+					
 					var elapsed:Number = 1.0 / stage.frameRate;
 					
 					// Dentro del Run se produce el Shutdown por EndMatch, siendo un estado mas del partido. Queremos que sea asi y 
@@ -132,10 +137,7 @@ package Match
 					_Game.Draw(elapsed);
 				}
 			}
-			catch(e:Error)
-			{
-				ErrorMessages.LogToServer("En OnFrame! " + e.message);
-			}
+			catch(e:Error) { ErrorMessages.LogToServer("En OnFrame! " + e.message);	}
 		}
 		
 		// Desde aqui nos ocupamos de destruir todo, especialmente los listeners (globales) para no perder memoria.

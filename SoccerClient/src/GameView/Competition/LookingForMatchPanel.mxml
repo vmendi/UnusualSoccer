@@ -33,7 +33,8 @@
 		{
 			if (!connected)
 				currentState = "Disabled";
-			else if (mRealtimeModel.LookingForMatch)
+			else 
+			if (mRealtimeModel.LookingForMatch)
 				currentState = "LookingForMatch";
 			else
 				currentState = "Wait";
@@ -67,9 +68,7 @@
 			<s:SolidColor color="#000000"/>
 		</s:fill>
 	</s:Rect>
-	
-	<!--<s:Label horizontalCenter="0" y="46" textAlign="center" text="Estás desconectado del juego..." styleName="whiteBoldBig" includeIn="Disabled" />-->
-	
+		
 	<s:Group includeIn="Disabled" horizontalCenter="0" verticalCenter="0">
 		<s:layout>
 			<s:VerticalLayout gap="2" horizontalAlign="center" />
