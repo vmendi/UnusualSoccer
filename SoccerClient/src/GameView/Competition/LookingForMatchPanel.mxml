@@ -3,19 +3,23 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*"
-		 currentState="Disabled"
+		 currentState="Connecting"
 		 width="740" height="105"
 		 preinitialize="PreinitializeHandler(event)">
 	
 	<s:states>
-		<s:State name="Wait" />
-		<s:State name="Disabled" />
+		<s:State name="Connecting" />
+		<s:State name="Inactivity" />
+		<s:State name="OutOfCredit" />
+		<s:State name="PlayMatchAvailable" />		
 		<s:State name="LookingForMatch" />
 	</s:states>
 	
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
 		import GameModel.RealtimeModel;
+		
+		import GameView.Purchase.PurchaseBase;
 		
 		import mx.binding.utils.BindingUtils;
 		import mx.events.FlexEvent;
@@ -25,42 +29,67 @@
 			mMainGameModel = SoccerClient.GetMainGameModel();
 			mRealtimeModel = mMainGameModel.TheRealtimeModel;
 			
+			// HasCredit o IsActive no hace falta bindearlo, porque esta implicito en el IsConnected (el RealtimeModel se encarga)
+			BindingUtils.bindSetter(OnConnectionChanged, mRealtimeModel, "IsConnected");
+			
+			// Pero dentro de que estemos conectados, podemos estar buscando partido o no
 			BindingUtils.bindSetter(OnLookingForMatchChanged, mRealtimeModel, "LookingForMatch");
-			BindingUtils.bindSetter(OnConnectedChanged, mRealtimeModel, "IsConnected");
 		}
 		
-		private function OnConnectedChanged(connected : Boolean) : void
+		private function OnConnectionChanged(isConnected : Boolean) : void
 		{
-			if (!connected)
-				currentState = "Disabled";
-			else 
-			if (mRealtimeModel.LookingForMatch)
-				currentState = "LookingForMatch";
-			else
-				currentState = "Wait";
+			RefreshState();
 		}
 		
 		private function OnLookingForMatchChanged(looking : Boolean) : void
 		{
 			if (looking)
-			{
 				GameMetrics.ReportEvent(GameMetrics.LOOK_FOR_MATCH, null);
-				currentState = "LookingForMatch";
+			
+			RefreshState();
+		}
+		
+		private function RefreshState() : void
+		{
+			if (mMainGameModel.TheTicketModel.HasCredit)
+			{
+				if (mRealtimeModel.IsConnected)
+				{
+					if (mRealtimeModel.LookingForMatch)
+						currentState = "LookingForMatch";
+					else
+						currentState = "PlayMatchAvailable";
+				}
+				else
+				if (mMainGameModel.TheInactivityModel.IsActive)
+					currentState = "Connecting";
+				else
+					currentState = "Inactivity";
 			}
 			else
-				currentState = "Wait";
-				
+				currentState = "OutOfCredit";
 		}
-
+				
 		protected function MyFindMatchButton_clickHandler(event:MouseEvent):void
 		{
-			if (currentState != "Disabled")
+			if (currentState == "PlayMatchAvailable" || currentState == "LookingForMatch")
 				mRealtimeModel.SwitchLookingForMatch();
 		}
 		
+		protected function MyConnectButton_clickHandler(event:MouseEvent):void
+		{
+			mMainGameModel.TheInactivityModel.LogNewActivity();
+		}
+		
+		protected function MyBuyTicketsButton_clickHandler(event:MouseEvent):void
+		{
+			PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseTicket") as Class);
+		}
+
+		
 		[Bindable] private var mMainGameModel : MainGameModel;
 		[Bindable] private var mRealtimeModel : RealtimeModel;
-
+		
 	]]></fx:Script>
 	
 	<s:Rect x="0" y="0" width="740" height="105" alpha="0.5" includeIn="LookingForMatch">
@@ -69,16 +98,20 @@
 		</s:fill>
 	</s:Rect>
 		
-	<s:Group includeIn="Disabled" horizontalCenter="0" verticalCenter="0">
-		<s:layout>
-			<s:VerticalLayout gap="2" horizontalAlign="center" />
-		</s:layout>
+	<s:Group includeIn="Connecting" horizontalCenter="0" verticalCenter="0">
+		<s:layout><s:VerticalLayout gap="2" horizontalAlign="center" /></s:layout>
 		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='WarningIcon')" fillMode="clip" />
-		<s:Label width="160" textAlign="center" text="{resourceManager.getString('main','LookingForMatchPanelDisconected')}" styleName="whiteBoldBig"/>
-	</s:Group>	
+		<s:Label width="160" textAlign="center" text="{resourceManager.getString('main','LookingForMatchPanelConnecting')}" styleName="whiteBoldBig"/>
+	</s:Group>
 	
-	<s:Button top="0" horizontalCenter="0" skinClass="GameView.Skins.ButtonPlayMatchSkin"
-			  includeIn="Wait"
+	<s:Group includeIn="Inactivity" horizontalCenter="0" verticalCenter="0" top="0">
+		<s:layout><s:VerticalLayout gap="8" horizontalAlign="center" /></s:layout>
+		<s:Label textAlign="center" text="{resourceManager.getString('main','LookingForMatchPanelInactivity')}" styleName="whiteBoldBig" />
+		<s:Button label="{resourceManager.getString('main','ConnectButton')}" skinClass="GameView.Skins.ButtonDarkGreySkin"
+				  click="MyConnectButton_clickHandler(event)"/>
+	</s:Group>
+	
+	<s:Button top="0" horizontalCenter="0" skinClass="GameView.Skins.ButtonPlayMatchSkin" includeIn="PlayMatchAvailable"
 			  click="MyFindMatchButton_clickHandler(event)"/>
 
 	<s:Group includeIn="LookingForMatch" horizontalCenter="0" verticalCenter="0">
@@ -90,6 +123,20 @@
 		<s:Button id="MyCancelButton"
 				  label="{resourceManager.getString('main','Cancel')}" minWidth="70" skinClass="GameView.Skins.ButtonDarkGreySkin"
 				  click="MyFindMatchButton_clickHandler(event)"/>
+	</s:Group>	
+	
+	<s:Group horizontalCenter="0" top="2" includeIn="OutOfCredit">
+		<s:layout><s:VerticalLayout horizontalAlign="center" gap="8" /></s:layout>
+		<s:Group>
+			<s:layout><s:VerticalLayout horizontalAlign="center" gap="0" /></s:layout>
+			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='WarningIcon')" fillMode="clip" />
+			<s:Label width="170" text="{resourceManager.getString('main','TicketNoAvailableTime')}" styleName="whiteBoldMedium" textAlign="center" />
+		</s:Group>
+		<s:Button id="MyBuyTicketsButton"
+				  label="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
+				  skinClass="GameView.Skins.ButtonDarkGreySkin"
+				  click="MyBuyTicketsButton_clickHandler(event)"
+				  width="110" height="18" x="40" y="41"/>
 	</s:Group>
 	
 </s:Group>

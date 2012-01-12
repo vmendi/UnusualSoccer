@@ -54,8 +54,11 @@ package GameModel
 			mRefreshTimer.stop();
 			mRefreshTimer = null;
 			
-			// Tambien tenemos que para el partido si lo hubiera
+			// Tambien tenemos que parar el partido si lo hubiera
 			mRealtimeModel.OnCleaningShutdown();
+			
+			// Y el timer de inactividad
+			mInactivityModel.OnCleaningShutdown();
 		}
 
 		public function InitialRefresh(callback : Function) : void

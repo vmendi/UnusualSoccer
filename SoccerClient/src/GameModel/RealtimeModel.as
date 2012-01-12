@@ -117,7 +117,7 @@ package GameModel
 				completeURI = "http://" + completeURI;
 			
 			Security.loadPolicyFile("xmlsocket://" + URLUtil.getServerName(completeURI) + ":843");
-			
+				
 			mServerConnection.AddClient(this);
 			mServerConnection.Connect(mURI);
 		}
@@ -158,7 +158,6 @@ package GameModel
 		// Podria ser privada si no fuera por los tests
 		public function Disconnect() : void
 		{
-			LocalRealtimePlayer = null;
 			TheRoomModel = null;
 			
 			if (TheMatch != null)

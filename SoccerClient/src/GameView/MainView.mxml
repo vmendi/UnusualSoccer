@@ -97,6 +97,8 @@
 			if (MainMenuButtonBar.selectedItem == null)
 				return;
 			
+			mMainGameModel.TheInactivityModel.LogNewActivity();
+			
 			if (MainMenuButtonBar.selectedItem.menuId == "Competition")
 				currentState = "Competition";
 			else

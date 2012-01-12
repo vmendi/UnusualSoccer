@@ -3,10 +3,11 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:Competition="GameView.Competition.*"
+		 xmlns:Team="GameView.Team.*" xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*"
 		 width="100%" height="100%"
 		 addedToStage="AddedToStageHandler(event)"
 		 creationComplete="CreationCompleteHandler(event)"
-		 currentState="Empty" xmlns:Team="GameView.Team.*" xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*">
+		 >
 	
 	<fx:Declarations>
 		<s:DropShadowFilter id="shadowNormal" distance="2" angle="90" blurX="1" blurY="1"/>
@@ -14,19 +15,12 @@
 	</fx:Declarations>	
 	
 	<fx:Style source="../styles.css" />
-	
-	<s:states>
-		<s:State name="Empty" />
-		<s:State name="OutOfCredit" />
-		<s:State name="AvailableCredit" />
-	</s:states>
-	
+		
 	<fx:Script><![CDATA[
 		import GameModel.CompetitionModel;
 		import GameModel.MainGameModel;
 		
 		import GameView.PromotedDialog;
-		import GameView.Purchase.PurchaseBase;
 		import GameView.Skins.DefaultPanelSkin;
 		
 		import mx.binding.utils.BindingUtils;
@@ -41,9 +35,7 @@
 			
 			// Se produce el AddedToStage antes q el CreationComplete (solo la primera vez, luego no se produce mas el CreationComplete, claro)
 			if (mCompetitionModel != null)
-			{
 				mCompetitionModel.RefreshGroup(OnGroupRefreshed);
-			}
 		}
 		
 		protected function CreationCompleteHandler(event:FlexEvent):void
@@ -51,18 +43,9 @@
 			mGameModel = SoccerClient.GetMainGameModel();
 			mCompetitionModel = mGameModel.TheCompetitionModel;
 			
-			BindingUtils.bindSetter(OnHasCreditChanged, mGameModel.TheTicketModel, ["HasCredit"]);
 			BindingUtils.bindSetter(OnPromotedChanged, mCompetitionModel, ["TheGroup", "Promoted"] );
 			
 			mCompetitionModel.RefreshGroup(OnGroupRefreshed);
-		}
-		
-		private function OnHasCreditChanged(hasCredit : Boolean) : void
-		{
-			if (hasCredit)
-				currentState = "AvailableCredit";
-			else
-				currentState = "OutOfCredit";
 		}
 		
 		private function OnPromotedChanged(bPromoted : Boolean) : void
@@ -96,11 +79,6 @@
 			try {			
 				MyCompetitionList.ensureIndexIsVisible(idx);
 			} catch(e:Error) {}
-		}
-		
-		protected function MyBuyTicketsButton_clickHandler(event:MouseEvent):void
-		{
-			PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseTicket") as Class);
 		}
 		
 		[Bindable]
@@ -154,26 +132,8 @@
 				dataProvider="{mCompetitionModel.TheGroup.GroupEntries}" skinClass="GameView.Competition.CompetitionListSkin"		
 				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="true" />
 		
-		<Competition:LookingForMatchPanel x="0" y="0" includeIn="AvailableCredit" />
-		
-		<s:Group horizontalCenter="0" includeIn="OutOfCredit" top="2">
-			<s:layout>
-				<s:VerticalLayout horizontalAlign="center" gap="8" />
-			</s:layout>
-			<s:Group>
-				<s:layout>
-					<s:VerticalLayout horizontalAlign="center" gap="0" />
-				</s:layout>
-				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='WarningIcon')" fillMode="clip" />
-				<s:Label width="170" text="{resourceManager.getString('main','TicketNoAvailableTime')}" styleName="whiteBoldMedium" textAlign="center" />
-			</s:Group>
-			<s:Button id="MyBuyTicketsButton"
-					  label="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
-					  skinClass="GameView.Skins.ButtonDarkGreySkin"
-					  click="MyBuyTicketsButton_clickHandler(event)"
-					  width="110" height="18" x="40" y="41"/>
-		</s:Group>
-		
+		<Competition:LookingForMatchPanel x="0" y="0" />
+				
 	</s:Panel>
 	
 </s:Group>

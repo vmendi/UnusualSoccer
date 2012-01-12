@@ -11,8 +11,9 @@
 	<fx:Style source="../styles.css"/>
 	
 	<s:states>
+		<s:State name="Inactivity" />
 		<s:State name="AvailableCredit" />
-		<s:State name="OutOfCredit" />		
+		<s:State name="OutOfCredit" />
 	</s:states>
 	
 	
@@ -40,15 +41,25 @@
 			
 			// La room puede ser null en distintas transciones
 			BindingUtils.bindSetter(OnRoomModelChanged, mMainGameModel.TheRealtimeModel, [ "TheRoomModel" ]);
-			BindingUtils.bindSetter(OnHasCreditChanged, mMainGameModel.TheTicketModel, [ "HasCredit" ]);
+			BindingUtils.bindSetter(OnConnectionChanged, mMainGameModel.TheRealtimeModel, [ "IsConnected" ]);
 		}
 		
-		protected function OnHasCreditChanged(hasCredit : Boolean) : void
+		private function OnConnectionChanged(isConnected : Boolean) : void
 		{
-			if (hasCredit)
-				currentState = "AvailableCredit";
+			if (mMainGameModel.TheTicketModel.HasCredit)
+			{
+				if (isConnected)
+					currentState = "AvailableCredit";
+				else
+					currentState = "Inactivity";
+			}
 			else
-				currentState = "OutOfCredit";
+				currentState = "OutOfCredit";	
+		}
+		
+		protected function MyConnectButton_clickHandler(event:MouseEvent):void
+		{
+			mMainGameModel.TheInactivityModel.LogNewActivity();
 		}
 		
 		protected function OnRoomModelChanged(theRoomModel : RoomModel) : void
@@ -58,12 +69,16 @@
 		
 		protected function MyPlayersInRoomList_changeHandler(event:IndexChangeEvent):void
 		{
+			mMainGameModel.TheInactivityModel.LogNewActivity();
+			
 			mRoomModel.Selected = MyPlayersInRoomList.selectedItem;
 			MyChallengesList.selectedItem = null;
 		}
 		
 		protected function MyChallengesList_changeHandler(event:IndexChangeEvent):void
 		{
+			mMainGameModel.TheInactivityModel.LogNewActivity();
+			
 			mRoomModel.SelectedChallenge = MyChallengesList.selectedItem;
 			MyPlayersInRoomList.selectedItem = null;
 		}
@@ -79,27 +94,42 @@
 	]]></fx:Script>
 	
 	<s:Group x="10" y="10" width="740" height="470" includeIn="OutOfCredit">
-		<s:Panel id="MyPlayersInRoomPanelFake" skinClass="GameView.Skins.DefaultPanelSkin" title="{resourceManager.getString('main','FriendlyPanelOnlineTitle')}"
+		<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" title="{resourceManager.getString('main','FriendlyPanelOnlineTitle')}"
 				 width="423" height="303" left="0" top="0" controlBarVisible="true" />
-		<s:Panel id="MyChallengesPanelFake" skinClass="GameView.Skins.DefaultPanelSkin" title="{resourceManager.getString('main','FriendlyPanelChallengesTitle')}"
+		<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" title="{resourceManager.getString('main','FriendlyPanelChallengesTitle')}"
 				 width="423" height="157" left="0" top="313" controlBarVisible="false" />
-		<s:Panel id="MyMatchDefitionPanelFake" skinClass="GameView.Skins.DefaultPanelSkin" title="{resourceManager.getString('main','FriendlyPanelDefinitionTitle')}"
+		<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" title="{resourceManager.getString('main','FriendlyPanelDefinitionTitle')}"
 				 right="0" top="0" width="306" height="470" />
 		<s:Group horizontalCenter="0" verticalCenter="0">
 			<GameView:PopupBackground width="230" height="180" />
 			<s:Group verticalCenter="0" horizontalCenter="0">
-				<s:layout>
-					<s:VerticalLayout horizontalAlign="center" gap="10" />
-				</s:layout>
+				<s:layout><s:VerticalLayout horizontalAlign="center" gap="10" /></s:layout>
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='WarningIcon')" fillMode="clip" />
 				<s:Label width="170" text="{resourceManager.getString('main','TicketNoAvailableTime')}" styleName="whiteBoldBig" textAlign="center" />
-				<s:Button id="MyBuyTicketsButton"
-						  label="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
-						  skinClass="GameView.Skins.ButtonDarkGreySkin"
-						  click="MyBuyTicketsButton_clickHandler(event)"
-						  width="110" height="18" x="40" y="41"/>
+				<s:Button id="MyBuyTicketsButton" width="110" height="18" x="40" y="41" skinClass="GameView.Skins.ButtonDarkGreySkin"
+						  label="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"						  
+						  click="MyBuyTicketsButton_clickHandler(event)" />
 			</s:Group>
-			
+		</s:Group>
+	</s:Group>
+	
+	<s:Group x="10" y="10" width="740" height="470" includeIn="Inactivity">
+		<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" title="{resourceManager.getString('main','FriendlyPanelOnlineTitle')}"
+				 width="423" height="303" left="0" top="0" controlBarVisible="true" />
+		<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" title="{resourceManager.getString('main','FriendlyPanelChallengesTitle')}"
+				 width="423" height="157" left="0" top="313" controlBarVisible="false" />
+		<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" title="{resourceManager.getString('main','FriendlyPanelDefinitionTitle')}"
+				 right="0" top="0" width="306" height="470" />
+		<s:Group horizontalCenter="0" verticalCenter="0">
+			<GameView:PopupBackground width="230" height="180" />
+			<s:Group verticalCenter="0" horizontalCenter="0">
+				<s:layout><s:VerticalLayout horizontalAlign="center" gap="10" /></s:layout>
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='WarningIcon')" fillMode="clip" />
+				<s:Label width="170" text="{resourceManager.getString('main','LookingForMatchPanelInactivity')}" styleName="whiteBoldBig" textAlign="center" />
+				<s:Button id="MyConnectButton" width="110" height="18" x="40" y="41" skinClass="GameView.Skins.ButtonDarkGreySkin"
+						  label="{resourceManager.getString('main','ConnectButton')}"
+						  click="MyConnectButton_clickHandler(event)"/>
+			</s:Group>
 		</s:Group>
 	</s:Group>
 	
