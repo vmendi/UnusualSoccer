@@ -365,37 +365,23 @@ package Match
 			// Obtenemos la chapa que dispara
 			var cap:Cap = GetCap(idPlayer, capID);
 			
-			if (ReasonTurnChanged == Enums.TurnTiroAPuerta)
-			{
-				if (capID != 0)
-					throw new Error(IDString + "En un tiro a puerta el defensor solo puede mover al portero!");
-				
-				// Almacenamos el tiro para ejecutarlo en paralelo con el del atacante
-				cap.ParallelShoot = new ShootInfo(new Point(dirX, dirY), force);
-				
-				// Y pasamos el turno al atacante!
-				OnGoalKeeperSet(idPlayer);
-			}
-			else
-			{
-				// Tenemos que ejecutar el tiro paralelo del portero (si lo hubiera)
-				if(ReasonTurnChanged == Enums.TurnGoalKeeperSet)
-					TheGamePhysics.Shoot(CurTeam.AgainstTeam().GoalKeeper, CurTeam.AgainstTeam().GoalKeeper.ParallelShoot);
-				
-				// Nada mas lanzar resetamos el tiempo. Esto hace que la tarta se rellene y que si al acabar la simulacion no hay ConsumeSubTurn o 
-				// YieldTurnToOpponent, por ejemplo, en una pase al pie, el tiempo este bien para el siguiente sub-turno.
-				ResetTimeout();
-				
-				// Aplicamos habilidad especial
-				if (cap.OwnerTeam.IsUsingSkill(Enums.Superpotencia))
-					force *= MatchConfig.PowerMultiplier;
-				
-				// Comienza la simulacion!
-				ChangeState(GameState.Simulating);
-				
-				// Ejecucion del tiro del atacante
-				TheGamePhysics.Shoot(cap, new ShootInfo(new Point(dirX, dirY), force));
-			}
+			// Tenemos que teletransportar al portero?
+			if (ReasonTurnChanged == Enums.TurnGoalKeeperSet)
+				CurTeam.AgainstTeam().GoalKeeper.GotoTeletransportPos();
+						
+			// Nada mas lanzar resetamos el tiempo. Esto hace que la tarta se rellene y que si al acabar la simulacion no hay ConsumeSubTurn o 
+			// YieldTurnToOpponent, por ejemplo, en una pase al pie, el tiempo este bien para el siguiente sub-turno.
+			ResetTimeout();
+			
+			// Aplicamos habilidad especial
+			if (cap.OwnerTeam.IsUsingSkill(Enums.Superpotencia))
+				force *= MatchConfig.PowerMultiplier;
+			
+			// Comienza la simulacion!
+			ChangeState(GameState.Simulating);
+			
+			// Ejecucion del tiro del atacante
+			TheGamePhysics.Shoot(cap, new ShootInfo(new Point(dirX, dirY), force));
 		}
 		
 		//
@@ -625,10 +611,14 @@ package Match
 		{
 			VerifyStateWhenReceivingCommand(GameState.WaitingCommandPosCap, idPlayer, "OnClientPosCap");
 						
-			if (capId != 0)
-				throw new Error(IDString + "Alguien ha posicionado una chapa que no es el portero!" );
+			if (capId != 0 || ReasonTurnChanged != Enums.TurnTiroAPuerta)
+				throw new Error(IDString + "This is madness!");
 			
-			GetCap(idPlayer, capId).SetPos(new Point(posX, posY));
+			// Guardamos la posicion de teletransporte y si es el equipo local, la vamos mostrando ya
+			GetCap(idPlayer, capId).TeletransportPos = new Point(posX, posY);
+			
+			if (CurTeam.IsLocalUser)
+				GetCap(idPlayer, capId).SetPos(new Point(posX, posY));
 			
 			ChangeState(GameState.Playing);
 		}
@@ -870,7 +860,9 @@ package Match
 			
 			// Nos olvidamos del potencial tiro paralelo que hubiera en el turno anterior
 			// Como para tirar a puerta solo hay 1 turno, no necesitamos hacer esto mismo en el ConsumeSubTurn
-			CurTeam.GoalKeeper.ParallelShoot = null;	
+			// Idem sobre el teletransporte
+			CurTeam.GoalKeeper.ParallelShoot = null;
+			CurTeam.GoalKeeper.TeletransportPos = null;
 			
 			// Mostramos un mensaje animado de cambio de turno
 			Cutscene.ShowTurn(reason, idTeam == MatchConfig.IdLocalUser);
@@ -1092,3 +1084,54 @@ package Match
 		
 	}	
 }
+
+
+
+
+
+
+
+
+
+
+/**********************************************************
+ public function OnClientShoot(idPlayer:int, capID:int, dirX:Number, dirY:Number, force:Number) : void
+ {
+	 VerifyStateWhenReceivingCommand(GameState.WaitingCommandShoot, idPlayer, "OnClientShoot");
+	 
+	 // Obtenemos la chapa que dispara
+	 var cap:Cap = GetCap(idPlayer, capID);
+	 
+	 if (ReasonTurnChanged == Enums.TurnTiroAPuerta)
+	 {
+		 if (capID != 0)
+		 	throw new Error(IDString + "En un tiro a puerta el defensor solo puede mover al portero!");
+		 
+		 // Almacenamos el tiro para ejecutarlo en paralelo con el del atacante
+		 cap.ParallelShoot = new ShootInfo(new Point(dirX, dirY), force);
+		 
+		 // Y pasamos el turno al atacante!
+		 OnGoalKeeperSet(idPlayer);
+	}
+	 else
+	 {
+		 // Tenemos que ejecutar el tiro paralelo del portero (si lo hubiera)
+		 if(ReasonTurnChanged == Enums.TurnGoalKeeperSet)
+		 TheGamePhysics.Shoot(CurTeam.AgainstTeam().GoalKeeper, CurTeam.AgainstTeam().GoalKeeper.ParallelShoot);
+		 
+		 // Nada mas lanzar resetamos el tiempo. Esto hace que la tarta se rellene y que si al acabar la simulacion no hay ConsumeSubTurn o 
+		 // YieldTurnToOpponent, por ejemplo, en una pase al pie, el tiempo este bien para el siguiente sub-turno.
+		 ResetTimeout();
+		 
+		 // Aplicamos habilidad especial
+		 if (cap.OwnerTeam.IsUsingSkill(Enums.Superpotencia))
+		 force *= MatchConfig.PowerMultiplier;
+		 
+		 // Comienza la simulacion!
+		 ChangeState(GameState.Simulating);
+		 
+		 // Ejecucion del tiro del atacante
+		 TheGamePhysics.Shoot(cap, new ShootInfo(new Point(dirX, dirY), force));
+ 	}
+ }
+ ******************************/

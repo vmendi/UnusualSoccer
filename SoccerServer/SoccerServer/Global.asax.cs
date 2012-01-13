@@ -126,7 +126,7 @@ namespace SoccerServer
                 mServerSettings["Title"] = "localhost";
                 mServerSettings["ImageUrl"] = "";
                 mServerSettings["Description"] = "";                
-                mServerSettings["TicketingSystem"] = "true";
+                mServerSettings["TicketingSystem"] = "false";
                 mServerSettings["SameIPAbandonsChecked"] = "false";
 
                 // Nuestro servidor remoto favorito cuando depuramos en local

@@ -124,7 +124,7 @@ package Match
 		public function ResetToSaquePuerta() : void
 		{
 			// Queda bonito desvanecer al portero desde donde esté hasta la posición de saque de puerta
-			FadeClone(GoalKeeper, 1);
+			GoalKeeper.FadeClone(1);
 			
 			// En el saque de puerta todo esta en la posición de formación salvo el portero
 			ResetToCurrentFormation();
@@ -144,7 +144,7 @@ package Match
 			var desiredPos : Point = ConvertFormationPosToFieldPos(currentFormation[0], Side);
 			
 			// Pequeño efecto visual
-			FadeClone(GoalKeeper, 1);
+			GoalKeeper.FadeClone(1);
 			
 			if (MatchMain.Ref.Game.TheField.ValidatePosCap(desiredPos, true, GoalKeeper))
 				SetFormationPosForCap(GoalKeeper, currentFormation[0], Side);
@@ -356,7 +356,7 @@ package Match
 
 			// Hacemos un clon visual que es el que realmente desvanecemos
 			if (withFadeOut)
-				FadeClone(cap, 2);
+				cap.FadeClone(2);
 			
 			// Colocamos la chapa fuera del area de visión. Las llevamos a puntos distintos para que no colisionen
 			var pos:Point = new Point(-100, -100);
@@ -364,24 +364,6 @@ package Match
 			cap.SetPos(pos);			
 		}
 		
-		private function FadeClone(cap:Cap, timeInSeconds : Number) : void
-		{
-			var cloned : DisplayObject = new (getDefinitionByName(getQualifiedClassName(cap.Visual)) as Class)();
-			cap.Visual.parent.addChild(cloned);
-			cloned.x = cap.Visual.x; 
-			cloned.y = cap.Visual.y;
-			cloned.rotationZ = cap.PhyBody.angle * 180.0 / Math.PI;
-			
-			Cap.PrepareVisualCap(cloned, PredefinedTeamNameID, cap.Visual.Second.visible, cap.Visual.Goalkeeper.visible);
-			
-			// Hacemos desvanecer el clon
-			TweenMax.to(cloned, timeInSeconds, {alpha:0, onComplete: Delegate.create(onFinishTween, cloned) });
-			
-			function onFinishTween(theCap:DisplayObject) : void
-			{
-				theCap.parent.removeChild(theCap);
-			}
-		}
 		
 		// Pista visual de que es nuestro turno
 		public function ShowMyTurnVisualCue(reason : int) : void

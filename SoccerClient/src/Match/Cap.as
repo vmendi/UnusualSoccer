@@ -6,6 +6,7 @@ package Match
 	import com.greensock.*;
 	
 	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
@@ -19,8 +20,12 @@ package Match
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
 	import flash.system.SecurityDomain;
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
 	
 	import mx.resources.ResourceManager;
+	
+	import utils.Delegate;
 	
 	public class Cap extends PhyEntity
 	{
@@ -46,6 +51,7 @@ package Match
 		
 		private var _IsInjured : Boolean = false;
 		private var _ParallelShoot : ShootInfo;
+		private var _TeletransportPos : Point;
 				
 		public var YellowCards:int = 0; 						// Número de tarjetas amarillas (2 => roja => expulsión)
 		
@@ -68,7 +74,9 @@ package Match
 		
 		public function get ParallelShoot() : ShootInfo { return _ParallelShoot; }
 		public function set ParallelShoot(v:ShootInfo) : void { _ParallelShoot = v; }
-
+		
+		public function set TeletransportPos(v:Point) : void { _TeletransportPos = v; }
+		
 
 		public function Cap(team:Team, id:int, descCap:Object, useSecondaryEquipment:Boolean) : void
 		{	
@@ -338,5 +346,33 @@ package Match
 			}
 		}
 		private var mFacebookPictureLoader : Loader;
+		
+		public function FadeClone(timeInSeconds : Number) : void
+		{
+			var cloned : DisplayObject = new (getDefinitionByName(getQualifiedClassName(Visual)) as Class)();
+			Visual.parent.addChild(cloned);
+			cloned.x = Visual.x; 
+			cloned.y = Visual.y;
+			cloned.rotationZ = PhyBody.angle * 180.0 / Math.PI;
+			
+			Cap.PrepareVisualCap(cloned, OwnerTeam.PredefinedTeamNameID, Visual.Second.visible, Visual.Goalkeeper.visible);
+			
+			// Hacemos desvanecer el clon
+			TweenMax.to(cloned, timeInSeconds, {alpha:0, onComplete: Delegate.create(onFinishTween, cloned) });
+			
+			function onFinishTween(theCap:DisplayObject) : void
+			{
+				theCap.parent.removeChild(theCap);
+			}
+		}
+		
+		public function GotoTeletransportPos() : void
+		{
+			if (_TeletransportPos != null)
+			{
+				FadeClone(0.5);
+				SetPos(_TeletransportPos);
+			}
+		}
 	}
 }
