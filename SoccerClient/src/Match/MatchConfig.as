@@ -67,7 +67,7 @@ package Match
 		public static const VelFaultT2:Number = 25.0;				// Límite inferior de tarjeta amarilla a un jugador y límite inferior de tarjeta roja al portero 
 		public static const VelFaultT3:Number = 32.0;				// Límite inferior de tarjeta roja a un jugador
 		
-		public static var TimeToPlaceGoalkeeper:Number = 10.0;		// Tiempo máximo para colocar al portero
+		public static var TimeToPlaceGoalkeeper:Number = 5.0;		// Tiempo máximo para colocar al portero
 				
 		//
 		// Conversión de unidades de pantalla (pixels) a unidades del motor de física (metros)
