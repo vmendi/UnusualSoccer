@@ -12,6 +12,18 @@
 		[ResourceBundle("matchmsgs")]
 	</fx:Metadata>
 	
+	<!-- Todas las fuentes se embeben aquí -->
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		
+		@font-face {
+			src:url("/Assets/Fonts/HelveticaNeueLT/lte50874.ttf");
+			fontFamily: MyFontHelveticaNeueLTBold;
+			font-weight: bold;
+			embedAsCFF: true;
+		}		
+	</fx:Style>
+	
 
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;

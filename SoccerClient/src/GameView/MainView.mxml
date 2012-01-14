@@ -5,18 +5,6 @@
 		 xmlns:Competition="GameView.Competition.*" xmlns:Friendly="GameView.Friendly.*" xmlns:Match="GameView.Match.*"
 		 creationComplete="CreationCompleteHandler(event)" currentState="Waiting" >
 	
-	<!-- Todas las fuentes se embeben aquí -->
-	<fx:Style>
-		@namespace s "library://ns.adobe.com/flex/spark";
-				
-		@font-face {
-			src:url("/Assets/Fonts/HelveticaNeueLT/lte50874.ttf");
-			fontFamily: MyFontHelveticaNeueLTBold;
-			font-weight: bold;
-			embedAsCFF: true;
-		}
-		
-	</fx:Style>
 	<fx:Style source="styles.css" />
 	
 	<s:states>

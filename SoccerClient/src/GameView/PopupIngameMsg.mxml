@@ -3,6 +3,8 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 width="100%" height="100%" cacheAsBitmap="true" mouseChildren="false" mouseEnabled="false">
+	
+	<fx:Style source="styles.css" />
 
 	<fx:Script><![CDATA[
 		import mx.core.FlexGlobals;
