@@ -50,7 +50,6 @@ package Match
 		private var _SizeInfluence:int = MatchConfig.RadiusPaseAlPie;	// tamaño del radio de influencia visual
 		
 		private var _IsInjured : Boolean = false;
-		private var _ParallelShoot : ShootInfo;
 		private var _TeletransportPos : Point;
 				
 		public var YellowCards:int = 0; 						// Número de tarjetas amarillas (2 => roja => expulsión)
@@ -71,10 +70,7 @@ package Match
 		public function get OriginalDefense() : int  { return _OriginalDefense; }
 		
 		public function get Ghost() : Entity { return this.OwnerTeam.Ghost; }	// Ghost de la chapa (solo hay uno por equipo)
-		
-		public function get ParallelShoot() : ShootInfo { return _ParallelShoot; }
-		public function set ParallelShoot(v:ShootInfo) : void { _ParallelShoot = v; }
-		
+	
 		public function set TeletransportPos(v:Point) : void { _TeletransportPos = v; }
 		
 
@@ -366,12 +362,13 @@ package Match
 			}
 		}
 		
-		public function GotoTeletransportPos() : void
+		public function GotoTeletransportAndResetPos() : void
 		{
 			if (_TeletransportPos != null)
 			{
-				FadeClone(0.5);
+				FadeClone(0.3);
 				SetPos(_TeletransportPos);
+				_TeletransportPos = null;
 			}
 		}
 	}

@@ -367,8 +367,8 @@ package Match
 			
 			// Tenemos que teletransportar al portero?
 			if (ReasonTurnChanged == Enums.TurnGoalKeeperSet)
-				CurTeam.AgainstTeam().GoalKeeper.GotoTeletransportPos();
-						
+				CurTeam.AgainstTeam().GoalKeeper.GotoTeletransportAndResetPos();
+									
 			// Nada mas lanzar resetamos el tiempo. Esto hace que la tarta se rellene y que si al acabar la simulacion no hay ConsumeSubTurn o 
 			// YieldTurnToOpponent, por ejemplo, en una pase al pie, el tiempo este bien para el siguiente sub-turno.
 			ResetTimeout();
@@ -858,12 +858,11 @@ package Match
 				TheTeams[Enums.Team2].DesactiveSkills();
 			}
 			
-			// Nos olvidamos del potencial tiro paralelo que hubiera en el turno anterior
+			// Si en el tiro anterior hubo un teletransporte que no ha sido ejecutado en el OnClientShoot (por timeout), tenemos que ejecutarlo ahora!
 			// Como para tirar a puerta solo hay 1 turno, no necesitamos hacer esto mismo en el ConsumeSubTurn
-			// Idem sobre el teletransporte
-			CurTeam.GoalKeeper.ParallelShoot = null;
-			CurTeam.GoalKeeper.TeletransportPos = null;
+			CurTeam.GoalKeeper.GotoTeletransportAndResetPos();
 			
+						
 			// Mostramos un mensaje animado de cambio de turno
 			Cutscene.ShowTurn(reason, idTeam == MatchConfig.IdLocalUser);
 			

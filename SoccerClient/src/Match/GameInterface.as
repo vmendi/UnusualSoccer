@@ -120,32 +120,50 @@ package Match
 
 				UpdateMuteButton();
 
-			} catch(e:Error) {}
+			} 
+			catch(e:Error)
+			{
+				DisableMuteSystem();
+			}
 		}
 		
 		private function UpdateMuteButton() : void
 		{
-			var so:SharedObject = SharedObject.getLocal("Match");			
-			
-			var bMuted : Boolean = false;
-			if (so.data.hasOwnProperty("Muted"))
-				bMuted = so.data.Muted;
-			
+			try {
+				var so:SharedObject = SharedObject.getLocal("Match");			
+				
+				var bMuted : Boolean = false;
+				if (so.data.hasOwnProperty("Muted"))
+					bMuted = so.data.Muted;
+				
+				var Gui:* = MatchMain.Ref.Game.TheField.Visual;
+				if (bMuted)
+				{
+					MatchMain.Ref.Game.TheAudioManager.Mute(true);
+					
+					Gui.SoundButton.BotonOn.visible = false;
+					Gui.SoundButton.BotonOff.visible = true;
+				}
+				else
+				{
+					MatchMain.Ref.Game.TheAudioManager.Mute(false);
+					
+					Gui.SoundButton.BotonOn.visible = true;
+					Gui.SoundButton.BotonOff.visible = false;
+				}
+			}
+			catch(e:Error) 
+			{
+				DisableMuteSystem();
+			}
+		}
+		
+		private function DisableMuteSystem() : void
+		{
 			var Gui:* = MatchMain.Ref.Game.TheField.Visual;
-			if (bMuted)
-			{
-				MatchMain.Ref.Game.TheAudioManager.Mute(true);
-				
-				Gui.SoundButton.BotonOn.visible = false;
-				Gui.SoundButton.BotonOff.visible = true;
-			}
-			else
-			{
-				MatchMain.Ref.Game.TheAudioManager.Mute(false);
-				
-				Gui.SoundButton.BotonOn.visible = true;
-				Gui.SoundButton.BotonOff.visible = false;
-			}
+			MatchMain.Ref.Game.TheAudioManager.Mute(true);
+			Gui.SoundButton.BotonOn.visible = false;
+			Gui.SoundButton.BotonOff.visible = false;
 		}
 		
 		// Indica si se acepta la entrada del usuario. Solo en un estado concreto y cuando tiene el turno el usuario local
