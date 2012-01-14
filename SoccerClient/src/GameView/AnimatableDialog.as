@@ -1,7 +1,6 @@
 package GameView
 {
 	import flash.display.Sprite;
-	import flash.events.EventDispatcher;
 	import flash.events.EventPhase;
 	
 	import mx.core.FlexGlobals;

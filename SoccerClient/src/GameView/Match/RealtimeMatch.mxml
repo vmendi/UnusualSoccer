@@ -12,6 +12,9 @@
 		{
 			GameMetrics.ReportEvent(GameMetrics.PLAY_MATCH, null);
 			
+			if (SoccerClient.GetMainGameModel().TheRealtimeModel.TheMatch == null)
+				throw new Error("WTF 693487");
+			
 			this.addElement(SoccerClient.GetMainGameModel().TheRealtimeModel.TheMatch);
 		}
 		

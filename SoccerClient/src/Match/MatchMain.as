@@ -89,6 +89,9 @@ package Match
 					if (_Instance == null)	// Es posible que el oponente se haya desconectado en este tiempo...
 						return;
 					
+					if (stage == null)
+						ErrorMessages.LogToServer("innerInit sin stage!");
+					
 					_Game = new Match.Game();
 					
 					Connection = netConnection;			

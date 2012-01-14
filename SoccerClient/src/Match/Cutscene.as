@@ -1,5 +1,7 @@
 package Match
 {
+	import GameView.PopupIngameMsg;
+	
 	import com.greensock.*;
 	
 	import flash.display.DisplayObject;
@@ -66,7 +68,7 @@ package Match
 				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaRightX, Field.SmallAreaRightY, callback);
 			
 			// Y ademas, un cartelito sin esperas
-			LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeControlPortero"), 0, 210);
+			PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeControlPortero"));
 		}
 		
 		
@@ -75,33 +77,33 @@ package Match
 			if (isMyTurn)
 			{
 				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)
-					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTurnoPropioRobo"), 0, 210);
+					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoPropioRobo"));
 				else 
 				if(reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaFalta)
-					FillConflictoFault(LaunchCutScene(ResourceManager.getInstance().getClass("match", "FaltaContraria"), 0, 210), MatchMain.Ref.Game.TheGamePhysics.TheFault);
+					FillFault(LaunchCutScene(ResourceManager.getInstance().getClass("match", "FaltaContraria"), 0, 210), MatchMain.Ref.Game.TheGamePhysics.TheFault);
 				else 
 				if(reason == Enums.TurnSaquePuertaInvalidGoal)
 					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTurnoPropioSaquePuerta"), 0, 210);
 				else 
 				if (reason == Enums.TurnTiroAPuerta)
-					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTiroPuertaRecepcion"), 0, 210);
+					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaRecepcion"));
 				else 
 				if (reason == Enums.TurnGoalKeeperSet)
-					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTiroPuertaConfirmacion"), 0, 210);
+					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaConfirmacion"));
 			}
 			else
 			{
 				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)	
-					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTurnoContrarioRobo"), 0, 210);
+					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoContrarioRobo"));
 				else 
 				if (reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaFalta)
-					FillConflictoFault(LaunchCutScene(ResourceManager.getInstance().getClass("match", "FaltaPropia"), 0, 210), MatchMain.Ref.Game.TheGamePhysics.TheFault);
+					FillFault(LaunchCutScene(ResourceManager.getInstance().getClass("match", "FaltaPropia"), 0, 210), MatchMain.Ref.Game.TheGamePhysics.TheFault);
 				else 
 				if (reason == Enums.TurnTiroAPuerta)
-					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTiroPuertaAnuncio"), 0, 210);
+					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaAnuncio"));
 				else 
 				if (reason == Enums.TurnGoalKeeperSet)
-					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTiroPuertaRecepcion2"), 0, 210);
+					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaRecepcion2"));
 			}
 		}
 		
@@ -117,15 +119,10 @@ package Match
 		
 		static public function ShowQuedanTurnos(turnos:int) : void
 		{
-			var itemClass:Class = null;
-			
 			if( turnos == 2 )
-				itemClass = ResourceManager.getInstance().getClass("match", "QuedanTiros2");
+				PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros2"));
 			else if( turnos == 1 )
-				itemClass = ResourceManager.getInstance().getClass("match", "QuedanTiros1");
-			
-			if (itemClass != null)
-				LaunchCutScene(itemClass, 0, 210);
+				PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros1"));
 		}
 		
 		//
@@ -136,16 +133,16 @@ package Match
 			if (conflicto != null)
 			{
 				if (!bUltimoPase)
-					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajePaseAlPieNoRobo"), 0, 210);
+					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajePaseAlPieNoRobo"));
 				else
-					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeUltimoPaseAlPieNoRobo"), 0, 210);
+					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeUltimoPaseAlPieNoRobo"));
 			}
 			else
 			{	
 				if (!bUltimoPase)
-					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajePaseAlPie"), 0, 210);
+					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajePaseAlPie"));
 				else
-					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeUltimoPaseAlPie"), 0, 210);
+					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeUltimoPaseAlPie"));
 			}
 		}
 		
@@ -185,21 +182,18 @@ package Match
 				callback();
 		}
 		
-		//
-		// Rellena los datos de un panel de conflicto utilizando un Objeto "conflicto" cuando se ha producido una falta
-		//
-		static private function FillConflictoFault( item:MovieClip, conflicto:Object ) : void
+		static private function FillFault(item:MovieClip, fault:Fault) : void
 		{
 			var game:Game = MatchMain.Ref.Game;
 			
-			if (conflicto.YellowCard && conflicto.RedCard)		// 2 amarillas
+			if (fault.YellowCard && fault.RedCard)		// 2 amarillas
 				item.Tarjeta.gotoAndStop( "dobleamarilla" );
 			else 
-			if (conflicto.RedCard)
-				item.Tarjeta.gotoAndStop( "roja" );
+			if (fault.RedCard)
+				item.Tarjeta.gotoAndStop("roja");
 			else 
-			if (conflicto.YellowCard)
-				item.Tarjeta.gotoAndStop( "amarilla" );
+			if (fault.YellowCard)
+				item.Tarjeta.gotoAndStop("amarilla");
 			else
 				item.Tarjeta.gotoAndStop( 0 );
 		}
