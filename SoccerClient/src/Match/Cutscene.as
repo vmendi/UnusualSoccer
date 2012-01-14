@@ -83,7 +83,7 @@ package Match
 					FillFault(LaunchCutScene(ResourceManager.getInstance().getClass("match", "FaltaContraria"), 0, 210), MatchMain.Ref.Game.TheGamePhysics.TheFault);
 				else 
 				if(reason == Enums.TurnSaquePuertaInvalidGoal)
-					LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeTurnoPropioSaquePuerta"), 0, 210);
+					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoPropioSaquePuerta"));
 				else 
 				if (reason == Enums.TurnTiroAPuerta)
 					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaRecepcion"));
