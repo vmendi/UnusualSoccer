@@ -21,7 +21,7 @@ namespace SoccerServer
                     newRequest.CreationDate = DateTime.Now;
                     newRequest.AnswerDate = null;
                     newRequest.FacebookRequestID = requestID;
-                    newRequest.Team = mPlayer.Team;  // SourceTeamID
+                    newRequest.Team = mPlayer.Team; // SourceTeamID
                     newRequest.TargetFacebookID = long.Parse(targetFacebookID);
 
                     mContext.Requests.InsertOnSubmit(newRequest);
@@ -31,13 +31,16 @@ namespace SoccerServer
             }
         }
 
-        public void TargetProcessedRequests(List<string> request_ids)
+        public List<string> TargetProcessedRequests(List<string> request_ids)
         {
+            List<string> ret = new List<string>();
+
             using (CreateDataForRequest())
             {
+                // Ignoramos los requests que nos entran, procesamos cualquier request donde el player que nos llama sea el target.
+                // Era: where request_ids.Contains(s.FacebookRequestID) &&
                 var allRequests = (from s in mContext.Requests
-                                   where request_ids.Contains(s.FacebookRequestID) && 
-                                         s.TargetFacebookID == mPlayer.FacebookID && 
+                                   where s.TargetFacebookID == mPlayer.FacebookID && 
                                          s.AnswerDate == null
                                    select s);
 
@@ -47,6 +50,8 @@ namespace SoccerServer
 
                     if (request.RequestType != 0)
                         continue;
+
+                    ret.Add(request.FacebookRequestID);
 
                     var sourceTeam = (from p in mContext.Teams
                                       where p.TeamID == request.SourceTeamID
@@ -59,6 +64,8 @@ namespace SoccerServer
 
                 mContext.SubmitChanges();
             }
+
+            return ret;
         }
 
         private void CreateSoccerPlayerUnderRequest(Team onTeam, Player sourcePlayer)

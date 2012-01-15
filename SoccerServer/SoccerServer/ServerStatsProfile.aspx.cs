@@ -67,8 +67,10 @@ namespace SoccerServer
             MyTeamInfo.Text += "XP: " + mPlayer.Team.XP.ToString() + "<br/>";
             MyTeamInfo.Text += "SkillPoints: " + mPlayer.Team.SkillPoints.ToString() + "<br/>";
             MyTeamInfo.Text += "Fitness: " + mPlayer.Team.Fitness.ToString() + "<br/>";
+            MyTeamInfo.Text += "<a href='http://www.facebook.com/profile.php?id=" + mPlayer.FacebookID.ToString() + "'>Facebook Profile</a>" + "<br/>";
             MyTeamInfo.Text += "SpecialTrainings: " + (from s in mPlayer.Team.SpecialTrainings.Where(s => s.IsCompleted)    // :)
                                                        select s.SpecialTrainingDefinition.Name).Aggregate("", (agg, curr) => agg += curr + "/").TrimEnd('/'); // :D
+            
         }
 
         private void FillTeamStats()
