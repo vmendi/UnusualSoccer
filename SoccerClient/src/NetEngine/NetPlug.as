@@ -60,36 +60,49 @@ package NetEngine
 			if (mSocket != null)
 				throw new Error("Disconnect first");
 			
-			mNextInvokationID = 0;
-			mNextMessageLength = -1;		
-			mPendingReturns = new Array();
-			mSocket = new Socket();
+			try {
+				mNextInvokationID = 0;
+				mNextMessageLength = -1;		
+				mPendingReturns = new Array();
+				mSocket = new Socket();
+				
+				mSocket.addEventListener(Event.CLOSE, OnSocketClose);
+				mSocket.addEventListener(Event.CONNECT, OnSocketConnect);
+				mSocket.addEventListener(IOErrorEvent.IO_ERROR, OnSocketIOError);
+				mSocket.addEventListener(SecurityErrorEvent.SECURITY_ERROR, OnSocketSecurityError);
+				mSocket.addEventListener(ProgressEvent.SOCKET_DATA, OnSocketData);
+				
+				mSocket.endian = Endian.LITTLE_ENDIAN; 
+				
+				var serverName : String = uri.substring(0, uri.indexOf(":"));
+				var port : int = parseInt(uri.substring(uri.indexOf(":") + 1));
 			
-			mSocket.addEventListener(Event.CLOSE, OnSocketClose);
-			mSocket.addEventListener(Event.CONNECT, OnSocketConnect);
-			mSocket.addEventListener(IOErrorEvent.IO_ERROR, OnSocketIOError);
-			mSocket.addEventListener(SecurityErrorEvent.SECURITY_ERROR, OnSocketSecurityError);
-			mSocket.addEventListener(ProgressEvent.SOCKET_DATA, OnSocketData);
-			
-			mSocket.endian = Endian.LITTLE_ENDIAN; 
-			
-			var serverName : String = uri.substring(0, uri.indexOf(":"));
-			var port : int = parseInt(uri.substring(uri.indexOf(":") + 1));
-			
-			mSocket.connect(serverName, port);
+				mSocket.connect(serverName, port);
+			} 
+			catch(e:Error)
+			{
+				SocketErrorSignal.dispatch("GeneralError");
+			}
 		}
 
 		// After calling this, the ClientList is still retained, but we won't dispatch any other event until you call Connect again
 		public function Disconnect() : void
 		{
-			if (mSocket != null)
+			try {
+				if (mSocket != null)
+				{
+					
+					// The close event is dispatched only when the server closes the connection; 
+					// it is not dispatched when you call the Socket.close() method.
+					mSocket.close();
+					
+					// We copy the socket behaviour. If called here, we don't dispatch any event
+					Destroy();
+				}
+			}
+			catch(e:Error)
 			{
-				// The close event is dispatched only when the server closes the connection; 
-				// it is not dispatched when you call the Socket.close() method.
-				mSocket.close();
-				
-				// We copy the socket behaviour. If called here, we don't dispatch any event
-				Destroy();
+				SocketErrorSignal.dispatch("GeneralError");
 			}
 		}
 
@@ -114,34 +127,40 @@ package NetEngine
 		{
 			if (mSocket == null)
 				throw new Error("Socket closed: " + funcName);
-
-			var objectToSerialize : NetInvokeMessage = new NetInvokeMessage();
-			objectToSerialize.InvokationID = NextInvokationID;
-			objectToSerialize.ReturnID = -1;
-			objectToSerialize.WantsReturn = false;
-			objectToSerialize.MethodName = funcName;
-			objectToSerialize.Params = args;
 			
-			if (response != null)
-			{
-				if (mClientList.indexOf(response.Client) == -1)
-					throw new Error("Invoke: The response target must be our client, methodName " + funcName);
+			try {
+				var objectToSerialize : NetInvokeMessage = new NetInvokeMessage();
+				objectToSerialize.InvokationID = NextInvokationID;
+				objectToSerialize.ReturnID = -1;
+				objectToSerialize.WantsReturn = false;
+				objectToSerialize.MethodName = funcName;
+				objectToSerialize.Params = args;
 				
-				objectToSerialize.WantsReturn = true;
-				mPendingReturns.push(new PendingReturn(objectToSerialize.InvokationID, 
-													   objectToSerialize.MethodName, response));
+				if (response != null)
+				{
+					if (mClientList.indexOf(response.Client) == -1)
+						throw new Error("Invoke: The response target must be our client, methodName " + funcName);
+					
+					objectToSerialize.WantsReturn = true;
+					mPendingReturns.push(new PendingReturn(objectToSerialize.InvokationID, 
+														   objectToSerialize.MethodName, response));
+				}
+				
+				// We need to know the length in bytes beforehand
+				var amfObject : ByteArray = new ByteArray();
+				amfObject.endian = Endian.LITTLE_ENDIAN;
+				amfObject.writeObject(objectToSerialize);
+	
+				mSocket.writeInt(amfObject.length + 4);
+				mSocket.writeBytes(amfObject);
+				mSocket.flush();
+				
+				mLastInvokeTime = getTimer();
 			}
-			
-			// We need to know the length in bytes beforehand
-			var amfObject : ByteArray = new ByteArray();
-			amfObject.endian = Endian.LITTLE_ENDIAN;
-			amfObject.writeObject(objectToSerialize);
-
-			mSocket.writeInt(amfObject.length + 4);
-			mSocket.writeBytes(amfObject);
-			mSocket.flush();
-			
-			mLastInvokeTime = getTimer();
+			catch(e:Error)
+			{
+				ErrorMessages.LogToServer("General error in NetPlug.Invoke: " + e.toString());
+			}
 		}
 		
 		
@@ -287,17 +306,23 @@ package NetEngine
 		
 		private function OnKeepAlive() : void
 		{
-			var elapsed : int = getTimer() - mLastInvokeTime;
-		
-			if (elapsed > KEEP_ALIVE_TIME * 1000)
-			{
-				mSocket.writeInt(4);
-				mSocket.flush();
-				
-				mLastInvokeTime = getTimer();
-			}
+			try {
+				var elapsed : int = getTimer() - mLastInvokeTime;
 			
-			TweenNano.delayedCall(KEEP_ALIVE_TIME, OnKeepAlive);
+				if (elapsed > KEEP_ALIVE_TIME * 1000)
+				{
+					mSocket.writeInt(4);
+					mSocket.flush();
+					
+					mLastInvokeTime = getTimer();
+				}
+				
+				TweenNano.delayedCall(KEEP_ALIVE_TIME, OnKeepAlive);
+			}
+			catch(e:Error)
+			{
+				SocketErrorSignal.dispatch("GeneralError");
+			}
 		}		
 		
 		private function OnSocketIOError(e:IOErrorEvent) : void
