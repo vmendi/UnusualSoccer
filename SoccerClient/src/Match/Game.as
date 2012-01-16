@@ -397,7 +397,7 @@ package Match
 			
 			// Al acabar el tiro movemos el portero a su posición de formación en caso de la ultima accion fuera un saque de puerta
 			if (Enums.IsSaquePuerta(ReasonTurnChanged))
-				CurTeam.ResetToCurrentFormationOnlyGoalKeeper();
+				CurTeam.ResetToFormationOnlyGoalKeeper();
 						
 			var paseToCap : Cap = CheckPaseAlPie();
 			var detectedFault : Fault = TheGamePhysics.TheFault;
@@ -587,7 +587,7 @@ package Match
 			else 
 			if (idSkill == Enums.PorteriaSegura)
 			{
-				team.ResetToCurrentFormationOnlyGoalKeeper();
+				team.ResetToFormationOnlyGoalKeeper();
 			}
 			
 			ChangeState(GameState.Playing);
@@ -692,7 +692,7 @@ package Match
 			TheGamePhysics.StopSimulation();
 
 			team.ResetToSaquePuerta();
-			team.AgainstTeam().ResetToCurrentFormation();
+			team.AgainstTeam().ResetToFormation();
 						
 			TheBall.SetPosInFrontOf(team.GoalKeeper);
 
@@ -704,8 +704,8 @@ package Match
 		{
 			TheGamePhysics.StopSimulation();
 			
-			TheTeams[Enums.Team1].ResetToCurrentFormation();
-			TheTeams[Enums.Team2].ResetToCurrentFormation();
+			TheTeams[Enums.Team1].ResetToFormation();
+			TheTeams[Enums.Team2].ResetToFormation();
 			
 			TheBall.SetPosInFieldCenter();
 
@@ -861,8 +861,7 @@ package Match
 			// Si en el tiro anterior hubo un teletransporte que no ha sido ejecutado en el OnClientShoot (por timeout), tenemos que ejecutarlo ahora!
 			// Como para tirar a puerta solo hay 1 turno, no necesitamos hacer esto mismo en el ConsumeSubTurn
 			CurTeam.GoalKeeper.GotoTeletransportAndResetPos();
-			
-						
+									
 			// Mostramos un mensaje animado de cambio de turno
 			Cutscene.ShowTurn(reason, idTeam == MatchConfig.IdLocalUser);
 			

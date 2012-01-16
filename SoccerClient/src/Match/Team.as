@@ -77,7 +77,7 @@ package Match
 				Side = Enums.Right_Side;
 			
 			// Asignamos la posición inicial de cada chapa según la alineación y lado del campo en el que se encuentran
-			ResetToCurrentFormation();
+			ResetToFormation();
 						
 			// Creamos una imagen de chapa Ghost (la utilizaremos para indicar donde mover el portero)
 			Ghost = new Entity(ResourceManager.getInstance().getClass("match", "Cap"), MatchMain.Ref.Game.GameLayer);
@@ -116,9 +116,30 @@ package Match
 		}
 		
 		// Posicionamos todas las chapas del equipo según la alineación y el lado del campo en el que están
-		public function ResetToCurrentFormation() : void
+		public function ResetToFormation() : void
 		{
 			SetFormationPos(_FormationName, Side);
+			
+			// Olvidamos las posiciones de teletransporte
+			GoalKeeper.TeletransportPos = null;
+		}
+		
+		// Devuelve sólo al portero a su posición de formación original
+		public function ResetToFormationOnlyGoalKeeper() : void
+		{
+			var currentFormation : Array = GetFormation(_FormationName);
+			
+			// Si hay algún obstaculo en esa posicion, no podemos resetear al portero, ignoramos la orden
+			var desiredPos : Point = ConvertFormationPosToFieldPos(currentFormation[0], Side);
+			
+			// Pequeño efecto visual, sólo porque estamos en el caso del portero
+			GoalKeeper.FadeClone(1);
+			
+			if (MatchMain.Ref.Game.TheField.ValidatePosCap(desiredPos, true, GoalKeeper))
+				SetFormationPosForCap(GoalKeeper, currentFormation[0], Side);
+			
+			// Olvidamos las posiciones de teletransporte
+			GoalKeeper.TeletransportPos = null;
 		}
 		
 		public function ResetToSaquePuerta() : void
@@ -127,7 +148,7 @@ package Match
 			GoalKeeper.FadeClone(1);
 			
 			// En el saque de puerta todo esta en la posición de formación salvo el portero
-			ResetToCurrentFormation();
+			ResetToFormation();
 			
 			// Este cambio de posición se hace para que sea más cómodo sacar...
 			var goalkeeperPos : Point = GoalKeeper.GetPos();
@@ -135,26 +156,6 @@ package Match
 			GoalKeeper.SetPos(goalkeeperPos);
 		}
 		
-		// Devuelve al portero a su posición de formación original. Se usa después de un SaquePuerta, al acabar de simular el tiro
-		public function ResetToCurrentFormationOnlyGoalKeeper() : void
-		{
-			var currentFormation : Array = GetFormation(_FormationName);
-			
-			// Si hay algún obstaculo en esa posicion, no podemos resetear al portero, ignoramos la orden
-			var desiredPos : Point = ConvertFormationPosToFieldPos(currentFormation[0], Side);
-			
-			// Pequeño efecto visual
-			GoalKeeper.FadeClone(1);
-			
-			if (MatchMain.Ref.Game.TheField.ValidatePosCap(desiredPos, true, GoalKeeper))
-				SetFormationPosForCap(GoalKeeper, currentFormation[0], Side);
-		}
-
-		//
-		// Posicionamos todas las chapas del equipo según la alineación y el lado del campo en el que están
-		// La formación se especifica en forma de cadena. 
-		// El hash de formaciones de match debe tener un array para esa entrada de cadena
-		//
 		private function SetFormationPos(formationName:String, side:int) : void
 		{
 			var currentFormation : Array = GetFormation(formationName);
@@ -183,10 +184,8 @@ package Match
 		{
 			// Las posiciones de formacion vienen sin aplicar offset & mirror
 			var pos : Point = ConvertFormationPosToFieldPos(formationPos, side);	
-			
-			// Asignamos la posición y detenemos cualquier movimiento que estuviera realizando la chapa
+
 			cap.SetPos(pos);
-			cap.StopMovement();
 		}
 		
 		static private function ConvertFormationPosToFieldPos(formationPos:Object, side:int) : Point
