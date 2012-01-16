@@ -86,7 +86,7 @@ namespace SoccerServer
                 mServerSettings["Title"] = "Unusual Soccer";
                 mServerSettings["ImageUrl"] = "http://unusualsoccerdev.unusualwonder.com/Imgs/Logo75x75_en_US.png";   // Tiene que ser absoluto pq va en los Meta de facebook
                 mServerSettings["Description"] = "Unusual Soccer Description";                                        // og:description
-                mServerSettings["TicketingSystem"] = "false";
+                mServerSettings["TicketingSystem"] = "true";
                 mServerSettings["SameIPAbandonsChecked"] = "false";
             }
             else

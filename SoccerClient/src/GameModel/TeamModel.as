@@ -88,16 +88,9 @@ package GameModel
 		// Cuando es el primer RefreshTeam de la aplicacion, queremos tener control especial para procesar los requests
 		private function InitialRefreshTeam(callback : Function) : void
 		{
-			if (AppConfig.REQUEST_IDS != null)
-			{	
-				mMainService.TargetProcessedRequests(AppConfig.REQUEST_IDS, 
-										 		     new Responder(Delegate.create(OnTargetProcessedRequestsResponse, finalCallback), ErrorMessages.Fault));
-			}
-			else
-			{
-				finalCallback();
-			}
-		
+			mMainService.TargetProcessedRequests(AppConfig.REQUEST_IDS, 
+									 		     new Responder(Delegate.create(OnTargetProcessedRequestsResponse, finalCallback), ErrorMessages.Fault));
+				
 			// Una vez procesados los requests, continuamos por la respuesta habitual... a veces adoro as3...
 			function finalCallback() : void
 			{
@@ -107,8 +100,10 @@ package GameModel
 		
 		private function OnTargetProcessedRequestsResponse(e:ResultEvent, callback : Function) : void
 		{
+			var processedRequests : ArrayCollection = e.result as ArrayCollection;
+			
 			// Mandamos a FB a borrar los requests
-			for each(var request_id : String in AppConfig.REQUEST_IDS)
+			for each(var request_id : String in processedRequests)
 			{
 				// Hay que concatenar... http://developers.facebook.com/docs/reference/dialogs/requests/
 				// DELETE https://graph.facebook,.com/[<request_id>_<user_id>]?access_token=[USER or APP ACCESS TOKEN]
