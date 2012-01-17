@@ -109,7 +109,7 @@ package Match
 		
 		static private function ChainWithDelay(otherMovieClipClass:Class, x:Number, y:Number, delaySeconds:Number) : Function
 		{
-			return Delegate.create(TweenLite.delayedCall, delaySeconds, LaunchCutScene, [ otherMovieClipClass, x, y ]);
+			return Delegate.create(TweenMax.delayedCall, delaySeconds, LaunchCutScene, [ otherMovieClipClass, x, y ]);
 		}
 		
 		static public function ShowMensajeSkill(idSkill:int) : void
@@ -119,9 +119,13 @@ package Match
 		
 		static public function ShowQuedanTurnos(turnos:int) : void
 		{
-			if( turnos == 2 )
+			if (turnos == 3)
+				PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros3"));
+			else
+			if (turnos == 2)
 				PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros2"));
-			else if( turnos == 1 )
+			else 
+			if (turnos == 1)
 				PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros1"));
 		}
 		
