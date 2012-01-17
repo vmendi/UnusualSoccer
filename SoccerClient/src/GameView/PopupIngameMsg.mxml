@@ -51,7 +51,7 @@
 	
 	
 	<s:Group>
-		<s:Rect left="-10" right="-10" top="-10" bottom="-10" alpha="1" radiusX="10">
+		<s:Rect left="-20" right="-20" top="-20" bottom="-20" alpha="1" radiusX="10">
 			<s:fill>
 				<s:SolidColor alpha="0.6" color="#000000"/>
 			</s:fill>
