@@ -38,7 +38,7 @@ namespace SoccerServer
         public const String MATCHLOG = "MATCH";
         public const String MATCHLOG_DEBUG = "MATCH DEBUG";
                 
-        public const int MinClientVersion = 200;                    // Versión mínima que exigimos a los clientes para jugar
+        public const int MinClientVersion = 201;                    // Versión mínima que exigimos a los clientes para jugar
         
         RealtimePlayer[] Players = new RealtimePlayer[2];             // Los jugadores en el manager
         RealtimePlayerData[] PlayersData = new RealtimePlayerData[2]; // Los jugadores en el manager

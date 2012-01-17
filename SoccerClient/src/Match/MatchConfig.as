@@ -14,7 +14,7 @@ package Match
 		public static const DebugPhysic:Boolean = false;		// Indica si depuramos la física (pintar el mundo físico y otras cosas más)
 		public static const DragPhysicObjects:Boolean = false;	// Indica si podemos arrastrar los objetos físicos con el ratón
 				
-		public static const ClientVersion:int = 200;			// Versión del cliente
+		public static const ClientVersion:int = 201;			// Versión del cliente
 				
 		public static const PhyFPS:int = 30;					// La física se ejecuta 30 veces por segundo
 		public static const PixelsPerMeter:uint = 30;			// 30 píxeles es igual a 1 metro físico
@@ -25,7 +25,7 @@ package Match
 		public static const LowCapMaxImpulse:Number = 160.0;	// Maximo impulso para una chapa de POTENCIA 0 cuando se dispara a la máxima potencia
 		public static const HighCapMaxImpulse:Number = 225.0;	// Maximo impulso para una chapa de POTENCIA 100 cuando se dispara a la máxima potencia
 		
-		public static const MaxHitsPerTurn:int = 2;				// Nº de disparos máximos por turno si no se toca la pelota
+		public static const MaxHitsPerTurn:int = 3;				// Nº de disparos máximos por turno si no se toca la pelota
 		public static const MaxNumPasesAlPie:int = 2;			// No de pases al pie máximos permitidos
 		
 		public static const DistToPutBallHandling:int = 10;		// Distancia a la chapa a la que colocamos la pelota cuando se recibe un pase al pie
