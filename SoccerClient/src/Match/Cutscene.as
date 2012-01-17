@@ -119,9 +119,13 @@ package Match
 		
 		static public function ShowQuedanTurnos(turnos:int) : void
 		{
-			if( turnos == 2 )
+			if (turnos == 3)
+				PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros3"));
+			else
+			if (turnos == 2)
 				PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros2"));
-			else if( turnos == 1 )
+			else 
+			if (turnos == 1)
 				PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros1"));
 		}
 		
