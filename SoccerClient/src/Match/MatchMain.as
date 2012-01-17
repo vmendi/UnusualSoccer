@@ -124,7 +124,7 @@ package Match
 			if (_Instance == null)
 				throw new Error("WTF 9533");
 			
-			try {			
+			try {
 				// _Game indicara que ya estamos inicializamos
 				if (_Game != null)
 				{
@@ -165,7 +165,7 @@ package Match
 				// ... y notificamos hacia afuera (al RealtimeModel)
 				dispatchEvent(new utils.GenericEvent("OnMatchEnded", result));
 			}
-			catch(e:Error) { ErrorMessages.LogToServer("En Shutdown04! " + e.message);}
+			catch(e:Error) { ErrorMessages.LogToServer("En Shutdown! " + e.message);}
 		}
 		
 		//

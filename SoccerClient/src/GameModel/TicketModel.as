@@ -1,12 +1,6 @@
 package GameModel
 {
 	import SoccerServer.MainService;
-	
-	import com.greensock.TweenNano;
-	
-	import flash.events.Event;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 
 	public final class TicketModel
 	{

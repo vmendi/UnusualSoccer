@@ -109,7 +109,7 @@ package Match
 		
 		static private function ChainWithDelay(otherMovieClipClass:Class, x:Number, y:Number, delaySeconds:Number) : Function
 		{
-			return Delegate.create(TweenLite.delayedCall, delaySeconds, LaunchCutScene, [ otherMovieClipClass, x, y ]);
+			return Delegate.create(TweenMax.delayedCall, delaySeconds, LaunchCutScene, [ otherMovieClipClass, x, y ]);
 		}
 		
 		static public function ShowMensajeSkill(idSkill:int) : void

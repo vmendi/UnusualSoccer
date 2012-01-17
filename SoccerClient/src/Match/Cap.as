@@ -263,10 +263,10 @@ package Match
 				_ShowInfluence = value;
 				_TimeShowingInfluence = 0;
 				
-				if( _ShowInfluence )			
-					TweenMax.to( this._Influence, 1, {alpha:1} );
+				if (_ShowInfluence)			
+					TweenMax.to(this._Influence, 1, {alpha:1});
 				else
-					TweenMax.to( this._Influence, 1, {alpha:0} );
+					TweenMax.to(this._Influence, 1, {alpha:0});
 			}
 		}
 		
@@ -277,9 +277,9 @@ package Match
 		
 		public override function Draw(elapsed:Number) : void
 		{
-			super.Draw( elapsed );
+			super.Draw(elapsed);
 			
-			if( this.Visual )
+			if (this.Visual)
 			{
 				// Reasignamos la posicion del objeto de radio de influencia, para que siga a la chapa
 				_Influence.x = GetPos().x;			
