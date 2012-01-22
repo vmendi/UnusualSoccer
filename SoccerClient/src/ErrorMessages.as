@@ -92,12 +92,12 @@ package
 			LogToServer("RealtimeLoginFailed");
 		}
 		
-		static public function RealtimeConnectionFailed() : void
+		static public function RealtimeConnectionFailed(reason:String) : void
 		{
 			OnCleaningShutdownSignal.dispatch();
 			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorRealtimeConnFailedMsg"),
 							 ResourceManager.getInstance().getString("main", "ErrorRealtimeConnFailedTit"), "center");
-			LogToServer("RealtimeConnectionFailed");
+			LogToServer("RealtimeConnectionFailed " + reason);
 		}
 		
 		static public function ResourceLoadFailed() : void

@@ -67,10 +67,9 @@ package GameModel
 		{
 			// Nos aseguramos de dejar el partido limpio y de cerrar el socket
 			if (mMatch != null)
-			{
 				mMatch.Shutdown(null);	// Esto provocara un MatchEnded con result == null
-				Disconnect();
-			}
+						
+			Disconnect();
 		}
 		
 		private function OnConnectionConditionsChanged(v:Boolean) : void
@@ -150,7 +149,7 @@ package GameModel
 				
 		private function NetPlugError(reason : String) : void
 		{
-			ErrorMessages.RealtimeConnectionFailed();
+			ErrorMessages.RealtimeConnectionFailed(reason);
 			
 			// NOTE01: Idem
 		}

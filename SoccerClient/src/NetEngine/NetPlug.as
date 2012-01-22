@@ -326,15 +326,15 @@ package NetEngine
 		}		
 		
 		private function OnSocketIOError(e:IOErrorEvent) : void
-		{	
-			Destroy();
+		{
+			Disconnect();
 			
 			SocketErrorSignal.dispatch("IOErrorEvent");
 		}
 		
 		private function OnSocketSecurityError(e:SecurityErrorEvent) : void
 		{
-			Destroy();
+			Disconnect();
 			
 			SocketErrorSignal.dispatch("SecurityErrorEvent");
 		}
