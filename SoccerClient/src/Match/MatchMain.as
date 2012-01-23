@@ -89,16 +89,24 @@ package Match
 					if (_Instance == null)	// Es posible que el oponente se haya desconectado en este tiempo...
 						return;
 					
-					if (stage == null)
-						ErrorMessages.LogToServer("innerInit sin stage!");
-					
-					_Game = new Match.Game();
-					
-					Connection = netConnection;			
-					Connection.AddClient(Game);
-								
-					// Indicamos al servidor que nuestro cliente necesita los datos del partido para continuar. Esto llamara a InitFromServer desde el servidor
-					Connection.Invoke("OnRequestData", null);
+					if (stage != null)
+					{
+						_Game = new Match.Game();
+						
+						Connection = netConnection;			
+						Connection.AddClient(Game);
+						
+						// Indicamos al servidor que nuestro cliente necesita los datos del partido para continuar. Esto llamara a InitFromServer desde el servidor
+						Connection.Invoke("OnRequestData", null);
+					}
+					else
+					{					
+						// Hemos comprobado que a aqui se llega en muy rara ocasión sin stage. Forzosamente tiene que ser
+						// que nos han quitado de la stage desde que se llamo al Init, pero sin llamarnos a Shutdown. Hipotesis:
+						// - Algun tipo de navegacion dentro del manager (desde un popup?) que provoca salir de la pantalla RealtimeMatch
+						// - 
+						ErrorMessages.ResourceLoadFailed();
+					}
 				}
 				catch(e:Error) { ErrorMessages.LogToServer("En innerInit! " + e.message); }
 			}
