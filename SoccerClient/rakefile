@@ -69,16 +69,11 @@ task :assetCopy => [:prepareBuildOutputDir] do
   	# TODO: Cuando el juego tenga assets...
 end
 
-#
-# La sintaxis para pasar parametro a una tarea concreta es:
-# rake publish[daRemoteHost, daRemoteThir]
-#
-# http://rake.rubyforge.org/files/doc/rakefile_rdoc.html
-#
-task :publish, [:remote_host_param, :remote_dir_param] do |t, args|
-	args.with_defaults(:remote_host_param => REMOTE_HOST, :remote_dir_param => REMOTE_DIR)
+task :publish do
+	remote_host = (ENV['remote_host'] == nil)? REMOTE_HOST : ENV['remote_host'] 
+	remote_dir = (ENV['remote_dir'] == nil)? REMOTE_DIR : ENV['remote_dir']
 	
-	remote_final_target = REMOTE_USER + '@' + args.remote_host_param + ':' + args.remote_dir_param
+	remote_final_target = REMOTE_USER + '@' + remote_host + ':' + remote_dir
 	
 	puts 'RSyncing to ' + remote_final_target + '...'
 

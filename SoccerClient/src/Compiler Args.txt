@@ -1,2 +1,0 @@
--locale es_ES en_US es_LA -source-path+=locale/{locale} -services ${DOCUMENTS}\SoccerServer\SoccerServer\web-inf\flex\services-config.xml 
--resource-bundle-list=myresources.txt

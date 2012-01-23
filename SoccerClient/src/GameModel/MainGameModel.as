@@ -42,23 +42,35 @@ package GameModel
 		
 		private function OnRefreshTimer(e:TimerEvent) : void
 		{
-			mTeamModel.OnTimerSeconds();
-			mTicketModel.OnTimerSeconds();
-			mCompetitionModel.OnTimerSeconds();
-			mTrainingModel.OnTimerSeconds();
+			try {
+				mTeamModel.OnTimerSeconds();
+				mTicketModel.OnTimerSeconds();
+				mCompetitionModel.OnTimerSeconds();
+				mTrainingModel.OnTimerSeconds();
+			}
+			catch(e:Event)
+			{
+				ErrorMessages.LogToServer("WTF 445");
+			}
 		}
 		
 		// No queremos que se nos queden timers and stuff cuando se produce un error y se da la OnCleaningShutdownSignal
 		public function OnCleaningShutdown() : void
 		{
-			mRefreshTimer.stop();
-			mRefreshTimer = null;
-			
-			// Tambien tenemos que parar el partido si lo hubiera
-			mRealtimeModel.OnCleaningShutdown();
-			
-			// Y el timer de inactividad
-			mInactivityModel.OnCleaningShutdown();
+			try {
+				mRefreshTimer.stop();
+				mRefreshTimer = null;
+				
+				// Tambien tenemos que parar el partido si lo hubiera
+				mRealtimeModel.OnCleaningShutdown();
+				
+				// Y el timer de inactividad
+				mInactivityModel.OnCleaningShutdown();
+			}
+			catch(e:Event)
+			{
+				ErrorMessages.LogToServer("WTF 446");
+			}
 		}
 
 		public function InitialRefresh(callback : Function) : void
