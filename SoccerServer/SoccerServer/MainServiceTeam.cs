@@ -24,8 +24,7 @@ namespace SoccerServer
 		public TransferModel.Team RefreshTeam()
 		{
             TransferModel.Team ret = null;
-            var sessionKey = GetSessionKeyFromRequest();
-
+            
             using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
             {
                 Stopwatch test = new Stopwatch();
@@ -47,13 +46,13 @@ namespace SoccerServer
 
                         mPlayerBySessionRefreshTeam = CompiledQuery.Compile<SoccerDataModelDataContext, string, Player>
                                                                     ((theContext, session) => (from s in mContext.Sessions
-                                                                                               where s.FacebookSession == sessionKey
+                                                                                               where s.FacebookSession == session
                                                                                                select s.Player).First());
                     }
 
                     mContext.LoadOptions = mLoadOptionsRefreshTeam;
 
-                    mPlayer = mPlayerBySessionRefreshTeam.Invoke(mContext, sessionKey);
+                    mPlayer = mPlayerBySessionRefreshTeam.Invoke(mContext, GetSessionKeyFromRequest());
 
                     if (mPlayer.Team != null)
                     {

@@ -53,29 +53,17 @@ namespace SoccerServer
 
 		public bool HasTeam()
 		{
-            var sessionKey = GetSessionKeyFromRequest();
-            bool bRet = false;
-
             using (mContext = new SoccerDataModelDataContext())
             {
                 if (mPrecompHasTeam == null)
-                    mPrecompHasTeam = CompiledQuery.Compile<SoccerDataModelDataContext, string, bool>
+                    mPrecompHasTeam = CompiledQuery.Compile<SoccerDataModelDataContext, string, Team>
                                                             ((theContext, session) => (from s in mContext.Sessions
-                                                                                        where s.FacebookSession == sessionKey
-                                                                                        select s.Player.Team).FirstOrDefault() != null);
-                bRet = mPrecompHasTeam.Invoke(mContext, sessionKey);
+                                                                                        where s.FacebookSession == session
+                                                                                        select s.Player.Team).FirstOrDefault());
+                return mPrecompHasTeam.Invoke(mContext, GetSessionKeyFromRequest()) != null;
             }
-
-            return bRet;
-            
-            /*
-            using (CreateDataForRequest())
-            {
-                return mPlayer.Team != null;
-            }
-             */
 		}
-        static Func<SoccerDataModelDataContext, string, bool> mPrecompHasTeam;
+        static Func<SoccerDataModelDataContext, string, Team> mPrecompHasTeam;
 
         
 		public VALID_NAME IsNameValid(string name)
