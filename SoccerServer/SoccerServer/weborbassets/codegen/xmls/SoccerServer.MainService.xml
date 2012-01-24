@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <namespaces>
-  <runtime path="F:/UnusualGit/UnusualSoccer/SoccerServer/SoccerServer/" weborbRootURL="ENTER WEBORB URL HERE" />
+  <runtime path="F:/UnusualGit/UnusualSoccer/SoccerServer/SoccerServer/" weborbRootURL="http://localhost/" />
   <namespace name="SoccerServer" fullname="SoccerServer">
     <enum name="VALID_NAME" fullname="SoccerServer.VALID_NAME" typeNamespace="SoccerServer">
       <field name="VALID" type="String" fulltype="String" nativetype="String" />
@@ -112,7 +112,7 @@
         <field name="SpecialSkillsIDs" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;int&gt;" />
       </datatype>
     </namespace>
-    <service name="MainService" fullname="SoccerServer.MainService" namespace="SoccerServer" url="http://ENTER WEBORB URL HERE/weborb.aspx">
+    <service name="MainService" fullname="SoccerServer.MainService" namespace="SoccerServer" url="http://localhost/console/weborb.aspx">
       <method name="AssignSkillPoints" type="void" nativetype="Void" containsvalues="0">
         <arg name="soccerPlayerID" type="int" nativetype="int" />
         <arg name="weight" type="int" nativetype="int" />
@@ -161,7 +161,7 @@
         <arg name="firstSoccerPlayerID" type="int" nativetype="int" />
         <arg name="secondSoccerPlayerID" type="int" nativetype="int" />
       </method>
-      <method name="TargetProcessedRequests" type="void" nativetype="Void" containsvalues="0">
+      <method name="TargetProcessedRequests" type="ArrayCollection" nativetype="List&lt;String&gt;" containsvalues="0">
         <arg name="request_ids" type="ArrayCollection" nativetype="List&lt;String&gt;" />
       </method>
       <method name="Train" type="PendingTraining" nativetype="SoccerServer.TransferModel.PendingTraining" containsvalues="0">

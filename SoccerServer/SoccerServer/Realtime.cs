@@ -29,9 +29,11 @@ namespace SoccerServer
         public override void OnAppStart(NetServer netServer)
         {
             Log.startLogging(REALTIME);
+            /*
             Log.startLogging(REALTIME_DEBUG);
-            Log.startLogging(RealtimeMatch.MATCHLOG);
-            Log.startLogging(RealtimeMatch.MATCHLOG_DEBUG);
+            Log.startLogging(RealtimeMatch.MATCHLOG_ERROR);
+            Log.startLogging(RealtimeMatch.MATCHLOG_VERBOSE);
+             */
 
             Log.log(REALTIME, "************************* Realtime Starting *************************");
 

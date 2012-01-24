@@ -1,10 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 using SoccerServer.BDDModel;
 using Weborb.Util.Logging;
 using Weborb.Service;
+using System.Data.SqlClient;
+using System.Data.Linq;
+using System.Web;
+using System.Diagnostics;
 
 
 namespace SoccerServer
@@ -16,26 +19,56 @@ namespace SoccerServer
 
         public const int INJURY_DURATION_DAYS = 1;
         public const int DEFAULT_NUM_MACHES = 5;
-	
+
+
 		public TransferModel.Team RefreshTeam()
 		{
             TransferModel.Team ret = null;
-
-            using (CreateDataForRequest())
+            
+            using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
             {
-                if (mPlayer.Team != null)
+                using (mContext = new SoccerDataModelDataContext(con))
                 {
-                    bool bSubmit = SyncTeam(mContext, mPlayer.Team);
+                    if (mLoadOptionsRefreshTeam == null)
+                    {
+                        mLoadOptionsRefreshTeam = new DataLoadOptions();
+                        mLoadOptionsRefreshTeam.LoadWith<Player>(t => t.Team);
+                        mLoadOptionsRefreshTeam.LoadWith<Team>(t => t.SoccerPlayers);
+                        mLoadOptionsRefreshTeam.LoadWith<Team>(t => t.PendingTraining);
+                        mLoadOptionsRefreshTeam.LoadWith<Team>(t => t.SpecialTrainings);
+                        mLoadOptionsRefreshTeam.LoadWith<Team>(t => t.Ticket);
+                        mLoadOptionsRefreshTeam.LoadWith<SpecialTraining>(t => t.SpecialTrainingDefinition);
+                        mLoadOptionsRefreshTeam.LoadWith<PendingTraining>(t => t.TrainingDefinition);
+                        mContext.LoadOptions = mLoadOptionsRefreshTeam;
 
-                    if (bSubmit)
-                        mContext.SubmitChanges();
+                        mPlayerBySessionRefreshTeam = CompiledQuery.Compile<SoccerDataModelDataContext, string, Player>
+                                                                    ((theContext, session) => (from s in theContext.Sessions
+                                                                                               where s.FacebookSession == session
+                                                                                               select s.Player).First());
+                    }
 
-                    ret = new TransferModel.Team(mPlayer.Team);
+                    mContext.LoadOptions = mLoadOptionsRefreshTeam;
+
+                    mPlayer = mPlayerBySessionRefreshTeam.Invoke(mContext, GetSessionKeyFromRequest());
+
+                    if (mPlayer.Team != null)
+                    {
+                        bool bSubmit = SyncTeam(mContext, mPlayer.Team);
+
+                        if (bSubmit)
+                            mContext.SubmitChanges();
+
+                        ret = new TransferModel.Team(mPlayer.Team);
+                    }
                 }
             }
 
             return ret;
 		}
+
+        // RefreshTeam precompiled query...
+        static Func<SoccerDataModelDataContext, string, Player> mPlayerBySessionRefreshTeam;
+        static DataLoadOptions mLoadOptionsRefreshTeam;
 
         // Un nuevo approach os doy...
         static internal bool SyncTeam(SoccerDataModelDataContext theContext, Team theTeam)

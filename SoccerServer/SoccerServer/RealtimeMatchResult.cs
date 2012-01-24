@@ -157,7 +157,9 @@ namespace SoccerServer
         {
             var currentSeason = MainService.GetCurrentSeason(mContext);
 
-            // Excepcion (...OrDefault) por el problema del paralelismo entre el SeasonEnd y el añadir equipo a competicion
+            // Excepcion (...OrDefault) por el problema del paralelismo entre el SeasonEnd y el añadir equipo a competicion:
+            // Si un equipo se añade a la competición (único punto: RefreshGroupForTeam) justo durante un cambio de season, se añadira a una q ya está caducada. 
+            // Juegas un partido y a la salida (aqui) no hay una GroupEntry asociada a esta nueva season.
             var entryPlayer1 = mBDDPlayer1.Team.CompetitionGroupEntries.SingleOrDefault(entry => entry.CompetitionGroup.CompetitionSeason == currentSeason);
             var entryPlayer2 = mBDDPlayer2.Team.CompetitionGroupEntries.SingleOrDefault(entry => entry.CompetitionGroup.CompetitionSeason == currentSeason);
 

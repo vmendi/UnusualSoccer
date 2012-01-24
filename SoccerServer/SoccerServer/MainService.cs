@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Data.Linq;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
-
-using Weborb.Util.Logging;
-
 using SoccerServer.BDDModel;
+using Weborb.Util.Logging;
+using System.Diagnostics;
 
 namespace SoccerServer
 {
@@ -13,31 +14,30 @@ namespace SoccerServer
 		public const String MAINSERVICE = "MAINSERVICE";
 		public const String CLIENT_ERROR = "CLIENT_ERROR";
 
-        public MainService()
-        {
-        }
-       
         private SoccerDataModelDataContext CreateDataForRequest()
         {
             mContext = new SoccerDataModelDataContext();
 
+            var sessionKey = GetSessionKeyFromRequest();
+
+            mPlayer = (from s in mContext.Sessions
+                       where s.FacebookSession == sessionKey
+                       select s.Player).FirstOrDefault();
+
+            if (mPlayer == null)
+                throw new Exception("Invalid SessionKey: " + sessionKey);
+
+            return mContext;
+        }
+
+        private string GetSessionKeyFromRequest()
+        {
             HttpContext theCurrentHttp = HttpContext.Current;
 
             if (!theCurrentHttp.Request.QueryString.AllKeys.Contains("SessionKey"))
                 throw new Exception("SessionKey is missing");
 
-            string sessionKey = theCurrentHttp.Request.QueryString["SessionKey"];
-                        
-            mSession = (from s in mContext.Sessions
-                        where s.FacebookSession == sessionKey
-                        select s).FirstOrDefault();
-
-            if (mSession == null)
-                throw new Exception("Invalid SessionKey: " + sessionKey);
-
-            mPlayer = mSession.Player;
-
-            return mContext;
+            return theCurrentHttp.Request.QueryString["SessionKey"];
         }
 
 		public enum VALID_NAME
@@ -53,12 +53,19 @@ namespace SoccerServer
 
 		public bool HasTeam()
 		{
-            using (CreateDataForRequest())
+            using (mContext = new SoccerDataModelDataContext())
             {
-                return mPlayer.Team != null;
+                if (mPrecompHasTeam == null)
+                    mPrecompHasTeam = CompiledQuery.Compile<SoccerDataModelDataContext, string, Team>
+                                                            ((theContext, session) => (from s in theContext.Sessions
+                                                                                        where s.FacebookSession == session
+                                                                                        select s.Player.Team).FirstOrDefault());
+                return mPrecompHasTeam.Invoke(mContext, GetSessionKeyFromRequest()) != null;
             }
 		}
+        static Func<SoccerDataModelDataContext, string, Team> mPrecompHasTeam;
 
+        
 		public VALID_NAME IsNameValid(string name)
 		{
             using (CreateDataForRequest())
@@ -150,6 +157,5 @@ namespace SoccerServer
 
 		SoccerDataModelDataContext mContext = null;
 		Player mPlayer = null;
-		Session mSession = null;
 	}
 }
