@@ -54,6 +54,7 @@ namespace SoccerServer
 		public bool HasTeam()
 		{
             var sessionKey = GetSessionKeyFromRequest();
+            bool bRet = false;
 
             using (mContext = new SoccerDataModelDataContext())
             {
@@ -62,8 +63,17 @@ namespace SoccerServer
                                                             ((theContext, session) => (from s in mContext.Sessions
                                                                                         where s.FacebookSession == sessionKey
                                                                                         select s.Player.Team).FirstOrDefault() != null);
-                return mPrecompHasTeam.Invoke(mContext, sessionKey);
+                bRet = mPrecompHasTeam.Invoke(mContext, sessionKey);
             }
+
+            return bRet;
+            
+            /*
+            using (CreateDataForRequest())
+            {
+                return mPlayer.Team != null;
+            }
+             */
 		}
         static Func<SoccerDataModelDataContext, string, bool> mPrecompHasTeam;
 
