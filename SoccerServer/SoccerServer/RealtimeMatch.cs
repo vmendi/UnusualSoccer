@@ -35,8 +35,8 @@ namespace SoccerServer
         const int Player2 = 1;                                  // Identificador para el player 2
         const int Invalid = (-1);                               // Identificador inválido
 
-        public const String MATCHLOG = "MATCH";
-        public const String MATCHLOG_DEBUG = "MATCH DEBUG";
+        public const String MATCHLOG_VERBOSE = "MATCH VERBOSE";
+        public const String MATCHLOG_ERROR = "MATCH ERROR";
                 
         public const int MinClientVersion = 201;                    // Versión mínima que exigimos a los clientes para jugar
         
@@ -169,7 +169,7 @@ namespace SoccerServer
 
             LogEx("Init Match: FirstPlayer: " + firstPlayer.Name + " - " + firstPlayer.FacebookID + 
                   " SecondPlayer: " + secondPlayer.Name + " - " + secondPlayer.FacebookID + 
-                  " MinClientVersion required " + MinClientVersion, MATCHLOG);
+                  " MinClientVersion required " + MinClientVersion);
             
             // NOTE : En este momento la conexión todavía no puede utilizarse, todavía el cliente no ha tomado el control            
         }
@@ -182,7 +182,7 @@ namespace SoccerServer
             LogEx("OnRequestData: Datos del partido solicitador por el Player: " + idPlayer + " Configuración partido: TotalTime: " + MatchLength + " TurnTime: " + TurnLength);
 
             if (CurState != State.WaitingForMatchStart)
-                LogEx("ServerException: Fallo en OnServerPlayerReadyForMatchStart " + idPlayer);
+                LogEx("ServerException: Fallo en OnServerPlayerReadyForMatchStart " + idPlayer, MATCHLOG_ERROR);
 
             CountReadyPlayersForInit++;
 
@@ -252,7 +252,7 @@ namespace SoccerServer
             LogEx("OnServerShoot: " + idPlayer + " Shoot: " + TotalShootCount + " Cap ID: " + capID + " dir: " + dirX + ", " + dirY + " force: " + force + " CPES: " + CountPlayersEndShoot);
 
             if (CurState != State.Playing || CountPlayersEndShoot != 0 || CountPlayersReportGoal != 0)
-                LogEx("ServerException: OnServerShoot en estado incorrecto");
+                LogEx("ServerException: OnServerShoot en estado incorrecto", MATCHLOG_ERROR);
 
             CurState = State.Simulating;
 
@@ -267,7 +267,7 @@ namespace SoccerServer
             LogEx("OnServerEndShoot: " + idPlayer);
 
             if (CurState != State.Simulating)
-                LogEx("ServerException: OnServerEndShoot en estado incorrecto");
+                LogEx("ServerException: OnServerEndShoot en estado incorrecto", MATCHLOG_ERROR);
             
             // Contabilizamos jugadores listos 
             CountPlayersEndShoot++;
@@ -295,7 +295,7 @@ namespace SoccerServer
             string finalStr = " Result: " + result + " PaseToID: " + paseToCapId + " CountTouchedCaps: " + countTouchedCaps + " FramesSimulating: " + framesSimulating + " ReasonTurnChanged: "+ reasonTurnChanged + " " + capListStr;
 
             if (TheClientState == null)
-                LogEx("ServerException: Pasamos por OnResultShoot sin haber creado el ClientState, cutucrush en la siguiente?!");
+                LogEx("ServerException: Pasamos por OnResultShoot sin haber creado el ClientState, cutucrush en la siguiente?!", MATCHLOG_ERROR);
             
             TheClientState.ClientString[idPlayer] = finalStr;
 
@@ -308,9 +308,9 @@ namespace SoccerServer
                     // Informamos a los clientes de que se ha producido una desincronia (el cliente decidira que hacer...)
                     Broadcast("PushedMatchUnsync");
 
-                    LogEx(">>>>>> FATAL ERROR UNSYNC STATE >>>>>> " + MatchID, MATCHLOG);
-                    LogEx(" STATE 1: " + TheClientState.ClientString[Player1], MATCHLOG);
-                    LogEx(" STATE 2: " + TheClientState.ClientString[Player2], MATCHLOG);
+                    LogEx(">>>>>> FATAL ERROR UNSYNC STATE >>>>>> " + MatchID, MATCHLOG_ERROR);
+                    LogEx(" STATE 1: " + TheClientState.ClientString[Player1], MATCHLOG_ERROR);
+                    LogEx(" STATE 2: " + TheClientState.ClientString[Player2], MATCHLOG_ERROR);
                 }
                 
                 TheClientState = null;
@@ -323,7 +323,7 @@ namespace SoccerServer
             LogEx("OnServerGoalScored: Player: " + idPlayer + " Scored player: " + scoredPlayer + " Validity: " + validity + " CountPlayersReportGoal: " + CountPlayersReportGoal);
 
             if (CurState != State.Simulating || CountPlayersSetTurn != 0)
-                LogEx("ServerException: OnServerGoalScored in Bad General State: " + CountPlayersSetTurn + " " + CurState);
+                LogEx("ServerException: OnServerGoalScored in Bad General State: " + CountPlayersSetTurn + " " + CurState, MATCHLOG_ERROR);
 
             // Contabilizamos el número de jugadores que han comunicado el gol. Hasta que los 2 no lo hayan hecho no lo contabilizamos
             CountPlayersReportGoal++;
@@ -349,7 +349,7 @@ namespace SoccerServer
                     PlayersState[scoredPlayer].ScoredGoals++;
                 else
                 if (ValidityGoal == Invalid)
-                    LogEx("ServerException: La validez del gol es inválida");
+                    LogEx("ServerException: La validez del gol es inválida", MATCHLOG_ERROR);
 
                 // Propagamos a los usuarios
                 Broadcast("OnClientGoalScored", scoredPlayer, ValidityGoal);
@@ -411,7 +411,7 @@ namespace SoccerServer
             LogEx("OnServerTimeout: " + idPlayer);
 
             if (CurState != State.Playing)
-                LogEx("ServerException: OnServerTimeout en estado incorrecto");
+                LogEx("ServerException: OnServerTimeout en estado incorrecto", MATCHLOG_ERROR);
 
             Broadcast("OnClientTimeout", idPlayer);
         }
@@ -421,7 +421,7 @@ namespace SoccerServer
             LogEx("OnServerPlaceBall: " + idPlayer + " Cap ID: " + capID);
 
             if (CurState != State.Playing)
-                LogEx("ServerException: OnServerPlaceBall en estado incorrecto");
+                LogEx("ServerException: OnServerPlaceBall en estado incorrecto", MATCHLOG_ERROR);
 
             Broadcast("OnClientPlaceBall", idPlayer, capID, dirX, dirY);
         }
@@ -431,7 +431,7 @@ namespace SoccerServer
             LogEx("OnServerPosCap: " + idPlayer + " Cap ID: " + capID);
 
             if (CurState != State.Playing)
-                LogEx("ServerException: OnServerPosCap en estado incorrecto");
+                LogEx("ServerException: OnServerPosCap en estado incorrecto", MATCHLOG_ERROR);
 
             Broadcast("OnClientPosCap", idPlayer, capID, posX, posY);
         }
@@ -442,7 +442,7 @@ namespace SoccerServer
             LogEx("OnUseSkill: Player: " + idPlayer + " Skill: " + idSkill);
 
             if (CurState != State.Playing)
-                LogEx("ServerException: OnServerUseSkill en estado incorrecto");
+                LogEx("ServerException: OnServerUseSkill en estado incorrecto", MATCHLOG_ERROR);
             
             Broadcast("OnClientUseSkill", idPlayer, idSkill);
         }
@@ -452,14 +452,14 @@ namespace SoccerServer
             LogEx("OnServerTiroPuerta: Player: " + idPlayer);
 
             if (CurState != State.Playing)
-                LogEx("ServerException: OnClientTiroPuerta en estado incorrecto");
+                LogEx("ServerException: OnClientTiroPuerta en estado incorrecto", MATCHLOG_ERROR);
 
             Broadcast("OnClientTiroPuerta", idPlayer);
         }
         
         public void OnMsgToChatAdded(RealtimePlayer source, string msg)
         {
-            Log.log(MATCHLOG, MatchID + " Chat: " + msg);
+            Log.log(MATCHLOG_VERBOSE, MatchID + " Chat: " + msg);
 
             // Mientras estamos esperando al saque inicial no permitimos chateo, puede haber uno de los clientes que esta inicializando todavia.
             // Cuando se ha acabado ya el tiempo tampoco, a un cliente le puede haber dado tiempo a salir.
@@ -480,7 +480,7 @@ namespace SoccerServer
         }
 
         #region Aux
-        public void LogEx(string message, string category = MATCHLOG_DEBUG)
+        public void LogEx(string message, string category = MATCHLOG_VERBOSE)
         {
             string finalMessage = " MatchID: " + MatchID + " Time: " + this.ServerTime + " " + message;
             finalMessage += " <ServerVars>: CurState=" + CurState + 

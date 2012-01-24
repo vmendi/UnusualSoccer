@@ -20,6 +20,9 @@ namespace SoccerServer
         [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 10000)]
         public TransferModel.CompetitionGroup RefreshGroupForTeam(long facebookID)
         {
+            Stopwatch test = new Stopwatch();
+            test.Start();
+
             using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
             {
                 con.Open();
@@ -66,6 +69,9 @@ namespace SoccerServer
                         theTeam.LastDivisionQueriedID = theGroupEntry.CompetitionGroup.CompetitionDivisionID;
                         mContext.SubmitChanges();
                     }
+
+                    test.Stop();
+                    Log.log(MainService.MAINSERVICE, "RefreshGroupForTeam: " + test.ElapsedMilliseconds);
 
                     return ret;
                 }
