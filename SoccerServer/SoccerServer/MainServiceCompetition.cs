@@ -17,12 +17,9 @@ namespace SoccerServer
     {
         // Nos basta con el facebookID y no nos hace falta el TeamID, porque ahora mismo hay una relacion 1:1. Asi nos ahorramos
         // enviar al cliente (en el TransferModel) el TeamID cuando ya tenemos el facebookID
-        //[WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 10000)]
+        [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 30000)]
         public TransferModel.CompetitionGroup RefreshGroupForTeam(long facebookID)
         {
-            Stopwatch test = new Stopwatch();
-            test.Start();
-
             using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
             {
                 con.Open();
@@ -74,9 +71,6 @@ namespace SoccerServer
                         theTeam.LastDivisionQueriedID = theGroupEntry.CompetitionGroup.CompetitionDivisionID;
                         mContext.SubmitChanges();
                     }
-
-                    test.Stop();
-                    Log.log(MainService.MAINSERVICE, "RefreshGroupForTeam: " + test.ElapsedMilliseconds);
 
                     return ret;
                 }
