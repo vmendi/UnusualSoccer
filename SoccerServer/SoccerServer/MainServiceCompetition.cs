@@ -17,7 +17,7 @@ namespace SoccerServer
     {
         // Nos basta con el facebookID y no nos hace falta el TeamID, porque ahora mismo hay una relacion 1:1. Asi nos ahorramos
         // enviar al cliente (en el TransferModel) el TeamID cuando ya tenemos el facebookID
-        [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 10000)]
+        //[WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 10000)]
         public TransferModel.CompetitionGroup RefreshGroupForTeam(long facebookID)
         {
             Stopwatch test = new Stopwatch();
@@ -34,6 +34,11 @@ namespace SoccerServer
                     DataLoadOptions options = new DataLoadOptions();
                     options.LoadWith<Team>(t => t.Player);
                     options.LoadWith<CompetitionGroupEntry>(entry => entry.Team);
+
+                    // Optimizacion secundaria
+                    options.LoadWith<CompetitionGroupEntry>(entry => entry.CompetitionGroup);
+                    options.LoadWith<CompetitionGroup>(gr => gr.CompetitionDivision);
+
                     mContext.LoadOptions = options;
 
                     BDDModel.Team theTeam = (from t in mContext.Teams

@@ -170,6 +170,31 @@
 			}
 		}
 		
+		private function Test22() : void
+		{
+			SoccerClient.GetFacebookFacade().Init(startTest);
+			
+			var counter : int = 0;
+			startTest();
+			
+			function startTest() : void
+			{
+				counter++;
+				mMainGameModel.TheTeamModel.RefreshTeam(OnTeamRefreshed);
+			}
+			
+			function OnTeamRefreshed() : void
+			{
+				mMainGameModel.TheCompetitionModel.RefreshGroup(onGroupRefreshed);
+			}
+			
+			function onGroupRefreshed() : void
+			{
+				SetLine(1, "onGroupRefreshed " + counter.toString());
+				TweenMax.delayedCall(3, startTest);
+			}
+		}
+		
 		private function Test03() : void
 		{
 			var passCounter:int=0;

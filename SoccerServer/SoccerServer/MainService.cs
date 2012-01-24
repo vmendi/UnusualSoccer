@@ -57,7 +57,7 @@ namespace SoccerServer
             {
                 if (mPrecompHasTeam == null)
                     mPrecompHasTeam = CompiledQuery.Compile<SoccerDataModelDataContext, string, Team>
-                                                            ((theContext, session) => (from s in mContext.Sessions
+                                                            ((theContext, session) => (from s in theContext.Sessions
                                                                                         where s.FacebookSession == session
                                                                                         select s.Player.Team).FirstOrDefault());
                 return mPrecompHasTeam.Invoke(mContext, GetSessionKeyFromRequest()) != null;

@@ -27,9 +27,6 @@ namespace SoccerServer
             
             using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
             {
-                Stopwatch test = new Stopwatch();
-                test.Start();
-
                 using (mContext = new SoccerDataModelDataContext(con))
                 {
                     if (mLoadOptionsRefreshTeam == null)
@@ -45,7 +42,7 @@ namespace SoccerServer
                         mContext.LoadOptions = mLoadOptionsRefreshTeam;
 
                         mPlayerBySessionRefreshTeam = CompiledQuery.Compile<SoccerDataModelDataContext, string, Player>
-                                                                    ((theContext, session) => (from s in mContext.Sessions
+                                                                    ((theContext, session) => (from s in theContext.Sessions
                                                                                                where s.FacebookSession == session
                                                                                                select s.Player).First());
                     }
@@ -64,8 +61,6 @@ namespace SoccerServer
                         ret = new TransferModel.Team(mPlayer.Team);
                     }
                 }
-
-                Log.log(MAINSERVICE, "RefreshTeam: " + test.ElapsedMilliseconds);
             }
 
             return ret;
