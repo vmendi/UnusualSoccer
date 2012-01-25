@@ -37,17 +37,40 @@ namespace SoccerServer
             // Unica instancia global
             mInstance = this;
 
-            ConfigureDB();
-
-            // Todos nuestros settings se configuran aqui, dependiendo de version, idioma, etc
+            // Necesitamos inicializar ya nuestros settings para que no falle la primera query
             ConfigureSettings();
 
+            // Y tambien el NetEngine, por el mismo motivo
             mNetEngine = new NetEngineMain(new Realtime());
             
             var starterThread = new Thread(StarterThread);
             starterThread.Name = "StarterThread";
             starterThread.Start();
 		}
+
+        public void StarterThread()
+        {
+            var forcedWeborbLogInit = Weborb.Config.ORBConfig.GetInstance();
+
+            Log.startLogging(GLOBAL_LOG);
+            Log.startLogging(MainService.MAINSERVICE);
+            Log.startLogging(MainService.CLIENT_ERROR);
+
+            Log.log(GLOBAL_LOG, "******************* Initialization from " + this.Server.MachineName + " Global.asax *******************");
+
+            ConfigureDB();
+            PrecompiledQueries.PrecompileAll();
+
+            mNetEngine.Start();
+
+            mStopWatch = new Stopwatch();
+            mSecondsTimer = new System.Timers.Timer(1000);
+            mSecondsTimer.Elapsed += new System.Timers.ElapsedEventHandler(SecondsTimer_Elapsed);
+
+            mTotalSeconds = 0;
+            mStopWatch.Start();
+            mSecondsTimer.Start();
+        }
 
         private void ConfigureDB()
         {
@@ -135,26 +158,6 @@ namespace SoccerServer
             }
         }
 
-        public void StarterThread()
-        {
-            var forcedWeborbLogInit = Weborb.Config.ORBConfig.GetInstance();
-                     
-            Log.startLogging(GLOBAL_LOG);
-            Log.startLogging(MainService.MAINSERVICE);
-            Log.startLogging(MainService.CLIENT_ERROR);
-
-            Log.log(GLOBAL_LOG, "******************* Initialization from " + this.Server.MachineName + " Global.asax *******************");
-
-            mNetEngine.Start();
-
-            mStopWatch = new Stopwatch();
-            mSecondsTimer = new System.Timers.Timer(1000);
-            mSecondsTimer.Elapsed += new System.Timers.ElapsedEventHandler(SecondsTimer_Elapsed);
-
-            mTotalSeconds = 0;
-            mStopWatch.Start();
-            mSecondsTimer.Start();
-        }
 
 		void SecondsTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{

@@ -29,26 +29,9 @@ namespace SoccerServer
             {
                 using (mContext = new SoccerDataModelDataContext(con))
                 {
-                    if (mLoadOptionsRefreshTeam == null)
-                    {
-                        mLoadOptionsRefreshTeam = new DataLoadOptions();
-                        mLoadOptionsRefreshTeam.LoadWith<Player>(t => t.Team);
-                        mLoadOptionsRefreshTeam.LoadWith<Team>(t => t.SoccerPlayers);
-                        mLoadOptionsRefreshTeam.LoadWith<Team>(t => t.PendingTraining);
-                        mLoadOptionsRefreshTeam.LoadWith<Team>(t => t.SpecialTrainings);
-                        mLoadOptionsRefreshTeam.LoadWith<Team>(t => t.Ticket);
-                        mLoadOptionsRefreshTeam.LoadWith<SpecialTraining>(t => t.SpecialTrainingDefinition);
-                        mLoadOptionsRefreshTeam.LoadWith<PendingTraining>(t => t.TrainingDefinition);
-                        
-                        mPrecompRefreshTeam = CompiledQuery.Compile<SoccerDataModelDataContext, string, Player>
-                                                                    ((theContext, session) => (from s in theContext.Sessions
-                                                                                               where s.FacebookSession == session
-                                                                                               select s.Player).First());
-                    }
+                    mContext.LoadOptions = PrecompiledQueries.RefreshTeam.LoadOptions;
 
-                    mContext.LoadOptions = mLoadOptionsRefreshTeam;
-
-                    mPlayer = mPrecompRefreshTeam.Invoke(mContext, GetSessionKeyFromRequest());
+                    mPlayer = PrecompiledQueries.RefreshTeam.GetPlayer.Invoke(mContext, GetSessionKeyFromRequest());
 
                     if (mPlayer.Team != null)
                     {
@@ -64,9 +47,7 @@ namespace SoccerServer
 
             return ret;
 		}
-        // RefreshTeam precompiled query...
-        static Func<SoccerDataModelDataContext, string, Player> mPrecompRefreshTeam;
-        static DataLoadOptions mLoadOptionsRefreshTeam;
+               
 
         // Un nuevo approach os doy...
         static internal bool SyncTeam(SoccerDataModelDataContext theContext, Team theTeam)
@@ -280,37 +261,31 @@ namespace SoccerServer
                                          where t.Player.FacebookID == facebookID
                                          select t).First();
 
-                var ret = RefreshTeamDetailsInner(theTeam);
+                var ret = new TransferModel.TeamDetails();
 
+                // Para el calculo de los averages, cogemos sólo los titulares
+                var myAlignedPlayers = (from sp in theTeam.SoccerPlayers
+                                        where sp.FieldPosition < 100
+                                        select sp);
+
+                ret.AverageWeight = (int)Math.Ceiling(myAlignedPlayers.Average(sp => sp.Weight));
+                ret.AverageSliding = (int)Math.Ceiling(myAlignedPlayers.Average(sp => sp.Sliding));
+                ret.AveragePower = (int)Math.Ceiling(myAlignedPlayers.Average(sp => sp.Power));
+
+                // No hacemos un SyncTeam, admitimos cierta obsolescencia
+                ret.Fitness = theTeam.Fitness;
+
+                ret.SpecialSkillsIDs = (from s in theTeam.SpecialTrainings
+                                        where s.IsCompleted
+                                        select s.SpecialTrainingDefinitionID).ToList();
+                
                 Log.log(MAINSERVICE, "RefreshTeamDetails: " + stopwatch.ElapsedMilliseconds);
 
                 return ret;
             }
         }
-
-        private TransferModel.TeamDetails RefreshTeamDetailsInner(BDDModel.Team theTeam)
-        {
-            var ret = new TransferModel.TeamDetails();
-
-            // Para el calculo de los averages, cogemos sólo los titulares
-            var myAlignedPlayers = (from sp in theTeam.SoccerPlayers
-                                    where sp.FieldPosition < 100
-                                    select sp);
-
-            ret.AverageWeight = (int)Math.Ceiling(myAlignedPlayers.Average(sp => sp.Weight));
-            ret.AverageSliding = (int)Math.Ceiling(myAlignedPlayers.Average(sp => sp.Sliding));
-            ret.AveragePower = (int)Math.Ceiling(myAlignedPlayers.Average(sp => sp.Power));
-
-            // No hacemos un SyncTeam, admitimos cierta obsolescencia
-            ret.Fitness = theTeam.Fitness;
-
-            ret.SpecialSkillsIDs = (from s in theTeam.SpecialTrainings
-                                    where s.IsCompleted
-                                    select s.SpecialTrainingDefinitionID).ToList();
-
-            return ret;
-        }
-
+        
+        
         public bool GetExtraRewardForMatch(int matchID)
         {
             bool bRet = false;

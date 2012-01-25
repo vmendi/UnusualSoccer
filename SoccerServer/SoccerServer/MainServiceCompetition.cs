@@ -32,49 +32,16 @@ namespace SoccerServer
 
                 using (mContext = new SoccerDataModelDataContext(con))
                 {
-                    // Cada vez que traigas una GroupEntry a memoria, traete tambien el equipo y el player. 
-                    // Pasamos de 3 queries por groupentry (si hay 100 entries => 300 queries) a 1 sola para todo
-                    if (mLoadOptionsRefreshGroupForTeam == null)
-                    {
-                        mLoadOptionsRefreshGroupForTeam = new DataLoadOptions();
-                        mLoadOptionsRefreshGroupForTeam.LoadWith<Team>(t => t.Player);
-                        mLoadOptionsRefreshGroupForTeam.LoadWith<CompetitionGroupEntry>(entry => entry.Team);
-
-                        // Optimizacion secundaria
-                        mLoadOptionsRefreshGroupForTeam.LoadWith<CompetitionGroupEntry>(entry => entry.CompetitionGroup);
-                        mLoadOptionsRefreshGroupForTeam.LoadWith<CompetitionGroup>(gr => gr.CompetitionDivision);
-                        
-                        mPrecompGetTeam = CompiledQuery.Compile<SoccerDataModelDataContext, long, Team>
-                                                            ((theContext, fbID) => (from t in theContext.Teams
-                                                                                    where t.Player.FacebookID == fbID
-                                                                                    select t).First());
-
-                        mPrecompGetCurrentSeason = CompiledQuery.Compile<SoccerDataModelDataContext, CompetitionSeason>
-                                                                    (context => context.CompetitionSeasons.Single(season => season.EndDate == null));
-
-                        mPrecompGetGroupEntry = CompiledQuery.Compile<SoccerDataModelDataContext, int, int, CompetitionGroupEntry>
-                                                                    ((context, teamID, competitionSeasonID)  =>
-                                                                     (from e in context.CompetitionGroupEntries
-                                                                      where e.TeamID == teamID &&
-                                                                            e.CompetitionGroup.CompetitionSeasonID == competitionSeasonID
-                                                                      select e).FirstOrDefault());
-
-                        mPrecompGetEntries = CompiledQuery.Compile<SoccerDataModelDataContext, int, IQueryable<CompetitionGroupEntry>>
-                                                                   ((context, competitionGroupID) => (from e in context.CompetitionGroupEntries
-                                                                                                      where e.CompetitionGroupID == competitionGroupID
-                                                                                                      select e));
-                    }
-
-                    mContext.LoadOptions = mLoadOptionsRefreshGroupForTeam;
+                    mContext.LoadOptions = PrecompiledQueries.RefreshGroupForTeam.LoadOptions;
 
                     // Equipo correspondiente al FacebookID
-                    BDDModel.Team theTeam = mPrecompGetTeam.Invoke(mContext, facebookID);
+                    BDDModel.Team theTeam = PrecompiledQueries.RefreshGroupForTeam.GetTeam.Invoke(mContext, facebookID);
 
                     // Nuestra propia copia de GetCurrentSeason para poder precompilar (var currentSeason = GetCurrentSeason(mContext))
-                    var currentSeason = mPrecompGetCurrentSeason.Invoke(mContext);
+                    var currentSeason = PrecompiledQueries.RefreshGroupForTeam.GetCurrentSeason.Invoke(mContext);
 
                     // GroupEntry de la temporada actual
-                    CompetitionGroupEntry theGroupEntry = mPrecompGetGroupEntry.Invoke(mContext, theTeam.TeamID, currentSeason.CompetitionSeasonID);
+                    CompetitionGroupEntry theGroupEntry = PrecompiledQueries.RefreshGroupForTeam.GetGroupEntry.Invoke(mContext, theTeam.TeamID, currentSeason.CompetitionSeasonID);
 
                     // Descartado en el SeasonEnd por inactividad o equipo recien creado?
                     if (theGroupEntry == null)
@@ -104,14 +71,7 @@ namespace SoccerServer
                 }
             }
         }
-        // RefreshGroupForTeam precompiled query...
-        static Func<SoccerDataModelDataContext, long, Team> mPrecompGetTeam;
-        static Func<SoccerDataModelDataContext, CompetitionSeason> mPrecompGetCurrentSeason;
-        static Func<SoccerDataModelDataContext, int, int, CompetitionGroupEntry> mPrecompGetGroupEntry;
-        static Func<SoccerDataModelDataContext, int, IQueryable<CompetitionGroupEntry>> mPrecompGetEntries;
-        static DataLoadOptions mLoadOptionsRefreshGroupForTeam;
-
-
+       
         private static CompetitionGroupEntry AddInactiveTeamToCompetition(SoccerDataModelDataContext theContext, CompetitionSeason currentSeason, BDDModel.Team theTeam)
         {
             // Veamos en que division se quedo la ultima vez que jugo
@@ -133,7 +93,7 @@ namespace SoccerServer
         private static TransferModel.CompetitionGroup GetTransferCompetitionGroup(SoccerDataModelDataContext context, CompetitionGroup theGroup)
         {
             var ret = new TransferModel.CompetitionGroup();
-            var entries = mPrecompGetEntries.Invoke(context, theGroup.CompetitionGroupID);  // Nos la tienen que precompilar por fuera
+            var entries = PrecompiledQueries.RefreshGroupForTeam.GetEntries.Invoke(context, theGroup.CompetitionGroupID);
 
             ret.DivisionName = theGroup.CompetitionDivision.DivisionName;
             ret.GroupName = theGroup.GroupName;
