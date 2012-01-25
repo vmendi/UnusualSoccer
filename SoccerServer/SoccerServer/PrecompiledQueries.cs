@@ -12,7 +12,9 @@ namespace SoccerServer
         {
             RefreshGroupForTeam.Precompile();
             HasTeam.Precompile();
-            RefreshTeam.Precompile();            
+            RefreshTeam.Precompile();
+            SwapFormationPosition.Precompile();
+            ChangeFormation.Precompile();
         }
 
         public class RefreshGroupForTeam
@@ -93,6 +95,34 @@ namespace SoccerServer
 
             public static Func<SoccerDataModelDataContext, string, Player> GetPlayer;
             public static DataLoadOptions LoadOptions;
+        }
+
+        public class SwapFormationPosition
+        {
+            static internal void Precompile()
+            {
+                GetSoccerPlayers = CompiledQuery.Compile<SoccerDataModelDataContext, int, int, IQueryable<SoccerPlayer>>
+                                                            ((theContext, firstSoccerPlayerID, secondSoccerPlayerID) => 
+                                                             (from sp in theContext.SoccerPlayers
+                                                              where sp.SoccerPlayerID == firstSoccerPlayerID ||
+                                                                    sp.SoccerPlayerID == secondSoccerPlayerID
+                                                              select sp));
+            }
+
+            public static Func<SoccerDataModelDataContext, int, int, IQueryable<SoccerPlayer>> GetSoccerPlayers;
+        }
+
+        public class ChangeFormation
+        {
+            static internal void Precompile()
+            {
+                GetTeam = CompiledQuery.Compile<SoccerDataModelDataContext, string, Team>
+                                                            ((theContext, sessionKey) => (from s in theContext.Sessions
+                                                                                          where s.FacebookSession == sessionKey
+                                                                                          select s.Player.Team).FirstOrDefault());
+            }
+
+            public static Func<SoccerDataModelDataContext, string, Team> GetTeam;
         }
     }
 }

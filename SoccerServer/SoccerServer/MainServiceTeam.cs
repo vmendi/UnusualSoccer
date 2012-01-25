@@ -208,17 +208,14 @@ namespace SoccerServer
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            using (CreateDataForRequest())
+            using (mContext = new SoccerDataModelDataContext())
             {
-                var soccerPlayers = from sp in mContext.SoccerPlayers
-                                    where sp.SoccerPlayerID == firstSoccerPlayerID ||
-                                          sp.SoccerPlayerID == secondSoccerPlayerID
-                                    select sp;
+                SoccerPlayer[] inArray = PrecompiledQueries.SwapFormationPosition.GetSoccerPlayers.Invoke(mContext, firstSoccerPlayerID, secondSoccerPlayerID).ToArray();
 
-                if (soccerPlayers.Count() != 2)
+                if (inArray.Count() != 2)
                     throw new Exception("Invalid SoccerPlayers");
-
-                SoccerPlayer[] inArray = soccerPlayers.ToArray();
+                
+                // TODO: Aqui podriamos verificar que los parametros pertenecen al equipo que hace el request
                 int swap = inArray[0].FieldPosition;
                 inArray[0].FieldPosition = inArray[1].FieldPosition;
                 inArray[1].FieldPosition = swap;
@@ -234,15 +231,17 @@ namespace SoccerServer
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            using (CreateDataForRequest())
-            {
-                string[] availableFormations = { "3-2-2", "3-3-1", "4-1-2", "4-2-1", "1-2-4", "2-2-3", "1-3-3", "1-4-2",
-										         "2-1-4", "2-2-3", "2-3-2", "2-4-1", "3-1-3"};
+            string[] availableFormations = { "3-2-2", "3-3-1", "4-1-2", "4-2-1", "1-2-4", "2-2-3", "1-3-3", "1-4-2",
+										     "2-1-4", "2-2-3", "2-3-2", "2-4-1", "3-1-3"};
 
-                if (availableFormations.Contains(newFormationName))
-                {
-                    mPlayer.Team.Formation = newFormationName;
-                    mContext.SubmitChanges();
+            if (availableFormations.Contains(newFormationName))
+            {
+                using (mContext = new SoccerDataModelDataContext())
+                {                
+                    var team = PrecompiledQueries.ChangeFormation.GetTeam.Invoke(mContext, GetSessionKeyFromRequest());
+
+                    team.Formation = newFormationName;
+                    mContext.SubmitChanges();            
                 }
             }
 
