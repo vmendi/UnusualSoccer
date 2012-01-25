@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoccerServer", "SoccerServe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skills", "Skills\Skills.csproj", "{15AD1345-984C-48ED-AF9A-2EAB44E5AA2B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetEngine", "NetEngine\NetEngine.csproj", "{144F0F81-76BB-4C9F-A56E-DC4B6517F726}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{15AD1345-984C-48ED-AF9A-2EAB44E5AA2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15AD1345-984C-48ED-AF9A-2EAB44E5AA2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15AD1345-984C-48ED-AF9A-2EAB44E5AA2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{144F0F81-76BB-4C9F-A56E-DC4B6517F726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{144F0F81-76BB-4C9F-A56E-DC4B6517F726}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{144F0F81-76BB-4C9F-A56E-DC4B6517F726}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{144F0F81-76BB-4C9F-A56E-DC4B6517F726}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,5 @@
 ﻿using Weborb.Util.Logging;
-using SoccerServer.NetEngine;
+using NetEngine;
 
 
 namespace SoccerServer

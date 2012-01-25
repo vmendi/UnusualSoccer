@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using SoccerServer.NetEngine;
+using NetEngine;
 using Weborb.Util.Logging;
 
 namespace SoccerServer

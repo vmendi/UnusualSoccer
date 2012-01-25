@@ -24,7 +24,7 @@ namespace SoccerServer
 		public TransferModel.Team RefreshTeam()
 		{
             TransferModel.Team ret = null;
-            
+
             using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
             {
                 using (mContext = new SoccerDataModelDataContext(con))
@@ -39,9 +39,8 @@ namespace SoccerServer
                         mLoadOptionsRefreshTeam.LoadWith<Team>(t => t.Ticket);
                         mLoadOptionsRefreshTeam.LoadWith<SpecialTraining>(t => t.SpecialTrainingDefinition);
                         mLoadOptionsRefreshTeam.LoadWith<PendingTraining>(t => t.TrainingDefinition);
-                        mContext.LoadOptions = mLoadOptionsRefreshTeam;
-
-                        mPlayerBySessionRefreshTeam = CompiledQuery.Compile<SoccerDataModelDataContext, string, Player>
+                        
+                        mPrecompRefreshTeam = CompiledQuery.Compile<SoccerDataModelDataContext, string, Player>
                                                                     ((theContext, session) => (from s in theContext.Sessions
                                                                                                where s.FacebookSession == session
                                                                                                select s.Player).First());
@@ -49,7 +48,7 @@ namespace SoccerServer
 
                     mContext.LoadOptions = mLoadOptionsRefreshTeam;
 
-                    mPlayer = mPlayerBySessionRefreshTeam.Invoke(mContext, GetSessionKeyFromRequest());
+                    mPlayer = mPrecompRefreshTeam.Invoke(mContext, GetSessionKeyFromRequest());
 
                     if (mPlayer.Team != null)
                     {
@@ -65,9 +64,8 @@ namespace SoccerServer
 
             return ret;
 		}
-
         // RefreshTeam precompiled query...
-        static Func<SoccerDataModelDataContext, string, Player> mPlayerBySessionRefreshTeam;
+        static Func<SoccerDataModelDataContext, string, Player> mPrecompRefreshTeam;
         static DataLoadOptions mLoadOptionsRefreshTeam;
 
         // Un nuevo approach os doy...
@@ -131,6 +129,9 @@ namespace SoccerServer
 
 		public bool CreateTeam(string name, string predefinedTeamNameID)
 		{
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             using (CreateDataForRequest())
             {
                 if (IsNameValidInner(name) != VALID_NAME.VALID)
@@ -160,6 +161,8 @@ namespace SoccerServer
                     Log.log(MAINSERVICE, e.Message);
                     theNewTeam = null;
                 }
+
+                Log.log(MAINSERVICE, "CreateTeam: " + stopwatch.ElapsedMilliseconds);
 
                 return theNewTeam != null;
             }
@@ -221,6 +224,9 @@ namespace SoccerServer
 
 		public void SwapFormationPosition(int firstSoccerPlayerID, int secondSoccerPlayerID)
 		{
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             using (CreateDataForRequest())
             {
                 var soccerPlayers = from sp in mContext.SoccerPlayers
@@ -238,10 +244,15 @@ namespace SoccerServer
 
                 mContext.SubmitChanges();
             }
+
+            Log.log(MAINSERVICE, "SwapFormationPosition: " + stopwatch.ElapsedMilliseconds);
 		}
 
 		public void ChangeFormation(string newFormationName)
 		{
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             using (CreateDataForRequest())
             {
                 string[] availableFormations = { "3-2-2", "3-3-1", "4-1-2", "4-2-1", "1-2-4", "2-2-3", "1-3-3", "1-4-2",
@@ -253,18 +264,27 @@ namespace SoccerServer
                     mContext.SubmitChanges();
                 }
             }
+
+            Log.log(MAINSERVICE, "ChangeFormation: " + stopwatch.ElapsedMilliseconds);
 		}
 
         [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 60000)]
         public TransferModel.TeamDetails RefreshTeamDetails(long facebookID)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             using (mContext = new SoccerDataModelDataContext())
             {
                 BDDModel.Team theTeam = (from t in mContext.Teams
                                          where t.Player.FacebookID == facebookID
                                          select t).First();
 
-                return RefreshTeamDetailsInner(theTeam);
+                var ret = RefreshTeamDetailsInner(theTeam);
+
+                Log.log(MAINSERVICE, "RefreshTeamDetails: " + stopwatch.ElapsedMilliseconds);
+
+                return ret;
             }
         }
 
@@ -294,6 +314,9 @@ namespace SoccerServer
         public bool GetExtraRewardForMatch(int matchID)
         {
             bool bRet = false;
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
             using (CreateDataForRequest())
             {
@@ -339,6 +362,8 @@ namespace SoccerServer
                     mContext.SubmitChanges();
                 }
             }
+
+            Log.log(MAINSERVICE, "GetExtraRewardForMatch: " + stopwatch.ElapsedMilliseconds);
 
             return bRet;
         }

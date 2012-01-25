@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using Weborb.Util.Logging;
 
-namespace SoccerServer.NetEngine
+namespace NetEngine
 {
     public class NetEngineMain
     {

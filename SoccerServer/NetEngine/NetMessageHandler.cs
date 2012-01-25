@@ -9,7 +9,7 @@ using System.Reflection;
 using Weborb.Reader;
 using Weborb.Types;
 
-namespace SoccerServer.NetEngine
+namespace NetEngine
 {
     internal class NetMessageHandler
     {

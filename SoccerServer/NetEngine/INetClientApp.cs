@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace SoccerServer.NetEngine
+namespace NetEngine
 {
     public abstract class INetClientApp
     {

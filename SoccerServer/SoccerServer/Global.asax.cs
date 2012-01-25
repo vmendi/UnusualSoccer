@@ -4,7 +4,7 @@ using SoccerServer.BDDModel;
 using Weborb.Util.Logging;
 using Weborb.Messaging.Server;
 using System.Data.Linq;
-using SoccerServer.NetEngine;
+using NetEngine;
 using System.Threading;
 using Facebook;
 using System.Collections.Generic;

@@ -5,7 +5,7 @@ using System.Web;
 using System.Net.Sockets;
 using Weborb.Util.Logging;
 
-namespace SoccerServer.NetEngine
+namespace NetEngine
 {
     class BufferManager
     {

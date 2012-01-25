@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Net;
 using Weborb.Util.Logging;
 
-namespace SoccerServer.NetEngine
+namespace NetEngine
 {
     // - SAEA pool
     // - Extreme: NetConnection pool. Warning: As we are giving them to the client, implementing a Reset is difficult.

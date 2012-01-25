@@ -5,7 +5,7 @@ using Weborb.Util.Logging;
 using System.Net;
 using System.Collections.Generic;
 
-namespace SoccerServer.NetEngine
+namespace NetEngine
 {
     /*
      * It represents a particular connection to a particular client, once the socket has been acepted.

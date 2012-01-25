@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using SoccerServer.NetEngine;
+using NetEngine;
 using SoccerServer.BDDModel;
 using System.Data.SqlClient;
 

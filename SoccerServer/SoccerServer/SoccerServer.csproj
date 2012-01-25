@@ -195,6 +195,7 @@
     <Content Include="ServerStatsProfile.aspx" />
     <Content Include="ServerStatsPurchases.aspx" />
     <Content Include="ServerStatsRanking.aspx" />
+    <Content Include="SoccerClient\SoccerClient.swf" />
     <Content Include="TestCreateSession.aspx" />
     <Content Include="TrueSkillHelper.aspx" />
     <Content Include="WEB-INF\flex\data-management-config.xml" />
@@ -253,17 +254,11 @@
     <Compile Include="MainServiceRequests.cs" />
     <Compile Include="MainServiceTeam.cs" />
     <Compile Include="MainServiceTraining.cs" />
-    <Compile Include="NetEngine\BufferManager.cs" />
-    <Compile Include="NetEngine\INetClientApp.cs" />
-    <Compile Include="NetEngine\NetEngineMain.cs" />
-    <Compile Include="NetEngine\NetMessageHandler.cs" />
-    <Compile Include="NetEngine\NetMessageHandlerPolicyServer.cs" />
-    <Compile Include="NetEngine\NetPlug.cs" />
-    <Compile Include="NetEngine\NetServer.cs" />
     <Compile Include="Payment.ashx.cs">
       <DependentUpon>Payment.ashx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryResultCache.cs" />
     <Compile Include="Realtime.cs" />
     <Compile Include="RealtimeMatch.cs" />
     <Compile Include="RealtimeMatchCreator.cs" />
@@ -342,6 +337,12 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Payment.ashx" />
+    <None Include="SoccerClient\framework_4.1.0.21490.swz" />
+    <None Include="SoccerClient\osmf_flex.4.0.0.13495.swz" />
+    <None Include="SoccerClient\rpc_4.1.0.16076.swz" />
+    <None Include="SoccerClient\sparkskins_4.1.0.16076.swz" />
+    <None Include="SoccerClient\spark_4.1.0.16076.swz" />
+    <None Include="SoccerClient\textLayout_1.1.0.604.swz" />
     <None Include="SoccerDataModel.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>SoccerDataModel.designer.cs</LastGenOutput>
@@ -364,6 +365,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NetEngine\NetEngine.csproj">
+      <Project>{144F0F81-76BB-4C9F-A56E-DC4B6517F726}</Project>
+      <Name>NetEngine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Skills\Skills.csproj">
       <Project>{15AD1345-984C-48ED-AF9A-2EAB44E5AA2B}</Project>
       <Name>Skills</Name>

@@ -4,7 +4,7 @@ using System.Linq;
 
 using Weborb.Util.Logging;
 using SoccerServer.BDDModel;
-using SoccerServer.NetEngine;
+using NetEngine;
 
  
 namespace SoccerServer
