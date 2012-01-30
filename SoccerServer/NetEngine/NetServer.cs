@@ -121,7 +121,7 @@ namespace NetEngine
                 
                 InnerStopCloseListeningSocket();
 
-                // In parallel with the current InvokeNetClientApp(s)
+                // In parallel with the current DeliverMessageToClient(s)
                 if (mNetClientApp != null)
                     mNetClientApp.OnServerAboutToShutdown();
 

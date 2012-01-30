@@ -86,7 +86,7 @@ namespace NetEngine
                     // Process pending messages
                     foreach (QueuedNetInvokeMessage msg in messagesToProcess)
                     {
-                        InvokeNetClientApp(msg);
+                        DeliverMessageToClient(msg);
                     }
                 }
 
@@ -99,24 +99,36 @@ namespace NetEngine
             }
         }
 
-        private void InvokeNetClientApp(QueuedNetInvokeMessage msg)
+        private void DeliverMessageToClient(QueuedNetInvokeMessage msg)
         {
-            Type t = mClientApp.GetType();
+            Type targetMsgType = null;
+            object targetForInvoke = null;
+
+            // We decide whether it's a global message for our clientApp or a message just for the room
+            if (msg.Source.Room != null)
+                targetForInvoke = msg.Source.Room;                
+            else
+                targetForInvoke = mClientApp;
+
+            targetMsgType = targetForInvoke.GetType();
 
             try
             {
                 // We wait until we know the possible method signature in order to do the final adaptation
-                MethodInfo info = t.GetMethod(msg.MethodName);
+                MethodInfo info = targetMsgType.GetMethod(msg.MethodName);
 
+                // It's very possible that a message for the room is received when the NetPlug is no longer in that room because
+                // the client hasn't received the LeftRoom message yet. We just ignore the message.
                 if (info == null)
-                    throw new NetEngineException("Unknown method: " + msg.MethodName);
+                    return;
 
                 ParameterInfo[] parametersInfo = info.GetParameters();
 
-                // First parameter always the NetPlug
+                // A little parameter verification. First parameter always the NetPlug
                 if (parametersInfo.Length == 0 || parametersInfo[0].ParameterType != msg.Source.GetType())
                     throw new NetEngineException("Incorrect method signature: " + msg.MethodName);
 
+                // We must have equal number of parameters
                 if ((msg.Params == null && parametersInfo.Length != 1) ||
                     (msg.Params != null && parametersInfo.Length != msg.Params.Length + 1))
                     throw new NetEngineException("Incorrect number of parameters: " + msg.MethodName);
@@ -135,7 +147,7 @@ namespace NetEngine
                     finalParams[c] = adapting.adapt(targetType);
                 }
 
-                object ret = info.Invoke(mClientApp, finalParams);
+                object ret = info.Invoke(targetForInvoke, finalParams);
 
                 // Handle the return for the Invoke
                 if (msg.WantsReturn)

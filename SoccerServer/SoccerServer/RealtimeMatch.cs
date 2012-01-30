@@ -495,13 +495,13 @@ namespace SoccerServer
 
         private void Broadcast(string method, params object[] args)
         {
-            Players[Player1].TheConnection.Invoke(method, args);
-            Players[Player2].TheConnection.Invoke(method, args);
+            Players[Player1].NetPlug.Invoke(method, args);
+            Players[Player2].NetPlug.Invoke(method, args);
         }
 
         private void Invoke(int idPlayer, string method, params object[] args)
         {
-            Players[idPlayer].TheConnection.Invoke(method, args);
+            Players[idPlayer].NetPlug.Invoke(method, args);
         }
 
         #endregion

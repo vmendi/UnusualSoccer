@@ -265,6 +265,7 @@
     <Compile Include="RealtimeMatchCreator.cs" />
     <Compile Include="RealtimeMatchResult.cs" />
     <Compile Include="RealtimeMatchBridge.cs" />
+    <Compile Include="RealtimeRoom.cs" />
     <Compile Include="RealtimeTests.cs" />
     <Compile Include="ServerStats.aspx.cs">
       <DependentUpon>ServerStats.aspx</DependentUpon>

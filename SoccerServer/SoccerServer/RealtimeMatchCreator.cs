@@ -80,7 +80,7 @@ namespace SoccerServer
         static public Player GetPlayerForRealtimePlayer(SoccerDataModelDataContext theContext, RealtimePlayer playerRT)
         {
             return (from s in theContext.Players
-                    where s.PlayerID == playerRT.PlayerID
+                    where s.PlayerID == playerRT.ActorID
                     select s).FirstOrDefault();
         }
 

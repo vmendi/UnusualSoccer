@@ -38,6 +38,12 @@ namespace NetEngine
             }
         }
 
+        public NetEngineRoom Room
+        {
+            get { return mRoom; }
+            internal set { mRoom = value; }
+        }
+
         public void Invoke(string methodName, params object[] args)
         {
             try
@@ -515,6 +521,8 @@ namespace NetEngine
 
             public MessageHelper(byte[] msg) { Msg = msg; }          
         }
+
+        private NetEngineRoom mRoom;
 
         object mUserData;
     }

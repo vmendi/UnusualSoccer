@@ -322,7 +322,7 @@ namespace SoccerServer
             
             WasAbandoned = true;
 
-            if (mRealtimePlayer1.TheConnection.RemoteAddress == mRealtimePlayer2.TheConnection.RemoteAddress &&
+            if (mRealtimePlayer1.NetPlug.RemoteAddress == mRealtimePlayer2.NetPlug.RemoteAddress &&
                 Global.Instance.ServerSettings["SameIPAbandonsChecked"] == "true")
             {
                 // No tocamos los goles, el resultado nos da igual puesto que el partido no se va a tener en cuenta

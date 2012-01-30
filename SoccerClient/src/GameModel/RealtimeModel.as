@@ -221,7 +221,7 @@ package GameModel
 			if (v != null)
 			{
 				var localRealtimePlayer : RealtimePlayer = new RealtimePlayer(null);
-				localRealtimePlayer.ClientID = -1;
+				localRealtimePlayer.ActorID = -1;
 				localRealtimePlayer.PredefinedTeamNameID = mMainModel.TheTeamModel.TheTeam.PredefinedTeamNameID;
 				localRealtimePlayer.Name = mMainModel.TheTeamModel.TheTeam.Name;
 				
@@ -257,9 +257,9 @@ package GameModel
 		// La vista necesitara añadirlo a la stage
 		public function get TheMatch() : MatchMain { return mMatch; }
 				
-		// Si el comienzo de partido viene de la aceptación de un challenge, firstClientID será siempre el aceptador, y
-		// secondClientID será el que lanzó el challenge
-		public function PushedStartMatch(firstClientID : int, secondClientID : int, bFriendly : Boolean) : void
+		// Si el comienzo de partido viene de la aceptación de un challenge, firstActorID será siempre el aceptador, y
+		// secondActorID será el que lanzó el challenge
+		public function PushedStartMatch(firstActorID : int, secondActorID : int, bFriendly : Boolean) : void
 		{
 			TheRoomModel.LogOff();
 			TheRoomModel = null;
