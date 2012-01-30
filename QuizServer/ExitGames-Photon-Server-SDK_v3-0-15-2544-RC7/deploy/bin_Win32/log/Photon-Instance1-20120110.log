@@ -1,0 +1,195 @@
+4332: 11:35:03.496 - ---
+4332: 11:35:03.496 - Service: "Photon Socket Server" starting
+4332: 11:35:03.496 - Config File: C:\Users\Manu\Desktop\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\bin_Win32\PhotonServer.config
+4332: 11:35:03.498 - Will produce at most: 10 crash dumps
+4332: 11:35:03.499 - Server Starting...
+4332: 11:35:03.499 -    Tick count: 5222975 (wraps in: 49.6498 days)
+4332: 11:35:03.499 - Tick count 64: 5222975
+4332: 11:35:03.499 - Photon Version: 3.0.9.841
+4332: 11:35:03.499 - Config File: C:\Users\Manu\Desktop\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\bin_Win32\PhotonServer.config
+4332: 11:35:03.502 - Not using performance counters as they are not currently installed. Run the service with /InstallCounters to install them.
+4332: 11:35:03.524 - About to load runtime: PhotonHostRuntime.PhotonDomainManager from PhotonHostRuntime, Culture=neutral, PublicKeyToken=02C301B61B060C4D
+4332: 11:35:03.525 - About to load CLR - versions available:
+4332: 11:35:03.525 - v2.0.50727
+4332: 11:35:03.525 - v4.0.30319
+4332: 11:35:03.525 - No preference in configuration file, will load latest.
+4332: 11:35:03.525 - About to load version: "v4.0.30319"
+4332: 11:35:03.529 - Loaded version: "v4.0.30319"
+4332: 11:35:04.235 - Photon host runtime loaded
+4332: 11:35:04.258 - License is valid.
+4332: 11:35:04.258 - Licensed for 100 concurrent connections.
+4332: 11:35:04.258 - Max Reliable Data In Transit (awaiting ACKs) per peer : 16384 bytes
+4332: 11:35:04.258 - Per peer bandwidth limit
+4332: 11:35:04.258 - Transmit Rate Limit: 128 KB/Sec
+4332: 11:35:04.258 - Limit period: 250ms
+4332: 11:35:04.258 - Limit per period: 32768 bytes
+4332: 11:35:04.258 - Max queued data for transmission per peer: 65536 bytes
+4332: 11:35:04.258 - Minimum retransmit timeout: 200
+4332: 11:35:04.258 - Minimum ENet timeout: 5000ms
+4332: 11:35:04.258 - Maximum ENet timeout: 30000ms
+4332: 11:35:04.258 - ENetHost: Using Timer Wheel
+4332: 11:35:04.259 - About to load application: Lite from Lite
+4332: 11:35:04.259 - Auto restart is enabled for application
+4332: 11:35:04.259 - Application will restart 10000ms after the last change detected
+4332: 11:35:04.259 - Application will restart if files matching the following are changed: "dll;config"
+4332: 11:35:04.259 - Application will NOT restart if files matching the following are changed: "log4net.config"
+4332: 11:35:05.433 - Application: "Lite" started in app domain: 2
+4332: 11:35:05.433 - About to load application: LiteLobby from LiteLobby
+4332: 11:35:05.433 - Auto restart is enabled for application
+4332: 11:35:05.433 - Application will restart 10000ms after the last change detected
+4332: 11:35:05.433 - Application will restart if files matching the following are changed: "dll;config"
+4332: 11:35:05.433 - Application will NOT restart if files matching the following are changed: "log4net.config"
+4332: 11:35:06.222 - Application: "LiteLobby" started in app domain: 3
+4332: 11:35:06.222 - About to load application: MmoDemo from Photon.MmoDemo.Server
+4332: 11:35:06.222 - Auto restart is enabled for application
+4332: 11:35:06.222 - Application will restart 10000ms after the last change detected
+4332: 11:35:06.222 - Application will restart if files matching the following are changed: "dll;config"
+4332: 11:35:06.222 - Application will NOT restart if files matching the following are changed: "log4net.config"
+4332: 11:35:07.469 - Application: "MmoDemo" started in app domain: 4
+4332: 11:35:07.469 - About to load application: LiteWebSockets from Lite
+4332: 11:35:08.308 - Application: "LiteWebSockets" started in app domain: 5
+4332: 11:35:08.308 - About to load application: CounterPublisher from CounterPublisher
+4332: 11:35:08.308 - Auto restart is enabled for application
+4332: 11:35:08.308 - Application will restart 10000ms after the last change detected
+4332: 11:35:08.308 - Application will restart if files matching the following are changed: "dll;config"
+4332: 11:35:08.308 - Application will NOT restart if files matching the following are changed: "log4net.config"
+4332: 11:35:09.533 - Application: "CounterPublisher" started in app domain: 6
+4332: 11:35:09.533 - About to load application: Policy from Policy.Application
+4332: 11:35:10.179 - Application: "Policy" started in app domain: 7
+4332: 11:35:10.179 - Adding TCP listener on :0.0.0.0: 4530 with a listen backlog of: 150
+4332: 11:35:10.179 - Nagle disabled
+4332: 11:35:10.179 - TCP inactivity timeout: 5000ms
+4332: 11:35:10.179 - UDP address specified as:0.0.0.0 adding listener to each available IPv4 address
+4332: 11:35:10.180 - Adding UDP listener on :192.168.1.106: 5055 with a listen backlog of: 500
+4332: 11:35:10.180 - Adding UDP listener on :127.0.0.1: 5055 with a listen backlog of: 500
+4332: 11:35:10.180 - Adding TCP Policy listener on :0.0.0.0: 843 with a listen backlog of: 150 and routing to application: "Policy"
+4332: 11:35:10.180 - TCP inactivity timeout: 5000ms
+4332: 11:35:10.180 - Adding TCP Policy listener on :0.0.0.0: 943 with a listen backlog of: 150 and routing to application: "Policy"
+4332: 11:35:10.180 - TCP inactivity timeout: 5000ms
+4332: 11:35:10.180 - Adding WebSocket TCP listener on :0.0.0.0: 9090 with a listen backlog of: 150
+4332: 11:35:10.180 - Nagle disabled
+4332: 11:35:10.180 - TCP inactivity timeout: 100000ms
+4332: 11:35:10.180 - Forcing all applications ids to: "LiteWebSockets"
+4332: 11:35:19.547 - Service is running...
+4332: 11:48:27.672 - Service is stopped...
+4332: 11:48:27.672 - Server shutting down...
+4332: 11:48:27.672 - Notifying CLR applications of shutdown...
+4332: 11:48:27.700 - Shutting down TCP Outbound Connection Manager...
+4332: 11:48:27.700 - Shutting down ENet host...
+4332: 11:48:27.700 - Disconnecting all peers...
+4332: 11:48:27.700 - Shutting down socket servers...
+4332: 11:48:27.700 - Shutting down ENet thread pool...
+4332: 11:48:27.700 - Shutting down TCP inactivity timers...
+4332: 11:48:27.701 - WaitingForShutdownToComplete: TCP:0.0.0.0:4530
+4332: 11:48:27.701 - OnShutdownCompleted: TCP:0.0.0.0:4530
+4332: 11:48:27.701 - WaitingForShutdownToComplete: TCPPolicy:0.0.0.0:843
+4332: 11:48:27.701 - OnShutdownCompleted: TCPPolicy:0.0.0.0:843
+4332: 11:48:27.701 - WaitingForShutdownToComplete: TCPPolicy:0.0.0.0:943
+4332: 11:48:27.701 - OnShutdownCompleted: TCPPolicy:0.0.0.0:943
+4332: 11:48:27.701 - WaitingForShutdownToComplete: UDP:127.0.0.1:5055
+4332: 11:48:27.701 - OnShutdownCompleted: UDP:127.0.0.1:5055
+4332: 11:48:27.701 - WaitingForShutdownToComplete: UDP:192.168.1.106:5055
+4332: 11:48:27.701 - OnShutdownCompleted: UDP:192.168.1.106:5055
+4332: 11:48:27.701 - WaitingForShutdownToComplete: WebSocket:0.0.0.0:9090
+4332: 11:48:27.701 - OnShutdownCompleted: WebSocket:0.0.0.0:9090
+4332: 11:48:27.701 - Shutting down CLR applications...
+4820: 11:48:27.713 - CManagedHost::OnDomainUnload() - 6
+4332: 11:48:27.718 - Shutting down business logic thread pool...
+4332: 11:48:27.718 - Shutting down I/O thread pool...
+4332: 11:48:27.719 - Flushing ENET buffer allocator...
+4332: 11:48:27.720 - Flushing TCP buffer allocator...
+4332: 11:48:27.720 - Flushing stream socket allocator...
+4332: 11:48:27.720 - Flushing datagram socket allocator...
+4332: 11:48:27.721 - Destroying ENet thread pool
+4332: 11:48:27.721 - Destroying TCP inactivity timer
+4332: 11:48:27.721 - Destroying Business logic thread pool
+4332: 11:48:27.721 - Destroying servers
+4332: 11:48:27.722 - Destroying TCP Outbound Connection Manager
+4332: 11:48:27.722 - Destroying resolver
+4332: 11:48:27.722 - Destroying TCP Proxy Connection Manager
+4332: 11:48:27.722 - Destroying ENet host
+4332: 11:48:27.722 - Destroying CLR dispatcher
+4332: 11:48:27.722 - Destroying CLR applications
+4332: 11:48:27.722 - ~CCLRApplicationCollection()
+4332: 11:48:27.722 - ~CCLRApplicationCollection() - RemoveAllApplications complete
+4332: 11:48:27.722 - ~CCLRApplicationCollection() - done
+4332: 11:48:27.806 - Destroying I/O thread pool
+4332: 11:48:27.806 - Destroying ENet buffer allocator
+4332: 11:48:27.806 - Destroying TCP buffer allocator
+4332: 11:48:27.806 - Destroying TCP socket allocator
+4332: 11:48:27.806 - Destroying ENet socket allocator
+4332: 11:48:27.806 - Destroying performance counters
+4332: 11:48:27.806 - Shutdown complete...
+6040: 11:48:37.365 - ---
+6040: 11:48:37.365 - Service: "Photon Socket Server" starting
+6040: 11:48:37.365 - Config File: C:\Users\Manu\Desktop\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\bin_Win32\PhotonServer.config
+6040: 11:48:37.367 - Will produce at most: 10 crash dumps
+6040: 11:48:37.368 - Server Starting...
+6040: 11:48:37.368 -    Tick count: 6036848 (wraps in: 49.6404 days)
+6040: 11:48:37.368 - Tick count 64: 6036848
+6040: 11:48:37.368 - Photon Version: 3.0.9.841
+6040: 11:48:37.368 - Config File: C:\Users\Manu\Desktop\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\bin_Win32\PhotonServer.config
+6040: 11:48:37.370 - Not using performance counters as they are not currently installed. Run the service with /InstallCounters to install them.
+6040: 11:48:37.393 - About to load runtime: PhotonHostRuntime.PhotonDomainManager from PhotonHostRuntime, Culture=neutral, PublicKeyToken=02C301B61B060C4D
+6040: 11:48:37.393 - About to load CLR - versions available:
+6040: 11:48:37.393 - v2.0.50727
+6040: 11:48:37.393 - v4.0.30319
+6040: 11:48:37.393 - No preference in configuration file, will load latest.
+6040: 11:48:37.393 - About to load version: "v4.0.30319"
+6040: 11:48:37.397 - Loaded version: "v4.0.30319"
+6040: 11:48:38.245 - Photon host runtime loaded
+6040: 11:48:38.268 - License is valid.
+6040: 11:48:38.268 - Licensed for 100 concurrent connections.
+6040: 11:48:38.268 - Max Reliable Data In Transit (awaiting ACKs) per peer : 16384 bytes
+6040: 11:48:38.268 - Per peer bandwidth limit
+6040: 11:48:38.268 - Transmit Rate Limit: 128 KB/Sec
+6040: 11:48:38.268 - Limit period: 250ms
+6040: 11:48:38.269 - Limit per period: 32768 bytes
+6040: 11:48:38.269 - Max queued data for transmission per peer: 65536 bytes
+6040: 11:48:38.269 - Minimum retransmit timeout: 200
+6040: 11:48:38.269 - Minimum ENet timeout: 5000ms
+6040: 11:48:38.269 - Maximum ENet timeout: 30000ms
+6040: 11:48:38.269 - ENetHost: Using Timer Wheel
+6040: 11:48:38.269 - About to load application: Lite from Lite
+6040: 11:48:38.269 - Auto restart is enabled for application
+6040: 11:48:38.269 - Application will restart 10000ms after the last change detected
+6040: 11:48:38.269 - Application will restart if files matching the following are changed: "dll;config"
+6040: 11:48:38.269 - Application will NOT restart if files matching the following are changed: "log4net.config"
+6040: 11:48:39.287 - Application: "Lite" started in app domain: 2
+6040: 11:48:39.288 - About to load application: LiteLobby from LiteLobby
+6040: 11:48:39.288 - Auto restart is enabled for application
+6040: 11:48:39.288 - Application will restart 10000ms after the last change detected
+6040: 11:48:39.288 - Application will restart if files matching the following are changed: "dll;config"
+6040: 11:48:39.288 - Application will NOT restart if files matching the following are changed: "log4net.config"
+6040: 11:48:40.055 - Application: "LiteLobby" started in app domain: 3
+6040: 11:48:40.055 - About to load application: MmoDemo from Photon.MmoDemo.Server
+6040: 11:48:40.055 - Auto restart is enabled for application
+6040: 11:48:40.055 - Application will restart 10000ms after the last change detected
+6040: 11:48:40.055 - Application will restart if files matching the following are changed: "dll;config"
+6040: 11:48:40.055 - Application will NOT restart if files matching the following are changed: "log4net.config"
+6040: 11:48:40.777 - Application: "MmoDemo" started in app domain: 4
+6040: 11:48:40.777 - About to load application: LiteWebSockets from Lite
+6040: 11:48:41.371 - Application: "LiteWebSockets" started in app domain: 5
+6040: 11:48:41.371 - About to load application: CounterPublisher from CounterPublisher
+6040: 11:48:41.371 - Auto restart is enabled for application
+6040: 11:48:41.371 - Application will restart 10000ms after the last change detected
+6040: 11:48:41.371 - Application will restart if files matching the following are changed: "dll;config"
+6040: 11:48:41.371 - Application will NOT restart if files matching the following are changed: "log4net.config"
+6040: 11:48:42.088 - Application: "CounterPublisher" started in app domain: 6
+6040: 11:48:42.088 - About to load application: Policy from Policy.Application
+6040: 11:48:42.669 - Application: "Policy" started in app domain: 7
+6040: 11:48:42.669 - Adding TCP listener on :0.0.0.0: 4530 with a listen backlog of: 150
+6040: 11:48:42.669 - Nagle disabled
+6040: 11:48:42.669 - TCP inactivity timeout: 5000ms
+6040: 11:48:42.669 - UDP address specified as:0.0.0.0 adding listener to each available IPv4 address
+6040: 11:48:42.670 - Adding UDP listener on :192.168.1.106: 5055 with a listen backlog of: 500
+6040: 11:48:42.670 - Adding UDP listener on :127.0.0.1: 5055 with a listen backlog of: 500
+6040: 11:48:42.670 - Adding TCP Policy listener on :0.0.0.0: 843 with a listen backlog of: 150 and routing to application: "Policy"
+6040: 11:48:42.670 - TCP inactivity timeout: 5000ms
+6040: 11:48:42.670 - Adding TCP Policy listener on :0.0.0.0: 943 with a listen backlog of: 150 and routing to application: "Policy"
+6040: 11:48:42.670 - TCP inactivity timeout: 5000ms
+6040: 11:48:42.670 - Adding WebSocket TCP listener on :0.0.0.0: 9090 with a listen backlog of: 150
+6040: 11:48:42.670 - Nagle disabled
+6040: 11:48:42.670 - TCP inactivity timeout: 100000ms
+6040: 11:48:42.670 - Forcing all applications ids to: "LiteWebSockets"
+6040: 11:48:50.209 - Service is running...

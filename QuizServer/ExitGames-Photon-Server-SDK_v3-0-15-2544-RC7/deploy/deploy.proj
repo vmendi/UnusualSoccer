@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Error" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<PropertyGroup>
+		<slnpath>..\src-server</slnpath>
+		<binpath>$(rootpath)\$(binp)</binpath>
+		<destination>..\deploy\$(dst)</destination>
+		<SolutionFilePath>$(slnpath)\$(rootpath)\$(slnfile)</SolutionFilePath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<DefaultExclude Include="$(slnpath)\$(rootpath)\**\*.vshost.*"/>
+		<DefaultExclude Include="$(slnpath)\$(rootpath)\**\*.suo"/>
+		<DefaultExclude Include="$(slnpath)\$(rootpath)\**\*.user"/>
+		<DefaultExclude Include="$(slnpath)\$(rootpath)\**\*.zip"/>
+		<DefaultExclude Include="$(slnpath)\$(rootpath)\**\*.rar"/>
+		<DefaultExclude Include="$(slnpath)\$(rootpath)\**\*.log"/>
+
+
+		<DefaultExclude Include="$(slnpath)\$(rootpath)\**\*.svn-base"/>
+		<DefaultExclude Include="$(slnpath)\$(rootpath)\**\.svn\**"/>
+
+		<DefaultExclude Include="$(slnpath)\$(rootpath)\**\log\*.*" />
+		<DefaultExclude Include="$(slnpath)\$(rootpath)\**\temp\**"/>
+
+		<DefaultExclude Include="$(slnpath)\$(rootpath)\**\_ReSharper*\**"/>
+        <DefaultExclude Include="$(slnpath)\$(rootpath)\**\*.resharper"/>
+        <DefaultExclude Include="$(slnpath)\$(rootpath)\**\*.StyleCop"/>
+        <DefaultExclude Include="$(slnpath)\$(rootpath)\**\*.Cache"/>
+	</ItemGroup>
+
+	<!-- *** TARGETS  -->
+
+	<Target Name="BuildAndCopyForDeployComplete">
+		<!-- Using this we are able to pass the property but not the item value -->
+        <MSBuild
+            Projects="$(MSBuildProjectFile)"
+            Targets="BuildAndCopyForDeploy"
+            Properties="binp=Lite\\;rootpath=Lite;slnfile=Lite.sln;dst=Lite" />
+
+		<MSBuild
+            Projects="$(MSBuildProjectFile)"
+            Targets="BuildAndCopyForDeploy"
+            Properties="binp=LiteLobby\\;rootpath=LiteLobby;slnfile=LiteLobby.sln;dst=LiteLobby" />
+
+		<MSBuild
+            Projects="$(MSBuildProjectFile)"
+            Targets="BuildAndCopyForDeploy"
+            Properties="binp=Policy.Application\\;rootpath=Policy;slnfile=Policy.2008.sln;dst=Policy" />
+
+		<MSBuild
+            Projects="$(MSBuildProjectFile)"
+            Targets="BuildAndCopyForDeploy"
+            Properties="binp=;rootpath=CounterPublisher\\;slnfile=CounterPublisher.sln;dst=CounterPublisher" />
+
+		<MSBuild
+            Projects="$(MSBuildProjectFile)"
+            Targets="BuildAndCopyForDeploy"
+            Properties="binp=Photon.MmoDemo.Server\\;rootpath=Mmo;slnfile=Photon.Mmo.sln;dst=MmoDemo" />
+
+			
+		<MSBuild
+            Projects="$(MSBuildProjectFile)"
+            Targets="BuildAndCopyForDeploy"
+            Properties="binp=Lite\\;rootpath=LiteWebSockets;slnfile=Lite.sln;dst=LiteWebSockets" />
+			
+		<MSBuild 
+			Projects="$(MSBuildProjectFile)"
+            Targets="BuildLoadbalancing"/>
+			
+	</Target>
+	
+	<Target Name="BuildLoadbalancing" >
+		<MSBuild
+            Projects="$(MSBuildProjectFile)"
+            Targets="BuildAndCopyForDeploy"
+            Properties="binp=Loadbalancing\\;rootpath=Loadbalancing;slnfile=Loadbalancing.sln;dst=Loadbalancing\Master" />
+			
+		<MSBuild
+            Projects="$(MSBuildProjectFile)"
+            Targets="BuildAndCopyForDeploy"
+            Properties="binp=Loadbalancing\\;rootpath=Loadbalancing;slnfile=Loadbalancing.sln;dst=Loadbalancing\GameServer1" />
+			
+		<MSBuild
+            Projects="$(MSBuildProjectFile)"
+            Targets="BuildAndCopyForDeploy"
+            Properties="binp=Loadbalancing\\;rootpath=Loadbalancing;slnfile=Loadbalancing.sln;dst=Loadbalancing\GameServer2" />
+			
+		<MSBuild 
+			Projects="$(MSBuildProjectFile)"
+            Targets="CopyConfigFiles"
+			Properties="configpath=$(slnpath)\Loadbalancing\;dst=Loadbalancing"
+			/>	
+	</Target>
+	
+	
+	<Target Name="CopyConfigFiles">
+			
+		<Message Text="- - Copy config files: $(configpath)\config\**"></Message>
+				
+		<ItemGroup>
+			<DeployConfigFiles Include="$(configpath)\config\**\**" Exclude="@(DefaultExclude);$(configpath)\config\**\.svn\**" />				
+		</ItemGroup>
+		
+		<Copy SourceFiles="@(DeployConfigFiles)" DestinationFiles="@(DeployConfigFiles->'$(deploypath)\$(dst)\%(RecursiveDir)%(Filename)%(Extension)')" />
+				
+	</Target>
+		
+
+	<!-- ************************************************************** -->
+	<Target Name="Clean">
+		<!-- Clean solution-->
+		<Message Text="- - Clean solution: $(SolutionFilePath)"></Message>
+		<MSBuild Projects="$(SolutionFilePath)" Targets="Clean"></MSBuild>
+	</Target> 
+
+
+	<Target Name="Build" DependsOnTargets="Clean">
+		<Message Text="- - Building Solution: $(SolutionFilePath)" Importance="high"/>
+		<Message Text="- - Configuration: $(Configuration)" Importance="high"/>
+
+		<MSBuild Projects="$(SolutionFilePath)" Properties="Configuration=$(Configuration)" />
+
+		<Message Text=" "></Message>
+		<Message Text="- - rebuild $(SolutionFilePath) finished." Importance="high"/>
+	</Target>
+
+
+	<Target Name="BuildAndCopyForDeploy" DependsOnTargets="build">
+		<Message Text="Copy for deploy: $(slnpath)\$(binpath) (assets\** and bin\**)" Importance="high"/>
+		
+		<Message Text="Remove $(destination)" Importance="high"/>
+		<RemoveDir Directories="$(destination)" />
+
+		<CreateItem Include="$(slnpath)\$(binpath)bin\**\*.*" Exclude="@(DefaultExclude)">
+			<Output ItemName="FilesToCopy" TaskParameter="Include"/>
+		</CreateItem>
+		<Message Text="Copy: @(FilesToCopy)"/>
+		<Copy SourceFiles="@(FilesToCopy)" DestinationFiles="@(FilesToCopy->'$(destination)\bin\%(RecursiveDir)%(Filename)%(Extension)')" />
+
+		<CreateItem Include="$(slnpath)\$(binpath)assets\**\*.*" Exclude="@(DefaultExclude)">
+			<Output ItemName="AssetsToCopy" TaskParameter="Include"/>
+		</CreateItem>
+		<Message Text="Copy: @(AssetsToCopy)"/>
+		<Copy SourceFiles="@(AssetsToCopy)" DestinationFiles="@(AssetsToCopy->'$(destination)\assets\%(RecursiveDir)%(Filename)%(Extension)')" />
+
+        <Message Text=">>> COPY for server deploy completed." Importance="high" />
+	</Target>	
+	
+	<!-- ************************************************************** -->
+
+	<Target Name="Error">
+		<Message Text="Invalid Build Target" Importance="high"/>
+		<Message Text="Root Path: $(rootpath)" Importance="high"/>
+		<Message Text="Bin Path: $(binp)" Importance="high"/>
+		<Message Text="Solution Path: $(slnpath)" Importance="high"/>
+		<Message Text="Destination: $(dst)" Importance="high"/>
+	</Target>
+
+</Project>

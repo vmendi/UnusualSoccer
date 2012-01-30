@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Lite">
+</Property><Property Name="Solution File" Value="C:\Users\Manu\Desktop\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\Lite\Lite.sln">
+</Property><Property Name="Date" Value="martes, 10 de enero de 2012">
+</Property><Property Name="Time" Value="14:16">
+</Property></Properties><Event ErrorLevel="0" Project="Lite" Source="Lite\Lite.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Lite" Source="Lite\Lite.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Lite.Tests" Source="Lite.NUnit\Lite.Tests.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Lite.Tests" Source="Lite.NUnit\Lite.Tests.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Lite.TestConsole" Source="Lite.TestConsole\Lite.TestConsole.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Lite.TestConsole" Source="Lite.TestConsole\Lite.TestConsole.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="MyApplication" Source="MyApplication\MyApplication.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="MyApplication" Source="MyApplication\MyApplication.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="Lite.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="Lite.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Lite.Tests" Source="Lite.NUnit\Lite.Tests.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="Lite.TestConsole" Source="Lite.TestConsole\Lite.TestConsole.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="MyApplication" Source="MyApplication\MyApplication.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

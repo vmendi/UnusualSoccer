@@ -1,0 +1,51 @@
+2012-01-23 13:28:48,998 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-23 13:28:49,014 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-23 13:28:49,015 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-23 13:43:25,978 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-23 13:43:25,994 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-23 13:43:25,995 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-24 01:19:44,878 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-24 01:19:44,919 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-24 01:19:44,920 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-24 11:11:42,953 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-24 11:11:42,982 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-24 11:11:42,983 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-25 12:50:39,805 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-25 12:50:39,849 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-25 12:50:39,851 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-25 20:22:26,817 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-25 20:22:26,862 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-25 20:22:26,863 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-26 02:06:50,746 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-26 02:06:50,789 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-26 02:06:50,791 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-26 12:06:08,053 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-26 12:06:08,075 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-26 12:06:08,076 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-28 21:07:09,801 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-28 21:07:09,827 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-28 21:07:09,828 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-29 15:28:07,391 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-29 15:28:07,420 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-29 15:28:07,421 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-29 20:14:47,356 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-29 20:14:47,369 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-29 20:14:47,371 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-29 20:17:20,284 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-29 20:17:20,313 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-29 20:17:20,315 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-29 20:19:03,773 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-29 20:19:03,787 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-29 20:19:03,788 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-29 20:52:26,437 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-29 20:52:26,452 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-29 20:52:26,453 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-30 02:23:02,957 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-30 02:23:02,972 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-30 02:23:02,973 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-30 11:15:22,720 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-30 11:15:22,735 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-30 11:15:22,736 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets
+2012-01-30 16:54:55,311 [1] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-30 16:54:55,336 [1] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-30 16:54:55,337 [1] INFO  Photon.WebSockets.ApplicationBase [(null)] - Application start: AppId=LiteWebSockets; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets

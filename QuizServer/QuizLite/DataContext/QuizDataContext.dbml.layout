@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="QuizLINQ">
+  <DataContextMoniker Name="/QuizLINQDataContext" />
+  <nestedChildShapes>
+    <classShape Id="fb2a6149-a328-4bca-ba4e-3df2ebab98b8" absoluteBounds="4.75, 0.5, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/QuizLINQDataContext/Question" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ea01202c-fefe-49ba-bf68-ddde44881463" absoluteBounds="4.765, 0.96, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a178deb2-f42e-4959-9a12-f140ce4dc58b" absoluteBounds="8.125, 2.375, 2.125, 1.1939925130208331">
+      <DataClassMoniker Name="/QuizLINQDataContext/QuestionType" />
+      <nestedChildShapes>
+        <elementListCompartment Id="bb0ae0ad-21c7-41ad-b188-1db8d6c155ab" absoluteBounds="8.14, 2.835, 2.0949999999999998, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(8.125 : 2.61140055338542); (6.75 : 2.61140055338542)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/QuizLINQDataContext/QuestionType/QuestionType_Question" />
+      <nodes>
+        <classShapeMoniker Id="a178deb2-f42e-4959-9a12-f140ce4dc58b" />
+        <classShapeMoniker Id="fb2a6149-a328-4bca-ba4e-3df2ebab98b8" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="5d18630e-327b-46fd-bffe-c8e7f85f2130" absoluteBounds="1.75, 0.625, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/QuizLINQDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="39b9a855-7f0c-4454-8aae-a41b4767a79d" absoluteBounds="1.7649999999999997, 1.085, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

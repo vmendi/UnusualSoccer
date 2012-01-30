@@ -1,0 +1,7 @@
+C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\log4net.config
+C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll
+C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.pdb
+C:\Santiago\Repo\QuizServer\QuizLite\obj\Debug\ResolveAssemblyReference.cache
+C:\Santiago\Repo\QuizServer\QuizLite\obj\Debug\QuizLite.dll
+C:\Santiago\Repo\QuizServer\QuizLite\obj\Debug\QuizLite.pdb
