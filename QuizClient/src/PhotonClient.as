@@ -6,14 +6,16 @@ package
 	import de.exitgames.photon_as3.CoreConstants;
 	import de.exitgames.photon_as3.Photon;
 	import de.exitgames.photon_as3.PhotonCore;
+	import de.exitgames.photon_as3.Responses.JoinLobbyResponse;
+	import de.exitgames.photon_as3.Responses.LoginResponse;
+	import de.exitgames.photon_as3.Responses.SingUpResponse;
 	import de.exitgames.photon_as3.event.BasicEvent;
 	import de.exitgames.photon_as3.event.CustomEvent;
 	import de.exitgames.photon_as3.event.JoinEvent;
 	import de.exitgames.photon_as3.event.LeaveEvent;
 	import de.exitgames.photon_as3.event.PhotonErrorEvent;
 	import de.exitgames.photon_as3.events.ChatEvent;
-	import de.exitgames.photon_as3.Responses.LoginResponse;
-	import de.exitgames.photon_as3.Responses.RoomsListResponse;
+	import de.exitgames.photon_as3.events.RoomsList;
 	import de.exitgames.photon_as3.response.CustomResponse;
 	import de.exitgames.photon_as3.response.InitializeConnectionResponse;
 	import de.exitgames.photon_as3.response.JoinResponse;
@@ -33,6 +35,8 @@ package
 	import flash.utils.Dictionary;
 	
 	import mx.core.FlexGlobals;
+	import mx.core.mx_internal;
+	import mx.olap.aggregators.CountAggregator;
 
 	
 	/**
@@ -164,35 +168,42 @@ package
 		public function onPhotonResponse(event:Event) : void {
 			switch(event.type){
 				case InitializeConnectionResponse.TYPE:
-					// the client is now connected and ready to start the chat / join the room
-					debug("got Photon Response: Initialize!");
+					// the client is now connected and ready
+					debug("QuizServer Responde: Comunicación establecida con QUIZSERVER"); 
 					break;
 				
 				case JoinResponse.TYPE:
-					debug("actor"+_actorNo + " got Photon Response: Join! " 			+ (event as JoinResponse).getReturnDebug());
+					debug("==> Join aceptado");
+					debug("Actor"+ (event as JoinResponse).getActorNo() + " Tiene una respuesta de QUIZSERVER: onJoin! \n ==> (MSG: [" + (event as JoinResponse).getReturnDebug() + "])");
 					break;
 				
 				case LeaveResponse.TYPE:
-					debug("actor"+_actorNo + " got Photon Response: leave! " 			+ (event as LeaveResponse).getReturnDebug());
+					debug("==> Leave aceptado");
+					debug("Actor" + _actorNo + " Tiene una respuesta de QUIZSERVER: onLeave! \n ==> (MSG: [" + (event as LeaveResponse).getReturnDebug() + "])");
 					break;
 				
 				case LoginResponse.TYPE:
-					debug("actor"+_actorNo + " got Photon Response: OnLoginResponse! "  + (event as LoginResponse).getReturnDebug());
+					debug("==> Login aceptado");
+					debug("Tiene una respuesta de QUIZSERVER: OnLoginResponse! \n ==> (MSG: [" + (event as LoginResponse).getReturnDebug() + "])");			
 					break;
-				case RoomsListResponse.TYPE:
-					debug("actor"+_actorNo+" got Photon Event: custom!");
-					var _roomsList:Dictionary = (event as RoomsListResponse).getRoomsList();
-					debug("Bienvenido al Lobby [" + me.ActorName + " " + me.ActorSurName + "], las habitaciones que hay en este lobby son: \n");
-					for ( var val:* in _roomsList)
-					{
-						debug("Room [" + val + "] tiene [" + _roomsList[val] + "] usuario/s en linea");
-					}
+				case SingUpResponse.TYPE:
+				{
+					debug("==> Alta aceptada (MSG ALTA: [" + (event as SingUpResponse).getSingUpSuccess().toString() + "])");
+					debug("Actor Tiene una Respuesta de QUIZSERVER: onSingUpResponse! \n ==> (MSG: [" + (event as SingUpResponse).getReturnDebug() + "])");
 					break;
+				}
+				case JoinLobbyResponse.TYPE:
+				{
+					debug("==> Join Lobby aceptada");
+					debug("Actor" + _actorNo + " Tiene una Respuesta de QUIZSERVER: onJoinLobbyResponse! \n ==> (MSG: [" + (event as JoinLobbyResponse).getReturnDebug() + "])");
+					break;
+				}
 				case CustomResponse.TYPE:
-					debug("actor"+_actorNo + "  Mensaje Custom no capturado:  [" 		+ (event as CustomResponse).getReturnDebug() + "]");
+					debug("actor"+_actorNo + "  Mensaje Custom no capturado: \n ==> "  + event.type + "(INFO: ["+ event.toString() + "]) \n ==> (MSG:[" + (event as CustomResponse).getReturnDebug() + "])");
 					break;
+				
 				default:
-					debug("actor" + _actorNo + " Mensaje Custom no capturado: "  + event.type + " ("+ event.toString() + ")")
+					debug("actor" + _actorNo + " Mensaje OTRO no capturado: "  + event.type + "(INFO: ["+ event.toString() + "])")
 					break;
 			}
 		}
@@ -224,8 +235,27 @@ package
 					debug("=> actor who left:"+(event as LeaveEvent).getActorNo());
 					debug("=> " + (event as LeaveEvent).getActorlist().length + " actors in room:" + (event as LeaveEvent).getActorlist().join(", "));
 					break;
+				
+				case RoomsList.TYPE:
+					var lista:String =  Utils.ObjectToString((event as RoomsList)._roomsList);
+					debug("Actor" + _actorNo + " Tiene una respuesta de QUIZSERVER: onRoomsListResponse! \n ==> (MSG: [" +lista + "])");
+					var _roomsList:Dictionary = (event as RoomsList).getRoomsList();
+					if( (event as RoomsList).getNumOfRooms() > 0 )
+					{
+						debug("==> Bienvenido al Lobby [" + me.ActorName + " " + me.ActorSurName + "], las habitaciones que hay en este lobby son: \n");
+						for ( var val:* in _roomsList)
+						{
+							debug("   > Room [" + val + "] tiene [" + _roomsList[val] + "] usuario/s en linea");
+						}
+					}
+					else
+					{
+						debug("==> Bienvenido al Lobby [" + me.ActorName + " " + me.ActorSurName + "], No hay habitaciones en este LOBBY");
+					}
+					break;
 				default:
 					debug("=[Mensaje Custom no capturado: "  + event.type + " ("+ event.toString() + ")]=")
+					break;
 			}
 		}
 		
@@ -280,7 +310,7 @@ package
 				RoomUserList = actorList.length.toString() + " USER(S):";
 				for each (var actor:Object in actorList) 
 				{
-					RoomUserList += "\n" + "Actor" + actor.getActorNo().toString();
+					RoomUserList += "\n" + "Actor" + actor.ActorNo.toString();
 				}
 			}
 			return RoomUserList;

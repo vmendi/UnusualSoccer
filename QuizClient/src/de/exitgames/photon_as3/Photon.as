@@ -2,10 +2,13 @@ package de.exitgames.photon_as3 {
 
 	import de.exitgames.photon_as3.Responses.JoinLobbyResponse;
 	import de.exitgames.photon_as3.Responses.LoginResponse;
-	import de.exitgames.photon_as3.Responses.RoomsListResponse;
 	import de.exitgames.photon_as3.Responses.SingUpResponse;
 	import de.exitgames.photon_as3.event.CustomEvent;
+	import de.exitgames.photon_as3.event.JoinEvent;
 	import de.exitgames.photon_as3.events.ChatEvent;
+	import de.exitgames.photon_as3.events.RoomsList;
+	
+	import flash.events.Event;
 
 	/**
 	 * this is the game specific gateway to the photon server.
@@ -42,19 +45,21 @@ package de.exitgames.photon_as3 {
 				case Constants.RES_CUSTOM_USER_SINGUP:
 					var res_SingUp : SingUpResponse = SingUpResponse.create(operationCode,returnCode,pData,debugMessage);
 					dispatchEvent(res_SingUp);
-					case Constants.RES_CUSTOM_JOIN:
-						var res_JoinLobby : JoinLobbyResponse= JoinLobbyResponse.create(operationCode,returnCode,pData,debugMessage);
-						dispatchEvent(res_JoinLobby);
-						var a:String = "";
+					break;
+				case CoreConstants.EV_JOIN:
+					var res_JoinLobby : JoinLobbyResponse= JoinLobbyResponse.create(operationCode,returnCode,pData,debugMessage);
+					dispatchEvent(res_JoinLobby);
+					break;
 				default:
+					trace("------Respuesta de QUIZSERVER no parseada con el \n -------->codigo [" + operationCode + "] \n -------->valor [" + pData[CoreKeys.CODE]+ "]"); 
 					break;
      		}
 			
-			switch (pData[CoreKeys.CODE]) 
+			/*switch (pData[CoreKeys.CODE]) 
 			{
 				default:					
 					break;
-			}
+			}*/
 		}
 		
 		/**
@@ -72,7 +77,7 @@ package de.exitgames.photon_as3 {
 					break;
 				case Constants.EV_CUSTOM_ROOMSLIST: //Al recibir un evento con la lista de habitaciones del lobby
 				case Constants.EV_CUSTOM_ROOMSLIST_UPDATE://Al recibir un evento con la lista de habitaciones del lobby Actualizada
-					var ev_roomsList : RoomsListResponse = RoomsListResponse.create(eventCode, pData);
+					var ev_roomsList : RoomsList = RoomsList.create(eventCode, pData);
 					dispatchEvent(ev_roomsList);
 					break;
 				case Constants.EV_CUSTOM_JOIN_ROOM:
@@ -80,6 +85,7 @@ package de.exitgames.photon_as3 {
 					dispatchEvent(ev_join_resp);
 					break;
 				default:
+					trace("------Evento de QUIZSERVER no parseada con el \n -------->codigo [" + eventCode + "] \n -------->valor [" + Utils.ObjectToString(pData[CoreKeys.CODE]) + "]");
 					break;
 			}
 		}

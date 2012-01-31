@@ -75,51 +75,9 @@ package de.exitgames.photon_as3 {
 		public function get ActorAnsweredFailed() : int { return _personalData[Keys.User_AnsweredFail]; }
 		public function set ActorAnsweredFailed(v:int) : void { _personalData[Keys.User_AnsweredFail] = v; }
 		
-		private var _nick:int;
-		public function get ActorNick() : int { return _personalData[Keys.User_Nick]; }
-		public function set ActorNickd(v:int) : void { _personalData[Keys.User_Nick] = v; }
-		
-		
-		
-		
-		
-/*		private var _quizID:int;		
-		public function get QuizID()  				: int { return _quizID; }
-		public function set QuizID(v:int) 			: void { _quizID = v; }
-		
-		private var _faceBookID:int
-		public function get ActorFaceBookID() 		: int { return _faceBookID; }
-		public function set ActorFaceBookID(v:int) 	: void { _faceBookID = v; }
-		
-		private var _name:String;
-		public function get ActorName() 				: String { return _name; }
-		public function set ActorName(v:String) 		: void { _name = v; }		
-		
-		private var _surName:String;
-		public function get ActorSurName() : String { return _surName; }
-		public function set ActorSurName(v:String) : void { _surName = v; }
-		
-		private var _creationDate:Date;
-		public function get ActorCreationDate() : Date { return _creationDate; }
-		public function set ActorCreationDate(v:Date) : void { _creationDate = v; }
-		
-		private var _lastLoginDate:Date;
-		public function get ActorLastLoginDate() : Date { return _lastLoginDate; }
-		public function set ActorLastLoginDate(v:Date) : void { _lastLoginDate = v; }
-		
-		private var _score:int;
-		public function get ActorScore() : int { return _score; }
-		public function set ActorScore(v:int) : void { _score = v; }
-		
-		private var _answeredRight:int;
-		public function get ActorAnsweredRight() : int { return _answeredRight; }
-		public function set ActorAnsweredRight(v:int) : void { _answeredRight = v; }
-		
-		private var _answeredFailed:int;
-		public function get ActorAnsweredFailed() : int { return _answeredFailed; }
-		public function set ActorAnsweredFailed(v:int) : void { _answeredFailed = v; }*/
-		
-		
+		private var _nick:String;
+		public function get ActorNick() : String { return _personalData[Keys.User_Nick]; }
+		public function set ActorNick(v : String) : void { _personalData[Keys.User_Nick] = v; }
 		
 		public function Actor() 
 		{

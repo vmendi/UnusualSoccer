@@ -1,5 +1,6 @@
 package
 {
+
 	import de.exitgames.photon_as3.Actor;
 	import de.exitgames.photon_as3.Constants;
 	import de.exitgames.photon_as3.CoreConstants;
@@ -9,11 +10,11 @@ package
 	import de.exitgames.photon_as3.PhotonCore;
 	import de.exitgames.photon_as3.Responses.JoinLobbyResponse;
 	import de.exitgames.photon_as3.Responses.LoginResponse;
-	import de.exitgames.photon_as3.Responses.RoomsListResponse;
 	import de.exitgames.photon_as3.Responses.SingUpResponse;
 	import de.exitgames.photon_as3.event.JoinEvent;
 	import de.exitgames.photon_as3.event.LeaveEvent;
 	import de.exitgames.photon_as3.events.ChatEvent;
+	import de.exitgames.photon_as3.events.RoomsList;
 	import de.exitgames.photon_as3.internals.DebugOut;
 	import de.exitgames.photon_as3.response.CustomResponse;
 	import de.exitgames.photon_as3.response.InitializeConnectionResponse;
@@ -28,7 +29,9 @@ package
 	{
 		public var mDefaultLobby:String 	= "Quiz_lobby";
 		public var mDefaultLobbyRoom:String = "Quiz_Lobby_Room";
-		public var mActorProperties:Object 	= new Object();
+		
+		public var myActorProperties:Object 	= new Object();
+		public var mOtherActorProperties:Object;
 		
 		private var mRoomsList:Dictionary 	= new Dictionary();
 		public  function get RoomList()				: Dictionary  {return mRoomsList;}
@@ -75,15 +78,15 @@ package
 		 override public function setupPhoton():void
 		 {			 
 			 super.setupPhoton();
-			 // Respuestas desde Photon Server
-			 Photon.getInstance().addEventListener(RoomsListResponse.TYPE, onPhotonResponse);
-			 Photon.getInstance().addEventListener(LoginResponse.TYPE, onPhotonResponse);
-			 Photon.getInstance().addEventListener(SingUpResponse.TYPE, onPhotonResponse);
-			 Photon.getInstance().addEventListener(JoinLobbyResponse.TYPE, onPhotonResponse);
-			 //Eventos que lanza Photon Server
-			 Photon.getInstance().addEventListener(ChatEvent.TYPE, onPhotonEvent);
-			
+			 // Respuestas desde Photon Server			 
+			 Photon.getInstance().addEventListener(LoginResponse.TYPE, 		onPhotonResponse);
+			 Photon.getInstance().addEventListener(SingUpResponse.TYPE, 	onPhotonResponse);
+			 Photon.getInstance().addEventListener(JoinResponse.TYPE, 		onPhotonResponse);
+			 Photon.getInstance().addEventListener(JoinLobbyResponse.TYPE, 	onPhotonResponse);
 			 
+			 //Eventos que lanza Photon Server
+			 Photon.getInstance().addEventListener(ChatEvent.TYPE, 			onPhotonEvent);
+			 Photon.getInstance().addEventListener(RoomsList.TYPE, 	onPhotonEvent);
 		 }
 		 
 		 /**
@@ -92,40 +95,43 @@ package
 		 */ 
 		 override public function onPhotonResponse(event:Event) : void
 		 {
-			this.debug("type of Response: _ " + event.type);
+			// this.debug("··· type of Response: _ " + event.type);
 			super.onPhotonResponse(event);
 			switch(event.type)
 			{
 				case InitializeConnectionResponse.TYPE:
 					// Cuando el Servidor nos responda que estamos conectados, nos unimos al Lobby
 					LoginOnApplication();
-					
-					//JoinLobby(mDefaultLobby);
 					break;
 				
 				case JoinResponse.TYPE:
-					_actorNo = (event as JoinResponse) .getActorNo();
+					_actorNo = (event as JoinResponse).getActorNo();
 					//var returnDebug = (event as JoinEvent).getActorlist();
 					this.IsConnected = true;
 					initUserList();
-					this.printChatLine(" ", "Hecho"); 
+					this.printChatLine("QS", "==> Joined"); 
 					break;
 				
 				case LeaveResponse.TYPE:
 					this.IsConnected = false;
 					initUserList();
+					this.printChatLine("QS", "==> Saliendo..."); 
 					break;
 				
 				case LoginResponse.TYPE:
-					debug("actor"+_actorNo+" Tiene una Respuesta de Photon: LoginResponse!");
-					debug("Message: " + (event as LoginResponse).getReturnDebug());
 					me.PersonalData = (event as LoginResponse).getUserPersonalData();
 					
 					if (me.Logged)
 					{
-						//Dispachar un evento para informar a la vista para que cambie de la 
-						//pantalla de LOGIN a la de MENUPRINCIPAL.
+						//Establecemos las propiedades del Actor (que enviaremos para logearnos en el lobby y en las rooms			 			
+						myActorProperties 					= new Object();
+						myActorProperties["QuizID"] 		= me.QuizID;
+						myActorProperties["User_Name"] 		= me.ActorName;
+						myActorProperties["User_Surname"] 	= me.ActorSurName;
+						myActorProperties["Nick"]			= me.ActorNick;
+						//Informamos a la vista para que cambie de la pantalla de LOGIN a la de MENUPRINCIPAL.
 						GameState = "MainMenu";
+						//Nos logeamos en el Lobby
 						JoinLobby(mDefaultLobby);
 					}
 					else
@@ -137,14 +143,19 @@ package
 					break;
 				
 				case SingUpResponse.TYPE:
-					debug("actor"+_actorNo+" Tiene una Respuesta de Photon: SingUpResponse!");
-					debug("Message: " + (event as SingUpResponse).getReturnDebug());
-					IsValidNick = (event as SingUpResponse).getSingUpSuccess();
+					IsValidNick = (event as SingUpResponse).getSingUpSuccess(); // Informamos a la vista si el nick es válido
 					break;
 				
-				case RoomsListResponse.TYPE:
-					mRoomsList = (event as RoomsListResponse).getRoomsList();
-					initUserList();
+				case JoinLobbyResponse.TYPE:
+					printChatLine("(Server)","Bienvenido al Lobby");
+					var a:Object = (event as JoinLobbyResponse).getPlayerProperties();
+					if( a != null)
+					{
+						debug("El mensaje de respuesta es:" + (event as JoinLobbyResponse).getReturnDebug());
+						mOtherActorProperties = (event as JoinLobbyResponse).getPlayerProperties();
+						printPLayersInfo();
+						debug("---> \n " + Utils.ObjectToString(mOtherActorProperties));
+					}
 					break;
 			}
 		 }
@@ -165,7 +176,12 @@ package
 					 debug("actor"+_actorNo+" got Photon Event: custom!");
 					 debug("=> Origen: Actor"+(event as ChatEvent).getActorNo());
 					 debug("=> message:"+(event as ChatEvent).getMessage());					
-					 printChatLine("Actor" + (event as ChatEvent).getActorNo() + " dice: ", (event as ChatEvent).getMessage());
+					 printChatLine("Actor" + (event as ChatEvent).getActorNo() + " dice", (event as ChatEvent).getMessage());
+					 break;
+				 
+				 case RoomsList.TYPE:
+					 mRoomsList = (event as RoomsList).getRoomsList();
+					 initUserList();
 					 break;
 			 }		
 		 }
@@ -189,26 +205,21 @@ package
 		 */ 
 		 private function JoinLobby(name:String):void
 		 {
-	     	//Photon.getInstance().sendJoinRequest(mDefaultLobby);
-			//Establecemos las propiedades del Actor			 			
-			 var userParams:Object = new Object();
-			 userParams.QuizID 		= me.QuizID;
-			 userParams.User_Name 	= me.ActorName;
-			 userParams.User_Surname =	me.ActorSurName;			 
-			 //Establecemos los parametros de nuestro custom join
+			 
 			 var params:Object= new Object();
-			 params[CoreKeys.ACTOR_PROPERTIES] = userParams;		
+			 params[CoreKeys.ACTOR_PROPERTIES] = myActorProperties; // En este EV_JOIN, insertamos en la ActorProperties, 
+			 														// nuestra infiormación, para informar a los demás clientes		
 			 params[CoreKeys.LOBBY_ID] = mDefaultLobby;
-			
-			 printChatLine(" ", "Pidiendo acceso al lobby [" + mDefaultLobby + "] ...");
-			 Photon.getInstance().raiseCustomEventWithCode(CoreConstants.EV_JOIN,params);
-			
+			 Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_JOIN_LOBBY,params);
+			 
+			 printChatLine(" - ", "Pidiendo acceso al lobby [" + mDefaultLobby + "] ...");
 		 }
 		 
 		 
 		 public function ReturnToLobby():void
-		 {
-		 	Photon.getInstance().sendLeaveRequest();
+		 { //TODO Con esta función, tendremos que ser capaces de salir de la room y quedanos en el LOBBY
+		 	//Photon.getInstance().sendLeaveRequest();
+			 JoinLobby(mDefaultLobby);
 		 }
 		 		 
 		 /**
@@ -220,35 +231,24 @@ package
 			 // Configuramos los parametros que enviará el evento
 		 	var params:Object= new Object();
 
-			params[CoreKeys.LOBBY_ID] = mDefaultLobby;
-			params[CoreKeys.GAME_ID] = mDefaultLobbyRoom;	
-			var userParams:Object = new Object();
-			
-			userParams.QuizID 		= me.QuizID;
-			userParams.User_Name 	= me.ActorName;
-			userParams.User_Surname =	me.ActorSurName;
-			params.ACTOR_PROPERTIES = userParams;			
+			params[CoreKeys.LOBBY_ID] = mDefaultLobby; 				// El nombre del Lobby dnd está/se creará la Room
+			params[CoreKeys.GAME_ID] = mDefaultLobbyRoom;			// El nombre de la room dnd nos queremos JOINear
+			params[CoreKeys.ACTOR_PROPERTIES] = myActorProperties;	// En este EV_JOIN, insertamos en la ActorProperties, 
+																	// nuestra infiormación, para informar a los demás clientes					
 
 			Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_JOIN_ROOM,params);
+			printChatLine(" - ", "Pidiendo acceso a la room [" + mDefaultLobbyRoom + "] ...");
 		 }
 		 
 		 /**
-		  * Manda un evento al Servidor, Logearnos en la App através del FacebookID
+		  * Manda un evento al Servidor, para Logearnos en la App através del FacebookID
 		  */
 		 public function LoginOnApplication():void
 		 {
-			 // Configuramos los parametros que enviará el evento
-			 var params:Object = new Object();
-			 params[Keys.User_FacebookID] = FacebookID;; 
-			 // lanzamos una operacion al servidor para recibir nuestros credenciales...
-			 Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_LOGIN_ON_APP,params)
-			/*
-			 *Si todo es correcto, recibiré los credenciales y podré unirme al lobby
-			 *
-			 *Si recibo -1 en el parametro.... es que no pertenezco a la BBDD y mandaré un SingUpEvent(con mis datos para insertarlos en la tabla.
-			 *
-			 */
-			 
+			 var params:Object = new Object();						// Configuramos los parametros que enviará el evento
+			 params[Keys.User_FacebookID] = FacebookID;				// A partir del FacebookID, el servidor sabrá si existimos en la BBDD 
+			 Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_LOGIN_ON_APP,params); // lanzamos una operacion al servidor para recibir nuestra información de Usuario
+			 debug("Enviando petición de Login...")
 		 }
 		 
 		 /**
@@ -256,14 +256,15 @@ package
 		 */ 
 		 public function SingUpWithThiNick(SelectedNick:String):void
 		 {
-			 // Configuramos los parametros que le enviaremos en el evento
+			 
 			 var params:Object = new Object();
-			 params[Keys.User_Nick] =SelectedNick;
-			 params[Keys.User_FacebookID] =FacebookID;
-			 params[Keys.User_Name] =UserName;
-			 params[Keys.User_Surname] =UserSurName;
-			 // lanzamos un evento (operacion) al servidor para darnos de alta en la aplicación
-			 Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_USER_SINGUP,params);
+			 // Configuramos los parametros que le enviaremos en el evento
+			 params[Keys.User_Nick] 		= SelectedNick;
+			 params[Keys.User_FacebookID] 	= FacebookID;
+			 params[Keys.User_Name] 		= UserName;
+			 params[Keys.User_Surname] 		= UserSurName;
+			 
+			 Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_USER_SINGUP,params); // lanzamos un evento (operacion) al servidor para darnos de alta en la aplicación
 		 }
 		 
 		 /**
@@ -272,8 +273,27 @@ package
 		  * @param msg Texto del mensaje
 		  */
 		 public final function sendChatMessage(msg:String) : void {
-			 printChatLine("Yo", msg);
+			 printChatLine("(Yo)", msg);
 			 Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_CHAT, {message:msg});
+		 }
+		 
+		 
+		 public function printPLayersInfo():void
+		 {
+		 	printChatLine("Usuarios Conectados...","");
+			for (var key:Object in mOtherActorProperties) 
+			{
+				var tmpKey:String = key.toString();
+				var usr:Object = mOtherActorProperties[tmpKey];
+				
+				
+				var nick:String 	= usr.Nick;
+				var name:String 	= usr.User_Name;
+				var surname:String 	= usr.User_Surname;
+				var ID: String 		= usr.QuizID;
+				
+				printChatLine(nick, name + " " +surname + "  -> ID: " + ID);
+			}
 		 }
 	}
 }

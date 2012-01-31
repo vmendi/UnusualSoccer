@@ -25,12 +25,12 @@ package de.exitgames.photon_as3.Responses
 		{
 			var ev:LoginResponse = new LoginResponse(TYPE);
 			ev.setBasicValues(eventCode,returnCode,pObject,debugMessage);
-			//var personalData:Object = pObject[CoreKeys.DATA];
 			if ( returnCode == 0 )
 			{
 				var _data:Dictionary = new Dictionary();
-				
+				//Guardamos nuestra información personal
 				_data[Keys.User_Name] 			= pObject[Keys.User_Name];
+				_data[Keys.User_FacebookID] 	= pObject[Keys.User_FacebookID];
 				_data[Keys.User_Surname] 		= pObject[Keys.User_Surname];
 				_data[Keys.User_ID] 			= pObject[Keys.User_ID];
 				_data[Keys.User_CreationDate] 	= pObject[Keys.User_CreationDate];
@@ -39,7 +39,7 @@ package de.exitgames.photon_as3.Responses
 				_data[Keys.User_AnsweredRight] 	= pObject[Keys.User_AnsweredRight];
 				_data[Keys.User_AnsweredFail] 	= pObject[Keys.User_AnsweredFail];
 				_data[Keys.User_Nick] 			= pObject[Keys.User_Nick];
-				ev.setUserPersonalData(_data);
+				ev.setUserPersonalData(_data);	// Guardamos nuestra información personal de usuario retornada por el servidor
 			}
 			else
 			{
@@ -48,10 +48,16 @@ package de.exitgames.photon_as3.Responses
 			return ev;
 		}
 		
+		/**
+		 * Retorna la información personal del usuario
+		 */
 		public function getUserPersonalData() : Dictionary {
 			return _userPersonalData;
 		}
 		
+		/**
+		 * Establece la información del usuario retornada.
+		 */
 		public function setUserPersonalData(userData:Dictionary) : void 
 		{
 			_userPersonalData = userData;

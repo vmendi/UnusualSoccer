@@ -24,8 +24,9 @@
 			 */ 
 			public function Start():void
 			{
-				//2222222222 - 
-				LoginOnAPP(1231231231,"Express","O'jara");
+				//LoginOnAPP(123456789,"Sant","Ti");
+				LoginOnAPP(0001112223,"truño","mars");
+				//LoginOnAPP(0001112223,"truño","mars");
 				BindingUtils.bindSetter(OnGameStateChanged, mConnection, "GameState");
 			}
 			
