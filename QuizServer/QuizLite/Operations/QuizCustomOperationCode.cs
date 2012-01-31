@@ -20,7 +20,7 @@ namespace QuizLite.Operations
         /// <summary>
         /// Event code for Join a Game into a Lobby
         /// </summary>
-        JoinLobby = 255,
+        JoinLobby = 5,
 
         /// <summary>
         /// Event code for add a user to the BBDD (SingUp)

@@ -74,6 +74,7 @@ namespace QuizLite
                             var param                               = new Dictionary<byte, object>();
                             param[(byte)ParameterKey.GameId]        = data[((byte)ParameterKey.GameId).ToString()].ToString();
                             param[(byte)LobbyParameterKeys.LobbyId] = data[((byte)LobbyParameterKeys.LobbyId).ToString()].ToString();
+                            param[(byte)ParameterKey.ActorProperties] = data[((byte)ParameterKey.ActorProperties).ToString()];
                             operationRequest.SetParameters(param);
 
                             this.HandleJoinOperation(operationRequest, sendParameters);

@@ -6269,3 +6269,89 @@ Para desactivar esta característica, elimine el valor de Registro [HKLM\Software
 2012-01-30 17:07:38,950 [ 9] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
 2012-01-30 17:07:38,951 [ 9] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
 2012-01-30 17:07:38,951 [ 9] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-01-31 00:24:26,527 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-01-31 00:42:40,672 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-01-31 00:42:40,680 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-01-31 00:42:40,681 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-01-31 00:42:40,687 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-01-31 00:42:40,690 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-01-31 00:42:40,717 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - LICENSE: Expiration: 01/02/2012; floating license: no; max connections: 100; valid IPs: any
+2012-01-31 00:42:40,765 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-01-31 00:42:41,277 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 00:42:41,277 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-01-31 00:42:41,277 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-01-31 00:42:41,816 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteWebSockets , Lite
+2012-01-31 00:42:41,816 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 00:42:41,816 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteWebSockets;LiteWebSockets\bin;bin_Win32;Shared
+2012-01-31 00:42:41,816 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets\bin\Lite.dll.config
+2012-01-31 00:42:42,267 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain CounterPublisher , CounterPublisher
+2012-01-31 00:42:42,267 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 00:42:42,267 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = CounterPublisher;CounterPublisher\bin;bin_Win32;Shared
+2012-01-31 00:42:42,268 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\CounterPublisher\bin\CounterPublisher.dll.config
+2012-01-31 00:42:42,805 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Policy , Policy.Application
+2012-01-31 00:42:42,805 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 00:42:42,805 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Policy;Policy\bin;bin_Win32;Shared
+2012-01-31 00:42:42,805 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Policy\bin\Policy.Application.dll.config
+2012-01-31 10:36:08,265 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-01-31 10:36:16,591 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-01-31 10:36:16,599 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-01-31 10:36:16,599 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-01-31 10:36:16,606 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-01-31 10:36:16,609 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-01-31 10:36:16,615 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - LICENSE: Expiration: 01/02/2012; floating license: no; max connections: 100; valid IPs: any
+2012-01-31 10:36:16,618 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-01-31 10:36:16,886 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 10:36:16,886 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-01-31 10:36:16,886 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-01-31 10:36:17,570 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteWebSockets , Lite
+2012-01-31 10:36:17,570 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 10:36:17,570 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteWebSockets;LiteWebSockets\bin;bin_Win32;Shared
+2012-01-31 10:36:17,571 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets\bin\Lite.dll.config
+2012-01-31 10:36:18,223 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain CounterPublisher , CounterPublisher
+2012-01-31 10:36:18,223 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 10:36:18,224 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = CounterPublisher;CounterPublisher\bin;bin_Win32;Shared
+2012-01-31 10:36:18,224 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\CounterPublisher\bin\CounterPublisher.dll.config
+2012-01-31 10:36:19,079 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Policy , Policy.Application
+2012-01-31 10:36:19,079 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 10:36:19,079 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Policy;Policy\bin;bin_Win32;Shared
+2012-01-31 10:36:19,079 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Policy\bin\Policy.Application.dll.config
+2012-01-31 12:41:55,372 [21] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-01-31 12:41:55,392 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 12:41:55,392 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-01-31 12:41:55,392 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-01-31 12:44:29,308 [21] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-01-31 12:44:29,308 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 12:44:29,308 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-01-31 12:44:29,308 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-01-31 13:13:46,042 [21] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-01-31 13:13:46,042 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 13:13:46,042 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-01-31 13:13:46,042 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-01-31 14:15:10,671 [21] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-01-31 14:15:10,685 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 14:15:10,685 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-01-31 14:15:10,685 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-01-31 17:38:55,533 [21] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-01-31 17:38:55,555 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 17:38:55,555 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-01-31 17:38:55,555 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-01-31 17:40:02,488 [21] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-01-31 17:40:02,488 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 17:40:02,488 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-01-31 17:40:02,488 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-01-31 17:44:10,255 [21] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-01-31 17:44:10,255 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 17:44:10,255 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-01-31 17:44:10,255 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-01-31 17:48:40,838 [21] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-01-31 17:48:40,838 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 17:48:40,838 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-01-31 17:48:40,838 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-01-31 17:50:39,315 [21] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-01-31 17:50:39,315 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 17:50:39,315 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-01-31 17:50:39,315 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-01-31 19:22:45,710 [21] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-01-31 19:22:45,710 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-01-31 19:22:45,710 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-01-31 19:22:45,710 [21] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
