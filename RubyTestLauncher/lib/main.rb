@@ -6,9 +6,9 @@ puts "Hello World"
 $address = 'http://mahouligachapas.unusualwonder.com/TestForm.aspx'
 $address = 'http://apps.facebook.com/unusualsoccerlocal/'
 
-$testName = 'Test06'
+$testName = 'Test05'
 
-for i in 1...4
+for i in 1...10
 
   $addressFinal = $address + '?FakeSessionKey=' + i.to_s + "&Test=" + $testName
 
@@ -17,6 +17,6 @@ for i in 1...4
   
   # system '"C:/Users/vmendi/AppData/Local/Google/Chrome/Application/chrome.exe" ' + $addressFinal
   
-  # system '"C:\Program Files (x86)\Internet Explorer\iexplore.exe" ' + $addressFinal
+  #system '"C:\Program Files (x86)\Internet Explorer\iexplore.exe" ' + $addressFinal
 
 end

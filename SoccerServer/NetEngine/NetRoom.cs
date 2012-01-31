@@ -5,31 +5,32 @@ using System.Text;
 
 namespace NetEngine
 {
-    public class NetEngineRoom
+    public class NetRoom
     {
-        public NetEngineRoom(string name)
+        public NetRoom(NetLobby lobby, string name)
         {
+            mNetLobby = lobby;
             mName = name;
             mActorsInRoom = new List<NetActor>();
         }
 
+        public string Name
+        {
+            get { return mName; }
+        }
+
         public virtual void JoinActor(NetActor actor)
         {
-            if (actor.NetPlug.Room != null)
-                throw new Exception("Debe dejar su habitacion primero");
+            if (actor.Room != null)
+                actor.Room.LeaveActor(actor);
 
             mActorsInRoom.Add(actor);
-            actor.NetPlug.Room = this;
+            actor.Room = this;
         }
 
         public virtual void LeaveActor(NetActor who)
         {
-            OnClientLeft(who.NetPlug);
-        }
-
-        public virtual void OnClientLeft(NetPlug who)
-        {
-            if (!mActorsInRoom.Remove(who.UserData as NetActor))
+            if (!mActorsInRoom.Remove(who))
                 throw new Exception("El NetPlug no estaba en esta habitacion");
 
             who.Room = null;
@@ -40,9 +41,9 @@ namespace NetEngine
             get { return mActorsInRoom; }
         }
 
-        public string Name
+        public NetLobby NetLobby
         {
-            get { return mName; }
+            get { return mNetLobby; }
         }
 
         protected void Broadcast(string method, params object[] args)
@@ -64,6 +65,8 @@ namespace NetEngine
         }
 
         private string mName = "Default Room";
-        protected List<NetActor> mActorsInRoom;
+
+        private NetLobby mNetLobby;
+        private List<NetActor> mActorsInRoom;
     }
 }

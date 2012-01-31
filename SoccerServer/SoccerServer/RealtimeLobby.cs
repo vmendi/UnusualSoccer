@@ -9,12 +9,12 @@ using NetEngine;
  
 namespace SoccerServer
 {
-    public partial class Realtime : INetClientApp
+    public partial class RealtimeLobby : NetLobby
     {
         public static readonly int[] MATCH_DURATION_SECONDS = new int[] { 5 * 60, 10 * 60, 15 * 60 };
         public static readonly int[] TURN_DURATION_SECONDS = new int[] { 5, 10, 15 };
 
-        public override void OnAppStart(NetServer netServer)
+        public override void OnLobbyStart(NetServer netServer)
         {
             Log.startLogging(REALTIME);
             /*
@@ -26,23 +26,24 @@ namespace SoccerServer
             Log.log(REALTIME, "************************* Realtime Starting *************************");
 
             mNetServer = netServer;
-            mRoomManager = new RoomManager();
-            
+            mLookingForMatch = new List<RealtimePlayer>();
+                                    
             for (int c = 0; c < NUM_ROOMS; c++)
             {
-                mRoomManager.AddRoom(new RealtimeRoom(ROOM_PREFIX + c.ToString("d2")));
+                AddRoom(new RealtimeRoom(this, ROOM_PREFIX + c.ToString("d2")));
             }
         }
 
-        public override void OnAppEnd()
+        public override void OnLobbyEnd()
         {
             Log.log(REALTIME, "************************* Realtime Stopping *************************");
         }
 
-        // Only method called in a different thread from the rest!.
-        // TODO: Esto deberia ser otro mensaje mas insertado en la cola.
+
         public override void OnServerAboutToShutdown()
         {
+            mLookingForMatch = null;
+
             IList<NetPlug> plugs = mNetServer.GetNetPlugs();
 
             foreach (NetPlug plug in plugs)
@@ -60,42 +61,32 @@ namespace SoccerServer
                 client.Invoke("PushedBroadcastMsg", mBroadcastMsg);
         }
 
-        // Un cliente que no estaba en ninguna habitacion ha dejado el servidor
-        public override void OnClientLeft(NetPlug client)
+        // Un cliente ha dejado el servidor
+        public override void OnClientDisconnected(NetPlug client)
         {
+            if (client.Actor != null)
+            {
+                // Somos nosotros los responsables de sacarlo de la habitación
+                if (client.Actor.Room != null)
+                    client.Actor.Room.LeaveActor(client.Actor);
+
+                // Fuera de la lista de busqueda de partido, si estuviera
+                mLookingForMatch.Remove(client.Actor as RealtimePlayer);
+            }
         }
-        
-        /*
-        // Mover al OnClientLeft del Match...
-        private void OnPlayerDisconnectedFromMatch(RealtimePlayer who)
-        {
-            RealtimeMatch theMatch = who.TheMatch;
-            RealtimePlayer opp = theMatch.GetOpponentOf(who);
-
-            // Informamos al partido del Abort. Es como si pulsaran el boton "abandonar partido", pero nunca llegaremos a procesar
-            // otro OnSecondsTick de este partido.
-            theMatch.OnAbort(theMatch.GetIdPlayer(who));
-
-            // Somos nosotros aqui los que cerramos el partido...
-            RealtimeMatchResult matchResult = OnFinishMatch(theMatch);
-
-            // Hay que notificar al oponente de que ha habido cancelacion
-            opp.TheConnection.Invoke("PushedOpponentDisconnected", matchResult);
-        }
-         */
-
+       
         public bool LogInToDefaultRoom(NetPlug myConnection, string facebookSession)
         {
             bool bRet = true;
 
             // Preferimos asegurar que recreamos el RealtimePlayer para estar preparados para cuando el servidor de partidos este en otra maquina
-            myConnection.UserData = null;
+            myConnection.Actor = null;
 
             try
             {
                 RealtimePlayer newPlayer = CreateRealtimePlayer(myConnection, facebookSession);
-                CloseOldConnectionForPlayer(newPlayer);
-                mRoomManager.GetPreferredRoom().JoinActor(newPlayer);
+                CloseOldConnectionFor(newPlayer);
+                GetPreferredRoom().JoinActor(newPlayer);
 
                 Log.log(REALTIME_DEBUG, newPlayer.FacebookID + " " + newPlayer.ActorID + " logged in: " + newPlayer.Name);
             }
@@ -106,6 +97,14 @@ namespace SoccerServer
             }
            
             return bRet;
+        }
+
+        public NetRoom GetPreferredRoom()
+        {
+            foreach (RealtimeRoom room in RoomsByType<RealtimeRoom>())
+                return room;
+
+            return null;
         }
 
         private RealtimePlayer CreateRealtimePlayer(NetPlug myConnection, string facebookSession)
@@ -133,25 +132,34 @@ namespace SoccerServer
                 theRealtimePlayer.PredefinedTeamNameID = theCurrentTeam.PredefinedTeamNameID;
                 theRealtimePlayer.TrueSkill = theCurrentTeam.TrueSkill;
 
-                myConnection.UserData = theRealtimePlayer;
+                myConnection.Actor = theRealtimePlayer;
                 
                 return theRealtimePlayer;
             }
         }
 
-        private void CloseOldConnectionForPlayer(NetActor theActor)
+        private void CloseOldConnectionFor(NetActor theActor)
         {
             IList<NetPlug> plugs = mNetServer.GetNetPlugs();
 
             foreach (NetPlug plug in plugs)
             {
-                // Es posible que la conexión se haya desconectado o que no haya hecho login todavia...
-                if (theActor.NetPlug != plug && !plug.IsClosed && plug.UserData != null)
+                // No nos interesa comparar con nosotros mismos, ni con conexiones ya cerradas o que no tengan actor
+                if (theActor.NetPlug != plug && !plug.IsClosed && plug.Actor != null)
                 {
                     // ActorID es el ID de la DB, es por lo tanto unico y universal
-                    if ((plug.UserData as NetActor).ActorID == theActor.ActorID)
+                    if ((plug.Actor as NetActor).ActorID == theActor.ActorID)
                     {
                         plug.Invoke("PushedDisconnected", "Duplicated");
+
+                        // Lo sacamos inmediatamente de la habitacion, esto evitara que haya duplicados dentro de la misma mientras 
+                        // llega el OnClientDisconnected que provoca el CloseRequest.
+                        if (theActor.Room != null)
+                            theActor.Room.LeaveActor(plug.Actor);
+
+                        // Fuera inmediatamente tb de la lista de LookingForMatch, si estuviera
+                        mLookingForMatch.Remove(theActor as RealtimePlayer);
+
                         plug.CloseRequest();
                         break;
                     }
@@ -159,77 +167,82 @@ namespace SoccerServer
             }
         }
 
+        public void StartMatch(RealtimePlayer firstPlayer, RealtimePlayer secondPlayer, int matchLength, int turnLength, bool bFriendly)
+        {
+            // Fuera de la lista de LookingForMatch, si estuvieran
+            mLookingForMatch.Remove(firstPlayer);
+            mLookingForMatch.Remove(secondPlayer);
+
+            // Creacion del partido en la BDD, descuento de tickets
+            var bddMatchCreator = new RealtimeMatchCreator(firstPlayer, secondPlayer, matchLength, turnLength, bFriendly);
+
+            // Creacion del RealtimeMatch. El mismo se añade al lobby (nosotros) como Room
+            RealtimeMatch theNewMatch = new RealtimeMatch(bddMatchCreator, this);
+        }
+
 
         public bool SwitchLookingForMatch(NetPlug from)
         {
             bool bRet = false;
 
-            /*
-            lock (mGlobalLock)
+            if (!mLookingForMatch.Remove(from.Actor as RealtimePlayer))
             {
-                RealtimePlayer self = from.UserData as RealtimePlayer;
-
-                if (self.LookingForMatch)
+                // Si no lo hemos removido, veamos si podemos añadirlo
+                using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
                 {
-                    self.LookingForMatch = false;
-                }
-                else
-                {
-                    using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
+                    // Podemos no hacer el Switch debido a que no sea valido el ticket. El ActorID es siempre el PlayerID de la DB.
+                    if (CheckTicketValidity(theContext, from.Actor.ActorID))
                     {
-                        // Podemos no llegar a hacer el Switch debido a que no sea valido el ticket
-                        if (CheckTicketValidity(theContext, self))
-                        {
-                            self.LookingForMatch = true;
-                        }
+                        mLookingForMatch.Add(from.Actor as RealtimePlayer);
+                        bRet = true;
                     }
                 }
-
-                bRet = self.LookingForMatch;
             }
-             */
-
+                        
             return bRet;
         }
 
+        static public bool CheckTicketValidity(SoccerDataModelDataContext theContext, int dbPlayerID)
+        {
+            if (!Global.Instance.TicketingSystemEnabled)
+                return true;
 
-        /*
+            var ticket = (from p in theContext.Players
+                          where p.PlayerID == dbPlayerID
+                          select p.Team.Ticket).First();
+
+            return ticket.TicketExpiryDate > DateTime.Now || ticket.RemainingMatches > 0;
+        }
+
         private void ProcessMatchMaking()
         {
-            var availables = new List<RealtimePlayer>();
+            int scannedIdx = 0;
 
-            foreach (RealtimePlayer thePlayer in mRooms[0].Players)
+            while (scannedIdx < mLookingForMatch.Count)
             {
-                if (thePlayer.LookingForMatch)
-                    availables.Add(thePlayer);
-            }
-
-            while (availables.Count > 1)
-            {
-                var candidate = availables.First();
-                availables.Remove(candidate);
-
-                var opponent = FindBestOpponent(candidate, availables);
+                var candidate = mLookingForMatch[scannedIdx];
+                var opponent = FindBestOpponent(candidate, mLookingForMatch, scannedIdx+1);
 
                 if (opponent != null)
                 {
-                    availables.Remove(opponent);
-
-                    candidate.LookingForMatch = false;
-                    opponent.LookingForMatch = false;
-
                     StartMatch(candidate, opponent, MATCH_DURATION_SECONDS[1], TURN_DURATION_SECONDS[1], false);
+                }
+                else
+                {
+                    scannedIdx++;
                 }
             }
         }
 
-        static private RealtimePlayer FindBestOpponent(RealtimePlayer who, IEnumerable<RealtimePlayer> available)
+        static private RealtimePlayer FindBestOpponent(RealtimePlayer who, List<RealtimePlayer> all, int startIdx)
         {
             RealtimePlayer closest = null;
             int bestSoFar = int.MaxValue;
 
-            foreach (var other in available)
+            for (int c = startIdx; c < all.Count; ++c)
             {
+                var other = all[c];
+
                 int absDiff = Math.Abs(other.TrueSkill - who.TrueSkill);
                 if (absDiff < bestSoFar)
                 {
@@ -239,132 +252,73 @@ namespace SoccerServer
             }
 
             // No lo damos por valido si hay demasiada diferencia de nivel (el equivalente en los amistosos a que no sea puntuable: WasJust).
-            // No miramos el GetTooManyTimes, al no elegir la gente con quien juega siempre puntuaremos independientemente de cuantas veces
-            // hayan jugado ya.
+            // No miramos el GetTooManyTimes, al no elegir la gente con quien juega siempre puntuaremos independientemente de cuantas veces hayan jugado ya.
             // Al acabar el partido en RealtimeMatchResult no hara falta pues comprobar nada, ya lo hemos todo aqui.
             if (bestSoFar > TrueSkillHelper.CUTOFF * TrueSkillHelper.MULTIPLIER)
                 closest = null;
 
             return closest;
         }
-         */
 
-        internal RealtimeMatchResult OnFinishMatch(RealtimeMatch realtimeMatch)
+        public int GetNumPeopleLookingForMatch()
         {
-            RealtimeMatchResult matchResult = null;
-
-            try
-            {
-                matchResult = new RealtimeMatchResult(realtimeMatch);
-            }
-            catch(Exception e)
-            {
-                Log.log(REALTIME, "Exception creando el resultado del partido: " + e.ToString());
-            }
-
-            RealtimePlayer player1 = realtimeMatch.GetRealtimePlayer(RealtimeMatch.PLAYER_1);
-            RealtimePlayer player2 = realtimeMatch.GetRealtimePlayer(RealtimeMatch.PLAYER_2);
-
-            //player1.TheMatch = null;
-            //player2.TheMatch = null;
-
-            // Borramos el match, dejamos que ellos se unan a la habitacion
-            //mMatches.Remove(realtimeMatch);
-
-            return matchResult;
+            return mLookingForMatch.Count;
         }
-        
 
         public void OnSecondsTick(float elapsedSeconds, float totalSeconds)
         {
-            /*
             try
             {
-                // El borrado del partido (OnFinishMatch) se produce siempre dentro del tick, asi que modificara la coleccion -> tenemos que hacer una copia
-                var matchesCopy = new List<RealtimeMatch>(mMatches);
-
-                foreach (RealtimeMatch theMatch in matchesCopy)
+                // Dentro del tick nunca se produce un borrado de la room del partido, asi que no tenemos que hacer copia
+                foreach (RealtimeMatch theMatch in RoomsByType<RealtimeMatch>())
                 {
                     theMatch.OnSecondsTick(elapsedSeconds);
                 }
             }
             catch (Exception e)
             {
-                // No queremos que falle el matchmaking si se produce algun error dentro del partido (o incluso como ya ha ocurrido, dentro
-                // del OnFinishMatch)
+                // No queremos que falle el matchmaking si se produce algun error dentro del partido
                 Log.log(REALTIME, "OnSecondsTick Exception: " + e.ToString());
             }
-
                 
             // Cada X segundos evaluamos los matcheos automaticos
             if (((int)totalSeconds) % 5 == 0)
             {
                 ProcessMatchMaking();
             }
-             * */
         }
 
         public int GetNumMatches()
         {
-            lock (mGlobalLock)
-            {
-                //return mMatches.Count;
-                return 0;
-            }
+            return RoomsByType<RealtimeMatch>().Count();         
         }
 
         public int GetNumTotalPeopleInRooms()
         {
-            lock (mGlobalLock)
-            {
-                //return mRooms[0].Players.Count;
-                return 0;
-            }
-        }
-
-        public int GetPeopleLookingForMatch()
-        {
-            int ret = 0;
-
-            /*
-            lock (mGlobalLock)
-            {
-                foreach (var rt in mRooms[0].Players)
-                {
-                    if (rt.LookingForMatch)
-                        ret++;
-                }
-            }
-             * */
-            return ret;
+            return RoomsByType<RealtimeRoom>().Select(room => room.ActorsInRoom.Count).Sum();
         }
 
         public void SetBroadcastMsg(string msg)
         {
-            lock (mGlobalLock)
+            mBroadcastMsg = msg;
+
+            // Cuando nos vacian el mensaje no hace falta enviar nada
+            if (mBroadcastMsg == "")
+                return;
+
+            IList<NetPlug> allConnections = mNetServer.GetNetPlugs();
+
+            foreach (NetPlug plug in allConnections)
             {
-                mBroadcastMsg = msg;
-
-                // Cuando nos vacian el mensaje no hace falta enviar nada
-                if (mBroadcastMsg == "")
-                    return;
-
-                IList<NetPlug> allConnections = mNetServer.GetNetPlugs();
-
-                foreach (NetPlug plug in allConnections)
-                {
-                    plug.Invoke("PushedBroadcastMsg", mBroadcastMsg);
-                }
+                plug.Invoke("PushedBroadcastMsg", mBroadcastMsg);
             }
         }
 
         public string GetBroadcastMsg(NetPlug from)
         {
-            lock (mGlobalLock)
-            {
-                return mBroadcastMsg;
-            }
+            return mBroadcastMsg;
         }
+
 
         public const String REALTIME = "REALTIME";
         public const String REALTIME_DEBUG = "REALTIME DEBUG";
@@ -374,24 +328,9 @@ namespace SoccerServer
         private const int NUM_ROOMS = 8;
 
         private NetServer mNetServer;
-        private RoomManager mRoomManager = new RoomManager();
-        
-        private readonly object mGlobalLock = new object();
 
+        private List<RealtimePlayer> mLookingForMatch;
         private string mBroadcastMsg = "";
-    }
-
- 
-    public class Challenge
-    {
-        public RealtimePlayer SourcePlayer;
-
-        [NonSerialized]
-        public RealtimePlayer TargetPlayer;
-
-        public String Message;
-        public int MatchLengthSeconds;
-        public int TurnLengthSeconds;
     }
 
     public class RealtimePlayer : NetActor
@@ -402,17 +341,9 @@ namespace SoccerServer
         public String PredefinedTeamNameID;
         public long   FacebookID;        
         public int    TrueSkill;
-
-        [NonSerialized]
-        public bool LookingForMatch = false;
-
-        [NonSerialized]
-        public List<Challenge> Challenges = new List<Challenge>();
     }
 
     // Datos de un jugador para el partido
-    // NOTE: Esta clase se transfiere por red. No cambiar nombres o destruir variables sin sincronizar los cambios en el cliente!!!
-    //
     public class RealtimePlayerData
     {
         public class SoccerPlayerData

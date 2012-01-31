@@ -11,8 +11,9 @@ package GameModel
 		public var MatchLengthSeconds : int;
 		public var TurnLengthSeconds : int;
 		
-		public function ReceivedChallenge(fromServer : Object)
+		public function ReceivedChallenge(fromServer : Object, sourcePlayer : RealtimePlayer)
 		{
+			SourcePlayer = sourcePlayer;
 			Message = fromServer.Message;
 			MatchLengthSeconds = fromServer.MatchLengthSeconds;
 			TurnLengthSeconds = fromServer.TurnLengthSeconds;

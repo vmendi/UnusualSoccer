@@ -8,6 +8,21 @@ namespace SoccerServer
 {
     public class RealtimeMatchCreator
     {
+        public int MatchID { get { return mMatchID; } }
+
+        public RealtimePlayer FirstRealtimePlayer  { get { return mFirstRealtimePlayer; } }
+        public RealtimePlayer SecondRealtimePlayer { get { return mSecondRealtimePlayer; } }
+
+        public RealtimePlayerData FirstData { get { return mFirstData; } }
+        public RealtimePlayerData SecondData { get { return mSecondData; } }
+
+        public int MatchDuration { get { return mMatchDuration; } }
+        public int TurnDuration { get { return mTurnDuration; } }
+
+        public bool IsFriendly { get { return mbFriendly; } }
+
+
+        private int mMatchID;
         private int mMatchDuration;
         private int mTurnDuration;
         private bool mbFriendly;
@@ -22,14 +37,6 @@ namespace SoccerServer
         private RealtimePlayerData mSecondData;
 
         private SoccerDataModelDataContext mContext;
-
-        private int mMatchID;
-
-        public int MatchID { get { return mMatchID; } }
-
-        public RealtimePlayerData FirstData { get { return mFirstData; } }
-        public RealtimePlayerData SecondData { get { return mSecondData; } }
-
 
         public RealtimeMatchCreator(RealtimePlayer firstPlayer, RealtimePlayer secondPlayer, int matchDuration, int turnDuration, bool bFriendly)
         {

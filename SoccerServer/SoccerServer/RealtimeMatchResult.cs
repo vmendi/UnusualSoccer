@@ -165,7 +165,7 @@ namespace SoccerServer
 
             if (entryPlayer1 == null || entryPlayer2 == null)
             {
-                Log.log(Realtime.REALTIME, "Descartando partido de competicion por problema de paralelismo SeasonEnd, partido " + mBDDMatch.MatchID);
+                Log.log(RealtimeLobby.REALTIME, "Descartando partido de competicion por problema de paralelismo SeasonEnd, partido " + mBDDMatch.MatchID);
                 return;
             }
 

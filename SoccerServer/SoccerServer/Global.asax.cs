@@ -41,7 +41,7 @@ namespace SoccerServer
             ConfigureSettings();
 
             // Y tambien el NetEngine, por el mismo motivo
-            mNetEngine = new NetEngineMain(new Realtime());
+            mNetEngine = new NetEngineMain(new RealtimeLobby());
             
             var starterThread = new Thread(StarterThread);
             starterThread.Name = "StarterThread";
@@ -175,7 +175,8 @@ namespace SoccerServer
                 RunWeeklyProcess();
 
                 // Llamamos al tick de los partidos en curso
-                (mNetEngine.NetServer.NetClientApp as Realtime).OnSecondsTick(elapsed, mTotalSeconds);
+                if (mNetEngine.IsRunning)
+                    mNetEngine.NetServer.OnSecondsTick(elapsed, mTotalSeconds);
             }
             catch (Exception excp)
             {

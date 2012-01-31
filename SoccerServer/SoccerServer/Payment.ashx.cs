@@ -11,9 +11,6 @@ using Facebook.Web;
 
 namespace SoccerServer
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class Payment : IHttpHandler
     {
         public void ProcessRequest(HttpContext context)

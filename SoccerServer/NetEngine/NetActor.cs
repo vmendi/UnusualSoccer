@@ -15,7 +15,11 @@ namespace NetEngine
 
         public int ActorID = -1;    // El equivalente en la BDD
 
+        // Tienen que ser fields para que podamos atribuirlas con NonSerialized
         [NonSerialized]
         public NetPlug NetPlug;
+
+        [NonSerialized]
+        public NetRoom Room;
     }
 }

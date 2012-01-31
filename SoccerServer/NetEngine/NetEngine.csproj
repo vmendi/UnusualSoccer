@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BufferManager.cs" />
-    <Compile Include="INetClientApp.cs" />
+    <Compile Include="NetLobby.cs" />
     <Compile Include="NetActor.cs" />
     <Compile Include="NetEngineMain.cs" />
     <Compile Include="NetMessageHandler.cs" />
@@ -54,8 +54,7 @@
     <Compile Include="NetPlug.cs" />
     <Compile Include="NetServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="NetEngineRoom.cs" />
-    <Compile Include="RoomManager.cs" />
+    <Compile Include="NetRoom.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

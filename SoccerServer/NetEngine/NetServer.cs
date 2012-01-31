@@ -15,7 +15,10 @@ namespace NetEngine
     //                  Ahora mismo se procesan primero los receives (syncronos) de la NetConnection.
     //                  Supongo que todo el concepto se aplica a cuando el accept es asynchrono.          
     //
-    // TODO: IDisposable!
+    // - TODO: IDisposable!
+    //
+    // - The client is ignoring IsForRoom in the outgoing NetInvokeMessages (it just looks for "MethodName" among the clients subscribed to the NetPlug)
+    //   If we wanted multiroom support, we should change this IsForRoom to a RoomID
     //
     public class NetServer
     {
@@ -27,10 +30,10 @@ namespace NetEngine
 
         
         /// <param name="bPolicyServerMode">Adobe policy server behaviour *only*</param>
-        public NetServer(bool bPolicyServerMode, INetClientApp netClientApp)
+        public NetServer(bool bPolicyServerMode, NetLobby netLobby)
         {
             mPolicyServerMode = bPolicyServerMode;
-            mNetClientApp = netClientApp;
+            mNetLobby = netLobby;
 
             mMaxConnectionsEnforcer = new Semaphore(MAX_CONNECTIONS, MAX_CONNECTIONS);
 
@@ -44,11 +47,41 @@ namespace NetEngine
                 mNetMessageHandler = new NetMessageHandler();
                 mBufferManager = new BufferManager(MAX_CONNECTIONS * 2, 4096);
             }
+
+            try
+            {
+                mNetMessageHandler.Start(this);
+
+                IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, mPolicyServerMode ? POLICY_SERVER_PORT : REGULAR_PORT);
+
+                mListeningSocket = new Socket(localEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                mListeningSocket.Bind(localEndPoint);
+
+                // "backlog" means pending connections. max # for backlog can be limited by the operating system.
+                // The backlog number is the number of clients that can wait for a SocketAsyncEventArg object that will do an accept operation.
+                // The listening socket keeps the backlog as a queue. The backlog allows for a certain # of excess clients waiting to be connected.
+                // If the backlog is maxed out, then the client will receive an error when trying to connect.
+                mListeningSocket.Listen(BACKLOG_CONNECTIONS);
+
+                mGhostsCleanupThread = new Thread(GhostsCleanupThread);
+                mGhostsCleanupThread.Name = "GhostsCleanupThread";
+                mGhostsCleanupThread.Start();
+
+                mLastStartTime = DateTime.Now;
+                                
+                StartAccept(null);
+            }
+            catch (Exception exc)
+            {
+                Log.log(NetEngineMain.NETENGINE_DEBUG, exc.ToString());
+                Stop();
+                throw;
+            }
          }
 
-        public INetClientApp NetClientApp
+        public NetLobby NetLobby
         {
-            get { return mNetClientApp; }
+            get { return mNetLobby; }
         }
 
         public int NumCurrentSockets
@@ -71,71 +104,32 @@ namespace NetEngine
             get { return mLastStartTime; }
         }
 
-
-        public void Start()
+        internal void Stop()
         {
             try
             {
-                if (IsRunning)
-                    throw new NetEngineException("Already started. Stopping.");
+                if (mGhostsCleanupThread == null)
+                    throw new NetEngineException("Already stopped");
 
-                mNetMessageHandler.Start(this);
-
-                IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, mPolicyServerMode ? POLICY_SERVER_PORT : REGULAR_PORT);
-
-                mListeningSocket = new Socket(localEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                mListeningSocket.Bind(localEndPoint);
-
-                // "backlog" means pending connections. max # for backlog can be limited by the operating system.
-                // The backlog number is the number of clients that can wait for a SocketAsyncEventArg object that will do an accept operation.
-                // The listening socket keeps the backlog as a queue. The backlog allows for a certain # of excess clients waiting to be connected.
-                // If the backlog is maxed out, then the client will receive an error when trying to connect.
-                mListeningSocket.Listen(BACKLOG_CONNECTIONS);
-
-                mGhostsCleanupThread = new Thread(GhostsCleanupThread);
-                mGhostsCleanupThread.Name = "GhostsCleanupThread";
-                mGhostsCleanupThread.Start();
-
-                mLastStartTime = DateTime.Now;
-
-                StartAccept(null);
-            }
-            catch (Exception exc)
-            {
-                Log.log(NetEngineMain.NETENGINE_DEBUG, exc.ToString());
-                Stop();
-                throw;
-            }
-        }
-
-        public void Stop()
-        {
-            try
-            {
-                // The following line causes an exception to be thrown 
-                // in ThreadMethod if newThread is currently blocked
-                // or becomes blocked in the future.
+                // The following line causes an exception to be thrown in ThreadMethod if the thread is currently blocked or becomes blocked in the future.
                 mGhostsCleanupThread.Interrupt();
                 mGhostsCleanupThread.Join();
                 mGhostsCleanupThread = null;
                 
                 InnerStopCloseListeningSocket();
 
-                // In parallel with the current DeliverMessageToClient(s)
-                if (mNetClientApp != null)
-                    mNetClientApp.OnServerAboutToShutdown();
+                // Message to the lobby, which will notify all clients that the server is going to shutdown (PushedDisconnected)
+                mNetMessageHandler.HandleOnServerAboutToShutdown();
 
-                // Only after signaling the INetClientApp that we are about to close, we close the NetPlugs
+                // Close the NetPlugs. OnCliendDisconnected(s) generated here.
                 InnerStopCloseNetPlugs();
 
                 if (mNetPlugs.Count != 0)
                     throw new NetEngineException("WTF - NetPlugs accepted?");
 
-                // The remaining OnClientLefts will be executed. No more messages should be entering the Queue as we have closed all the NetPlugs
-                // and we are no longer listening to connections
+                // It's guaranteed that if there're any pending OnClientDisconnected(s), they will be executed here. 
+                // No messages should be entering the Queue as we have closed all the NetPlugs and we are no longer listening to connections.
                 mNetMessageHandler.Stop();
-
-                mBufferManager.Reset();
             }
             catch (Exception exc)
             {
@@ -164,25 +158,18 @@ namespace NetEngine
         {
             lock (mListeningSocketLock)
             {
-                if (IsRunning)
+                try
                 {
-                    try
-                    {
-                        mListeningSocket.Close();
-                    }
-                    finally
-                    {
-                        // No more connections are accepted after this. IsRunning == false
-                        mListeningSocket = null;
-                    }
+                    mListeningSocket.Close();
+                }
+                finally
+                {
+                    // No more connections are accepted after this. IsRunning == false
+                    mListeningSocket = null;
                 }
             }
         }
 
-        public bool IsRunning
-        {
-            get { lock (mListeningSocketLock) return mListeningSocket != null; }
-        }
 
         private void StartAccept(SocketAsyncEventArgs acceptSAEA)
         {
@@ -208,7 +195,7 @@ namespace NetEngine
                 // the connections were accepted, *if* the accepts where synchronous and we were looping here.
                 lock (mListeningSocketLock) 
                 {
-                    if (!IsRunning)
+                    if (mListeningSocket == null)
                         return;
 
                     if (!(bAsyncOp = mListeningSocket.AcceptAsync(acceptSAEA)))
@@ -290,6 +277,12 @@ namespace NetEngine
             get { return mTimestamp; }
         }
 
+        // This could be done with an internal clock, but we rather have it called externally assuming the client has already setup an universal timer
+        public void OnSecondsTick(float elapsedSeconds, float totalSeconds)
+        {
+            mNetMessageHandler.HandleOnSecondsTick(elapsedSeconds, totalSeconds);
+        }
+
         public void GhostsCleanupThread()
         {
             try
@@ -344,7 +337,7 @@ namespace NetEngine
         internal BufferManager BufferManager { get { return mBufferManager; } }
 
         readonly bool mPolicyServerMode;                // Our only use is to be an Adobe policy server 
-        readonly INetClientApp mNetClientApp;
+        readonly NetLobby mNetLobby;
 
         readonly object mListeningSocketLock = new object();
         Socket mListeningSocket;

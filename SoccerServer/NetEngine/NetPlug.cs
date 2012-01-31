@@ -21,10 +21,10 @@ namespace NetEngine
             get { return mID; }
         }
 
-        public object UserData
+        public NetActor Actor
         {
-            get { return mUserData; }
-            set { mUserData = value; }
+            get { return mActor; }
+            set { mActor = value; }
         }
 
         public bool IsClosed
@@ -36,12 +36,6 @@ namespace NetEngine
                     return mSocket == null;
                 }
             }
-        }
-
-        public NetEngineRoom Room
-        {
-            get { return mRoom; }
-            internal set { mRoom = value; }
         }
 
         public void Invoke(string methodName, params object[] args)
@@ -522,8 +516,6 @@ namespace NetEngine
             public MessageHelper(byte[] msg) { Msg = msg; }          
         }
 
-        private NetEngineRoom mRoom;
-
-        object mUserData;
+        private NetActor mActor;
     }
 }

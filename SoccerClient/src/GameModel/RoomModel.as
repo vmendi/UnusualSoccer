@@ -84,9 +84,8 @@ package GameModel
 		
 		public function PushedNewChallenge(fromServer : Object) : void
 		{
-			var newChallenge : ReceivedChallenge = new ReceivedChallenge(fromServer);
-			newChallenge.SourcePlayer = FindPlayerInRoom(fromServer.SourcePlayer);
-			
+			var newChallenge : ReceivedChallenge = new ReceivedChallenge(fromServer, FindPlayerInRoom(fromServer.SourcePlayer));
+						
 			if (newChallenge.SourcePlayer == null)
 				throw new Error("Challenge from player not in room");
 			
@@ -131,11 +130,11 @@ package GameModel
 		
 		public function Challenge(other : RealtimePlayer, msg:String, matchLengthMinutes : int, turnLengthSeconds: int) : void
 		{
-			mServerConnection.Invoke("Challenge", new InvokeResponse(this, OnChallengeResponse), 
+			mServerConnection.Invoke("SendChallengeTo", new InvokeResponse(this, OnSendChallengeToResponse), 
 									 other.ActorID, msg, matchLengthMinutes*60, turnLengthSeconds);
 		}
 		
-		private function OnChallengeResponse(actorID : int) : void
+		private function OnSendChallengeToResponse(actorID : int) : void
 		{
 			if (actorID >= 0)
 			{
@@ -189,7 +188,7 @@ package GameModel
 		public function AcceptSelectedChallengeMatch(callback : Function) : void
 		{
 			mServerConnection.Invoke("AcceptChallenge", new InvokeResponse(this, Delegate.create(OnAcceptChallengeResponded, callback)), 
-									 SelectedChallenge.SourcePlayer.ActorID);
+									 SelectedChallenge.SourcePlayer.ActorID, SelectedChallenge.MatchLengthSeconds, SelectedChallenge.TurnLengthSeconds);
 		}
 		
 		// Es posible que quedamos aceptar un partido que ya no existe => bSuccess = false

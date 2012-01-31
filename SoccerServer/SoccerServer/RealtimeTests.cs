@@ -7,7 +7,7 @@ using Weborb.Util.Logging;
 
 namespace SoccerServer
 {
-    public partial class Realtime
+    public partial class RealtimeLobby
     {
         public string TestMethod01(NetPlug src, string input)
         {

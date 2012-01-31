@@ -260,11 +260,10 @@
     <Compile Include="PrecompiledQueries.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryResultCache.cs" />
-    <Compile Include="Realtime.cs" />
+    <Compile Include="RealtimeLobby.cs" />
     <Compile Include="RealtimeMatch.cs" />
     <Compile Include="RealtimeMatchCreator.cs" />
     <Compile Include="RealtimeMatchResult.cs" />
-    <Compile Include="RealtimeMatchBridge.cs" />
     <Compile Include="RealtimeRoom.cs" />
     <Compile Include="RealtimeTests.cs" />
     <Compile Include="ServerStats.aspx.cs">
