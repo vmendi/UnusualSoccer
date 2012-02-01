@@ -384,7 +384,10 @@ namespace SoccerServer
                         LogEx("OnServerPlayerReadySetTurn: Finalización de partido!");
 
                         RealtimeMatchResult result = Finish();
-                        Broadcast("OnClientFinishPart", Part, result);             
+
+                        // La habitacion ya esta vacia (por la llamada a Finish), tenemos que invokar sin llamar a Broadcast
+                        Players[Player1].NetPlug.Invoke("OnClientFinishPart", Part, result);
+                        Players[Player2].NetPlug.Invoke("OnClientFinishPart", Part, result);
                     }
                 }
                 else
@@ -470,8 +473,16 @@ namespace SoccerServer
         {
             LogEx("OnAbort: Player: " + GetIdPlayer(plug.Actor as RealtimePlayer));
 
-            // Una peticion de abort es equivalente a una desconexion
-            LeaveActor(plug.Actor);
+            RealtimePlayer self = plug.Actor as RealtimePlayer;
+            RealtimePlayer opp = GetOpponentOf(self);
+
+            PlayerIdAbandon = GetIdPlayer(self);
+
+            RealtimeMatchResult matchResult = Finish();
+
+            // Practicamente como el LeaveActor pero informando ademas al que pide el OnAbort
+            opp.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
+            self.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
         }
 
         private RealtimeMatchResult Finish()
@@ -498,19 +509,19 @@ namespace SoccerServer
             return result;
         }
 
-       // Uno de los dos players se ha desconectado
-       override public void LeaveActor(NetActor who)
-       {
-           RealtimePlayer self = who as RealtimePlayer;
-           RealtimePlayer opp = GetOpponentOf(self);
+        // Uno de los dos players se ha desconectado
+        override public void LeaveActor(NetActor who)
+        {
+            RealtimePlayer self = who as RealtimePlayer;
+            RealtimePlayer opp = GetOpponentOf(self);
 
-           PlayerIdAbandon = GetIdPlayer(self);
+            PlayerIdAbandon = GetIdPlayer(self);
 
-           RealtimeMatchResult matchResult = Finish();
+            RealtimeMatchResult matchResult = Finish();
 
-           // Hay que notificar al oponente de que ha habido cancelacion
-           opp.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
-       }
+            // Hay que notificar al oponente de que ha habido cancelacion
+            opp.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
+        }
         
         
         public void LogEx(string message, string category = MATCHLOG_VERBOSE)

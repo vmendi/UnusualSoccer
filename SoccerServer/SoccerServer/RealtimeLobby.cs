@@ -176,10 +176,9 @@ namespace SoccerServer
             // Creacion del partido en la BDD, descuento de tickets
             var bddMatchCreator = new RealtimeMatchCreator(firstPlayer, secondPlayer, matchLength, turnLength, bFriendly);
 
-            // Creacion del RealtimeMatch. El mismo se añade al lobby (nosotros) como Room
+            // Creacion del RealtimeMatch. El mismo se añade al lobby (nosotros) como Room.
             RealtimeMatch theNewMatch = new RealtimeMatch(bddMatchCreator, this);
         }
-
 
         public bool SwitchLookingForMatch(NetPlug from)
         {
