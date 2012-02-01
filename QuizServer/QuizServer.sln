@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lite", "ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\Lite\Lite\Lite.csproj", "{E1F918F4-F581-4280-9D91-3CF77B24C290}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizLite", "QuizLite\QuizLite.csproj", "{23869171-1189-453E-8EDD-ACEC93FE492B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E78AA5A6-59AE-4806-BD0F-98E869091DE2} = {E78AA5A6-59AE-4806-BD0F-98E869091DE2}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteLobby", "ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\LiteLobby\LiteLobby\LiteLobby.csproj", "{FA7E92F0-41E3-4295-9CB1-1B9A2F0605B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizServer", "QuizServer\QuizServer.csproj", "{E78AA5A6-59AE-4806-BD0F-98E869091DE2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1F918F4-F581-4280-9D91-3CF77B24C290}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1F918F4-F581-4280-9D91-3CF77B24C290}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1F918F4-F581-4280-9D91-3CF77B24C290}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1F918F4-F581-4280-9D91-3CF77B24C290}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23869171-1189-453E-8EDD-ACEC93FE492B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23869171-1189-453E-8EDD-ACEC93FE492B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23869171-1189-453E-8EDD-ACEC93FE492B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23869171-1189-453E-8EDD-ACEC93FE492B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA7E92F0-41E3-4295-9CB1-1B9A2F0605B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA7E92F0-41E3-4295-9CB1-1B9A2F0605B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA7E92F0-41E3-4295-9CB1-1B9A2F0605B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA7E92F0-41E3-4295-9CB1-1B9A2F0605B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E78AA5A6-59AE-4806-BD0F-98E869091DE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E78AA5A6-59AE-4806-BD0F-98E869091DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E78AA5A6-59AE-4806-BD0F-98E869091DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E78AA5A6-59AE-4806-BD0F-98E869091DE2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

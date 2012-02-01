@@ -1,0 +1,73 @@
+5344: 10:30:11.996 - ---
+5344: 10:30:11.996 - Service: "Photon Socket Server" starting
+5344: 10:30:11.996 - Config File: C:\Users\Manu\Desktop\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\bin_Win32\PhotonServer.config
+5344: 10:30:11.999 - Will produce at most: 10 crash dumps
+5344: 10:30:11.999 - Server Starting...
+5344: 10:30:11.999 -    Tick count: 1641879 (wraps in: 49.6913 days)
+5344: 10:30:11.999 - Tick count 64: 1641879
+5344: 10:30:12.000 - Photon Version: 3.0.9.841
+5344: 10:30:12.000 - Config File: C:\Users\Manu\Desktop\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\bin_Win32\PhotonServer.config
+5344: 10:30:12.002 - Not using performance counters as they are not currently installed. Run the service with /InstallCounters to install them.
+5344: 10:30:12.026 - About to load runtime: PhotonHostRuntime.PhotonDomainManager from PhotonHostRuntime, Culture=neutral, PublicKeyToken=02C301B61B060C4D
+5344: 10:30:12.027 - About to load CLR - versions available:
+5344: 10:30:12.027 - v2.0.50727
+5344: 10:30:12.027 - v4.0.30319
+5344: 10:30:12.027 - No preference in configuration file, will load latest.
+5344: 10:30:12.027 - About to load version: "v4.0.30319"
+5344: 10:30:12.030 - Loaded version: "v4.0.30319"
+5344: 10:30:12.792 - Photon host runtime loaded
+5344: 10:30:12.815 - License is valid.
+5344: 10:30:12.815 - Licensed for 100 concurrent connections.
+5344: 10:30:12.815 - Max Reliable Data In Transit (awaiting ACKs) per peer : 16384 bytes
+5344: 10:30:12.815 - Per peer bandwidth limit
+5344: 10:30:12.815 - Transmit Rate Limit: 128 KB/Sec
+5344: 10:30:12.815 - Limit period: 250ms
+5344: 10:30:12.815 - Limit per period: 32768 bytes
+5344: 10:30:12.815 - Max queued data for transmission per peer: 65536 bytes
+5344: 10:30:12.815 - Minimum retransmit timeout: 200
+5344: 10:30:12.815 - Minimum ENet timeout: 5000ms
+5344: 10:30:12.815 - Maximum ENet timeout: 30000ms
+5344: 10:30:12.815 - ENetHost: Using Timer Wheel
+5344: 10:30:12.815 - About to load application: Lite from Lite
+5344: 10:30:12.816 - Auto restart is enabled for application
+5344: 10:30:12.816 - Application will restart 10000ms after the last change detected
+5344: 10:30:12.816 - Application will restart if files matching the following are changed: "dll;config"
+5344: 10:30:12.816 - Application will NOT restart if files matching the following are changed: "log4net.config"
+5344: 10:30:14.454 - Application: "Lite" started in app domain: 2
+5344: 10:30:14.454 - About to load application: LiteLobby from LiteLobby
+5344: 10:30:14.454 - Auto restart is enabled for application
+5344: 10:30:14.454 - Application will restart 10000ms after the last change detected
+5344: 10:30:14.454 - Application will restart if files matching the following are changed: "dll;config"
+5344: 10:30:14.454 - Application will NOT restart if files matching the following are changed: "log4net.config"
+5344: 10:30:15.859 - Application: "LiteLobby" started in app domain: 3
+5344: 10:30:15.860 - About to load application: MmoDemo from Photon.MmoDemo.Server
+5344: 10:30:15.860 - Auto restart is enabled for application
+5344: 10:30:15.860 - Application will restart 10000ms after the last change detected
+5344: 10:30:15.860 - Application will restart if files matching the following are changed: "dll;config"
+5344: 10:30:15.860 - Application will NOT restart if files matching the following are changed: "log4net.config"
+5344: 10:30:17.471 - Application: "MmoDemo" started in app domain: 4
+5344: 10:30:17.471 - About to load application: LiteWebSockets from Lite
+5344: 10:30:18.351 - Application: "LiteWebSockets" started in app domain: 5
+5344: 10:30:18.351 - About to load application: CounterPublisher from CounterPublisher
+5344: 10:30:18.351 - Auto restart is enabled for application
+5344: 10:30:18.351 - Application will restart 10000ms after the last change detected
+5344: 10:30:18.351 - Application will restart if files matching the following are changed: "dll;config"
+5344: 10:30:18.351 - Application will NOT restart if files matching the following are changed: "log4net.config"
+5344: 10:30:19.703 - Application: "CounterPublisher" started in app domain: 6
+5344: 10:30:19.703 - About to load application: Policy from Policy.Application
+5344: 10:30:20.388 - Application: "Policy" started in app domain: 7
+5344: 10:30:20.388 - Adding TCP listener on :0.0.0.0: 4530 with a listen backlog of: 150
+5344: 10:30:20.388 - Nagle disabled
+5344: 10:30:20.388 - TCP inactivity timeout: 5000ms
+5344: 10:30:20.388 - UDP address specified as:0.0.0.0 adding listener to each available IPv4 address
+5344: 10:30:20.389 - Adding UDP listener on :192.168.1.106: 5055 with a listen backlog of: 500
+5344: 10:30:20.389 - Adding UDP listener on :127.0.0.1: 5055 with a listen backlog of: 500
+5344: 10:30:20.389 - Adding TCP Policy listener on :0.0.0.0: 843 with a listen backlog of: 150 and routing to application: "Policy"
+5344: 10:30:20.389 - TCP inactivity timeout: 5000ms
+5344: 10:30:20.389 - Adding TCP Policy listener on :0.0.0.0: 943 with a listen backlog of: 150 and routing to application: "Policy"
+5344: 10:30:20.389 - TCP inactivity timeout: 5000ms
+5344: 10:30:20.389 - Adding WebSocket TCP listener on :0.0.0.0: 9090 with a listen backlog of: 150
+5344: 10:30:20.389 - Nagle disabled
+5344: 10:30:20.389 - TCP inactivity timeout: 100000ms
+5344: 10:30:20.389 - Forcing all applications ids to: "LiteWebSockets"
+5344: 10:30:30.681 - Service is running...
