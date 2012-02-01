@@ -6,9 +6,9 @@ puts "Hello World"
 $address = 'http://mahouligachapas.unusualwonder.com/TestForm.aspx'
 $address = 'http://apps.facebook.com/unusualsoccerlocal/'
 
-$testName = 'Test05'
+$testName = 'Test06'
 
-for i in 1...10
+for i in 5...10
 
   $addressFinal = $address + '?FakeSessionKey=' + i.to_s + "&Test=" + $testName
 
