@@ -84,9 +84,8 @@ package GameModel
 		
 		public function PushedNewChallenge(fromServer : Object) : void
 		{
-			var newChallenge : ReceivedChallenge = new ReceivedChallenge(fromServer);
-			newChallenge.SourcePlayer = FindPlayerInRoom(fromServer.SourcePlayer);
-			
+			var newChallenge : ReceivedChallenge = new ReceivedChallenge(fromServer, FindPlayerInRoom(fromServer.SourcePlayer));
+						
 			if (newChallenge.SourcePlayer == null)
 				throw new Error("Challenge from player not in room");
 			
@@ -102,18 +101,18 @@ package GameModel
 		{
 			for each(var playerInRoom : RealtimePlayer in mPlayersInRoom)
 			{
-				if (playerInRoom.ClientID == playerFromServer.ClientID &&
+				if (playerInRoom.ActorID == playerFromServer.ActorID &&
 					playerInRoom.Name == playerFromServer.Name)
 					return playerInRoom;
 			}
 			return null;
 		}
 		
-		private function FindPlayerInRoomByID(clientID : int) : RealtimePlayer
+		private function FindPlayerInRoomByID(actorID : int) : RealtimePlayer
 		{
 			for each(var playerInRoom : RealtimePlayer in mPlayersInRoom)
 			{
-				if (playerInRoom.ClientID == clientID)
+				if (playerInRoom.ActorID == actorID)
 					return playerInRoom;
 			}
 			return null;
@@ -131,15 +130,15 @@ package GameModel
 		
 		public function Challenge(other : RealtimePlayer, msg:String, matchLengthMinutes : int, turnLengthSeconds: int) : void
 		{
-			mServerConnection.Invoke("Challenge", new InvokeResponse(this, OnChallengeResponse), 
-									 other.ClientID, msg, matchLengthMinutes*60, turnLengthSeconds);
+			mServerConnection.Invoke("SendChallengeTo", new InvokeResponse(this, OnSendChallengeToResponse), 
+									 other.ActorID, msg, matchLengthMinutes*60, turnLengthSeconds);
 		}
 		
-		private function OnChallengeResponse(clientID : int) : void
+		private function OnSendChallengeToResponse(actorID : int) : void
 		{
-			if (clientID >= 0)
+			if (actorID >= 0)
 			{
-				var other : RealtimePlayer = FindPlayerInRoomByID(clientID);
+				var other : RealtimePlayer = FindPlayerInRoomByID(actorID);
 				if (other != null)
 					other.IsChallengeTarget = true;
 			}
@@ -189,7 +188,7 @@ package GameModel
 		public function AcceptSelectedChallengeMatch(callback : Function) : void
 		{
 			mServerConnection.Invoke("AcceptChallenge", new InvokeResponse(this, Delegate.create(OnAcceptChallengeResponded, callback)), 
-									 SelectedChallenge.SourcePlayer.ClientID);
+									 SelectedChallenge.SourcePlayer.ActorID, SelectedChallenge.MatchLengthSeconds, SelectedChallenge.TurnLengthSeconds);
 		}
 		
 		// Es posible que quedamos aceptar un partido que ya no existe => bSuccess = false

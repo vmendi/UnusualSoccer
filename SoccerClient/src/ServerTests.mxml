@@ -310,7 +310,9 @@
 				SetLine(2, "Jugando partido " + numMatches);
 				TweenMax.killDelayedCallsTo(onTime);
 				addElementAt(new UIComponentWrapper(mMainGameModel.TheRealtimeModel.TheMatch), 0);
-				TweenMax.delayedCall(RandUtils.RandIntBetween(3, 5), mMainGameModel.TheRealtimeModel.ForceMatchFinish);
+				
+				// Simulamos que han pulsado el viejo boton de abandonar
+				TweenMax.delayedCall(RandUtils.RandIntBetween(3, 5), mMainGameModel.TheRealtimeModel.TheMatch.Game.TheInterface.OnAbandonarClick, [ null ]);
 			}
 			
 			function onMatchEnded(matchResult : Object) : void

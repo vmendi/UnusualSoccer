@@ -9,7 +9,7 @@ package GameModel
 	[Bindable]
 	public final class RealtimePlayer extends EventDispatcher
 	{
-		public var ClientID : int;
+		public var ActorID : int;
 		public var FacebookID : Number;
 		public var Name : String;
 		public var PredefinedTeamNameID : String;

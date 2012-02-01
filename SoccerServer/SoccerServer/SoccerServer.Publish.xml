@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
-  <publishProfile publishUrl="ftp://unusualsoccerdev.unusualwonder.com/wwwsoccerserverv2" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="UnusualSoccerDev" publishMethod="FTP" replaceMatchingFiles="True" userName="ftpuser" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAUaT19xDBF0CD9+tWGYqiqgAAAAACAAAAAAAQZgAAAAEAACAAAACyogdM8ez0c7GkEaWMgB1gLnh0//5rdfXTTU4evYuAWAAAAAAOgAAAAAIAACAAAADh/m5K2/DG+EvzHh8PbBlKdsfsRFWpyG1g3Ivus9xHNDAAAACcwZMtcuvOak0xT5YeYydJbGE/xVs7JcAe6EJ2RdbRd1LIRoKF22bLQGVcbUnbWIZAAAAAj3t7fgCzmZaA1TAsbXIqiDo76vaCfkHPNxMZRDd6/ueufDv0r+WHVFSyHHHb/PhMKLsmiT9OeWO1b1I05cCuOw==" SelectedForPublish="False">
+  <publishProfile publishUrl="ftp://unusualsoccerdev.unusualwonder.com/wwwsoccerserverv2" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="UnusualSoccerDev" publishMethod="FTP" replaceMatchingFiles="True" userName="ftpuser" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAUaT19xDBF0CD9+tWGYqiqgAAAAACAAAAAAAQZgAAAAEAACAAAACyogdM8ez0c7GkEaWMgB1gLnh0//5rdfXTTU4evYuAWAAAAAAOgAAAAAIAACAAAADh/m5K2/DG+EvzHh8PbBlKdsfsRFWpyG1g3Ivus9xHNDAAAACcwZMtcuvOak0xT5YeYydJbGE/xVs7JcAe6EJ2RdbRd1LIRoKF22bLQGVcbUnbWIZAAAAAj3t7fgCzmZaA1TAsbXIqiDo76vaCfkHPNxMZRDd6/ueufDv0r+WHVFSyHHHb/PhMKLsmiT9OeWO1b1I05cCuOw==" SelectedForPublish="True">
     <file relUrl="Imgs/MensajeHabilidadCatenaccio_en_US.jpg" publishTime="01/09/2012 09:49:10" />
     <file relUrl="Imgs/MensajeHabilidadTiroAGol.jpg" publishTime="12/19/2011 19:41:00" />
     <file relUrl="Default.aspx" publishTime="01/09/2012 18:06:40" />
     <file relUrl="Imgs/MensajeHabilidadCatenaccio.jpg" publishTime="12/19/2011 19:41:00" />
     <file relUrl="_App_Offline.htm" publishTime="01/04/2012 14:03:48" />
-    <file relUrl="bin/SoccerServer.dll" publishTime="01/15/2012 19:35:36" />
+    <file relUrl="bin/SoccerServer.dll" publishTime="02/01/2012 10:41:44" />
     <file relUrl="Imgs/MensajeHabilidad5Estrellas.jpg" publishTime="12/19/2011 19:41:00" />
     <file relUrl="console/history.swf" publishTime="01/07/2010 14:56:46" />
     <file relUrl="console/woeeoverview.htm" publishTime="10/14/2011 12:14:08" />
     <file relUrl="WEB-INF/flex/weborb-services-config.xml" publishTime="12/10/2010 15:48:06" />
+    <file relUrl="SoccerClient/SoccerClient.swf" publishTime="01/31/2012 16:02:24" />
     <file relUrl="Imgs/NavIconInvita_es_LA.png" publishTime="01/09/2012 17:57:34" />
     <file relUrl="console/images/examplesoverview.jpg" publishTime="04/08/2010 17:05:18" />
     <file relUrl="ServerStats.aspx" publishTime="11/28/2011 23:18:42" />
@@ -43,16 +44,16 @@
     <file relUrl="Imgs/NavIconForo.png" publishTime="12/20/2011 09:52:40" />
     <file relUrl="Imgs/MensajeHabilidadFuriaRoja_en_US.jpg" publishTime="01/09/2012 09:49:10" />
     <file relUrl="Imgs/BannerMeGustaBg_es_LA.png" publishTime="01/09/2012 09:49:10" />
-    <file relUrl="Imgs/Match_es_ES.swf" publishTime="01/13/2012 19:26:38" />
+    <file relUrl="Imgs/Match_es_ES.swf" publishTime="01/23/2012 16:01:16" />
     <file relUrl="channel.html" publishTime="01/05/2012 14:20:06" />
     <file relUrl="console/AC_OETags.js" publishTime="10/14/2011 12:14:08" />
     <file relUrl="Deauthorize.aspx" publishTime="08/11/2011 15:05:08" />
     <file relUrl="console/images/folder_closed.png" publishTime="04/01/2010 13:03:40" />
-    <file relUrl="weborb.config" publishTime="08/11/2011 19:01:34" />
+    <file relUrl="weborb.config" publishTime="01/25/2012 18:19:18" />
     <file relUrl="Imgs/NavIcons.png" publishTime="08/19/2011 13:07:18" />
     <file relUrl="Imgs/TrainingItem_es_ES.swf" publishTime="12/26/2011 17:34:18" />
-    <file relUrl="WEB-INF/flex/dynamic-remoting-config.xml" publishTime="01/16/2012 16:06:54" />
-    <file relUrl="bin/Moserware.Skills.dll" publishTime="08/18/2011 00:13:18" />
+    <file relUrl="WEB-INF/flex/dynamic-remoting-config.xml" publishTime="01/31/2012 19:25:34" />
+    <file relUrl="bin/Moserware.Skills.dll" publishTime="01/25/2012 16:17:38" />
     <file relUrl="Imgs/Logo75x75.png" publishTime="08/19/2011 13:07:18" />
     <file relUrl="App_Data/UpdateTeam.sql" publishTime="01/09/2012 16:45:24" />
     <file relUrl="Imgs/DivisionBadge_en_US.swf" publishTime="12/27/2011 12:55:34" />
@@ -69,8 +70,8 @@
     <file relUrl="console/images/testdrive.png" publishTime="05/05/2010 10:24:16" />
     <file relUrl="Imgs/HeaderLinks.gif" publishTime="08/19/2011 13:07:18" />
     <file relUrl="console/images/runningwoee.jpg" publishTime="04/01/2010 13:03:40" />
-    <file relUrl="News.xml" publishTime="08/11/2011 15:16:36" />
-    <file relUrl="Imgs/Match_es_LA.swf" publishTime="01/13/2012 19:26:38" />
+    <file relUrl="News.xml" publishTime="01/25/2012 16:07:46" />
+    <file relUrl="Imgs/Match_es_LA.swf" publishTime="01/23/2012 16:01:16" />
     <file relUrl="DefaultMahou.aspx" publishTime="12/24/2011 02:09:16" />
     <file relUrl="console/gettingstarted.htm" publishTime="10/14/2011 12:14:08" />
     <file relUrl="Imgs/MensajeHabilidadManoDeDios.jpg" publishTime="12/19/2011 19:41:00" />
@@ -83,6 +84,7 @@
     <file relUrl="Imgs/NavIconInfo_en_US.png" publishTime="01/09/2012 17:57:34" />
     <file relUrl="Cancelled.aspx" publishTime="08/13/2011 00:34:14" />
     <file relUrl="Imgs/BannerMeGustaBg_en_US.png" publishTime="01/09/2012 17:57:34" />
+    <file relUrl="bin/NetEngine.dll" publishTime="02/01/2012 10:41:08" />
     <file relUrl="console/yesflex-yesdotnet.htm" publishTime="10/14/2011 12:14:08" />
     <file relUrl="Imgs/MensajeHabilidadTiroExtra.jpg" publishTime="12/19/2011 19:41:00" />
     <file relUrl="Imgs/MensajeHabilidadManoDeDios_en_US.jpg" publishTime="01/09/2012 09:49:10" />
@@ -91,7 +93,7 @@
     <file relUrl="console/console.swf" publishTime="06/17/2011 16:40:42" />
     <file relUrl="bin/Npgsql.dll" publishTime="03/25/2010 13:31:26" />
     <file relUrl="console/examplesinstructions.htm" publishTime="10/14/2011 12:14:08" />
-    <file relUrl="Web.config" publishTime="12/24/2011 00:16:38" />
+    <file relUrl="Web.config" publishTime="01/25/2012 16:36:52" />
     <file relUrl="Imgs/Logo100x100_en_US.png" publishTime="01/09/2012 09:49:10" />
     <file relUrl="crossdomain.xml" publishTime="05/06/2011 15:58:00" />
     <file relUrl="Imgs/NavIconInvita.png" publishTime="12/20/2011 09:52:40" />
@@ -101,7 +103,7 @@
     <file relUrl="Imgs/MainHeader_en_US.jpg" publishTime="01/09/2012 09:49:10" />
     <file relUrl="Imgs/NavIconInvita_en_US.png" publishTime="01/09/2012 17:57:34" />
     <file relUrl="bin/MySql.Data.dll" publishTime="06/08/2011 13:07:28" />
-    <file relUrl="Imgs/Match_en_US.swf" publishTime="01/13/2012 19:26:38" />
+    <file relUrl="Imgs/Match_en_US.swf" publishTime="01/23/2012 16:01:16" />
     <file relUrl="Imgs/NavBg.png" publishTime="08/19/2011 13:07:18" />
     <file relUrl="Imgs/MensajeHabilidadTiroAGol_en_US.jpg" publishTime="01/09/2012 09:49:10" />
     <file relUrl="WEB-INF/flex/remoting-config.xml" publishTime="06/08/2011 12:15:32" />
@@ -126,7 +128,7 @@
     <file relUrl="Imgs/NavIconInfo_es_LA.png" publishTime="01/09/2012 17:57:34" />
     <file relUrl="Imgs/MensajeVictoria_en_US.jpg" publishTime="01/09/2012 09:49:10" />
   </publishProfile>
-  <publishProfile publishUrl="ftp://mahouligachapas.unusualwonder.com/wwwsoccerserverv2" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="MahouLigaChapas" publishMethod="FTP" replaceMatchingFiles="True" userName="ftpuser" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAASZAbhtV0oUWqq9gwm+ur2QAAAAACAAAAAAAQZgAAAAEAACAAAADTBPyTYNNSc/xnEsWe13hEBj035UUTVqg0hyEwNRtctQAAAAAOgAAAAAIAACAAAAD+BotHc6pEAKRcyIfgp0sliLQ6YU1jm1xHHtHXSsd3+jAAAAAx5x0n4LAfgEVYzQBbEx7nPZ73MJmF6N0CC23vVZIsJqdKK9Ltmy+OAcG26nR1AhBAAAAAyGoAl4dlOdDd/iIUYc167i6KU7zLaLvGMpvFE5eLv3v6tsGjMbuK1QGnpa0PC3oSyojNeyW1y36Hd+zfriGRhw==" SelectedForPublish="True">
+  <publishProfile publishUrl="ftp://mahouligachapas.unusualwonder.com/wwwsoccerserverv2" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="MahouLigaChapas" publishMethod="FTP" replaceMatchingFiles="True" userName="ftpuser" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAASZAbhtV0oUWqq9gwm+ur2QAAAAACAAAAAAAQZgAAAAEAACAAAADTBPyTYNNSc/xnEsWe13hEBj035UUTVqg0hyEwNRtctQAAAAAOgAAAAAIAACAAAAD+BotHc6pEAKRcyIfgp0sliLQ6YU1jm1xHHtHXSsd3+jAAAAAx5x0n4LAfgEVYzQBbEx7nPZ73MJmF6N0CC23vVZIsJqdKK9Ltmy+OAcG26nR1AhBAAAAAyGoAl4dlOdDd/iIUYc167i6KU7zLaLvGMpvFE5eLv3v6tsGjMbuK1QGnpa0PC3oSyojNeyW1y36Hd+zfriGRhw==" SelectedForPublish="False">
     <file relUrl="Imgs/MensajeHabilidadCatenaccio_en_US.jpg" publishTime="01/09/2012 09:49:10" />
     <file relUrl="Default.aspx" publishTime="01/09/2012 18:06:40" />
     <file relUrl="Imgs/MensajeHabilidadCatenaccio.jpg" publishTime="12/19/2011 19:41:00" />
@@ -249,7 +251,7 @@
     <file relUrl="Imgs/MensajeHabilidadTiempoExtra.jpg" publishTime="12/19/2011 19:41:00" />
     <file relUrl="ServerStatsGlobalMatches.aspx" publishTime="08/11/2011 15:05:08" />
     <file relUrl="Imgs/NavIconForo.png" publishTime="12/20/2011 09:52:40" />
-    <file relUrl="bin/SoccerServer.dll" publishTime="01/26/2012 12:23:22" />
+    <file relUrl="bin/SoccerServer.dll" publishTime="01/26/2012 07:51:12" />
     <file relUrl="App_Data/DeleteAll.sql" publishTime="01/09/2012 14:56:52" />
     <file relUrl="Imgs/NavIconInfo_es_LA.png" publishTime="01/09/2012 17:57:34" />
     <file relUrl="Web.config" publishTime="01/25/2012 16:36:52" />

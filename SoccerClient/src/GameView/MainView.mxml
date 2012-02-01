@@ -85,11 +85,15 @@
 			if (MainMenuButtonBar.selectedItem == null)
 				return;
 			
-			// Hemos comprobado que llega un evento de boton cuando el partido ya esta iniciado!
-			if (mMainGameModel.TheRealtimeModel.TheMatch != null || currentState == "OnRealtimeMatch")
-				return;
-			
 			mMainGameModel.TheInactivityModel.LogNewActivity();
+			
+			if (mMainGameModel.TheRealtimeModel.TheMatch != null)
+			{
+				ErrorMessages.LogToServer("----------------------------------------------------------------------------------------");
+				ErrorMessages.LogToServer("WTF UNSYNC SE PRODUJO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+				ErrorMessages.LogToServer("WTF UNSYNC SE PRODUJO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+				ErrorMessages.LogToServer("----------------------------------------------------------------------------------------");
+			}
 			
 			if (MainMenuButtonBar.selectedItem.menuId == "Competition")
 				currentState = "Competition";

@@ -13,10 +13,9 @@ namespace NetEngine
         internal const String NETENGINE_DEBUG_THREADING = "NETENGINE DEBUG THREADING";
         internal const String NETENGINE_DEBUG_KEEPALIVE = "NETENGINE DEBUG KEEPALIVE";
 
-        public NetEngineMain(INetClientApp clientApp)
+        public NetEngineMain(NetLobby netLobby)
         {
-            mPolicyServer = new NetServer(true, null);
-            mNetServer = new NetServer(false, clientApp);            
+            mNetLobby = netLobby;
         }
 
         public void Start()
@@ -26,14 +25,25 @@ namespace NetEngine
             //Log.startLogging(NETENGINE_DEBUG_THREADING);
             //Log.startLogging(NETENGINE_DEBUG_KEEPALIVE);
 
-            mPolicyServer.Start();
-            mNetServer.Start();
+            mPolicyServer = new NetServer(true, null);
+            mNetServer = new NetServer(false, mNetLobby);
+        }
+
+        public bool IsRunning
+        {
+            get { return mNetServer != null; }
         }
 
         public void Stop()
         {
-            mNetServer.Stop();
-            mPolicyServer.Stop();
+            if (IsRunning)
+            {
+                mNetServer.Stop();
+                mPolicyServer.Stop();
+
+                mNetServer = null;
+                mPolicyServer = null;
+            }
         }
 
         public NetServer NetServer
@@ -41,8 +51,10 @@ namespace NetEngine
             get { return mNetServer; }
         }
 
-        readonly NetServer mNetServer;
-        readonly NetServer mPolicyServer;
+        readonly NetLobby mNetLobby;
+
+        NetServer mNetServer;
+        NetServer mPolicyServer;
     }
 
     public sealed class NetEngineException : Exception

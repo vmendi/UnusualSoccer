@@ -221,7 +221,7 @@ package GameModel
 			if (v != null)
 			{
 				var localRealtimePlayer : RealtimePlayer = new RealtimePlayer(null);
-				localRealtimePlayer.ClientID = -1;
+				localRealtimePlayer.ActorID = -1;
 				localRealtimePlayer.PredefinedTeamNameID = mMainModel.TheTeamModel.TheTeam.PredefinedTeamNameID;
 				localRealtimePlayer.Name = mMainModel.TheTeamModel.TheTeam.Name;
 				
@@ -257,9 +257,9 @@ package GameModel
 		// La vista necesitara añadirlo a la stage
 		public function get TheMatch() : MatchMain { return mMatch; }
 				
-		// Si el comienzo de partido viene de la aceptación de un challenge, firstClientID será siempre el aceptador, y
-		// secondClientID será el que lanzó el challenge
-		public function PushedStartMatch(firstClientID : int, secondClientID : int, bFriendly : Boolean) : void
+		// Si el comienzo de partido viene de la aceptación de un challenge, firstActorID será siempre el aceptador, y
+		// secondActorID será el que lanzó el challenge
+		public function PushedStartMatch(firstActorID : int, secondActorID : int, bFriendly : Boolean) : void
 		{
 			TheRoomModel.LogOff();
 			TheRoomModel = null;
@@ -286,7 +286,7 @@ package GameModel
 		
 		private function OnMatchEnded(e:GenericEvent) : void
 		{
-			// No problemo, a un remove se le puede llamar dos veces. Es necesario cuando PushedOpponentDisconnected y no estabamos añadidos a la stage todavía.
+			// No problemo, a un remove se le puede llamar dos veces. Es necesario cuando PushedMatchAbandoned y no estabamos añadidos a la stage todavía.
 			mMatch.removeEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage);
 			mMatch.removeEventListener("OnMatchEnded", OnMatchEnded);
 			mMatch = null;
@@ -305,21 +305,16 @@ package GameModel
 				MatchEnded.dispatch(e.Data);
 			}
 		}
-		
-		public function ForceMatchFinish() : void
-		{
-			if (mMatch != null)
-				mMatch.ForceMatchFinish();
-		}
-		
+				
 		public function PushedMatchUnsync() : void
 		{
 			//Alert.show("Unsync state!", "BETA");
 		}
 		
-		// Nuestro enemigo se ha desconectado en medio del partido. Nosotros hacemos una salida limpia. Lo controlamos
-		// desde aqui y no desde el partido porque el partido puede no estar inicializado todavia.
-		public function PushedOpponentDisconnected(result:Object) : void
+		// Partido abandonado, por nosotros o por nuestro enemigo. Como no tenemos boton de abandonar, en general sera por abandono del
+		// enemigo (salvo en los tests). Nosotros hacemos una salida limpia. Lo controlamos desde aqui y no desde el partido porque el 
+		// partido puede no estar inicializado todavia.
+		public function PushedMatchAbandoned(result:Object) : void
 		{
 			if (mMatch != null)
 			{
@@ -328,7 +323,7 @@ package GameModel
 			}
 			else
 			{
-				ErrorMessages.LogToServer("WTF 4192: Ha llegado un PushedOpponentDisconnected sin tener partido!");
+				ErrorMessages.LogToServer("WTF 4192: Ha llegado un PushedMatchAbandoned sin tener partido!");
 			}
 		}
 		
