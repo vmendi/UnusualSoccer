@@ -85,15 +85,13 @@
 			if (MainMenuButtonBar.selectedItem == null)
 				return;
 			
+			// Hemos comprobado que puede llegarnos este mensaje cuando esta el partido ya en curso, probablemente por una cuestion de orden
+			// de eventos. Obviamente durante el partido no se puede cambiar el estado de la botonera, asi que lo ignoramos
+			if (mMainGameModel.TheRealtimeModel.TheMatch != null)
+				return;
+			
 			mMainGameModel.TheInactivityModel.LogNewActivity();
 			
-			if (mMainGameModel.TheRealtimeModel.TheMatch != null)
-			{
-				ErrorMessages.LogToServer("----------------------------------------------------------------------------------------");
-				ErrorMessages.LogToServer("WTF UNSYNC SE PRODUJO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-				ErrorMessages.LogToServer("WTF UNSYNC SE PRODUJO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-				ErrorMessages.LogToServer("----------------------------------------------------------------------------------------");
-			}
 			
 			if (MainMenuButtonBar.selectedItem.menuId == "Competition")
 				currentState = "Competition";
