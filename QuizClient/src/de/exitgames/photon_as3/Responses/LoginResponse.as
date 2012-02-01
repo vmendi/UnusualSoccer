@@ -2,6 +2,7 @@ package de.exitgames.photon_as3.Responses
 {
 	import de.exitgames.photon_as3.CoreKeys;
 	import de.exitgames.photon_as3.Keys;
+	import de.exitgames.photon_as3.Photon;
 	import de.exitgames.photon_as3.event.BasicEvent;
 	import de.exitgames.photon_as3.internals.DebugOut;
 	import de.exitgames.photon_as3.response.BasicResponse;
@@ -39,6 +40,7 @@ package de.exitgames.photon_as3.Responses
 				_data[Keys.User_AnsweredRight] 	= pObject[Keys.User_AnsweredRight];
 				_data[Keys.User_AnsweredFail] 	= pObject[Keys.User_AnsweredFail];
 				_data[Keys.User_Nick] 			= pObject[Keys.User_Nick];
+				_data[CoreKeys.ACTOR_NO]		= pObject[CoreKeys.ACTOR_NO];
 				ev.setUserPersonalData(_data);	// Guardamos nuestra información personal de usuario retornada por el servidor
 			}
 			else

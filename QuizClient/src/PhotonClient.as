@@ -49,6 +49,7 @@ package
 	public class PhotonClient {
 		
 		private static var _instance : PhotonClient;
+		[Bindable]
 		public var me:Actor = new Actor();
 		[Bindable]
 		public function  get IsConnected() 			: Boolean 	{ return mIsConnectedToGame; }

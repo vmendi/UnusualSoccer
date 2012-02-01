@@ -5,6 +5,7 @@ package de.exitgames.photon_as3 {
 	 * the actor class is currently very basic. 
 	 * an actor has only an actor number.
 	 */
+	[Bindable]
 	public class Actor {
 		// Es el numero ID que nos da photon cuando entramos en un lobby/Room
 		private var _actorNo:int;		

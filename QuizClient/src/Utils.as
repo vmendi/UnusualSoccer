@@ -4,6 +4,17 @@ package
 
 	public class Utils
 	{
+		/**
+		 * Elimina los espacios en blanco al principio y al final de la cadena
+		 * @param str La cadena de texto.
+		 */ 
+		public static function trim(str:String):String 
+		{
+			var tmp:String = str.replace(/^\s*(.*?)\s*$/g, "$1");
+			return tmp
+		}
+		
+		
 		public static function ObjectToString(obj:Object):String
 		{
 			var str:String = "";

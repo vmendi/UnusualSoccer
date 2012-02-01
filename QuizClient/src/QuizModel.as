@@ -69,7 +69,7 @@ package
 		 }		 
 		 
 		 ///////////////////////////////////////////////////////////////////////
-		 // photon communication handling
+		 // Metodos para gestionar la comunicación con el Servidor
 		 ///////////////////////////////////////////////////////////////////////		 
 		 /**
 		 * Aqui añadimos los EventListener para los Eventos y Responses que lance Phoon Server
@@ -118,17 +118,12 @@ package
 					this.printChatLine("QS", "==> Saliendo..."); 
 					break;
 				
-				case LoginResponse.TYPE:
+				case LoginResponse.TYPE:	
 					me.PersonalData = (event as LoginResponse).getUserPersonalData();
-					
 					if (me.Logged)
 					{
 						//Establecemos las propiedades del Actor (que enviaremos para logearnos en el lobby y en las rooms			 			
-						myActorProperties 					= new Object();
-						myActorProperties["QuizID"] 		= me.QuizID;
-						myActorProperties["User_Name"] 		= me.ActorName;
-						myActorProperties["User_Surname"] 	= me.ActorSurName;
-						myActorProperties["Nick"]			= me.ActorNick;
+						setActorProperties();
 						//Informamos a la vista para que cambie de la pantalla de LOGIN a la de MENUPRINCIPAL.
 						GameState = "MainMenu";
 						//Nos logeamos en el Lobby
@@ -148,6 +143,7 @@ package
 				
 				case JoinLobbyResponse.TYPE:
 					printChatLine("(Server)","Bienvenido al Lobby");
+					//me.ActorNo = (event as JoinLobbyResponse).getPlayerNum();
 					var a:Object = (event as JoinLobbyResponse).getPlayerProperties();
 					if( a != null)
 					{
@@ -195,7 +191,7 @@ package
 		 }
 		 
 		 ///////////////////////////////////////////////////////////////////////
-		 // Metodos
+		 // Metodos para la funcionalidad de la interaccion con el servidor
 		 ///////////////////////////////////////////////////////////////////////
 		 
 		 /**
@@ -215,7 +211,9 @@ package
 			 printChatLine(" - ", "Pidiendo acceso al lobby [" + mDefaultLobby + "] ...");
 		 }
 		 
-		 
+		 /**
+		 * Funcion para volver al Lobby
+		 */
 		 public function ReturnToLobby():void
 		 { //TODO Con esta función, tendremos que ser capaces de salir de la room y quedanos en el LOBBY
 		 	//Photon.getInstance().sendLeaveRequest();
@@ -234,8 +232,7 @@ package
 			params[CoreKeys.LOBBY_ID] = mDefaultLobby; 				// El nombre del Lobby dnd está/se creará la Room
 			params[CoreKeys.GAME_ID] = mDefaultLobbyRoom;			// El nombre de la room dnd nos queremos JOINear
 			params[CoreKeys.ACTOR_PROPERTIES] = myActorProperties;	// En este EV_JOIN, insertamos en la ActorProperties, 
-																	// nuestra infiormación, para informar a los demás clientes					
-
+																	// nuestra infiormación, para informar a los demás clientes
 			Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_JOIN_ROOM,params);
 			printChatLine(" - ", "Pidiendo acceso a la room [" + mDefaultLobbyRoom + "] ...");
 		 }
@@ -267,14 +264,36 @@ package
 			 Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_USER_SINGUP,params); // lanzamos un evento (operacion) al servidor para darnos de alta en la aplicación
 		 }
 		 
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ //                                    Métodos de interaccion con la Vista	     							//
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		 /**
 		  * Envía un mensaje de chat a la sala para que todos los clientes lo lean
 		  * 
 		  * @param msg Texto del mensaje
 		  */
 		 public final function sendChatMessage(msg:String) : void {
-			 printChatLine("(Yo)", msg);
+			 printChatLine(me.ActorNick, msg);
 			 Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_CHAT, {message:msg});
+		 }
+		 
+		 
+		 /**
+		 * Establece las propiedades del Actor dentro de la sala añade como "internal data" 
+		 * los valores que queramos que vayan acompañando al player en cada habitación.
+		 * 
+		 * @param userData Diccionario que contiene los del jugador que hayamos recibido del servidor
+		 */
+		 public function setActorProperties():void
+		 {
+		 	var ActorProperties:Object 		= new Object();
+			ActorProperties 				= new Object();
+		 	ActorProperties["QuizID"] 		= me.QuizID;
+		 	ActorProperties["User_Name"] 	= me.ActorName;
+		 	ActorProperties["User_Surname"] = me.ActorSurName;
+		 	ActorProperties["Nick"]			= me.ActorNick;
+			ActorProperties["Score"]		= me.ActorScore;
+			ActorProperties["ActorNo"]		= me.ActorNo;
 		 }
 		 
 		 
@@ -283,14 +302,13 @@ package
 		 	printChatLine("Usuarios Conectados...","");
 			for (var key:Object in mOtherActorProperties) 
 			{
-				var tmpKey:String = key.toString();
-				var usr:Object = mOtherActorProperties[tmpKey];
+				var tmpKey:String 	= key.toString();
+				var usr:Object 		= mOtherActorProperties[tmpKey];
 				
-				
-				var nick:String 	= usr.Nick;
-				var name:String 	= usr.User_Name;
-				var surname:String 	= usr.User_Surname;
-				var ID: String 		= usr.QuizID;
+				var nick	:String 	= usr.Nick;
+				var name	:String 	= usr.User_Name;
+				var surname	:String 	= usr.User_Surname;
+				var ID		:int  		= usr.QuizID;
 				
 				printChatLine(nick, name + " " +surname + "  -> ID: " + ID);
 			}

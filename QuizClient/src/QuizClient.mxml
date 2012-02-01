@@ -14,18 +14,46 @@
 			
 			import mx.binding.utils.BindingUtils;
 			import mx.collections.ArrayCollection;
+			import mx.core.FlexGlobals;
 			
 			[Bindable]
 			private var mConnection:QuizModel;
+
+			/**
+			 * Función que se encarga de controlar el cambio de estados de la aplicación 
+			 */ 
+			private function OnGameStateChanged(newGameState : String) : void
+			{
+				if( newGameState != currentState)
+				{
+					currentState = newGameState;
+					switch (currentState)
+					{
+						case "Login":
+							break;
+						case "MainMenu":
+							BindingUtils.bindSetter(OnIsConnectedChanged, mConnection, "IsConnected");
+							break;
+						case "SingUp":
+							BindingUtils.bindSetter(OnInvalidNick,mConnection,"IsValidNick");
+							break;
+					}					
+				}
+			}			
 			
-			
+			//================================================================================================||
+			///////////////////////////////  Funciones para el STATE = "LOGIN"  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\||
+			//================================================================================================||
 			/**
 			 * Fucion que se ejecuta al iniciar la App, es la encargada de conectarnos con la applicación
 			 */ 
 			public function Start():void
 			{
-				//LoginOnAPP(123456789,"Sant","Ti");
-				LoginOnAPP(0001112223,"truño","mars");
+				//Creamos un eventListener para capturar el teclado.
+				//FlexGlobals.topLevelApplication.addEventListener(KeyboardEvent.KEY_UP, onKeyUpCheckEnter);
+				
+				LoginOnAPP(123456789,"Sant","Ti");
+				//LoginOnAPP(0001112223,"truño","mars");
 				//LoginOnAPP(0001112223,"truño","mars");
 				BindingUtils.bindSetter(OnGameStateChanged, mConnection, "GameState");
 			}
@@ -50,77 +78,104 @@
 				mConnection.ReturnToLobby();
 			}
 			
-			/**
-			 * Función que mete al usuario en una habitación del Lobby en la que se desarrolla el juego
-			 */
-			public function ConnectToRoom1():void
-			{				
-				mConnection.JoinRoomFromLobby();
-			}
-			
-			/**
-			 * Función que se encarga de controlar el cambio de estados de la aplicación 
-			 */ 
-			private function OnGameStateChanged(newGameState : String) : void
-			{
-				if( newGameState != currentState)
-				{
-					currentState = newGameState;
-					switch (currentState)
-					{
-						case "Login":
-							break;
-						case "MainMenu":
-							BindingUtils.bindSetter(OnIsConnectedChanged, mConnection, "IsConnected");
-							break;
-						case "SingUp":
-							BindingUtils.bindSetter(OnInvalidNick,mConnection,"IsValidNick");
-							break;
-					}					
-				}
-			}
-			
+			//================================================================================================||
+			//////////////////////////////// Funciones para el STATE = "SignUp" \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\||
+			//================================================================================================||
 			/**
 			 * Esta función se encarga de que el cliente haga una llamada al servidor, pidiendole que nos de 
 			 * de alta en la BBDD con el nick deseado (siempre que no exista uno igual). 
 			 */ 
 			public function SingUpOnApp():void
-			{
-			 var selectedNick:String = this.txtNick.text;
-			  mConnection.SingUpWithThiNick(selectedNick);
+			{ 
+				var selectedNick:String = this.txtNick.text;
+				mConnection.SingUpWithThiNick(selectedNick);
 			}
-			
-			//Funcion que si la enganchas, avisa cuando te conectas con el servidor.
-			private function OnIsConnectedChanged(isConnected : Boolean) : void
-			{
-				if (isConnected)
-				{
-					//btnConnLobby.enabled = !mConnection.IsConnected;
-					this["btnPlayer" +  (mConnection.ActorNum).toString()].enabled = true;					
-				}
-			}
-			
+						
 			//Function, que si la encganchas, avisa ante un Nick Invalido.
 			public function OnInvalidNick(v:Boolean):void
 			{
 				imgWrongNick.visible = !mConnection.IsValidNick;
 			}
+						
+			//================================================================================================||
+			/////////////////////////////// Funciones para el STATE = "MAINMENU" \\\\\\\\\\\\\\\\\\\\\\\\\\\\\||
+			//================================================================================================||
 			
+			/**
+			 * Función que mete al usuario en una habitación del Lobby en la que se desarrolla el juego
+			 */
+			public function ConnectToRoom1():void
+			{
+				mConnection.JoinRoomFromLobby();
+			}
+			
+			/**
+			 * Funcion que si la enganchas, avisa cuando te conectas con el servidor.
+			 */
+			private function OnIsConnectedChanged(isConnected : Boolean) : void
+			{	
+				btnStartPlaying.enabled = isConnected;
+				//btnSendMessage.enabled = isConnected;
+			}
+			/**
+			 * sends a chat messages when user releases the ENTER key
+			 * 
+			 * @param event
+			 */
+			private function onKeyUpCheckEnter(event:KeyboardEvent) : void 
+			{
+					var cadenaValida:Boolean = (Utils.trim(txtMessage.text).length > 0) 
+					if(cadenaValida)
+					{
+						btnSendMessage.enabled = true;
+						if (event.keyCode == Keyboard.ENTER) 
+						{
+							sendMyMessage();
+						}
+					}
+					else
+					{
+						btnSendMessage.enabled = false;
+					}
+			}
+			
+			public function sendMyMessage():void
+			{
+				mConnection.sendChatMessage(txtMessage.text);
+				txtMessage.text = "";
+			}    			
+			
+			//================================================================================================||
+			///////////////////////////////   Código antiguo STATE = "TRASH"    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\||
+			//================================================================================================||
+			
+			/*
+			//Envía un mensaje de chat a los participantes del Lobby/Room donde estes conectado
 			public function sendMessage(nombre:String):void
 			{
 				mConnection.sendChatMessage("Hola a todos, soy " + nombre);
 			}
+
 			
-			/* 
+			//Funcion que si la enganchas, avisa cuando te conectas con el servidor.
+			private function OnIsConnectedChanged(isConnected : Boolean) : void
+			{	
+			if (isConnected)
+			{
+			//btnConnLobby.enabled = !mConnection.IsConnected;
+			this["btnPlayer" +  (mConnection.ActorNum).toString()].enabled = true;					
+			}
+			}
+			
 			private var mTest:ArrayCollection= new ArrayCollection();
 			
 			protected function MyLabel_clickHandler(event:MouseEvent):void
 			{
-				// TODO Auto-generated method stub				 
-				mTest.addItem("Test1");
-				mTest.addItem("Test2");
-				mTest.addItem("Test3");
-				mTest.addItem("Test4");				
+			// TODO Auto-generated method stub				 
+			mTest.addItem("Test1");
+			mTest.addItem("Test2");
+			mTest.addItem("Test3");
+			mTest.addItem("Test4");				
 			}
 			*/
 		]]>
@@ -132,9 +187,8 @@
 		<s:State name="trash"/>
 		<!-- Crear mas estados en funcion de las necesidades-->		
 	</s:states>
-	<s:Image id="imgBackground" includeIn="MainMenu" x="0" y="0" width="640" height="480"
-			 source="@Embed('Assets/background.jpg')"/> 
-	<s:Group id="gMainGame" x="114" y="0" width="407" height="470" contentBackgroundAlpha="1.0" includeIn="trash">
+		
+	<s:Group id="gTrash" x="114" y="0" width="407" height="470" contentBackgroundAlpha="1.0" includeIn="trash">
 		<s:Rect id="gEstadoServidorBackGround" x="39" y="66" width="330" height="250">
 			<s:fill>
 				<s:SolidColor id="MainGameFill" color="#FFFFFF"/>
@@ -190,28 +244,73 @@
 					 text="ScorePlayer4" textAlign="center" verticalAlign="middle"/>
 		</s:Group>
 		
-		<s:Button id="btnPlayer1" x="10"  y="416" label="Player1" click="sendMessage('Player1')" enabled = "false"/>
+	<!--	<s:Button id="btnPlayer1" x="10"  y="416" label="Player1" click="sendMessage('Player1')" enabled = "false"/>
 		<s:Button id="btnPlayer2" x="117" y="416" label="Player2" click="sendMessage('Player2')" enabled = "false"/>
 		<s:Button id="btnPlayer3" x="225" y="416" label="Player3" click="sendMessage('Player3')" enabled = "false"/>
 		<s:Button id="btnPlayer4" x="337" y="416" label="Player4" click="sendMessage('Player4')" enabled = "false"/>		
-		
+		-->
 		<s:Button id="btnConnLobby" x="40"  y="29" width="126" height="24" label="Connect to Lobby"  click="ConnectToLobby()"/>
 		<s:Button id="btnConnRoom1" x="245" y="28" width="152" height="26" label="Connect to Room1"  click="ConnectToRoom1()"/>
-		<s:TextArea id="Actors" includeIn="MainMenu" x="6" y="23" width="101" height="145" text="{mConnection.RoomUserList}"/>
+		<s:TextArea id="Actors" x="6" y="23" width="101" height="145" text="{mConnection.RoomUserList}"/>
 	</s:Group>
 	
-	<s:Image id="imgLogin" includeIn="Login" x="0" y="0" width="640" height="480" scaleMode="zoom"
-			 smooth="true" smoothingQuality="high" source="Assets/loading.gif"/>
 	<s:Group includeIn="SingUp" x="0" y="0" width="640" height="480">
 		<s:Image x="10" y="10" width="620" height="261" scaleMode="stretch" source="Assets/QuizLogo.gif"/>
+		
 		<s:Label id="lblNombre" x="98" y="310" width="232" height="18" fontFamily="Georgia"
 				 fontSize="16" fontWeight="bold" text="Introduce tu nick:" textAlign="left"
 				 verticalAlign="bottom"/>
+		
 		<s:TextInput id="txtNick" x="97" y="327" width="447"/>
-		<s:Button id="btnValidar" x="474" y="357" label="Validar" click="SingUpOnApp()"/>
+		
+		<s:Button id="btnValidar" x="474" y="349" label="Validar" click="SingUpOnApp()"/>
+		
 		<s:Image id="imgWrongNick" x="522" y="328" width="21" height="21" scaleMode="stretch"
 				 source="Assets/red-cross.png" visible="false"/>
 	</s:Group>
 	
+	<s:Group id="gMainMenu" includeIn="MainMenu" x="0" y="0" width="640" height="480">
+		<s:Image id="imgBackground" includeIn="MainMenu" x="0" y="0" width="640" height="480"
+				 source="@Embed('Assets/background.jpg')"/> 
+		
+		<s:Image id="imgFacebookAvatar" x="10" y="10" width="64" height="72" scaleMode="stretch"
+				 source="Assets/DefaultAvatar.gif"/>
+		
+		<s:Label id="lblPersonalName" x="82" y="10" width="127" height="18" color="#646464"
+				 fontSize="14" fontWeight="normal" text="{mConnection.me.ActorName + ' ' + mConnection.me.ActorSurName} "  textAlign="left"
+				 verticalAlign="bottom"/>
+		
+		<s:Label id="lblNick" x="77" y="27" width="174" height="55" color="#DCDCDC" fontSize="70"
+				 fontWeight="bold" text="{mConnection.me.ActorNick}" textAlign="left" verticalAlign="justify"/>
+		
+		
+		<s:Label id="lblScoreTitle" x="12" y="85" width="64" height="18" color="#FFFFFF"
+				 fontSize="14" fontStyle="normal" fontWeight="normal" text="Score:"
+				 textAlign="right" verticalAlign="middle"/>
+		<s:Label id="lblScore" x="74" y="85" width="88" height="18" color="#FFFFFF" fontSize="15"
+				 fontWeight="normal" lineThrough="false" text="{mConnection.me.ActorScore}" textAlign="right"
+				 verticalAlign="middle"/>
+		<s:Image x="165" y="85" width="16" height="16" source="Assets/pointsIcon.png"/>
+		
+		<s:TextArea id="txtChat" x="31" y="328" width="578" height="121" borderColor="#3C3C3C"
+					borderVisible="true" color="#FFFFFF" contentBackgroundColor="#000000"
+					editable="false" enabled="true" fontFamily="Courier New" fontWeight="normal"
+					text="{mConnection.ChatText}"/>
+		<s:TextInput id="txtMessage" left="34" bottom="33" width="502" keyUp="onKeyUpCheckEnter(event)"/>
+		
+		<s:Button id="btnSendMessage" x="537" y="426" label="Enviar" enabled="false"
+				  click.MainMenu="sendMyMessage();"/>
+		
+		<s:Button id="btnStartPlaying" x="288" y="178" enabled="false"
+				  skinClass="Skins.QuizMainButton"/>
+		<s:Label id="lblPlayTitle" x="131.5" y="250" width="377" height="35" color="#FFFFFF"
+				 fontSize="24" fontWeight="bold" text="Dale al pulsador para empezar"
+				 textAlign="center" verticalAlign="middle"/>
+	</s:Group>
+	
+	<s:Group id="gLoading" includeIn="Login" x="0" y="0" width="640" height="480">
+		<s:Image id="imgLogin" x="0" y="0" width="640" height="480" scaleMode="zoom"
+				 smooth="true" smoothingQuality="high" source="Assets/loading.gif"/>
+	</s:Group>
 	
 </s:Application>
