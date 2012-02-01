@@ -96,6 +96,7 @@
     <Content Include="App_Data\Backup.sql" />
     <Content Include="App_Data\DeleteAll.sql" />
     <Content Include="App_Data\UpdateTeam.sql" />
+    <Content Include="Canceled.html" />
     <Content Include="Cancelled.aspx" />
     <Content Include="channel.html" />
     <Content Include="console\AC_OETags.js" />
@@ -127,6 +128,12 @@
     <Content Include="Imgs\BannerMeGustaBg.png" />
     <Content Include="Imgs\BannerMeGustaBg_en_US.png" />
     <Content Include="Imgs\BannerMeGustaBg_es_LA.png" />
+    <Content Include="Imgs\CanceledBg.jpg" />
+    <Content Include="Imgs\CanceledIconBasicInfo.gif" />
+    <Content Include="Imgs\CanceledIconWall.gif" />
+    <Content Include="Imgs\CanceledLogo.png" />
+    <Content Include="Imgs\CanceledLogoUnusual.png" />
+    <Content Include="Imgs\CanceledPlayButton.png" />
     <Content Include="Imgs\DivisionBadge_en_US.swf" />
     <Content Include="Imgs\DivisionBadge_es_ES.swf" />
     <Content Include="Imgs\FacebookLandingPage.jpg" />
