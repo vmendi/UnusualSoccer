@@ -129,11 +129,12 @@
 		<s:State name="Login"/>
 		<s:State name="SingUp"/>
 		<s:State name="MainMenu"/>	
+		<s:State name="trash"/>
 		<!-- Crear mas estados en funcion de las necesidades-->		
 	</s:states>
 	<s:Image id="imgBackground" includeIn="MainMenu" x="0" y="0" width="640" height="480"
 			 source="@Embed('Assets/background.jpg')"/> 
-	<s:Group id="gMainGame" x="114" y="0" width="407" height="470" contentBackgroundAlpha="1.0" includeIn="MainMenu">
+	<s:Group id="gMainGame" x="114" y="0" width="407" height="470" contentBackgroundAlpha="1.0" includeIn="trash">
 		<s:Rect id="gEstadoServidorBackGround" x="39" y="66" width="330" height="250">
 			<s:fill>
 				<s:SolidColor id="MainGameFill" color="#FFFFFF"/>
@@ -196,9 +197,9 @@
 		
 		<s:Button id="btnConnLobby" x="40"  y="29" width="126" height="24" label="Connect to Lobby"  click="ConnectToLobby()"/>
 		<s:Button id="btnConnRoom1" x="245" y="28" width="152" height="26" label="Connect to Room1"  click="ConnectToRoom1()"/>
+		<s:TextArea id="Actors" includeIn="MainMenu" x="6" y="23" width="101" height="145" text="{mConnection.RoomUserList}"/>
 	</s:Group>
-	<s:TextArea id="Actors" includeIn="MainMenu" x="6" y="23" width="101" height="145"
-				text="{mConnection.RoomUserList}"/>
+	
 	<s:Image id="imgLogin" includeIn="Login" x="0" y="0" width="640" height="480" scaleMode="zoom"
 			 smooth="true" smoothingQuality="high" source="Assets/loading.gif"/>
 	<s:Group includeIn="SingUp" x="0" y="0" width="640" height="480">
