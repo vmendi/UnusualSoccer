@@ -1,0 +1,7 @@
+2012-01-31 19:22:47,118 [21] DEBUG ExitGames.Diagnostics.Counter.CounterBase [(null)] - Creating NumericCounter: Name='Games'
+2012-01-31 19:22:47,133 [21] DEBUG ExitGames.Diagnostics.Monitoring.CounterSamplePublisherFactory [(null)] - Added counter 'Lite.Games' to counter publisher.
+2012-01-31 19:22:47,143 [21] INFO  Photon.SocketServer.ApplicationBase [(null)] - Application start: AppId=QuizLite; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite
+2012-01-31 19:22:47,144 [21] DEBUG PhotonHostRuntime.PhotonDomainManager [(null)] - RequestStop
+2012-01-31 19:22:47,144 [21] INFO  Photon.SocketServer.ApplicationBase [(null)] - Application is stopping: AppId=QuizLite
+2012-01-31 19:22:47,145 [21] INFO  PhotonHostRuntime.PhotonDomainManager [(null)] - Stop
+2012-01-31 19:22:47,145 [21] INFO  Photon.SocketServer.ApplicationBase [(null)] - Application stop: AppId=QuizLite

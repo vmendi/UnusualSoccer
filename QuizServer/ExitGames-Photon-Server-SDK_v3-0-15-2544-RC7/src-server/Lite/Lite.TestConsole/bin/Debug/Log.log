@@ -1,0 +1,105 @@
+2012-01-10 14:18:34,931 [20] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:34,962 [100] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:34,964 [20] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:34,970 [100] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:35,125 [20] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:35,125 [20] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:35,198 [6] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:35,198 [6] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:35,255 [100] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:35,255 [100] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:35,260 [20] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:35,265 [20] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:35,316 [6] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:35,316 [6] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:35,391 [15] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:35,395 [15] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:35,400 [20] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:35,404 [20] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:35,470 [100] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:35,471 [100] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:35,471 [14] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:35,476 [14] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:35,491 [6] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:35,496 [6] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:35,557 [15] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:35,558 [15] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:35,678 [20] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:35,679 [20] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:35,816 [14] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:35,819 [14] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:35,824 [6] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:35,824 [6] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:35,835 [100] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:35,836 [100] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,015 [15] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,015 [15] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,083 [20] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,086 [20] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,101 [14] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,104 [14] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,167 [100] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,170 [100] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,181 [6] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,203 [6] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,329 [15] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,350 [15] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,416 [20] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,419 [20] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,423 [14] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,437 [20] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,438 [20] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,438 [20] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,437 [14] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,442 [20] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,442 [14] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,447 [20] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,448 [14] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,452 [20] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,452 [100] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,460 [100] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,458 [6] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,462 [6] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,459 [14] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,464 [14] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,463 [15] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,465 [15] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,519 [20] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,519 [6] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,519 [20] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,520 [100] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,520 [15] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,521 [14] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,531 [6] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,531 [20] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,531 [6] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,531 [15] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,532 [20] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,531 [14] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,531 [100] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,544 [6] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,546 [6] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,544 [14] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,544 [20] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,545 [100] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,551 [100] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,551 [20] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,549 [6] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,544 [15] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,549 [14] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,552 [100] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,553 [20] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,555 [15] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,558 [15] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,555 [14] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,556 [100] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,560 [14] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,554 [6] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,557 [20] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,559 [15] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,561 [100] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,562 [14] ERROR Lite.Tests.Client.TestClient - DebugReturn(ERROR): Receiving failed. SocketException: ConnectionReset
+2012-01-10 14:18:36,563 [6] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,566 [14] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 14:18:36,566 [100] WARN  Lite.Tests.Client.TestClient - DisconnectByServer
+2012-01-10 15:19:40,838 [9] INFO  Lite.Tests.ServerToServerTests - Receive took:   6,544.55 ms =    0.06545 ms/item =     15,280 items/s

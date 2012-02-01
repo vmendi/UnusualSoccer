@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="QuizServer">
+</Property><Property Name="Solution File" Value="C:\Santiago\Repo\QuizServer\QuizServer.sln">
+</Property><Property Name="Date" Value="jueves, 19 de enero de 2012">
+</Property><Property Name="Time" Value="20:07">
+</Property></Properties><Event ErrorLevel="0" Project="QuizServer" Source="QuizServer\QuizServer.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="QuizServer" Source="QuizServer\QuizServer.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Lite" Source="ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\Lite\Lite\Lite.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Lite" Source="ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\Lite\Lite\Lite.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="QuizLite" Source="QuizLite\QuizLite.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="QuizLite" Source="QuizLite\QuizLite.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="LiteLobby" Source="ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\LiteLobby\LiteLobby\LiteLobby.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="LiteLobby" Source="ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\LiteLobby\LiteLobby\LiteLobby.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="QuizServer.sln" Description="The solution file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="" Source="QuizServer.sln" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="LiteLobby" Source="ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\LiteLobby\LiteLobby\LiteLobby.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

@@ -1,0 +1,306 @@
+package
+{		
+	import de.exitgames.photon_as3.Actor;
+	import de.exitgames.photon_as3.Constants;
+	import de.exitgames.photon_as3.CoreConstants;
+	import de.exitgames.photon_as3.Photon;
+	import de.exitgames.photon_as3.event.ChatEvent;
+	import de.exitgames.photon_as3.event.CustomEvent;
+	import de.exitgames.photon_as3.event.JoinEvent;
+	import de.exitgames.photon_as3.event.LeaveEvent;
+	import de.exitgames.photon_as3.event.PhotonErrorEvent;
+	import de.exitgames.photon_as3.response.CustomResponse;
+	import de.exitgames.photon_as3.response.InitializeConnectionResponse;
+	import de.exitgames.photon_as3.response.JoinResponse;
+	import de.exitgames.photon_as3.response.LeaveResponse;
+	
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.display.StageScaleMode;
+	import flash.events.Event;
+	import flash.events.FocusEvent;
+	import flash.events.IOErrorEvent;
+	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
+	import flash.events.SecurityErrorEvent;
+	import flash.events.TimerEvent;
+	import flash.system.Security;
+	import flash.text.TextField;
+	import flash.ui.Keyboard;
+	
+	import mx.core.FlexGlobals;
+	
+	/**
+	 * the main application class<br>
+	 * <br>
+	 * this chat sample lets all users join one room named 
+	 * "DemoChat" once they are connected. 
+	 * all chat messages are broadcasted to this room.
+	 */
+	public class PhotonConnection {
+		
+		private static var _instance : PhotonConnection;
+		private var isConnected:Boolean;
+		
+		public function get IsConnected() : Boolean
+		{
+			return isConnected;
+		}
+		
+		/**
+		 * get singleton's instance from anywhere
+		 * 
+		 * @return 		instance of chat application
+		 */ 
+		public static function getInstance() : PhotonConnection {
+			if (_instance == null) {
+				_instance = new PhotonConnection();
+			}
+			return _instance;
+		}
+		
+		[Bindable]
+		public var Estado:String = "";
+		
+		// save actorNo after joining a room as local variable
+		private var _actorNo : int; //el numero que se otorga a cada actor que entra en la sala
+		
+		/**
+		 * constructor
+		 */
+		public function PhotonConnection() {
+			_instance = this;
+			debug("Conexion created");
+/*			
+			stage.scaleMode = StageScaleMode.NO_SCALE;*/
+			setupPhoton();
+			//addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		}
+		
+		/**
+		 * instanciate Photon class, set EventListeners
+		 */
+		private function setupPhoton() : void {
+			//listen for photon responses
+			Photon.getInstance().addEventListener(InitializeConnectionResponse.TYPE, onPhotonResponse);
+			Photon.getInstance().addEventListener(JoinResponse.TYPE, onPhotonResponse);
+			Photon.getInstance().addEventListener(LeaveResponse.TYPE, onPhotonResponse);
+			Photon.getInstance().addEventListener(CustomResponse.TYPE, onPhotonResponse);
+			
+			//listen for photon events
+			Photon.getInstance().addEventListener(Event.CLOSE, onPhotonEvent);
+			Photon.getInstance().addEventListener(JoinEvent.TYPE, onPhotonEvent);
+			Photon.getInstance().addEventListener(LeaveEvent.TYPE, onPhotonEvent);
+			Photon.getInstance().addEventListener(CustomEvent.TYPE, onPhotonEvent);
+			Photon.getInstance().addEventListener(ChatEvent.TYPE, onPhotonEvent);
+			
+			//listen for errors
+			Photon.getInstance().addEventListener(IOErrorEvent.IO_ERROR, onPhotonError);
+			Photon.getInstance().addEventListener(SecurityErrorEvent.SECURITY_ERROR, onPhotonError);
+			Photon.getInstance().addEventListener(PhotonErrorEvent.ERROR, onPhotonError);
+			
+			// get setup parameters from html code, else use defaults
+			var server:String = "127.0.0.1";
+			var port:int = 4530;
+			var policyPort:int = 843; 
+			
+			var flashvars:Object = FlexGlobals.topLevelApplication.parameters
+			if (flashvars != null) {
+				if (flashvars["server"] != null) 
+					server = flashvars["server"];
+				if (flashvars["port"] != null) 
+					port = parseInt(flashvars["port"]);
+				if (flashvars["policyPort"] != null) 
+					policyPort = parseInt(flashvars["policyPort"]);
+			}
+			debug("connecting to " + server + ":" + port + ", Lite");
+			Photon.getInstance().initializeConnection(server, port, policyPort, "Lite");
+			isConnected = true;
+		}
+		
+		
+		///////////////////////////////////////////////////////////////////////
+		// utils
+		///////////////////////////////////////////////////////////////////////
+		
+		/**
+		 * traces debug messages
+		 * 
+		 * @param pMsg		message to be traced
+		 */
+		private function debug(pMsg:String) : void {
+			Estado = Estado + "\n---" + pMsg;
+			trace(pMsg);
+		}
+
+		/**
+		 * creates a HTML formatted String containing all users
+		 */
+		private function createUserList() : String {
+			var actorList:Array = Photon.getInstance().getActorList();
+			var s:String = "<b>" + actorList.length.toString() + " USER(S):</b>";
+			for each (var actor:Object in actorList) {
+				s += "<br>actor" + actor.getActorNo().toString();
+			} 
+			return s;
+		}
+
+		/**
+		 * called when user clicks the clear button,
+		 * clears the chat output window
+		 * 
+		 * @param event
+		 */
+		private function onClearLink(event:MouseEvent) : void {
+			//_chatScreen.tfMessages.text = "";
+		}
+		
+		/**
+		 * called when user clicks the send button,
+		 * 
+		 * @param event
+		 */
+		private function onSendLink(event:MouseEvent) : void {
+			//sendChatMessage();
+		}
+		
+		/**
+		 * sends a chat messages when user releases the ENTER key
+		 * 
+		 * @param event
+		 */
+		private function onKeyUpCheckEnter(event:KeyboardEvent) : void {
+			/*if (stage.focus == _chatScreen.tfInput) {
+				if (event.keyCode == Keyboard.ENTER) {
+					sendChatMessage();
+				}
+			}*/
+		}		
+		
+		/**
+		 * print a chat line to the output window
+		 * 
+		 * @param name		name of user who sent the chat message
+		 * @param msg		message to print
+		 */
+		private function printChatLine(name:String, msg:String) : void {
+			/*var addMsg:String = "<b>" + name + "</b>" + ": " + msg + "\n";
+			_chatScreen.tfMessages.htmlText = _chatScreen.tfMessages.text == "\r" ? addMsg : _chatScreen.tfMessages.htmlText + addMsg;
+			var maxScroll:int = _chatScreen.tfMessages.maxScrollV;
+			_chatScreen.tfMessages.scrollV = maxScroll;*/
+		}
+		
+		
+		///////////////////////////////////////////////////////////////////////
+		// photon communication handling
+		///////////////////////////////////////////////////////////////////////
+		
+		/**
+		 * handles all the responses dispatched by photon
+		 * 
+		 * @param event
+		 */
+		// TODO: response, not event
+		private function onPhotonResponse(event:Event) : void {
+			switch(event.type){
+				case InitializeConnectionResponse.TYPE:
+					// the client is now connected and ready to start the chat / join the room
+					debug("got Photon Response: initialize!");
+					Photon.getInstance().sendJoinRequest("DemoChat");
+					break;
+				
+				case JoinResponse.TYPE:
+					_actorNo = (event as JoinResponse).getActorNo();
+					debug("actor"+_actorNo + " got Photon Response: join! " + (event as JoinResponse).getReturnDebug());
+					//initChat();
+					break;
+				
+				case LeaveResponse.TYPE:
+					debug("actor"+_actorNo + " got Photon Response: leave! " + (event as LeaveResponse).getReturnDebug());
+					break;
+				
+				case CustomResponse.TYPE:
+					debug("actor"+_actorNo + " got Photon Response: custom! " + (event as CustomResponse).getReturnDebug());
+					break;
+			}
+		}
+		
+		/**
+		 * handles all the events dispatched by photon
+		 * 
+		 * @param event 
+		 */
+		private function onPhotonEvent(event:Event) : void {
+			debug("type of event:_ " + event.type);
+			switch(event.type){
+				case Event.CLOSE:
+					debug("!!!connection to server closed!!!");
+					
+					/*_alertbox.sMsgTxt.text = "Connection to the server closed!";
+					if(_alertbox.stage == null) {
+						addChild(_alertbox);
+					}*/
+					break;
+				
+				case JoinEvent.TYPE:
+					debug("actor"+_actorNo+" got Photon Event: join!");
+					debug("=> actor who joined:"+(event as JoinEvent).getActorNo());
+					debug("=> " + (event as JoinEvent).getActorlist().length + " actors in room:" + (event as JoinEvent).getActorlist().join(", "));
+					
+					//initUserList();
+					break;
+				
+				case LeaveEvent.TYPE:
+					debug("actor"+_actorNo+" got Photon Event: leave!");
+					debug("=> actor who left:"+(event as LeaveEvent).getActorNo());
+					debug("=> " + (event as LeaveEvent).getActorlist().length + " actors in room:" + (event as LeaveEvent).getActorlist().join(", "));
+					
+					//initUserList();
+					break;
+				
+				case ChatEvent.TYPE:
+					debug("actor"+_actorNo+" got Photon Event: custom!");
+					debug("=> actor who sent message:"+(event as ChatEvent).getActorNo());
+					debug("=> message:"+(event as ChatEvent).getMessage());
+					
+					printChatLine("actor" + (event as ChatEvent).getActorNo(), (event as ChatEvent).getMessage());
+					break;
+			}
+		}
+		
+		/**
+		 * handles all the errors dispatched by photon
+		 * 
+		 * @param event
+		 */
+		private function onPhotonError(event:Event) : void {
+			debug("############ ERROR ############");
+			debug(""+event);
+			switch(event.type){
+				case IOErrorEvent.IO_ERROR:
+					//_alertbox.sMsgTxt.text = "IO_ERROR: Connection to server failed!";
+					break;
+				
+				case SecurityErrorEvent.SECURITY_ERROR:
+					//_alertbox.sMsgTxt.text = "SECURITY_ERROR: Could not read security policy file!";
+					break;
+				
+				case PhotonErrorEvent.ERROR:
+					// ERR_MESSAGE_SIZE means that the chat message length exceeds the possible message size
+					// in this case a message was canceled and has not been broadcasted
+					if (PhotonErrorEvent(event).getCode() == CoreConstants.ERR_MESSAGE_SIZE) {
+						printChatLine("System", "This message was too big, complete operation call canceled. No message was sent.");
+						return;
+					}
+					break;
+				
+				default:
+					break;
+			}
+			
+			/*if(_alertbox.stage == null) {
+				addChild(_alertbox);
+			}*/
+		}		
+	}
+}

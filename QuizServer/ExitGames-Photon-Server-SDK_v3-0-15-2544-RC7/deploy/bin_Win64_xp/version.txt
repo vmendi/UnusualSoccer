@@ -1,0 +1,8 @@
+PhotonSocketServer.2010
+x64 Unicode Release XP
+BuildDate: 2011-11-17 14:47:57
+Version: 3.0.9.841
+SVN repository: photon-socketserver
+SVN revisions of...
+... this project: 841
+... bin-tools: 82

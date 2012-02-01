@@ -1,0 +1,146 @@
+4524: 01:58:38.048 - Restarting application: "QuizLite" due to file changes
+4524: 01:58:38.074 - Application: "QuizLite" restart request
+4524: 01:58:39.001 - Application: "QuizLite" started in app domain: 11
+7108: 02:04:35.547 - Service is stopped...
+7108: 02:04:35.554 - Server shutting down...
+7108: 02:04:35.554 - Notifying CLR applications of shutdown...
+11688: 02:06:38.441 - ---
+11688: 02:06:38.441 - Service: "Photon Socket Server" starting
+11688: 02:06:38.441 - Config File: C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\bin_Win32\PhotonServer.config
+11688: 02:06:38.443 - Will produce at most: 10 crash dumps
+11688: 02:06:38.443 - Server Starting...
+11688: 02:06:38.443 -    Tick count: 22623498 (wraps in: 49.4484 days)
+11688: 02:06:38.443 - Tick count 64: 22623498
+11688: 02:06:38.443 - Photon Version: 3.0.9.841
+11688: 02:06:38.444 - Config File: C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\bin_Win32\PhotonServer.config
+11688: 02:06:38.445 - Not using performance counters as they are not currently installed. Run the service with /InstallCounters to install them.
+11688: 02:06:38.459 - About to load runtime: PhotonHostRuntime.PhotonDomainManager from PhotonHostRuntime, Culture=neutral, PublicKeyToken=02C301B61B060C4D
+11688: 02:06:38.460 - About to load CLR - versions available:
+11688: 02:06:38.460 - v2.0.50727
+11688: 02:06:38.460 - v4.0.30319
+11688: 02:06:38.460 - No preference in configuration file, will load latest.
+11688: 02:06:38.460 - About to load version: "v4.0.30319"
+11688: 02:06:38.463 - Loaded version: "v4.0.30319"
+11688: 02:06:39.097 - Photon host runtime loaded
+11688: 02:06:39.106 - License is valid.
+11688: 02:06:39.106 - Licensed for 100 concurrent connections.
+11688: 02:06:39.106 - Max Reliable Data In Transit (awaiting ACKs) per peer : 16384 bytes
+11688: 02:06:39.106 - Per peer bandwidth limit
+11688: 02:06:39.106 - Transmit Rate Limit: 128 KB/Sec
+11688: 02:06:39.106 - Limit period: 250ms
+11688: 02:06:39.106 - Limit per period: 32768 bytes
+11688: 02:06:39.106 - Max queued data for transmission per peer: 65536 bytes
+11688: 02:06:39.106 - Minimum retransmit timeout: 200
+11688: 02:06:39.106 - Minimum ENet timeout: 5000ms
+11688: 02:06:39.106 - Maximum ENet timeout: 30000ms
+11688: 02:06:39.106 - ENetHost: Using Timer Wheel
+11688: 02:06:39.106 - About to load application: QuizLite from QuizLite
+11688: 02:06:39.106 - Auto restart is enabled for application
+11688: 02:06:39.106 - Application will restart 10000ms after the last change detected
+11688: 02:06:39.106 - Application will restart if files matching the following are changed: "dll;config"
+11688: 02:06:39.106 - Application will NOT restart if files matching the following are changed: "log4net.config"
+11688: 02:06:39.852 - Application: "QuizLite" started in app domain: 2
+11688: 02:06:39.852 - About to load application: LiteWebSockets from Lite
+11688: 02:06:40.290 - Application: "LiteWebSockets" started in app domain: 3
+11688: 02:06:40.290 - About to load application: CounterPublisher from CounterPublisher
+11688: 02:06:40.290 - Auto restart is enabled for application
+11688: 02:06:40.290 - Application will restart 10000ms after the last change detected
+11688: 02:06:40.290 - Application will restart if files matching the following are changed: "dll;config"
+11688: 02:06:40.290 - Application will NOT restart if files matching the following are changed: "log4net.config"
+11688: 02:06:40.729 - Application: "CounterPublisher" started in app domain: 4
+11688: 02:06:40.729 - About to load application: Policy from Policy.Application
+11688: 02:06:41.133 - Application: "Policy" started in app domain: 5
+11688: 02:06:41.133 - Adding TCP listener on :0.0.0.0: 4530 with a listen backlog of: 150
+11688: 02:06:41.134 - Nagle disabled
+11688: 02:06:41.134 - TCP inactivity timeout: 5000ms
+11688: 02:06:41.134 - UDP address specified as:0.0.0.0 adding listener to each available IPv4 address
+11688: 02:06:41.134 - Adding UDP listener on :192.168.1.2: 5055 with a listen backlog of: 500
+11688: 02:06:41.134 - Adding UDP listener on :127.0.0.1: 5055 with a listen backlog of: 500
+11688: 02:06:41.134 - Adding TCP Policy listener on :0.0.0.0: 843 with a listen backlog of: 150 and routing to application: "Policy"
+11688: 02:06:41.134 - TCP inactivity timeout: 5000ms
+11688: 02:06:41.134 - Adding TCP Policy listener on :0.0.0.0: 943 with a listen backlog of: 150 and routing to application: "Policy"
+11688: 02:06:41.134 - TCP inactivity timeout: 5000ms
+11688: 02:06:41.135 - Adding WebSocket TCP listener on :0.0.0.0: 9090 with a listen backlog of: 150
+11688: 02:06:41.135 - Nagle disabled
+11688: 02:06:41.135 - TCP inactivity timeout: 100000ms
+11688: 02:06:41.135 - Forcing all applications ids to: "LiteWebSockets"
+11688: 02:06:51.028 - Service is running...
+11324: 02:24:24.421 - Restarting application: "QuizLite" due to file changes
+11324: 02:24:24.421 - Application: "QuizLite" restart request
+11324: 02:24:25.113 - Application: "QuizLite" started in app domain: 6
+11324: 02:24:25.209 - Application: "QuizLite" stopped in app domain: 2
+11324: 02:24:25.209 - Application: "QuizLite" restart complete.
+12180: 02:25:17.265 - CManagedHost::OnDomainUnload() - 2
+11324: 02:28:15.149 - Restarting application: "QuizLite" due to file changes
+11324: 02:28:15.149 - Application: "QuizLite" restart request
+11324: 02:28:15.626 - Application: "QuizLite" started in app domain: 7
+11324: 02:28:15.720 - Application: "QuizLite" stopped in app domain: 6
+11324: 02:28:15.720 - Application: "QuizLite" restart complete.
+12180: 02:28:30.220 - CManagedHost::OnDomainUnload() - 6
+11324: 02:30:02.411 - Restarting application: "QuizLite" due to file changes
+11324: 02:30:02.411 - Application: "QuizLite" restart request
+11324: 02:30:03.035 - Application: "QuizLite" started in app domain: 8
+11324: 02:30:03.191 - Application: "QuizLite" stopped in app domain: 7
+11324: 02:30:03.191 - Application: "QuizLite" restart complete.
+12180: 02:30:06.015 - CManagedHost::OnDomainUnload() - 7
+8120: 12:05:55.956 - ---
+8120: 12:05:55.956 - Service: "Photon Socket Server" starting
+8120: 12:05:55.956 - Config File: C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\bin_Win32\PhotonServer.config
+8120: 12:05:55.958 - Will produce at most: 10 crash dumps
+8120: 12:05:55.958 - Server Starting...
+8120: 12:05:55.958 -    Tick count: 4508007 (wraps in: 49.6581 days)
+8120: 12:05:55.958 - Tick count 64: 4508007
+8120: 12:05:55.958 - Photon Version: 3.0.9.841
+8120: 12:05:55.958 - Config File: C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\bin_Win32\PhotonServer.config
+8120: 12:05:55.959 - Not using performance counters as they are not currently installed. Run the service with /InstallCounters to install them.
+8120: 12:05:56.173 - About to load runtime: PhotonHostRuntime.PhotonDomainManager from PhotonHostRuntime, Culture=neutral, PublicKeyToken=02C301B61B060C4D
+8120: 12:05:56.174 - About to load CLR - versions available:
+8120: 12:05:56.174 - v2.0.50727
+8120: 12:05:56.174 - v4.0.30319
+8120: 12:05:56.174 - No preference in configuration file, will load latest.
+8120: 12:05:56.174 - About to load version: "v4.0.30319"
+8120: 12:05:56.176 - Loaded version: "v4.0.30319"
+8120: 12:05:57.033 - Photon host runtime loaded
+8120: 12:05:57.043 - License is valid.
+8120: 12:05:57.043 - Licensed for 100 concurrent connections.
+8120: 12:05:57.043 - Max Reliable Data In Transit (awaiting ACKs) per peer : 16384 bytes
+8120: 12:05:57.043 - Per peer bandwidth limit
+8120: 12:05:57.043 - Transmit Rate Limit: 128 KB/Sec
+8120: 12:05:57.043 - Limit period: 250ms
+8120: 12:05:57.043 - Limit per period: 32768 bytes
+8120: 12:05:57.043 - Max queued data for transmission per peer: 65536 bytes
+8120: 12:05:57.043 - Minimum retransmit timeout: 200
+8120: 12:05:57.043 - Minimum ENet timeout: 5000ms
+8120: 12:05:57.043 - Maximum ENet timeout: 30000ms
+8120: 12:05:57.043 - ENetHost: Using Timer Wheel
+8120: 12:05:57.043 - About to load application: QuizLite from QuizLite
+8120: 12:05:57.043 - Auto restart is enabled for application
+8120: 12:05:57.043 - Application will restart 10000ms after the last change detected
+8120: 12:05:57.043 - Application will restart if files matching the following are changed: "dll;config"
+8120: 12:05:57.043 - Application will NOT restart if files matching the following are changed: "log4net.config"
+8120: 12:05:57.903 - Application: "QuizLite" started in app domain: 2
+8120: 12:05:57.903 - About to load application: LiteWebSockets from Lite
+8120: 12:05:58.404 - Application: "LiteWebSockets" started in app domain: 3
+8120: 12:05:58.404 - About to load application: CounterPublisher from CounterPublisher
+8120: 12:05:58.404 - Auto restart is enabled for application
+8120: 12:05:58.404 - Application will restart 10000ms after the last change detected
+8120: 12:05:58.404 - Application will restart if files matching the following are changed: "dll;config"
+8120: 12:05:58.404 - Application will NOT restart if files matching the following are changed: "log4net.config"
+8120: 12:05:59.142 - Application: "CounterPublisher" started in app domain: 4
+8120: 12:05:59.142 - About to load application: Policy from Policy.Application
+8120: 12:05:59.754 - Application: "Policy" started in app domain: 5
+8120: 12:05:59.754 - Adding TCP listener on :0.0.0.0: 4530 with a listen backlog of: 150
+8120: 12:05:59.754 - Nagle disabled
+8120: 12:05:59.754 - TCP inactivity timeout: 5000ms
+8120: 12:05:59.755 - UDP address specified as:0.0.0.0 adding listener to each available IPv4 address
+8120: 12:05:59.755 - Adding UDP listener on :192.168.1.105: 5055 with a listen backlog of: 500
+8120: 12:05:59.755 - Adding UDP listener on :127.0.0.1: 5055 with a listen backlog of: 500
+8120: 12:05:59.755 - Adding TCP Policy listener on :0.0.0.0: 843 with a listen backlog of: 150 and routing to application: "Policy"
+8120: 12:05:59.755 - TCP inactivity timeout: 5000ms
+8120: 12:05:59.756 - Adding TCP Policy listener on :0.0.0.0: 943 with a listen backlog of: 150 and routing to application: "Policy"
+8120: 12:05:59.756 - TCP inactivity timeout: 5000ms
+8120: 12:05:59.756 - Adding WebSocket TCP listener on :0.0.0.0: 9090 with a listen backlog of: 150
+8120: 12:05:59.756 - Nagle disabled
+8120: 12:05:59.756 - TCP inactivity timeout: 100000ms
+8120: 12:05:59.756 - Forcing all applications ids to: "LiteWebSockets"
+8120: 12:06:08.444 - Service is running...

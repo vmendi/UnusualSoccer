@@ -1,0 +1,61 @@
+3292: 10:47:51.958 - ---
+3292: 10:47:51.959 - Service: "Photon Socket Server" starting
+3292: 10:47:51.959 - Config File: C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\bin_Win32\PhotonServer.config
+3292: 10:47:51.963 - Will produce at most: 10 crash dumps
+3292: 10:47:51.963 - Server Starting...
+3292: 10:47:51.963 -    Tick count: 1694014 (wraps in: 49.6907 days)
+3292: 10:47:51.963 - Tick count 64: 1694014
+3292: 10:47:51.964 - Photon Version: 3.0.9.841
+3292: 10:47:51.964 - Config File: C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\bin_Win32\PhotonServer.config
+3292: 10:47:51.968 - Not using performance counters as they are not currently installed. Run the service with /InstallCounters to install them.
+3292: 10:47:52.002 - About to load runtime: PhotonHostRuntime.PhotonDomainManager from PhotonHostRuntime, Culture=neutral, PublicKeyToken=02C301B61B060C4D
+3292: 10:47:52.003 - About to load CLR - versions available:
+3292: 10:47:52.003 - v2.0.50727
+3292: 10:47:52.003 - v4.0.30319
+3292: 10:47:52.003 - No preference in configuration file, will load latest.
+3292: 10:47:52.003 - About to load version: "v4.0.30319"
+3292: 10:47:52.008 - Loaded version: "v4.0.30319"
+3292: 10:47:52.913 - Photon host runtime loaded
+3292: 10:47:52.922 - License is valid.
+3292: 10:47:52.922 - Licensed for 100 concurrent connections.
+3292: 10:47:52.922 - Max Reliable Data In Transit (awaiting ACKs) per peer : 16384 bytes
+3292: 10:47:52.922 - Per peer bandwidth limit
+3292: 10:47:52.922 - Transmit Rate Limit: 128 KB/Sec
+3292: 10:47:52.922 - Limit period: 250ms
+3292: 10:47:52.922 - Limit per period: 32768 bytes
+3292: 10:47:52.922 - Max queued data for transmission per peer: 65536 bytes
+3292: 10:47:52.922 - Minimum retransmit timeout: 200
+3292: 10:47:52.922 - Minimum ENet timeout: 5000ms
+3292: 10:47:52.922 - Maximum ENet timeout: 30000ms
+3292: 10:47:52.923 - ENetHost: Using Timer Wheel
+3292: 10:47:52.923 - About to load application: QuizLite from QuizLite
+3292: 10:47:52.923 - Auto restart is enabled for application
+3292: 10:47:52.923 - Application will restart 10000ms after the last change detected
+3292: 10:47:52.923 - Application will restart if files matching the following are changed: "dll;config"
+3292: 10:47:52.923 - Application will NOT restart if files matching the following are changed: "log4net.config"
+3292: 10:47:53.662 - Application: "QuizLite" started in app domain: 2
+3292: 10:47:53.662 - About to load application: LiteWebSockets from Lite
+3292: 10:47:54.078 - Application: "LiteWebSockets" started in app domain: 3
+3292: 10:47:54.078 - About to load application: CounterPublisher from CounterPublisher
+3292: 10:47:54.078 - Auto restart is enabled for application
+3292: 10:47:54.078 - Application will restart 10000ms after the last change detected
+3292: 10:47:54.078 - Application will restart if files matching the following are changed: "dll;config"
+3292: 10:47:54.078 - Application will NOT restart if files matching the following are changed: "log4net.config"
+3292: 10:47:54.468 - Application: "CounterPublisher" started in app domain: 4
+3292: 10:47:54.468 - About to load application: Policy from Policy.Application
+3292: 10:47:54.862 - Application: "Policy" started in app domain: 5
+3292: 10:47:54.862 - Adding TCP listener on :0.0.0.0: 4530 with a listen backlog of: 150
+3292: 10:47:54.862 - Nagle disabled
+3292: 10:47:54.862 - TCP inactivity timeout: 5000ms
+3292: 10:47:54.862 - UDP address specified as:0.0.0.0 adding listener to each available IPv4 address
+3292: 10:47:54.863 - Adding UDP listener on :192.168.1.105: 5055 with a listen backlog of: 500
+3292: 10:47:54.863 - Adding UDP listener on :127.0.0.1: 5055 with a listen backlog of: 500
+3292: 10:47:54.863 - Adding TCP Policy listener on :0.0.0.0: 843 with a listen backlog of: 150 and routing to application: "Policy"
+3292: 10:47:54.863 - TCP inactivity timeout: 5000ms
+3292: 10:47:54.863 - Adding TCP Policy listener on :0.0.0.0: 943 with a listen backlog of: 150 and routing to application: "Policy"
+3292: 10:47:54.863 - TCP inactivity timeout: 5000ms
+3292: 10:47:54.863 - Adding WebSocket TCP listener on :0.0.0.0: 9090 with a listen backlog of: 150
+3292: 10:47:54.863 - Nagle disabled
+3292: 10:47:54.863 - TCP inactivity timeout: 100000ms
+3292: 10:47:54.863 - Forcing all applications ids to: "LiteWebSockets"
+3292: 10:48:02.944 - Service is running...
