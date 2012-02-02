@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Weborb.Util.Logging;
 
 namespace NetEngine
 {
@@ -21,6 +22,11 @@ namespace NetEngine
 
         public virtual void JoinActor(NetActor actor)
         {
+            Log.log(NetEngineMain.NETENGINE_VERBOSE, "Actor joined Room: " + mName + " ActorID:" + actor.ActorID);
+
+            if (actor.Room != null && actor.Room == this)
+                Log.log(NetEngineMain.NETENGINE_DEBUG, "WTF Join duplicado");
+
             if (actor.Room != null)
                 actor.Room.LeaveActor(actor);
 
@@ -28,12 +34,14 @@ namespace NetEngine
             actor.Room = this;
         }
 
-        public virtual void LeaveActor(NetActor who)
+        public virtual void LeaveActor(NetActor actor)
         {
-            if (!mActorsInRoom.Remove(who))
+            Log.log(NetEngineMain.NETENGINE_VERBOSE, "Actor left Room: " + mName + " ActorID:" + actor.ActorID);
+
+            if (!mActorsInRoom.Remove(actor))
                 throw new Exception("El NetPlug no estaba en esta habitacion");
 
-            who.Room = null;
+            actor.Room = null;
         }
         
         public virtual IList<NetActor> ActorsInRoom

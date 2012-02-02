@@ -81,7 +81,10 @@ package Match
 		{
 			MatchConfig.OfflineMode = false;
 			
-			LoadMatchResources(innerInit);
+			try {
+				LoadMatchResources(innerInit);
+			}
+			catch(e:Error) { ErrorMessages.LogToServer("LoadMatchResources! " + e.message); }
 
 			function innerInit() : void
 			{
@@ -104,7 +107,7 @@ package Match
 						// Hemos comprobado que a aqui se llega en muy rara ocasión sin stage. Forzosamente tiene que ser
 						// que nos han quitado de la stage desde que se llamo al Init, pero sin llamarnos a Shutdown. Hipotesis:
 						// - Algun tipo de navegacion dentro del manager (desde un popup?) que provoca salir de la pantalla RealtimeMatch
-						// - 
+						// - La botonera principal envia su mensaje tarde, cuando ya estamos en el partido. 
 						ErrorMessages.ResourceLoadFailed();
 					}
 				}

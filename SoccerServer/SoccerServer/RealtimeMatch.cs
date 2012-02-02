@@ -39,7 +39,7 @@ namespace SoccerServer
         public const String MATCHLOG_VERBOSE = "MATCH VERBOSE";
         public const String MATCHLOG_ERROR = "MATCH ERROR";
                 
-        public const int MinClientVersion = 201;                    // Versión mínima que exigimos a los clientes para jugar
+        public const int MinClientVersion = 203;                    // Versión mínima que exigimos a los clientes para jugar
         
         RealtimePlayer[] Players = new RealtimePlayer[2];             // Los jugadores en el manager
         RealtimePlayerData[] PlayersData = new RealtimePlayerData[2]; // Los jugadores en el manager
@@ -146,7 +146,7 @@ namespace SoccerServer
 
 
         #region Init
-        public RealtimeMatch(RealtimeMatchCreator matchCreator, NetLobby netLobby) : base(netLobby, "Match" + matchCreator.MatchID)
+        public RealtimeMatch(RealtimeMatchCreator matchCreator, NetLobby netLobby) : base(netLobby, "MatchID " + matchCreator.MatchID)
         {
             mMatchID = matchCreator.MatchID;
                         
@@ -163,9 +163,8 @@ namespace SoccerServer
             TurnLength = matchCreator.TurnDuration;
             RemainingSecs = MatchLength / 2;
 
-            LogEx("Init Match: FirstPlayer: " + Players[Player1].Name + " - " + Players[Player1].FacebookID +
-                  " SecondPlayer: " + Players[Player2].Name + " - " + Players[Player2].FacebookID + 
-                  " MinClientVersion required " + MinClientVersion);
+            LogEx("FirstPlayer: " + Players[Player1].Name + " - " + Players[Player1].FacebookID + " - " + Players[Player1].ActorID +
+                  " SecondPlayer: " + Players[Player2].Name + " - " + Players[Player2].FacebookID + " - " + Players[Player2].ActorID);
 
             JoinActor(Players[Player1]);
             JoinActor(Players[Player2]);
@@ -487,6 +486,8 @@ namespace SoccerServer
 
         private RealtimeMatchResult Finish()
         {
+            LogEx("Finish");
+
             RealtimeMatchResult result = null;
             CurState = State.End;
             
@@ -512,6 +513,8 @@ namespace SoccerServer
         // Uno de los dos players se ha desconectado
         override public void LeaveActor(NetActor who)
         {
+            LogEx("LeaveActor: Player: " + GetIdPlayer(who as RealtimePlayer));
+
             RealtimePlayer self = who as RealtimePlayer;
             RealtimePlayer opp = GetOpponentOf(self);
 
@@ -526,13 +529,10 @@ namespace SoccerServer
         
         public void LogEx(string message, string category = MATCHLOG_VERBOSE)
         {
-            string finalMessage = " MatchID: " + MatchID + " Time: " + this.ServerTime + " " + message;
+            string finalMessage = " MatchID: " + MatchID + " " + message;
             finalMessage += " <ServerVars>: CurState=" + CurState + 
-                            " CountPlayersEndShoot=" + CountPlayersEndShoot + 
-                            " CountPlayersSetTurn=" + CountPlayersSetTurn +
-                            " CountPlayersReportGoal=" + CountPlayersReportGoal + 
-                            " Part=" + Part + " RemainingSecs=" + RemainingSecs + 
-                            " ScoredGoals1=" + PlayersState[Player1].ScoredGoals + " ScoredGoals2=" + PlayersState[Player2].ScoredGoals;
+                            " Part=" + Part + " RemainingSecs=" + RemainingSecs + " Time=" + ServerTime +
+                            " Goals0=" + PlayersState[Player1].ScoredGoals + " Goals1=" + PlayersState[Player2].ScoredGoals;
 
             Log.log(category, finalMessage);
         }
