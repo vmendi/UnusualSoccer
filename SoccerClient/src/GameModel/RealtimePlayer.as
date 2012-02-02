@@ -23,8 +23,15 @@ package GameModel
 		public function RealtimePlayer(fromServer : Object)
 		{
 			if (fromServer != null)
+			{
 				for (var val : String in fromServer)
+				{
+					if (!this.hasOwnProperty(val))
+						throw new Error("La propiedad no existe en RealtimePlayer"); 
+					
 					this[val]= fromServer[val];
+				}
+			}
 		}
 	}
 }

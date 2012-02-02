@@ -261,25 +261,31 @@ package GameModel
 		// secondActorID será el que lanzó el challenge
 		public function PushedStartMatch(firstActorID : int, secondActorID : int, bFriendly : Boolean) : void
 		{
+			if (TheRoomModel == null || mMatch != null)
+				throw new Error("WTF 12333333 " + (TheRoomModel==null? "R0" : "R1") + (mMatch == null? "M0" : "M1"));
+			
 			TheRoomModel.LogOff();
 			TheRoomModel = null;
 			
 			// Ya no estamos buscando
 			SwitchLookingForMatchResponded(false);
+				
+			mMatch = new MatchMain();
 			
-			if (mMatch != null)
-				throw new Error("WTF 543");
-			
-			mMatch = new MatchMain();			
 			mMatch.addEventListener("OnMatchEnded", OnMatchEnded);
 			mMatch.addEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage);
 
 			// Nosotros lanzamos la señal y alguien (RealtimeMatch.mxml) se encargara de añadirlo a la stage
-			MatchStarted.dispatch();
+			MatchStarted.dispatch();			
 		}
 		
 		private function OnMatchAddedToStage(e:Event) : void
 		{
+			// Ocurrira si llega un PushedMatchAbandoned inmediatamente despues del PushedStartMatch?
+			// Creo que es imposible puesto q removemos el evento en OnMatchEnded
+			if (mMatch == null)
+				throw new Error("OnMatchAddedToStage: Es null");
+			
 			mMatch.removeEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage)
 			mMatch.Init(mServerConnection);
 		}
@@ -316,15 +322,11 @@ package GameModel
 		// partido puede no estar inicializado todavia.
 		public function PushedMatchAbandoned(result:Object) : void
 		{
-			if (mMatch != null)
-			{
-				// Esto provocara un OnMatchEnded
-				mMatch.Shutdown(result);
-			}
-			else
-			{
-				ErrorMessages.LogToServer("WTF 4192: Ha llegado un PushedMatchAbandoned sin tener partido!");
-			}
+			if (mMatch == null)
+				throw new Error("WTF 4192: Ha llegado un PushedMatchAbandoned sin tener partido!");
+			
+			// Esto provocara un OnMatchEnded
+			mMatch.Shutdown(result);
 		}
 		
 		public function PushedBroadcastMsg(msg : String) : void

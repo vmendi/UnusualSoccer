@@ -9,6 +9,7 @@ namespace NetEngine
     public class NetEngineMain
     {
         internal const String NETENGINE_DEBUG = "NETENGINE DEBUG";
+        internal const String NETENGINE_VERBOSE = "NETENGINE VERBOSE";
         internal const String NETENGINE_DEBUG_BUFFER = "NETENGINE DEBUG BUFFER";
         internal const String NETENGINE_DEBUG_THREADING = "NETENGINE DEBUG THREADING";
         internal const String NETENGINE_DEBUG_KEEPALIVE = "NETENGINE DEBUG KEEPALIVE";
@@ -21,6 +22,7 @@ namespace NetEngine
         public void Start()
         {
             Log.startLogging(NETENGINE_DEBUG);
+            Log.startLogging(NETENGINE_VERBOSE);
             //Log.startLogging(NETENGINE_DEBUG_BUFFER);
             //Log.startLogging(NETENGINE_DEBUG_THREADING);
             //Log.startLogging(NETENGINE_DEBUG_KEEPALIVE);

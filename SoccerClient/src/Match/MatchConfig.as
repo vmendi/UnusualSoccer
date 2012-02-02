@@ -14,7 +14,7 @@ package Match
 		public static const DebugPhysic:Boolean = false;		// Indica si depuramos la física (pintar el mundo físico y otras cosas más)
 		public static const DragPhysicObjects:Boolean = false;	// Indica si podemos arrastrar los objetos físicos con el ratón
 				
-		public static const ClientVersion:int = 201;			// Versión del cliente
+		public static const ClientVersion:int = 203;			// Versión del cliente
 				
 		public static const PhyFPS:int = 30;					// La física se ejecuta 30 veces por segundo
 		public static const PixelsPerMeter:uint = 30;			// 30 píxeles es igual a 1 metro físico

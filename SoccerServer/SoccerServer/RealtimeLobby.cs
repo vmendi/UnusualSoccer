@@ -17,12 +17,10 @@ namespace SoccerServer
         public override void OnLobbyStart(NetServer netServer)
         {
             Log.startLogging(REALTIME);
-            /*
             Log.startLogging(REALTIME_DEBUG);
             Log.startLogging(RealtimeMatch.MATCHLOG_ERROR);
             Log.startLogging(RealtimeMatch.MATCHLOG_VERBOSE);
-             */
-
+             
             Log.log(REALTIME, "************************* Realtime Starting *************************");
 
             mNetServer = netServer;
@@ -184,6 +182,10 @@ namespace SoccerServer
         {
             bool bRet = false;
 
+            // Es posible que nos llegue cuando ya se ha comenzado un partido (nuestro PushedMatchStarted todavia está volando, no ha llegado al cliente)
+            if ((from.Actor as RealtimePlayer).Room is RealtimeMatch)
+                return bRet;
+
             if (!mLookingForMatch.Remove(from.Actor as RealtimePlayer))
             {
                 // Si no lo hemos removido, veamos si podemos añadirlo
@@ -197,7 +199,7 @@ namespace SoccerServer
                     }
                 }
             }
-                        
+                                    
             return bRet;
         }
 

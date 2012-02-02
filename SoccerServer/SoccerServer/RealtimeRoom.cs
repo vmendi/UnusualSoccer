@@ -8,8 +8,7 @@ namespace SoccerServer
 {
     public class RealtimeRoom : NetRoom
     {
-        public RealtimeRoom(NetLobby netLobby, string name)
-            : base(netLobby, name)
+        public RealtimeRoom(NetLobby netLobby, string name) : base(netLobby, name)
         {
         }
 
