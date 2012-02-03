@@ -191,7 +191,7 @@ namespace SoccerServer
                 // Si no lo hemos removido, veamos si podemos añadirlo
                 using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
                 {
-                    // Podemos no hacer el Switch debido a que no sea valido el ticket. El ActorID es siempre el PlayerID de la DB.
+                    // Podemos negarnos a hacer el Switch debido a que no sea valido el ticket. El ActorID es siempre el PlayerID de la DB.
                     if (CheckTicketValidity(theContext, from.Actor.ActorID))
                     {
                         mLookingForMatch.Add(from.Actor as RealtimePlayer);

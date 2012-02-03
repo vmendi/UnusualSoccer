@@ -25,12 +25,13 @@ package Match
 		public static const LowCapMaxImpulse:Number = 160.0;	// Maximo impulso para una chapa de POTENCIA 0 cuando se dispara a la máxima potencia
 		public static const HighCapMaxImpulse:Number = 225.0;	// Maximo impulso para una chapa de POTENCIA 100 cuando se dispara a la máxima potencia
 		
-		public static const MaxHitsPerTurn:int = 3;				// Nº de disparos máximos por turno si no se toca la pelota
+		public static const MaxHitsPerTurn:int = 2;				// Nº de disparos máximos por turno si no se toca la pelota
 		public static const MaxNumPasesAlPie:int = 2;			// No de pases al pie máximos permitidos
 		
 		public static const DistToPutBallHandling:int = 10;		// Distancia a la chapa a la que colocamos la pelota cuando se recibe un pase al pie
 		
-		public static const AutoPasePermitido:Boolean = true;	// La chapa con la que se dispara puede recibir pase al pie despues de tocar el balon
+		public static const AutoPasePermitido:Boolean = true;			// La chapa con la que se dispara puede recibir pase al pie despues de tocar el balon
+		public static const PorteroTeletransportado:Boolean = false;	// Portero teletransportado o portero parallelshoot?
 		
 		public static const CapMass:Number = 4;
 		public static const CapLinearDamping:Number = 5;
