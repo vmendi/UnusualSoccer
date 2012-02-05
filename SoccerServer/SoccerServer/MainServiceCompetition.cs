@@ -249,7 +249,7 @@ namespace SoccerServer
 
             stopWatch.Stop();
 
-            Log.log(MAINSERVICE, "MainServiceCompetition.CheckSeasonEnd: Elapsed miliseconds " + stopWatch.Elapsed.TotalMilliseconds.ToString());
+            Log.log(MAINSERVICE_INVOKE, "MainServiceCompetition.CheckSeasonEnd: " + stopWatch.ElapsedMilliseconds);
         }
 
         // En las fecha de creacion, siempre insertamos la verdadera. Luego los calculos los haremos con la teorica

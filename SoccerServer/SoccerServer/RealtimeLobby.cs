@@ -5,6 +5,7 @@ using System.Linq;
 using Weborb.Util.Logging;
 using SoccerServer.BDDModel;
 using NetEngine;
+using System.Diagnostics;
 
  
 namespace SoccerServer
@@ -14,22 +15,14 @@ namespace SoccerServer
         public static readonly int[] MATCH_DURATION_SECONDS = new int[] { 5 * 60, 10 * 60, 15 * 60 };
         public static readonly int[] TURN_DURATION_SECONDS = new int[] { 5, 10, 15 };
 
+        public static readonly int MAX_ACTORS_PER_ROOM = 50;
+
         public override void OnLobbyStart(NetServer netServer)
-        {
-            Log.startLogging(REALTIME);
-            Log.startLogging(REALTIME_DEBUG);
-            Log.startLogging(RealtimeMatch.MATCHLOG_ERROR);
-            Log.startLogging(RealtimeMatch.MATCHLOG_VERBOSE);
-             
+        {             
             Log.log(REALTIME, "************************* Realtime Starting *************************");
 
             mNetServer = netServer;
             mLookingForMatch = new List<RealtimePlayer>();
-                                    
-            for (int c = 0; c < NUM_ROOMS; c++)
-            {
-                AddRoom(new RealtimeRoom(this, ROOM_PREFIX + c.ToString("d2")));
-            }
         }
 
         public override void OnLobbyEnd()
@@ -49,7 +42,6 @@ namespace SoccerServer
                 plug.Invoke("PushedDisconnected", "ServerShutdown");
             }
         }
-
 
         public override void OnClientConnected(NetPlug client)
         {
@@ -75,6 +67,9 @@ namespace SoccerServer
        
         public bool LogInToDefaultRoom(NetPlug myConnection, string facebookSession)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             bool bRet = true;
 
             // Preferimos asegurar que recreamos el RealtimePlayer para estar preparados para cuando el servidor de partidos este en otra maquina
@@ -84,7 +79,7 @@ namespace SoccerServer
             {
                 RealtimePlayer newPlayer = CreateRealtimePlayer(myConnection, facebookSession);
                 CloseOldConnectionFor(newPlayer);
-                GetPreferredRoom().JoinActor(newPlayer);
+                JoinActorToBestRoom(newPlayer);
 
                 Log.log(REALTIME_DEBUG, newPlayer.FacebookID + " " + newPlayer.ActorID + " logged in: " + newPlayer.Name);
             }
@@ -93,16 +88,60 @@ namespace SoccerServer
                 bRet = false;
                 Log.log(REALTIME, "Exception in LogInToDefaultRoom: " + e.ToString());
             }
+
+            Log.log(REALTIME_INVOKE, "LogInToDefaultRoom: " + stopwatch.ElapsedMilliseconds);
            
             return bRet;
         }
 
-        public NetRoom GetPreferredRoom()
+        public void JoinActorToBestRoom(NetActor actor)
         {
-            foreach (RealtimeRoom room in RoomsByType<RealtimeRoom>())
-                return room;
+            int minPlayersCount = int.MaxValue;
+            RealtimeRoom minPlayersRoom = null;
+            List<int> roomIDs = new List<int>(RoomsCount);
 
-            return null;
+            foreach (RealtimeRoom room in RoomsByType<RealtimeRoom>())
+            {
+                var actorsCount = room.ActorsInRoom.Count();
+                if (actorsCount < minPlayersCount)
+                {
+                    minPlayersCount = actorsCount;
+                    minPlayersRoom = room;
+                }
+
+                roomIDs.Add(room.RoomID);
+            }
+
+            if (minPlayersCount >= MAX_ACTORS_PER_ROOM)
+            {
+                // Buscamos un hueco entre los RoomIDs
+                roomIDs.Sort();
+
+                int availableRoomID = -1;
+                int numRooms = roomIDs.Count();
+
+                if (numRooms == 0 || roomIDs[0] != 1)
+                    availableRoomID = 1;
+                else
+                {
+                    for (int c = 0; c < numRooms - 1; ++c)
+                    {
+                        if (roomIDs[c] != roomIDs[c + 1] - 1)
+                        {
+                            availableRoomID = roomIDs[c] + 1;
+                            break;
+                        }
+                    }
+
+                    if (availableRoomID == -1)
+                        availableRoomID = roomIDs[numRooms - 1] + 1;
+                }
+
+                // Unico punto donde se crean RealtimeRooms
+                minPlayersRoom = AddRoom(new RealtimeRoom(this, availableRoomID)) as RealtimeRoom;
+            }
+            
+            minPlayersRoom.JoinActor(actor);
         }
 
         private RealtimePlayer CreateRealtimePlayer(NetPlug myConnection, string facebookSession)
@@ -261,10 +300,6 @@ namespace SoccerServer
             return closest;
         }
 
-        public int GetNumPeopleLookingForMatch()
-        {
-            return mLookingForMatch.Count;
-        }
 
         public void OnSecondsTick(float elapsedSeconds, float totalSeconds)
         {
@@ -299,6 +334,11 @@ namespace SoccerServer
             return RoomsByType<RealtimeRoom>().Select(room => room.ActorsInRoom.Count).Sum();
         }
 
+        public int GetNumPeopleLookingForMatch()
+        {
+            return mLookingForMatch.Count;
+        }
+
         public void SetBroadcastMsg(string msg)
         {
             mBroadcastMsg = msg;
@@ -325,9 +365,7 @@ namespace SoccerServer
         public const String REALTIME_DEBUG = "REALTIME DEBUG";
         public const String REALTIME_INVOKE = "REALTIME INVOKE";
 
-        private const String ROOM_PREFIX = "Room";
-        private const int NUM_ROOMS = 8;
-
+        
         private NetServer mNetServer;
 
         private List<RealtimePlayer> mLookingForMatch;

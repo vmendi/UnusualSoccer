@@ -10,6 +10,11 @@ namespace SoccerServer
 {
     public class RealtimeMatch : NetEngine.NetRoom
     {
+        protected override string NamePrefix 
+        { 
+            get { return "MatchID "; } 
+        }
+
         protected class ClientState
         {
             public int ShootCount = 0;
@@ -64,12 +69,10 @@ namespace SoccerServer
         private ClientState TheClientState = null;              // Debugeo de estado del cliente
         private int TotalShootCount = 0;                        // Tiros totales que se han producido en el partido
 
-        private int mMatchID;
-
         #region Interfaz hacia el manager
         public int MatchID
         {
-            get { return mMatchID; }
+            get { return RoomID; }
         }
 
         public bool IsRealtimePlayerInMatch(RealtimePlayer who)
@@ -146,10 +149,8 @@ namespace SoccerServer
 
 
         #region Init
-        public RealtimeMatch(RealtimeMatchCreator matchCreator, NetLobby netLobby) : base(netLobby, "MatchID " + matchCreator.MatchID)
-        {
-            mMatchID = matchCreator.MatchID;
-                        
+        public RealtimeMatch(RealtimeMatchCreator matchCreator, NetLobby netLobby) : base(netLobby, matchCreator.MatchID)
+        {                        
             Players[Player1] = matchCreator.FirstRealtimePlayer;
             Players[Player2] = matchCreator.SecondRealtimePlayer;
 

@@ -8,7 +8,12 @@ namespace SoccerServer
 {
     public class RealtimeRoom : NetRoom
     {
-        public RealtimeRoom(NetLobby netLobby, string name) : base(netLobby, name)
+        protected override string NamePrefix 
+        { 
+            get { return "Room "; } 
+        }
+
+        public RealtimeRoom(NetLobby netLobby, int roomID) : base(netLobby, roomID)
         {
         }
 
@@ -30,7 +35,10 @@ namespace SoccerServer
         {
             base.LeaveActor(actor);
 
-            Broadcast("PushedPlayerLeftTheRoom", actor);
+            if (ActorsInRoom.Count != 0)
+                Broadcast("PushedPlayerLeftTheRoom", actor);
+            else
+                NetLobby.RemoveRoom(this);
         }
 
         // Devolvemos el ActorID en caso de exito para ayudar al cliente

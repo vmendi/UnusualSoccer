@@ -143,7 +143,7 @@ namespace SoccerServer
                     theNewTeam = null;
                 }
 
-                Log.log(MAINSERVICE, "CreateTeam: " + stopwatch.ElapsedMilliseconds);
+                Log.log(MAINSERVICE_INVOKE, "CreateTeam: " + stopwatch.ElapsedMilliseconds);
 
                 return theNewTeam != null;
             }
@@ -223,7 +223,7 @@ namespace SoccerServer
                 mContext.SubmitChanges();
             }
 
-            Log.log(MAINSERVICE, "SwapFormationPosition: " + stopwatch.ElapsedMilliseconds);
+            Log.log(MAINSERVICE_INVOKE, "SwapFormationPosition: " + stopwatch.ElapsedMilliseconds);
 		}
 
 		public void ChangeFormation(string newFormationName)
@@ -245,7 +245,7 @@ namespace SoccerServer
                 }
             }
 
-            Log.log(MAINSERVICE, "ChangeFormation: " + stopwatch.ElapsedMilliseconds);
+            Log.log(MAINSERVICE_INVOKE, "ChangeFormation: " + stopwatch.ElapsedMilliseconds);
 		}
 
         [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 60000)]
@@ -278,7 +278,7 @@ namespace SoccerServer
                                         where s.IsCompleted
                                         select s.SpecialTrainingDefinitionID).ToList();
                 
-                Log.log(MAINSERVICE, "RefreshTeamDetails: " + stopwatch.ElapsedMilliseconds);
+                Log.log(MAINSERVICE_INVOKE, "RefreshTeamDetails: " + stopwatch.ElapsedMilliseconds);
 
                 return ret;
             }
@@ -337,7 +337,7 @@ namespace SoccerServer
                 }
             }
 
-            Log.log(MAINSERVICE, "GetExtraRewardForMatch: " + stopwatch.ElapsedMilliseconds);
+            Log.log(MAINSERVICE_INVOKE, "GetExtraRewardForMatch: " + stopwatch.ElapsedMilliseconds);
 
             return bRet;
         }

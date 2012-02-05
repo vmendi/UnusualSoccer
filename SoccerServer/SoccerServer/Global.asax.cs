@@ -54,7 +54,13 @@ namespace SoccerServer
 
             Log.startLogging(GLOBAL_LOG);
             Log.startLogging(MainService.MAINSERVICE);
+            Log.startLogging(MainService.MAINSERVICE_INVOKE);
             Log.startLogging(MainService.CLIENT_ERROR);
+            Log.startLogging(RealtimeLobby.REALTIME);
+            Log.startLogging(RealtimeLobby.REALTIME_INVOKE);
+            Log.startLogging(RealtimeLobby.REALTIME_DEBUG);
+            Log.startLogging(RealtimeMatch.MATCHLOG_ERROR);
+            Log.startLogging(RealtimeMatch.MATCHLOG_VERBOSE);
 
             Log.log(GLOBAL_LOG, "******************* Initialization from " + this.Server.MachineName + " Global.asax *******************");
 

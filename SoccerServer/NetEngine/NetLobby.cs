@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Weborb.Util.Logging;
 
 namespace NetEngine
 {
@@ -20,13 +21,19 @@ namespace NetEngine
         abstract public void OnClientDisconnected(NetPlug client);
 
 
-        public void AddRoom(NetRoom theRoom)
+        public NetRoom AddRoom(NetRoom theRoom)
         {
+            Log.log(NetEngineMain.NETENGINE_VERBOSE, "Room Added: " + theRoom.Name);
+
             mRooms.Add(theRoom);
+
+            return theRoom;
         }
 
         public void RemoveRoom(NetRoom theRoom)
         {
+            Log.log(NetEngineMain.NETENGINE_VERBOSE, "Room Removed: " + theRoom.Name);
+
             mRooms.Remove(theRoom);
         }
 
@@ -37,6 +44,11 @@ namespace NetEngine
                 if (mRooms[c] is T)
                     yield return mRooms[c] as T;
             }
+        }
+
+        public int RoomsCount 
+        { 
+            get { return mRooms.Count; } 
         }
 
         private List<NetRoom> mRooms = new List<NetRoom>();

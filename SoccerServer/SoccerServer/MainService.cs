@@ -12,6 +12,7 @@ namespace SoccerServer
 	public partial class MainService
 	{
 		public const String MAINSERVICE = "MAINSERVICE";
+        public const String MAINSERVICE_INVOKE = "MAINSERVICE INVOKE";
 		public const String CLIENT_ERROR = "CLIENT_ERROR";
 
         private SoccerDataModelDataContext CreateDataForRequest()
