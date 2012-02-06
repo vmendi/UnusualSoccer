@@ -13,6 +13,7 @@ using System.Data.Common;
 
 using Monty.Linq;
 using System.Web;
+using NetEngine;
 
 namespace SoccerServer
 {
@@ -23,8 +24,8 @@ namespace SoccerServer
         [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 60000)]
         public TransferModel.CompetitionGroup RefreshGroupForTeam(long facebookID)
         {
-            Stopwatch test = new Stopwatch();
-            test.Start();
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
             using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
             {
@@ -65,7 +66,7 @@ namespace SoccerServer
                         mContext.SubmitChanges();
                     }
 
-                    Log.log(MAINSERVICE, "RefreshGroupForTeam: " + test.ElapsedMilliseconds);
+                    Log.log(MAINSERVICE, "RefreshGroupForTeam: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
 
                     return ret;
                 }
@@ -224,8 +225,8 @@ namespace SoccerServer
 
         internal static void CheckSeasonEnd(bool forceEnd)
         {
-            Stopwatch stopWatch = new Stopwatch();
-            stopWatch.Start();
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
             using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
             {
@@ -247,9 +248,7 @@ namespace SoccerServer
                 }
             }
 
-            stopWatch.Stop();
-
-            Log.log(MAINSERVICE_INVOKE, "MainServiceCompetition.CheckSeasonEnd: " + stopWatch.ElapsedMilliseconds);
+            Log.log(MAINSERVICE_INVOKE, "CheckSeasonEnd: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
         }
 
         // En las fecha de creacion, siempre insertamos la verdadera. Luego los calculos los haremos con la teorica

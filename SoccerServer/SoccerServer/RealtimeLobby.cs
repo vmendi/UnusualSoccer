@@ -89,7 +89,8 @@ namespace SoccerServer
                 Log.log(REALTIME, "Exception in LogInToDefaultRoom: " + e.ToString());
             }
 
-            Log.log(REALTIME_INVOKE, "LogInToDefaultRoom: " + stopwatch.ElapsedMilliseconds);
+
+            Log.log(REALTIME_INVOKE, "LogInToDefaultRoom: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
            
             return bRet;
         }
@@ -98,10 +99,11 @@ namespace SoccerServer
         {
             int minPlayersCount = int.MaxValue;
             RealtimeRoom minPlayersRoom = null;
-            List<int> roomIDs = new List<int>(RoomsCount);
+            List<int> roomIDs = new List<int>(RoomsCount) { 0 };    // Empezamos a contar habitaciones desde ID==1
 
             foreach (RealtimeRoom room in RoomsByType<RealtimeRoom>())
             {
+                // Buscamos la que menos players tenga
                 var actorsCount = room.ActorsInRoom.Count();
                 if (actorsCount < minPlayersCount)
                 {
@@ -109,32 +111,25 @@ namespace SoccerServer
                     minPlayersRoom = room;
                 }
 
+                // Y por si estan todas llenas nos quedamos con los IDs para luego calcular el ID de la nueva que creemos
                 roomIDs.Add(room.RoomID);
             }
 
             if (minPlayersCount >= MAX_ACTORS_PER_ROOM)
             {
-                // Buscamos un hueco entre los RoomIDs
                 roomIDs.Sort();
 
-                int availableRoomID = -1;
                 int numRooms = roomIDs.Count();
+                int availableRoomID = roomIDs[numRooms - 1] + 1;    // En principio, el ultimo + 1
 
-                if (numRooms == 0 || roomIDs[0] != 1)
-                    availableRoomID = 1;
-                else
+                // Buscamos si hubiera un hueco anterior
+                for (int c = 0; c < numRooms - 1; ++c)
                 {
-                    for (int c = 0; c < numRooms - 1; ++c)
+                    if (roomIDs[c] != roomIDs[c + 1] - 1)
                     {
-                        if (roomIDs[c] != roomIDs[c + 1] - 1)
-                        {
-                            availableRoomID = roomIDs[c] + 1;
-                            break;
-                        }
+                        availableRoomID = roomIDs[c] + 1;
+                        break;
                     }
-
-                    if (availableRoomID == -1)
-                        availableRoomID = roomIDs[numRooms - 1] + 1;
                 }
 
                 // Unico punto donde se crean RealtimeRooms
@@ -206,6 +201,9 @@ namespace SoccerServer
 
         public void StartMatch(RealtimePlayer firstPlayer, RealtimePlayer secondPlayer, int matchLength, int turnLength, bool bFriendly)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             // Fuera de la lista de LookingForMatch, si estuvieran
             mLookingForMatch.Remove(firstPlayer);
             mLookingForMatch.Remove(secondPlayer);
@@ -215,10 +213,15 @@ namespace SoccerServer
 
             // Creacion del RealtimeMatch. El mismo se añade al lobby (nosotros) como Room.
             RealtimeMatch theNewMatch = new RealtimeMatch(bddMatchCreator, this);
+
+            Log.log(REALTIME_INVOKE, "StartMatch: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
         }
 
         public bool SwitchLookingForMatch(NetPlug from)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             bool bRet = false;
 
             // Es posible que nos llegue cuando ya se ha comenzado un partido (nuestro PushedMatchStarted todavia está volando, no ha llegado al cliente)
@@ -238,6 +241,8 @@ namespace SoccerServer
                     }
                 }
             }
+
+            Log.log(REALTIME_INVOKE, "SwitchLookingForMatch: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
                                     
             return bRet;
         }

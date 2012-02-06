@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Threading;
-using System.Collections;
 using Weborb.Util.Logging;
 using System.Reflection;
 using Weborb.Reader;
 using Weborb.Types;
+using System.Diagnostics;
 
 namespace NetEngine
 {
@@ -102,6 +100,9 @@ namespace NetEngine
 
         private void DeliverMessageToClient(QueuedNetInvokeMessage msg)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             Type targetMsgType = null;
             object targetForInvoke = null;
 
@@ -184,6 +185,9 @@ namespace NetEngine
             {
                 Log.log(NetEngineMain.NETENGINE_DEBUG, e.ToString());
             }
+
+            if (msg.MethodName != "OnSecondsTick")
+                Log.log(NetEngineMain.NETENGINE_INVOKE, "DeliverMessageToClient: " + msg.MethodName + " " + ProfileUtils.ElapsedMicroseconds(stopwatch));
         }
 
         virtual internal void HandleStringMessage(NetPlug from, byte[] theString, int stringLength)

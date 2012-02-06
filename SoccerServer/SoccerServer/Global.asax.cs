@@ -60,7 +60,8 @@ namespace SoccerServer
             Log.startLogging(RealtimeLobby.REALTIME_INVOKE);
             Log.startLogging(RealtimeLobby.REALTIME_DEBUG);
             Log.startLogging(RealtimeMatch.MATCHLOG_ERROR);
-            Log.startLogging(RealtimeMatch.MATCHLOG_VERBOSE);
+            Log.startLogging(RealtimeMatch.MATCHLOG_CHAT);
+            //Log.startLogging(RealtimeMatch.MATCHLOG_VERBOSE);
 
             Log.log(GLOBAL_LOG, "******************* Initialization from " + this.Server.MachineName + " Global.asax *******************");
 

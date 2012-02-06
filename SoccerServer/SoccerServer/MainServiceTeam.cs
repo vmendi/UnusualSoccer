@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Data.Linq;
 using System.Web;
 using System.Diagnostics;
+using NetEngine;
 
 
 namespace SoccerServer
@@ -143,7 +144,7 @@ namespace SoccerServer
                     theNewTeam = null;
                 }
 
-                Log.log(MAINSERVICE_INVOKE, "CreateTeam: " + stopwatch.ElapsedMilliseconds);
+                Log.log(MAINSERVICE_INVOKE, "CreateTeam: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
 
                 return theNewTeam != null;
             }
@@ -223,7 +224,7 @@ namespace SoccerServer
                 mContext.SubmitChanges();
             }
 
-            Log.log(MAINSERVICE_INVOKE, "SwapFormationPosition: " + stopwatch.ElapsedMilliseconds);
+            Log.log(MAINSERVICE_INVOKE, "SwapFormationPosition: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
 		}
 
 		public void ChangeFormation(string newFormationName)
@@ -245,7 +246,7 @@ namespace SoccerServer
                 }
             }
 
-            Log.log(MAINSERVICE_INVOKE, "ChangeFormation: " + stopwatch.ElapsedMilliseconds);
+            Log.log(MAINSERVICE_INVOKE, "ChangeFormation: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
 		}
 
         [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 60000)]
@@ -277,8 +278,8 @@ namespace SoccerServer
                 ret.SpecialSkillsIDs = (from s in theTeam.SpecialTrainings
                                         where s.IsCompleted
                                         select s.SpecialTrainingDefinitionID).ToList();
-                
-                Log.log(MAINSERVICE_INVOKE, "RefreshTeamDetails: " + stopwatch.ElapsedMilliseconds);
+
+                Log.log(MAINSERVICE_INVOKE, "RefreshTeamDetails: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
 
                 return ret;
             }
@@ -337,7 +338,7 @@ namespace SoccerServer
                 }
             }
 
-            Log.log(MAINSERVICE_INVOKE, "GetExtraRewardForMatch: " + stopwatch.ElapsedMilliseconds);
+            Log.log(MAINSERVICE_INVOKE, "GetExtraRewardForMatch: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
 
             return bRet;
         }

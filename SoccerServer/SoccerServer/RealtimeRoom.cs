@@ -57,15 +57,15 @@ namespace SoccerServer
             {
                 if (!RealtimeLobby.CheckTicketValidity(theContext, self.ActorID) || !RealtimeLobby.CheckTicketValidity(theContext, other.ActorID))
                     return -2;  // Codigo de error: este partido no se puede disputar por falta de credito de alguna de las partes
-
-                Challenge newChallenge = new Challenge();
-                newChallenge.SourcePlayer = self;
-                newChallenge.Message = msg;
-                newChallenge.MatchLengthSeconds = matchLengthSeconds;
-                newChallenge.TurnLengthSeconds = turnLengthSeconds;
-
-                other.NetPlug.Invoke("PushedNewChallenge", newChallenge);
             }
+
+            Challenge newChallenge = new Challenge();
+            newChallenge.SourcePlayer = self;
+            newChallenge.Message = msg;
+            newChallenge.MatchLengthSeconds = matchLengthSeconds;
+            newChallenge.TurnLengthSeconds = turnLengthSeconds;
+
+            other.NetPlug.Invoke("PushedNewChallenge", newChallenge);            
 
             return opponentActorID;
         }

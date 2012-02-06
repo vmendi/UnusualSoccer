@@ -43,6 +43,7 @@ namespace SoccerServer
 
         public const String MATCHLOG_VERBOSE = "MATCH VERBOSE";
         public const String MATCHLOG_ERROR = "MATCH ERROR";
+        public const String MATCHLOG_CHAT = "MATCH CHAT";
                 
         public const int MinClientVersion = 203;                    // Versión mínima que exigimos a los clientes para jugar
         
@@ -383,7 +384,7 @@ namespace SoccerServer
                     {
                         LogEx("OnServerPlayerReadySetTurn: Finalización de partido!");
 
-                        RealtimeMatchResult result = Finish();
+                        RealtimeMatchResult result = FinishMatch();
 
                         // La habitacion ya esta vacia (por la llamada a Finish), tenemos que invokar sin llamar a Broadcast
                         Players[Player1].NetPlug.Invoke("OnClientFinishPart", Part, result);
@@ -461,7 +462,7 @@ namespace SoccerServer
 
         public void OnMsgToChatAdded(NetPlug plug, string msg)
         {
-            Log.log(MATCHLOG_VERBOSE, MatchID + " Chat: " + msg);
+            Log.log(MATCHLOG_CHAT, MatchID + " Chat: " + msg);
 
             // Mientras estamos esperando al saque inicial no permitimos chateo, puede haber uno de los clientes que esta inicializando todavia.
             // Cuando se ha acabado ya el tiempo tampoco, a un cliente le puede haber dado tiempo a salir.
@@ -478,15 +479,18 @@ namespace SoccerServer
 
             PlayerIdAbandon = GetIdPlayer(self);
 
-            RealtimeMatchResult matchResult = Finish();
+            RealtimeMatchResult matchResult = FinishMatch();
 
             // Practicamente como el LeaveActor pero informando ademas al que pide el OnAbort
             opp.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
             self.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
         }
 
-        private RealtimeMatchResult Finish()
+        private RealtimeMatchResult FinishMatch()
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             LogEx("Finish");
 
             RealtimeMatchResult result = null;
@@ -508,12 +512,15 @@ namespace SoccerServer
             // Y la destruimos
             NetLobby.RemoveRoom(this);
 
+            Log.log(RealtimeLobby.REALTIME_INVOKE, "FinishMatch: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
+
             return result;
         }
 
         // Uno de los dos players se ha desconectado
         override public void LeaveActor(NetActor who)
         {
+
             LogEx("LeaveActor: Player: " + GetIdPlayer(who as RealtimePlayer));
 
             RealtimePlayer self = who as RealtimePlayer;
@@ -521,7 +528,7 @@ namespace SoccerServer
 
             PlayerIdAbandon = GetIdPlayer(self);
 
-            RealtimeMatchResult matchResult = Finish();
+            RealtimeMatchResult matchResult = FinishMatch();
 
             // Hay que notificar al oponente de que ha habido cancelacion
             opp.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
