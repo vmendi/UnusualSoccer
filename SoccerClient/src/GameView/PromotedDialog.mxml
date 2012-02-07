@@ -13,12 +13,14 @@
 			import GameView.AnimatableDialog;
 			
 			import mx.collections.ArrayCollection;
+			import mx.resources.ResourceManager;
 			
 			public static function Show() : void
 			{
 				var dialog : PromotedDialog = AnimatableDialog.Show(getDefinitionByName("GameView::PromotedDialog") as Class) as PromotedDialog;
 				
 				dialog.MyDivisionBadge.Division = SoccerClient.GetMainGameModel().TheCompetitionModel.TheGroup.DivisionName;
+				dialog.MyDivisionName.text = ResourceManager.getInstance().getString('main','DivisionName'+SoccerClient.GetMainGameModel().TheCompetitionModel.TheGroup.DivisionName); 
 			}
 			
 			protected function CloseClickHandler(event:MouseEvent):void
@@ -50,7 +52,7 @@
 					</s:filters>
 				</s:Label>
 				<s:Label text="{resourceManager.getString('main','PromoteDialogTxt')}" styleName="whiteBoldBig" />
-				<s:Label text="REGIONAL"
+				<s:Label id="MyDivisionName" text=""
 						 styleName="yellowBoldVeryBig" />	
 			</s:Group>
 		</s:Group>

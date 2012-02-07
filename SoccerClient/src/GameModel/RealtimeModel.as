@@ -221,7 +221,7 @@ package GameModel
 			if (v != null)
 			{
 				var localRealtimePlayer : RealtimePlayer = new RealtimePlayer(null);
-				localRealtimePlayer.ClientID = -1;
+				localRealtimePlayer.ActorID = -1;
 				localRealtimePlayer.PredefinedTeamNameID = mMainModel.TheTeamModel.TheTeam.PredefinedTeamNameID;
 				localRealtimePlayer.Name = mMainModel.TheTeamModel.TheTeam.Name;
 				
@@ -257,36 +257,42 @@ package GameModel
 		// La vista necesitara añadirlo a la stage
 		public function get TheMatch() : MatchMain { return mMatch; }
 				
-		// Si el comienzo de partido viene de la aceptación de un challenge, firstClientID será siempre el aceptador, y
-		// secondClientID será el que lanzó el challenge
-		public function PushedStartMatch(firstClientID : int, secondClientID : int, bFriendly : Boolean) : void
+		// Si el comienzo de partido viene de la aceptación de un challenge, firstActorID será siempre el aceptador, y
+		// secondActorID será el que lanzó el challenge
+		public function PushedStartMatch(firstActorID : int, secondActorID : int, bFriendly : Boolean) : void
 		{
+			if (TheRoomModel == null || mMatch != null)
+				throw new Error("WTF 12333333 " + (TheRoomModel==null? "R0" : "R1") + (mMatch == null? "M0" : "M1"));
+			
 			TheRoomModel.LogOff();
 			TheRoomModel = null;
 			
 			// Ya no estamos buscando
 			SwitchLookingForMatchResponded(false);
+				
+			mMatch = new MatchMain();
 			
-			if (mMatch != null)
-				throw new Error("WTF 543");
-			
-			mMatch = new MatchMain();			
 			mMatch.addEventListener("OnMatchEnded", OnMatchEnded);
 			mMatch.addEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage);
 
 			// Nosotros lanzamos la señal y alguien (RealtimeMatch.mxml) se encargara de añadirlo a la stage
-			MatchStarted.dispatch();
+			MatchStarted.dispatch();			
 		}
 		
 		private function OnMatchAddedToStage(e:Event) : void
 		{
+			// Ocurrira si llega un PushedMatchAbandoned inmediatamente despues del PushedStartMatch?
+			// Creo que es imposible puesto q removemos el evento en OnMatchEnded
+			if (mMatch == null)
+				throw new Error("OnMatchAddedToStage: Es null");
+			
 			mMatch.removeEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage)
 			mMatch.Init(mServerConnection);
 		}
 		
 		private function OnMatchEnded(e:GenericEvent) : void
 		{
-			// No problemo, a un remove se le puede llamar dos veces. Es necesario cuando PushedOpponentDisconnected y no estabamos añadidos a la stage todavía.
+			// No problemo, a un remove se le puede llamar dos veces. Es necesario cuando PushedMatchAbandoned y no estabamos añadidos a la stage todavía.
 			mMatch.removeEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage);
 			mMatch.removeEventListener("OnMatchEnded", OnMatchEnded);
 			mMatch = null;
@@ -305,31 +311,22 @@ package GameModel
 				MatchEnded.dispatch(e.Data);
 			}
 		}
-		
-		public function ForceMatchFinish() : void
-		{
-			if (mMatch != null)
-				mMatch.ForceMatchFinish();
-		}
-		
+				
 		public function PushedMatchUnsync() : void
 		{
 			//Alert.show("Unsync state!", "BETA");
 		}
 		
-		// Nuestro enemigo se ha desconectado en medio del partido. Nosotros hacemos una salida limpia. Lo controlamos
-		// desde aqui y no desde el partido porque el partido puede no estar inicializado todavia.
-		public function PushedOpponentDisconnected(result:Object) : void
+		// Partido abandonado, por nosotros o por nuestro enemigo. Como no tenemos boton de abandonar, en general sera por abandono del
+		// enemigo (salvo en los tests). Nosotros hacemos una salida limpia. Lo controlamos desde aqui y no desde el partido porque el 
+		// partido puede no estar inicializado todavia.
+		public function PushedMatchAbandoned(result:Object) : void
 		{
-			if (mMatch != null)
-			{
-				// Esto provocara un OnMatchEnded
-				mMatch.Shutdown(result);
-			}
-			else
-			{
-				ErrorMessages.LogToServer("WTF 4192: Ha llegado un PushedOpponentDisconnected sin tener partido!");
-			}
+			if (mMatch == null)
+				throw new Error("WTF 4192: Ha llegado un PushedMatchAbandoned sin tener partido!");
+			
+			// Esto provocara un OnMatchEnded
+			mMatch.Shutdown(result);
 		}
 		
 		public function PushedBroadcastMsg(msg : String) : void

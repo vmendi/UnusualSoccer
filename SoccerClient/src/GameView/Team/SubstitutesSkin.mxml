@@ -6,6 +6,17 @@
     <fx:Metadata><![CDATA[ 
         [HostComponent("spark.components.List")]
     ]]></fx:Metadata> 
+	
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		
+		.substitutesTit {
+			font-family:MyFontHelveticaNeueLTBold;
+			font-size:15pt;
+			font-weight:bold;
+			color:#FFFFFF;
+		}
+	</fx:Style>
     
     <s:states>
         <s:State name="normal" />
@@ -14,7 +25,13 @@
 	
 	<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='BackSubstitutes')" fillMode="clip" />
     
-    <s:Scroller width="321" top="12" height="93" left="12" id="scroller" hasFocusableChildren="false" skinClass="GameView.Skins.DefaultScrollerSkin" >
+	<s:Label top="7" width="300" horizontalCenter="0" text="{resourceManager.getString('main','TeamPanelSubstitutesTitle')}" styleName="substitutesTit" textAlign="center" >
+		<s:filters>
+			<s:DropShadowFilter angle="270" distance="1" blurX="1" blurY="1" color="0x444444" />
+		</s:filters>
+	</s:Label>
+	
+    <s:Scroller width="321" top="32" height="93" left="12" id="scroller" hasFocusableChildren="false" skinClass="GameView.Skins.DefaultScrollerSkin" >
 		<s:DataGroup id="dataGroup"
 					 left="0" top="0" right="0" bottom="0" 
 					 hasFocusableChildren="false">

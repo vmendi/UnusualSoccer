@@ -81,7 +81,10 @@ package Match
 		{
 			MatchConfig.OfflineMode = false;
 			
-			LoadMatchResources(innerInit);
+			try {
+				LoadMatchResources(innerInit);
+			}
+			catch(e:Error) { ErrorMessages.LogToServer("LoadMatchResources! " + e.message); }
 
 			function innerInit() : void
 			{
@@ -104,7 +107,7 @@ package Match
 						// Hemos comprobado que a aqui se llega en muy rara ocasión sin stage. Forzosamente tiene que ser
 						// que nos han quitado de la stage desde que se llamo al Init, pero sin llamarnos a Shutdown. Hipotesis:
 						// - Algun tipo de navegacion dentro del manager (desde un popup?) que provoca salir de la pantalla RealtimeMatch
-						// - 
+						// - La botonera principal envia su mensaje tarde, cuando ya estamos en el partido. 
 						ErrorMessages.ResourceLoadFailed();
 					}
 				}
@@ -152,13 +155,13 @@ package Match
 		}
 		
 		// Desde aqui nos ocupamos de destruir todo, especialmente los listeners (globales) para no perder memoria.
-		// Nos llaman siempre: por fin del partido normal, por PushedOpponentDisconnected y por OnCleaningSignalShutdown.
+		// Nos llaman siempre: por fin del partido normal, por PushedMatchAbandoned y por OnCleaningSignalShutdown.
 		public function Shutdown(result : Object) : void
 		{
 			try {
 				removeEventListener(Event.ENTER_FRAME, OnFrame);
 				
-				// Es posible que nos llegue este Shutdown antes de estar inicializados (OnPushedOpponentDisconnected)
+				// Es posible que nos llegue este Shutdown antes de estar inicializados (PushedMatchAbandoned)
 				if (_Game != null)
 				{
 					Connection.RemoveClient(_Game);
@@ -174,15 +177,6 @@ package Match
 				dispatchEvent(new utils.GenericEvent("OnMatchEnded", result));
 			}
 			catch(e:Error) { ErrorMessages.LogToServer("En Shutdown! " + e.message);}
-		}
-		
-		//
-		// Desde fuera nos cierran el partido (para los Tests)
-		//
-		public function ForceMatchFinish() : void
-		{
-			// Generamos un cierre voluntario simulando que clickan en el boton de abandonar
-			Game.TheInterface.OnAbandonarClick(null);
 		}
 		
 		private var _Game : Match.Game;

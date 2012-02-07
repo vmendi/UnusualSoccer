@@ -9,7 +9,7 @@ package GameModel
 	[Bindable]
 	public final class RealtimePlayer extends EventDispatcher
 	{
-		public var ClientID : int;
+		public var ActorID : int;
 		public var FacebookID : Number;
 		public var Name : String;
 		public var PredefinedTeamNameID : String;
@@ -23,8 +23,15 @@ package GameModel
 		public function RealtimePlayer(fromServer : Object)
 		{
 			if (fromServer != null)
+			{
 				for (var val : String in fromServer)
+				{
+					if (!this.hasOwnProperty(val))
+						throw new Error("La propiedad no existe en RealtimePlayer"); 
+					
 					this[val]= fromServer[val];
+				}
+			}
 		}
 	}
 }

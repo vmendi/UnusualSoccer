@@ -16,7 +16,7 @@ package Match
 		// Las dimensiones de la zona jugable del campo (en pixels)
 		static public const SizeX:Number = 668;
 		static public const SizeY:Number = 400;
-		static public const HeightGoal:Number = 120;
+		static public const HeightGoal:Number = 106;
 		
 		// Origen del campo (tener en cuenta que el gráfico tiene una zona de vallas, por eso no es 0,0)
 		static public const OffsetX:Number = 46;
@@ -41,7 +41,7 @@ package Match
 		// Coordenadas de las porterias
 		private var X_GOAL_LEFT:Number = 0;
 		private var X_GOAL_RIGHT:Number = 714;
-		private var Y_GOAL:Number = 207;
+		private var Y_GOAL:Number = 214;
 		
 		// Sensores de gol colocados en cada portería para detectar el gol
 		public var GoalLeft : QuickObject = null;

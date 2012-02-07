@@ -3,12 +3,18 @@ using System.Diagnostics;
 
 using Weborb.Util.Logging;
 using System.Collections.Generic;
+using NetEngine;
 
 
 namespace SoccerServer
 {
-    public class RealtimeMatch
+    public class RealtimeMatch : NetEngine.NetRoom
     {
+        protected override string NamePrefix 
+        { 
+            get { return "MatchID "; } 
+        }
+
         protected class ClientState
         {
             public int ShootCount = 0;
@@ -37,17 +43,15 @@ namespace SoccerServer
 
         public const String MATCHLOG_VERBOSE = "MATCH VERBOSE";
         public const String MATCHLOG_ERROR = "MATCH ERROR";
+        public const String MATCHLOG_CHAT = "MATCH CHAT";
                 
-        public const int MinClientVersion = 201;                    // Versión mínima que exigimos a los clientes para jugar
+        public const int MinClientVersion = 203;                    // Versión mínima que exigimos a los clientes para jugar
         
         RealtimePlayer[] Players = new RealtimePlayer[2];             // Los jugadores en el manager
         RealtimePlayerData[] PlayersData = new RealtimePlayerData[2]; // Los jugadores en el manager
         PlayerState[] PlayersState = new PlayerState[2];              // Estado de los jugadores
 
-        Realtime MainRT = null;                                 // Objeto que nos ha creado
-
-        bool IsMarkedToAbort = false;                           // Mecanismo que permiter abortar un partido por parte de un player (antiguo boton "abondanar partido")
-        int PlayerIdAbort = Invalid;                            // Jugador que ha abandonado el partido
+        int PlayerIdAbandon = Invalid;                            // Jugador que ha abandonado el partido
 
         private State CurState = State.WaitingForMatchStart;   // Estado actual del servidor de juego       
         private int CountPlayersEndShoot = 0;
@@ -66,12 +70,10 @@ namespace SoccerServer
         private ClientState TheClientState = null;              // Debugeo de estado del cliente
         private int TotalShootCount = 0;                        // Tiros totales que se han producido en el partido
 
-        private int mMatchID;
-
         #region Interfaz hacia el manager
         public int MatchID
         {
-            get { return mMatchID; }
+            get { return RoomID; }
         }
 
         public bool IsRealtimePlayerInMatch(RealtimePlayer who)
@@ -109,7 +111,7 @@ namespace SoccerServer
         public bool HasPlayerAbandoned(RealtimePlayer player)
         {
             bool bAbandon = false;
-            if (this.GetIdPlayer(player) == this.PlayerIdAbort)
+            if (this.GetIdPlayer(player) == this.PlayerIdAbandon)
                 bAbandon = true;
             return (bAbandon);
         }
@@ -148,36 +150,38 @@ namespace SoccerServer
 
 
         #region Init
-        public RealtimeMatch(int matchID, RealtimePlayer firstPlayer, RealtimePlayer secondPlayer, 
-                             RealtimePlayerData firstData, RealtimePlayerData secondData, int matchLength, int turnLength, Realtime mainRT)
-        {
-            mMatchID = matchID;
-            MainRT = mainRT;
-            
-            Players[Player1] = firstPlayer;
-            Players[Player2] = secondPlayer;
+        public RealtimeMatch(RealtimeMatchCreator matchCreator, NetLobby netLobby) : base(netLobby, matchCreator.MatchID)
+        {                        
+            Players[Player1] = matchCreator.FirstRealtimePlayer;
+            Players[Player2] = matchCreator.SecondRealtimePlayer;
 
-            PlayersData[Player1] = firstData;
-            PlayersData[Player2] = secondData;
+            PlayersData[Player1] = matchCreator.FirstData;
+            PlayersData[Player2] = matchCreator.SecondData;
 
             PlayersState[Player1] = new PlayerState();
             PlayersState[Player2] = new PlayerState();
 
-            MatchLength = matchLength;
-            TurnLength = turnLength;
+            MatchLength = matchCreator.MatchDuration;
+            TurnLength = matchCreator.TurnDuration;
             RemainingSecs = MatchLength / 2;
 
-            LogEx("Init Match: FirstPlayer: " + firstPlayer.Name + " - " + firstPlayer.FacebookID + 
-                  " SecondPlayer: " + secondPlayer.Name + " - " + secondPlayer.FacebookID + 
-                  " MinClientVersion required " + MinClientVersion);
-            
-            // NOTE : En este momento la conexión todavía no puede utilizarse, todavía el cliente no ha tomado el control            
+            LogEx("FirstPlayer: " + Players[Player1].Name + " - " + Players[Player1].FacebookID + " - " + Players[Player1].ActorID +
+                  " SecondPlayer: " + Players[Player2].Name + " - " + Players[Player2].FacebookID + " - " + Players[Player2].ActorID);
+
+            JoinActor(Players[Player1]);
+            JoinActor(Players[Player2]);
+
+            NetLobby.AddRoom(this);
+
+            // Mensaje para el RealtimeModel, iniciara el MainMatch al recibir este mensaje
+            Players[Player1].NetPlug.Invoke("PushedStartMatch", Players[Player1].ActorID, Players[Player2].ActorID, matchCreator.IsFriendly);
+            Players[Player2].NetPlug.Invoke("PushedStartMatch", Players[Player1].ActorID, Players[Player2].ActorID, matchCreator.IsFriendly);
         }
 
         // Uno de los jugadores ha indicado que necesita los datos del partido. Cuando ambos lo han indicado, estamos listos para empezar
-        public void OnRequestData(RealtimePlayer player)
+        public void OnRequestData(NetPlug plug)
         {
-            int idPlayer = GetIdPlayer(player);
+            int idPlayer = GetIdPlayer(plug.Actor as RealtimePlayer);
 
             LogEx("OnRequestData: Datos del partido solicitador por el Player: " + idPlayer + " Configuración partido: TotalTime: " + MatchLength + " TurnTime: " + TurnLength);
 
@@ -194,8 +198,8 @@ namespace SoccerServer
                 LogEx("Todos los jugadores estan listos para empezar el partido");
 
                 // Envía la configuración del partido al jugador a ambos jugadores
-                Invoke(Player1, "InitFromServer", this.mMatchID, PlayersData[Player1], PlayersData[Player2], Player1, MatchLength, TurnLength, MinClientVersion);
-                Invoke(Player2, "InitFromServer", this.mMatchID, PlayersData[Player1], PlayersData[Player2], Player2, MatchLength, TurnLength, MinClientVersion);
+                Players[Player1].NetPlug.Invoke("InitFromServer", MatchID, PlayersData[Player1], PlayersData[Player2], Player1, MatchLength, TurnLength, MinClientVersion);
+                Players[Player2].NetPlug.Invoke("InitFromServer", MatchID, PlayersData[Player1], PlayersData[Player2], Player2, MatchLength, TurnLength, MinClientVersion);
             }            
         }
         #endregion
@@ -203,20 +207,6 @@ namespace SoccerServer
         public void OnSecondsTick(float elapsed)
         {
             ServerTime += elapsed;
-
-            // Nos ha llegado un OnAbort de uno de los clientes. Es forzoso hacerlo dentro del tick
-            if (IsMarkedToAbort)
-            {
-                LogEx("Match aborted");
-
-                RealtimeMatchResult result = MainRT.OnFinishMatch(this);
-
-                // Es como si el oponente se hubiera desconectado, el cliente no tiene necesidad de saber que en concreto el motivo es un OnAbort
-                Broadcast("PushedOpponentDisconnected", result);
-
-                IsMarkedToAbort = false;
-                CurState = State.End;
-            }
 
             switch (CurState)
             {
@@ -241,11 +231,11 @@ namespace SoccerServer
         }
 
         #region Shoot
-        // 
-        // Un cliente ha disparado sobre una chapa
-        // 
-        public void OnServerShoot(int idPlayer, int capID, float dirX, float dirY, float force)
+        
+        public void OnServerShoot(NetPlug plug, int capID, float dirX, float dirY, float force)
         {
+            int idPlayer = GetIdPlayer(plug.Actor as RealtimePlayer);
+
             // Otro disparo mas
             TotalShootCount++;
 
@@ -259,11 +249,10 @@ namespace SoccerServer
             Broadcast("OnClientShoot", idPlayer, capID, dirX, dirY, force);
         }
 
-        // 
-        // Un cliente ha terminado de simular un disparo. Cuando todos hayan terminado la simulación, lo notificamos a los clientes
-        // 
-        public void OnServerEndShoot(int idPlayer)
+        public void OnServerEndShoot(NetPlug plug)
         {
+            int idPlayer = GetIdPlayer(plug.Actor as RealtimePlayer);
+
             LogEx("OnServerEndShoot: " + idPlayer);
 
             if (CurState != State.Simulating)
@@ -287,11 +276,11 @@ namespace SoccerServer
             }
         }
 
-        //
-        // Comprobacion del resultado que ha calculado un cliente de un disparo que ha terminado
-        //
-        public void OnResultShoot(int idPlayer, int result, int countTouchedCaps, int paseToCapId, int framesSimulating, int reasonTurnChanged, string capListStr)
-        {            
+
+        public void OnResultShoot(NetPlug plug, int result, int countTouchedCaps, int paseToCapId, int framesSimulating, int reasonTurnChanged, string capListStr)
+        {
+            int idPlayer = GetIdPlayer(plug.Actor as RealtimePlayer);
+
             string finalStr = " Result: " + result + " PaseToID: " + paseToCapId + " CountTouchedCaps: " + countTouchedCaps + " FramesSimulating: " + framesSimulating + " ReasonTurnChanged: "+ reasonTurnChanged + " " + capListStr;
 
             if (TheClientState == null)
@@ -318,8 +307,10 @@ namespace SoccerServer
         }
         #endregion
 
-        public void OnServerGoalScored(int idPlayer, int scoredPlayer, int validity)
+        public void OnServerGoalScored(NetPlug plug, int scoredPlayer, int validity)
         {
+            int idPlayer = GetIdPlayer(plug.Actor as RealtimePlayer);
+
             LogEx("OnServerGoalScored: Player: " + idPlayer + " Scored player: " + scoredPlayer + " Validity: " + validity + " CountPlayersReportGoal: " + CountPlayersReportGoal);
 
             if (CurState != State.Simulating || CountPlayersSetTurn != 0)
@@ -361,9 +352,9 @@ namespace SoccerServer
             }
         }
 
-        public void OnServerPlayerReadyForSetTurn(RealtimePlayer player, int idPlayerReceivingTurn, int reason)
+        public void OnServerPlayerReadyForSetTurn(NetPlug plug, int idPlayerReceivingTurn, int reason)
         {
-            int idPlayer = GetIdPlayer(player);
+            int idPlayer = GetIdPlayer(plug.Actor as RealtimePlayer);
 
             LogEx("OnServerPlayerReadySetTurn: " + idPlayer + " Reason: " + reason);
 
@@ -378,23 +369,26 @@ namespace SoccerServer
                 {
                     if (Part == 1)
                     {
+                        LogEx("OnServerPlayerReadySetTurn: Finalización de parte!");
+
                         Part++;
                         RemainingSecs = MatchLength / 2;
 
                         // Paramos el tiempo, esperando a que nos descongelen mediante otro SetTurn (despues de la cutscene de fin del 1er tiempo, etc)
                         CurState = State.FrozenTime;
-
-                        LogEx("OnServerPlayerReadySetTurn: Finalización de parte!");
+                        
                         Broadcast("OnClientFinishPart", Part, null);
                     }
                     else 
                     if (Part == 2)
                     {
-                        RealtimeMatchResult result = MainRT.OnFinishMatch(this);
-                        CurState = State.End;
-
                         LogEx("OnServerPlayerReadySetTurn: Finalización de partido!");
-                        Broadcast("OnClientFinishPart", Part, result);             
+
+                        RealtimeMatchResult result = FinishMatch();
+
+                        // La habitacion ya esta vacia (por la llamada a Finish), tenemos que invokar sin llamar a Broadcast
+                        Players[Player1].NetPlug.Invoke("OnClientFinishPart", Part, result);
+                        Players[Player2].NetPlug.Invoke("OnClientFinishPart", Part, result);
                     }
                 }
                 else
@@ -406,8 +400,10 @@ namespace SoccerServer
             }
         }
 
-        public void OnServerTimeout(int idPlayer)
+        public void OnServerTimeout(NetPlug plug)
         {
+            int idPlayer = GetIdPlayer(plug.Actor as RealtimePlayer);
+
             LogEx("OnServerTimeout: " + idPlayer);
 
             if (CurState != State.Playing)
@@ -416,8 +412,10 @@ namespace SoccerServer
             Broadcast("OnClientTimeout", idPlayer);
         }
 
-        public void OnServerPlaceBall(int idPlayer, int capID, float dirX, float dirY)
+        public void OnServerPlaceBall(NetPlug plug, int capID, float dirX, float dirY)
         {
+            int idPlayer = GetIdPlayer(plug.Actor as RealtimePlayer);
+
             LogEx("OnServerPlaceBall: " + idPlayer + " Cap ID: " + capID);
 
             if (CurState != State.Playing)
@@ -426,8 +424,10 @@ namespace SoccerServer
             Broadcast("OnClientPlaceBall", idPlayer, capID, dirX, dirY);
         }
 
-        public void OnServerPosCap(int idPlayer, int capID, float posX, float posY)
+        public void OnServerPosCap(NetPlug plug, int capID, float posX, float posY)
         {
+            int idPlayer = GetIdPlayer(plug.Actor as RealtimePlayer);
+
             LogEx("OnServerPosCap: " + idPlayer + " Cap ID: " + capID);
 
             if (CurState != State.Playing)
@@ -436,9 +436,10 @@ namespace SoccerServer
             Broadcast("OnClientPosCap", idPlayer, capID, posX, posY);
         }
 
-
-        public void OnServerUseSkill(int idPlayer, int idSkill)
+        public void OnServerUseSkill(NetPlug plug, int idSkill)
         {
+            int idPlayer = GetIdPlayer(plug.Actor as RealtimePlayer);
+
             LogEx("OnUseSkill: Player: " + idPlayer + " Skill: " + idSkill);
 
             if (CurState != State.Playing)
@@ -447,8 +448,10 @@ namespace SoccerServer
             Broadcast("OnClientUseSkill", idPlayer, idSkill);
         }
 
-        public void OnServerTiroPuerta(int idPlayer)
+        public void OnServerTiroPuerta(NetPlug plug)
         {
+            int idPlayer = GetIdPlayer(plug.Actor as RealtimePlayer);
+
             LogEx("OnServerTiroPuerta: Player: " + idPlayer);
 
             if (CurState != State.Playing)
@@ -456,10 +459,10 @@ namespace SoccerServer
 
             Broadcast("OnClientTiroPuerta", idPlayer);
         }
-        
-        public void OnMsgToChatAdded(RealtimePlayer source, string msg)
+
+        public void OnMsgToChatAdded(NetPlug plug, string msg)
         {
-            Log.log(MATCHLOG_VERBOSE, MatchID + " Chat: " + msg);
+            Log.log(MATCHLOG_CHAT, MatchID + " Chat: " + msg);
 
             // Mientras estamos esperando al saque inicial no permitimos chateo, puede haber uno de los clientes que esta inicializando todavia.
             // Cuando se ha acabado ya el tiempo tampoco, a un cliente le puede haber dado tiempo a salir.
@@ -467,43 +470,79 @@ namespace SoccerServer
                 Broadcast("OnClientChatMsg", msg);
         }
 
-        // Marca el partido para terminar en el próximo tick de ejecución (antiguo boton de "abandonar partido")
-        public void OnAbort(int playerId)
+        public void OnAbort(NetPlug plug)
         {
-            LogEx("OnAbort: Player: " + playerId);
+            LogEx("OnAbort: Player: " + GetIdPlayer(plug.Actor as RealtimePlayer));
 
-            // Almacenamos el jugador que abandonó el partido
-            PlayerIdAbort = playerId;
+            RealtimePlayer self = plug.Actor as RealtimePlayer;
+            RealtimePlayer opp = GetOpponentOf(self);
 
-            // Marcamos el partido para que termine en el proximo tick
-            IsMarkedToAbort = true;
+            PlayerIdAbandon = GetIdPlayer(self);
+
+            RealtimeMatchResult matchResult = FinishMatch();
+
+            // Practicamente como el LeaveActor pero informando ademas al que pide el OnAbort
+            opp.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
+            self.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
         }
 
-        #region Aux
+        private RealtimeMatchResult FinishMatch()
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            LogEx("Finish");
+
+            RealtimeMatchResult result = null;
+            CurState = State.End;
+            
+            try
+            {
+                result = new RealtimeMatchResult(this);
+            }
+            catch (Exception exc)
+            {
+                Log.log(MATCHLOG_ERROR, "Exception: No hemos podido crear el RealtimeMatchResult " + exc.ToString());
+            }
+
+            // Sacamos a los players de la habitacion
+            base.LeaveActor(Players[Player1]);
+            base.LeaveActor(Players[Player2]);
+
+            // Y la destruimos
+            NetLobby.RemoveRoom(this);
+
+            Log.log(RealtimeLobby.REALTIME_INVOKE, "FinishMatch: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
+
+            return result;
+        }
+
+        // Uno de los dos players se ha desconectado
+        override public void LeaveActor(NetActor who)
+        {
+
+            LogEx("LeaveActor: Player: " + GetIdPlayer(who as RealtimePlayer));
+
+            RealtimePlayer self = who as RealtimePlayer;
+            RealtimePlayer opp = GetOpponentOf(self);
+
+            PlayerIdAbandon = GetIdPlayer(self);
+
+            RealtimeMatchResult matchResult = FinishMatch();
+
+            // Hay que notificar al oponente de que ha habido cancelacion
+            opp.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
+        }
+        
+        
         public void LogEx(string message, string category = MATCHLOG_VERBOSE)
         {
-            string finalMessage = " MatchID: " + MatchID + " Time: " + this.ServerTime + " " + message;
+            string finalMessage = " MatchID: " + MatchID + " " + message;
             finalMessage += " <ServerVars>: CurState=" + CurState + 
-                            " CountPlayersEndShoot=" + CountPlayersEndShoot + 
-                            " CountPlayersSetTurn=" + CountPlayersSetTurn +
-                            " CountPlayersReportGoal=" + CountPlayersReportGoal + 
-                            " Part=" + Part + " RemainingSecs=" + RemainingSecs + 
-                            " ScoredGoals1=" + PlayersState[Player1].ScoredGoals + " ScoredGoals2=" + PlayersState[Player2].ScoredGoals;
+                            " Part=" + Part + " RemainingSecs=" + RemainingSecs + " Time=" + ServerTime +
+                            " Goals0=" + PlayersState[Player1].ScoredGoals + " Goals1=" + PlayersState[Player2].ScoredGoals;
 
             Log.log(category, finalMessage);
         }
-
-        private void Broadcast(string method, params object[] args)
-        {
-            Players[Player1].TheConnection.Invoke(method, args);
-            Players[Player2].TheConnection.Invoke(method, args);
-        }
-
-        private void Invoke(int idPlayer, string method, params object[] args)
-        {
-            Players[idPlayer].TheConnection.Invoke(method, args);
-        }
-
-        #endregion
     }
 }

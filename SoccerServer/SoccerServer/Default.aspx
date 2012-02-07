@@ -108,7 +108,7 @@
     <!-- Banner y botón Like mecanismo XFBML -->
     <asp:Panel id="MyLikePanel" style="width:760px; height:38px; background:url(Imgs/BannerMeGustaBg_en_US.png); margin-bottom:10px;" runat="server">
 	    <div style="float:left; padding-left:32px; padding-top:10px; width:150px;">
-		    <fb:like href="www.facebook.com/apps/application.php?id=${facebookAppId}" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
+		    <fb:like send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
 	    </div>
     </asp:Panel>
 
@@ -122,12 +122,6 @@
             </tr>
         </table>
     </div>
-
-<!--
-	    <div style="padding-left:39px; float:left; width:203px;"><a href="#" onclick="sendRequestViaMultiFriendSelector(); return false;"  ><img alt="" src="Imgs/NavIconInvita_en_US.png" width="142" height="33" /></a></div>
-	    <div style="float:left; width:130px;"><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=wall" target="_parent"><img alt="" src="Imgs/NavIconMuro.png" width="60" height="33"  /></a></div>
-	    <div style="float:left; width:250px;"><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=info" target="_parent"><img alt="" src="Imgs/NavIconInfo.png" width="178" height="33" /></a></div>
--->
 
     <div id="flashContent">
         <p>

@@ -382,7 +382,12 @@ package Match
 			if (game.ReasonTurnChanged == Enums.TurnTiroAPuerta)
 			{
 				if (game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
-					_PosControl.Start(cap);
+				{
+					if (MatchConfig.PorteroTeletransportado)
+						_PosControl.Start(cap);
+					else
+						_ShootControl.Start(cap);
+				}
 			}
 			// Si estamos en modo de saque de puerta:
 			else 

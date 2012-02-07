@@ -9,31 +9,45 @@ namespace NetEngine
     public class NetEngineMain
     {
         internal const String NETENGINE_DEBUG = "NETENGINE DEBUG";
+        internal const String NETENGINE_VERBOSE = "NETENGINE VERBOSE";
+        internal const String NETENGINE_INVOKE = "NETENGINE INVOKE";
         internal const String NETENGINE_DEBUG_BUFFER = "NETENGINE DEBUG BUFFER";
         internal const String NETENGINE_DEBUG_THREADING = "NETENGINE DEBUG THREADING";
         internal const String NETENGINE_DEBUG_KEEPALIVE = "NETENGINE DEBUG KEEPALIVE";
 
-        public NetEngineMain(INetClientApp clientApp)
+        public NetEngineMain(NetLobby netLobby)
         {
-            mPolicyServer = new NetServer(true, null);
-            mNetServer = new NetServer(false, clientApp);            
+            mNetLobby = netLobby;
         }
 
         public void Start()
         {
             Log.startLogging(NETENGINE_DEBUG);
+            Log.startLogging(NETENGINE_VERBOSE);
+            //Log.startLogging(NETENGINE_INVOKE);
             //Log.startLogging(NETENGINE_DEBUG_BUFFER);
             //Log.startLogging(NETENGINE_DEBUG_THREADING);
             //Log.startLogging(NETENGINE_DEBUG_KEEPALIVE);
 
-            mPolicyServer.Start();
-            mNetServer.Start();
+            mPolicyServer = new NetServer(true, null);
+            mNetServer = new NetServer(false, mNetLobby);
+        }
+
+        public bool IsRunning
+        {
+            get { return mNetServer != null; }
         }
 
         public void Stop()
         {
-            mNetServer.Stop();
-            mPolicyServer.Stop();
+            if (IsRunning)
+            {
+                mNetServer.Stop();
+                mPolicyServer.Stop();
+
+                mNetServer = null;
+                mPolicyServer = null;
+            }
         }
 
         public NetServer NetServer
@@ -41,8 +55,10 @@ namespace NetEngine
             get { return mNetServer; }
         }
 
-        readonly NetServer mNetServer;
-        readonly NetServer mPolicyServer;
+        readonly NetLobby mNetLobby;
+
+        NetServer mNetServer;
+        NetServer mPolicyServer;
     }
 
     public sealed class NetEngineException : Exception

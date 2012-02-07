@@ -104,15 +104,15 @@
     <!-- Banner y botón Like mecanismo XFBML -->
     <asp:Panel id="MyLikePanel" style="width:760px; height:38px; background:url(Imgs/BannerMeGustaBg.png); margin-bottom:10px;" runat="server">
 	    <div style="float:left; padding-left:32px; padding-top:10px; width:150px;">
-		    <fb:like href="www.facebook.com/apps/application.php?id=${facebookAppId}" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
+		    <fb:like href="http://www.facebook.com/MahouLigaChapas" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
 	    </div>
     </asp:Panel>
 
     <!-- Navegación -->		
     <div style="width:760px; height:33px; background:url(Imgs/NavBg.png);" >
 	    <div style="padding-left:25px; float:left; width:203px;"><a href="#" onclick="sendRequestViaMultiFriendSelector(); return false;"><img alt="" src="Imgs/NavIconInvita.png" width="142" height="33" border="0" /></a></div>
-	    <div style="float:left; width:102px;"><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=wall" target="_parent"><img alt="" src="Imgs/NavIconMuro.png" width="60" height="33" border="0" /></a></div>
-	    <div style="float:left; width:208px;"><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=info" target="_parent"><img alt="" src="Imgs/NavIconInfo.png" width="178" height="33" border="0" /></a></div>
+	    <div style="float:left; width:102px;"><a href="http://www.facebook.com/MahouLigaChapas" target="_parent"><img alt="" src="Imgs/NavIconMuro.png" width="60" height="33" border="0" /></a></div>
+	    <div style="float:left; width:208px;"><a href="http://www.facebook.com/MahouLigaChapas?sk=info" target="_parent"><img alt="" src="Imgs/NavIconInfo.png" width="178" height="33" border="0" /></a></div>
 	    <div style="float:left;"><a href="http://www.facebook.com/mahou.es" target="_parent"><img alt="" src="Imgs/NavIconVisita.png" width="184" height="33" border="0"/></a></div>
     </div>
 

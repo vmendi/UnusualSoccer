@@ -51,6 +51,7 @@ package Match
 		
 		private var _IsInjured : Boolean = false;
 		private var _TeletransportPos : Point;
+		private var _ParallelShoot : ShootInfo;
 				
 		public var YellowCards:int = 0; 						// Número de tarjetas amarillas (2 => roja => expulsión)
 		
@@ -72,6 +73,10 @@ package Match
 		public function get Ghost() : Entity { return this.OwnerTeam.Ghost; }	// Ghost de la chapa (solo hay uno por equipo)
 	
 		public function set TeletransportPos(v:Point) : void { _TeletransportPos = v; }
+		
+		// Almacenamos en la propia chapa el tiro en paralelo con el enemigo a ejecutar en el siguiente tiro
+		public function get ParallelShoot() : ShootInfo { return _ParallelShoot; }
+		public function set ParallelShoot(s:ShootInfo) : void { _ParallelShoot = s; }		
 		
 
 		public function Cap(team:Team, id:int, descCap:Object, useSecondaryEquipment:Boolean) : void

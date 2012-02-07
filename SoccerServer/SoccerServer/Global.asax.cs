@@ -41,7 +41,7 @@ namespace SoccerServer
             ConfigureSettings();
 
             // Y tambien el NetEngine, por el mismo motivo
-            mNetEngine = new NetEngineMain(new Realtime());
+            mNetEngine = new NetEngineMain(new RealtimeLobby());
             
             var starterThread = new Thread(StarterThread);
             starterThread.Name = "StarterThread";
@@ -54,7 +54,14 @@ namespace SoccerServer
 
             Log.startLogging(GLOBAL_LOG);
             Log.startLogging(MainService.MAINSERVICE);
+            Log.startLogging(MainService.MAINSERVICE_INVOKE);
             Log.startLogging(MainService.CLIENT_ERROR);
+            Log.startLogging(RealtimeLobby.REALTIME);
+            Log.startLogging(RealtimeLobby.REALTIME_INVOKE);
+            Log.startLogging(RealtimeLobby.REALTIME_DEBUG);
+            Log.startLogging(RealtimeMatch.MATCHLOG_ERROR);
+            Log.startLogging(RealtimeMatch.MATCHLOG_CHAT);
+            //Log.startLogging(RealtimeMatch.MATCHLOG_VERBOSE);
 
             Log.log(GLOBAL_LOG, "******************* Initialization from " + this.Server.MachineName + " Global.asax *******************");
 
@@ -141,10 +148,10 @@ namespace SoccerServer
                 mFBSettings.SecureCanvasUrl = "https://localhost/";
 
                 // Pondremos lo que mas nos convenga para depurar en local
-                mServerSettings["VersionID"] = "UnusualSoccer";
-                mClientSettings["VersionID"] = "UnusualSoccer";
-                //mServerSettings["VersionID"] = "MahouLigaChapas";
-                //mClientSettings["VersionID"] = "MahouLigaChapas";
+                //mServerSettings["VersionID"] = "UnusualSoccer";
+                //mClientSettings["VersionID"] = "UnusualSoccer";
+                mServerSettings["VersionID"] = "MahouLigaChapas";
+                mClientSettings["VersionID"] = "MahouLigaChapas";
 
                 mServerSettings["Title"] = "localhost";
                 mServerSettings["ImageUrl"] = "";
@@ -175,7 +182,8 @@ namespace SoccerServer
                 RunWeeklyProcess();
 
                 // Llamamos al tick de los partidos en curso
-                (mNetEngine.NetServer.NetClientApp as Realtime).OnSecondsTick(elapsed, mTotalSeconds);
+                if (mNetEngine.IsRunning)
+                    mNetEngine.NetServer.OnSecondsTick(elapsed, mTotalSeconds);
             }
             catch (Exception excp)
             {

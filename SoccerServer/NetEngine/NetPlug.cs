@@ -21,10 +21,10 @@ namespace NetEngine
             get { return mID; }
         }
 
-        public object UserData
+        public NetActor Actor
         {
-            get { return mUserData; }
-            set { mUserData = value; }
+            get { return mActor; }
+            set { mActor = value; }
         }
 
         public bool IsClosed
@@ -516,6 +516,6 @@ namespace NetEngine
             public MessageHelper(byte[] msg) { Msg = msg; }          
         }
 
-        object mUserData;
+        private NetActor mActor;
     }
 }

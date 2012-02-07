@@ -48,17 +48,19 @@ namespace SoccerServer
         {
             NetEngineMain netEngineMain = Global.Instance.TheNetEngine;
 
-            if (netEngineMain.NetServer.IsRunning)
+            if (netEngineMain.IsRunning)
             {
-                Realtime theMainRealtime = netEngineMain.NetServer.NetClientApp as Realtime;
+                RealtimeLobby theMainRealtime = netEngineMain.NetServer.NetLobby as RealtimeLobby;
                 MyRealtimeConsole.Text = "Currently in play matches: " + theMainRealtime.GetNumMatches().ToString() + "<br/>";
                 MyRealtimeConsole.Text += "People in rooms: " + theMainRealtime.GetNumTotalPeopleInRooms().ToString() + "<br/>";
-                MyRealtimeConsole.Text += "People looking for match: " + theMainRealtime.GetPeopleLookingForMatch().ToString() + "<br/>";
+                MyRealtimeConsole.Text += "People looking for match: " + theMainRealtime.GetNumPeopleLookingForMatch().ToString() + "<br/>";
                 MyRealtimeConsole.Text += "Current connections: " + netEngineMain.NetServer.NumCurrentSockets.ToString() + "<br/>";
                 MyRealtimeConsole.Text += "Cumulative connections: " + netEngineMain.NetServer.NumCumulativePlugs.ToString() + "<br/>";
                 MyRealtimeConsole.Text += "Max Concurrent connections: " + netEngineMain.NetServer.NumMaxConcurrentSockets.ToString() + "<br/>";
                 MyRunButton.Text = "Stop";
                 MyCurrentBroadcastMsgLabel.Text = "Current msg: " + theMainRealtime.GetBroadcastMsg(null);
+
+                MyUpSinceLabel.Text = "Up since: " + netEngineMain.NetServer.LastStartTime.ToString();
             }
             else
             {
@@ -66,8 +68,6 @@ namespace SoccerServer
                 MyRunButton.Text = "Run";
                 MyCurrentBroadcastMsgLabel.Text = "Not running";
             }
-
-            MyUpSinceLabel.Text = "Up since: " + netEngineMain.NetServer.LastStartTime.ToString();
         }
 
         private int GetTotalPlayers()
@@ -141,7 +141,7 @@ namespace SoccerServer
         {
             NetEngineMain netEngineMain = Global.Instance.TheNetEngine;
 
-            if (!netEngineMain.NetServer.IsRunning)
+            if (!netEngineMain.IsRunning)
                 netEngineMain.Start();
             else
                 netEngineMain.Stop();
@@ -153,9 +153,9 @@ namespace SoccerServer
         {
             NetEngineMain netEngineMain = Global.Instance.TheNetEngine;
 
-            if (netEngineMain.NetServer.IsRunning)
+            if (netEngineMain.IsRunning)
             {
-                Realtime theMainRealtime = netEngineMain.NetServer.NetClientApp as Realtime;
+                RealtimeLobby theMainRealtime = netEngineMain.NetServer.NetLobby as RealtimeLobby;
                 theMainRealtime.SetBroadcastMsg(MyBroadcastMsgTextBox.Text);
 
                 UpdateRealtimeData();

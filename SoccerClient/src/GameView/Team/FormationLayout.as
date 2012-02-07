@@ -70,7 +70,7 @@ package GameView.Team
 			
 			for (var c:int = 0; c < ret.length; c++)
 			{
-				ret[c] = new Point(ret[c].x - fieldCapWidth*0.5, ret[c].y - fieldCapHeight*0.5); 
+				ret[c] = new Point(ret[c].x - fieldCapWidth*0.5, ret[c].y - fieldCapHeight*0.5 - 20); 
 			}
 			
 			return ret;

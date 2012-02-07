@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
-		 xmlns:s="library://ns.adobe.com/flex/spark" 
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 xmlns:mx="library://ns.adobe.com/flex/mx">
 	<s:layout>
 		<s:VerticalLayout/>
@@ -310,7 +310,14 @@
 				SetLine(2, "Jugando partido " + numMatches);
 				TweenMax.killDelayedCallsTo(onTime);
 				addElementAt(new UIComponentWrapper(mMainGameModel.TheRealtimeModel.TheMatch), 0);
-				TweenMax.delayedCall(RandUtils.RandIntBetween(3, 5), mMainGameModel.TheRealtimeModel.ForceMatchFinish);
+				
+				// Simulamos que han pulsado el viejo boton de abandonar
+				TweenMax.delayedCall(RandUtils.RandIntBetween(3, 5), abandonMatch);
+			}
+			
+			function abandonMatch() : void
+			{
+				mMainGameModel.TheRealtimeModel.TheMatch.Game.TheInterface.OnAbandonarClick(null);
 			}
 			
 			function onMatchEnded(matchResult : Object) : void
@@ -649,7 +656,7 @@
 	]]></fx:Script>
 	
 	
-	<s:Label id="MyDebugTest" left="0" right="0" top="0" bottom="0" />
+	<s:Label id="MyDebugTest" left="0" right="0" top="0" bottom="0"/>
 	
 </s:Group>
 
