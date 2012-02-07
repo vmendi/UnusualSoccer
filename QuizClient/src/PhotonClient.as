@@ -1,21 +1,24 @@
 package
 {		
 
-	import de.exitgames.photon_as3.Actor;
-	import de.exitgames.photon_as3.Constants;
+	import ServerConnection.Actor;
+	import ServerConnection.Constants;
+	import ServerConnection.Photon;
+	import ServerConnection.Responses.CustomJoinResponse;
+	import ServerConnection.Responses.JoinLobbyResponse;
+	import ServerConnection.Responses.LoginResponse;
+	import ServerConnection.Responses.SingUpResponse;
+	import ServerConnection.events.ChatEvent;
+	import ServerConnection.events.ExtendedJoinEvent;
+	import ServerConnection.events.RoomsListEvent;
+	
 	import de.exitgames.photon_as3.CoreConstants;
-	import de.exitgames.photon_as3.Photon;
 	import de.exitgames.photon_as3.PhotonCore;
-	import de.exitgames.photon_as3.Responses.JoinLobbyResponse;
-	import de.exitgames.photon_as3.Responses.LoginResponse;
-	import de.exitgames.photon_as3.Responses.SingUpResponse;
 	import de.exitgames.photon_as3.event.BasicEvent;
 	import de.exitgames.photon_as3.event.CustomEvent;
 	import de.exitgames.photon_as3.event.JoinEvent;
 	import de.exitgames.photon_as3.event.LeaveEvent;
 	import de.exitgames.photon_as3.event.PhotonErrorEvent;
-	import de.exitgames.photon_as3.events.ChatEvent;
-	import de.exitgames.photon_as3.events.RoomsList;
 	import de.exitgames.photon_as3.response.CustomResponse;
 	import de.exitgames.photon_as3.response.InitializeConnectionResponse;
 	import de.exitgames.photon_as3.response.JoinResponse;
@@ -60,11 +63,16 @@ package
 		public  function get ChatText() 			: String 	{return mChatTexts;}
 		private function set ChatText(v:String) 	: void   	{mChatTexts=v;}
 		private var mChatTexts:String = "";
+
+		[Bindable]
+		public  function get RoomsList()         : Dictionary 	{ return mRoomsList; }
+		public function set RoomsList(v:Dictionary) : void   	{ mRoomsList = v; }
+		private var mRoomsList:Dictionary = new Dictionary();
 		
 		// Variable que guardará la lista de usuarios conectados en la habitacion
 		[Bindable]
 		public  function get RoomUserList()         : String 	{ return mRoomUserList; }
-		private function set RoomUserList(v:String) : void   	{ mRoomUserList = v; }
+		public function set RoomUserList(v:String) : void   	{ mRoomUserList = v; }
 		private var mRoomUserList:String = "";
 
 		private var mTextLog:TextoLog = new TextoLog();
@@ -99,13 +107,12 @@ package
 		public function setupPhoton() : void {
 			//listen for photon responses
 			Photon.getInstance().addEventListener(InitializeConnectionResponse.TYPE, onPhotonResponse);
-			Photon.getInstance().addEventListener(JoinResponse.TYPE, onPhotonResponse);
 			Photon.getInstance().addEventListener(LeaveResponse.TYPE, onPhotonResponse);
 			Photon.getInstance().addEventListener(CustomResponse.TYPE, onPhotonResponse);
+			Photon.getInstance().addEventListener(CustomJoinResponse.TYPE, onPhotonResponse);
 			
 			//listen for photon events
 			Photon.getInstance().addEventListener(Event.CLOSE, this.onPhotonEvent);
-			Photon.getInstance().addEventListener(JoinEvent.TYPE, this.onPhotonEvent);
 			Photon.getInstance().addEventListener(LeaveEvent.TYPE, this.onPhotonEvent);
 			
 			//listen for errors
@@ -170,41 +177,36 @@ package
 			switch(event.type){
 				case InitializeConnectionResponse.TYPE:
 					// the client is now connected and ready
-					debug("QuizServer Responde: Comunicación establecida con QUIZSERVER"); 
+					debug("==> Respuesta Servidor: CONEXIÓN INICIADA con QuizServer"); 
 					break;
 				
-				case JoinResponse.TYPE:
-					debug("==> Join aceptado");
-					debug("Actor"+ (event as JoinResponse).getActorNo() + " Tiene una respuesta de QUIZSERVER: onJoin! \n ==> (MSG: [" + (event as JoinResponse).getReturnDebug() + "])");
+				case CustomJoinResponse.TYPE:
+					debug("==> Respuesta Servidor: Operación JOIN, realizada con éxito");
 					break;
 				
 				case LeaveResponse.TYPE:
-					debug("==> Leave aceptado");
-					debug("Actor" + _actorNo + " Tiene una respuesta de QUIZSERVER: onLeave! \n ==> (MSG: [" + (event as LeaveResponse).getReturnDebug() + "])");
+					debug("==> Respuesta Servidor: Operación LEAVE, realizada con éxito");
 					break;
 				
 				case LoginResponse.TYPE:
-					debug("==> Login aceptado");
-					debug("Tiene una respuesta de QUIZSERVER: OnLoginResponse! \n ==> (MSG: [" + (event as LoginResponse).getReturnDebug() + "])");			
+					debug("==> Respuesta Servidor: Operación LOGIN, realizada con éxito");
 					break;
 				case SingUpResponse.TYPE:
 				{
-					debug("==> Alta aceptada (MSG ALTA: [" + (event as SingUpResponse).getSingUpSuccess().toString() + "])");
-					debug("Actor Tiene una Respuesta de QUIZSERVER: onSingUpResponse! \n ==> (MSG: [" + (event as SingUpResponse).getReturnDebug() + "])");
+					debug("==> Respuesta Servidor: Operación SINGUP, realizada con éxito");
 					break;
 				}
 				case JoinLobbyResponse.TYPE:
 				{
-					debug("==> Join Lobby aceptada");
-					debug("Actor" + _actorNo + " Tiene una Respuesta de QUIZSERVER: onJoinLobbyResponse! \n ==> (MSG: [" + (event as JoinLobbyResponse).getReturnDebug() + "])");
+					debug("==> Respuesta Servidor: Operación JOIN LOBBY, realizada con éxito");
 					break;
 				}
 				case CustomResponse.TYPE:
-					debug("actor"+_actorNo + "  Mensaje Custom no capturado: \n ==> "  + event.type + "(INFO: ["+ event.toString() + "]) \n ==> (MSG:[" + (event as CustomResponse).getReturnDebug() + "])");
+					debug("==> Respuesta Servidor: Operación CUSTOM, realizada con éxito");
 					break;
 				
 				default:
-					debug("actor" + _actorNo + " Mensaje OTRO no capturado: "  + event.type + "(INFO: ["+ event.toString() + "])")
+					debug("==> Respuesta Servidor: Operación OTRA, realizada con éxito:\n==> "  + event.type + " (INFO: [ "+ event.toString() + "])")
 					break;
 			}
 		}
@@ -220,42 +222,23 @@ package
 			switch(event.type)
 			{
 				case Event.CLOSE:
-					debug("!!!connection to server closed!!!");
+					debug("Evento Servidor: Operación CERRAR CONEXIÓN");
 					break;
 				
-				case JoinEvent.TYPE:
-					debug("El [Actor"+_actorNo+"] ha recibido un EVENTO join!");
-					debug("=> Actor que ha hecho join: "+(event as JoinEvent).getActorNo());
-					debug("=> " + (event as JoinEvent).getActorlist().length + " actors in room:" + (event as JoinEvent).getActorlist().join(", "));
-					//var actorList:Array = (Actor)Photon.getInstance().getActorList();
-					//debug (actorList.toString());
+				case ExtendedJoinEvent.TYPE:
+					debug("Evento Servidor: Operación JOIN");
 					break;
 				
 				case LeaveEvent.TYPE:
-					debug("actor"+_actorNo+" got Photon Event: leave!");
-					debug("=> actor who left:"+(event as LeaveEvent).getActorNo());
-					debug("=> " + (event as LeaveEvent).getActorlist().length + " actors in room:" + (event as LeaveEvent).getActorlist().join(", "));
+					debug("Evento Servidor: Operación LEAVE");
 					break;
 				
-				case RoomsList.TYPE:
-					var lista:String =  Utils.ObjectToString((event as RoomsList)._roomsList);
-					debug("Actor" + _actorNo + " Tiene una respuesta de QUIZSERVER: onRoomsListResponse! \n ==> (MSG: [" +lista + "])");
-					var _roomsList:Dictionary = (event as RoomsList).getRoomsList();
-					if( (event as RoomsList).getNumOfRooms() > 0 )
-					{
-						debug("==> Bienvenido al Lobby [" + me.ActorName + " " + me.ActorSurName + "], las habitaciones que hay en este lobby son: \n");
-						for ( var val:* in _roomsList)
-						{
-							debug("   > Room [" + val + "] tiene [" + _roomsList[val] + "] usuario/s en linea");
-						}
-					}
-					else
-					{
-						debug("==> Bienvenido al Lobby [" + me.ActorName + " " + me.ActorSurName + "], No hay habitaciones en este LOBBY");
-					}
+				case RoomsListEvent.TYPE:
+					debug("Se ha recibido datos de las habitaciones");
 					break;
+				
 				default:
-					debug("=[Mensaje Custom no capturado: "  + event.type + " ("+ event.toString() + ")]=")
+					debug("[Evento Custom no capturado: "  + event.type + " ("+ event.toString() + ")]=")
 					break;
 			}
 		}

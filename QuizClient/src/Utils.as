@@ -22,7 +22,7 @@ package
 			for (var key:Object in obj) 
 			{
 				// iterates through each object key
-				var tmpKey:String = key.toString();
+				var tmpKey:Object = key;
 				str += tmpKey + ": " + obj[tmpKey].toString() + "\n";
 			}
 			return str;

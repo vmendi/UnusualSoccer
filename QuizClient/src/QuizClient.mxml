@@ -32,9 +32,11 @@
 						case "Login":
 							break;
 						case "MainMenu":
-							BindingUtils.bindSetter(OnIsConnectedChanged, mConnection, "IsConnected");
+							btnStartPlaying.enabled = mConnection.me.Logged;
+							//BindingUtils.bindSetter(OnIsConnectedChanged, mConnection, "IsConnected");
 							break;
 						case "SingUp":
+							imgWrongNick.visible = !mConnection.IsValidNick;
 							BindingUtils.bindSetter(OnInvalidNick,mConnection,"IsValidNick");
 							break;
 					}					
@@ -49,13 +51,15 @@
 			 */ 
 			public function Start():void
 			{
-				//Creamos un eventListener para capturar el teclado.
-				//FlexGlobals.topLevelApplication.addEventListener(KeyboardEvent.KEY_UP, onKeyUpCheckEnter);
+				var mErrorMessages:ErrorMessages = new ErrorMessages();
+				//Antes de nada, nos suscribimos al sistema de uncaught de Flash, para loggear los errores en el archivo de log del servidor
+				//if (loaderInfo.hasOwnProperty("uncaughtErrorEvents"))
+					//IEventDispatcher(loaderInfo["uncaughtErrorEvents"]).addEventListener("uncaughtError", mErrorMessages.UncaughtErrorHandler);
 				
 				LoginOnAPP(123456789,"Sant","Ti");
 				//LoginOnAPP(0001112223,"truño","mars");
-				//LoginOnAPP(0001112223,"truño","mars");
-				BindingUtils.bindSetter(OnGameStateChanged, mConnection, "GameState");
+				//LoginOnAPP(147852369,"Actor","Segundo");
+				BindingUtils.bindSetter(OnGameStateChanged, mConnection, "ScreenState");
 			}
 			
 			/**
@@ -65,8 +69,8 @@
 			{				
 				Security.allowDomain("*");
 				mConnection = new QuizModel();
-				mConnection.FacebookID 	= faceBookId;
-				mConnection.UserName 	= name;
+				mConnection.FacebookID = faceBookId;
+				mConnection.UserName = name;
 				mConnection.UserSurName = surName;				
 			}
 			
@@ -75,7 +79,7 @@
 			 */ 
 			public function ConnectToLobby():void
 			{
-				mConnection.ReturnToLobby();
+				//mConnection.ReturnToLobby();
 			}
 			
 			//================================================================================================||
@@ -104,19 +108,20 @@
 			/**
 			 * Función que mete al usuario en una habitación del Lobby en la que se desarrolla el juego
 			 */
-			public function ConnectToRoom1():void
+			/*public function ConnectToRoom1():void
 			{
 				mConnection.JoinRoomFromLobby();
 			}
-			
+
 			/**
 			 * Funcion que si la enganchas, avisa cuando te conectas con el servidor.
-			 */
+			 * /
 			private function OnIsConnectedChanged(isConnected : Boolean) : void
 			{	
-				btnStartPlaying.enabled = isConnected;
-				//btnSendMessage.enabled = isConnected;
 			}
+			*/
+			
+			
 			/**
 			 * sends a chat messages when user releases the ENTER key
 			 * 
@@ -143,12 +148,13 @@
 			{
 				mConnection.sendChatMessage(txtMessage.text);
 				txtMessage.text = "";
+				btnSendMessage.enabled = false;
 			}    			
 			
 			//================================================================================================||
 			///////////////////////////////   Código antiguo STATE = "TRASH"    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\||
 			//================================================================================================||
-			
+
 			/*
 			//Envía un mensaje de chat a los participantes del Lobby/Room donde estes conectado
 			public function sendMessage(nombre:String):void
@@ -249,8 +255,8 @@
 		<s:Button id="btnPlayer3" x="225" y="416" label="Player3" click="sendMessage('Player3')" enabled = "false"/>
 		<s:Button id="btnPlayer4" x="337" y="416" label="Player4" click="sendMessage('Player4')" enabled = "false"/>		
 		-->
-		<s:Button id="btnConnLobby" x="40"  y="29" width="126" height="24" label="Connect to Lobby"  click="ConnectToLobby()"/>
-		<s:Button id="btnConnRoom1" x="245" y="28" width="152" height="26" label="Connect to Room1"  click="ConnectToRoom1()"/>
+		<s:Button id="btnConnLobby" x="40"  y="29" width="126" height="24" label="Connect to Lobby"  click="/*ConnectToLobby()*/"/>
+		<s:Button id="btnConnRoom1" x="245" y="28" width="152" height="26" label="Connect to Room1"  click="/*ConnectToRoom1()*/"/>
 		<s:TextArea id="Actors" x="6" y="23" width="101" height="145" text="{mConnection.RoomUserList}"/>
 	</s:Group>
 	
@@ -292,7 +298,7 @@
 				 verticalAlign="middle"/>
 		<s:Image x="165" y="85" width="16" height="16" source="Assets/pointsIcon.png"/>
 		
-		<s:TextArea id="txtChat" x="31" y="328" width="578" height="121" borderColor="#3C3C3C"
+		<s:TextArea id="txtChat" x="31" y="280" width="578" height="146" borderColor="#3C3C3C"
 					borderVisible="true" color="#FFFFFF" contentBackgroundColor="#000000"
 					editable="false" enabled="true" fontFamily="Courier New" fontWeight="normal"
 					text="{mConnection.ChatText}"/>
@@ -302,10 +308,19 @@
 				  click.MainMenu="sendMyMessage();"/>
 		
 		<s:Button id="btnStartPlaying" x="288" y="178" enabled="false"
-				  skinClass="Skins.QuizMainButton"/>
+				  skinClass="Skins.QuizMainButton" click="/*mConnection.JoinRoomFromLobby()*/"/>
 		<s:Label id="lblPlayTitle" x="131.5" y="250" width="377" height="35" color="#FFFFFF"
 				 fontSize="24" fontWeight="bold" text="Dale al pulsador para empezar"
 				 textAlign="center" verticalAlign="middle"/>
+		<s:Group id="Test" x="360" y="10" width="249" height="200">
+			<s:List id="myList" height="100%" width="100%" 
+					itemRenderer="ItemRenderers.MyListItemRenderer">
+				<s:dataProvider>
+					<s:ArrayCollection source.MainMenu="{mConnection.mRoomActors}"/>
+
+				</s:dataProvider>
+			</s:List>
+		</s:Group>
 	</s:Group>
 	
 	<s:Group id="gLoading" includeIn="Login" x="0" y="0" width="640" height="480">
