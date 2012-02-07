@@ -31,7 +31,7 @@ namespace Lite.Operations
         ///   The target actor nr.
         /// </summary>
         TargetActorNr = 253, 
-
+         
         /// <summary>
         ///   The actors.
         /// </summary>

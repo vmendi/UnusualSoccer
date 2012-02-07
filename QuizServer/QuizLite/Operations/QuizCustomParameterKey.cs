@@ -13,7 +13,7 @@ namespace QuizLite.DataContext
         /// <summary>
         ///   UserID
         /// </summary>
-        SingUpResponse         = 98,        
+        SingUpResponse  = 98,        
         /// <summary>
         ///   UserID
         /// </summary>
@@ -21,7 +21,7 @@ namespace QuizLite.DataContext
         /// <summary>
         ///   FaceBookID
         /// </summary>
-        FaceBookID      = 100,
+        FacebookID      = 100,
         /// <summary>
         ///   PlayerName
         /// </summary>

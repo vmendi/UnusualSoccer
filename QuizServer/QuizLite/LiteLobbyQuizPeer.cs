@@ -163,7 +163,7 @@ namespace QuizLite
                 case (byte)QuizCustomOperationCode.UserLogin:
                 {
                     // Queremos logearnos en la applicación, con lo que hay que comprobar si existe el usuario en la BBDD
-                    long FacebookID = long.Parse(data[((byte)QuizCustomParameterKeys.FaceBookID).ToString()].ToString());//data["100"].ToString());
+                    long FacebookID = long.Parse(data[((byte)QuizCustomParameterKeys.FacebookID).ToString()].ToString());//data["100"].ToString());
                     var queryResult = UsersQuerys.GetActorDataByFacebookID(FacebookID);
                     if (log.IsDebugEnabled)
                     {
@@ -176,7 +176,7 @@ namespace QuizLite
                         UsersQuerys.UpdateUserLastLogin(((User)queryResult).UserID);
                         //Preparamos los datos que devolveremos al cliente
                         Dictionary<byte,Object> ActorData = new Dictionary<byte,object>();
-                        ActorData.Add((byte)QuizCustomParameterKeys.FaceBookID,     ((User)queryResult).FacebookID);
+                        ActorData.Add((byte)QuizCustomParameterKeys.FacebookID,     ((User)queryResult).FacebookID);
                         ActorData.Add((byte)QuizCustomParameterKeys.Name,           ((User)queryResult).Name);
                         ActorData.Add((byte)QuizCustomParameterKeys.Surname,        ((User)queryResult).Surname);
                         ActorData.Add((byte)QuizCustomParameterKeys.UserID,         ((User)queryResult).UserID);
@@ -187,9 +187,7 @@ namespace QuizLite
                         ActorData.Add((byte)QuizCustomParameterKeys.AnswersFailed,  ((User)queryResult).AnsweredFailed);
                         ActorData.Add((byte)QuizCustomParameterKeys.Nick,           ((User)queryResult).Nick);
                         //creamos la respuesta que enviaremos al usuario
-                        SendOperationResponse((byte)QuizCustomResponseCode.ActorPersonalData, ActorData, 0, "Retornando sus datos de usuario...", sendParameters);
-
-                        //string message = string.Format("Unknown operation code {0}", operationRequest.OperationCode);
+                        SendOperationResponse((byte)QuizCustomResponseCode.ActorPersonalData, ActorData, 0, "Transferidos sus datos de usuario...", sendParameters);
                     }
                     else
                     {
@@ -209,6 +207,7 @@ namespace QuizLite
 
 
         //Metodos privados
+
         /// <summary>
         /// Crea una operación de Respuesta, que resultara en un ResponseEvent en el Cliente
         /// </summary>
@@ -239,7 +238,7 @@ namespace QuizLite
         {
             User _user = new User();
             _user.Nick              = data[((byte)QuizCustomParameterKeys.Nick).ToString()].ToString();
-            _user.FacebookID        = long.Parse(data[((byte)QuizCustomParameterKeys.FaceBookID).ToString()].ToString());
+            _user.FacebookID        = long.Parse(data[((byte)QuizCustomParameterKeys.FacebookID).ToString()].ToString());
             _user.Name              = data[((byte)QuizCustomParameterKeys.Name).ToString()].ToString();
             _user.Surname           = data[((byte)QuizCustomParameterKeys.Surname).ToString()].ToString();
             _user.CreationDate      = DateTime.Now;
