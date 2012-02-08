@@ -1,8 +1,9 @@
 package ServerConnection.Responses
 {
-	import de.exitgames.photon_as3.CoreKeys;
 	import ServerConnection.Keys;
 	import ServerConnection.Photon;
+	
+	import de.exitgames.photon_as3.CoreKeys;
 	import de.exitgames.photon_as3.event.BasicEvent;
 	import de.exitgames.photon_as3.internals.DebugOut;
 	import de.exitgames.photon_as3.response.BasicResponse;
@@ -35,12 +36,12 @@ package ServerConnection.Responses
 				_data[Keys.User_Surname] 		= pObject[Keys.User_Surname];
 				_data[Keys.User_ID] 			= pObject[Keys.User_ID];
 				_data[Keys.User_CreationDate] 	= pObject[Keys.User_CreationDate];
-				_data[Keys.User_LastLoginDate] 	= pObject[Keys.User_LastLoginDate];
-				_data[Keys.User_Score] 			= pObject[Keys.User_Score];
+				_data[Keys.User_LastLoginDate] 	= pObject[Keys.User_LastLoginDate];				
 				_data[Keys.User_AnsweredRight] 	= pObject[Keys.User_AnsweredRight];
 				_data[Keys.User_AnsweredFail] 	= pObject[Keys.User_AnsweredFail];
-				_data[Keys.User_Nick] 			= pObject[Keys.User_Nick];
-				_data[CoreKeys.ACTOR_NO]		= pObject[CoreKeys.ACTOR_NO];
+				_data[Keys.User_Photo]			= pObject[Keys.User_Photo] != null ? pObject[Keys.User_Photo] : "Assets/DefaultAvatar.gif";
+				_data[Keys.User_Nick] 			= pObject[Keys.User_Nick];				
+				_data[Keys.User_Score] 			= pObject[Keys.User_Score];
 				ev.setUserPersonalData(_data);	// Guardamos nuestra información personal de usuario retornada por el servidor
 			}
 			else

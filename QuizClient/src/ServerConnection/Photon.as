@@ -15,7 +15,7 @@ package ServerConnection {
 	import de.exitgames.photon_as3.event.JoinEvent;
 	import de.exitgames.photon_as3.response.JoinResponse;
 	
-	import flash.events.Event;
+	//import flash.events.Event;
 
 	/**
 	 * this is the game specific gateway to the photon server.
@@ -55,24 +55,10 @@ package ServerConnection {
 					var res_JoinRoom : CustomJoinResponse = CustomJoinResponse.create(operationCode, returnCode, pData, debugMessage);
 					dispatchEvent(res_JoinRoom);
 					break;	
-				case CoreConstants.EV_PROPERTIES_CHANGED:
-					break;
-				case "251":
-					var data:Object = pData;
-					break;
-				case 251:
-					var data2:Object = pData;
-					break;
 				default:
 					trace("------Respuesta de QUIZSERVER no parseada con el \n -------->codigo [" + operationCode + "] \n -------->valor [" + pData[CoreKeys.CODE]+ "]"); 
 					break;
      		}
-			
-			/*switch (pData[CoreKeys.CODE]) 
-			{
-				default:					
-					break;
-			}*/
 		}
 		
 		/**
@@ -80,9 +66,7 @@ package ServerConnection {
 		 */
 		override protected function parseEventData(eventCode : int, pData : Object) : void {
 			// parse core events
-			//if(eventCode != CoreConstants.EV_JOIN)
-			//if(eventCode != CoreConstants.EV_JOIN)
-				super.parseEventData(eventCode, pData);
+			super.parseEventData(eventCode, pData);
 			
 			// add custom events parsing here
 			switch (eventCode) {
@@ -97,16 +81,19 @@ package ServerConnection {
 					dispatchEvent(ev_roomsList);
 					break;
 				
-				/*case CoreConstants.EV_JOIN:
+				case CoreConstants.EV_JOIN:
 					var ev_join_resp : ExtendedJoinEvent = ExtendedJoinEvent.create(eventCode,pData);
 					dispatchEvent(ev_join_resp);
-					break;*/
-				
+					break;
+								
 				case Constants.EV_CUSTOM_JOIN_ROOM:
 					var ev_join_resp_ : ExtendedJoinEvent = ExtendedJoinEvent.create(eventCode,pData);
 					dispatchEvent(ev_join_resp_);
 					break;
-
+				
+				case CoreConstants.OP_SET_PROPERTIES:
+					var a:Object = pData;
+					break;
 				default:
 					trace("------Evento de QUIZSERVER no parseada con el \n -------->codigo [" + eventCode + "] \n -------->valor [" + Utils.ObjectToString(pData[CoreKeys.CODE]) + "]");
 					break;

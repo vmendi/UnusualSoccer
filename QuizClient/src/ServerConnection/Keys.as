@@ -19,6 +19,6 @@ package ServerConnection {
 		public static const User_AnsweredFail	:int	= 107;
 		public static const User_Nick			:int	= 108;
 		public static const User_Photo			:int	= 109;
-		public static const ActorNo 			:int	= 110;
+		//public static const ActorNo 			:int	= 110;
 	}
 }

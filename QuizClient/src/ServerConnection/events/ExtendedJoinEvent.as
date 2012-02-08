@@ -2,26 +2,28 @@ package ServerConnection.events
 {
 	import de.exitgames.photon_as3.CoreKeys;
 	import de.exitgames.photon_as3.event.JoinEvent;
+	
+	import flash.utils.Dictionary;
 
 	public class ExtendedJoinEvent extends JoinEvent
 	{
 		/**
 		 * Definicion del tipo de evento (event.TYPE)
 		 */ 
-		public static const TYPE:String = JoinEvent.TYPE;// "onJoinEvent";
+		public static const TYPE:String = "onJoinEvent";
 		
 		/**
 		 * Propiedades de los jugadores del LOBBY
 		 */ 
-		private var mPlayerProps:Object;
-		public function getPlayerProperties():Object {return mPlayerProps};
-		public function setPlayerProperties(v:Object):void{mPlayerProps = v;};
+		private var mActorsProperties:Object;
+		public function getActorsProperties():Object {return mActorsProperties};
+		public function setActorsProperties(v:Object):void{mActorsProperties = v;};
 		
 		/**
 		 * Numero de Actor que me asigna el LOBBY al entrar
 		 */  
 		public var mActorNum:int;
-		public  function getPlayerNum():int {return mActorNum};
+		public function getPlayerNum():int {return mActorNum};
 		public function setPlayerNum(v:int):void{mActorNum = v;};
 		
 		/**
@@ -41,7 +43,7 @@ package ServerConnection.events
 
 			if(params[CoreKeys.ACTOR_PROPERTIES] != null)
 			{ 				// Si ya había algún jugador en el LOBBY, este nos envía sus "Player Properties".
-				ev.setPlayerProperties(params[CoreKeys.ACTOR_PROPERTIES]); 	// parseamos los datos
+				ev.setActorsProperties(params[CoreKeys.ACTOR_PROPERTIES]); 	// parseamos los datos
 			}
 			if(params[CoreKeys.ACTOR_NO] != null)
 			{

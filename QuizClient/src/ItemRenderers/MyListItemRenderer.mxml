@@ -15,10 +15,10 @@
 	</s:layout>
 	
 	<s:HGroup verticalAlign="middle" paddingTop="0" paddingBottom="0">
+		<s:Label text="{data.ActorNo}" color.hovered="0x1313cd" color.selected="0x000000" verticalAlign="bottom"/>
 		<mx:Image source="{data.Photo}" width="50" height="40" alpha.hovered=".5"/>
 		<s:Label text="{data.ActorNick}" color.hovered="0x1313cd" color.selected="0x000000" verticalAlign="bottom"/>
 		<s:Label text="{data.ActorScore}" color.hovered="0x1313cd" color.selected="0x000000" verticalAlign="bottom"/>
-		<s:Label text="{data.ActorLastLoginDate}" color.hovered="0x1313cd" color.selected="0x000000" verticalAlign="bottom"/>
 	</s:HGroup>
 	
 </s:ItemRenderer>

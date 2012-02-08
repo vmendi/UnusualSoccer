@@ -25,6 +25,7 @@ package
 	
 	import flash.events.DataEvent;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.net.ObjectEncoding;
 	import flash.utils.Dictionary;
 	
@@ -114,8 +115,6 @@ package
 						{
 							//Informamos a la vista para que cambie de la pantalla de LOGIN a la de MENUPRINCIPAL.
 							ScreenState = "MainMenu";
-							//Establecemos las propiedades del Actor (que enviaremos para logearnos en el lobby y en las rooms			 			
-							setActorProperties();
 							//Nos logeamos en el Lobby
 							JoinLobby(mDefaultLobby);							
 						}
@@ -183,7 +182,6 @@ package
 				}
 				case LoginResponse.TYPE:	
 				{
-
 					me.PersonalData = (event as LoginResponse).getUserPersonalData();
 					if (me.Logged)
 					{
@@ -218,32 +216,32 @@ package
 				}
 				case CustomJoinResponse.TYPE:
 				{
+					//Actualizamos el numero que Photón establece para el actor
 					me.ActorNo = (event as CustomJoinResponse).getPlayerNum();
-					var params:Object; 
+					
+					//Si la respuesta que esperamos es conectarse al lobby...
 					if(getState() == STATE_JOINLOBBY_REQUESTING)
 					{
 						setState(STATE_JOINED_AT_LOBBY);
 						this.printChatLine("QS", "==> Bienvenido al Lobby"); 
-					}
+					}//Si la respuesta que esperamos es conectarse a la habitación...
 					else if(getState() == STATE_JOINROOM_REQUESTING)
 					{
-						setState(STATE_JOINED_AT_ROOM);		
-						this.IsConnected = true;
-						var playerProps:Object = (event as CustomJoinResponse).getPlayerProperties();
+						setState(STATE_JOINED_AT_ROOM);
 						initUserList();
+						this.IsConnected = true;
+						//Inicializamos la lista de Actores de la Room
+						mRoomActors = new Array();
+						//Recolectamos los datos de los demás players
+						var playerProps:Object = (event as CustomJoinResponse).getPlayerProperties();
 						JoinActorPropertiesWithActorList(playerProps);
-						
-						
-						
 
 						this.printChatLine("QS", "==> Bienvenido a la Habitación"); 
-					}else if (getState() == STATE_JOINED_AT_ROOM)
+					}
+					/*else if (getState() == STATE_JOINED_AT_ROOM)
 					{
 						//TODO Verificar si el programa pasa por aqui en algún momento... 
-						// - si pasa, parseamos la actorlist y las playerproperties. 
-						params = (event as CustomJoinResponse).getPlayerProperties();
-						mRoomActors = Photon.getInstance().getActorList();
-					}
+					}*/
 					break;
 				}
 				case LeaveResponse.TYPE:
@@ -267,37 +265,31 @@ package
 			super.onPhotonEvent(event);
 
 			switch(event.type)
-			{	
+			{	// Tratamos el evento capturado de RoomListEvent
 				case RoomsListEvent.TYPE:
 				{
 					var lista:Dictionary = (event as RoomsListEvent).getRoomsList();
 					this.RoomsList = lista;
 					if( getState() == STATE_JOINED_AT_LOBBY)
 					{
+						//Establecemos las propiedades del Actor (que enviaremos para logearnos en el lobby y en las rooms			 			
+						setActorProperties();
 						JoinDefaultLobbyRoom();
 					}
 					break;
 				}
-					
+				// Tratamos el evento capturado de Join (Join al lobbym o Join a la Room)	
 				case ExtendedJoinEvent.TYPE:
 				{
+					initUserList();
 					if (getState() == STATE_JOINED_AT_ROOM)
 					{
-						//var params:Object = (event as JoinEvent).getActorlist();
-						//var test:String = mRoomActors[0].ActorNo;
-						//var ActorList:Array   = Photon.getInstance().getActorList();
-						//initUserList();
-						mRoomActors = Photon.getInstance().getActorList();
-						//var playerProps:Object = (event as ExtendedJoinEvent).getPlayerProperties();
-						//JoinActorPropertiesWithActorList(mRoomActors);
-						
-						Photon.getInstance().raiseCustomEvent(251);
-						
-						
+						var playerProps:Object = (event as ExtendedJoinEvent).getActorsProperties();
+						JoinActorPropertiesWithActorList(playerProps);
 					}
 					break;
 				}
-					
+				// Tratamos el evento capturado de Chat	
 				case ChatEvent.TYPE:
 				{
 					var _actor:String = (event as ChatEvent).getActorNick();
@@ -361,8 +353,10 @@ package
 		{
 			
 			var params:Object= new Object();
-			//params[CoreKeys.ACTOR_PROPERTIES] = myActorProperties; // En este EV_JOIN, insertamos en la ActorProperties, 
-			// nuestra infiormación, para informar a los demás clientes		
+			//params[CoreKeys.BROADCAST] = true;
+			//params[CoreKeys.ACTOR_PROPERTIES] = myActorProperties; // En este EV_JOIN, insertamos en la ActorProperties,
+			
+			//nuestra infiormación, para informar a los demás clientes		
 			params[CoreKeys.LOBBY_ID] = mDefaultLobby;
 			Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_JOIN_LOBBY,params);
 			setState(STATE_JOINLOBBY_REQUESTING);
@@ -376,6 +370,7 @@ package
 		 */
 		private function JoinDefaultLobbyRoom():void
 		{
+			mRoomActors = new Array();
 			JoinRoomFromLobby(mDefaultLobbyRoom);
 		}
 		
@@ -388,6 +383,7 @@ package
 			// Configuramos los parametros que enviará el evento
 			var params:Object= new Object();
 			
+			params[CoreKeys.BROADCAST] = true;
 			params[CoreKeys.LOBBY_ID] = mDefaultLobby; 				// El nombre del Lobby dnd está/se creará la Room
 			params[CoreKeys.GAME_ID] = roomName;					// El nombre de la room dnd nos queremos JOINear
 			params[CoreKeys.ACTOR_PROPERTIES] = myActorProperties;	// En este EV_JOIN, insertamos en la ActorProperties, 
@@ -419,31 +415,41 @@ package
 		
 		private function JoinActorPropertiesWithActorList(Players:Object):void
 		{			
-			//mRoomActors = new Array();
-		
 			if ( Players != null)
 			{
-				mRoomActors = new Array;
-				var ActorList:Object = Photon.getInstance().getActorList();
-				for (var key:Object in Players) 
+				//Si nos llegan datos de mas de un actor(Si hemos hecho join en una sala que ya tenía Actors, 
+				//la información nos llega en forma de Array
+				if((Players as Array).length > 0)
 				{
-				
-					var _actor:Actor = new Actor();
-					var actorProps:Object = key;
-					
-					_actor.ActorNo = parseInt(key.toString(),0);
-					_actor.ActorName = Players[key].User_Name;
-					_actor.ActorSurName = Players[key].User_Surname;
-					_actor.ActorNick = Players[key].Nick;
-					_actor.ActorScore = Players[key].Score;
-					mRoomActors.push(_actor);
-				}			
-			}
-			else
-			{
-				//mRoomActors.push(me);				
+					for (var key:Object in Players) 
+					{						
+						var _actor:Actor 		= new Actor();
+						var actorProps:Object 	= Players[key];
+						actorProps.ActorNo 		= key;
+						
+						_actor.ActorNo 		= parseInt(key.toString(),0);
+						_actor.ActorNick	= actorProps.Nick;
+						_actor.ActorScore 	= actorProps.Score;
+						_actor.Photo 		= actorProps.Photo; 
+						_actor.ActorName 	= actorProps.User_Name;
+						_actor.ActorSurName = actorProps.User_Surname;
+						mRoomActors.push(_actor);
+					}	
+				}// en el caso de ser el primero en hacer Join en la Room... me devuelve los datos como un Object;
+				else
+				{
+					var _thisActor:Actor = new Actor();
+					_thisActor.ActorNo 		= Players.ActorNo;
+					_thisActor.ActorName 	= Players.User_Name;
+					_thisActor.ActorSurName = Players.User_Surname;
+					_thisActor.ActorNick	= Players.Nick;
+					_thisActor.ActorScore 	= Players.Score;
+					_thisActor.Photo		= Players.Photo;
+					mRoomActors.push(_thisActor);
+				}						
 			}
 		}
+		
 		/**
 		 * Establece las propiedades del Actor dentro de la sala añade como "internal data" 
 		 * los valores que queramos que vayan acompañando al player en cada habitación.
@@ -454,12 +460,15 @@ package
 		{
 			var ActorProperties:Array 		= new Array();
 			ActorProperties 				= new Array();
-			ActorProperties["QuizID"] 		= me.QuizID;
-			ActorProperties["User_Name"] 	= me.ActorName;
-			ActorProperties["User_Surname"] = me.ActorSurName;
+			// información para compartir con los demás clientes
+			ActorProperties["ActorNo"]		= me.ActorNo;
+			ActorProperties["Photo"]		= me.Photo;
 			ActorProperties["Nick"]			= me.ActorNick;
 			ActorProperties["Score"]		= me.ActorScore;
-			ActorProperties["ActorNo"]		= me.ActorNo;
+			// información personal que no se utilizará para la gestion de la app
+			ActorProperties["QuizID"] 		= me.QuizID;
+			ActorProperties["User_Name"] 	= me.ActorName;
+			ActorProperties["User_Surname"] = me.ActorSurName;			
 			ActorProperties["FacebookID"]   = me.ActorFaceBookID;
 			myActorProperties = ActorProperties;
 		}

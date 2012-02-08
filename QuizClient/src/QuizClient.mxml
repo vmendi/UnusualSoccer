@@ -14,6 +14,7 @@
 			
 			import mx.binding.utils.BindingUtils;
 			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
 			import mx.core.FlexGlobals;
 			
 			[Bindable]
@@ -52,13 +53,15 @@
 			public function Start():void
 			{
 				var mErrorMessages:ErrorMessages = new ErrorMessages();
+				
+				addEventListener("onCloseConnection",ShowAlert);
 				//Antes de nada, nos suscribimos al sistema de uncaught de Flash, para loggear los errores en el archivo de log del servidor
 				//if (loaderInfo.hasOwnProperty("uncaughtErrorEvents"))
 					//IEventDispatcher(loaderInfo["uncaughtErrorEvents"]).addEventListener("uncaughtError", mErrorMessages.UncaughtErrorHandler);
 				
-				LoginOnAPP(123456789,"Sant","Ti");
+				//LoginOnAPP(123456789,"Sant","Ti");
 				//LoginOnAPP(0001112223,"truño","mars");
-				//LoginOnAPP(147852369,"Actor","Segundo");
+				LoginOnAPP(147852369,"Actor","Segundo");
 				BindingUtils.bindSetter(OnGameStateChanged, mConnection, "ScreenState");
 			}
 			
@@ -105,6 +108,14 @@
 			/////////////////////////////// Funciones para el STATE = "MAINMENU" \\\\\\\\\\\\\\\\\\\\\\\\\\\\\||
 			//================================================================================================||
 			
+			
+			public function ShowAlert(ev:Event):void
+			{
+				if( ev.type == "onCloseConnection")
+				{
+					mx.controls.Alert.show("Se ha perdid,o la conexión con el servidor","Information");
+				}
+			}	
 			/**
 			 * Función que mete al usuario en una habitación del Lobby en la que se desarrolla el juego
 			 */
@@ -317,7 +328,6 @@
 					itemRenderer="ItemRenderers.MyListItemRenderer">
 				<s:dataProvider>
 					<s:ArrayCollection source.MainMenu="{mConnection.mRoomActors}"/>
-
 				</s:dataProvider>
 			</s:List>
 		</s:Group>

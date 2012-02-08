@@ -1,4 +1,6 @@
 package ServerConnection {
+	import de.exitgames.photon_as3.CoreKeys;
+	
 	import flash.utils.Dictionary;
 
 	/**
@@ -81,8 +83,8 @@ package ServerConnection {
 		public function get ActorNo()            	: int { return _actorNo; }
 		public function setActorNo(actorNo:int) 	: void { _actorNo = actorNo; }*/
 	
-		public function get ActorNo()            	: int { return _personalData[Keys.ActorNo]; }
-		public function set ActorNo(actorNo:int) 	: void { _personalData[Keys.ActorNo] = actorNo; }
+		public function get ActorNo()            	: int { return _personalData[CoreKeys.ACTOR_NO]; }
+		public function set ActorNo(actorNo:int) 	: void { _personalData[CoreKeys.ACTOR_NO] = actorNo; }
 		
 		// Es el numero ID que nos da photon cuando entramos en un lobby/Room
 		//private var _ActorPhoto:String;		

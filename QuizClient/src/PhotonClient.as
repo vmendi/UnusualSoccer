@@ -1,6 +1,5 @@
 package
 {		
-
 	import ServerConnection.Actor;
 	import ServerConnection.Constants;
 	import ServerConnection.Photon;
@@ -25,18 +24,16 @@ package
 	import de.exitgames.photon_as3.response.LeaveResponse;
 	
 	import flash.events.Event;
-	import flash.events.FocusEvent;
+	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
-	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
 	import flash.events.SecurityErrorEvent;
-	import flash.events.TimerEvent;
 	import flash.sampler.getMasterString;
 	import flash.system.Security;
 	import flash.text.TextField;
 	import flash.ui.Keyboard;
 	import flash.utils.Dictionary;
 	
+	import mx.controls.Alert;
 	import mx.core.FlexGlobals;
 	import mx.core.mx_internal;
 	import mx.olap.aggregators.CountAggregator;
@@ -223,6 +220,7 @@ package
 			{
 				case Event.CLOSE:
 					debug("Evento Servidor: Operación CERRAR CONEXIÓN");
+					Alert.show("Se ha perdido la conexión con el servidor","Information");
 					break;
 				
 				case ExtendedJoinEvent.TYPE:
@@ -248,6 +246,7 @@ package
 		 * 
 		 * @param event
 		 */
+/*
 		public function onPhotonError(event:Event) : void 
 		{
 			debug("############ ERROR ############");
@@ -273,7 +272,34 @@ package
 					break;
 			}
 		}
-		
+*/
+		public function onPhotonError(event:Event) : void 
+		{
+			var _errorText:String = "############ ERROR ############\n *" + event;
+			//debug(_errorText);
+			switch(event.type){
+				case IOErrorEvent.IO_ERROR:
+					_errorText += "\n\n IO_ERROR: Connection to server failed!";
+					break;				
+				case SecurityErrorEvent.SECURITY_ERROR:
+				_errorText += "\n\n SECURITY_ERROR: Could not read security policy file!";
+					break;				
+				case PhotonErrorEvent.ERROR:
+					// ERR_MESSAGE_SIZE means that the chat message length exceeds the possible message size
+					// in this case a message was canceled and has not been broadcasted
+					if (PhotonErrorEvent(event).getCode() == CoreConstants.ERR_MESSAGE_SIZE) 
+					{
+						_errorText += "\n\n This message was too big. No message was sent.";
+						printChatLine("System", "This message was too big, complete operation call canceled. No message was sent.");
+						return;
+					}
+					break;
+				default:
+					break;
+			}
+			debug(_errorText);
+			Alert.show(_errorText,"Error!");
+		}
 		
 		/**
 		 * set or reset userlist (on join or quit events)
