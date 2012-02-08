@@ -21,10 +21,10 @@
         <classShapeMoniker Id="fb2a6149-a328-4bca-ba4e-3df2ebab98b8" />
       </nodes>
     </associationConnector>
-    <classShape Id="5d18630e-327b-46fd-bffe-c8e7f85f2130" absoluteBounds="1.75, 0.625, 2, 2.7324039713541666">
+    <classShape Id="33c354d5-b600-4def-ba85-db71699ff650" absoluteBounds="1.375, 0.5, 2, 2.9247054036458331">
       <DataClassMoniker Name="/QuizLINQDataContext/User" />
       <nestedChildShapes>
-        <elementListCompartment Id="39b9a855-7f0c-4454-8aae-a41b4767a79d" absoluteBounds="1.7649999999999997, 1.085, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="3bc89db6-5186-43cb-a836-e449eb9b4a74" absoluteBounds="1.3899999999999997, 0.96, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

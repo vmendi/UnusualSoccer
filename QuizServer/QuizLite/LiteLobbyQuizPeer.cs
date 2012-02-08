@@ -62,24 +62,10 @@ namespace QuizLite
                 {
                     //Parseamos los datos que recibimos.
                     var parameters = ((Dictionary<byte, object>)operationRequest.Parameters);
-                    var CustomOperationCode = (int)parameters[(byte)ParameterKey.Code];//(int)operationRequest.Parameters[244];
+                    //var CustomOperationCode = (int)parameters[(byte)ParameterKey.Code];//(int)operationRequest.Parameters[244];
+                    byte CustomOperationCode = parameters.ContainsKey((byte)ParameterKey.Code) ?   byte.Parse(parameters[(byte)ParameterKey.Code].ToString()) : byte.Parse(0.ToString());
                     switch (CustomOperationCode)
                     {
-                        case (byte)QuizCustomOperationCode.JoinGameFromLobby: // JoinGameWithLobby: Unimos al cliente a un juego del lobby
-                        {
-                            var data = (Hashtable)operationRequest.Parameters[(byte)ParameterKey.Data];
-                            
-                            operationRequest.OperationCode = (byte)OperationCode.Join;
-                            
-                            var param                               = new Dictionary<byte, object>();
-                            param[(byte)ParameterKey.GameId]        = data[((byte)ParameterKey.GameId).ToString()].ToString();
-                            param[(byte)LobbyParameterKeys.LobbyId] = data[((byte)LobbyParameterKeys.LobbyId).ToString()].ToString();
-                            param[(byte)ParameterKey.ActorProperties] = data[((byte)ParameterKey.ActorProperties).ToString()];
-                            operationRequest.SetParameters(param);
-
-                            this.HandleJoinOperation(operationRequest, sendParameters);
-                            break;
-                        }
                         case (byte)QuizCustomOperationCode.JoinLobby:
                         {
                             var data = (Hashtable)operationRequest.Parameters[(byte)ParameterKey.Data];
@@ -93,6 +79,24 @@ namespace QuizLite
                             this.HandleJoinOperation(operationRequest, sendParameters);
                             break;
                         }
+
+                        case (byte)QuizCustomOperationCode.JoinGameFromLobby: // JoinGameWithLobby: Unimos al cliente a un juego del lobby
+                        {
+                            var data = (Hashtable)operationRequest.Parameters[(byte)ParameterKey.Data];
+                            
+                            operationRequest.OperationCode = (byte)OperationCode.Join;
+                            
+                            var param                                   = new Dictionary<byte, object>();
+                            param[(byte)ParameterKey.GameId]            = data[((byte)ParameterKey.GameId).ToString()].ToString();
+                            param[(byte)LobbyParameterKeys.LobbyId]     = data[((byte)LobbyParameterKeys.LobbyId).ToString()].ToString();
+                            param[(byte)ParameterKey.ActorProperties]   = data[((byte)ParameterKey.ActorProperties).ToString()];
+                            param[(byte)ParameterKey.Broadcast]         = data[((byte)ParameterKey.Broadcast).ToString()];
+                            operationRequest.SetParameters(param);
+
+                            this.HandleJoinOperation(operationRequest, sendParameters);
+                            break;
+                        }
+
                         default: // Si es cualquier otro Codigo que no necesite que sea interceptado, lo tratmos como lo haría LiteLobby.
                         {
                             base.HandleGameOperation(operationRequest, sendParameters);
@@ -122,19 +126,22 @@ namespace QuizLite
         {
             var parameters = ((Dictionary<byte, object>)operationRequest.Parameters);
             byte CustomOperationCode = parameters.ContainsKey((byte)ParameterKey.Code) ? byte.Parse(parameters[(byte)ParameterKey.Code].ToString()) : (byte)0;
-            var data = parameters.ContainsKey((byte)ParameterKey.Data) ? (Hashtable)parameters[(byte)ParameterKey.Data] : new Hashtable();
+            //var data = parameters.ContainsKey((byte)ParameterKey.Data) ? (Hashtable)parameters[(byte)ParameterKey.Data] : new Hashtable();
+            var data = parameters.ContainsKey((byte)ParameterKey.Data) ? (object)parameters[(byte)ParameterKey.Data] : new Hashtable();
 
             switch (CustomOperationCode)
             {
                 case (byte)QuizCustomOperationCode.UserSingin:
                 {
-                    String nick = data[((byte)QuizCustomParameterKeys.Nick).ToString()].ToString();
+                    //String nick = data[((byte)QuizCustomParameterKeys.Nick).ToString()].ToString();
+                    String nick = ((Hashtable)data)[((byte)QuizCustomParameterKeys.Nick).ToString()].ToString();
                     //Comprobamos la disponbilidad del Nick
                     bool UniqueNick = UsersQuerys.CheckNickAvailability(nick);
                     //Si el nick es "genuino", damos al usuario de alta en la BBDD
                     if (UniqueNick)
                     {
-                        User user = CreateUser(data);
+                        //User user = CreateUser(data);
+                        User user = CreateUser(((Hashtable)data));
                         UsersQuerys.CreateUser(user);
                         if (log.IsDebugEnabled)
                         {
@@ -160,10 +167,14 @@ namespace QuizLite
 
                     return;
                 }
+
                 case (byte)QuizCustomOperationCode.UserLogin:
                 {
                     // Queremos logearnos en la applicación, con lo que hay que comprobar si existe el usuario en la BBDD
-                    long FacebookID = long.Parse(data[((byte)QuizCustomParameterKeys.FacebookID).ToString()].ToString());//data["100"].ToString());
+                    
+                    //long FacebookID = long.Parse(data[((byte)QuizCustomParameterKeys.FacebookID).ToString()].ToString());//data["100"].ToString());
+                    long FacebookID = long.Parse(((Hashtable)data)[((byte)QuizCustomParameterKeys.FacebookID).ToString()].ToString());//data["100"].ToString());
+                    
                     var queryResult = UsersQuerys.GetActorDataByFacebookID(FacebookID);
                     if (log.IsDebugEnabled)
                     {
@@ -182,10 +193,12 @@ namespace QuizLite
                         ActorData.Add((byte)QuizCustomParameterKeys.UserID,         ((User)queryResult).UserID);
                         ActorData.Add((byte)QuizCustomParameterKeys.CreationData,   ((User)queryResult).CreationDate);
                         ActorData.Add((byte)QuizCustomParameterKeys.LastLoginDate,  ((User)queryResult).LastLoginDate);
-                        ActorData.Add((byte)QuizCustomParameterKeys.Score,          ((User)queryResult).Score);
+
                         ActorData.Add((byte)QuizCustomParameterKeys.AnswersCorrect, ((User)queryResult).AnsweredRight);
                         ActorData.Add((byte)QuizCustomParameterKeys.AnswersFailed,  ((User)queryResult).AnsweredFailed);
                         ActorData.Add((byte)QuizCustomParameterKeys.Nick,           ((User)queryResult).Nick);
+                        ActorData.Add((byte)QuizCustomParameterKeys.Score,          ((User)queryResult).Score);
+                        ActorData.Add((byte)QuizCustomParameterKeys.Photo,          ((User)queryResult).Photo);
                         //creamos la respuesta que enviaremos al usuario
                         SendOperationResponse((byte)QuizCustomResponseCode.ActorPersonalData, ActorData, 0, "Transferidos sus datos de usuario...", sendParameters);
                     }

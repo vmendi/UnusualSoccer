@@ -32,6 +32,7 @@
       <Column Name="AnsweredRight" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="AnsweredFailed" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Nick" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Photo" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
     </Type>
   </Table>
 </Database>

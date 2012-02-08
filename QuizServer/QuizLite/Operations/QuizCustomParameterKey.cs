@@ -53,7 +53,11 @@ namespace QuizLite.DataContext
                 /// <summary>
         ///   Player Nick
         /// </summary>
-        Nick = 108
+        Nick = 108,
+        /// <summary>
+        ///   Player Photo (path)
+        /// </summary>
+        Photo = 109
 
     }
 }

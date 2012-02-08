@@ -507,6 +507,8 @@ namespace QuizLite.DataContext
 		
 		private string _Nick;
 		
+		private string _Photo;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -531,6 +533,8 @@ namespace QuizLite.DataContext
     partial void OnAnsweredFailedChanged();
     partial void OnNickChanging(string value);
     partial void OnNickChanged();
+    partial void OnPhotoChanging(string value);
+    partial void OnPhotoChanged();
     #endregion
 		
 		public User()
@@ -734,6 +738,26 @@ namespace QuizLite.DataContext
 					this._Nick = value;
 					this.SendPropertyChanged("Nick");
 					this.OnNickChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Photo", DbType="VarChar(MAX)")]
+		public string Photo
+		{
+			get
+			{
+				return this._Photo;
+			}
+			set
+			{
+				if ((this._Photo != value))
+				{
+					this.OnPhotoChanging(value);
+					this.SendPropertyChanging();
+					this._Photo = value;
+					this.SendPropertyChanged("Photo");
+					this.OnPhotoChanged();
 				}
 			}
 		}
