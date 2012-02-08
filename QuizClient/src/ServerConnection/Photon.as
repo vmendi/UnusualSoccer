@@ -90,9 +90,7 @@ package ServerConnection {
 					var ev_join_resp_ : ExtendedJoinEvent = ExtendedJoinEvent.create(eventCode,pData);
 					dispatchEvent(ev_join_resp_);
 					break;
-				
-				case CoreConstants.OP_SET_PROPERTIES:
-					var a:Object = pData;
+				case CoreConstants.EV_LEAVE:
 					break;
 				default:
 					trace("------Evento de QUIZSERVER no parseada con el \n -------->codigo [" + eventCode + "] \n -------->valor [" + Utils.ObjectToString(pData[CoreKeys.CODE]) + "]");

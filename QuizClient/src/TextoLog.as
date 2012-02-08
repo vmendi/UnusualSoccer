@@ -1,26 +1,31 @@
 package
 {
+	import mx.collections.ArrayCollection;
+
 	public class TextoLog
 	{
 		private var mNumMessages:int = 10;
-		private var mArrayDeTextos:Array;
+		private var mArrayDeTextos:ArrayCollection;
 		
 		
 		public function TextoLog()
 		{
-			mArrayDeTextos = new Array();	
+			mArrayDeTextos = new ArrayCollection();	
 		}			
 		
 		public function AddMessage(newMsg:String):void
 		{
 			if( mArrayDeTextos.length < mNumMessages)
 			{
-				mArrayDeTextos.push(newMsg);	
+				mArrayDeTextos.addItem(newMsg);	
 			}
 			else
 			{
-				mArrayDeTextos.shift();
-				mArrayDeTextos.push(newMsg);					
+				mArrayDeTextos.removeItemAt(0);
+				mArrayDeTextos.addItem(newMsg);		
+				var a:Array = new Array();
+				a.s
+					
 			}
 		}
 		

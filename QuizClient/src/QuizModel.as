@@ -29,6 +29,7 @@ package
 	import flash.net.ObjectEncoding;
 	import flash.utils.Dictionary;
 	
+	import mx.collections.ArrayCollection;
 	import mx.states.State;
 	
 	import org.osmf.logging.Log;
@@ -59,7 +60,7 @@ package
 		
 		
 		[Bindable]
-		public var mRoomActors:Array;
+		public var mRoomActors:ArrayCollection;
 		
 		private var mFacebookID:int;
 		public  function get FacebookID()			: int {return mFacebookID;}
@@ -156,13 +157,14 @@ package
 		{			 
 			super.setupPhoton();
 			// Respuestas desde Photon Server			 
-			Photon.getInstance().addEventListener(LoginResponse.TYPE, onPhotonResponse);
-			Photon.getInstance().addEventListener(SingUpResponse.TYPE, onPhotonResponse);
-			Photon.getInstance().addEventListener(RoomsListEvent.TYPE, onPhotonEvent);
-			Photon.getInstance().addEventListener(CustomJoinResponse.TYPE, onPhotonResponse);
+			Photon.getInstance().addEventListener(LoginResponse.TYPE, 		onPhotonResponse);
+			Photon.getInstance().addEventListener(SingUpResponse.TYPE, 		onPhotonResponse);
+			Photon.getInstance().addEventListener(CustomJoinResponse.TYPE, 	onPhotonResponse);			
 			
-			Photon.getInstance().addEventListener(ChatEvent.TYPE, onPhotonEvent);
-			Photon.getInstance().addEventListener(ExtendedJoinEvent.TYPE,onPhotonEvent);
+			Photon.getInstance().addEventListener(RoomsListEvent.TYPE, 		onPhotonEvent);			
+			Photon.getInstance().addEventListener(ChatEvent.TYPE, 			onPhotonEvent);
+			Photon.getInstance().addEventListener(ExtendedJoinEvent.TYPE, 	onPhotonEvent);
+			Photon.getInstance().addEventListener(LeaveEvent.TYPE, 			onPhotonEvent);
 		}
 		
 		/**
@@ -228,14 +230,14 @@ package
 					else if(getState() == STATE_JOINROOM_REQUESTING)
 					{
 						setState(STATE_JOINED_AT_ROOM);
-						initUserList();
+						
 						this.IsConnected = true;
-						//Inicializamos la lista de Actores de la Room
-						mRoomActors = new Array();
-						//Recolectamos los datos de los demás players
-						var playerProps:Object = (event as CustomJoinResponse).getPlayerProperties();
-						JoinActorPropertiesWithActorList(playerProps);
 
+						//Recolectamos los datos de los demás players
+						//Me devolverá información de los demás players
+						var playerProps:Object = (event as CustomJoinResponse).getPlayerProperties();
+						GenerateRoomActorsList(playerProps);
+						initUserList();
 						this.printChatLine("QS", "==> Bienvenido a la Habitación"); 
 					}
 					/*else if (getState() == STATE_JOINED_AT_ROOM)
@@ -280,13 +282,17 @@ package
 				}
 				// Tratamos el evento capturado de Join (Join al lobbym o Join a la Room)	
 				case ExtendedJoinEvent.TYPE:
-				{
-					initUserList();
+				{					
 					if (getState() == STATE_JOINED_AT_ROOM)
 					{
+						//Solo me devolverá mi información
+						var num:int = (event as ExtendedJoinEvent).getActorNo();
 						var playerProps:Object = (event as ExtendedJoinEvent).getActorsProperties();
-						JoinActorPropertiesWithActorList(playerProps);
+						
+						getDataFromNewActor(num,playerProps);
+						//JoinActorPropertiesWithActorList(playerProps);
 					}
+					initUserList();
 					break;
 				}
 				// Tratamos el evento capturado de Chat	
@@ -295,7 +301,12 @@ package
 					var _actor:String = (event as ChatEvent).getActorNick();
 					var _msg:String = (event as ChatEvent).getMessage();
 					printChatLine(_actor,_msg);
-				}		
+				}	
+				case LeaveEvent.TYPE:
+				{
+					var ActorNo_Leaving:int = (event as LeaveEvent).getActorNo();
+					RemoveActorFromActorList(ActorNo_Leaving);
+				}
 			}		
 		}
 		
@@ -370,7 +381,7 @@ package
 		 */
 		private function JoinDefaultLobbyRoom():void
 		{
-			mRoomActors = new Array();
+			
 			JoinRoomFromLobby(mDefaultLobbyRoom);
 		}
 		
@@ -380,6 +391,9 @@ package
 		 */ 
 		public function JoinRoomFromLobby(roomName:String):void
 		{
+			//Reseteamos la lista de Actors en la room, ya que vamos a entrar en una nueva habitación.
+			mRoomActors = new ArrayCollection();
+			
 			// Configuramos los parametros que enviará el evento
 			var params:Object= new Object();
 			
@@ -413,48 +427,96 @@ package
 			Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_CHAT, params);
 		}
 		
-		private function JoinActorPropertiesWithActorList(Players:Object):void
+		/**
+		 * Genera la lista de participantes de la Room, a partir de las PlayerProperties
+		 * 
+		 * @param Players Array que contiene el/los playerProperties
+		 */ 
+		private function GenerateRoomActorsList(Players:Object):void
 		{			
 			if ( Players != null)
 			{
-				//Si nos llegan datos de mas de un actor(Si hemos hecho join en una sala que ya tenía Actors, 
-				//la información nos llega en forma de Array
 				if((Players as Array).length > 0)
 				{
+					//Si nos llegan datos de mas de un actor(Si hemos hecho join en una sala que ya tenía Actors, 
+					//la información nos llega en forma de Array
 					for (var key:Object in Players) 
-					{						
-						var _actor:Actor 		= new Actor();
-						var actorProps:Object 	= Players[key];
-						actorProps.ActorNo 		= key;
-						
-						_actor.ActorNo 		= parseInt(key.toString(),0);
-						_actor.ActorNick	= actorProps.Nick;
-						_actor.ActorScore 	= actorProps.Score;
-						_actor.Photo 		= actorProps.Photo; 
-						_actor.ActorName 	= actorProps.User_Name;
-						_actor.ActorSurName = actorProps.User_Surname;
-						mRoomActors.push(_actor);
+					{
+						var _actor:Object  		= new Object();
+						var actorProps:Object 	= new Object();
+						actorProps 			= Players[key];
+						actorProps.ActorNo 	= key;
+						AddActorToActorList(actorProps);
 					}	
-				}// en el caso de ser el primero en hacer Join en la Room... me devuelve los datos como un Object;
+				}
 				else
-				{
-					var _thisActor:Actor = new Actor();
-					_thisActor.ActorNo 		= Players.ActorNo;
-					_thisActor.ActorName 	= Players.User_Name;
-					_thisActor.ActorSurName = Players.User_Surname;
-					_thisActor.ActorNick	= Players.Nick;
-					_thisActor.ActorScore 	= Players.Score;
-					_thisActor.Photo		= Players.Photo;
-					mRoomActors.push(_thisActor);
+				{					
+					AddActorToActorList(Players);
 				}						
 			}
 		}
 		
 		/**
+		 * Inserta los datos del nuevo actor en la Room dentro de la lista de Actores de la Room
+		 * 
+		 * @param num El ActorNo
+		 * @param actorProps La información personal del Actor
+		 */
+		private function AddActorToActorList(actorProps:Object):void
+		{	
+			var _actor:Object = new Object();
+			_actor.ActorNo      = actorProps.ActorNo;
+			_actor.ActorNick	= actorProps.Nick;
+			_actor.ActorScore 	= actorProps.Score;
+			_actor.Photo 		= actorProps.Photo; 
+			_actor.ActorName 	= actorProps.User_Name;
+			_actor.ActorSurName = actorProps.User_Surname;
+			if ( !mRoomActors.contains(_actor))
+			{
+				mRoomActors.addItem(_actor);
+				debug("=> El Actor_" + _actor.ActorNo + "[" + _actor.ActorNick + "], se ha unido a la Room"); 
+			}
+		}
+		
+		/**
+		 * Inserta los datos del nuevo actor en la Room dentro de la lista de Actores de la Room
+		 * 
+		 * @param num El ActorNo
+		 * @param actorProps La información personal del Actor
+		 */
+		public function getDataFromNewActor(num:int, actorProps:Object):void
+		{			
+			var _actor:Object 				= new Object();
+			_actor.ActorNo      = num;
+			_actor.ActorNick	= actorProps.Nick;
+			_actor.ActorScore 	= actorProps.Score;
+			_actor.Photo 		= actorProps.Photo; 
+			_actor.ActorName 	= actorProps.User_Name;
+			_actor.ActorSurName = actorProps.User_Surname;
+			mRoomActors.addItem(_actor);
+		}
+		
+		
+		private function RemoveActorFromActorList(actorNum:int):void
+		{
+			for (var key:Object in mRoomActors) 
+			{
+				var value:Object = mRoomActors[key];
+				//Si localizamos el actor que ha salido de la Room de la lista...
+				if(value.ActorNo == actorNum)
+				{
+					//borramos al actor de la lista.
+					var deletedActor:Object = new Object();
+					deletedActor = mRoomActors.removeItemAt(mRoomActors.getItemIndex(value));
+					debug("=> El Actor_" + deletedActor.ActorNo + "[" + deletedActor.ActorNick + "], ha abandonado la Room"); 
+					return;
+				}
+			}	
+		}
+		
+		/**
 		 * Establece las propiedades del Actor dentro de la sala añade como "internal data" 
 		 * los valores que queramos que vayan acompañando al player en cada habitación.
-		 * 
-		 * @param userData Diccionario que contiene los del jugador que hayamos recibido del servidor
 		 */
 		public function setActorProperties():void
 		{

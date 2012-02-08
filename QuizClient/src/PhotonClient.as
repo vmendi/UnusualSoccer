@@ -65,12 +65,7 @@ package
 		public  function get RoomsList()         : Dictionary 	{ return mRoomsList; }
 		public function set RoomsList(v:Dictionary) : void   	{ mRoomsList = v; }
 		private var mRoomsList:Dictionary = new Dictionary();
-		
-		// Variable que guardará la lista de usuarios conectados en la habitacion
-		[Bindable]
-		public  function get RoomUserList()         : String 	{ return mRoomUserList; }
-		public function set RoomUserList(v:String) : void   	{ mRoomUserList = v; }
-		private var mRoomUserList:String = "";
+
 
 		private var mTextLog:TextoLog = new TextoLog();
 		
@@ -305,13 +300,20 @@ package
 		 * set or reset userlist (on join or quit events)
 		 */
 		public function initUserList() : void {
-			mRoomUserList = createUserList();
+			//mRoomUserList = createUserList();
 		}
 		
 		
+		
+		
+		
+		//////////////////////////////////////////////////////////////////////////////
+		//////////////////////////            TRASH         //////////////////////////
+		//////////////////////////////////////////////////////////////////////////////
+		/*
 		/**
 		 * creates a HTML formatted String containing all users
-		 */
+		 * /
 		public function createUserList() : String {
 			var actorList:Array = Photon.getInstance().getActorList();
 			
@@ -325,6 +327,6 @@ package
 			}
 			return RoomUserList;
 		}
-		
+		*/		
 	}
 }

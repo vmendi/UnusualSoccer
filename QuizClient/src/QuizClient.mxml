@@ -59,9 +59,10 @@
 				//if (loaderInfo.hasOwnProperty("uncaughtErrorEvents"))
 					//IEventDispatcher(loaderInfo["uncaughtErrorEvents"]).addEventListener("uncaughtError", mErrorMessages.UncaughtErrorHandler);
 				
-				//LoginOnAPP(123456789,"Sant","Ti");
+				LoginOnAPP(123456789,"Sant","Ti");
 				//LoginOnAPP(0001112223,"truño","mars");
-				LoginOnAPP(147852369,"Actor","Segundo");
+				//LoginOnAPP(147852369,"Actor","Segundo");
+				//LoginOnAPP(11447788552,"Astracus","Mortimer");
 				BindingUtils.bindSetter(OnGameStateChanged, mConnection, "ScreenState");
 			}
 			
@@ -268,7 +269,7 @@
 		-->
 		<s:Button id="btnConnLobby" x="40"  y="29" width="126" height="24" label="Connect to Lobby"  click="/*ConnectToLobby()*/"/>
 		<s:Button id="btnConnRoom1" x="245" y="28" width="152" height="26" label="Connect to Room1"  click="/*ConnectToRoom1()*/"/>
-		<s:TextArea id="Actors" x="6" y="23" width="101" height="145" text="{mConnection.RoomUserList}"/>
+		<s:TextArea id="Actors" x="6" y="23" width="101" height="145" text=""/>
 	</s:Group>
 	
 	<s:Group includeIn="SingUp" x="0" y="0" width="640" height="480">
@@ -319,18 +320,17 @@
 				  click.MainMenu="sendMyMessage();"/>
 		
 		<s:Button id="btnStartPlaying" x="288" y="178" enabled="false"
-				  skinClass="Skins.QuizMainButton" click="/*mConnection.JoinRoomFromLobby()*/"/>
+				  skinClass="Skins.QuizMainButton" click="/**/"/>
 		<s:Label id="lblPlayTitle" x="131.5" y="250" width="377" height="35" color="#FFFFFF"
 				 fontSize="24" fontWeight="bold" text="Dale al pulsador para empezar"
 				 textAlign="center" verticalAlign="middle"/>
 		<s:Group id="Test" x="360" y="10" width="249" height="200">
-			<s:List id="myList" height="100%" width="100%" 
-					itemRenderer="ItemRenderers.MyListItemRenderer">
-				<s:dataProvider>
-					<s:ArrayCollection source.MainMenu="{mConnection.mRoomActors}"/>
-				</s:dataProvider>
+			<s:List id="myList" height="100%" width="100%" itemRenderer="ItemRenderers.MyListItemRenderer" dataProvider="{mConnection.mRoomActors}">
+				
 			</s:List>
 		</s:Group>
+		<s:Label id="lblActorNo" x="10" y="10" width="31" height="29" color="#FF0000"
+				 fontWeight="bold" text="{mConnection.me.ActorNo}"/>
 	</s:Group>
 	
 	<s:Group id="gLoading" includeIn="Login" x="0" y="0" width="640" height="480">
