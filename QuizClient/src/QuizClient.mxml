@@ -290,47 +290,54 @@
 	<s:Group id="gMainMenu" includeIn="MainMenu" x="0" y="0" width="640" height="480">
 		<s:Image id="imgBackground" includeIn="MainMenu" x="0" y="0" width="640" height="480"
 				 source="@Embed('Assets/background.jpg')"/> 
-		
-		<s:Image id="imgFacebookAvatar" x="10" y="10" width="64" height="72" scaleMode="stretch"
-				 source="Assets/DefaultAvatar.gif"/>
-		
-		<s:Label id="lblPersonalName" x="82" y="10" width="127" height="18" color="#646464"
-				 fontSize="14" fontWeight="normal" text="{mConnection.me.ActorName + ' ' + mConnection.me.ActorSurName} "  textAlign="left"
-				 verticalAlign="bottom"/>
-		
-		<s:Label id="lblNick" x="77" y="27" width="174" height="55" color="#DCDCDC" fontSize="70"
-				 fontWeight="bold" text="{mConnection.me.ActorNick}" textAlign="left" verticalAlign="justify"/>
-		
-		
-		<s:Label id="lblScoreTitle" x="12" y="85" width="64" height="18" color="#FFFFFF"
-				 fontSize="14" fontStyle="normal" fontWeight="normal" text="Score:"
-				 textAlign="right" verticalAlign="middle"/>
-		<s:Label id="lblScore" x="74" y="85" width="88" height="18" color="#FFFFFF" fontSize="15"
-				 fontWeight="normal" lineThrough="false" text="{mConnection.me.ActorScore}" textAlign="right"
-				 verticalAlign="middle"/>
-		<s:Image x="165" y="85" width="16" height="16" source="Assets/pointsIcon.png"/>
-		
-		<s:TextArea id="txtChat" x="31" y="280" width="578" height="146" borderColor="#3C3C3C"
-					borderVisible="true" color="#FFFFFF" contentBackgroundColor="#000000"
-					editable="false" enabled="true" fontFamily="Courier New" fontWeight="normal"
-					text="{mConnection.ChatText}"/>
-		<s:TextInput id="txtMessage" left="34" bottom="33" width="502" keyUp="onKeyUpCheckEnter(event)"/>
-		
-		<s:Button id="btnSendMessage" x="537" y="426" label="Enviar" enabled="false"
-				  click.MainMenu="sendMyMessage();"/>
-		
-		<s:Button id="btnStartPlaying" x="288" y="178" enabled="false"
-				  skinClass="Skins.QuizMainButton" click="/**/"/>
-		<s:Label id="lblPlayTitle" x="131.5" y="250" width="377" height="35" color="#FFFFFF"
-				 fontSize="24" fontWeight="bold" text="Dale al pulsador para empezar"
-				 textAlign="center" verticalAlign="middle"/>
-		<s:Group id="Test" x="360" y="10" width="249" height="200">
-			<s:List id="myList" height="100%" width="100%" itemRenderer="ItemRenderers.MyListItemRenderer" dataProvider="{mConnection.mRoomActors}">
-				
-			</s:List>
+		<s:Group id="gJoinGame" left="199" right="11" top="124" height="150">
+			<s:Button id="btnStartPlaying" bottom="0" click="/**/" enabled="false"
+					  horizontalCenter="0" skinClass="Skins.QuizMainButton"/>
+			<s:Label id="lblPlayTitle" bottom="0" width="100%" color="#FFFFFF" fontSize="24"
+					 fontWeight="bold" horizontalCenter="0" text="Dale al pulsador para empezar"
+					 textAlign="center" verticalAlign="middle"/>
 		</s:Group>
-		<s:Label id="lblActorNo" x="10" y="10" width="31" height="29" color="#FF0000"
-				 fontWeight="bold" text="{mConnection.me.ActorNo}"/>
+
+		<s:Group id="gRoomActorsList" left="0" top="124" bottom="10" width="200">
+			<s:List id="myList" left="10" right="10" height="100%"
+					dataProvider="{mConnection.mRoomActors}"
+					itemRenderer="ItemRenderers.MyListItemRenderer"></s:List>
+		</s:Group>
+		
+		<s:Group id="gActorInfo" x="0" y="0" width="325" height="125">
+			<s:Image id="imgFacebookAvatar" left="10" top="10" width="70" height="80"
+					 scaleMode="stretch" source="Assets/DefaultAvatar.gif"/>
+			
+			<s:Label id="lblPersonalName" x="88" y="10" width="238" height="18" color="#646464"
+					 fontSize="14" fontWeight="normal" text="{mConnection.me.ActorName + ' ' + mConnection.me.ActorSurName} "  textAlign="left"
+					 verticalAlign="bottom"/>
+			
+			<s:Label id="lblNick" x="88" y="27" width="239" height="55" color="#DCDCDC" fontSize="70"
+					 fontWeight="bold" text="{mConnection.me.ActorNick}" textAlign="left" verticalAlign="justify"/>
+			
+			
+			<s:Label id="lblScoreTitle" left="30" bottom="15" width="43" height="18" color="#FFFFFF"
+					 fontSize="14" fontStyle="normal" fontWeight="normal" text="Score:"
+					 textAlign="right" verticalAlign="middle"/>
+			<s:Label id="lblScore" left="81" bottom="15" width="100" height="20" color="#FFFFFF"
+					 fontSize="15" fontWeight="normal" lineThrough="false"
+					 text="{mConnection.me.ActorScore}" textAlign="right" verticalAlign="middle"/>
+			<s:Image x="184" y="89" width="16" height="16" source="Assets/pointsIcon.png"/>
+			<s:Label id="lblActorNo" x="10" y="10" width="30" height="30" color="#FF0000" fontWeight="bold" text="{mConnection.me.ActorNo}"/>
+		</s:Group>
+		
+		<s:Group id="gChat" x="199" top="273" bottom="10" width="431">
+			<s:TextArea id="txtChat" left="0" right="0" top="0" bottom="20" borderColor="#3C3C3C"
+						borderVisible="true" color="#FFFFFF" contentBackgroundColor="#000000"
+						editable="false" enabled="true" fontFamily="Courier New" fontWeight="normal"
+						text="{mConnection.ChatText}"/>
+			<s:TextInput id="txtMessage" left="0" right="60" bottom="0" height="20"
+						 keyUp="onKeyUpCheckEnter(event)"/>
+			
+			<s:Button id="btnSendMessage" right="0" bottom="0" width="60" height="20" label="Enviar"
+					  enabled="false"
+					  click.MainMenu="sendMyMessage();"/>
+		</s:Group>
 	</s:Group>
 	
 	<s:Group id="gLoading" includeIn="Login" x="0" y="0" width="640" height="480">
