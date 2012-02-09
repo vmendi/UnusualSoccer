@@ -241,33 +241,6 @@ package
 		 * 
 		 * @param event
 		 */
-/*
-		public function onPhotonError(event:Event) : void 
-		{
-			debug("############ ERROR ############");
-			debug(""+event);
-			switch(event.type){
-				case IOErrorEvent.IO_ERROR:
-					debug("IO_ERROR: Connection to server failed!");
-					break;				
-				case SecurityErrorEvent.SECURITY_ERROR:
-					debug("SECURITY_ERROR: Could not read security policy file!");
-					break;				
-				case PhotonErrorEvent.ERROR:
-					// ERR_MESSAGE_SIZE means that the chat message length exceeds the possible message size
-					// in this case a message was canceled and has not been broadcasted
-					if (PhotonErrorEvent(event).getCode() == CoreConstants.ERR_MESSAGE_SIZE) 
-					{
-						debug("This message was too big. No message was sent.");
-						printChatLine("System", "This message was too big, complete operation call canceled. No message was sent.");
-						return;
-					}
-					break;
-				default:
-					break;
-			}
-		}
-*/
 		public function onPhotonError(event:Event) : void 
 		{
 			var _errorText:String = "############ ERROR ############\n *" + event;
@@ -310,6 +283,34 @@ package
 		//////////////////////////////////////////////////////////////////////////////
 		//////////////////////////            TRASH         //////////////////////////
 		//////////////////////////////////////////////////////////////////////////////
+		/*
+		public function onPhotonError(event:Event) : void 
+		{
+			debug("############ ERROR ############");
+			debug(""+event);
+			switch(event.type){
+				case IOErrorEvent.IO_ERROR:
+					debug("IO_ERROR: Connection to server failed!");
+					break;				
+				case SecurityErrorEvent.SECURITY_ERROR:
+					debug("SECURITY_ERROR: Could not read security policy file!");
+					break;				
+				case PhotonErrorEvent.ERROR:
+					// ERR_MESSAGE_SIZE means that the chat message length exceeds the possible message size
+					// in this case a message was canceled and has not been broadcasted
+					if (PhotonErrorEvent(event).getCode() == CoreConstants.ERR_MESSAGE_SIZE) 
+					{
+						debug("This message was too big. No message was sent.");
+						printChatLine("System", "This message was too big, complete operation call canceled. No message was sent.");
+						return;
+					}
+					break;
+				default:
+					break;
+			}
+		}
+		*/
+		
 		/*
 		/**
 		 * creates a HTML formatted String containing all users

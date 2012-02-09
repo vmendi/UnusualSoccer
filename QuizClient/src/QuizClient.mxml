@@ -10,12 +10,13 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import flashx.textLayout.operations.RedoOperation;
+			import Utils.MyFunctions;
 			
 			import mx.binding.utils.BindingUtils;
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.core.FlexGlobals;
+			
 			
 			[Bindable]
 			private var mConnection:QuizModel;
@@ -40,6 +41,8 @@
 							imgWrongNick.visible = !mConnection.IsValidNick;
 							BindingUtils.bindSetter(OnInvalidNick,mConnection,"IsValidNick");
 							break;
+						case "Playing":
+							break;
 					}					
 				}
 			}			
@@ -54,13 +57,13 @@
 			{
 				var mErrorMessages:ErrorMessages = new ErrorMessages();
 				
-				addEventListener("onCloseConnection",ShowAlert);
+				//addEventListener("onCloseConnection",ShowAlert);
 				//Antes de nada, nos suscribimos al sistema de uncaught de Flash, para loggear los errores en el archivo de log del servidor
 				//if (loaderInfo.hasOwnProperty("uncaughtErrorEvents"))
 					//IEventDispatcher(loaderInfo["uncaughtErrorEvents"]).addEventListener("uncaughtError", mErrorMessages.UncaughtErrorHandler);
 				
-				LoginOnAPP(123456789,"Sant","Ti");
-				//LoginOnAPP(0001112223,"truño","mars");
+				//LoginOnAPP(123456789,"Sant","Ti");
+				LoginOnAPP(0001112223,"truño","mars");
 				//LoginOnAPP(147852369,"Actor","Segundo");
 				//LoginOnAPP(11447788552,"Astracus","Mortimer");
 				BindingUtils.bindSetter(OnGameStateChanged, mConnection, "ScreenState");
@@ -109,30 +112,13 @@
 			/////////////////////////////// Funciones para el STATE = "MAINMENU" \\\\\\\\\\\\\\\\\\\\\\\\\\\\\||
 			//================================================================================================||
 			
-			
-			public function ShowAlert(ev:Event):void
+			public function StartQuizGame():void
 			{
-				if( ev.type == "onCloseConnection")
-				{
-					mx.controls.Alert.show("Se ha perdid,o la conexión con el servidor","Information");
-				}
-			}	
-			/**
-			 * Función que mete al usuario en una habitación del Lobby en la que se desarrolla el juego
-			 */
-			/*public function ConnectToRoom1():void
-			{
-				mConnection.JoinRoomFromLobby();
+				
+				// Informa al server que queremos incorporarnos a una partida o si no hay ninguna creada, 
+				// la creamos desde cero. Primero volveremos al Lobby.
+				mConnection.setState(GameFeatures.STATE_START_GAME_REQUESTING);
 			}
-
-			/**
-			 * Funcion que si la enganchas, avisa cuando te conectas con el servidor.
-			 * /
-			private function OnIsConnectedChanged(isConnected : Boolean) : void
-			{	
-			}
-			*/
-			
 			
 			/**
 			 * sends a chat messages when user releases the ENTER key
@@ -141,7 +127,7 @@
 			 */
 			private function onKeyUpCheckEnter(event:KeyboardEvent) : void 
 			{
-					var cadenaValida:Boolean = (Utils.trim(txtMessage.text).length > 0) 
+					var cadenaValida:Boolean = (MyFunctions.trim(txtMessage.text).length > 0) 
 					if(cadenaValida)
 					{
 						btnSendMessage.enabled = true;
@@ -201,7 +187,8 @@
 	<s:states>
 		<s:State name="Login"/>
 		<s:State name="SingUp"/>
-		<s:State name="MainMenu"/>	
+		<s:State name="MainMenu"/>
+		<s:State name="Playing"/>
 		<s:State name="trash"/>
 		<!-- Crear mas estados en funcion de las necesidades-->		
 	</s:states>
@@ -291,7 +278,7 @@
 		<s:Image id="imgBackground" includeIn="MainMenu" x="0" y="0" width="640" height="480"
 				 source="@Embed('Assets/background.jpg')"/> 
 		<s:Group id="gJoinGame" left="199" right="11" top="124" height="150">
-			<s:Button id="btnStartPlaying" bottom="0" click="/**/" enabled="false"
+			<s:Button id="btnStartPlaying" bottom="0" click="StartQuizGame()" enabled="false"
 					  horizontalCenter="0" skinClass="Skins.QuizMainButton"/>
 			<s:Label id="lblPlayTitle" bottom="0" width="100%" color="#FFFFFF" fontSize="24"
 					 fontWeight="bold" horizontalCenter="0" text="Dale al pulsador para empezar"
@@ -343,6 +330,16 @@
 	<s:Group id="gLoading" includeIn="Login" x="0" y="0" width="640" height="480">
 		<s:Image id="imgLogin" x="0" y="0" width="640" height="480" scaleMode="zoom"
 				 smooth="true" smoothingQuality="high" source="Assets/loading.gif"/>
+	</s:Group>
+	
+	<s:Rect id="rBackGround" includeIn="Playing" x="0" y="0" width="100%" height="100%">
+		<s:fill>
+			<s:SolidColor color="#005544"/>
+		</s:fill>
+	</s:Rect>
+	<s:Group includeIn="Playing" left="10" right="10" top="10" bottom="200">
+		<s:Label id="lblQuestion" y="0" width="100%" height="100%" fontFamily="Georgia" fontSize="36"
+				 textAlign="center" verticalAlign="middle"/>
 	</s:Group>
 	
 </s:Application>

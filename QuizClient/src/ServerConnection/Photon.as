@@ -8,12 +8,15 @@ package ServerConnection {
 	import ServerConnection.events.ExtendedJoinEvent;
 	import ServerConnection.events.RoomsListEvent;
 	
+	import Utils.*;
+	
 	import de.exitgames.photon_as3.CoreConstants;
 	import de.exitgames.photon_as3.CoreKeys;
 	import de.exitgames.photon_as3.PhotonCore;
 	import de.exitgames.photon_as3.event.CustomEvent;
 	import de.exitgames.photon_as3.event.JoinEvent;
 	import de.exitgames.photon_as3.response.JoinResponse;
+
 	
 	//import flash.events.Event;
 
@@ -93,7 +96,7 @@ package ServerConnection {
 				case CoreConstants.EV_LEAVE:
 					break;
 				default:
-					trace("------Evento de QUIZSERVER no parseada con el \n -------->codigo [" + eventCode + "] \n -------->valor [" + Utils.ObjectToString(pData[CoreKeys.CODE]) + "]");
+					trace("------Evento de QUIZSERVER no parseada con el \n -------->codigo [" + eventCode + "] \n -------->valor [" + MyFunctions.ObjectToString (pData[CoreKeys.CODE]) + "]");
 					break;
 			}
 		}

@@ -4,7 +4,7 @@ package
 
 	public class TextoLog
 	{
-		private var mNumMessages:int = 10;
+		private var mNumMessages:int = 8;
 		private var mArrayDeTextos:ArrayCollection;
 		
 		

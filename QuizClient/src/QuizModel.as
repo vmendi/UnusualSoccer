@@ -12,6 +12,9 @@ package
 	import ServerConnection.events.ExtendedJoinEvent;
 	import ServerConnection.events.RoomsListEvent;
 	
+	import Utils.MyFunctions;
+	import Utils.StringUtils;
+	
 	import de.exitgames.photon_as3.CoreConstants;
 	import de.exitgames.photon_as3.CoreKeys;
 	import de.exitgames.photon_as3.PhotonCore;
@@ -31,23 +34,13 @@ package
 	
 	import mx.collections.ArrayCollection;
 	import mx.states.State;
+	import mx.utils.StringUtil;
 	
 	import org.osmf.logging.Log;
-	
+
 	public class QuizModel extends PhotonClient
 	{
-		///////////////////////////////////////////////////////////////////////
-		// Constantes
-		///////////////////////////////////////////////////////////////////////
-		private const STATE_INITIALIZE_REQUESTING:int	= 0;
-		private const STATE_INITIALIZED:int				= 1;
-		private const STATE_LOGIN_REQUESTING:int 		= 2;
-		private const STATE_SINGUP_REQUESTING:int 		= 3;
-		private const STATE_LOGGED:int 					= 4;
-		private const STATE_JOINLOBBY_REQUESTING:int 	= 5;
-		private const STATE_JOINED_AT_LOBBY:int 		= 6;
-		private const STATE_JOINROOM_REQUESTING:int 	= 7;
-		private const STATE_JOINED_AT_ROOM:int 			= 8;
+
 		
 		///////////////////////////////////////////////////////////////////////
 		// Declaraciones
@@ -84,7 +77,7 @@ package
 		private function set IsValidNick(v:Boolean):void 		{ mValidNick = v; }
 		private var mValidNick:Boolean = true;
 		//ESTADOS
-		public var mState:int = STATE_INITIALIZE_REQUESTING;
+		public var mState:int = GameFeatures.STATE_INITIALIZE_REQUESTING;
 		
 		public function setState(newState:int):void 
 		{
@@ -95,24 +88,24 @@ package
 				
 				switch(mState)
 				{
-					case STATE_INITIALIZE_REQUESTING:
+					case GameFeatures.STATE_INITIALIZE_REQUESTING:
 						break;
 					
-					case STATE_INITIALIZED:
-						if(_lastState == STATE_INITIALIZE_REQUESTING)
+					case GameFeatures.STATE_INITIALIZED:
+						if(_lastState == GameFeatures.STATE_INITIALIZE_REQUESTING)
 							LoginOnApplication();
 						break;
 					
-					case STATE_LOGIN_REQUESTING:
+					case GameFeatures.STATE_LOGIN_REQUESTING:
 						break;
 					
-					case STATE_SINGUP_REQUESTING:
-						if(_lastState == STATE_LOGIN_REQUESTING)
+					case GameFeatures.STATE_SINGUP_REQUESTING:
+						if(_lastState == GameFeatures.STATE_LOGIN_REQUESTING)
 							ScreenState = "SingUp";
 						break;
 					
-					case STATE_LOGGED:
-						if (_lastState == STATE_LOGIN_REQUESTING || _lastState == STATE_SINGUP_REQUESTING)
+					case GameFeatures.STATE_LOGGED:
+						if (_lastState == GameFeatures.STATE_LOGIN_REQUESTING || _lastState == GameFeatures.STATE_SINGUP_REQUESTING)
 						{
 							//Informamos a la vista para que cambie de la pantalla de LOGIN a la de MENUPRINCIPAL.
 							ScreenState = "MainMenu";
@@ -121,14 +114,17 @@ package
 						}
 						break;
 					
-					case STATE_JOINLOBBY_REQUESTING:
+					case GameFeatures.STATE_JOINLOBBY_REQUESTING:
 						break;
-					case STATE_JOINED_AT_LOBBY:
+					case GameFeatures.STATE_JOINED_AT_LOBBY:
 						break;
-					case STATE_JOINROOM_REQUESTING:
+					case GameFeatures.STATE_JOINROOM_REQUESTING:
 						break;
-					case STATE_JOINED_AT_ROOM:
+					case GameFeatures.STATE_JOINED_AT_ROOM:
 						break;
+					case GameFeatures.STATE_START_GAME_REQUESTING:
+						JoinLobby(mDefaultLobby);
+
 					default:
 						break;
 				}
@@ -179,7 +175,7 @@ package
 				case InitializeConnectionResponse.TYPE:// Cuando el Servidor nos responda que estamos conectados, nos unimos al Lobby
 				{
 					//setting state
-					setState(STATE_INITIALIZED);
+					setState(GameFeatures.STATE_INITIALIZED);
 					break;
 				}
 				case LoginResponse.TYPE:	
@@ -190,7 +186,7 @@ package
 						var _fecha:Date = new Date();
 						var _cadenaFecha:String = _fecha.day + "/" + _fecha.month + "/" + _fecha.fullYear + " - " + _fecha.hours + ":" + _fecha.minutes + ":" + _fecha.seconds;
 						
-						setState(STATE_LOGGED);
+						setState(GameFeatures.STATE_LOGGED);
 
 						printChatLine("[" + me.ActorNick + "]","Logged on QuizServer " + _cadenaFecha);
 						debug((event as LoginResponse).getReturnDebug());
@@ -198,7 +194,7 @@ package
 					else
 					{
 						//informar a la vista para que cambie de la pantalla de LOGIN a la de MENUDEALTA
-						setState(STATE_SINGUP_REQUESTING);
+						setState(GameFeatures.STATE_SINGUP_REQUESTING);
 					}
 					break;
 				}
@@ -207,12 +203,12 @@ package
 					IsValidNick = (event as SingUpResponse).getSingUpSuccess(); // Informamos a la vista si el nick es válido
 					if (!IsValidNick)
 					{
-						setState(STATE_SINGUP_REQUESTING)
+						setState(GameFeatures.STATE_SINGUP_REQUESTING)
 						ScreenState = "SingUp"
 					}
 					else
 					{
-						setState(STATE_LOGGED);
+						setState(GameFeatures.STATE_LOGGED);
 					}
 					break;
 				}
@@ -222,14 +218,14 @@ package
 					me.ActorNo = (event as CustomJoinResponse).getPlayerNum();
 					
 					//Si la respuesta que esperamos es conectarse al lobby...
-					if(getState() == STATE_JOINLOBBY_REQUESTING)
+					if(getState() == GameFeatures.STATE_JOINLOBBY_REQUESTING)
 					{
-						setState(STATE_JOINED_AT_LOBBY);
+						setState(GameFeatures.STATE_JOINED_AT_LOBBY);
 						this.printChatLine("QS", "==> Bienvenido al Lobby"); 
 					}//Si la respuesta que esperamos es conectarse a la habitación...
-					else if(getState() == STATE_JOINROOM_REQUESTING)
+					else if(getState() == GameFeatures.STATE_JOINROOM_REQUESTING)
 					{
-						setState(STATE_JOINED_AT_ROOM);
+						setState(GameFeatures.STATE_JOINED_AT_ROOM);
 						
 						this.IsConnected = true;
 
@@ -267,23 +263,28 @@ package
 			super.onPhotonEvent(event);
 
 			switch(event.type)
-			{	// Tratamos el evento capturado de RoomListEvent
+			{	
+				// Tratamos el evento capturado de RoomListEvent
 				case RoomsListEvent.TYPE:
-				{
-					var lista:Dictionary = (event as RoomsListEvent).getRoomsList();
-					this.RoomsList = lista;
-					if( getState() == STATE_JOINED_AT_LOBBY)
+					//RoomsList =  (event as RoomsListEvent).getRoomsList();
+					if( getState() == GameFeatures.STATE_JOINED_AT_LOBBY)
 					{
 						//Establecemos las propiedades del Actor (que enviaremos para logearnos en el lobby y en las rooms			 			
 						setActorProperties();
 						JoinDefaultLobbyRoom();
 					}
+					else if (getState() == GameFeatures.STATE_START_GAME_REQUESTING)
+					{
+						RoomsList = (event as RoomsListEvent).getRoomsList();
+						var _roomName:String = GiveMeAGameRoom();
+						JoinRoomFromLobby(_roomName);
+					}
+					
 					break;
-				}
+
 				// Tratamos el evento capturado de Join (Join al lobbym o Join a la Room)	
 				case ExtendedJoinEvent.TYPE:
-				{					
-					if (getState() == STATE_JOINED_AT_ROOM)
+					if (getState() == GameFeatures.STATE_JOINED_AT_ROOM)
 					{
 						//Solo me devolverá mi información
 						var num:int = (event as ExtendedJoinEvent).getActorNo();
@@ -294,19 +295,18 @@ package
 					}
 					initUserList();
 					break;
-				}
+
 				// Tratamos el evento capturado de Chat	
 				case ChatEvent.TYPE:
-				{
 					var _actor:String = (event as ChatEvent).getActorNick();
 					var _msg:String = (event as ChatEvent).getMessage();
 					printChatLine(_actor,_msg);
-				}	
+				
+				// Tratamos  el evento de LEAVE
 				case LeaveEvent.TYPE:
-				{
 					var ActorNo_Leaving:int = (event as LeaveEvent).getActorNo();
 					RemoveActorFromActorList(ActorNo_Leaving);
-				}
+
 			}		
 		}
 		
@@ -328,7 +328,7 @@ package
 		public function LoginOnApplication():void
 		{
 			//setting state
-			setState(STATE_LOGIN_REQUESTING);
+			setState(GameFeatures.STATE_LOGIN_REQUESTING);
 			
 			var params:Object = new Object();
 			var FacebookID:int = FacebookID; // Configuramos los parametros que enviará el evento
@@ -343,7 +343,7 @@ package
 		public function SingUpWithThiNick(SelectedNick:String):void
 		{
 			//setting state
-			mState = STATE_SINGUP_REQUESTING;
+			mState = GameFeatures.STATE_SINGUP_REQUESTING;
 			var params:Object = new Object();
 			// Configuramos los parametros que le enviaremos en el evento
 			params[Keys.User_Nick] 			= SelectedNick;
@@ -370,9 +370,18 @@ package
 			//nuestra infiormación, para informar a los demás clientes		
 			params[CoreKeys.LOBBY_ID] = mDefaultLobby;
 			Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_JOIN_LOBBY,params);
-			setState(STATE_JOINLOBBY_REQUESTING);
-			debug("Enviando petición de Join to Lobby...")
-			printChatLine(" - ", "Pidiendo acceso al lobby [" + mDefaultLobby + "] ...");
+			
+			if ( getState() == GameFeatures.STATE_LOGGED)
+			{//Si es la primera vez que entramos en el juego, vamos al lobby normal, cambiando el estado
+				setState(GameFeatures.STATE_JOINLOBBY_REQUESTING);
+				debug("Enviando petición de Join to Lobby...")
+				printChatLine(" - ", "Pidiendo acceso al lobby [" + mDefaultLobby + "] ...");	
+			}
+			else
+			{//Sino... es porque ya hemos pasado por aqui y no hay que cambiar el estado del juego.
+				debug("Volviendo al Lobby...")
+				printChatLine(" - ", "volviendo al Lobby  [" + mDefaultLobby + "] y buscando habitaciones de juego ...");
+			}
 		}
 		
 		/**
@@ -389,7 +398,7 @@ package
 		 * Se une a una sala del lobby, la sala está especificada por la constante mDefaultRoom
 		 * 
 		 */ 
-		public function JoinRoomFromLobby(roomName:String):void
+		public function JoinRoomFromLobby(roomName:String, roomParameters:Object = null):void
 		{
 			//Reseteamos la lista de Actors en la room, ya que vamos a entrar en una nueva habitación.
 			mRoomActors = new ArrayCollection();
@@ -400,13 +409,46 @@ package
 			params[CoreKeys.BROADCAST] = true;
 			params[CoreKeys.LOBBY_ID] = mDefaultLobby; 				// El nombre del Lobby dnd está/se creará la Room
 			params[CoreKeys.GAME_ID] = roomName;					// El nombre de la room dnd nos queremos JOINear
-			params[CoreKeys.ACTOR_PROPERTIES] = myActorProperties;	// En este EV_JOIN, insertamos en la ActorProperties, 
+			params[CoreKeys.ACTOR_PROPERTIES] = myActorProperties;	// En este EV_JOIN, insertamos en la ActorProperties,
+			//if(roomParameters != null)
+				//setRoomParameters();
 			// nuestra infiormación, para informar a los demás clientes
 			Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_JOIN_ROOM,params);
-			setState(STATE_JOINROOM_REQUESTING);
+			setState(GameFeatures.STATE_JOINROOM_REQUESTING);
 			debug("Enviando petición de 'Join to LobbyRoom'...")
 			printChatLine(" - ", "Pidiendo acceso a la room [" + roomName + "] ...");
 			
+		}
+		
+		
+		public function GiveMeAGameRoom():String
+		{
+			var _ret:String;
+			
+			if ( MyFunctions.countKeys(RoomsList) > 0)
+			{
+				//Buscamos la primera GameRoom que no supere el máximo de participantes
+				for (var key:Object in RoomsList)
+				{
+					var tmpKey:Object = key;
+					if (StringUtils.beginsWith(tmpKey.toString(),"GameRoom"))
+					{
+						
+						if(RoomsList[tmpKey] < GameConstants.MAX_GAMEROOM_PLAYERS)
+						{
+							_ret = tmpKey.toString();
+							break;
+						}						
+					}
+				}
+				_ret="GameRoom0";
+			}
+		else
+		{
+				_ret="GameRoom0";
+			}
+				
+			return _ret;
 		}
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//                                    Métodos de interaccion con la Vista	     							//
@@ -496,7 +538,11 @@ package
 			mRoomActors.addItem(_actor);
 		}
 		
-		
+		/**
+		 * Elimina a un Actor de la lista de Actores
+		 * 
+		 * @param actorNum el indice del actor que queremos eliminar
+		 */
 		private function RemoveActorFromActorList(actorNum:int):void
 		{
 			for (var key:Object in mRoomActors) 

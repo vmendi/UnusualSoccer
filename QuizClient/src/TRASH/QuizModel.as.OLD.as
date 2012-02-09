@@ -24,6 +24,7 @@ package TRASH
 	import flash.events.DataEvent;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
+	import Utils.MyFunctions;
 
 	public class QuizModel_old extends PhotonClient
 	{

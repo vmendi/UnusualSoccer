@@ -24,6 +24,8 @@
 				   xmlns:s="library://ns.adobe.com/flex/spark"
 				   xmlns:fb="http://ns.adobe.com/flashbuilder/2009"
 				   alpha.disabled="0.5"
+				   width.down="148" height.down="148"
+				   width.over="148" height.over="148"
 				   width.up="148" height.up="148">
      
     <fx:Metadata>
@@ -44,9 +46,12 @@
     </s:states>
     
     <!--- @private -->
-	<s:Image id="btnNormal" includeIn="up" horizontalCenter="0" scaleMode="zoom" smooth="false"
-			 smoothingQuality="high" source="Assets\normal.png" verticalCenter="0"/>
-	<s:Image id="btnHover" includeIn="over" scaleMode="stretch" source="Assets\hover.png"/>
-	<s:Image id="btnClick" includeIn="down" scaleMode="stretch" source="Assets\click.png"/>
+	<s:Image id="btnNormal" includeIn="up" width="100%" height="100%" horizontalCenter="0"
+			 scaleMode="stretch" smooth="false" smoothingQuality="high" source="Assets\normal.png"
+			 verticalCenter="0"/>
+	<s:Image id="btnHover" includeIn="over" width="100%" height="100%" horizontalCenter="0"
+			 scaleMode="stretch" source="Assets\hover.png" verticalCenter="0"/>
+	<s:Image id="btnClick" includeIn="down" width="100%" height="100%" horizontalCenter="0"
+			 scaleMode="stretch" source="Assets\click.png" verticalCenter="0"/>
     
 </s:SparkButtonSkin>
