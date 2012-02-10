@@ -8046,3 +8046,7 @@ Nombre del parámetro: key
 2012-02-10 13:45:11,453 [ 8] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
 2012-02-10 13:45:11,454 [ 8] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteLobby;LiteLobby\bin;bin_Win32;Shared
 2012-02-10 13:45:11,454 [ 8] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.dll.config
+2012-02-10 14:01:36,492 [ 8] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteLobby , LiteLobby
+2012-02-10 14:01:36,493 [ 8] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-10 14:01:36,494 [ 8] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteLobby;LiteLobby\bin;bin_Win32;Shared
+2012-02-10 14:01:36,495 [ 8] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.dll.config
