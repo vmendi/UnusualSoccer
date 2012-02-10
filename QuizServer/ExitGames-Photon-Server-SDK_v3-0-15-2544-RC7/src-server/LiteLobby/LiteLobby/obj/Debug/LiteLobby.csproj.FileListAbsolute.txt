@@ -39,6 +39,14 @@ C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-ser
 C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\LiteLobby\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\LiteLobby.dll.config
 C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\LiteLobby\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\LiteLobby.dll
 C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\LiteLobby\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\LiteLobby.pdb
+C:\Santiago\Repo\QuizServer - BackUp - LiteLobbyQuizGame\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\log4net.config
+C:\Santiago\Repo\QuizServer - BackUp - LiteLobbyQuizGame\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\LiteLobby.dll.config
+C:\Santiago\Repo\QuizServer - BackUp - LiteLobbyQuizGame\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\LiteLobby.dll
+C:\Santiago\Repo\QuizServer - BackUp - LiteLobbyQuizGame\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\LiteLobby.pdb
 C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\LiteLobby\LiteLobby\obj\Debug\ResolveAssemblyReference.cache
 C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\LiteLobby\LiteLobby\obj\Debug\LiteLobby.dll
 C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\LiteLobby\LiteLobby\obj\Debug\LiteLobby.pdb
+C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\log4net.config
+C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.dll.config
+C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.dll
+C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.pdb

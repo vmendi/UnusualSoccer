@@ -7451,3 +7451,598 @@ Nombre del parámetro: key
 2012-02-09 01:57:44,518 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
 2012-02-09 01:57:44,519 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Policy;Policy\bin;bin_Win32;Shared
 2012-02-09 01:57:44,520 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Policy\bin\Policy.Application.dll.config
+2012-02-09 11:37:36,448 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-09 11:37:48,785 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-09 11:37:48,793 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-09 11:37:48,794 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-09 11:37:48,802 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-09 11:37:48,805 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-09 11:37:50,506 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-09 11:37:50,550 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 11:37:50,560 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 11:37:50,561 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 11:37:50,562 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 11:37:50,921 [10] DEBUG emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - Reached license monitor.
+2012-02-09 11:37:52,432 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteWebSockets , Lite
+2012-02-09 11:37:52,433 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 11:37:52,433 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteWebSockets;LiteWebSockets\bin;bin_Win32;Shared
+2012-02-09 11:37:52,433 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets\bin\Lite.dll.config
+2012-02-09 11:37:53,228 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain CounterPublisher , CounterPublisher
+2012-02-09 11:37:53,230 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 11:37:53,231 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = CounterPublisher;CounterPublisher\bin;bin_Win32;Shared
+2012-02-09 11:37:53,232 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\CounterPublisher\bin\CounterPublisher.dll.config
+2012-02-09 11:37:54,194 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Policy , Policy.Application
+2012-02-09 11:37:54,195 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 11:37:54,195 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Policy;Policy\bin;bin_Win32;Shared
+2012-02-09 11:37:54,195 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Policy\bin\Policy.Application.dll.config
+2012-02-09 11:38:54,353 [11] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyLoadEvent: System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+2012-02-09 11:38:54,354 [11] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyLoadEvent: System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+2012-02-09 11:38:54,356 [11] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyLoadEvent: System.Transactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+2012-02-09 11:38:54,359 [11] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyLoadEvent: System.EnterpriseServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+2012-02-09 11:38:54,379 [11] ERROR PhotonHostRuntime.PhotonDomainManager - System.Data.SqlClient.SqlException (0x80131904): Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Named Pipes Provider, error: 40 - No se pudo abrir una conexión con SQL Server)
+   en System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   en System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
+   en System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
+   en System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
+   en System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
+   en System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
+   en System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
+   en System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
+   en System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnection owningConnection, DbConnectionPool pool, DbConnectionOptions options)
+   en System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionPool.GetConnection(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
+   en System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
+   en System.Data.SqlClient.SqlConnection.Open()
+   en System.Data.Linq.SqlClient.SqlConnectionManager.UseConnection(IConnectionUser user)
+   en System.Data.Linq.SqlClient.SqlProvider.get_IsSqlCe()
+   en System.Data.Linq.SqlClient.SqlProvider.InitializeProviderMode()
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source)
+   en QuizLite.DataContext.Querys.UsersQuerys.GetActorDataByFacebookID(Int64 fbID) en C:\Santiago\Repo\QuizServer\QuizLite\DataContext\Querys\UsersQuerys.cs:línea 20
+   en QuizLite.LiteLobbyQuizPeer.OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters) en C:\Santiago\Repo\QuizServer\QuizLite\LiteLobbyQuizPeer.cs:línea 178
+   en Photon.SocketServer.PeerBase.OnReceiveInternal(Byte[] data, SendParameters sendParameters) en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 641
+   en Photon.SocketServer.PeerBase.<>c__DisplayClass3.<Photon.SocketServer.IManagedPeer.Application_OnReceive>b__2() en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 564
+   en (Object )
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(Action toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 31
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.QueueUserWorkItemCallback.WaitCallback_Context(Object state)
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-09 11:39:25,517 [13] ERROR PhotonHostRuntime.PhotonDomainManager - System.Data.SqlClient.SqlException (0x80131904): Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Named Pipes Provider, error: 40 - No se pudo abrir una conexión con SQL Server)
+   en System.Data.ProviderBase.DbConnectionPool.GetConnection(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
+   en System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
+   en System.Data.SqlClient.SqlConnection.Open()
+   en System.Data.Linq.SqlClient.SqlConnectionManager.UseConnection(IConnectionUser user)
+   en System.Data.Linq.SqlClient.SqlProvider.get_IsSqlCe()
+   en System.Data.Linq.SqlClient.SqlProvider.InitializeProviderMode()
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
+   en System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source)
+   en System.Data.SqlClient.SqlConnection.Open()
+   en QuizLite.DataContext.Querys.UsersQuerys.GetActorDataByFacebookID(Int64 fbID) en C:\Santiago\Repo\QuizServer\QuizLite\DataContext\Querys\UsersQuerys.cs:línea 20
+   en System.Data.Linq.SqlClient.SqlConnectionManager.UseConnection(IConnectionUser user)
+   en QuizLite.LiteLobbyQuizPeer.OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters) en C:\Santiago\Repo\QuizServer\QuizLite\LiteLobbyQuizPeer.cs:línea 178
+   en System.Data.Linq.SqlClient.SqlProvider.get_IsSqlCe()
+   en Photon.SocketServer.PeerBase.OnReceiveInternal(Byte[] data, SendParameters sendParameters) en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 641
+   en System.Data.Linq.SqlClient.SqlProvider.InitializeProviderMode()
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en Photon.SocketServer.PeerBase.<>c__DisplayClass3.<Photon.SocketServer.IManagedPeer.Application_OnReceive>b__2() en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 564
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en (Object )
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(Action toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 31
+   en QuizLite.DataContext.Querys.UsersQuerys.GetActorDataByFacebookID(Int64 fbID) en C:\Santiago\Repo\QuizServer\QuizLite\DataContext\Querys\UsersQuerys.cs:línea 20
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en QuizLite.LiteLobbyQuizPeer.OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters) en C:\Santiago\Repo\QuizServer\QuizLite\LiteLobbyQuizPeer.cs:línea 178
+   en Photon.SocketServer.PeerBase.OnReceiveInternal(Byte[] data, SendParameters sendParameters) en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 641
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en (Object )
+   en System.Threading.QueueUserWorkItemCallback.WaitCallback_Context(Object state)
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(Action toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 31
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.QueueUserWorkItemCallback.WaitCallback_Context(Object state)
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-09 11:39:25,517 [11] ERROR PhotonHostRuntime.PhotonDomainManager - System.Data.SqlClient.SqlException (0x80131904): Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Named Pipes Provider, error: 40 - No se pudo abrir una conexión con SQL Server)
+   en System.Data.ProviderBase.DbConnectionPool.GetConnection(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
+   en System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
+   en System.Data.SqlClient.SqlConnection.Open()
+   en System.Data.Linq.SqlClient.SqlConnectionManager.UseConnection(IConnectionUser user)
+   en System.Data.Linq.SqlClient.SqlProvider.get_IsSqlCe()
+   en System.Data.Linq.SqlClient.SqlProvider.InitializeProviderMode()
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
+   en System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source)
+   en System.Data.SqlClient.SqlConnection.Open()
+   en QuizLite.DataContext.Querys.UsersQuerys.GetActorDataByFacebookID(Int64 fbID) en C:\Santiago\Repo\QuizServer\QuizLite\DataContext\Querys\UsersQuerys.cs:línea 20
+   en System.Data.Linq.SqlClient.SqlConnectionManager.UseConnection(IConnectionUser user)
+   en QuizLite.LiteLobbyQuizPeer.OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters) en C:\Santiago\Repo\QuizServer\QuizLite\LiteLobbyQuizPeer.cs:línea 178
+   en System.Data.Linq.SqlClient.SqlProvider.get_IsSqlCe()
+   en Photon.SocketServer.PeerBase.OnReceiveInternal(Byte[] data, SendParameters sendParameters) en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 641
+   en System.Data.Linq.SqlClient.SqlProvider.InitializeProviderMode()
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en Photon.SocketServer.PeerBase.<>c__DisplayClass3.<Photon.SocketServer.IManagedPeer.Application_OnReceive>b__2() en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 564
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en (Object )
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(Action toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 31
+   en QuizLite.DataContext.Querys.UsersQuerys.GetActorDataByFacebookID(Int64 fbID) en C:\Santiago\Repo\QuizServer\QuizLite\DataContext\Querys\UsersQuerys.cs:línea 20
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en QuizLite.LiteLobbyQuizPeer.OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters) en C:\Santiago\Repo\QuizServer\QuizLite\LiteLobbyQuizPeer.cs:línea 178
+   en Photon.SocketServer.PeerBase.OnReceiveInternal(Byte[] data, SendParameters sendParameters) en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 641
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en (Object )
+   en System.Threading.QueueUserWorkItemCallback.WaitCallback_Context(Object state)
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(Action toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 31
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.QueueUserWorkItemCallback.WaitCallback_Context(Object state)
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-09 11:40:06,828 [10] ERROR PhotonHostRuntime.PhotonDomainManager - System.Data.SqlClient.SqlException (0x80131904): Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Named Pipes Provider, error: 40 - No se pudo abrir una conexión con SQL Server)
+   en System.Data.ProviderBase.DbConnectionPool.GetConnection(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
+   en System.Data.ProviderBase.DbConnectionPool.GetConnection(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
+   en System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
+   en System.Data.SqlClient.SqlConnection.Open()
+   en System.Data.Linq.SqlClient.SqlConnectionManager.UseConnection(IConnectionUser user)
+   en System.Data.Linq.SqlClient.SqlProvider.get_IsSqlCe()
+   en System.Data.Linq.SqlClient.SqlProvider.InitializeProviderMode()
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source)
+   en QuizLite.DataContext.Querys.UsersQuerys.GetActorDataByFacebookID(Int64 fbID) en C:\Santiago\Repo\QuizServer\QuizLite\DataContext\Querys\UsersQuerys.cs:línea 20
+   en QuizLite.LiteLobbyQuizPeer.OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters) en C:\Santiago\Repo\QuizServer\QuizLite\LiteLobbyQuizPeer.cs:línea 178
+   en Photon.SocketServer.PeerBase.OnReceiveInternal(Byte[] data, SendParameters sendParameters) en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 641
+   en Photon.SocketServer.PeerBase.<>c__DisplayClass3.<Photon.SocketServer.IManagedPeer.Application_OnReceive>b__2() en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 564
+   en (Object )
+   en System.Data.Linq.SqlClient.SqlConnectionManager.UseConnection(IConnectionUser user)
+   en System.Data.Linq.SqlClient.SqlProvider.get_IsSqlCe()
+   en System.Data.Linq.SqlClient.SqlProvider.InitializeProviderMode()
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source)
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en QuizLite.LiteLobbyQuizPeer.OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters) en C:\Santiago\Repo\QuizServer\QuizLite\LiteLobbyQuizPeer.cs:línea 178
+   en Photon.SocketServer.PeerBase.OnReceiveInternal(Byte[] data, SendParameters sendParameters) en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 641
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+   en Photon.SocketServer.PeerBase.<>c__DisplayClass3.<Photon.SocketServer.IManagedPeer.Application_OnReceive>b__2() en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 564
+   en (Object )
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(Action toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 31
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.QueueUserWorkItemCallback.WaitCallback_Context(Object state)
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-09 11:40:06,828 [13] ERROR PhotonHostRuntime.PhotonDomainManager - System.Data.SqlClient.SqlException (0x80131904): Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Named Pipes Provider, error: 40 - No se pudo abrir una conexión con SQL Server)
+   en System.Data.ProviderBase.DbConnectionPool.GetConnection(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
+   en System.Data.ProviderBase.DbConnectionPool.GetConnection(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
+   en System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
+   en System.Data.SqlClient.SqlConnection.Open()
+   en System.Data.Linq.SqlClient.SqlConnectionManager.UseConnection(IConnectionUser user)
+   en System.Data.Linq.SqlClient.SqlProvider.get_IsSqlCe()
+   en System.Data.Linq.SqlClient.SqlProvider.InitializeProviderMode()
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source)
+   en QuizLite.DataContext.Querys.UsersQuerys.GetActorDataByFacebookID(Int64 fbID) en C:\Santiago\Repo\QuizServer\QuizLite\DataContext\Querys\UsersQuerys.cs:línea 20
+   en QuizLite.LiteLobbyQuizPeer.OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters) en C:\Santiago\Repo\QuizServer\QuizLite\LiteLobbyQuizPeer.cs:línea 178
+   en Photon.SocketServer.PeerBase.OnReceiveInternal(Byte[] data, SendParameters sendParameters) en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 641
+   en Photon.SocketServer.PeerBase.<>c__DisplayClass3.<Photon.SocketServer.IManagedPeer.Application_OnReceive>b__2() en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 564
+   en (Object )
+   en System.Data.Linq.SqlClient.SqlConnectionManager.UseConnection(IConnectionUser user)
+   en System.Data.Linq.SqlClient.SqlProvider.get_IsSqlCe()
+   en System.Data.Linq.SqlClient.SqlProvider.InitializeProviderMode()
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source)
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en QuizLite.LiteLobbyQuizPeer.OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters) en C:\Santiago\Repo\QuizServer\QuizLite\LiteLobbyQuizPeer.cs:línea 178
+   en Photon.SocketServer.PeerBase.OnReceiveInternal(Byte[] data, SendParameters sendParameters) en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 641
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+   en Photon.SocketServer.PeerBase.<>c__DisplayClass3.<Photon.SocketServer.IManagedPeer.Application_OnReceive>b__2() en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 564
+   en (Object )
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(Action toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 31
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.QueueUserWorkItemCallback.WaitCallback_Context(Object state)
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-09 11:40:55,566 [13] ERROR PhotonHostRuntime.PhotonDomainManager - System.Data.SqlClient.SqlException (0x80131904): Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Named Pipes Provider, error: 40 - No se pudo abrir una conexión con SQL Server)
+   en System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   en System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
+   en System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
+   en System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
+   en System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
+   en System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
+   en System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
+   en System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
+   en System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnection owningConnection, DbConnectionPool pool, DbConnectionOptions options)
+   en System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionPool.GetConnection(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
+   en System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
+   en System.Data.SqlClient.SqlConnection.Open()
+   en System.Data.Linq.SqlClient.SqlConnectionManager.UseConnection(IConnectionUser user)
+   en System.Data.Linq.SqlClient.SqlProvider.get_IsSqlCe()
+   en System.Data.Linq.SqlClient.SqlProvider.InitializeProviderMode()
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source)
+   en QuizLite.DataContext.Querys.UsersQuerys.GetActorDataByFacebookID(Int64 fbID) en C:\Santiago\Repo\QuizServer\QuizLite\DataContext\Querys\UsersQuerys.cs:línea 20
+   en QuizLite.LiteLobbyQuizPeer.OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters) en C:\Santiago\Repo\QuizServer\QuizLite\LiteLobbyQuizPeer.cs:línea 178
+   en Photon.SocketServer.PeerBase.OnReceiveInternal(Byte[] data, SendParameters sendParameters) en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 641
+   en Photon.SocketServer.PeerBase.<>c__DisplayClass3.<Photon.SocketServer.IManagedPeer.Application_OnReceive>b__2() en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 564
+   en (Object )
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(Action toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 31
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.QueueUserWorkItemCallback.WaitCallback_Context(Object state)
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-09 11:41:31,123 [14] ERROR PhotonHostRuntime.PhotonDomainManager - System.Data.SqlClient.SqlException (0x80131904): Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Named Pipes Provider, error: 40 - No se pudo abrir una conexión con SQL Server)
+   en System.Data.ProviderBase.DbConnectionPool.GetConnection(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
+   en System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
+   en System.Data.SqlClient.SqlConnection.Open()
+   en System.Data.Linq.SqlClient.SqlConnectionManager.UseConnection(IConnectionUser user)
+   en System.Data.Linq.SqlClient.SqlProvider.get_IsSqlCe()
+   en System.Data.Linq.SqlClient.SqlProvider.InitializeProviderMode()
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source)
+   en QuizLite.DataContext.Querys.UsersQuerys.GetActorDataByFacebookID(Int64 fbID) en C:\Santiago\Repo\QuizServer\QuizLite\DataContext\Querys\UsersQuerys.cs:línea 20
+   en QuizLite.LiteLobbyQuizPeer.OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters) en C:\Santiago\Repo\QuizServer\QuizLite\LiteLobbyQuizPeer.cs:línea 178
+   en Photon.SocketServer.PeerBase.OnReceiveInternal(Byte[] data, SendParameters sendParameters) en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 641
+   en Photon.SocketServer.PeerBase.<>c__DisplayClass3.<Photon.SocketServer.IManagedPeer.Application_OnReceive>b__2() en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 564
+   en (Object )
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(Action toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 31
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.QueueUserWorkItemCallback.WaitCallback_Context(Object state)
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-09 11:42:08,599 [10] ERROR PhotonHostRuntime.PhotonDomainManager - System.Data.SqlClient.SqlException (0x80131904): Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Named Pipes Provider, error: 40 - No se pudo abrir una conexión con SQL Server)
+   en System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   en System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
+   en System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
+   en System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
+   en System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
+   en System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
+   en System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
+   en System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
+   en System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnection owningConnection, DbConnectionPool pool, DbConnectionOptions options)
+   en System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionPool.GetConnection(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
+   en System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
+   en System.Data.SqlClient.SqlConnection.Open()
+   en System.Data.Linq.SqlClient.SqlConnectionManager.UseConnection(IConnectionUser user)
+   en System.Data.Linq.SqlClient.SqlProvider.get_IsSqlCe()
+   en System.Data.Linq.SqlClient.SqlProvider.InitializeProviderMode()
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source)
+   en QuizLite.DataContext.Querys.UsersQuerys.GetActorDataByFacebookID(Int64 fbID) en C:\Santiago\Repo\QuizServer\QuizLite\DataContext\Querys\UsersQuerys.cs:línea 20
+   en QuizLite.LiteLobbyQuizPeer.OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters) en C:\Santiago\Repo\QuizServer\QuizLite\LiteLobbyQuizPeer.cs:línea 178
+   en Photon.SocketServer.PeerBase.OnReceiveInternal(Byte[] data, SendParameters sendParameters) en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 641
+   en Photon.SocketServer.PeerBase.<>c__DisplayClass3.<Photon.SocketServer.IManagedPeer.Application_OnReceive>b__2() en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 564
+   en (Object )
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(Action toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 31
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.QueueUserWorkItemCallback.WaitCallback_Context(Object state)
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-09 11:44:07,394 [14] ERROR PhotonHostRuntime.PhotonDomainManager - System.Data.SqlClient.SqlException (0x80131904): Error relacionado con la red o específico de la instancia mientras se establecía una conexión con el servidor SQL Server. No se encontró el servidor o éste no estaba accesible. Compruebe que el nombre de la instancia es correcto y que SQL Server está configurado para admitir conexiones remotas. (provider: Named Pipes Provider, error: 40 - No se pudo abrir una conexión con SQL Server)
+   en System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   en System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
+   en System.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, Boolean ignoreSniOpenTimeout, Int64 timerExpire, Boolean encrypt, Boolean trustServerCert, Boolean integratedSecurity)
+   en System.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, Boolean ignoreSniOpenTimeout, TimeoutTimer timeout, SqlConnection owningObject)
+   en System.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, Boolean redirectedUserInstance, SqlConnection owningObject, SqlConnectionString connectionOptions, TimeoutTimer timeout)
+   en System.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(SqlConnection owningObject, TimeoutTimer timeout, SqlConnectionString connectionOptions, String newPassword, Boolean redirectedUserInstance)
+   en System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, Object providerInfo, String newPassword, SqlConnection owningObject, Boolean redirectedUserInstance)
+   en System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection)
+   en System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnection owningConnection, DbConnectionPool pool, DbConnectionOptions options)
+   en System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionPool.GetConnection(DbConnection owningObject)
+   en System.Data.ProviderBase.DbConnectionFactory.GetConnection(DbConnection owningConnection)
+   en System.Data.ProviderBase.DbConnectionClosed.OpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory)
+   en System.Data.SqlClient.SqlConnection.Open()
+   en System.Data.Linq.SqlClient.SqlConnectionManager.UseConnection(IConnectionUser user)
+   en System.Data.Linq.SqlClient.SqlProvider.get_IsSqlCe()
+   en System.Data.Linq.SqlClient.SqlProvider.InitializeProviderMode()
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source)
+   en QuizLite.DataContext.Querys.UsersQuerys.GetActorDataByFacebookID(Int64 fbID) en C:\Santiago\Repo\QuizServer\QuizLite\DataContext\Querys\UsersQuerys.cs:línea 20
+   en QuizLite.LiteLobbyQuizPeer.OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters) en C:\Santiago\Repo\QuizServer\QuizLite\LiteLobbyQuizPeer.cs:línea 178
+   en Photon.SocketServer.PeerBase.OnReceiveInternal(Byte[] data, SendParameters sendParameters) en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 641
+   en Photon.SocketServer.PeerBase.<>c__DisplayClass3.<Photon.SocketServer.IManagedPeer.Application_OnReceive>b__2() en c:\build\photon-socketserver-sdk_3.0\src\Photon.SocketServer\PeerBase.cs:línea 564
+   en (Object )
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(Action toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 31
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.QueueUserWorkItemCallback.WaitCallback_Context(Object state)
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-09 12:01:50,344 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-09 12:02:03,887 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-09 12:02:03,895 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-09 12:02:03,896 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-09 12:02:03,903 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-09 12:02:03,906 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-09 12:02:05,462 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-09 12:02:05,466 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 12:02:05,475 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 12:02:05,476 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 12:02:05,476 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 12:02:05,755 [11] DEBUG emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - Reached license monitor.
+2012-02-09 12:02:06,496 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteWebSockets , Lite
+2012-02-09 12:02:06,497 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 12:02:06,497 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteWebSockets;LiteWebSockets\bin;bin_Win32;Shared
+2012-02-09 12:02:06,498 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets\bin\Lite.dll.config
+2012-02-09 12:02:07,092 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain CounterPublisher , CounterPublisher
+2012-02-09 12:02:07,093 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 12:02:07,093 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = CounterPublisher;CounterPublisher\bin;bin_Win32;Shared
+2012-02-09 12:02:07,094 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\CounterPublisher\bin\CounterPublisher.dll.config
+2012-02-09 12:02:07,743 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Policy , Policy.Application
+2012-02-09 12:02:07,743 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 12:02:07,744 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Policy;Policy\bin;bin_Win32;Shared
+2012-02-09 12:02:07,744 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Policy\bin\Policy.Application.dll.config
+2012-02-09 12:03:31,603 [16] ERROR PhotonHostRuntime.PhotonDomainManager - System.Runtime.Serialization.SerializationException: El tipo 'System.Data.Linq.ChangeConflictException' del ensamblado 'System.Data.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089' no está marcado como serializable.
+   en System.Runtime.Serialization.Formatters.Binary.WriteObjectInfo.InitSerialize(Object obj, ISurrogateSelector surrogateSelector, StreamingContext context, SerObjectInfoInit serObjectInfoInit, IFormatterConverter converter, ObjectWriter objectWriter, SerializationBinder binder)
+   en System.Runtime.Serialization.Formatters.Binary.WriteObjectInfo.Serialize(Object obj, ISurrogateSelector surrogateSelector, StreamingContext context, SerObjectInfoInit serObjectInfoInit, IFormatterConverter converter, ObjectWriter objectWriter, SerializationBinder binder)
+   en System.Runtime.Serialization.Formatters.Binary.ObjectWriter.Serialize(Object graph, Header[] inHeaders, __BinaryWriter serWriter, Boolean fCheck)
+   en System.Runtime.Serialization.Formatters.Binary.BinaryFormatter.Serialize(Stream serializationStream, Object graph, Header[] headers, Boolean fCheck)
+   en System.Runtime.Remoting.Channels.CrossAppDomainSerializer.SerializeObject(Object obj, MemoryStream stm)
+   en System.AppDomain.Serialize(Object o)
+   en System.AppDomain.MarshalObject(Object o)
+
+2012-02-09 12:20:31,911 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 12:20:31,932 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 12:20:31,933 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 12:20:31,935 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 12:21:02,251 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 12:21:02,252 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 12:21:02,253 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 12:21:02,266 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 12:44:53,706 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 12:44:53,706 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 12:44:53,707 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 12:44:53,739 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 12:48:09,277 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 12:48:09,278 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 12:48:09,279 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 12:48:09,281 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 12:48:21,760 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 12:48:21,761 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 12:48:21,761 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 12:48:21,762 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 12:49:46,380 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 12:49:46,381 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 12:49:46,381 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 12:49:46,382 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 12:50:15,727 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 12:50:15,728 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 12:50:15,730 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 12:50:15,763 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 13:02:05,952 [29] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyResolveEvent: System.resources, Version=4.0.0.0, Culture=es-ES, PublicKeyToken=b77a5c561934e089
+2012-02-09 13:02:05,953 [29] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyResolveEvent: System.resources, Version=4.0.0.0, Culture=es-ES, PublicKeyToken=b77a5c561934e089
+2012-02-09 13:02:05,956 [29] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyLoadEvent: System.resources, Version=4.0.0.0, Culture=es, PublicKeyToken=b77a5c561934e089
+2012-02-09 13:02:06,022 [31] ERROR emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - Did not reach license monitor #0.
+2012-02-09 13:02:06,022 [31] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - Reached license monitor in past 2 days. Going to try later.
+2012-02-09 14:58:28,044 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 14:58:28,081 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 14:58:28,081 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 14:58:28,082 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 14:59:51,286 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 14:59:51,286 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 14:59:51,287 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 14:59:51,345 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 15:00:06,373 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 15:00:06,375 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 15:00:06,377 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 15:00:06,379 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 15:01:22,405 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 15:01:22,406 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 15:01:22,407 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 15:01:22,408 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 15:02:37,850 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 15:02:37,851 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 15:02:37,852 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 15:02:37,854 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 15:04:45,527 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 15:04:45,543 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 15:04:45,544 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 15:04:45,545 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 15:16:48,524 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 15:16:48,526 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 15:16:48,528 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 15:16:48,530 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 15:24:31,328 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 15:24:31,330 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 15:24:31,331 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 15:24:31,364 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 15:50:46,932 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 15:50:46,934 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 15:50:46,936 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 15:50:46,938 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 17:17:32,572 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 17:17:32,574 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 17:17:32,575 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 17:17:32,576 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 17:36:53,469 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 17:36:53,471 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 17:36:53,472 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 17:36:53,474 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 17:39:17,098 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 17:39:17,100 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 17:39:17,101 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 17:39:17,102 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 17:42:28,800 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 17:42:28,801 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 17:42:28,802 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 17:42:28,802 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 17:42:53,882 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 17:42:53,882 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 17:42:53,883 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 17:42:53,884 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-09 17:48:28,781 [17] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-09 17:48:28,783 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-09 17:48:28,784 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-09 17:48:28,785 [17] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-10 13:25:42,665 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:29:00,528 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:29:00,536 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:29:00,563 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-10 13:29:00,571 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-10 13:29:00,576 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-10 13:29:02,135 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-10 13:29:02,139 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-10 13:29:02,146 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-10 13:29:02,147 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-10 13:29:02,147 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-10 13:29:02,658 [11] DEBUG emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - Reached license monitor.
+2012-02-10 13:30:45,762 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:30:45,770 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:30:45,772 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-10 13:30:45,777 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-10 13:30:45,781 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-10 13:30:47,279 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-10 13:30:47,283 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-10 13:30:47,288 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-10 13:30:47,288 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-10 13:30:47,289 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-10 13:30:47,582 [11] DEBUG emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - Reached license monitor.
+2012-02-10 13:32:55,763 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:32:55,771 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:32:55,773 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-10 13:32:55,777 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-10 13:32:55,781 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-10 13:32:57,283 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-10 13:32:57,287 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-10 13:32:57,293 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-10 13:32:57,294 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-10 13:32:57,294 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-10 13:32:57,646 [10] DEBUG emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - Reached license monitor.
+2012-02-10 13:34:33,975 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:34:33,983 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:34:33,984 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-10 13:34:33,991 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-10 13:34:33,995 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-10 13:34:35,555 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-10 13:34:35,559 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-10 13:34:35,566 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-10 13:34:35,567 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-10 13:34:35,567 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-10 13:34:35,861 [10] DEBUG emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - Reached license monitor.
+2012-02-10 13:36:03,963 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:36:03,971 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:36:03,972 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-10 13:36:03,978 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-10 13:36:03,982 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-10 13:36:05,503 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-10 13:36:05,510 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-10 13:36:05,518 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-10 13:36:05,519 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-10 13:36:05,520 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-10 13:36:05,836 [11] DEBUG emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - Reached license monitor.
+2012-02-10 13:36:26,254 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:36:26,261 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:36:26,263 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-10 13:36:26,269 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-10 13:36:26,273 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-10 13:36:27,840 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-10 13:36:27,844 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-10 13:36:27,848 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-10 13:36:27,848 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-10 13:36:27,849 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-10 13:36:28,151 [10] DEBUG emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - Reached license monitor.
+2012-02-10 13:36:32,365 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:36:32,373 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:36:32,375 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-10 13:36:32,383 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-10 13:36:32,388 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-10 13:36:33,662 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-10 13:36:33,666 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain QuizLite , QuizLite
+2012-02-10 13:36:33,670 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-10 13:36:33,671 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = QuizLite;QuizLite\bin;bin_Win32;Shared
+2012-02-10 13:36:33,671 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\QuizLite.dll.config
+2012-02-10 13:36:33,997 [11] DEBUG emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - Reached license monitor.
+2012-02-10 13:37:48,412 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:37:48,420 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-10 13:37:48,421 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-10 13:37:48,427 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-10 13:37:48,430 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-10 13:37:49,988 [ 1] INFO  emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-10 13:37:49,995 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteLobby , LiteLobby
+2012-02-10 13:37:50,001 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-10 13:37:50,002 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteLobby;LiteLobby\bin;bin_Win32;Shared
+2012-02-10 13:37:50,003 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.dll.config
+2012-02-10 13:37:50,287 [12] DEBUG emsshWyh8OdXcBhmOw.ehxaT538dKc1iA6uqG - Reached license monitor.
+2012-02-10 13:37:51,748 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteWebSockets , Lite
+2012-02-10 13:37:51,749 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-10 13:37:51,750 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteWebSockets;LiteWebSockets\bin;bin_Win32;Shared
+2012-02-10 13:37:51,751 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets\bin\Lite.dll.config
+2012-02-10 13:37:52,671 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain CounterPublisher , CounterPublisher
+2012-02-10 13:37:52,672 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-10 13:37:52,673 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = CounterPublisher;CounterPublisher\bin;bin_Win32;Shared
+2012-02-10 13:37:52,674 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\CounterPublisher\bin\CounterPublisher.dll.config
+2012-02-10 13:37:53,385 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Policy , Policy.Application
+2012-02-10 13:37:53,386 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-10 13:37:53,386 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Policy;Policy\bin;bin_Win32;Shared
+2012-02-10 13:37:53,387 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Policy\bin\Policy.Application.dll.config
+2012-02-10 13:39:54,851 [ 8] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteLobby , LiteLobby
+2012-02-10 13:39:54,852 [ 8] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-10 13:39:54,853 [ 8] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteLobby;LiteLobby\bin;bin_Win32;Shared
+2012-02-10 13:39:54,854 [ 8] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.dll.config
+2012-02-10 13:43:26,360 [ 8] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteLobby , LiteLobby
+2012-02-10 13:43:26,362 [ 8] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-10 13:43:26,363 [ 8] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteLobby;LiteLobby\bin;bin_Win32;Shared
+2012-02-10 13:43:26,364 [ 8] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.dll.config
+2012-02-10 13:45:11,453 [ 8] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteLobby , LiteLobby
+2012-02-10 13:45:11,453 [ 8] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-10 13:45:11,454 [ 8] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteLobby;LiteLobby\bin;bin_Win32;Shared
+2012-02-10 13:45:11,454 [ 8] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.dll.config

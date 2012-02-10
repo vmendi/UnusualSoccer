@@ -36,7 +36,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\QuizLite\bin\</OutputPath>
+    <OutputPath>..\..\..\deploy\LiteLobby\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -78,11 +78,21 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caching\LiteLobbyGameCache.cs" />
     <Compile Include="Caching\LiteLobbyRoomCache.cs" />
+    <Compile Include="DataContext\Querys\UsersQuerys.cs" />
+    <Compile Include="DataContext\QuizDataContext.cs">
+      <DependentUpon>QuizDataContext.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext\QuizDataContext.designer.cs">
+      <DependentUpon>QuizDataContext.dbml</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="LiteLobbyApplication.cs" />
     <Compile Include="LiteLobbyPeer.cs" />
     <Compile Include="LiteLobbyRoom.cs" />
@@ -96,16 +106,31 @@
     <Compile Include="Operations\LiteLobbyEventCode.cs" />
     <Compile Include="Operations\LobbyParameterKeys.cs" />
     <Compile Include="Operations\JoinOperation.cs" />
+    <Compile Include="Operations\LiteLobbyResponseCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="DataContext\QuizDataContext.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>QuizDataContext.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="LobbySettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>LobbySettings.Designer.cs</LastGenOutput>
     </None>
     <None Include="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +155,14 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DataContext\QuizDataContext.dbml.layout">
+      <DependentUpon>QuizDataContext.dbml</DependentUpon>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
