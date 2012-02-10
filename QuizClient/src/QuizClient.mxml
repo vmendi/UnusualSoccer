@@ -63,8 +63,8 @@
 					//IEventDispatcher(loaderInfo["uncaughtErrorEvents"]).addEventListener("uncaughtError", mErrorMessages.UncaughtErrorHandler);
 				
 				//LoginOnAPP(123456789,"Sant","Ti");
-				LoginOnAPP(0001112223,"truño","mars");
-				//LoginOnAPP(147852369,"Actor","Segundo");
+				//LoginOnAPP(0001112223,"truño","mars");
+				LoginOnAPP(147852369,"Actor","Segundo");
 				//LoginOnAPP(11447788552,"Astracus","Mortimer");
 				BindingUtils.bindSetter(OnGameStateChanged, mConnection, "ScreenState");
 			}

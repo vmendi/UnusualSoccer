@@ -126,8 +126,8 @@ package
 				if (flashvars["policyPort"] != null) 
 					policyPort = parseInt(flashvars["policyPort"]);
 			}
-			debug("Conectando con " + server + ":" + port + ", QuizLite");
-			Photon.getInstance().initializeConnection(server, port, policyPort, "QuizLite");
+			debug("Conectando con " + server + ":" + port + ", LiteLobby");
+			Photon.getInstance().initializeConnection(server, port, policyPort, "LiteLobby");
 		}
 		
 		

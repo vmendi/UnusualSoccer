@@ -4,7 +4,7 @@ package
 
 	public class TextoLog
 	{
-		private var mNumMessages:int = 8;
+		private var mNumMessages:int = 12;
 		private var mArrayDeTextos:ArrayCollection;
 		
 		
@@ -24,8 +24,6 @@ package
 				mArrayDeTextos.removeItemAt(0);
 				mArrayDeTextos.addItem(newMsg);		
 				var a:Array = new Array();
-				a.s
-					
 			}
 		}
 		

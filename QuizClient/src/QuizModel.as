@@ -45,9 +45,6 @@ package
 		///////////////////////////////////////////////////////////////////////
 		// Declaraciones
 		///////////////////////////////////////////////////////////////////////
-
-		public var mDefaultLobby:String	= "Quiz_lobby";
-		public var mDefaultLobbyRoom:String = "Default_Lobby_Room";
 		
 		public var myActorProperties:Array	= new Array();
 		
@@ -110,7 +107,7 @@ package
 							//Informamos a la vista para que cambie de la pantalla de LOGIN a la de MENUPRINCIPAL.
 							ScreenState = "MainMenu";
 							//Nos logeamos en el Lobby
-							JoinLobby(mDefaultLobby);							
+							JoinLobby(GameConstants.DEFAULT_QUIZLOBBY);							
 						}
 						break;
 					
@@ -123,7 +120,7 @@ package
 					case GameFeatures.STATE_JOINED_AT_ROOM:
 						break;
 					case GameFeatures.STATE_START_GAME_REQUESTING:
-						JoinLobby(mDefaultLobby);
+						JoinLobby(GameConstants.DEFAULT_QUIZLOBBY);
 
 					default:
 						break;
@@ -368,19 +365,19 @@ package
 			//params[CoreKeys.ACTOR_PROPERTIES] = myActorProperties; // En este EV_JOIN, insertamos en la ActorProperties,
 			
 			//nuestra infiormación, para informar a los demás clientes		
-			params[CoreKeys.LOBBY_ID] = mDefaultLobby;
+			params[CoreKeys.LOBBY_ID] = GameConstants.DEFAULT_QUIZLOBBY;
 			Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_JOIN_LOBBY,params);
 			
 			if ( getState() == GameFeatures.STATE_LOGGED)
 			{//Si es la primera vez que entramos en el juego, vamos al lobby normal, cambiando el estado
 				setState(GameFeatures.STATE_JOINLOBBY_REQUESTING);
 				debug("Enviando petición de Join to Lobby...")
-				printChatLine(" - ", "Pidiendo acceso al lobby [" + mDefaultLobby + "] ...");	
+				printChatLine(" - ", "Pidiendo acceso al lobby [" + GameConstants.DEFAULT_QUIZLOBBY + "] ...");	
 			}
 			else
 			{//Sino... es porque ya hemos pasado por aqui y no hay que cambiar el estado del juego.
 				debug("Volviendo al Lobby...")
-				printChatLine(" - ", "volviendo al Lobby  [" + mDefaultLobby + "] y buscando habitaciones de juego ...");
+				printChatLine(" - ", "volviendo al Lobby  [" + GameConstants.DEFAULT_QUIZLOBBY + "] y buscando habitaciones de juego ...");
 			}
 		}
 		
@@ -391,7 +388,7 @@ package
 		private function JoinDefaultLobbyRoom():void
 		{
 			
-			JoinRoomFromLobby(mDefaultLobbyRoom);
+			JoinRoomFromLobby(GameConstants.DEFAULT_QUIZGAME);
 		}
 		
 		/**
@@ -407,9 +404,9 @@ package
 			var params:Object= new Object();
 			
 			params[CoreKeys.BROADCAST] = true;
-			params[CoreKeys.LOBBY_ID] = mDefaultLobby; 				// El nombre del Lobby dnd está/se creará la Room
-			params[CoreKeys.GAME_ID] = roomName;					// El nombre de la room dnd nos queremos JOINear
-			params[CoreKeys.ACTOR_PROPERTIES] = myActorProperties;	// En este EV_JOIN, insertamos en la ActorProperties,
+			params[CoreKeys.LOBBY_ID] = GameConstants.DEFAULT_QUIZLOBBY;// El tipo del Lobby dnd está/se creará la Room
+			params[CoreKeys.GAME_ID] = roomName;						// El tipo de la room dnd nos queremos JOINear
+			params[CoreKeys.ACTOR_PROPERTIES] = myActorProperties;		// En este EV_JOIN, insertamos en la ActorProperties,
 			//if(roomParameters != null)
 				//setRoomParameters();
 			// nuestra infiormación, para informar a los demás clientes
@@ -431,7 +428,7 @@ package
 				for (var key:Object in RoomsList)
 				{
 					var tmpKey:Object = key;
-					if (StringUtils.beginsWith(tmpKey.toString(),"GameRoom"))
+					if (StringUtils.beginsWith(tmpKey.toString(),"QuizGameRoom"))
 					{
 						
 						if(RoomsList[tmpKey] < GameConstants.MAX_GAMEROOM_PLAYERS)
@@ -441,11 +438,11 @@ package
 						}						
 					}
 				}
-				_ret="GameRoom0";
+				_ret="newQuizGameRoom";
 			}
 		else
 		{
-				_ret="GameRoom0";
+				_ret="QuizGameRoom0";
 			}
 				
 			return _ret;
@@ -548,7 +545,7 @@ package
 			for (var key:Object in mRoomActors) 
 			{
 				var value:Object = mRoomActors[key];
-				//Si localizamos el actor que ha salido de la Room de la lista...
+				//localizamos el actor que ha salido de la Room de la lista...
 				if(value.ActorNo == actorNum)
 				{
 					//borramos al actor de la lista.
