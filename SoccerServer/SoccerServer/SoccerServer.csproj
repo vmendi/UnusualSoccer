@@ -35,7 +35,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DesktopBuildPackageLocation>Deploy\Release\SoccerServerV1.zip</DesktopBuildPackageLocation>
+    <DesktopBuildPackageLocation>..\Build\SoccerServer.zip</DesktopBuildPackageLocation>
     <PublishDatabaseSettings>
       <Objects>
         <ObjectGroup Name="SoccerV1ConnectionString-Deployment" Order="1" Enabled="True">
@@ -51,15 +51,65 @@
     <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
     <ExcludeApp_Data>false</ExcludeApp_Data>
     <PublishDatabases>false</PublishDatabases>
+    <IncludeIisSettings>false</IncludeIisSettings>
+    <DeployIisAppPath>SoccerServerV2</DeployIisAppPath>
+    <IncludeAppPool>false</IncludeAppPool>
+    <DeployIisAppPhysicalPath>c:\inetpub\wwwsoccerserverv2</DeployIisAppPhysicalPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Amazon|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\SoccerServer.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Mahou|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\SoccerServer.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnusualSoccerDev|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\SoccerServer.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Facebook, Version=5.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+    <Reference Include="Facebook, Version=5.4.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Facebook.5.2.1.0\lib\net40-client\Facebook.dll</HintPath>
+      <HintPath>..\packages\Facebook.5.4.1.0\lib\net40-client\Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Facebook.Web, Version=5.2.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+    <Reference Include="Facebook.Web, Version=5.4.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FacebookWeb.5.2.1.0\lib\net40\Facebook.Web.dll</HintPath>
+      <HintPath>..\packages\FacebookWeb.5.4.1.0\lib\net40\Facebook.Web.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL" />
@@ -96,7 +146,6 @@
     <Content Include="App_Data\Backup.sql" />
     <Content Include="App_Data\DeleteAll.sql" />
     <Content Include="App_Data\UpdateTeam.sql" />
-    <Content Include="Canceled.html" />
     <Content Include="Cancelled.aspx" />
     <Content Include="channel.html" />
     <Content Include="console\AC_OETags.js" />
@@ -193,6 +242,7 @@
     <Content Include="Imgs\PopupAppOffline.jpg" />
     <Content Include="Imgs\TrainingItem_en_US.swf" />
     <Content Include="Imgs\TrainingItem_es_ES.swf" />
+    <Content Include="logs\dummy.txt" />
     <Content Include="News.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -233,6 +283,7 @@
     <Compile Include="Cancelled.aspx.designer.cs">
       <DependentUpon>Cancelled.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ServerConfig.cs" />
     <Compile Include="Deauthorize.aspx.cs">
       <DependentUpon>Deauthorize.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -362,6 +413,16 @@
       <LastGenOutput>SoccerEntityModel.Designer.cs</LastGenOutput>
       <CustomToolNamespace>DBModel</CustomToolNamespace>
     </EntityDeploy>
+    <Content Include="Web.Amazon.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Mahou.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.UnusualSoccerDev.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
@@ -382,6 +443,7 @@
       <Name>Skills</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>

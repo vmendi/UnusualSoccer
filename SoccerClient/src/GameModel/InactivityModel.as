@@ -37,6 +37,14 @@ package GameModel
 			BindingUtils.bindSetter(OnLookingForMatchChanged, gameModel, ["TheRealtimeModel", "LookingForMatch"]);
 		}
 		
+		// Para los tests, nos fuerza a estar siempre inactivos
+		public function SupressActivity() : void
+		{
+			StopAndDestroyTimer();
+			IsActive = false;
+			mForcedInactivity = true;
+		}
+		
 		public function OnCleaningShutdown() : void
 		{
 			StopAndDestroyTimer();
@@ -54,6 +62,9 @@ package GameModel
 		
 		private function ReevaluateTimerCreation() : void
 		{
+			if (mForcedInactivity)
+				return;
+			
 			if (mTeamModel.TheTeam != null && !mRealtimeModel.LookingForMatch && mRealtimeModel.TheMatch == null)
 				EnsureCreateAndStartTimer();
 			else
@@ -122,5 +133,7 @@ package GameModel
 		private var mTimer : Timer;
 		private var mRealtimeModel : RealtimeModel;
 		private var mTeamModel : TeamModel;
+		
+		private var mForcedInactivity : Boolean = false
 	}
 }

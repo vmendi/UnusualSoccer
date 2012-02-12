@@ -249,7 +249,7 @@ namespace SoccerServer
 
         static public bool CheckTicketValidity(SoccerDataModelDataContext theContext, int dbPlayerID)
         {
-            if (!Global.Instance.TicketingSystemEnabled)
+            if (!Global.Instance.ServerSettings.TicketingSystem)
                 return true;
 
             var ticket = (from p in theContext.Players

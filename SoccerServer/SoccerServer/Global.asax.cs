@@ -9,6 +9,7 @@ using System.Threading;
 using Facebook;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Configuration;
 
 
 namespace SoccerServer
@@ -19,15 +20,10 @@ namespace SoccerServer
 
         public const String GLOBAL_LOG = "GLOBAL";
 
-        public Dictionary<string, string> ServerSettings { get { return mServerSettings; } }
-        public Dictionary<string, string> ClientSettings { get { return mClientSettings; } }
+        public ServerConfig ServerSettings { get { return mServerSettings; } }        
         public IFacebookApplication FacebookSettings { get { return mFBSettings; } }
 
         public NetEngineMain TheNetEngine { get { return mNetEngine; } }
-
-        // Un acceso rapido para una propiedad importante
-        public bool TicketingSystemEnabled { get { return ServerSettings["TicketingSystem"] == "true"; } }
-
         
 		protected void Application_Start(object sender, EventArgs e)
 		{
@@ -38,8 +34,9 @@ namespace SoccerServer
             mInstance = this;
 
             // Necesitamos inicializar ya nuestros settings para que no falle la primera query
-            ConfigureSettings();
-
+            mFBSettings     = ConfigurationManager.GetSection("facebookSettings") as FacebookConfigurationSection;
+            mServerSettings = ConfigurationManager.GetSection("soccerServerConfig") as ServerConfig;
+            
             // Y tambien el NetEngine, por el mismo motivo
             mNetEngine = new NetEngineMain(new RealtimeLobby());
             
@@ -88,83 +85,6 @@ namespace SoccerServer
                     MainService.ResetSeasons(false);
             }
         }
-
-        private void ConfigureSettings()
-        {
-            mServerSettings = new Dictionary<string, string>();
-            mClientSettings = new Dictionary<string, string>();
-            mFBSettings = new FacebookConfigurationSection();
-            
-            // La cancelUrlPath hemos detectado que es la direccion adonde nos manda tras un "Don't allow". 
-            // Puede que haya más cancelaciones. Si la dejas vacia, te manda a facebook.com
-            mFBSettings.CancelUrlPath = "Cancelled.aspx";
-
-            if (this.Server.MachineName == "UNUSUALTWO")    // UnusualSoccerDev
-            {
-                mFBSettings.AppId = "191393844257355";
-                mFBSettings.AppSecret = "a06a6bf1080247ed87ba203422dcbb30";
-
-                mFBSettings.CanvasPage = "http://apps.facebook.com/unusualsoccerdev/";
-                mFBSettings.CanvasUrl = "http://unusualsoccerdev.unusualwonder.com/";
-                mFBSettings.SecureCanvasUrl = "https://unusualsoccerdev.unusualwonder.com/";
-
-                mClientSettings["VersionID"] = "UnusualSoccer";
-                mServerSettings["VersionID"] = "UnusualSoccer";                
-                //mClientSettings["VersionID"] = "MahouLigaChapas";
-                //mServerSettings["VersionID"] = "MahouLigaChapas";
-
-                mServerSettings["Title"] = "Unusual Soccer";
-                mServerSettings["ImageUrl"] = "http://unusualsoccerdev.unusualwonder.com/Imgs/Logo75x75_en_US.png";   // Tiene que ser absoluto pq va en los Meta de facebook
-                mServerSettings["Description"] = "Unusual Soccer Description";                                        // og:description
-                mServerSettings["TicketingSystem"] = "true";
-                mServerSettings["SameIPAbandonsChecked"] = "false";
-            }
-            else
-            if (this.Server.MachineName == "UNUSUALFOUR")   // MahouLigaChapas
-            {
-                mFBSettings.AppId = "129447350433277";
-                mFBSettings.AppSecret = "bdc5e672a1447f4d917fbf847981cb0d";
-
-                mFBSettings.CanvasPage = "http://apps.facebook.com/mahouligachapas/";
-                mFBSettings.CanvasUrl = "http://mahouligachapas.unusualwonder.com/";
-                mFBSettings.SecureCanvasUrl = "https://mahouligachapas.unusualwonder.com/";
-
-                mClientSettings["VersionID"] = "MahouLigaChapas";
-                mServerSettings["VersionID"] = "MahouLigaChapas";
-                
-                mServerSettings["Title"] = "Mahou Liga Chapas";
-                mServerSettings["ImageUrl"] = "http://mahouligachapas.unusualwonder.com/Imgs/Logo75x75.png";
-                mServerSettings["Description"] = "Mahou Liga Chapas es el juego definitivo de fútbol en Facebook. Configura tu equipo, entrena a tus jugadores, consigue habilidades especiales y compite con tus amigos en partidos llenos de emoción. ¡Bienvenido a Mahou Liga Chapas!";
-                mServerSettings["TicketingSystem"] = "false";
-                mServerSettings["SameIPAbandonsChecked"] = "true";
-            }
-            else    // localhost
-            {
-                mFBSettings.AppId = "100203833418013";
-                mFBSettings.AppSecret = "bec70c821551670c027317de43a5ceae";
-
-                mFBSettings.CanvasPage = "http://apps.facebook.com/unusualsoccerlocal/";
-                mFBSettings.CanvasUrl = "http://localhost/";
-                mFBSettings.SecureCanvasUrl = "https://localhost/";
-
-                // Pondremos lo que mas nos convenga para depurar en local
-                //mServerSettings["VersionID"] = "UnusualSoccer";
-                //mClientSettings["VersionID"] = "UnusualSoccer";
-                mServerSettings["VersionID"] = "MahouLigaChapas";
-                mClientSettings["VersionID"] = "MahouLigaChapas";
-
-                mServerSettings["Title"] = "localhost";
-                mServerSettings["ImageUrl"] = "";
-                mServerSettings["Description"] = "";                
-                mServerSettings["TicketingSystem"] = "false";
-                mServerSettings["SameIPAbandonsChecked"] = "false";
-
-                // Nuestro servidor remoto favorito cuando depuramos en local
-                //mClientSettings["RemoteServer"] = "unusualsoccerdev.unusualwonder.com";
-                mClientSettings["RemoteServer"] = "mahouligachapas.unusualwonder.com";
-            }
-        }
-
 
 		void SecondsTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
@@ -277,8 +197,7 @@ namespace SoccerServer
         private DateTime mLast24hProcessedDateTime = DateTime.Now;
         private DateTime mLastHourlyProcessedDateTime = DateTime.Now;
 
-        private Dictionary<string, string> mServerSettings;
-        private Dictionary<string, string> mClientSettings;    // Settings que pasaremos a flash
+        private ServerConfig mServerSettings;
         private FacebookConfigurationSection mFBSettings;
 	}
 }
