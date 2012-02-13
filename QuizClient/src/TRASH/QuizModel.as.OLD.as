@@ -3,18 +3,21 @@ package TRASH
 
 	import ServerConnection.Actor;
 	import ServerConnection.Constants;
-	import de.exitgames.photon_as3.CoreConstants;
-	import de.exitgames.photon_as3.CoreKeys;
 	import ServerConnection.Keys;
 	import ServerConnection.Photon;
-	import de.exitgames.photon_as3.PhotonCore;
 	import ServerConnection.Responses.JoinLobbyResponse;
 	import ServerConnection.Responses.LoginResponse;
 	import ServerConnection.Responses.SingUpResponse;
-	import de.exitgames.photon_as3.event.JoinEvent;
-	import de.exitgames.photon_as3.event.LeaveEvent;
 	import ServerConnection.events.ChatEvent;
 	import ServerConnection.events.RoomsListEvent;
+	
+	import Utils.MyFunctions;
+	
+	import de.exitgames.photon_as3.CoreConstants;
+	import de.exitgames.photon_as3.CoreKeys;
+	import de.exitgames.photon_as3.PhotonCore;
+	import de.exitgames.photon_as3.event.JoinEvent;
+	import de.exitgames.photon_as3.event.LeaveEvent;
 	import de.exitgames.photon_as3.internals.DebugOut;
 	import de.exitgames.photon_as3.response.CustomResponse;
 	import de.exitgames.photon_as3.response.InitializeConnectionResponse;
@@ -23,8 +26,8 @@ package TRASH
 	
 	import flash.events.DataEvent;
 	import flash.events.Event;
+	import flash.geom.Utils3D;
 	import flash.utils.Dictionary;
-	import Utils.MyFunctions;
 
 	public class QuizModel_old extends PhotonClient
 	{
@@ -156,7 +159,7 @@ package TRASH
 						debug("El mensaje de respuesta es:" + (event as JoinLobbyResponse).getReturnDebug());
 						mOtherActorProperties = (event as JoinLobbyResponse).getPlayerProperties();
 						printPLayersInfo();
-						debug("---> \n " + Utils.ObjectToString(mOtherActorProperties));
+						debug("---> \n " + Utils.MyFunctions.ObjectToString(mOtherActorProperties));
 					}
 					JoinRoomFromLobby();
 					break;
