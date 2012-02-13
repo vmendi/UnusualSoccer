@@ -116,6 +116,9 @@ package
 					case GameFeatures.STATE_START_GAME_REQUESTING:
 						JoinRoomFromLobby(GameConstants.DEFAULT_QUIZLOBBY);
 						break;
+					case GameFeatures.STATE_STARTED_GAME:
+						ScreenState = "Playing";
+						break;
 					
 					default:
 						break;
