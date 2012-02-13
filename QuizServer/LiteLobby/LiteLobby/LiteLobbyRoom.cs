@@ -37,6 +37,8 @@ namespace LiteLobby
         /// <summary>Hashtable containing all roomes for this lobby.</summary>
         private readonly Hashtable roomList;
 
+        public Hashtable getRoomList() { return (Hashtable)this.roomList.Clone(); }
+
         /// <summary>Hashtable containing all roomes which changed since last update.</summary>
         private Hashtable changedRoomList;
 

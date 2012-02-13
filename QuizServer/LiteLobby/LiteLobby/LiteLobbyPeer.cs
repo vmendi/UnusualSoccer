@@ -44,6 +44,9 @@ namespace LiteLobby
         /// </summary>
         private static readonly ILogger log = LogManager.GetCurrentClassLogger();
 
+
+        private string mLobbyName;
+
         #endregion
 
         #region Constructors and Destructors
@@ -189,7 +192,9 @@ namespace LiteLobby
                     var queryResult = UsersQuerys.GetActorDataByFacebookID(FacebookID);
                     if (log.IsDebugEnabled)
                     {
-                        log.DebugFormat("Se ha consultado la BBDD, el resultado es:{0}", queryResult != null ? queryResult.ToString() : String.Format("El jugador con FacebookID [{0}], no existe en la BBDD", FacebookID));
+                        log.DebugFormat("Se ha consultado la BBDD, el resultado es:{0}", queryResult != null ? 
+                                String.Format("Login_Event: Se ha logeado un usuario: FaceBookID:{0}, Nick{1},logueado por ultima vez el {2}", queryResult.FacebookID, queryResult.Nick, queryResult.LastLoginDate) :
+                                String.Format("Login_Event: El jugador con FacebookID [{0}], no existe en la BBDD", FacebookID));
                     }
                     //Si "Existe", devolvermos un "OnLoginResponse" con los datos del jugador que los pide
                     if (queryResult != null)
@@ -198,18 +203,18 @@ namespace LiteLobby
                         UsersQuerys.UpdateUserLastLogin(((User)queryResult).UserID);
                         //Preparamos los datos que devolveremos al cliente
                         Dictionary<byte, Object> ActorData = new Dictionary<byte, object>();
-                        ActorData.Add((byte)LobbyParameterKeys.FacebookID, ((User)queryResult).FacebookID);
-                        ActorData.Add((byte)LobbyParameterKeys.Name, ((User)queryResult).Name);
-                        ActorData.Add((byte)LobbyParameterKeys.Surname, ((User)queryResult).Surname);
-                        ActorData.Add((byte)LobbyParameterKeys.UserID, ((User)queryResult).UserID);
-                        ActorData.Add((byte)LobbyParameterKeys.CreationData, ((User)queryResult).CreationDate);
-                        ActorData.Add((byte)LobbyParameterKeys.LastLoginDate, ((User)queryResult).LastLoginDate);
-
-                        ActorData.Add((byte)LobbyParameterKeys.AnswersCorrect, ((User)queryResult).AnsweredRight);
-                        ActorData.Add((byte)LobbyParameterKeys.AnswersFailed, ((User)queryResult).AnsweredFailed);
-                        ActorData.Add((byte)LobbyParameterKeys.Nick, ((User)queryResult).Nick);
-                        ActorData.Add((byte)LobbyParameterKeys.Score, ((User)queryResult).Score);
-                        ActorData.Add((byte)LobbyParameterKeys.Photo, ((User)queryResult).Photo);
+                        ActorData.Add((byte)LobbyParameterKeys.FacebookID,      ((User)queryResult).FacebookID);
+                        ActorData.Add((byte)LobbyParameterKeys.Name,            ((User)queryResult).Name);
+                        ActorData.Add((byte)LobbyParameterKeys.Surname,         ((User)queryResult).Surname);
+                        ActorData.Add((byte)LobbyParameterKeys.UserID,          ((User)queryResult).UserID);
+                        ActorData.Add((byte)LobbyParameterKeys.CreationData,    ((User)queryResult).CreationDate);
+                        ActorData.Add((byte)LobbyParameterKeys.LastLoginDate,   ((User)queryResult).LastLoginDate);
+                        ActorData.Add((byte)LobbyParameterKeys.AnswersCorrect,  ((User)queryResult).AnsweredRight);
+                        ActorData.Add((byte)LobbyParameterKeys.AnswersFailed,   ((User)queryResult).AnsweredFailed);
+                        ActorData.Add((byte)LobbyParameterKeys.Nick,            ((User)queryResult).Nick);
+                        ActorData.Add((byte)LobbyParameterKeys.Score,           ((User)queryResult).Score);
+                        ActorData.Add((byte)LobbyParameterKeys.Photo,           ((User)queryResult).Photo);
+                        
                         //creamos la respuesta que enviaremos al usuario
                         SendOperationResponse((byte)LiteLobbyResponseCode.ActorPersonalData, ActorData, 0, "Transferidos sus datos de usuario...", sendParameters);
                     }
@@ -219,7 +224,6 @@ namespace LiteLobby
                         Dictionary<byte, Object> ActorData = new Dictionary<byte, object>();
                         ActorData.Add((byte)LobbyParameterKeys.UserID, -1);
                         SendOperationResponse((byte)LiteLobbyResponseCode.ActorPersonalData, ActorData, 0, "El usuario consultado, no está en la BBDD.", sendParameters);
-
                     }
                     //break;
                     return;
@@ -257,10 +261,10 @@ namespace LiteLobby
                             log.DebugFormat("Se ha comprobado el nick {0} en la BBDD, y el resultado es: {1}", nick, _debugMessage);
                         }
                     }
-
                     return;
                 }
             }
+
             base.OnOperationRequest(operationRequest, sendParameters);
         }
 
@@ -295,41 +299,43 @@ namespace LiteLobby
                         switch (CustomOperationCode)
                         {
                             case (byte)LiteLobbyEventCode.JoinLobby:
-                                {
-                                    var data = (Hashtable)operationRequest.Parameters[(byte)ParameterKey.Data];
-                                    operationRequest.OperationCode = (byte)Lite.Operations.OperationCode.Join;
+                            {
+                                var data = (Hashtable)operationRequest.Parameters[(byte)ParameterKey.Data];
+                                operationRequest.OperationCode = (byte)Lite.Operations.OperationCode.Join;
 
-                                    var param = new Dictionary<byte, object>();
-                                    param[(byte)Lite.Operations.ParameterKey.GameId] = data[((byte)LobbyParameterKeys.LobbyId).ToString()].ToString();
-                                    param[(byte)Lite.Operations.ParameterKey.ActorProperties] = data[((byte)ParameterKey.ActorProperties).ToString()];
-                                    operationRequest.SetParameters(param);
+                                var param = new Dictionary<byte, object>();
+                                param[(byte)Lite.Operations.ParameterKey.GameId] = mLobbyName = data[((byte)LobbyParameterKeys.LobbyId).ToString()].ToString();
+                                param[(byte)Lite.Operations.ParameterKey.ActorProperties] = data[((byte)ParameterKey.ActorProperties).ToString()];
+                                operationRequest.SetParameters(param);
 
-                                    this.HandleJoinOperation(operationRequest, sendParameters);
-                                    break;
-                                }
+                                this.HandleJoinOperation(operationRequest, sendParameters);
+                                break;
+                            }
+                            // Como el Join que recibiremos será uno custom... tenemos que crear un JoinRequest (para LiteLobby) a partir del CustomJoin
+                            // que recibimos. 
+                            // Nota: De momento nos olvidamos del GameID, porque será el servidor quien decida en que habitación metera a este Peer.
+                            case (byte)LiteLobbyEventCode.JoinGameFromLobby:
+                            {
+                                var data = (Hashtable)operationRequest.Parameters[(byte)ParameterKey.Data];
+                                
+                                //Recolectamos los parametros del Join
+                                var param = new Dictionary<byte, object>();                                    
+                                
+                                param[(byte)ParameterKey.ActorProperties]   = data[((byte)ParameterKey.ActorProperties).ToString()];
+                                param[(byte)ParameterKey.Broadcast]         = data[((byte)ParameterKey.Broadcast).ToString()];
+                                param[(byte)ParameterKey.GameProperties]    = data[((byte)ParameterKey.GameProperties).ToString()];
+                                //El lobby al que se conectó inicialmente, será el Lobby Foreverrrrrrrrr
+                                param[(byte)LobbyParameterKeys.LobbyId]     = mLobbyName;
+                                RoomReference _roomRef = LiteLobbyRoomCache.Instance.GetRoomReference(mLobbyName);
+                                Hashtable _roomsList = (_roomRef.Room as LiteLobbyRoom).getRoomList();
+                                param[(byte)ParameterKey.GameId] = LookForAValidGameRoom(_roomsList);
+                                //Asignamos los parametros al Join
+                                operationRequest.OperationCode = (byte)OperationCode.Join;
+                                operationRequest.SetParameters(param);
 
-                            case (byte)LiteLobbyEventCode.JoinGameFromLobby: // JoinGameWithLobby: Unimos al cliente a un juego del lobby
-                                {
-
-                                    //TODO cuando el cliente quiera empezar a jugar, me pide acceso a una QUIZROOM...
-                                    //*Tengo que informar al lobby que tal cliente quiere unirse a una habitación de juego y el Lobby (por si mismo), 
-                                    // es el que tiene que unir al cliente a una habitación y responderle al cliente que ya está dentro de ella!
-                                    //- No hay que extender el lobby, pero si las habitaciones para personalizarlas.
-
-                                    var data = (Hashtable)operationRequest.Parameters[(byte)ParameterKey.Data];
-
-                                    operationRequest.OperationCode = (byte)OperationCode.Join;
-
-                                    var param = new Dictionary<byte, object>();
-                                    // param[(byte)ParameterKey.GameId]            = data[((byte)ParameterKey.GameId).ToString()].ToString();
-                                    param[(byte)LobbyParameterKeys.LobbyId] = data[((byte)LobbyParameterKeys.LobbyId).ToString()].ToString();
-                                    param[(byte)ParameterKey.ActorProperties] = data[((byte)ParameterKey.ActorProperties).ToString()];
-                                    param[(byte)ParameterKey.Broadcast] = data[((byte)ParameterKey.Broadcast).ToString()];
-                                    operationRequest.SetParameters(param);
-
-                                    this.HandleJoinOperation(operationRequest, sendParameters);
-                                    break;
-                                }
+                                this.HandleJoinOperation(operationRequest, sendParameters);
+                                break;
+                            }
 
                             default: // Si es cualquier otro Codigo que no necesite que sea interceptado, lo tratmos como lo haría LiteLobby.
                                 {
@@ -345,6 +351,16 @@ namespace LiteLobby
                         break;
                     }
             }
+        }
+
+        private object LookForAValidGameRoom(Hashtable _roomList)
+        {
+            foreach (var key in _roomList.Keys)
+            {
+                if (int.Parse((string)_roomList[key.ToString()]) < LiteLobbyGame.MAX_USERS)
+                    return key.ToString();
+            }
+            return "GameRoom" + _roomList.Count.ToString();
         }
 
         /// <summary>
