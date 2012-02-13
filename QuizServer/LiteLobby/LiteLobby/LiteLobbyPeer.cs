@@ -357,7 +357,7 @@ namespace LiteLobby
         {
             foreach (var key in _roomList.Keys)
             {
-                if (int.Parse((string)_roomList[key.ToString()]) < LiteLobbyGame.MAX_USERS)
+                if (int.Parse((string)_roomList[key.ToString()]) < GameFeatures.MAX_USERS)
                     return key.ToString();
             }
             return "GameRoom" + _roomList.Count.ToString();

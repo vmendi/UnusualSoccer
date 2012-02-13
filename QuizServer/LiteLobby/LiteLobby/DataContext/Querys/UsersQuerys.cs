@@ -70,5 +70,23 @@ namespace LiteLobby.DataContext.Querys
             result.LastLoginDate = DateTime.Now; //Actualizamos su fecha de ultimo login
             quizDC.SubmitChanges();
         }
+
+        /// <summary>
+        /// Devuelve una nueva pregunta, descartando las que ya habían sido formuladas para el mismo juego
+        /// </summary>
+        /// <param name="UsedQuestions">Lista que contiene los ID's de las preguntas ya formuladas</param>
+        /// <returns>la nueva pregunta</returns>
+        internal static Question GetNewAnswer(List<int> UsedQuestions)
+        {
+            using (var quizDC = new QuizLINQDataContext())
+            {
+                Question result = (from q in quizDC.Questions
+                                  where !UsedQuestions.Contains(q.QuestionID)
+                                  select q).First();
+                return result;
+            }
+
+            
+        }
     }
 }

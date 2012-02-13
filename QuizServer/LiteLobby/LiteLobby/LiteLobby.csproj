@@ -93,6 +93,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="GameFeatures.cs" />
     <Compile Include="LiteLobbyApplication.cs" />
     <Compile Include="LiteLobbyPeer.cs" />
     <Compile Include="LiteLobbyRoom.cs" />

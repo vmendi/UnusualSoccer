@@ -169,7 +169,7 @@ namespace LiteLobby.DataContext
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="Question", Storage="_Question1", DbType="VarChar(MAX)")]
-		public string Question1
+        public string Question1
 		{
 			get
 			{

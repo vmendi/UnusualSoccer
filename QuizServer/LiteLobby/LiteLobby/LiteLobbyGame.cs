@@ -34,7 +34,8 @@ namespace LiteLobby
         ///   This <see cref = "RoomReference" /> is the link to the <see cref = "LiteLobbyRoom" /> that needs to be updated when players join or leave.
         /// </summary>
         private readonly RoomReference lobbyReference;
-        public static int MAX_USERS = 3;
+
+        private QuizGame game;
 
         #endregion
 
@@ -54,7 +55,7 @@ namespace LiteLobby
         {
             // get the reference to the lobby
             this.lobbyReference = LiteLobbyRoomCache.Instance.GetRoomReference(lobbyName);
-            
+            this.game = new QuizGame();
         }
 
         #endregion
