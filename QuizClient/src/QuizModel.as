@@ -10,6 +10,7 @@ package
 	import ServerConnection.Responses.SingUpResponse;
 	import ServerConnection.events.ChatEvent;
 	import ServerConnection.events.ExtendedJoinEvent;
+	import ServerConnection.events.NewQuestionEvent;
 	import ServerConnection.events.RoomsListEvent;
 	
 	import Utils.MyFunctions;
@@ -26,9 +27,7 @@ package
 	import de.exitgames.photon_as3.response.JoinResponse;
 	import de.exitgames.photon_as3.response.LeaveResponse;
 	
-	import flash.events.DataEvent;
 	import flash.events.Event;
-	import flash.events.EventDispatcher;
 	import flash.net.ObjectEncoding;
 	import flash.utils.Dictionary;
 	
@@ -50,26 +49,43 @@ package
 		public var mRoomActors:ArrayCollection;
 		
 		private var mFacebookID:int;
-		public  function get FacebookID()			: int {return mFacebookID;}
-		public function set FacebookID(v:int) 		: void	{ mFacebookID = v; }
+		public  function get FacebookID()					: int { return mFacebookID; }
+		public function set FacebookID(v:int) 				: void	{ mFacebookID = v; }
 		
 		private var mUserName:String;
-		public  function get UserName()				: String {return mUserName;}
-		public function set UserName(v:String) 	: void	{ mUserName = v; }
+		public  function get UserName()						: String { return mUserName; }
+		public function set UserName(v:String) 				: void	{ mUserName = v; }
 		
 		private var mUserSurName:String;
-		public  function get UserSurName()			: String {return mUserSurName;}
-		public function set UserSurName(v:String) 	: void	{ mUserSurName = v; }
+		public  function get UserSurName()					: String { return mUserSurName; }
+		public function set UserSurName(v:String) 			: void	{ mUserSurName = v; }
 		
 		[Bindable]
-		public function get ScreenState()				:String 	{ return mScreenState; }
-		private function set ScreenState(v:String)	:void 		{ mScreenState = v; }
+		public function get ScreenState()					:String	{ return mScreenState; }
+		private function set ScreenState(v:String)			:void 	{ mScreenState = v; }
 		private var mScreenState:String = "Login";
 		
 		[Bindable]
-		public function get IsValidNick()			:Boolean 	{ return mValidNick; }
-		private function set IsValidNick(v:Boolean):void 		{ mValidNick = v; }
+		public function get IsValidNick()					:Boolean { return mValidNick; }
+		private function set IsValidNick(v:Boolean)         :void    { mValidNick = v; }
 		private var mValidNick:Boolean = true;
+		
+		
+		[Bindable]
+		public function get IsNewQuestionArrived()			:Boolean { return mIsNewQuestionArrived; }
+		public function set IsNewQuestionArrived(v:Boolean)	:void 
+		{ 
+			mIsNewQuestionArrived = v;
+			
+		}	
+		private var mIsNewQuestionArrived: Boolean;
+		
+		
+		
+		
+		[Bindable]
+		public var CurrentQuestion:QuizQuestion;
+		
 		
 		//ESTADOS
 		public var mState:int = GameFeatures.STATE_INITIALIZE_REQUESTING;
@@ -117,7 +133,6 @@ package
 						JoinRoomFromLobby(GameConstants.DEFAULT_QUIZLOBBY);
 						break;
 					case GameFeatures.STATE_STARTED_GAME:
-						ScreenState = "Playing";
 						break;
 					
 					default:
@@ -156,6 +171,7 @@ package
 			Photon.getInstance().addEventListener(ChatEvent.TYPE, 			onPhotonEvent);
 			Photon.getInstance().addEventListener(ExtendedJoinEvent.TYPE, 	onPhotonEvent);
 			Photon.getInstance().addEventListener(LeaveEvent.TYPE, 			onPhotonEvent);
+			Photon.getInstance().addEventListener(NewQuestionEvent.TYPE,	onPhotonEvent);
 		}
 		
 		/**
@@ -255,8 +271,6 @@ package
 					else if (getState() == GameFeatures.STATE_START_GAME_REQUESTING)
 					{
 						RoomsList = (event as RoomsListEvent).getRoomsList();
-						var _roomName:String = GiveMeAGameRoom();
-						JoinRoomFromLobby(_roomName);
 					}
 					
 					break;
@@ -282,10 +296,19 @@ package
 					printChatLine(_actor,_msg);
 				
 				// Tratamos  el evento de LEAVE
-				case LeaveEvent.TYPE:
+				case LeaveEvent.TYPE:	
 					var ActorNo_Leaving:int = (event as LeaveEvent).getActorNo();
 					RemoveActorFromActorList(ActorNo_Leaving);
-
+				
+				case NewQuestionEvent.TYPE:
+					 CurrentQuestion = new QuizQuestion(
+						 (event as NewQuestionEvent).getQuestionType(),
+						 (event as NewQuestionEvent).getQuestion(),
+						 (event as NewQuestionEvent).getAnswers(),
+						 (event as NewQuestionEvent).getSolution()
+					 );
+					 ScreenState = "Playing";				
+					break;
 			}		
 		}
 		
@@ -401,55 +424,6 @@ package
 			
 		}
 		
-		
-		public function GiveMeAGameRoom():String
-		{
-			var _ret:String;
-			
-			if ( MyFunctions.countKeys(RoomsList) > 0)
-			{
-				//Buscamos la primera GameRoom que no supere el máximo de participantes
-				for (var key:Object in RoomsList)
-				{
-					var tmpKey:Object = key;
-					if (StringUtils.beginsWith(tmpKey.toString(),"QuizGameRoom"))
-					{
-						
-						if(RoomsList[tmpKey] < GameConstants.MAX_GAMEROOM_PLAYERS)
-						{
-							_ret = tmpKey.toString();
-							break;
-						}						
-					}
-				}
-				_ret="newQuizGameRoom";
-			}
-		else
-		{
-				_ret="QuizGameRoom0";
-			}
-				
-			return _ret;
-		}
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		//                                    Métodos de interaccion con la Vista	     							//
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		/**
-		 * Envía un mensaje de chat a la sala para que todos los clientes lo lean
-		 * 
-		 * @param msg Texto del mensaje
-		 */
-		public final function sendChatMessage(msg:String) : void {
-			printChatLine("Yo", msg);
-			
-			var params:Object 		= new Object();
-			params["message"] 		= msg;
-			params["ActorNick"] 	= me.ActorNick;
-			
-			Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_CHAT, params);
-		}
-		
 		/**
 		 * Genera la lista de participantes de la Room, a partir de las PlayerProperties
 		 * 
@@ -561,5 +535,43 @@ package
 			ActorProperties["FacebookID"]   = me.ActorFaceBookID;
 			myActorProperties = ActorProperties;
 		}
-	}
+		
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//                                    Métodos de interaccion con la Vista	     							//
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		/**
+		 * Envía un mensaje de chat a la sala para que todos los clientes lo lean
+		 * 
+		 * @param msg Texto del mensaje
+		 */
+		public final function sendChatMessage(msg:String) : void {
+			printChatLine("Yo", msg);
+			
+			var params:Object 		= new Object();
+			params["message"] 		= msg;
+			params["ActorNick"] 	= me.ActorNick;
+			
+			Photon.getInstance().raiseCustomEventWithCode(Constants.EV_CUSTOM_CHAT, params);
+		}
+		
+		[Bindalbe]
+		public final function SendMySelectedAnswer(opt:int, sol:Boolean) : void
+		{
+			var pEventData:Object = new Object();			
+			pEventData[GameConstants.SELECTED_ANSWER] 	= opt; 
+			pEventData[GameConstants.SOLUTION] 			= sol;
+			
+			Photon.getInstance().raiseCustomEventWithCode(Constants.RES_CUSTOM_ACTOR_ANSWER, pEventData);
+		}
+		
+		/*public function SetCurrentAnswers(Answers:Array):void
+		{
+			Answ1 = Answers[0];
+			Answ2 = Answers[1];
+			Answ3 = Answers[2];
+			Answ4 = Answers[3];
+		}*/
+	}	
 }

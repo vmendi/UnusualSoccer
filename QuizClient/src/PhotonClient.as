@@ -23,6 +23,7 @@ package
 	import de.exitgames.photon_as3.response.JoinResponse;
 	import de.exitgames.photon_as3.response.LeaveResponse;
 	
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
@@ -46,8 +47,8 @@ package
 	 * "DemoChat" once they are connected. 
 	 * all chat messages are broadcasted to this room.
 	 */
-	public class PhotonClient {
-		
+	public class PhotonClient
+	{		
 		private static var _instance : PhotonClient;
 		[Bindable]
 		public var me:Actor = new Actor();

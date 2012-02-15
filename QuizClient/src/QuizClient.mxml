@@ -10,12 +10,17 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import ServerConnection.Constants;
+			import ServerConnection.Photon;
+			import ServerConnection.events.NewQuestionEvent;
+			
 			import Utils.MyFunctions;
 			
 			import mx.binding.utils.BindingUtils;
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.core.FlexGlobals;
+			import mx.utils.ColorUtil;
 			
 			
 			[Bindable]
@@ -42,6 +47,9 @@
 							BindingUtils.bindSetter(OnInvalidNick,mConnection,"IsValidNick");
 							break;
 						case "Playing":
+							if( mConnection.CurrentQuestion != null)
+								Photon.getInstance().addEventListener(NewQuestionEvent.TYPE, onNewQuestionArrives);	
+							//BindingUtils.bindSetter(OnResetAnswers,mConnection,"IsQuestionAnswered");
 							break;
 					}					
 				}
@@ -78,7 +86,7 @@
 				mConnection = new QuizModel();
 				mConnection.FacebookID = faceBookId;
 				mConnection.UserName = name;
-				mConnection.UserSurName = surName;				
+				mConnection.UserSurName = surName;
 			}
 			
 			/**
@@ -87,6 +95,13 @@
 			public function ConnectToLobby():void
 			{
 				//mConnection.ReturnToLobby();
+			}
+			
+			
+			public function onNewQuestionArrives(evento:Event):void
+			{
+				rectAcierto.visible = false;
+				rectFallo.visible   = false;
 			}
 			
 			//================================================================================================||
@@ -147,7 +162,23 @@
 				mConnection.sendChatMessage(txtMessage.text);
 				txtMessage.text = "";
 				btnSendMessage.enabled = false;
-			}    			
+			}    	
+			
+			public function ChooseThisAnswers(opt:int):void
+			{
+				var resp:Boolean;
+				if(opt == mConnection.CurrentQuestion.Solution)
+				{
+					rectAcierto.visible = true;
+					resp = true;
+				}
+				else
+				{
+					rectFallo.visible = true;
+					resp = false;
+				}
+				mConnection.SendMySelectedAnswer(opt, resp);
+			}
 			
 			//================================================================================================||
 			///////////////////////////////   Código antiguo STATE = "TRASH"    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\||
@@ -339,6 +370,16 @@
 				<s:SolidColor color="#005544"/>
 			</s:fill>
 		</s:Rect>
+		<s:Rect id="rectAcierto" x="0" y="0" width="100%" height="100%" visible="false">
+			<s:fill>
+				<s:SolidColor color="#00FF00"/>
+			</s:fill>
+		</s:Rect>
+		<s:Rect id="rectFallo" x="0" y="0" width="100%" height="100%"  visible="false">
+			<s:fill>
+				<s:SolidColor color="#FF0000"/>
+			</s:fill>
+		</s:Rect>
 		
 		<s:Group id="Question" includeIn="Playing" left="10" right="10" top="110" bottom="198" >
 			<s:Rect width="100%" height="100%">
@@ -347,7 +388,7 @@
 				</s:fill>
 			</s:Rect>
 			<s:Label id="lblQuestion" width="100%" height="100%" color="#FFFFFF" fontFamily="Georgia"
-					 fontSize="36" horizontalCenter="0" textAlign="center" verticalAlign="middle" verticalCenter="0"/>
+					 fontSize="36" horizontalCenter="0" textAlign="center" verticalAlign="middle" verticalCenter="0" text="{mConnection.CurrentQuestion.Question}"/>
 		</s:Group>
 		
 		<s:Group id="Answers" includeIn="Playing" left="10" right="10" bottom="10" height="150">
@@ -356,10 +397,14 @@
 					<s:SolidColor color="#003c32" alpha="0.5"/>
 				</s:fill>
 			</s:Rect>
-			<s:Button id="btnAnswer1" left="10" top="25" width="300" height="50" label="Answer1"/>
-			<s:Button id="btnAnswer3" left="10" bottom="25" width="300" height="50" label="Answer3"/>
-			<s:Button id="btnAnswer2" right="10" top="25" width="300" height="50" label="Answer2"/>
-			<s:Button id="btnAnswer4" right="10" bottom="25" width="300" height="50" label="Answer4"/>
+<!--		    <s:Button id="btnAnswer1" left ="10" top    ="25" width="300" height="50" label="{mConnection.Answ1}" click="ChooseThisAnswers(1)"/>
+			<s:Button id="btnAnswer3" left ="10" bottom ="25" width="300" height="50" label="{mConnection.Answ2}" click="ChooseThisAnswers(2)"/>
+			<s:Button id="btnAnswer2" right="10" top    ="25" width="300" height="50" label="{mConnection.Answ3}" click="ChooseThisAnswers(3)"/>
+			<s:Button id="btnAnswer4" right="10" bottom ="25" width="300" height="50" label="{mConnection.Answ4}" click="ChooseThisAnswers(4)"/>-->
+			<s:Button id="btnAnswer1" left ="10" top    ="25" width="300" height="50" label="{mConnection.CurrentQuestion.Answers.getItemAt(0)}" click="ChooseThisAnswers(1)"/>
+			<s:Button id="btnAnswer3" left ="10" bottom ="25" width="300" height="50" label="{mConnection.CurrentQuestion.Answers.getItemAt(1)}" click="ChooseThisAnswers(2)"/>
+			<s:Button id="btnAnswer2" right="10" top    ="25" width="300" height="50" label="{mConnection.CurrentQuestion.Answers.getItemAt(2)}" click="ChooseThisAnswers(3)"/>
+			<s:Button id="btnAnswer4" right="10" bottom ="25" width="300" height="50" label="{mConnection.CurrentQuestion.Answers.getItemAt(3)}" click="ChooseThisAnswers(4)"/>
 		</s:Group>
 		
 		

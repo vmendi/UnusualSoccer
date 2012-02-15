@@ -6,6 +6,7 @@ package ServerConnection {
 	import ServerConnection.Responses.SingUpResponse;
 	import ServerConnection.events.ChatEvent;
 	import ServerConnection.events.ExtendedJoinEvent;
+	import ServerConnection.events.NewQuestionEvent;
 	import ServerConnection.events.RoomsListEvent;
 	
 	import Utils.*;
@@ -94,6 +95,11 @@ package ServerConnection {
 					dispatchEvent(ev_join_resp_);
 					break;
 				case CoreConstants.EV_LEAVE:
+					break;
+				
+				case Constants.EV_CUSTOM_NEWQUESTION:
+					var ev_newQuestion : NewQuestionEvent = NewQuestionEvent.create(eventCode, pData);
+					dispatchEvent(ev_newQuestion);
 					break;
 				default:
 					trace("------Evento de QUIZSERVER no parseada con el \n -------->codigo [" + eventCode + "] \n -------->valor [" + MyFunctions.ObjectToString (pData[CoreKeys.CODE]) + "]");
