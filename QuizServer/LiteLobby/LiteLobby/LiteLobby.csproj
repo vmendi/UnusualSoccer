@@ -103,6 +103,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>LobbySettings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Messages\GameRoomMessageCode.cs" />
     <Compile Include="Messages\LobbyMessageCode.cs" />
     <Compile Include="Operations\LiteLobbyEventCode.cs" />
     <Compile Include="Operations\LobbyParameterKeys.cs" />

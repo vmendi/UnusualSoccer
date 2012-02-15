@@ -44,7 +44,16 @@ namespace LiteLobby
         /// </summary>
         private static readonly ILogger log = LogManager.GetCurrentClassLogger();
 
+        private User mUser;
 
+        public User User
+        {
+            get { return mUser; }
+            set 
+            {
+               mUser = UsersQuerys.UpdateUserScore(value);           
+            }
+        }
         private string mLobbyName;
 
         #endregion
@@ -189,32 +198,33 @@ namespace LiteLobby
                     // Queremos logearnos en la applicación, con lo que hay que comprobar si existe el usuario en la BBDD
                     long FacebookID = long.Parse(((Hashtable)data)[((byte)LobbyParameterKeys.FacebookID).ToString()].ToString());//data["100"].ToString());
 
-                    var queryResult = UsersQuerys.GetActorDataByFacebookID(FacebookID);
+                    var tmpUser = UsersQuerys.GetActorDataByFacebookID(FacebookID);
                     if (log.IsDebugEnabled)
                     {
-                        log.DebugFormat("Se ha consultado la BBDD, el resultado es:{0}", queryResult != null ? 
-                                String.Format("Login_Event: Se ha logeado un usuario: FaceBookID:{0}, Nick{1},logueado por ultima vez el {2}", queryResult.FacebookID, queryResult.Nick, queryResult.LastLoginDate) :
+                        log.DebugFormat("Se ha consultado la BBDD, el resultado es:{0}", tmpUser != null ?
+                                String.Format("Login_Event: Se ha logeado un usuario: FaceBookID:{0}, Nick{1},logueado por ultima vez el {2}", tmpUser.FacebookID, tmpUser.Nick, tmpUser.LastLoginDate) :
                                 String.Format("Login_Event: El jugador con FacebookID [{0}], no existe en la BBDD", FacebookID));
                     }
                     //Si "Existe", devolvermos un "OnLoginResponse" con los datos del jugador que los pide
-                    if (queryResult != null)
+                    if (tmpUser != null)
                     {
                         //Actualizamos la fecha de ultimo login del usuario
-                        UsersQuerys.UpdateUserLastLogin(((User)queryResult).UserID);
+                        UsersQuerys.UpdateUserLastLogin(((User)tmpUser).UserID);
                         //Preparamos los datos que devolveremos al cliente
                         Dictionary<byte, Object> ActorData = new Dictionary<byte, object>();
-                        ActorData.Add((byte)LobbyParameterKeys.FacebookID,      ((User)queryResult).FacebookID);
-                        ActorData.Add((byte)LobbyParameterKeys.Name,            ((User)queryResult).Name);
-                        ActorData.Add((byte)LobbyParameterKeys.Surname,         ((User)queryResult).Surname);
-                        ActorData.Add((byte)LobbyParameterKeys.UserID,          ((User)queryResult).UserID);
-                        ActorData.Add((byte)LobbyParameterKeys.CreationData,    ((User)queryResult).CreationDate);
-                        ActorData.Add((byte)LobbyParameterKeys.LastLoginDate,   ((User)queryResult).LastLoginDate);
-                        ActorData.Add((byte)LobbyParameterKeys.AnswersCorrect,  ((User)queryResult).AnsweredRight);
-                        ActorData.Add((byte)LobbyParameterKeys.AnswersFailed,   ((User)queryResult).AnsweredFailed);
-                        ActorData.Add((byte)LobbyParameterKeys.Nick,            ((User)queryResult).Nick);
-                        ActorData.Add((byte)LobbyParameterKeys.Score,           ((User)queryResult).Score);
-                        ActorData.Add((byte)LobbyParameterKeys.Photo,           ((User)queryResult).Photo);
-                        
+                        ActorData.Add((byte)LobbyParameterKeys.FacebookID, ((User)tmpUser).FacebookID);
+                        ActorData.Add((byte)LobbyParameterKeys.Name, ((User)tmpUser).Name);
+                        ActorData.Add((byte)LobbyParameterKeys.Surname, ((User)tmpUser).Surname);
+                        ActorData.Add((byte)LobbyParameterKeys.UserID, ((User)tmpUser).UserID);
+                        ActorData.Add((byte)LobbyParameterKeys.CreationData, ((User)tmpUser).CreationDate);
+                        ActorData.Add((byte)LobbyParameterKeys.LastLoginDate, ((User)tmpUser).LastLoginDate);
+                        ActorData.Add((byte)LobbyParameterKeys.AnswersCorrect, ((User)tmpUser).AnsweredRight);
+                        ActorData.Add((byte)LobbyParameterKeys.AnswersFailed, ((User)tmpUser).AnsweredFailed);
+                        ActorData.Add((byte)LobbyParameterKeys.Nick, ((User)tmpUser).Nick);
+                        ActorData.Add((byte)LobbyParameterKeys.Score, ((User)tmpUser).Score);
+                        ActorData.Add((byte)LobbyParameterKeys.Photo,           ((User)tmpUser).Photo);
+
+                        this.User = tmpUser;
                         //creamos la respuesta que enviaremos al usuario
                         SendOperationResponse((byte)LiteLobbyResponseCode.ActorPersonalData, ActorData, 0, "Transferidos sus datos de usuario...", sendParameters);
                     }
@@ -262,6 +272,15 @@ namespace LiteLobby
                         }
                     }
                     return;
+                }
+
+                case (byte)LiteLobbyEventCode.ActorAnswer:
+                {
+                    // Comprobamos la respuesta que nos manda el cliente
+                   // int ChoosedOption = data[(byte)LobbyParameterKeys.ChoosedActorAnswer];
+                    //int ChoosedOption = data[((byte)LobbyParameterKeys.ChoosedActorAnswer).ToString()];
+                     
+                    break;
                 }
             }
 
@@ -357,7 +376,7 @@ namespace LiteLobby
         {
             foreach (var key in _roomList.Keys)
             {
-                if (int.Parse((string)_roomList[key.ToString()]) < GameFeatures.MAX_USERS)
+                if (int.Parse((string)_roomList[key.ToString()]) < QuizGame.MAX_USERS)
                     return key.ToString();
             }
             return "GameRoom" + _roomList.Count.ToString();

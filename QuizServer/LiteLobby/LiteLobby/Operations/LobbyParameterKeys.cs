@@ -81,6 +81,36 @@ namespace LiteLobby.Operations
         /// <summary>
         ///   Player Photo (path)
         /// </summary>
-        Photo           = 109
+        Photo           = 109,
+
+        /// <summary>
+        /// Tipo de la pregunta
+        /// </summary>
+        QuestionType    = 110,
+
+        /// <summary>
+        /// Enunciado de la pregunta
+        /// </summary>
+        Question        = 111,
+
+        /// <summary>
+        /// Opciones de respuesta
+        /// </summary>
+        AnswerPosibilities = 112,
+
+        /// <summary>
+        /// Respuesta correcta
+        /// </summary>
+        Solution        = 113,
+
+        /// <summary>
+        /// parametro donde se almacena la respuesta elegida por el cliente
+        /// </summary>
+        ChoosedActorAnswer = 114,
+
+        /// <summary>
+        /// parametro donde se almacena la Solución (acierto/fallo) del cliente
+        /// </summary>
+        ChoosedActorSolution = 115
     }
 }

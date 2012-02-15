@@ -17,7 +17,7 @@ namespace LiteLobby.Operations
         /// <summary>
         /// Event code for the game list event.
         /// </summary>
-        GameList = 252, 
+        GameList = 252,
 
         /// <summary>
         /// event code for the update game list event.
@@ -37,7 +37,7 @@ namespace LiteLobby.Operations
         /// Event code for Join a Game into a Lobby
         /// </summary>
         JoinGameFromLobby = 2,
-        
+
         /// <summary>
         /// Event code for add a user to the BBDD (SingUp)
         /// </summary>
@@ -51,6 +51,21 @@ namespace LiteLobby.Operations
         /// <summary>
         /// Event code for Join a Game into a Lobby
         /// </summary>
-        JoinLobby = 5
+        JoinLobby = 5,
+
+        /// <summary>
+        /// Codigo de Evento para transmitir las puntuaciones a los ganadores de la ronda
+        /// </summary>
+        NewQuestion = 6,
+        
+        /// <summary>
+        /// Codigo de Evento para transmitir las puntuaciones a los ganadores de la ronda
+        /// </summary>
+        RoundPoints = 7,
+
+        /// <summary>
+        /// Codigo de Evento para transmitir la solución del cliente al servidor
+        /// </summary>
+        ActorAnswer= 8
     }
 }

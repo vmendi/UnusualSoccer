@@ -76,7 +76,7 @@ namespace LiteLobby.DataContext.Querys
         /// </summary>
         /// <param name="UsedQuestions">Lista que contiene los ID's de las preguntas ya formuladas</param>
         /// <returns>la nueva pregunta</returns>
-        internal static Question GetNewAnswer(List<int> UsedQuestions)
+        internal static Question GetNewQuestion(List<int> UsedQuestions)
         {
             using (var quizDC = new QuizLINQDataContext())
             {
@@ -84,9 +84,22 @@ namespace LiteLobby.DataContext.Querys
                                   where !UsedQuestions.Contains(q.QuestionID)
                                   select q).First();
                 return result;
-            }
+            }            
+        }
 
-            
+        internal static User UpdateUserScore(User value)
+        {
+            using (var quizDC = new QuizLINQDataContext())
+            {
+
+                User result = (from q in quizDC.Users
+                               where q.UserID == value.UserID
+                               select q).First();
+
+                result.Score = value.Score; //Actualizamos su fecha de ultimo login
+                quizDC.SubmitChanges();
+                return result;
+            }
         }
     }
 }

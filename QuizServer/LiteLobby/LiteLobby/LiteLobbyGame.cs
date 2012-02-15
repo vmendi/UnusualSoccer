@@ -18,8 +18,12 @@ namespace LiteLobby
 
     using LiteLobby.Caching;
     using LiteLobby.Messages;
+    using LiteLobby.Operations;
 
     using Photon.SocketServer;
+    using System.Collections.Generic;
+    using Lite.Events;
+    using System.Collections;
 
     #endregion
 
@@ -56,6 +60,8 @@ namespace LiteLobby
             // get the reference to the lobby
             this.lobbyReference = LiteLobbyRoomCache.Instance.GetRoomReference(lobbyName);
             this.game = new QuizGame();
+            var msg = new RoomMessage((byte)GameRoomMessageCode.NextQuestion);
+            ScheduleMessage(msg, 1000);
         }
 
         #endregion
@@ -109,7 +115,7 @@ namespace LiteLobby
         /// <returns>
         ///   The newly created (joined) <see cref = "Actor" />.
         /// </returns>
-        protected override Actor HandleJoinOperation(LitePeer peer, JoinRequest joinRequest, SendParameters sendParamters)
+        protected override Actor HandleJoinOperation(LitePeer peer, Lite.Operations.JoinRequest joinRequest, SendParameters sendParamters)
         {
             Actor actor = base.HandleJoinOperation(peer, joinRequest, sendParamters);
             if (actor != null)
@@ -136,6 +142,57 @@ namespace LiteLobby
             this.UpdateLobby();
             return actorNr;
         }
+
+        protected override void ProcessMessage(IMessage message)
+        {
+            base.ProcessMessage(message);
+            //Procesamos los mensajes "propios"
+            switch ((GameRoomMessageCode)message.Action)
+            {
+                case GameRoomMessageCode.NextQuestion:
+                    if (game.RoundsCount > 0)
+                    {
+                        this.game.SetState(GameStates.SOLVING_SCORES);
+                        SetScores(this.game.WinnersActors);
+                        this.game.SetState(GameStates.CHOOSING_NEXT_QUESTION);
+                        PublishNextQuestionEvent();
+                    }
+                    else
+                    {
+                        PublishNextQuestionEvent();
+                    }
+                    break;
+            }
+        }
+
+        private void PublishNextQuestionEvent()
+        {
+            Hashtable parameters = new Hashtable();
+
+            parameters.Add((LobbyParameterKeys)LobbyParameterKeys.QuestionType, game.CurrentQuestionType);
+            parameters.Add((LobbyParameterKeys)LobbyParameterKeys.Question, game.CurrentQuestion);
+            parameters.Add((LobbyParameterKeys)LobbyParameterKeys.AnswerPosibilities, game.CurrentAnswersOptions);
+            parameters.Add((LobbyParameterKeys)LobbyParameterKeys.Solution, game.CurrentSolution);
+
+            PublishEvent(new CustomEvent(0, (byte)LiteLobbyEventCode.NewQuestion, parameters), Actors, new SendParameters { Unreliable = true });
+
+            var msg = new RoomMessage((byte)GameRoomMessageCode.NextQuestion);
+            ScheduleMessage(msg, 5000);
+        }
+
+        private void SetScores(Dictionary<int,int> winners)
+        {
+            int gameScore = 10;
+           //recorre la lista de Actores de principio a fin y les envia la puntuación.
+            foreach (Actor act in Actors)
+            { 
+                //TODO sumar puntos al usuario del peer
+                var a = (act.Peer as LiteLobbyPeer).User;
+                a.Score += gameScore;
+                gameScore--;
+            }
+        }
+
 
         /// <summary>
         ///   Updates the lobby if necessary.

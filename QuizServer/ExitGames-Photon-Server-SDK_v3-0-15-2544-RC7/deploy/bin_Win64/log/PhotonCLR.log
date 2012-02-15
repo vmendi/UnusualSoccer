@@ -1,1 +1,356 @@
 2012-01-10 11:34:26,647 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-14 15:00:30,111 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-14 15:01:38,059 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-14 15:01:38,078 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-14 15:01:38,081 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-14 15:01:38,091 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-14 15:01:38,098 [ 1] INFO  eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-14 15:01:38,099 [ 1] ERROR eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - ERROR: The trial license is expired. Going to shutdown.
+2012-02-14 15:01:59,655 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-14 15:01:59,674 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-14 15:01:59,677 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-14 15:01:59,685 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-14 15:01:59,692 [ 1] INFO  eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-14 15:01:59,692 [ 1] ERROR eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - ERROR: The trial license is expired. Going to shutdown.
+2012-02-14 15:02:19,665 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-14 15:02:19,684 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-14 15:02:19,705 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-14 15:02:19,714 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-14 15:02:19,721 [ 1] INFO  eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-14 15:02:23,756 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyResolveEvent: System.resources, Version=4.0.0.0, Culture=es-ES, PublicKeyToken=b77a5c561934e089
+2012-02-14 15:02:23,758 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyResolveEvent: System.resources, Version=4.0.0.0, Culture=es-ES, PublicKeyToken=b77a5c561934e089
+2012-02-14 15:02:23,966 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyLoadEvent: System.resources, Version=4.0.0.0, Culture=es, PublicKeyToken=b77a5c561934e089
+2012-02-14 15:02:23,982 [ 7] ERROR eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - Did not reach license monitor #0.
+2012-02-14 15:02:23,987 [ 7] ERROR eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - On startup, license monitor must be available / reachable. Going to Shutdown.
+2012-02-14 15:02:23,996 [ 1] INFO  eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-14 15:02:24,008 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Lite , Lite
+2012-02-14 15:02:24,013 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:02:24,015 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Lite;Lite\bin;bin_Win64;Shared
+2012-02-14 15:02:24,016 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Lite\bin\Lite.dll.config
+2012-02-14 15:02:29,006 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteLobby , LiteLobby
+2012-02-14 15:02:29,008 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:02:29,009 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteLobby;LiteLobby\bin;bin_Win64;Shared
+2012-02-14 15:02:29,009 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.dll.config
+2012-02-14 15:02:34,072 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain MmoDemo , Photon.MmoDemo.Server
+2012-02-14 15:02:34,074 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:02:34,075 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = MmoDemo;MmoDemo\bin;bin_Win64;Shared
+2012-02-14 15:02:34,076 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\MmoDemo\bin\Photon.MmoDemo.Server.dll.config
+2012-02-14 15:02:39,694 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteWebSockets , Lite
+2012-02-14 15:02:39,695 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:02:39,695 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteWebSockets;LiteWebSockets\bin;bin_Win64;Shared
+2012-02-14 15:02:39,696 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets\bin\Lite.dll.config
+2012-02-14 15:02:44,621 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain CounterPublisher , CounterPublisher
+2012-02-14 15:02:44,622 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:02:44,622 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = CounterPublisher;CounterPublisher\bin;bin_Win64;Shared
+2012-02-14 15:02:44,623 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\CounterPublisher\bin\CounterPublisher.dll.config
+2012-02-14 15:02:49,294 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Policy , Policy.Application
+2012-02-14 15:02:49,295 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:02:49,296 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Policy;Policy\bin;bin_Win64;Shared
+2012-02-14 15:02:49,297 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Policy\bin\Policy.Application.dll.config
+2012-02-14 15:03:35,563 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-14 15:03:35,587 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-14 15:03:35,590 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-14 15:03:36,275 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-14 15:03:36,286 [ 1] INFO  eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-14 15:03:40,233 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyResolveEvent: System.resources, Version=4.0.0.0, Culture=es-ES, PublicKeyToken=b77a5c561934e089
+2012-02-14 15:03:40,234 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyResolveEvent: System.resources, Version=4.0.0.0, Culture=es-ES, PublicKeyToken=b77a5c561934e089
+2012-02-14 15:03:40,238 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyLoadEvent: System.resources, Version=4.0.0.0, Culture=es, PublicKeyToken=b77a5c561934e089
+2012-02-14 15:03:40,245 [ 7] ERROR eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - Did not reach license monitor #0.
+2012-02-14 15:03:40,246 [ 7] ERROR eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - On startup, license monitor must be available / reachable. Going to Shutdown.
+2012-02-14 15:03:40,247 [ 1] INFO  eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-14 15:03:40,255 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Lite , Lite
+2012-02-14 15:03:40,258 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:03:40,258 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Lite;Lite\bin;bin_Win64;Shared
+2012-02-14 15:03:40,258 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Lite\bin\Lite.dll.config
+2012-02-14 15:03:44,772 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteLobby , LiteLobby
+2012-02-14 15:03:44,810 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:03:44,811 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteLobby;LiteLobby\bin;bin_Win64;Shared
+2012-02-14 15:03:44,812 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.dll.config
+2012-02-14 15:03:48,858 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain MmoDemo , Photon.MmoDemo.Server
+2012-02-14 15:03:48,859 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:03:48,859 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = MmoDemo;MmoDemo\bin;bin_Win64;Shared
+2012-02-14 15:03:48,860 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\MmoDemo\bin\Photon.MmoDemo.Server.dll.config
+2012-02-14 15:03:52,915 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteWebSockets , Lite
+2012-02-14 15:03:52,916 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:03:52,916 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteWebSockets;LiteWebSockets\bin;bin_Win64;Shared
+2012-02-14 15:03:52,917 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets\bin\Lite.dll.config
+2012-02-14 15:03:56,955 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain CounterPublisher , CounterPublisher
+2012-02-14 15:03:56,956 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:03:56,956 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = CounterPublisher;CounterPublisher\bin;bin_Win64;Shared
+2012-02-14 15:03:56,957 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\CounterPublisher\bin\CounterPublisher.dll.config
+2012-02-14 15:04:01,038 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Policy , Policy.Application
+2012-02-14 15:04:01,039 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:04:01,039 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Policy;Policy\bin;bin_Win64;Shared
+2012-02-14 15:04:01,039 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Policy\bin\Policy.Application.dll.config
+2012-02-14 15:06:08,997 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-14 15:06:09,017 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-14 15:06:09,019 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-14 15:06:09,027 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-14 15:06:09,034 [ 1] INFO  eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-14 15:06:42,460 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyResolveEvent: System.resources, Version=4.0.0.0, Culture=es-ES, PublicKeyToken=b77a5c561934e089
+2012-02-14 15:06:42,461 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyResolveEvent: System.resources, Version=4.0.0.0, Culture=es-ES, PublicKeyToken=b77a5c561934e089
+2012-02-14 15:06:42,466 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - AssemblyLoadEvent: System.resources, Version=4.0.0.0, Culture=es, PublicKeyToken=b77a5c561934e089
+2012-02-14 15:06:42,472 [ 7] ERROR eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - Did not reach license monitor #0.
+2012-02-14 15:06:42,474 [ 7] ERROR eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - On startup, license monitor must be available / reachable. Going to Shutdown.
+2012-02-14 15:06:42,478 [ 1] INFO  eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-14 15:06:42,484 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Lite , Lite
+2012-02-14 15:06:42,530 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:06:42,531 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Lite;Lite\bin;bin_Win64;Shared
+2012-02-14 15:06:42,531 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Lite\bin\Lite.dll.config
+2012-02-14 15:06:49,247 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteLobby , LiteLobby
+2012-02-14 15:06:49,247 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:06:49,247 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteLobby;LiteLobby\bin;bin_Win64;Shared
+2012-02-14 15:06:49,248 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.dll.config
+2012-02-14 15:06:53,955 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain MmoDemo , Photon.MmoDemo.Server
+2012-02-14 15:06:53,956 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:06:53,956 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = MmoDemo;MmoDemo\bin;bin_Win64;Shared
+2012-02-14 15:06:53,957 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\MmoDemo\bin\Photon.MmoDemo.Server.dll.config
+2012-02-14 15:06:58,737 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteWebSockets , Lite
+2012-02-14 15:06:58,737 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:06:58,738 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteWebSockets;LiteWebSockets\bin;bin_Win64;Shared
+2012-02-14 15:06:58,796 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets\bin\Lite.dll.config
+2012-02-14 15:07:02,969 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain CounterPublisher , CounterPublisher
+2012-02-14 15:07:02,970 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:07:02,971 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = CounterPublisher;CounterPublisher\bin;bin_Win64;Shared
+2012-02-14 15:07:02,971 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\CounterPublisher\bin\CounterPublisher.dll.config
+2012-02-14 15:07:07,220 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Policy , Policy.Application
+2012-02-14 15:07:07,221 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-14 15:07:07,221 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Policy;Policy\bin;bin_Win64;Shared
+2012-02-14 15:07:07,221 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Policy\bin\Policy.Application.dll.config
+2012-02-15 00:42:20,484 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-15 00:42:38,357 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-15 00:42:38,376 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-15 00:42:38,378 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-15 00:42:38,405 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-15 00:42:38,412 [ 1] INFO  eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-15 00:42:40,340 [ 1] INFO  eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-15 00:42:40,354 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Lite , Lite
+2012-02-15 00:42:40,368 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 00:42:40,369 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Lite;Lite\bin;bin_Win64;Shared
+2012-02-15 00:42:40,370 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Lite\bin\Lite.dll.config
+2012-02-15 00:42:48,620 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteLobby , LiteLobby
+2012-02-15 00:42:48,620 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 00:42:48,621 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteLobby;LiteLobby\bin;bin_Win64;Shared
+2012-02-15 00:42:48,621 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.dll.config
+2012-02-15 00:42:55,743 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain MmoDemo , Photon.MmoDemo.Server
+2012-02-15 00:42:55,745 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 00:42:55,746 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = MmoDemo;MmoDemo\bin;bin_Win64;Shared
+2012-02-15 00:42:55,747 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\MmoDemo\bin\Photon.MmoDemo.Server.dll.config
+2012-02-15 00:43:03,344 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteWebSockets , Lite
+2012-02-15 00:43:03,345 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 00:43:03,345 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteWebSockets;LiteWebSockets\bin;bin_Win64;Shared
+2012-02-15 00:43:03,346 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets\bin\Lite.dll.config
+2012-02-15 00:43:08,017 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain CounterPublisher , CounterPublisher
+2012-02-15 00:43:08,017 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 00:43:08,018 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = CounterPublisher;CounterPublisher\bin;bin_Win64;Shared
+2012-02-15 00:43:08,018 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\CounterPublisher\bin\CounterPublisher.dll.config
+2012-02-15 00:43:08,165 [11] DEBUG eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - Reached license monitor.
+2012-02-15 00:43:13,035 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Policy , Policy.Application
+2012-02-15 00:43:13,037 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 00:43:13,038 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Policy;Policy\bin;bin_Win64;Shared
+2012-02-15 00:43:13,039 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Policy\bin\Policy.Application.dll.config
+2012-02-15 00:44:49,124 [16] ERROR PhotonHostRuntime.PhotonDomainManager - System.InvalidOperationException: La secuencia no contiene elementos
+   en System.Data.Linq.SqlClient.SqlProvider.Execute(Expression query, QueryInfo queryInfo, IObjectReaderFactory factory, Object[] parentArgs, Object[] userArgs, ICompiledSubQuery[] subQueries, Object lastResult)
+   en System.Data.Linq.SqlClient.SqlProvider.ExecuteAll(Expression query, QueryInfo[] queryInfos, IObjectReaderFactory factory, Object[] userArguments, ICompiledSubQuery[] subQueries)
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.First[TSource](IQueryable`1 source)
+   en LiteLobby.DataContext.Querys.UsersQuerys.GetNewQuestion(List`1 UsedQuestions) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\DataContext\Querys\UsersQuerys.cs:línea 83
+   en LiteLobby.QuizGame.GenerateNewQuestion() en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 225
+   en LiteLobby.QuizGame.SetState(GameStates newState) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 194
+   en LiteLobby.LiteLobbyGame.ProcessMessage(IMessage message) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\LiteLobbyGame.cs:línea 157
+   en Lite.Room.<>c__DisplayClass7.<ScheduleMessage>b__6() en C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\Lite\Lite\Room.cs:línea 182
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-15 00:45:41,444 [23] ERROR PhotonHostRuntime.PhotonDomainManager - System.InvalidOperationException: La secuencia no contiene elementos
+   en System.Data.Linq.SqlClient.SqlProvider.Execute(Expression query, QueryInfo queryInfo, IObjectReaderFactory factory, Object[] parentArgs, Object[] userArgs, ICompiledSubQuery[] subQueries, Object lastResult)
+   en System.Data.Linq.SqlClient.SqlProvider.ExecuteAll(Expression query, QueryInfo[] queryInfos, IObjectReaderFactory factory, Object[] userArguments, ICompiledSubQuery[] subQueries)
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.First[TSource](IQueryable`1 source)
+   en LiteLobby.DataContext.Querys.UsersQuerys.GetNewQuestion(List`1 UsedQuestions) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\DataContext\Querys\UsersQuerys.cs:línea 83
+   en LiteLobby.QuizGame.GenerateNewQuestion() en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 225
+   en LiteLobby.QuizGame.SetState(GameStates newState) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 194
+   en LiteLobby.LiteLobbyGame.ProcessMessage(IMessage message) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\LiteLobbyGame.cs:línea 157
+   en Lite.Room.<>c__DisplayClass7.<ScheduleMessage>b__6() en C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\Lite\Lite\Room.cs:línea 182
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-15 02:22:44,851 [11] ERROR PhotonHostRuntime.PhotonDomainManager - System.InvalidOperationException: La secuencia no contiene elementos
+   en System.Data.Linq.SqlClient.SqlProvider.Execute(Expression query, QueryInfo queryInfo, IObjectReaderFactory factory, Object[] parentArgs, Object[] userArgs, ICompiledSubQuery[] subQueries, Object lastResult)
+   en System.Data.Linq.SqlClient.SqlProvider.ExecuteAll(Expression query, QueryInfo[] queryInfos, IObjectReaderFactory factory, Object[] userArguments, ICompiledSubQuery[] subQueries)
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.First[TSource](IQueryable`1 source)
+   en LiteLobby.DataContext.Querys.UsersQuerys.GetNewQuestion(List`1 UsedQuestions) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\DataContext\Querys\UsersQuerys.cs:línea 83
+   en LiteLobby.QuizGame.GenerateNewQuestion() en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 225
+   en LiteLobby.QuizGame.SetState(GameStates newState) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 194
+   en LiteLobby.LiteLobbyGame.ProcessMessage(IMessage message) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\LiteLobbyGame.cs:línea 157
+   en Lite.Room.<>c__DisplayClass7.<ScheduleMessage>b__6() en C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\Lite\Lite\Room.cs:línea 182
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-15 02:25:56,763 [12] ERROR PhotonHostRuntime.PhotonDomainManager - System.InvalidOperationException: La secuencia no contiene elementos
+   en System.Data.Linq.SqlClient.SqlProvider.Execute(Expression query, QueryInfo queryInfo, IObjectReaderFactory factory, Object[] parentArgs, Object[] userArgs, ICompiledSubQuery[] subQueries, Object lastResult)
+   en System.Data.Linq.SqlClient.SqlProvider.ExecuteAll(Expression query, QueryInfo[] queryInfos, IObjectReaderFactory factory, Object[] userArguments, ICompiledSubQuery[] subQueries)
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.First[TSource](IQueryable`1 source)
+   en LiteLobby.DataContext.Querys.UsersQuerys.GetNewQuestion(List`1 UsedQuestions) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\DataContext\Querys\UsersQuerys.cs:línea 83
+   en LiteLobby.QuizGame.GenerateNewQuestion() en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 225
+   en LiteLobby.QuizGame.SetState(GameStates newState) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 194
+   en LiteLobby.LiteLobbyGame.ProcessMessage(IMessage message) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\LiteLobbyGame.cs:línea 157
+   en Lite.Room.<>c__DisplayClass7.<ScheduleMessage>b__6() en C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\Lite\Lite\Room.cs:línea 182
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-15 10:47:44,545 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-15 10:50:41,577 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-15 10:50:41,596 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-15 10:50:41,599 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-15 10:50:41,607 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-15 10:50:41,614 [ 1] INFO  eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-15 10:50:56,894 [ 1] INFO  eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-15 10:50:56,912 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Lite , Lite
+2012-02-15 10:50:56,922 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 10:50:56,922 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Lite;Lite\bin;bin_Win64;Shared
+2012-02-15 10:50:56,923 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Lite\bin\Lite.dll.config
+2012-02-15 10:50:57,425 [ 9] DEBUG eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - Reached license monitor.
+2012-02-15 10:51:03,551 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteLobby , LiteLobby
+2012-02-15 10:51:03,551 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 10:51:03,552 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteLobby;LiteLobby\bin;bin_Win64;Shared
+2012-02-15 10:51:03,552 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.dll.config
+2012-02-15 10:51:08,935 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain MmoDemo , Photon.MmoDemo.Server
+2012-02-15 10:51:08,936 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 10:51:08,937 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = MmoDemo;MmoDemo\bin;bin_Win64;Shared
+2012-02-15 10:51:08,937 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\MmoDemo\bin\Photon.MmoDemo.Server.dll.config
+2012-02-15 10:51:14,802 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteWebSockets , Lite
+2012-02-15 10:51:14,802 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 10:51:14,803 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteWebSockets;LiteWebSockets\bin;bin_Win64;Shared
+2012-02-15 10:51:14,803 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets\bin\Lite.dll.config
+2012-02-15 10:51:19,476 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain CounterPublisher , CounterPublisher
+2012-02-15 10:51:19,477 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 10:51:19,477 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = CounterPublisher;CounterPublisher\bin;bin_Win64;Shared
+2012-02-15 10:51:19,478 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\CounterPublisher\bin\CounterPublisher.dll.config
+2012-02-15 10:51:25,225 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Policy , Policy.Application
+2012-02-15 10:51:25,225 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 10:51:25,226 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Policy;Policy\bin;bin_Win64;Shared
+2012-02-15 10:51:25,226 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Policy\bin\Policy.Application.dll.config
+2012-02-15 10:52:40,601 [16] ERROR PhotonHostRuntime.PhotonDomainManager - System.InvalidOperationException: La secuencia no contiene elementos
+   en System.Data.Linq.SqlClient.SqlProvider.Execute(Expression query, QueryInfo queryInfo, IObjectReaderFactory factory, Object[] parentArgs, Object[] userArgs, ICompiledSubQuery[] subQueries, Object lastResult)
+   en System.Data.Linq.SqlClient.SqlProvider.ExecuteAll(Expression query, QueryInfo[] queryInfos, IObjectReaderFactory factory, Object[] userArguments, ICompiledSubQuery[] subQueries)
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.First[TSource](IQueryable`1 source)
+   en LiteLobby.DataContext.Querys.UsersQuerys.GetNewQuestion(List`1 UsedQuestions) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\DataContext\Querys\UsersQuerys.cs:línea 83
+   en LiteLobby.QuizGame.GenerateNewQuestion() en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 225
+   en LiteLobby.QuizGame.SetState(GameStates newState) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 194
+   en LiteLobby.LiteLobbyGame.ProcessMessage(IMessage message) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\LiteLobbyGame.cs:línea 157
+   en Lite.Room.<>c__DisplayClass7.<ScheduleMessage>b__6() en C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\Lite\Lite\Room.cs:línea 182
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-15 11:12:25,601 [13] ERROR PhotonHostRuntime.PhotonDomainManager - System.InvalidOperationException: La secuencia no contiene elementos
+   en System.Data.Linq.SqlClient.SqlProvider.Execute(Expression query, QueryInfo queryInfo, IObjectReaderFactory factory, Object[] parentArgs, Object[] userArgs, ICompiledSubQuery[] subQueries, Object lastResult)
+   en System.Data.Linq.SqlClient.SqlProvider.ExecuteAll(Expression query, QueryInfo[] queryInfos, IObjectReaderFactory factory, Object[] userArguments, ICompiledSubQuery[] subQueries)
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.First[TSource](IQueryable`1 source)
+   en LiteLobby.DataContext.Querys.UsersQuerys.GetNewQuestion(List`1 UsedQuestions) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\DataContext\Querys\UsersQuerys.cs:línea 83
+   en LiteLobby.QuizGame.GenerateNewQuestion() en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 225
+   en LiteLobby.QuizGame.SetState(GameStates newState) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 194
+   en LiteLobby.LiteLobbyGame.ProcessMessage(IMessage message) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\LiteLobbyGame.cs:línea 157
+   en Lite.Room.<>c__DisplayClass7.<ScheduleMessage>b__6() en C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\Lite\Lite\Room.cs:línea 182
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-15 12:47:43,172 [23] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteLobby , LiteLobby
+2012-02-15 12:47:43,222 [23] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 12:47:43,257 [23] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteLobby;LiteLobby\bin;bin_Win64;Shared
+2012-02-15 12:47:43,333 [23] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.dll.config
+2012-02-15 12:47:56,550 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-15 12:48:33,746 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-15 12:57:08,819 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-15 12:57:08,845 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - PhotonDomainManager created
+2012-02-15 12:57:08,848 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - InitializeNewDomain PhotonSocketServer.exe
+2012-02-15 12:57:08,885 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - AppDomains with unhandled exceptions are usually not unloaded and restarted.
+2012-02-15 12:57:08,894 [ 1] INFO  eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - ### PhotonHostRuntime.Licensing: Getting license information...
+2012-02-15 12:57:10,853 [ 1] INFO  eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - LICENSE: Expiration: 02/03/2012; floating license: yes; max connections: Unlimited; valid IPs: any
+2012-02-15 12:57:10,860 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Lite , Lite
+2012-02-15 12:57:10,880 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 12:57:10,881 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Lite;Lite\bin;bin_Win64;Shared
+2012-02-15 12:57:10,881 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Lite\bin\Lite.dll.config
+2012-02-15 12:57:11,875 [12] DEBUG eE4mVBADTWk9fw5CV1.epQkwZ5tKL7Kd8HXIN - Reached license monitor.
+2012-02-15 12:57:16,137 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteLobby , LiteLobby
+2012-02-15 12:57:16,139 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 12:57:16,139 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteLobby;LiteLobby\bin;bin_Win64;Shared
+2012-02-15 12:57:16,249 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteLobby\bin\LiteLobby.dll.config
+2012-02-15 12:57:20,371 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain MmoDemo , Photon.MmoDemo.Server
+2012-02-15 12:57:20,372 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 12:57:20,372 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = MmoDemo;MmoDemo\bin;bin_Win64;Shared
+2012-02-15 12:57:20,373 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\MmoDemo\bin\Photon.MmoDemo.Server.dll.config
+2012-02-15 12:57:25,801 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain LiteWebSockets , Lite
+2012-02-15 12:57:25,803 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 12:57:25,804 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = LiteWebSockets;LiteWebSockets\bin;bin_Win64;Shared
+2012-02-15 12:57:25,805 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\LiteWebSockets\bin\Lite.dll.config
+2012-02-15 12:57:29,946 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain CounterPublisher , CounterPublisher
+2012-02-15 12:57:29,947 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 12:57:29,948 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = CounterPublisher;CounterPublisher\bin;bin_Win64;Shared
+2012-02-15 12:57:29,950 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\CounterPublisher\bin\CounterPublisher.dll.config
+2012-02-15 12:57:34,541 [ 1] INFO  PhotonHostRuntime.PhotonDomainManager - CreateAppDomain Policy , Policy.Application
+2012-02-15 12:57:34,542 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ApplicationBase = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy
+2012-02-15 12:57:34,543 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: PrivateBinPath = Policy;Policy\bin;bin_Win64;Shared
+2012-02-15 12:57:34,544 [ 1] DEBUG PhotonHostRuntime.PhotonDomainManager - CreateAppDomain: ConfigurationFile = C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\Policy\bin\Policy.Application.dll.config
+2012-02-15 14:55:55,761 [11] ERROR PhotonHostRuntime.PhotonDomainManager - System.InvalidOperationException: La secuencia no contiene elementos
+   en System.Data.Linq.SqlClient.SqlProvider.Execute(Expression query, QueryInfo queryInfo, IObjectReaderFactory factory, Object[] parentArgs, Object[] userArgs, ICompiledSubQuery[] subQueries, Object lastResult)
+   en System.Data.Linq.SqlClient.SqlProvider.ExecuteAll(Expression query, QueryInfo[] queryInfos, IObjectReaderFactory factory, Object[] userArguments, ICompiledSubQuery[] subQueries)
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.First[TSource](IQueryable`1 source)
+   en LiteLobby.DataContext.Querys.UsersQuerys.GetNewQuestion(List`1 UsedQuestions) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\DataContext\Querys\UsersQuerys.cs:línea 83
+   en LiteLobby.QuizGame.GenerateNewQuestion() en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 225
+   en LiteLobby.QuizGame.SetState(GameStates newState) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 194
+   en LiteLobby.LiteLobbyGame.ProcessMessage(IMessage message) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\LiteLobbyGame.cs:línea 157
+   en Lite.Room.<>c__DisplayClass7.<ScheduleMessage>b__6() en C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\Lite\Lite\Room.cs:línea 182
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
+2012-02-15 14:56:43,992 [16] ERROR PhotonHostRuntime.PhotonDomainManager - System.InvalidOperationException: La secuencia no contiene elementos
+   en System.Data.Linq.SqlClient.SqlProvider.Execute(Expression query, QueryInfo queryInfo, IObjectReaderFactory factory, Object[] parentArgs, Object[] userArgs, ICompiledSubQuery[] subQueries, Object lastResult)
+   en System.Data.Linq.SqlClient.SqlProvider.ExecuteAll(Expression query, QueryInfo[] queryInfos, IObjectReaderFactory factory, Object[] userArguments, ICompiledSubQuery[] subQueries)
+   en System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   en System.Data.Linq.DataQuery`1.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   en System.Linq.Queryable.First[TSource](IQueryable`1 source)
+   en LiteLobby.DataContext.Querys.UsersQuerys.GetNewQuestion(List`1 UsedQuestions) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\DataContext\Querys\UsersQuerys.cs:línea 83
+   en LiteLobby.QuizGame.GenerateNewQuestion() en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 225
+   en LiteLobby.QuizGame.SetState(GameStates newState) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\GameFeatures.cs:línea 194
+   en LiteLobby.LiteLobbyGame.ProcessMessage(IMessage message) en C:\Santiago\Repo\QuizServer\LiteLobby\LiteLobby\LiteLobbyGame.cs:línea 157
+   en Lite.Room.<>c__DisplayClass7.<ScheduleMessage>b__6() en C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\src-server\Lite\Lite\Room.cs:línea 182
+   en ExitGames.Concurrency.Core.DefaultExecutor.Execute(List`1 toExecute) en c:\Dev\exitgames-libs\src\Core\Concurrency\Core\DefaultExecutor.cs:línea 21
+   en ExitGames.Concurrency.Fibers.PoolFiber.Flush(Object ) en c:\Dev\exitgames-libs\src\Core\Concurrency\Fibers\PoolFiber.cs:línea 216
+   en System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   en System.Threading.QueueUserWorkItemCallback.System.Threading.IThreadPoolWorkItem.ExecuteWorkItem()
+   en System.Threading.ThreadPoolWorkQueue.Dispatch()
+   en System.Threading._ThreadPoolWaitCallback.PerformWaitCallback()
