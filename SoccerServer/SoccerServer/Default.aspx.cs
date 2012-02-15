@@ -152,13 +152,14 @@ namespace SoccerServer
             // Seleccionamos por ejemplo el Javascript SDK que se cargara.
             pageSource.Replace("${locale}", GetLocaleFromSignedRequest(FacebookWebContext.Current.SignedRequest));
 
-            // Parametros de entrada al SWF. Todo lo que nos viene en la QueryString mas nuestros Global.ClientSettings
+            // Parametros de entrada al SWF. Todo lo que nos viene en la QueryString mas algunos del ServerSettings
             string flashVars = " { "; 
             foreach (string key in Request.QueryString.AllKeys)
                 flashVars += key + ": '" + Request.QueryString[key] + "' ,";
 
             flashVars += "VersionID: '" + serverSettings.VersionID + "' ,";
             flashVars += "RemoteServer: '" + serverSettings.RemoteServer + "' ,";
+            flashVars += "RealtimeServer: '" + serverSettings.RealtimeServer + "' ,";
 
             flashVars += "AppId: '" + theFBApp.AppId + "' ,";
             flashVars += "CanvasPage: '" + theFBApp.CanvasPage + "' ,";

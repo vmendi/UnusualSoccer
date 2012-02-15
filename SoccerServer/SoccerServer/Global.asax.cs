@@ -3,11 +3,9 @@ using System.Linq;
 using SoccerServer.BDDModel;
 using Weborb.Util.Logging;
 using Weborb.Messaging.Server;
-using System.Data.Linq;
 using NetEngine;
 using System.Threading;
 using Facebook;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Configuration;
 
@@ -65,15 +63,19 @@ namespace SoccerServer
             ConfigureDB();
             PrecompiledQueries.PrecompileAll();
 
-            mNetEngine.Start();
+            // Servidor HTTP nebuloso?
+            if (ServerSettings.EnableRealtime)
+            {
+                mNetEngine.Start();
 
-            mStopWatch = new Stopwatch();
-            mSecondsTimer = new System.Timers.Timer(1000);
-            mSecondsTimer.Elapsed += new System.Timers.ElapsedEventHandler(SecondsTimer_Elapsed);
+                mStopWatch = new Stopwatch();
+                mSecondsTimer = new System.Timers.Timer(1000);
+                mSecondsTimer.Elapsed += new System.Timers.ElapsedEventHandler(SecondsTimer_Elapsed);
 
-            mTotalSeconds = 0;
-            mStopWatch.Start();
-            mSecondsTimer.Start();
+                mTotalSeconds = 0;
+                mStopWatch.Start();
+                mSecondsTimer.Start();
+            }
         }
 
         private void ConfigureDB()
@@ -99,8 +101,7 @@ namespace SoccerServer
             {
                 RunHourlyProcess();
                 Run24hProcess();
-                RunWeeklyProcess();
-
+                
                 // Llamamos al tick de los partidos en curso
                 if (mNetEngine.IsRunning)
                     mNetEngine.NetServer.OnSecondsTick(elapsed, mTotalSeconds);
@@ -145,11 +146,6 @@ namespace SoccerServer
 
                 mLast24hProcessedDateTime = now;
             }
-        }
-
-        // TODO
-        private void RunWeeklyProcess()
-        {
         }
 
 		protected void Session_Start(object sender, EventArgs e)

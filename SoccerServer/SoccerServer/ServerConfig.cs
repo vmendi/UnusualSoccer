@@ -49,5 +49,17 @@ namespace SoccerServer
         {
             get { return (string)this["remoteServer"]; }
         }
+
+        [ConfigurationProperty("realtimeServer", IsRequired = false, DefaultValue = "")]
+        public string RealtimeServer
+        {
+            get { return (string)this["realtimeServer"]; }
+        }
+
+        [ConfigurationProperty("enableRealtime", IsRequired = true)]
+        public bool EnableRealtime
+        {
+            get { return (bool)this["enableRealtime"]; }
+        }
     }
 }
