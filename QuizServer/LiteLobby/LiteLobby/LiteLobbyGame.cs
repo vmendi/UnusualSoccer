@@ -40,6 +40,7 @@ namespace LiteLobby
         private readonly RoomReference lobbyReference;
 
         private QuizGame game;
+        public const int TIME_PER_QUESTION = 5500;
 
         #endregion
 
@@ -155,12 +156,9 @@ namespace LiteLobby
                         this.game.SetState(GameStates.SOLVING_SCORES);
                         SetScores(this.game.WinnersActors);
                         this.game.SetState(GameStates.CHOOSING_NEXT_QUESTION);
-                        PublishNextQuestionEvent();
                     }
-                    else
-                    {
-                        PublishNextQuestionEvent();
-                    }
+                   
+                    PublishNextQuestionEvent();
                     break;
             }
         }
@@ -173,11 +171,12 @@ namespace LiteLobby
             parameters.Add((LobbyParameterKeys)LobbyParameterKeys.Question, game.CurrentQuestion);
             parameters.Add((LobbyParameterKeys)LobbyParameterKeys.AnswerPosibilities, game.CurrentAnswersOptions);
             parameters.Add((LobbyParameterKeys)LobbyParameterKeys.Solution, game.CurrentSolution);
+            parameters.Add((LobbyParameterKeys)LobbyParameterKeys.Duration, LiteLobbyGame.TIME_PER_QUESTION/1000);
 
             PublishEvent(new CustomEvent(0, (byte)LiteLobbyEventCode.NewQuestion, parameters), Actors, new SendParameters { Unreliable = true });
 
             var msg = new RoomMessage((byte)GameRoomMessageCode.NextQuestion);
-            ScheduleMessage(msg, 5000);
+            ScheduleMessage(msg, TIME_PER_QUESTION);
         }
 
         private void SetScores(Dictionary<int,int> winners)
