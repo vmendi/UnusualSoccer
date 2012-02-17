@@ -2,7 +2,7 @@
   <Connection Mode="AppSettings" ConnectionString="Data Source=YO-PC;Initial Catalog=QuizV1;Integrated Security=True" SettingsObjectName="SpreadSheetImporter.Properties.Settings" SettingsPropertyName="QuizV1ConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Questions" Member="Questions">
     <Type Name="Question">
-      <Column Name="QuestionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="QuestionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Question" Member="Question1" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
       <Column Name="Solution" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Option1" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />

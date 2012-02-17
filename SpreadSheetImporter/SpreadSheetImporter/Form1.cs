@@ -29,8 +29,12 @@ namespace SpreadSheetImporter
 
         CellQuery cQuery;
         CellFeed cFeed;
+        
+        int numRegistrosInsertados;
+        int numRegistrosOmitidos;
+        int numLineasOmitidas;
 
-        Dictionary<uint, QuestionData> QuestionList;
+        Dictionary<uint, QuestionData> QuestionList; 
 
         public Form1()
         {
@@ -43,7 +47,7 @@ namespace SpreadSheetImporter
             ssService.setUserCredentials(txtUser.Text, txtPassword.Text);
 
             ssquery = new SpreadsheetQuery();
-            ssfeed = ssService.Query(ssquery);
+            ssfeed  = ssService.Query(ssquery);
 
            string docTitles = string.Empty;
 
@@ -57,19 +61,22 @@ namespace SpreadSheetImporter
             }
             lstDocs.DataSource = docTitles.Split(',');
 
-            gbImportDocument.Enabled = true;
-            gbUserData.Visible = false;
-            gbChangeUser.Visible = true;
+            gbImportDocument.Enabled    = true;
+            gbUserData.Visible          = false;
+            gbChangeUser.Visible        = true;
         }
 
         private void btnImportar_Click(object sender, EventArgs e)
         {
-            gbImportDocument.Enabled = false;
-            gbChangeUser.Enabled = false;
-            AtomLink link = ssEntry.Links.FindService(GDataSpreadsheetsNameTable.WorksheetRel, null);
-
-            wsQuery = new WorksheetQuery(link.HRef.ToString());
-            wsFeed = ssService.Query(wsQuery);
+            gbImportDocument.Enabled    = false;
+            gbChangeUser.Enabled        = false;
+            numLineasOmitidas           = 0;
+            numRegistrosInsertados      = 0;
+            numRegistrosOmitidos        = 0;
+            
+            AtomLink link   = ssEntry.Links.FindService(GDataSpreadsheetsNameTable.WorksheetRel, null);
+            wsQuery         = new WorksheetQuery(link.HRef.ToString());
+            wsFeed          = ssService.Query(wsQuery);
 
             foreach (WorksheetEntry worksheet in wsFeed.Entries)
             {
@@ -164,30 +171,34 @@ namespace SpreadSheetImporter
                 {
                     if (qd.QuestionID != -1)
                     {
-                        InsertNewQuestionToBBDD(qd);
+                        InsertNewQuestionToBBDD(GenerateQuestion(qd));
+                    }
+                    else
+                    {
+                        numLineasOmitidas++;
                     }
                 }
-                MessageBox.Show("La importación de las Preguntas a la BBDD se ha completado correctamente",
+                MessageBox.Show("La importación de las Preguntas a la BBDD se ha completado correctamente" +
+                                "\nSe han insertado " + numRegistrosInsertados + " registros" +
+                                "\nSe han omitido por dupolicidad " + numRegistrosOmitidos + " registros" +
+                                "\nSe han omitido " + numLineasOmitidas + " lineas del SpreadSheet",
                                 "SpreadSheet Importer",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
             }
             catch (Exception e)
             {
-                MessageBox.Show("Ha ocurrido un error durante el proceso de importación de las preguntas a la BBDD \n"
-                                + "El mensaje de error devuelto ha sido: " + e.Message,
+                MessageBox.Show("Ha ocurrido un error durante el proceso de importación de las preguntas a la BBDD"
+                                + "\nEl mensaje de error devuelto ha sido: " + e.Message,
                                     "SpreadSheet Importer",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Error);
+                return;
             }
                 
         }
 
-        /// <summary>
-        /// Genera el objeto <paramref name="Question"/> y lo inserta en la BBDD
-        /// </summary>
-        /// <param name="qd">La <paramref name="Question"/></param>
-        private void InsertNewQuestionToBBDD(QuestionData qd)
+        private Question GenerateQuestion(QuestionData qd)
         {
             Question tmpQuestion = new Question();
             tmpQuestion.QuestionID = qd.QuestionID;
@@ -198,11 +209,51 @@ namespace SpreadSheetImporter
             tmpQuestion.Option2 = qd.Answer2;
             tmpQuestion.Option3 = qd.Answer3;
             tmpQuestion.Option4 = qd.Answer4;
+            return tmpQuestion;
+        }
 
-            using (DataClasses1DataContext a = new DataClasses1DataContext())
+        private bool ExistQuestion(int p)
+        {
+            Question result;
+            using (DataClasses1DataContext DataContext = new DataClasses1DataContext())
             {
-                a.Questions.InsertOnSubmit(tmpQuestion);
-                a.SubmitChanges();
+                result = (from q in DataContext.Questions
+                              where q.QuestionID == p
+                              select q).FirstOrDefault();
+            }
+            return result != null ? true : false;
+        }
+
+        /// <summary>
+        /// Genera el objeto <paramref name="Question"/> y lo inserta en la BBDD
+        /// </summary>
+        /// <param name="qd">La <paramref name="Question"/></param>
+        private void InsertNewQuestionToBBDD(Question _question)
+        {
+            try
+            {
+                if (!ExistQuestion(_question.QuestionID))
+                {
+                    using (DataClasses1DataContext dc = new DataClasses1DataContext())
+                    {
+                        dc.Questions.InsertOnSubmit(_question);
+                        dc.SubmitChanges();
+                    }
+                    numRegistrosInsertados++;
+                }
+                else
+                {
+                    numRegistrosOmitidos++;
+                }
+            }
+            catch (System.Data.SqlClient.SqlException e)
+            {
+                MessageBox.Show("Ha ocurrido un error al insertar un registro en la BBDD."
+                                + "\nEl mensaje de error devuelto ha sido: " + e.Message,
+                                    "SpreadSheet Importer",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
+                return;
             }
         }
 
