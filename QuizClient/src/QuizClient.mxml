@@ -70,8 +70,7 @@
 				
 				//addEventListener("onCloseConnection",ShowAlert);
 				//Antes de nada, nos suscribimos al sistema de uncaught de Flash, para loggear los errores en el archivo de log del servidor
-				//if (loaderInfo.hasOwnProperty("uncaughtErrorEvents"))
-					//IEventDispatcher(loaderInfo["uncaughtErrorEvents"]).addEventListener("uncaughtError", mErrorMessages.UncaughtErrorHandler);
+				
 				
 				//LoginOnAPP(123456789,"Sant","Ti");
 				//LoginOnAPP(0001112223,"truño","mars");
@@ -79,6 +78,9 @@
 				LoginOnAPP(11447788552,"Astracus","Mortimer");
 				BindingUtils.bindSetter(OnGameStateChanged, mConnection, "ScreenState");
 				BindingUtils.bindSetter(OnNewQuestion,mConnection,"CurrentQuestion");
+				
+				//if (this.loaderInfo.hasOwnProperty("uncaughtErrorEvents"))
+					//IEventDispatcher(loaderInfo["uncaughtErrorEvents"]).addEventListener("uncaughtError", mErrorMessages.UncaughtErrorHandler);
 			}
 			
 			/**
