@@ -28,15 +28,15 @@ package ServerConnection.events
 		
 		private var answers:ArrayCollection;
 		public function getAnswers() : ArrayCollection  		{ return answers; }
-		public function setAnswers(v:ArrayCollection): void 
-		{ 
-						answers = v; 
-		
-		}
+		public function setAnswers(v:ArrayCollection): void 	{ answers = v; }
 		
 		private var solution:int;
 		public function getSolution() : int  		{ return solution; }
 		public function setSolution(v:int) 			: void  	{ solution = v; }
+		
+		private var duration:int;
+		public function getDuration() : int  		{ return duration; }
+		public function setDuration(v:int) 			: void  	{ duration = v; }
 		
 		public function NewQuestionEvent(type:String, bubbles:Boolean = false, cancelable:Boolean = false) 
 		{
@@ -51,7 +51,7 @@ package ServerConnection.events
 			var params:Object = pObject[CoreKeys.DATA];
 			ev.setQuestionType(params.QuestionType);
 			ev.setQuestion(params.Question);
-			//ev.setAnswers(params.AnswerPosibilities);
+			ev.setDuration(params.Duration);
 			var _answers:ArrayCollection= new ArrayCollection();
 			for each (var key:Object in params.AnswerPosibilities)
 			{

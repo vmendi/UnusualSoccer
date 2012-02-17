@@ -25,7 +25,11 @@
 			
 			[Bindable]
 			private var mConnection:QuizModel;
-
+			
+			private var timer:Timer;
+			private var startTime:Number;
+			private var endTime:Number;
+			public var TimePerQuestion:int;
 			/**
 			 * Función que se encarga de controlar el cambio de estados de la aplicación 
 			 */ 
@@ -110,6 +114,8 @@
 				{
 					rectAcierto.visible = false;
 					rectFallo.visible   = false;
+					TimePerQuestion = mConnection.CurrentQuestion.Duration;
+					onStartTimer();
 				}
 			}
 			
@@ -189,6 +195,29 @@
 				mConnection.SendMySelectedAnswer(opt, resp);
 			}
 			
+			
+			private function onStartTimer():void{
+				startTime = new Date().time;
+				endTime = new Date().time + Number(TimePerQuestion) * 1000;
+				lblTimerCountDown.text = TimePerQuestion.toString();
+				if(timer==null)
+					timer = new Timer(500);
+				timer.addEventListener(TimerEvent.TIMER, onTimerInterval);
+				timer.start();
+			}
+			
+			private function onTimerInterval(event:Event):void{
+				var now:Number = new Date().time;
+				if(endTime <= now){
+					//startButton.enabled = secondsInput.enabled = true;
+					//startButton.label = "Start Count Down";
+				}else{
+					lblTimerCountDown.text = Math.round((endTime - now)/1000).toString();
+					timer.start();
+				}
+			}
+
+
 			//================================================================================================||
 			///////////////////////////////   Código antiguo STATE = "TRASH"    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\||
 			//================================================================================================||
@@ -389,7 +418,6 @@
 				<s:SolidColor color="#FF0000"/>
 			</s:fill>
 		</s:Rect>
-		
 		<s:Group id="Question" includeIn="Playing" left="10" right="10" top="110" bottom="198" >
 			<s:Rect width="100%" height="100%">
 				<s:fill>
@@ -415,6 +443,9 @@
 			<s:Button id="btnAnswer2" right="10" top    ="25" width="300" height="50" label="{mConnection.CurrentQuestion.Answers.getItemAt(2)}" click="ChooseThisAnswers(3)"/>
 			<s:Button id="btnAnswer4" right="10" bottom ="25" width="300" height="50" label="{mConnection.CurrentQuestion.Answers.getItemAt(3)}" click="ChooseThisAnswers(4)"/>
 		</s:Group>
+		<s:Label id="lblTimerCountDown" top="10" width="120" height="90" color="#FFFFFF"
+				 fontSize="100" fontWeight="bold" horizontalCenter="0" text="{this.TimePerQuestion}" textAlign="center"
+				 verticalAlign="middle"/>
 		
 		
 	</s:Group>

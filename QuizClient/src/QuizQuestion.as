@@ -28,12 +28,18 @@ package
 		private function set Solution(v:int):void { mSolution = v; }
 		private var mSolution:int = -1;
 		
-		public function QuizQuestion(questionType:int, question:String, answers:ArrayCollection, solution:int)
+		[Bindable]
+		public function get Duration() : int { return mDuration; }
+		private function set Duration(v:int):void { mDuration = v; }
+		private var mDuration:int = -1;
+		
+		public function QuizQuestion(questionType:int, question:String, answers:ArrayCollection, solution:int, duration:int)
 		{
 			QuestionType = questionType;
 			Question = question;
 			Answers = answers;
-			Solution = solution;	
+			Solution = solution;
+			Duration = duration;
 		}
 	}
 }

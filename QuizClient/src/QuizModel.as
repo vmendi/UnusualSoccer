@@ -306,7 +306,8 @@ package
 						 (event as NewQuestionEvent).getQuestionType(),
 						 (event as NewQuestionEvent).getQuestion(),
 						 (event as NewQuestionEvent).getAnswers(),
-						 (event as NewQuestionEvent).getSolution()
+						 (event as NewQuestionEvent).getSolution(),
+						 (event as NewQuestionEvent).getDuration()
 					 );
 					break;
 			}		
