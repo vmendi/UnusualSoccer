@@ -301,13 +301,13 @@ package
 					RemoveActorFromActorList(ActorNo_Leaving);
 				
 				case NewQuestionEvent.TYPE:
+					 ScreenState = "Playing";
 					 CurrentQuestion = new QuizQuestion(
 						 (event as NewQuestionEvent).getQuestionType(),
 						 (event as NewQuestionEvent).getQuestion(),
 						 (event as NewQuestionEvent).getAnswers(),
 						 (event as NewQuestionEvent).getSolution()
 					 );
-					 ScreenState = "Playing";				
 					break;
 			}		
 		}

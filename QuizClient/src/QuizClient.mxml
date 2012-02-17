@@ -47,9 +47,12 @@
 							BindingUtils.bindSetter(OnInvalidNick,mConnection,"IsValidNick");
 							break;
 						case "Playing":
+							/*
 							if( mConnection.CurrentQuestion != null)
-								Photon.getInstance().addEventListener(NewQuestionEvent.TYPE, onNewQuestionArrives);	
+								Photon.getInstance().addEventListener(NewQuestionEvent.TYPE, onNewQuestionArrives);
+							*/
 							//BindingUtils.bindSetter(OnResetAnswers,mConnection,"IsQuestionAnswered");
+							//BindingUtils.bindSetter(OnNewQuestion,mConnection,"CurrentQuestion");
 							break;
 					}					
 				}
@@ -75,6 +78,7 @@
 				//LoginOnAPP(147852369,"Actor","Segundo");
 				LoginOnAPP(11447788552,"Astracus","Mortimer");
 				BindingUtils.bindSetter(OnGameStateChanged, mConnection, "ScreenState");
+				BindingUtils.bindSetter(OnNewQuestion,mConnection,"CurrentQuestion");
 			}
 			
 			/**
@@ -98,10 +102,13 @@
 			}
 			
 			
-			public function onNewQuestionArrives(evento:Event):void
+			public function OnNewQuestion(currentQuestion:QuizQuestion):void
 			{
-				rectAcierto.visible = false;
-				rectFallo.visible   = false;
+				if (currentQuestion != null) 
+				{
+					rectAcierto.visible = false;
+					rectFallo.visible   = false;
+				}
 			}
 			
 			//================================================================================================||
