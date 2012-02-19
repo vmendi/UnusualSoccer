@@ -38,11 +38,11 @@
 		#flashContent { display:none; }
     </style>
 
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 
     <!-- Esto selecciona el idioma para todo lo XFBML, el boton de like por ejemplo -->
-	<script type="text/javascript" src="http://connect.facebook.net/${locale}/all.js"></script>
+	<script type="text/javascript" src="//connect.facebook.net/${locale}/all.js"></script>
 	
     <script type="text/javascript">
 			
@@ -117,8 +117,8 @@
         <table border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <td><a href="#" onclick="sendRequestViaMultiFriendSelector(); return false;"  ><img alt="" src="Imgs/NavIconInvita_${locale}.png" hspace="20" border="0" /></a></td>
-                <td><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=wall" target="_parent"><img alt="" src="Imgs/NavIconMuro_${locale}.png" hspace="20" border="0" /></a></td>
-                <td><a href="http://www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=info" target="_parent"><img alt="" src="Imgs/NavIconInfo_${locale}.png" hspace="20" border="0" /></a></td>
+                <td><a href="//www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=wall" target="_parent"><img alt="" src="Imgs/NavIconMuro_${locale}.png" hspace="20" border="0" /></a></td>
+                <td><a href="//www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=info" target="_parent"><img alt="" src="Imgs/NavIconInfo_${locale}.png" hspace="20" border="0" /></a></td>
             </tr>
         </table>
     </div>

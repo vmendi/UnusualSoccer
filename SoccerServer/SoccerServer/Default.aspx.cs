@@ -6,10 +6,8 @@ using Facebook;
 using Facebook.Web;
 
 using SoccerServer.BDDModel;
-using System.Threading;
 using System.Text;
 using System.IO;
-using System.Collections.Generic;
 using System.Web;
 using Weborb.Util.Logging;
 
@@ -28,8 +26,10 @@ namespace SoccerServer
             // en el canvas, asi que lo dejamos redireccionando
             if (HttpContext.Current.Request["signed_request"] == null)
             {
-                Log.log(Global.GLOBAL_LOG, "Intento de carga de Default.aspx sin signed_request");
-                Response.Redirect(Global.Instance.FacebookSettings.CanvasPage, true);
+                Uri canvasUri = new Uri(Global.Instance.FacebookSettings.CanvasPage);
+                string redirect = HttpContext.Current.Request.Url.Scheme + "://" + canvasUri.Host + canvasUri.PathAndQuery;
+                Log.log(Global.GLOBAL_LOG, "Intento de carga de Default.aspx sin signed_request " + redirect);
+                Response.Redirect(redirect, true);
             }
 
             // Para las versiones no-default (Mahou) el IIS deberia estar configurado para responder con la pagina adecuada.
