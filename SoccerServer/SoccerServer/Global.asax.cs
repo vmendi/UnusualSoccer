@@ -8,6 +8,7 @@ using System.Threading;
 using Facebook;
 using System.Diagnostics;
 using System.Configuration;
+using System.Web;
 
 
 namespace SoccerServer
@@ -148,15 +149,7 @@ namespace SoccerServer
             }
         }
 
-		protected void Session_Start(object sender, EventArgs e)
-		{
-		}
-
 		protected void Application_BeginRequest(object sender, EventArgs e)
-		{
-		}
-
-		protected void Application_AuthenticateRequest(object sender, EventArgs e)
 		{
 		}
 
@@ -168,10 +161,6 @@ namespace SoccerServer
             Log.log(GLOBAL_LOG, "Application_Error: " + Request.Url.ToString() + ". Error Message:" + objErr.Message.ToString());
             Log.log(GLOBAL_LOG, "Application_Error: " + Server.GetLastError().ToString());
             Log.log(GLOBAL_LOG, "Application_Error: " + Server.GetLastError().InnerException.ToString());
-		}
-
-		protected void Session_End(object sender, EventArgs e)
-		{
 		}
 
 		protected void Application_End(object sender, EventArgs e)
