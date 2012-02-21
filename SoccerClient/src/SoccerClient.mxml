@@ -27,13 +27,10 @@
 
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
-		
-		import GameView.MainView;
-		
+		import GameView.MainView;		
 		import Match.MatchMain;
 		
-		import SoccerServer.DataTypeInitializer;
-		
+		import SoccerServer.DataTypeInitializer;		
 		import mx.events.FlexEvent;
 
 		protected function ApplicationCompleteHandler(event:FlexEvent):void
