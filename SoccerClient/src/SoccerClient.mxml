@@ -27,13 +27,10 @@
 
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
-		
-		import GameView.MainView;
-		
+		import GameView.MainView;		
 		import Match.MatchMain;
 		
-		import SoccerServer.DataTypeInitializer;
-		
+		import SoccerServer.DataTypeInitializer;		
 		import mx.events.FlexEvent;
 
 		protected function ApplicationCompleteHandler(event:FlexEvent):void
@@ -149,6 +146,8 @@
 		static public function GetFacebookFacade() : FacebookFacade { return mFacebookFacade; }
 	
 	]]></fx:Script>
+	
+	<s:BitmapImage source="{resourceManager.getClass('main','BackGeneral')}" fillMode="clip" top="131"/>
 	
 	<local:ServerTests id="MyServerTests" visible="false" width="100%" height="100%"/>
 			

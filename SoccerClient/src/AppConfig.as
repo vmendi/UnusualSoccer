@@ -9,8 +9,9 @@ package
 		static public var CANVAS_PAGE : String = null; 				// "http://apps.facebook.com/unusualsoccerdev";
 		static public var CANVAS_URL : String = null; 				// "http://mahouligachapas.unusualwonder.com";
 		static public var APP_ID : String = null;
-		static public var REMOTE : String = null;					// true/false
+		static public var REMOTE : String = null;					// true/false (solo para debug!)
 		static public var REMOTE_SERVER : String = null;			// "mahouligachapas.unusualwonder.com"; (CANVAS_URL puede ser localhost)
+		static public var REALTIME_SERVER : String = null;			// Servidor realtime para tenerlo separado en la nube
 		static public var SESSION_KEY : String = null;				
 		static public var FAKE_SESSION_KEY : String = null;
 		static public var TEST : String = null;
@@ -50,6 +51,9 @@ package
 			
 			if (parameters.hasOwnProperty("FakeSessionKey"))
 				FAKE_SESSION_KEY = parameters["FakeSessionKey"];
+			
+			if (parameters.hasOwnProperty("RealtimeServer"))
+				REALTIME_SERVER = parameters["RealtimeServer"];
 			
 			if (parameters.hasOwnProperty("Test"))
 				TEST = parameters["Test"];

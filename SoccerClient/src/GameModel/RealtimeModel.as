@@ -84,11 +84,13 @@ package GameModel
 				InitialConnection(null);
 		}
 
+		// Publica para los tests...
 		public function InitialConnection(callback : Function) : void
-		{
-			Connect(Delegate.create(RTMPConnectionSuccess, callback));
+		{			
+			Connect(Delegate.create(LogInToDefaultRoom, callback));
 		}
-			
+
+		// Publica para los tests...
 		public function Connect(callback : Function) : void
 		{
 			if (IsConnected)
@@ -121,12 +123,6 @@ package GameModel
 			mServerConnection.Connect(mURI);
 		}
 
-		
-		private function RTMPConnectionSuccess(callback : Function) : void
-		{
-			LogInToDefaultRoom(callback);
-		}
-		
 		private function NetPlugConnected() : void
 		{
 			if (IsConnected)
@@ -194,7 +190,7 @@ package GameModel
 			}
 		}
 		
-		public function LogInToDefaultRoom(onSuccess : Function) : void
+		private function LogInToDefaultRoom(onSuccess : Function) : void
 		{
 			if (!IsConnected || TheRoomModel != null)
 				throw new Error("LogInToDefaultRoom - WTF");
@@ -346,6 +342,7 @@ package GameModel
 		private var mServerConnection:NetPlug;
 		private var mURI : String;
 		private var mIsConnected : Boolean = false;
+		private var mbFirstTimeInitialized : Boolean = false;
 		
 		private var mMatch : MatchMain;
 		private var mRoomModel : RoomModel;

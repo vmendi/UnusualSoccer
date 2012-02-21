@@ -44,6 +44,11 @@ package
 			}
 			else
 			{
+				// Desde el servidor nos pueden decir a qué servidor Realtime nos tenemos que conectar. Si no, nos conectaremos a la propia URL
+				// desde donde se está cargando el SWF (se encarga la propia RealtimeModel.GetDefaultURI)
+				if (AppConfig.REALTIME_SERVER != null && AppConfig.REALTIME_SERVER != "")
+					RealtimeModel.SetDefaultURI(AppConfig.REALTIME_SERVER + ":2020");
+								
 				// Cogemos la SessionKey del parametro que nos pasa el servidor por flashVars
 				SetWeborbSessionKey();
 				

@@ -6,10 +6,8 @@ using Facebook;
 using Facebook.Web;
 
 using SoccerServer.BDDModel;
-using System.Threading;
 using System.Text;
 using System.IO;
-using System.Collections.Generic;
 using System.Web;
 using Weborb.Util.Logging;
 
@@ -35,7 +33,7 @@ namespace SoccerServer
             // Para las versiones no-default (Mahou) el IIS deberia estar configurado para responder con la pagina adecuada.
             // Sin embargo, para que no haya que reconfigurar el IIS para hacer una prueba, comprobamos aqui si somos una 
             // version no-default y hacemos un transfer.
-            if (Global.Instance.ServerSettings["VersionID"] == "MahouLigaChapas" &&
+            if (Global.Instance.ServerSettings.VersionID == "MahouLigaChapas" &&
                 !HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.ToLower().Contains("defaultmahou.aspx"))
             {
                 Server.Transfer("~/DefaultMahou.aspx");
@@ -123,10 +121,10 @@ namespace SoccerServer
             var theFBApp = Global.Instance.FacebookSettings;
 
             // Todo los meta (og:xxxx) queremos que esten OK para cuando pase el linter
-            pageSource.Replace("${title}", serverSettings["Title"]);
-            pageSource.Replace("${siteName}", serverSettings["Title"]);
-            pageSource.Replace("${description}", serverSettings["Description"]);
-            pageSource.Replace("${imageUrl}", serverSettings["ImageUrl"]);
+            pageSource.Replace("${title}", serverSettings.Title);
+            pageSource.Replace("${siteName}", serverSettings.Title);
+            pageSource.Replace("${description}", serverSettings.Description);
+            pageSource.Replace("${imageUrl}", serverSettings.ImageUrl);
 
             pageSource.Replace("${facebookCanvasPage}", theFBApp.CanvasPage);
             pageSource.Replace("${facebookCanvasUrl}", theFBApp.CanvasUrl);
@@ -140,8 +138,7 @@ namespace SoccerServer
         {
             var theFBApp = Global.Instance.FacebookSettings;
             var serverSettings = Global.Instance.ServerSettings;
-            var clientSettings = Global.Instance.ClientSettings;
-
+            
             pageSource.Replace("${version_major}", "10");       // Flex SDK 4.1 => Flash Player 10.0.0
             pageSource.Replace("${version_minor}", "0");
             pageSource.Replace("${version_revision}", "0");
@@ -153,13 +150,14 @@ namespace SoccerServer
             // Seleccionamos por ejemplo el Javascript SDK que se cargara.
             pageSource.Replace("${locale}", GetLocaleFromSignedRequest(FacebookWebContext.Current.SignedRequest));
 
-            // Parametros de entrada al SWF. Todo lo que nos viene en la QueryString mas nuestros Global.ClientSettings
+            // Parametros de entrada al SWF. Todo lo que nos viene en la QueryString mas algunos del ServerSettings
             string flashVars = " { "; 
             foreach (string key in Request.QueryString.AllKeys)
                 flashVars += key + ": '" + Request.QueryString[key] + "' ,";
 
-            foreach (string key in clientSettings.Keys)
-                flashVars += key + ": '" + clientSettings[key] + "' ,";
+            flashVars += "VersionID: '" + serverSettings.VersionID + "' ,";
+            flashVars += "RemoteServer: '" + serverSettings.RemoteServer + "' ,";
+            flashVars += "RealtimeServer: '" + serverSettings.RealtimeServer + "' ,";
 
             flashVars += "AppId: '" + theFBApp.AppId + "' ,";
             flashVars += "CanvasPage: '" + theFBApp.CanvasPage + "' ,";
@@ -186,7 +184,7 @@ namespace SoccerServer
             var locale = ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["locale"] as string;
 
             // MahouLigaChapas nunca puede ser otro idioma que no sea español de España
-            if (Global.Instance.ServerSettings["VersionID"] == "MahouLigaChapas")
+            if (Global.Instance.ServerSettings.VersionID == "MahouLigaChapas")
                 locale = "es_ES";
             else
             if (locale == "es_ES")  // Es un español que esta accediendo a Unusual Soccer -> Lo mutamos a es_LA

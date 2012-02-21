@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+	<parameter name="enableRealtime" defaultValue="true">
+		<parameterEntry kind="XmlFile"
+			scope="web\.config$"
+			match="/configuration/soccerServerConfig/@enableRealtime">
+		</parameterEntry>
+	</parameter>
+</parameters>
