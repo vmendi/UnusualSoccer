@@ -27,8 +27,6 @@ namespace SoccerServer
             if (HttpContext.Current.Request["signed_request"] == null)
             {
                 Log.log(Global.GLOBAL_LOG, "Intento de carga de Default.aspx sin signed_request");
-                Log.log(Global.GLOBAL_LOG, "Url: " + HttpContext.Current.Request.Url);
-                Log.log(Global.GLOBAL_LOG, "Browser: " + HttpContext.Current.Request.Browser.Browser);                
                 Response.Redirect(Global.Instance.FacebookSettings.CanvasPage, true);
             }
 

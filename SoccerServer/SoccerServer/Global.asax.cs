@@ -151,17 +151,18 @@ namespace SoccerServer
 
 		protected void Application_BeginRequest(object sender, EventArgs e)
 		{
+            // Cuando es un request HTTPS Chrome inserta este Header con valor por ejemplo https://canvas.unusualsoccer.com.
+            // Pues bien, detrás de un load balancer con terminación HTTPS (vamos, que se ocupa él de descodificar el paquete), con comunicación HTTP
+            // entre el load balancer y la maquina HTTP, el weborb revienta en una funcion que se llama handleCrossOriginRequest (null reference).
+            // Probablemente los de weborb este caso no lo tendrían contemplado y se piensa que es un cross origin request (http vs https).
+            HttpContext.Current.Request.Headers.Remove("Origin");
 		}
 
 		protected void Application_Error(object sender, EventArgs e)
 		{
-            // Code that runs when an unhandled error occurs
-            Exception objErr = Server.GetLastError().GetBaseException();
-            
-            Log.log(GLOBAL_LOG, "Application_Error: " + Request.Url.ToString() + ". Error Message:" + objErr.Message.ToString());
-            Log.log(GLOBAL_LOG, "Application_Error: " + Server.GetLastError().ToString());
-            Log.log(GLOBAL_LOG, "Application_Error: " + Server.GetLastError().InnerException.ToString());
-		}
+            Log.log(GLOBAL_LOG, "Application_Error: " + Request.Url.ToString() + 
+                                ". LastError:" + Server.GetLastError().ToString());
+        }
 
 		protected void Application_End(object sender, EventArgs e)
 		{
