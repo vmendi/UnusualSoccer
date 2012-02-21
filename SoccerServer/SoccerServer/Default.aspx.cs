@@ -17,19 +17,19 @@ namespace SoccerServer
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Cargamos nuestros settings procedurales que nos deja ahi Global.asax
+            // Cargamos nuestros settings procedurales que nos deja ahí Global.asax
             FacebookApplication.SetApplication(Global.Instance.FacebookSettings as IFacebookApplication);
 
             // Asumimos que si no tenemos signed_request es porque nos están intendo cargar desde fuera del canvas: redireccionamos al canvas.
-            // Hemos comprobado que el SignedRequest tb se puede obtener a partir de la cookie. En ese caso, despues de haber cargado los settings
-            // con un FacebookApplication.SetApplication, el signed request se obtendria igual q abajo. Sin embargo, queremos forzar a estar siempre 
-            // en el canvas, asi que lo dejamos redireccionando
+            // Hemos comprobado que nos llaman sin signed_request cuando por ejemplo pasan los crawlers.
+            // También hemos comprobado que el SignedRequest tb se puede obtener a partir de la cookie. En ese caso, despues de haber cargado los settings
+            // con un FacebookApplication.SetApplication, el signed_request se obtendria igual q abajo. Sin embargo, queremos forzar a estar siempre 
+            // en el canvas, asi que lo dejamos redireccionando.
             if (HttpContext.Current.Request["signed_request"] == null)
             {
-                Log.log(Global.GLOBAL_LOG, "Intento de carga de Default.aspx sin signed_request");
                 Response.Redirect(Global.Instance.FacebookSettings.CanvasPage, true);
             }
-
+            
             // Para las versiones no-default (Mahou) el IIS deberia estar configurado para responder con la pagina adecuada.
             // Sin embargo, para que no haya que reconfigurar el IIS para hacer una prueba, comprobamos aqui si somos una 
             // version no-default y hacemos un transfer.
