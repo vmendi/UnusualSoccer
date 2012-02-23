@@ -7,7 +7,7 @@
       xmlns:fb="http://www.facebook.com/2008/fbml">
 
 <head id="TheHead">
-    <title>${title}</title>
+    <title>Mahou Liga Chapas</title>
 
     <!-- Kissmetrics -->
     <script type="text/javascript">
@@ -20,18 +20,9 @@
         }
         _kms('//i.kissmetrics.com/i.js'); _kms('//doug1izaerwt3.cloudfront.net/97ae4b481c68dbb45bd7c09efe3036ea503bd37f.1.js');
     </script>
-    <!-- End Kissmetrics -->
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        
-    <meta property="og:title" content="${title}"/>
-	<meta property="og:url" content="${facebookCanvasPage}" />
-	<meta property="og:type" content="game" />
-	<meta property="og:site_name" content="${siteName}"/>
-	<meta property="og:description" content="${description}"/>
-	<meta property="og:image" content="${imageUrl}"/>
-	<meta property="fb:app_id" content="${facebookAppId}"/>
-
+  
     <style type="text/css" media="screen"> 
 		html, body	{ height:100%; }
 		body { margin:0; padding:0; overflow:auto; background-color: #FFFFFF; }
@@ -98,7 +89,7 @@
 <asp:Panel id="MyDefaultPanel" runat="server" Visible="false">
 
     <div id="fb-root"></div>
-				
+
     <div style="margin-bottom:10px;width:760px;height:74px;"><img src="Imgs/MainHeader.jpg" alt= "" width="760" height="74" style="display:block;border:0;" /></div>
 
     <!-- Banner y botón Like mecanismo XFBML -->
@@ -108,7 +99,7 @@
 	    </div>
     </asp:Panel>
 
-    <!-- Navegación -->		
+    <!-- Navegación -->
     <div style="width:760px; height:33px; background:url(Imgs/NavBg.png);" >
 	    <div style="padding-left:25px; float:left; width:203px;"><a href="#" onclick="sendRequestViaMultiFriendSelector(); return false;"><img alt="" src="Imgs/NavIconInvita.png" width="142" height="33" border="0" /></a></div>
 	    <div style="float:left; width:102px;"><a href="//www.facebook.com/MahouLigaChapas" target="_parent"><img alt="" src="Imgs/NavIconMuro.png" width="60" height="33" border="0" /></a></div>

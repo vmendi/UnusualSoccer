@@ -7,7 +7,7 @@
       xmlns:fb="http://www.facebook.com/2008/fbml">
 
 <head id="TheHead">
-    <title>${title}</title>
+    <title>Unusual Soccer</title>
 
     <!-- Kissmetrics -->
     <script type="text/javascript">
@@ -21,16 +21,7 @@
         _kms('//i.kissmetrics.com/i.js'); _kms('//doug1izaerwt3.cloudfront.net/ae86ab550667e1579736f7bbf25066047d01b340.1.js');
     </script>
 
-
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-    <meta property="og:title" content="${title}"/>
-	<meta property="og:url" content="${facebookCanvasPage}" />
-	<meta property="og:type" content="game" />
-	<meta property="og:site_name" content="${siteName}"/>
-	<meta property="og:description" content="${description}"/>
-	<meta property="og:image" content="${imageUrl}"/>
-	<meta property="fb:app_id" content="${facebookAppId}"/>
 
     <style type="text/css" media="screen"> 
 		html, body	{ height:100%; }
@@ -40,8 +31,6 @@
 
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-
-    <!-- Esto selecciona el idioma para todo lo XFBML, el boton de like por ejemplo -->
 	<script type="text/javascript" src="//connect.facebook.net/${locale}/all.js"></script>
 	
     <script type="text/javascript">
@@ -116,9 +105,9 @@
     <div align="center" style="width:760px; height:33px; background:url(Imgs/NavBg.png);" >
         <table border="0" cellpadding="0" cellspacing="0">
             <tr>
-                <td><a href="#" onclick="sendRequestViaMultiFriendSelector(); return false;"  ><img alt="" src="Imgs/NavIconInvita_${locale}.png" hspace="20" border="0" /></a></td>
-                <td><a href="//www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=wall" target="_parent"><img alt="" src="Imgs/NavIconMuro_${locale}.png" hspace="20" border="0" /></a></td>
-                <td><a href="//www.facebook.com/apps/application.php?id=${facebookAppId}&amp;v=info" target="_parent"><img alt="" src="Imgs/NavIconInfo_${locale}.png" hspace="20" border="0" /></a></td>
+                <td><a href="#" onclick="sendRequestViaMultiFriendSelector(); return false;"><img alt="" src="Imgs/NavIconInvita_${locale}.png" hspace="20" border="0" /></a></td>
+                <td><a href="//www.facebook.com/pages/Unusual-Soccer/302667959787764" target="_parent"><img alt="" src="Imgs/NavIconMuro_${locale}.png" hspace="20" border="0" /></a></td>
+                <td><a href="//www.facebook.com/pages/Unusual-Soccer/302667959787764" target="_parent"><img alt="" src="Imgs/NavIconInfo_${locale}.png" hspace="20" border="0" /></a></td>
             </tr>
         </table>
     </div>

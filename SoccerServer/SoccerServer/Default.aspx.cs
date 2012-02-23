@@ -120,15 +120,7 @@ namespace SoccerServer
             var serverSettings = Global.Instance.ServerSettings;
             var theFBApp = Global.Instance.FacebookSettings;
 
-            // Todo los meta (og:xxxx) queremos que esten OK para cuando pase el linter
-            pageSource.Replace("${title}", serverSettings.Title);
-            pageSource.Replace("${siteName}", serverSettings.Title);
-            pageSource.Replace("${description}", serverSettings.Description);
-            pageSource.Replace("${imageUrl}", serverSettings.ImageUrl);
-
-            pageSource.Replace("${facebookCanvasPage}", theFBApp.CanvasPage);
-            pageSource.Replace("${facebookCanvasUrl}", theFBApp.CanvasUrl);
-            pageSource.Replace("${facebookAppId}", theFBApp.AppId);
+            // Aqui soliamos hacer reemplazos, pero gracias a la limpieza de los meta og ya no hace falta.
 
             // El {locale} no podemos reemplazarlo a pesar de estar fuera del panel, puesto que aqui operamos
             // como si no tuvieramos signed_request (por ejemplo, para cuando pase el linter)

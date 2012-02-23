@@ -1,0 +1,15 @@
+<parameters>
+	<setParameter name="connectionString" 
+				  value="Data Source=localhost;Initial Catalog=SoccerV2;Integrated Security=True" />
+
+	<setParameter name="appId" value="191393844257355" />
+	<setParameter name="appSecret" value="a06a6bf1080247ed87ba203422dcbb30" />
+	<setParameter name="canvasPage" value="http://apps.facebook.com/unusualsoccerdev/" />
+	<setParameter name="canvasUrl" value="http://unusualsoccerdev.unusualwonder.com/" />
+	<setParameter name="secureCanvasUrl" value="https://unusualsoccerdev.unusualwonder.com/" />
+	
+	<setParameter name="versionID" value="UnusualSoccer" />
+	<setParameter name="enableRealtime" value="true" />
+	<setParameter name="ticketingSystem" value="false" />
+	<setParameter name="sameIPAbandonsChecked" value="false" />
+</parameters>

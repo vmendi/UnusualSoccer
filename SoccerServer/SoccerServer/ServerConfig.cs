@@ -14,24 +14,6 @@ namespace SoccerServer
             get { return (string)this["versionID"]; }
         }
 
-        [ConfigurationProperty("title", IsRequired = true)]
-        public string Title
-        {
-            get { return (string)this["title"]; }
-        }
-
-        [ConfigurationProperty("imageUrl", IsRequired = true)]
-        public string ImageUrl
-        {
-            get { return (string)this["imageUrl"]; }
-        }
-
-        [ConfigurationProperty("description", IsRequired = true)]
-        public string Description
-        {
-            get { return (string)this["description"]; }
-        }
-
         [ConfigurationProperty("ticketingSystem", IsRequired = true)]
         public bool TicketingSystem
         {

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <parameters>
-	<parameter name="enableRealtime">
-		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@enableRealtime"/>
+
+	<parameter name="connectionString">
+		<parameterEntry kind="XmlFile" scope="web\.config$" 
+						match="/configuration/connectionStrings/add[@name='SoccerV2ConnectionString']/@connectionString"/>
 	</parameter>
+
 	<parameter name="appId">
 		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/facebookSettings/@appId"/>
 	</parameter>
@@ -22,12 +25,23 @@
 		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/facebookSettings/@cancelUrlPath"/>
 	</parameter>
 
-
 	<parameter name="versionID">
 		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@versionID"/>
 	</parameter>
-	<parameter name="title">
-		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@title"/>
+	<parameter name="enableRealtime">
+		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@enableRealtime"/>
+	</parameter>
+	<parameter name="ticketingSystem">
+		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@ticketingSystem"/>
+	</parameter>
+	<parameter name="sameIPAbandonsChecked">
+		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@sameIPAbandonsChecked"/>
+	</parameter>
+	<parameter name="remoteServer" defaultValue="">
+		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@remoteServer"/>
+	</parameter>
+	<parameter name="realtimeServer" defaultValue="">
+		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@realtimeServer"/>
 	</parameter>
 
 </parameters>
