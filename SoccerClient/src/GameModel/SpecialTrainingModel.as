@@ -11,6 +11,7 @@ package GameModel
 	import mx.binding.utils.BindingUtils;
 	import mx.collections.ArrayCollection;
 	import mx.collections.Sort;
+	import mx.controls.Alert;
 	import mx.resources.ResourceManager;
 	import mx.rpc.Responder;
 	import mx.rpc.events.ResultEvent;
@@ -113,7 +114,7 @@ package GameModel
 		}
 		
 		public function OnLikeButtonPressed(href : Object) : void
-		{
+		{		
 			// Es posible que se pulse el boton Like antes de tener creado un equipo, por ejemplo durante la pantalla de Login.mxml
 			if (mMainModel.TheTeamModel.TheTeam != null)
 			{
@@ -138,13 +139,13 @@ package GameModel
 				}
 			}
 			
-			throw "WTF";
+			throw new Error("WTF 31");
 		}
 		
 		public function TrainSpecial(specTraining : SpecialTraining, response:Function = null) : void
 		{
 			if (specTraining.IsCompleted)
-				throw "WTF";
+				throw new Error("WTF 23");
 			
 			// Hemos quitado el parametro Energia del equipo. Ahora se resta de los SkillPoints
 			if (specTraining.SpecialTrainingDefinition.EnergyStep <= mMainModel.TheTeamModel.TheTeam.SkillPoints)

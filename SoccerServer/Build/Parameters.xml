@@ -1,9 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <parameters>
-	<parameter name="enableRealtime" defaultValue="true">
-		<parameterEntry kind="XmlFile"
-			scope="web\.config$"
-			match="/configuration/soccerServerConfig/@enableRealtime">
-		</parameterEntry>
+	<parameter name="enableRealtime">
+		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@enableRealtime"/>
 	</parameter>
+	<parameter name="appId">
+		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/facebookSettings/@appId"/>
+	</parameter>
+	<parameter name="appSecret">
+		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/facebookSettings/@appSecret"/>
+	</parameter>
+	<parameter name="canvasPage">
+		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/facebookSettings/@canvasPage"/>
+	</parameter>
+	<parameter name="canvasUrl">
+		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/facebookSettings/@canvasUrl"/>
+	</parameter>
+	<parameter name="secureCanvasUrl">
+		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/facebookSettings/@secureCanvasUrl"/>
+	</parameter>
+	<parameter name="cancelUrlPath" defaultValue="Cancelled.aspx">
+		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/facebookSettings/@cancelUrlPath"/>
+	</parameter>
+
+
+	<parameter name="versionID">
+		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@versionID"/>
+	</parameter>
+	<parameter name="title">
+		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@title"/>
+	</parameter>
+
 </parameters>

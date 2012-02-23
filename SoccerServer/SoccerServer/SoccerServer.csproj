@@ -430,6 +430,7 @@
     </EntityDeploy>
     <Content Include="Web.Mahou.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.UnusualSoccerDev.config">
       <DependentUpon>Web.config</DependentUpon>

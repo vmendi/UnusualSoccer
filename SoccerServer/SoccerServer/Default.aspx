@@ -23,7 +23,7 @@
 
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        
+
     <meta property="og:title" content="${title}"/>
 	<meta property="og:url" content="${facebookCanvasPage}" />
 	<meta property="og:type" content="game" />
