@@ -1,21 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using SoccerServer.BDDModel;
-using Weborb.Service;
 using System.Data.SqlClient;
-
-using Microsoft.Samples.EntityDataReader;
 using System.Diagnostics;
+using System.Linq;
+using HttpService.BDDModel;
+using Weborb.Service;
 using Weborb.Util.Logging;
-using System.Data.Linq;
-using System.Data.Common;
 
-using Monty.Linq;
-using System.Web;
-using NetEngine;
-
-namespace SoccerServer
+namespace HttpService
 {
     public partial class MainService
     {

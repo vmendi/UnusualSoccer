@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-using SoccerServer.TransferModel;
-using SoccerServer.BDDModel;
+using HttpService.TransferModel;
+using HttpService.BDDModel;
 using Weborb.Service;
 
-namespace SoccerServer
+namespace HttpService
 {
 	public partial class MainService
 	{

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Data.Linq;
+using System.Linq;
+using HttpService.BDDModel;
 
-using SoccerServer.BDDModel;
-
-namespace SoccerServer
+namespace HttpService
 {
     public class PrecompiledQueries
     {

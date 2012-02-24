@@ -7,7 +7,7 @@ using System.Collections;
 using Weborb.Writer;
 using System.Reflection;
 
-namespace SoccerServer.TransferModel
+namespace HttpService.TransferModel
 {
 	public class Team
 	{

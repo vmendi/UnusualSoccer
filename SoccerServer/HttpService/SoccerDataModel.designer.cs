@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SoccerServer
+namespace HttpService
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -28,70 +28,70 @@ namespace SoccerServer
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertCompetitionDivision(SoccerServer.BDDModel.CompetitionDivision instance);
-    partial void UpdateCompetitionDivision(SoccerServer.BDDModel.CompetitionDivision instance);
-    partial void DeleteCompetitionDivision(SoccerServer.BDDModel.CompetitionDivision instance);
-    partial void InsertTrainingDefinition(SoccerServer.BDDModel.TrainingDefinition instance);
-    partial void UpdateTrainingDefinition(SoccerServer.BDDModel.TrainingDefinition instance);
-    partial void DeleteTrainingDefinition(SoccerServer.BDDModel.TrainingDefinition instance);
-    partial void InsertCompetitionGroupEntry(SoccerServer.BDDModel.CompetitionGroupEntry instance);
-    partial void UpdateCompetitionGroupEntry(SoccerServer.BDDModel.CompetitionGroupEntry instance);
-    partial void DeleteCompetitionGroupEntry(SoccerServer.BDDModel.CompetitionGroupEntry instance);
-    partial void InsertCompetitionGroup(SoccerServer.BDDModel.CompetitionGroup instance);
-    partial void UpdateCompetitionGroup(SoccerServer.BDDModel.CompetitionGroup instance);
-    partial void DeleteCompetitionGroup(SoccerServer.BDDModel.CompetitionGroup instance);
-    partial void InsertCompetitionMatchParticipation(SoccerServer.BDDModel.CompetitionMatchParticipation instance);
-    partial void UpdateCompetitionMatchParticipation(SoccerServer.BDDModel.CompetitionMatchParticipation instance);
-    partial void DeleteCompetitionMatchParticipation(SoccerServer.BDDModel.CompetitionMatchParticipation instance);
-    partial void InsertCompetitionSeason(SoccerServer.BDDModel.CompetitionSeason instance);
-    partial void UpdateCompetitionSeason(SoccerServer.BDDModel.CompetitionSeason instance);
-    partial void DeleteCompetitionSeason(SoccerServer.BDDModel.CompetitionSeason instance);
-    partial void InsertMatch(SoccerServer.BDDModel.Match instance);
-    partial void UpdateMatch(SoccerServer.BDDModel.Match instance);
-    partial void DeleteMatch(SoccerServer.BDDModel.Match instance);
-    partial void InsertMatchParticipation(SoccerServer.BDDModel.MatchParticipation instance);
-    partial void UpdateMatchParticipation(SoccerServer.BDDModel.MatchParticipation instance);
-    partial void DeleteMatchParticipation(SoccerServer.BDDModel.MatchParticipation instance);
-    partial void InsertPendingTraining(SoccerServer.BDDModel.PendingTraining instance);
-    partial void UpdatePendingTraining(SoccerServer.BDDModel.PendingTraining instance);
-    partial void DeletePendingTraining(SoccerServer.BDDModel.PendingTraining instance);
-    partial void InsertPlayer(SoccerServer.BDDModel.Player instance);
-    partial void UpdatePlayer(SoccerServer.BDDModel.Player instance);
-    partial void DeletePlayer(SoccerServer.BDDModel.Player instance);
-    partial void InsertPurchase(SoccerServer.BDDModel.Purchase instance);
-    partial void UpdatePurchase(SoccerServer.BDDModel.Purchase instance);
-    partial void DeletePurchase(SoccerServer.BDDModel.Purchase instance);
-    partial void InsertPurchaseStatus(SoccerServer.BDDModel.PurchaseStatus instance);
-    partial void UpdatePurchaseStatus(SoccerServer.BDDModel.PurchaseStatus instance);
-    partial void DeletePurchaseStatus(SoccerServer.BDDModel.PurchaseStatus instance);
-    partial void InsertRequest(SoccerServer.BDDModel.Request instance);
-    partial void UpdateRequest(SoccerServer.BDDModel.Request instance);
-    partial void DeleteRequest(SoccerServer.BDDModel.Request instance);
-    partial void InsertSession(SoccerServer.BDDModel.Session instance);
-    partial void UpdateSession(SoccerServer.BDDModel.Session instance);
-    partial void DeleteSession(SoccerServer.BDDModel.Session instance);
-    partial void InsertSoccerPlayer(SoccerServer.BDDModel.SoccerPlayer instance);
-    partial void UpdateSoccerPlayer(SoccerServer.BDDModel.SoccerPlayer instance);
-    partial void DeleteSoccerPlayer(SoccerServer.BDDModel.SoccerPlayer instance);
-    partial void InsertSpecialTrainingDefinition(SoccerServer.BDDModel.SpecialTrainingDefinition instance);
-    partial void UpdateSpecialTrainingDefinition(SoccerServer.BDDModel.SpecialTrainingDefinition instance);
-    partial void DeleteSpecialTrainingDefinition(SoccerServer.BDDModel.SpecialTrainingDefinition instance);
-    partial void InsertSpecialTraining(SoccerServer.BDDModel.SpecialTraining instance);
-    partial void UpdateSpecialTraining(SoccerServer.BDDModel.SpecialTraining instance);
-    partial void DeleteSpecialTraining(SoccerServer.BDDModel.SpecialTraining instance);
-    partial void InsertTeam(SoccerServer.BDDModel.Team instance);
-    partial void UpdateTeam(SoccerServer.BDDModel.Team instance);
-    partial void DeleteTeam(SoccerServer.BDDModel.Team instance);
-    partial void InsertTeamStat(SoccerServer.BDDModel.TeamStat instance);
-    partial void UpdateTeamStat(SoccerServer.BDDModel.TeamStat instance);
-    partial void DeleteTeamStat(SoccerServer.BDDModel.TeamStat instance);
-    partial void InsertTicket(SoccerServer.BDDModel.Ticket instance);
-    partial void UpdateTicket(SoccerServer.BDDModel.Ticket instance);
-    partial void DeleteTicket(SoccerServer.BDDModel.Ticket instance);
+    partial void InsertCompetitionDivision(HttpService.BDDModel.CompetitionDivision instance);
+    partial void UpdateCompetitionDivision(HttpService.BDDModel.CompetitionDivision instance);
+    partial void DeleteCompetitionDivision(HttpService.BDDModel.CompetitionDivision instance);
+    partial void InsertTrainingDefinition(HttpService.BDDModel.TrainingDefinition instance);
+    partial void UpdateTrainingDefinition(HttpService.BDDModel.TrainingDefinition instance);
+    partial void DeleteTrainingDefinition(HttpService.BDDModel.TrainingDefinition instance);
+    partial void InsertCompetitionGroupEntry(HttpService.BDDModel.CompetitionGroupEntry instance);
+    partial void UpdateCompetitionGroupEntry(HttpService.BDDModel.CompetitionGroupEntry instance);
+    partial void DeleteCompetitionGroupEntry(HttpService.BDDModel.CompetitionGroupEntry instance);
+    partial void InsertCompetitionGroup(HttpService.BDDModel.CompetitionGroup instance);
+    partial void UpdateCompetitionGroup(HttpService.BDDModel.CompetitionGroup instance);
+    partial void DeleteCompetitionGroup(HttpService.BDDModel.CompetitionGroup instance);
+    partial void InsertCompetitionMatchParticipation(HttpService.BDDModel.CompetitionMatchParticipation instance);
+    partial void UpdateCompetitionMatchParticipation(HttpService.BDDModel.CompetitionMatchParticipation instance);
+    partial void DeleteCompetitionMatchParticipation(HttpService.BDDModel.CompetitionMatchParticipation instance);
+    partial void InsertCompetitionSeason(HttpService.BDDModel.CompetitionSeason instance);
+    partial void UpdateCompetitionSeason(HttpService.BDDModel.CompetitionSeason instance);
+    partial void DeleteCompetitionSeason(HttpService.BDDModel.CompetitionSeason instance);
+    partial void InsertMatch(HttpService.BDDModel.Match instance);
+    partial void UpdateMatch(HttpService.BDDModel.Match instance);
+    partial void DeleteMatch(HttpService.BDDModel.Match instance);
+    partial void InsertMatchParticipation(HttpService.BDDModel.MatchParticipation instance);
+    partial void UpdateMatchParticipation(HttpService.BDDModel.MatchParticipation instance);
+    partial void DeleteMatchParticipation(HttpService.BDDModel.MatchParticipation instance);
+    partial void InsertPendingTraining(HttpService.BDDModel.PendingTraining instance);
+    partial void UpdatePendingTraining(HttpService.BDDModel.PendingTraining instance);
+    partial void DeletePendingTraining(HttpService.BDDModel.PendingTraining instance);
+    partial void InsertPlayer(HttpService.BDDModel.Player instance);
+    partial void UpdatePlayer(HttpService.BDDModel.Player instance);
+    partial void DeletePlayer(HttpService.BDDModel.Player instance);
+    partial void InsertPurchase(HttpService.BDDModel.Purchase instance);
+    partial void UpdatePurchase(HttpService.BDDModel.Purchase instance);
+    partial void DeletePurchase(HttpService.BDDModel.Purchase instance);
+    partial void InsertPurchaseStatus(HttpService.BDDModel.PurchaseStatus instance);
+    partial void UpdatePurchaseStatus(HttpService.BDDModel.PurchaseStatus instance);
+    partial void DeletePurchaseStatus(HttpService.BDDModel.PurchaseStatus instance);
+    partial void InsertRequest(HttpService.BDDModel.Request instance);
+    partial void UpdateRequest(HttpService.BDDModel.Request instance);
+    partial void DeleteRequest(HttpService.BDDModel.Request instance);
+    partial void InsertSession(HttpService.BDDModel.Session instance);
+    partial void UpdateSession(HttpService.BDDModel.Session instance);
+    partial void DeleteSession(HttpService.BDDModel.Session instance);
+    partial void InsertSoccerPlayer(HttpService.BDDModel.SoccerPlayer instance);
+    partial void UpdateSoccerPlayer(HttpService.BDDModel.SoccerPlayer instance);
+    partial void DeleteSoccerPlayer(HttpService.BDDModel.SoccerPlayer instance);
+    partial void InsertSpecialTrainingDefinition(HttpService.BDDModel.SpecialTrainingDefinition instance);
+    partial void UpdateSpecialTrainingDefinition(HttpService.BDDModel.SpecialTrainingDefinition instance);
+    partial void DeleteSpecialTrainingDefinition(HttpService.BDDModel.SpecialTrainingDefinition instance);
+    partial void InsertSpecialTraining(HttpService.BDDModel.SpecialTraining instance);
+    partial void UpdateSpecialTraining(HttpService.BDDModel.SpecialTraining instance);
+    partial void DeleteSpecialTraining(HttpService.BDDModel.SpecialTraining instance);
+    partial void InsertTeam(HttpService.BDDModel.Team instance);
+    partial void UpdateTeam(HttpService.BDDModel.Team instance);
+    partial void DeleteTeam(HttpService.BDDModel.Team instance);
+    partial void InsertTeamStat(HttpService.BDDModel.TeamStat instance);
+    partial void UpdateTeamStat(HttpService.BDDModel.TeamStat instance);
+    partial void DeleteTeamStat(HttpService.BDDModel.TeamStat instance);
+    partial void InsertTicket(HttpService.BDDModel.Ticket instance);
+    partial void UpdateTicket(HttpService.BDDModel.Ticket instance);
+    partial void DeleteTicket(HttpService.BDDModel.Ticket instance);
     #endregion
 		
 		public SoccerDataModelDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString, mappingSource)
+				base(global::HttpService.Properties.Settings.Default.SoccerV2ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -120,168 +120,168 @@ namespace SoccerServer
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.CompetitionDivision> CompetitionDivisions
+		public System.Data.Linq.Table<HttpService.BDDModel.CompetitionDivision> CompetitionDivisions
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.CompetitionDivision>();
+				return this.GetTable<HttpService.BDDModel.CompetitionDivision>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.TrainingDefinition> TrainingDefinitions
+		public System.Data.Linq.Table<HttpService.BDDModel.TrainingDefinition> TrainingDefinitions
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.TrainingDefinition>();
+				return this.GetTable<HttpService.BDDModel.TrainingDefinition>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.CompetitionGroupEntry> CompetitionGroupEntries
+		public System.Data.Linq.Table<HttpService.BDDModel.CompetitionGroupEntry> CompetitionGroupEntries
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.CompetitionGroupEntry>();
+				return this.GetTable<HttpService.BDDModel.CompetitionGroupEntry>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.CompetitionGroup> CompetitionGroups
+		public System.Data.Linq.Table<HttpService.BDDModel.CompetitionGroup> CompetitionGroups
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.CompetitionGroup>();
+				return this.GetTable<HttpService.BDDModel.CompetitionGroup>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.CompetitionMatchParticipation> CompetitionMatchParticipations
+		public System.Data.Linq.Table<HttpService.BDDModel.CompetitionMatchParticipation> CompetitionMatchParticipations
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.CompetitionMatchParticipation>();
+				return this.GetTable<HttpService.BDDModel.CompetitionMatchParticipation>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.CompetitionSeason> CompetitionSeasons
+		public System.Data.Linq.Table<HttpService.BDDModel.CompetitionSeason> CompetitionSeasons
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.CompetitionSeason>();
+				return this.GetTable<HttpService.BDDModel.CompetitionSeason>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.Match> Matches
+		public System.Data.Linq.Table<HttpService.BDDModel.Match> Matches
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.Match>();
+				return this.GetTable<HttpService.BDDModel.Match>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.MatchParticipation> MatchParticipations
+		public System.Data.Linq.Table<HttpService.BDDModel.MatchParticipation> MatchParticipations
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.MatchParticipation>();
+				return this.GetTable<HttpService.BDDModel.MatchParticipation>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.PendingTraining> PendingTrainings
+		public System.Data.Linq.Table<HttpService.BDDModel.PendingTraining> PendingTrainings
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.PendingTraining>();
+				return this.GetTable<HttpService.BDDModel.PendingTraining>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.Player> Players
+		public System.Data.Linq.Table<HttpService.BDDModel.Player> Players
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.Player>();
+				return this.GetTable<HttpService.BDDModel.Player>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.Purchase> Purchases
+		public System.Data.Linq.Table<HttpService.BDDModel.Purchase> Purchases
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.Purchase>();
+				return this.GetTable<HttpService.BDDModel.Purchase>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.PurchaseStatus> PurchaseStatus
+		public System.Data.Linq.Table<HttpService.BDDModel.PurchaseStatus> PurchaseStatus
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.PurchaseStatus>();
+				return this.GetTable<HttpService.BDDModel.PurchaseStatus>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.Request> Requests
+		public System.Data.Linq.Table<HttpService.BDDModel.Request> Requests
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.Request>();
+				return this.GetTable<HttpService.BDDModel.Request>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.Session> Sessions
+		public System.Data.Linq.Table<HttpService.BDDModel.Session> Sessions
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.Session>();
+				return this.GetTable<HttpService.BDDModel.Session>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.SoccerPlayer> SoccerPlayers
+		public System.Data.Linq.Table<HttpService.BDDModel.SoccerPlayer> SoccerPlayers
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.SoccerPlayer>();
+				return this.GetTable<HttpService.BDDModel.SoccerPlayer>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.SpecialTrainingDefinition> SpecialTrainingDefinitions
+		public System.Data.Linq.Table<HttpService.BDDModel.SpecialTrainingDefinition> SpecialTrainingDefinitions
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.SpecialTrainingDefinition>();
+				return this.GetTable<HttpService.BDDModel.SpecialTrainingDefinition>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.SpecialTraining> SpecialTrainings
+		public System.Data.Linq.Table<HttpService.BDDModel.SpecialTraining> SpecialTrainings
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.SpecialTraining>();
+				return this.GetTable<HttpService.BDDModel.SpecialTraining>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.Team> Teams
+		public System.Data.Linq.Table<HttpService.BDDModel.Team> Teams
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.Team>();
+				return this.GetTable<HttpService.BDDModel.Team>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.TeamStat> TeamStats
+		public System.Data.Linq.Table<HttpService.BDDModel.TeamStat> TeamStats
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.TeamStat>();
+				return this.GetTable<HttpService.BDDModel.TeamStat>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SoccerServer.BDDModel.Ticket> Tickets
+		public System.Data.Linq.Table<HttpService.BDDModel.Ticket> Tickets
 		{
 			get
 			{
-				return this.GetTable<SoccerServer.BDDModel.Ticket>();
+				return this.GetTable<HttpService.BDDModel.Ticket>();
 			}
 		}
 	}
 }
-namespace SoccerServer.BDDModel
+namespace HttpService.BDDModel
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;

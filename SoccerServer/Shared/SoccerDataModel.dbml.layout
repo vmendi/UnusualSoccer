@@ -129,140 +129,140 @@
         <classShapeMoniker Id="f3d41b3d-7165-4d0c-b568-0669fc548d85" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(11.5 : 8.8749995); (11.7916666666667 : 8.8749995 : JumpStart); (11.9583333333333 : 8.8749995 : JumpEnd); (13.25 : 8.8749995); (13.25 : 9.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(11.5 : 8.8749995); (13.25 : 8.8749995); (13.25 : 9.75)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/CompetitionGroup/CompetitionGroup_CompetitionGroupEntry" />
       <nodes>
         <classShapeMoniker Id="2c2a9816-5182-4b42-8ed9-3c659906c145" />
         <classShapeMoniker Id="8a663051-d510-4238-b716-0b45c5651f66" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.75 : 10.34375); (7.41666666666667 : 10.34375 : JumpStart); (7.58333333333333 : 10.34375 : JumpEnd); (11.40625 : 10.34375); (11.40625 : 9.77089680989583)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.75 : 10.34375); (11.40625 : 10.34375); (11.40625 : 9.77089680989583)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/CompetitionDivision/CompetitionDivision_CompetitionGroup" />
       <nodes>
         <classShapeMoniker Id="f3d41b3d-7165-4d0c-b568-0669fc548d85" />
         <classShapeMoniker Id="2c2a9816-5182-4b42-8ed9-3c659906c145" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(14.25 : 10.8277498372396); (16 : 10.8277498372396); (16 : 13.25)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(14.25 : 10.8277498372396); (16 : 10.8277498372396); (16 : 13.25)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/CompetitionGroupEntry/CompetitionGroupEntry_CompetitionMatchParticipation" />
       <nodes>
         <classShapeMoniker Id="8a663051-d510-4238-b716-0b45c5651f66" />
         <classShapeMoniker Id="0e05fd15-b179-4e6c-9645-ed0fd7ffe85d" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.75 : 8.81814697265625); (9.5 : 8.81814697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8.75 : 8.81814697265625); (9.5 : 8.81814697265625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/CompetitionSeason/CompetitionSeason_CompetitionGroup" />
       <nodes>
         <classShapeMoniker Id="ae2e6a99-1ae4-4c0c-94e8-8a6a612eb7a0" />
         <classShapeMoniker Id="2c2a9816-5182-4b42-8ed9-3c659906c145" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(14.25 : 16.8277498372396); (16 : 16.8277498372396); (16 : 14.4439925130208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(14.25 : 16.8277498372396); (16 : 16.8277498372396); (16 : 14.4439925130208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/MatchParticipation/MatchParticipation_CompetitionMatchParticipation" />
       <nodes>
         <classShapeMoniker Id="991460e6-79e0-4b10-96af-138b060836d3" />
         <classShapeMoniker Id="0e05fd15-b179-4e6c-9645-ed0fd7ffe85d" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(11.5 : 19.8662019856771); (13.25 : 19.8662019856771); (13.25 : 17.9054996744792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(11.5 : 19.8662019856771); (13.25 : 19.8662019856771); (13.25 : 17.9054996744792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/Match/Match_MatchParticipation" />
       <nodes>
         <classShapeMoniker Id="8b60ede6-57cb-4cec-b039-0c56ad2dd40f" />
         <classShapeMoniker Id="991460e6-79e0-4b10-96af-138b060836d3" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.5 : 17); (8.875 : 16.625); (8.875 : 13.7892976888021); (9.25 : 13.7892976888021)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8.5 : 17); (8.875 : 16.625); (8.875 : 13.7892976888021); (9.25 : 13.7892976888021)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/TrainingDefinition/TrainingDefinition_PendingTraining" />
       <nodes>
         <classShapeMoniker Id="5b3aa6bf-a3c6-4688-a2af-45c97b1e5b96" />
         <classShapeMoniker Id="9be2e71d-7084-4bf5-8081-d97156fbf7b9" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 1.78929768880208); (3.5 : 1.78929768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 1.78929768880208); (3.5 : 1.78929768880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/Purchase/Purchase_PurchaseStatus" />
       <nodes>
         <classShapeMoniker Id="6cab5c2a-f6cc-42d6-846f-f69f102e9713" />
         <classShapeMoniker Id="63c04892-cb88-436f-bf79-144068bba806" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 13.8181469726562); (3.5 : 13.8181469726562)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 13.8181469726562); (3.5 : 13.8181469726562)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/Player/Player_Session" />
       <nodes>
         <classShapeMoniker Id="fe8b8429-a5de-45df-806e-dfff3535204b" />
         <classShapeMoniker Id="fc0a36d8-521e-4d1c-a6f6-7d39982f9867" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(11.5 : 6.76953358158053); (11.875 : 7.14453358158053); (11.875 : 13.8854484049479); (12.25 : 13.8854484049479)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(11.5 : 6.76953358158053); (11.875 : 7.14453358158053); (11.875 : 13.8854484049479); (12.25 : 13.8854484049479)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/SpecialTrainingDefinition/SpecialTrainingDefinition_SpecialTraining" />
       <nodes>
         <classShapeMoniker Id="170b4eae-fc7d-448f-af47-c18706b8cd39" />
         <classShapeMoniker Id="3b6121ea-0b97-48df-b91b-083e67b61bf2" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(7.5 : 12.25); (7.5 : 10.0885734049479); (11.3229166666667 : 10.0885734049479 : JumpStart); (11.4895833333333 : 10.0885734049479 : JumpEnd); (11.7916666666667 : 10.0885734049479 : JumpStart); (11.9583333333333 : 10.0885734049479 : JumpEnd); (12.25 : 10.0885734049479)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(7.5 : 12.25); (7.5 : 10.0885734049479); (11.3229166666667 : 10.0885734049479 : JumpStart); (11.4895833333333 : 10.0885734049479 : JumpEnd); (12.25 : 10.0885734049479)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/Team/Team_CompetitionGroupEntry" />
       <nodes>
         <classShapeMoniker Id="fde2a1cb-47ab-4608-b5e9-a26aa5e24eeb" />
         <classShapeMoniker Id="8a663051-d510-4238-b716-0b45c5651f66" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.5 : 14.6743024785156); (8.79166666666667 : 14.6743024785156 : JumpStart); (8.95833333333333 : 14.6743024785156 : JumpEnd); (9 : 14.6743024785156); (9 : 15.0208968098958); (12.6666666666667 : 15.0208968098958 : JumpStart); (12.8333333333333 : 15.0208968098958 : JumpEnd); (13.25 : 15.0208968098958); (13.25 : 15.75)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8.5 : 14.6743024785156); (8.79166666666667 : 14.6743024785156 : JumpStart); (8.95833333333333 : 14.6743024785156 : JumpEnd); (9 : 14.6743024785156); (9 : 15.0208968098958); (12.6666666666667 : 15.0208968098958 : JumpStart); (12.8333333333333 : 15.0208968098958 : JumpEnd); (13.25 : 15.0208968098958); (13.25 : 15.75)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/Team/Team_MatchParticipation" />
       <nodes>
         <classShapeMoniker Id="fde2a1cb-47ab-4608-b5e9-a26aa5e24eeb" />
         <classShapeMoniker Id="991460e6-79e0-4b10-96af-138b060836d3" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.5 : 13.332148844401); (9.25 : 13.332148844401)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8.5 : 13.332148844401); (9.25 : 13.332148844401)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/Team/Team_PendingTraining" />
       <nodes>
         <classShapeMoniker Id="fde2a1cb-47ab-4608-b5e9-a26aa5e24eeb" />
         <classShapeMoniker Id="9be2e71d-7084-4bf5-8081-d97156fbf7b9" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.5 : 15.5593082682292); (8.81607443490112 : 15.8753827031303 : JumpStart); (8.93392556509888 : 15.993233833328 : JumpEnd); (9.125 : 16.1843082682292); (9.125 : 25.2027498372396); (9.25 : 25.2027498372396)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8.5 : 15.5593082682292); (9.125 : 16.1843082682292); (9.125 : 25.2027498372396); (9.25 : 25.2027498372396)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/Team/Team_Request" />
       <nodes>
         <classShapeMoniker Id="fde2a1cb-47ab-4608-b5e9-a26aa5e24eeb" />
         <classShapeMoniker Id="d44a47d3-7215-4941-bbf9-93f496ac6104" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.45076923076923 : 15.5593082682292); (8.81607443490112 : 15.9246134723611 : JumpStart); (8.93392556509888 : 16.0424646025588 : JumpEnd); (9.0625 : 16.1710390374599); (9.0625 : 28.4623527018229); (9.25 : 28.4623527018229)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8.45076923076923 : 15.5593082682292); (9.0625 : 16.1710390374599); (9.0625 : 28.4623527018229); (9.25 : 28.4623527018229)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/Team/Team_SoccerPlayer" />
       <nodes>
         <classShapeMoniker Id="fde2a1cb-47ab-4608-b5e9-a26aa5e24eeb" />
         <classShapeMoniker Id="03b08863-acd7-4df8-ac56-8597baf29ca4" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.5 : 15.2419264621394); (8.69791666666667 : 15.2419264621394 : JumpStart); (8.95833333333333 : 15.2419264621394 : JumpEnd); (12.75 : 15.2419264621394); (12.75 : 14.7708968098958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8.5 : 15.2419264621394); (8.69791666666667 : 15.2419264621394 : JumpStart); (8.95025979547273 : 15.2419264621394 : JumpEnd); (12.75 : 15.2419264621394); (12.75 : 14.7708968098958)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/Team/Team_SpecialTraining" />
       <nodes>
         <classShapeMoniker Id="fde2a1cb-47ab-4608-b5e9-a26aa5e24eeb" />
         <classShapeMoniker Id="3b6121ea-0b97-48df-b91b-083e67b61bf2" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.65625 : 11.5785953776042); (5.65625 : 15.0665511067708); (6.5 : 15.0665511067708)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.65625 : 11.5785953776042); (5.65625 : 15.0665511067708); (6.5 : 15.0665511067708)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/CompetitionDivision/CompetitionDivision_Team" />
       <nodes>
         <classShapeMoniker Id="f3d41b3d-7165-4d0c-b568-0669fc548d85" />
         <classShapeMoniker Id="fde2a1cb-47ab-4608-b5e9-a26aa5e24eeb" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 14.70599609375); (5.57291666666667 : 14.70599609375 : JumpStart); (5.73958333333333 : 14.70599609375 : JumpEnd); (6.5 : 14.70599609375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 14.70599609375); (6.5 : 14.70599609375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/Player/Player_Team" />
       <nodes>
         <classShapeMoniker Id="fe8b8429-a5de-45df-806e-dfff3535204b" />
         <classShapeMoniker Id="fde2a1cb-47ab-4608-b5e9-a26aa5e24eeb" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.5 : 15.4793072682292); (8.78125 : 15.7605572682292); (8.78125 : 15.15625); (8.81607443490112 : 15.1910744349011 : JumpStart); (8.93392556509888 : 15.3089255650989 : JumpEnd); (9.25 : 15.625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(8.5 : 15.4793072682292); (8.78125 : 15.7605572682292); (8.78125 : 15.15625); (9.25 : 15.625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/Team/Team_TeamStat" />
       <nodes>
         <classShapeMoniker Id="fde2a1cb-47ab-4608-b5e9-a26aa5e24eeb" />
         <classShapeMoniker Id="9438077a-14bd-4aa0-a3d6-0725a29711f4" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.0312525 : 12.25); (8.0312525 : 11.4687475); (9.25 : 11.4687475)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8.0312525 : 12.25); (8.0312525 : 11.4687475); (9.25 : 11.4687475)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/SoccerDataModelDataContext/Team/Team_Ticket" />
       <nodes>
         <classShapeMoniker Id="fde2a1cb-47ab-4608-b5e9-a26aa5e24eeb" />

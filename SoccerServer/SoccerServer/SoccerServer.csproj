@@ -238,6 +238,7 @@
     <Compile Include="Cancelled.aspx.designer.cs">
       <DependentUpon>Cancelled.aspx</DependentUpon>
     </Compile>
+    <Compile Include="FBUtils.cs" />
     <Compile Include="ServerConfig.cs" />
     <Compile Include="Deauthorize.aspx.cs">
       <DependentUpon>Deauthorize.aspx</DependentUpon>
@@ -256,23 +257,13 @@
     <Compile Include="DefaultMahou.aspx.designer.cs">
       <DependentUpon>DefaultMahou.aspx</DependentUpon>
     </Compile>
-    <Compile Include="EntityDataReader.cs" />
-    <Compile Include="FBUtils.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="MainService.cs" />
-    <Compile Include="MainServiceCompetition.cs" />
-    <Compile Include="MainServiceRanking.cs" />
-    <Compile Include="MainServiceRequests.cs" />
-    <Compile Include="MainServiceTeam.cs" />
-    <Compile Include="MainServiceTraining.cs" />
     <Compile Include="Payment.ashx.cs">
       <DependentUpon>Payment.ashx</DependentUpon>
     </Compile>
-    <Compile Include="PrecompiledQueries.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryResultCache.cs" />
     <Compile Include="RealtimeLobby.cs" />
     <Compile Include="RealtimeMatch.cs" />
     <Compile Include="RealtimeMatchCreator.cs" />
@@ -333,13 +324,6 @@
     <Compile Include="TestCreateSession.aspx.designer.cs">
       <DependentUpon>TestCreateSession.aspx</DependentUpon>
     </Compile>
-    <Compile Include="TransferModel.cs" />
-    <Compile Include="SoccerDataModel.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SoccerDataModel.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="TransferModelCompetition.cs" />
     <Compile Include="TrueSkillHelper.aspx.cs">
       <DependentUpon>TrueSkillHelper.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -357,11 +341,6 @@
     <Content Include="SoccerClient\sparkskins_4.1.0.16076.swz" />
     <Content Include="SoccerClient\spark_4.1.0.16076.swz" />
     <Content Include="SoccerClient\textLayout_1.1.0.604.swz" />
-    <None Include="SoccerDataModel.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>SoccerDataModel.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="weborb.config" />
     <EntityDeploy Include="SoccerEntityModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
@@ -372,11 +351,6 @@
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SoccerDataModel.dbml.layout">
-      <DependentUpon>SoccerDataModel.dbml</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetEngine\NetEngine.csproj">

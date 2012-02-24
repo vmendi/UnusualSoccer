@@ -1,0 +1,1 @@
+F:\UnusualGit\UnusualSoccer\SoccerServer\HttpService\obj\Debug\ResolveAssemblyReference.cache

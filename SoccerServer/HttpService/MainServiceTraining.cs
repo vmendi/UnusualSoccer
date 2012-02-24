@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-
-using SoccerServer.BDDModel;
-using Weborb.Util.Logging;
-using System.Data.Linq;
+using HttpService.BDDModel;
 using Weborb.Service;
 
-namespace SoccerServer
+namespace HttpService
 {
 	public partial class MainService
 	{

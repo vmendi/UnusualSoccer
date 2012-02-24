@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace SoccerServer.TransferModel
+namespace HttpService.TransferModel
 {
     public class CompetitionGroup
     {
