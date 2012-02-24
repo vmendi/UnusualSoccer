@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Linq;
 using HttpService.BDDModel;
 using Microsoft.Samples.EntityDataReader;
 using Weborb.Util.Logging;
@@ -12,7 +11,7 @@ namespace HttpService
 {
     public class SeasonUtils
     {
-        static public void CreateSeasonIfNotExists()
+        static public void CreateInitialSeasonIfNotExists()
         {
             using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
             {

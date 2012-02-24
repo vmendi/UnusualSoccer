@@ -60,7 +60,7 @@ namespace SoccerServer
 
             Log.log(GLOBAL_LOG, "******************* Initialization from " + this.Server.MachineName + " Global.asax *******************");
 
-            SeasonUtils.CreateSeasonIfNotExists();
+            SeasonUtils.CreateInitialSeasonIfNotExists();
             PrecompiledQueries.PrecompileAll();
 
             // Servidor HTTP nebuloso?
