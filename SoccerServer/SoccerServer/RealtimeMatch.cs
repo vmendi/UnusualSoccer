@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Weborb.Util.Logging;
 using System.Collections.Generic;
 using NetEngine;
+using HttpService;
 
 
 namespace SoccerServer

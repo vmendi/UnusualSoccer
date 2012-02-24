@@ -1,1 +1,10 @@
 F:\UnusualGit\UnusualSoccer\SoccerServer\HttpService\obj\Debug\ResolveAssemblyReference.cache
+F:\UnusualGit\UnusualSoccer\SoccerServer\HttpService\bin\Debug\HttpService.dll
+F:\UnusualGit\UnusualSoccer\SoccerServer\HttpService\bin\Debug\HttpService.pdb
+F:\UnusualGit\UnusualSoccer\SoccerServer\HttpService\bin\Debug\weborb.dll
+F:\UnusualGit\UnusualSoccer\SoccerServer\HttpService\bin\Debug\Npgsql.dll
+F:\UnusualGit\UnusualSoccer\SoccerServer\HttpService\bin\Debug\Spring.Core.dll
+F:\UnusualGit\UnusualSoccer\SoccerServer\HttpService\bin\Debug\MySql.Data.dll
+F:\UnusualGit\UnusualSoccer\SoccerServer\HttpService\bin\Debug\Mono.Security.dll
+F:\UnusualGit\UnusualSoccer\SoccerServer\HttpService\obj\Debug\HttpService.dll
+F:\UnusualGit\UnusualSoccer\SoccerServer\HttpService\obj\Debug\HttpService.pdb

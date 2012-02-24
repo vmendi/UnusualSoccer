@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using HttpService;
 
 namespace SoccerServer
 {
@@ -11,7 +12,7 @@ namespace SoccerServer
     {
         private SoccerDataModelDataContext mDC;
         private int mTeamID;
-        private BDDModel.Player mPlayer;
+        private HttpService.BDDModel.Player mPlayer;
 
         protected override void OnLoad(EventArgs e)
         {

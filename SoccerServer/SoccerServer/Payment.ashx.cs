@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Transactions;
 using System.Web.Script.Serialization;
-using Weborb.Util.Logging;
-using System.Collections;
 using Facebook.Web;
+using HttpService;
+using Weborb.Util.Logging;
+using HttpService.BDDModel;
 
 
 namespace SoccerServer
@@ -72,7 +73,7 @@ namespace SoccerServer
         {
             using (var bddContext = new SoccerDataModelDataContext())
             {
-                BDDModel.PurchaseStatus newStatus = new BDDModel.PurchaseStatus();
+                PurchaseStatus newStatus = new PurchaseStatus();
                 newStatus.Purchase = GetPurchase(httpContext, bddContext);
                 newStatus.Status = "disputed";
                 newStatus.StatusDate = DateTime.Now;
@@ -126,7 +127,7 @@ namespace SoccerServer
         {
             using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
             {
-                BDDModel.Purchase newPurchase = new BDDModel.Purchase();
+                HttpService.BDDModel.Purchase newPurchase = new HttpService.BDDModel.Purchase();
 
                 newPurchase.ItemID = itemID;
                 newPurchase.Price = GetItemForSale(itemID).price;
@@ -134,7 +135,7 @@ namespace SoccerServer
                 newPurchase.FacebookBuyerID = buyerFacebookID;
                 newPurchase.FacebookOrderID = facebookOrderID;
 
-                BDDModel.PurchaseStatus currentStatus = new BDDModel.PurchaseStatus();
+                HttpService.BDDModel.PurchaseStatus currentStatus = new HttpService.BDDModel.PurchaseStatus();
                 currentStatus.Purchase = newPurchase;
                 currentStatus.Status = "settled";
                 currentStatus.StatusDate = DateTime.Now;
@@ -148,7 +149,7 @@ namespace SoccerServer
             }
         }
 
-        static private void AwardTheItem(SoccerDataModelDataContext bddContext, BDDModel.Purchase thePurchase)
+        static private void AwardTheItem(SoccerDataModelDataContext bddContext, HttpService.BDDModel.Purchase thePurchase)
         {
             var theTeam = (from t in bddContext.Teams
                            where t.Player.FacebookID == thePurchase.FacebookBuyerID
@@ -184,7 +185,7 @@ namespace SoccerServer
             }
         }
 
-        static private void AwardTicketTime(BDDModel.Ticket theTicket, int ticketKind, TimeSpan time)
+        static private void AwardTicketTime(HttpService.BDDModel.Ticket theTicket, int ticketKind, TimeSpan time)
         {
             // A la expiracion del ticket, estara bien
             theTicket.RemainingMatches = MainService.DEFAULT_NUM_MACHES;
@@ -233,7 +234,7 @@ namespace SoccerServer
             context.Response.Write(ob);
         }
 
-        static private BDDModel.Purchase GetPurchase(HttpContext context, SoccerDataModelDataContext bddContext)
+        static private HttpService.BDDModel.Purchase GetPurchase(HttpContext context, SoccerDataModelDataContext bddContext)
         {
             long order_id = long.Parse(context.Request.Form["order_id"]);
 

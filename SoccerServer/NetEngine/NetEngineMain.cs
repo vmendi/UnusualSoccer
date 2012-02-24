@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Weborb.Util.Logging;
+using System.Diagnostics;
 
 namespace NetEngine
 {
@@ -53,6 +54,13 @@ namespace NetEngine
         public NetServer NetServer
         {
             get { return mNetServer; }
+        }
+
+        static internal string ElapsedMicroseconds(Stopwatch stopwatch)
+        {
+            double elapsedTicks = stopwatch.ElapsedTicks;
+            double nanosecPerTick = (1000L * 1000L * 1000L) / Stopwatch.Frequency;
+            return (elapsedTicks * nanosecPerTick / 1000).ToString("0");
         }
 
         readonly NetLobby mNetLobby;

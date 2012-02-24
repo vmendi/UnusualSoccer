@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Linq;
-using SoccerServer.BDDModel;
-using Weborb.Util.Logging;
-using Weborb.Messaging.Server;
-using NetEngine;
+using System.Configuration;
+using System.Diagnostics;
 using System.Threading;
 using Facebook;
-using System.Diagnostics;
-using System.Configuration;
-using System.Web;
+using HttpService;
+using HttpService.BDDModel;
+using NetEngine;
+using Weborb.Messaging.Server;
+using Weborb.Util.Logging;
 
 
 namespace SoccerServer
@@ -85,7 +84,7 @@ namespace SoccerServer
             {
                 // Si todavia no tenemos ninguna temporada, es que la DB esta limpia => tenemos que empezar!
                 if (theContext.CompetitionSeasons.Count() == 0)
-                    MainService.ResetSeasons(false);
+                    Seasons.ResetSeasons(false);
             }
         }
 

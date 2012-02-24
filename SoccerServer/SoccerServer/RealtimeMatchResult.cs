@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Linq;
-using SoccerServer;
-using SoccerServer.BDDModel;
 using System.Collections.Generic;
+using System.Linq;
+using HttpService;
+using HttpService.BDDModel;
 using Weborb.Util.Logging;
 
 namespace SoccerServer
@@ -120,7 +120,7 @@ namespace SoccerServer
             ResultPlayer2.InjuredSoccerPlayers = InjureSoccerPlayers(mBDDPlayer2.Team);
         }
 
-        static private List<int> InjureSoccerPlayers(BDDModel.Team theTeam)
+        static private List<int> InjureSoccerPlayers(Team theTeam)
         {
             var ret = new List<int>();
 
@@ -155,7 +155,7 @@ namespace SoccerServer
 
         private void ProcessCompetition()
         {
-            var currentSeason = MainService.GetCurrentSeason(mContext);
+            var currentSeason = Seasons.GetCurrentSeason(mContext);
 
             // Excepcion (...OrDefault) por el problema del paralelismo entre el SeasonEnd y el añadir equipo a competicion:
             // Si un equipo se añade a la competición (único punto: RefreshGroupForTeam) justo durante un cambio de season, se añadira a una q ya está caducada. 
@@ -224,7 +224,7 @@ namespace SoccerServer
             }
             else
             {
-                BDDModel.Player winner = mBDDPlayer1, loser = mBDDPlayer2;
+                Player winner = mBDDPlayer1, loser = mBDDPlayer2;
 
                 if (ResultPlayer1.Goals < ResultPlayer2.Goals)
                 {
@@ -359,10 +359,10 @@ namespace SoccerServer
 
         private SoccerDataModelDataContext mContext;
 
-        private BDDModel.Match mBDDMatch;
+        private Match mBDDMatch;
 
-        private BDDModel.Player mBDDPlayer1;
-        private BDDModel.Player mBDDPlayer2;
+        private Player mBDDPlayer1;
+        private Player mBDDPlayer2;
 
         private RealtimePlayer mRealtimePlayer1;
         private RealtimePlayer mRealtimePlayer2;

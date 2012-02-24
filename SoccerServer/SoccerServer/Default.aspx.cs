@@ -1,15 +1,13 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Web;
 using System.Web.UI;
-
 using Facebook;
 using Facebook.Web;
-
-using SoccerServer.BDDModel;
-using System.Text;
-using System.IO;
-using System.Web;
-using Weborb.Util.Logging;
+using HttpService;
+using HttpService.BDDModel;
 
 namespace SoccerServer
 {
@@ -198,7 +196,7 @@ namespace SoccerServer
             return locale;
         }
 
-		static public BDDModel.Session EnsureSessionIsCreated(SoccerDataModelDataContext theContext, Player thePlayer, string sessionKey)
+		static public Session EnsureSessionIsCreated(SoccerDataModelDataContext theContext, Player thePlayer, string sessionKey)
 		{
 			var session = (from dbSession in theContext.Sessions
 						   where dbSession.FacebookSession == sessionKey
@@ -206,7 +204,7 @@ namespace SoccerServer
 
 			if (session == null)
 			{
-				session = new BDDModel.Session();
+				session = new Session();
 				session.Player = thePlayer;
 				session.FacebookSession = sessionKey;
                 session.CreationDate = DateTime.Now;    // En horario del servidor

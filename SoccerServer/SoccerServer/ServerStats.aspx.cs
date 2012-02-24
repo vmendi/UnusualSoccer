@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
+using HttpService;
+using HttpService.BDDModel;
 using NetEngine;
-using SoccerServer.BDDModel;
-using System.Data.SqlClient;
-
-using Microsoft.Samples.EntityDataReader;
 
 namespace SoccerServer
 {

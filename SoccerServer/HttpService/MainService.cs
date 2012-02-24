@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web;
 using Weborb.Util.Logging;
 using HttpService.BDDModel;
+using System.Diagnostics;
 
 
 namespace HttpService

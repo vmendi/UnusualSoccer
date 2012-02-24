@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using SoccerServer.BDDModel;
+using HttpService;
+using HttpService.BDDModel;
 
 namespace SoccerServer
 {
@@ -93,15 +92,15 @@ namespace SoccerServer
 
         private int CreateDatabaseMatchInner(SoccerDataModelDataContext theContext)
         {
-            BDDModel.Match theNewMatch = new BDDModel.Match();
+            Match theNewMatch = new Match();
             
             theNewMatch.DateStarted = DateTime.Now;
             theNewMatch.MatchDuration = mMatchDuration;
             theNewMatch.TurnDuration = mTurnDuration;
             theNewMatch.IsFriendly = mbFriendly;
 
-            BDDModel.MatchParticipation homePart = CreateMatchParticipation(theContext, mFirstRealtimePlayer, mFirstPlayer, true);
-            BDDModel.MatchParticipation awayPart = CreateMatchParticipation(theContext, mSecondRealtimePlayer, mSecondPlayer, false);
+            MatchParticipation homePart = CreateMatchParticipation(theContext, mFirstRealtimePlayer, mFirstPlayer, true);
+            MatchParticipation awayPart = CreateMatchParticipation(theContext, mSecondRealtimePlayer, mSecondPlayer, false);
 
             homePart.Match = theNewMatch;
             awayPart.Match = theNewMatch;
@@ -115,10 +114,10 @@ namespace SoccerServer
             return theNewMatch.MatchID;
         }
 
-        static private BDDModel.MatchParticipation CreateMatchParticipation(SoccerDataModelDataContext theContext, 
-                                                                            RealtimePlayer playerRT, Player bddPlayer, bool asHome)
+        static private MatchParticipation CreateMatchParticipation(SoccerDataModelDataContext theContext, 
+                                                                   RealtimePlayer playerRT, Player bddPlayer, bool asHome)
         {
-            BDDModel.MatchParticipation part = new BDDModel.MatchParticipation();
+            MatchParticipation part = new MatchParticipation();
 
             part.AsHome = asHome;
             part.Goals = 0;

@@ -77,7 +77,6 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System" />
@@ -353,6 +352,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HttpService\HttpService.csproj">
+      <Project>{111103BF-5CD3-432E-BF91-3E7E86F3FA89}</Project>
+      <Name>HttpService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetEngine\NetEngine.csproj">
       <Project>{144F0F81-76BB-4C9F-A56E-DC4B6517F726}</Project>
       <Name>NetEngine</Name>

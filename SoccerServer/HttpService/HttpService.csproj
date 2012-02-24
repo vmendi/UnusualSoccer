@@ -63,6 +63,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="QueryResultCache.cs" />
+    <Compile Include="Seasons.cs" />
     <Compile Include="SoccerDataModel.designer.cs">
       <DependentUpon>SoccerDataModel.dbml</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -84,9 +85,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SoccerDataModel.dbml.layout">

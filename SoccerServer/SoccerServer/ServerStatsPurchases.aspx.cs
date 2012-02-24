@@ -1,14 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Net;
-using System.IO;
 using System.Web.Script.Serialization;
-using System.Collections;
-using SoccerServer.BDDModel;
+using HttpService;
+using HttpService.BDDModel;
 
 namespace SoccerServer
 {
