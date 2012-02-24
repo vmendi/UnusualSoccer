@@ -311,11 +311,6 @@
     <Compile Include="ServerStatsRanking.aspx.designer.cs">
       <DependentUpon>ServerStatsRanking.aspx</DependentUpon>
     </Compile>
-    <Compile Include="SoccerEntityModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SoccerEntityModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="TestCreateSession.aspx.cs">
       <DependentUpon>TestCreateSession.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -341,11 +336,6 @@
     <Content Include="SoccerClient\spark_4.1.0.16076.swz" />
     <Content Include="SoccerClient\textLayout_1.1.0.604.swz" />
     <Content Include="weborb.config" />
-    <EntityDeploy Include="SoccerEntityModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SoccerEntityModel.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>DBModel</CustomToolNamespace>
-    </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
