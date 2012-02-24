@@ -197,6 +197,7 @@
     <Content Include="Imgs\PopupAppOffline.jpg" />
     <Content Include="Imgs\TrainingItem_en_US.swf" />
     <Content Include="Imgs\TrainingItem_es_ES.swf" />
+    <Content Include="logs\dummy.txt" />
     <Content Include="News.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -387,9 +388,7 @@
       <Name>Skills</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="logs\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>
