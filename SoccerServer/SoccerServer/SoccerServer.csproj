@@ -368,10 +368,6 @@
       <LastGenOutput>SoccerEntityModel.Designer.cs</LastGenOutput>
       <CustomToolNamespace>DBModel</CustomToolNamespace>
     </EntityDeploy>
-    <Content Include="Web.Mahou.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

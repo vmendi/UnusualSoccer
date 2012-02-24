@@ -2,7 +2,8 @@
 
 call SetEnvironment
 
-call Build
+call BuildClient
+call BuildServer
 
 rem Creamos primero el package Intermediate.zip. Es necesario porque queremos
 rem usar el sistema de declareParamFile/setParamFile. Primero metemos
