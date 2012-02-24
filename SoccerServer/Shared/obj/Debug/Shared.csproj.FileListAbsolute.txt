@@ -1,6 +1,0 @@
-F:\UnusualGit\UnusualSoccer\SoccerServer\Shared\obj\Debug\ResolveAssemblyReference.cache
-F:\UnusualGit\UnusualSoccer\SoccerServer\Shared\bin\Debug\Shared.dll.config
-F:\UnusualGit\UnusualSoccer\SoccerServer\Shared\bin\Debug\Shared.dll
-F:\UnusualGit\UnusualSoccer\SoccerServer\Shared\bin\Debug\Shared.pdb
-F:\UnusualGit\UnusualSoccer\SoccerServer\Shared\obj\Debug\Shared.dll
-F:\UnusualGit\UnusualSoccer\SoccerServer\Shared\obj\Debug\Shared.pdb
