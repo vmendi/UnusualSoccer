@@ -53,7 +53,7 @@ namespace SoccerServer
                 mFirstPlayer = GetPlayerForRealtimePlayer(theContext, mFirstRealtimePlayer);
                 mSecondPlayer = GetPlayerForRealtimePlayer(theContext, mSecondRealtimePlayer);
 
-                if (MainService.SyncTeam(theContext, mFirstPlayer.Team) | MainService.SyncTeam(theContext, mSecondPlayer.Team))
+                if (TeamUtils.SyncTeam(theContext, mFirstPlayer.Team) | TeamUtils.SyncTeam(theContext, mSecondPlayer.Team))
                     theContext.SubmitChanges();
 
                 mMatchID = CreateDatabaseMatchInner(mContext);

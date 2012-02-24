@@ -93,7 +93,7 @@ namespace HttpService.TransferModel
 
             IsInjured = from.IsInjured;
 		    LastInjuryDate = from.LastInjuryDate;
-            RemainingInjurySeconds = Utils.GetConservativeRemainingSeconds(LastInjuryDate.AddDays(MainService.INJURY_DURATION_DAYS));
+            RemainingInjurySeconds = Utils.GetConservativeRemainingSeconds(LastInjuryDate.AddDays(GameConstants.INJURY_DURATION_DAYS));
         }
 	}
 

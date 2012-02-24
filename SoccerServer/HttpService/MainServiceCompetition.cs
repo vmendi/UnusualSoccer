@@ -76,7 +76,7 @@ namespace HttpService
 
             // Si es un equipo recien creado...
             if (lastDivision == null)
-                lastDivision = Seasons.GetLowestDivision(theContext); // ...lo añadimos a la division mas baja
+                lastDivision = SeasonUtils.GetLowestDivision(theContext); // ...lo añadimos a la division mas baja
 
             // No queremos que la season cambie (SeasonEnd) mientras insertamos equipo!
             // TODO TODO TODO
@@ -163,7 +163,7 @@ namespace HttpService
             using (var context = new SoccerDataModelDataContext())
             {
                 // Segundos restantes al momento pronosticado en el que se acabara la temporada
-                return TransferModel.Utils.GetConservativeRemainingSeconds(Seasons.GenerateTheoricalSeasonEndDate(Seasons.GetCurrentSeason(context).CreationDate));
+                return TransferModel.Utils.GetConservativeRemainingSeconds(SeasonUtils.GenerateTheoricalSeasonEndDate(SeasonUtils.GetCurrentSeason(context).CreationDate));
             }
         }
     }

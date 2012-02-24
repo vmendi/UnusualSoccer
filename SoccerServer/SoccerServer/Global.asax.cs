@@ -60,7 +60,7 @@ namespace SoccerServer
 
             Log.log(GLOBAL_LOG, "******************* Initialization from " + this.Server.MachineName + " Global.asax *******************");
 
-            ConfigureDB();
+            SeasonUtils.CreateSeasonIfNotExists();
             PrecompiledQueries.PrecompileAll();
 
             // Servidor HTTP nebuloso?
@@ -75,16 +75,6 @@ namespace SoccerServer
                 mTotalSeconds = 0;
                 mStopWatch.Start();
                 mSecondsTimer.Start();
-            }
-        }
-
-        private void ConfigureDB()
-        {
-            using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
-            {
-                // Si todavia no tenemos ninguna temporada, es que la DB esta limpia => tenemos que empezar!
-                if (theContext.CompetitionSeasons.Count() == 0)
-                    Seasons.ResetSeasons(false);
             }
         }
 
@@ -124,7 +114,7 @@ namespace SoccerServer
             {
                 Log.log(GLOBAL_LOG, "Running Hourly process");
 
-                MainService.CheckSeasonEnd(false);
+                SeasonUtils.CheckSeasonEnd(false);
 
                 mLastHourlyProcessedDateTime = now;
             }
@@ -141,7 +131,7 @@ namespace SoccerServer
 
                 using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
                 {
-                    theContext.ExecuteCommand("UPDATE [SoccerV2].[dbo].[Tickets] SET [RemainingMatches] = 3");
+                    theContext.ExecuteCommand("UPDATE [SoccerV2].[dbo].[Tickets] SET [RemainingMatches] = {0}", GameConstants.DAILY_NUM_MATCHES);
                 }               
 
                 mLast24hProcessedDateTime = now;

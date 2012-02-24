@@ -155,7 +155,7 @@ namespace SoccerServer
 
         private void ProcessCompetition()
         {
-            var currentSeason = Seasons.GetCurrentSeason(mContext);
+            var currentSeason = SeasonUtils.GetCurrentSeason(mContext);
 
             // Excepcion (...OrDefault) por el problema del paralelismo entre el SeasonEnd y el añadir equipo a competicion:
             // Si un equipo se añade a la competición (único punto: RefreshGroupForTeam) justo durante un cambio de season, se añadira a una q ya está caducada. 

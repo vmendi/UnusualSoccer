@@ -10,13 +10,19 @@ using Weborb.Util.Logging;
 
 namespace HttpService
 {
-    public class Seasons
+    public class SeasonUtils
     {
-        static private int COMPETITION_GROUP_ENTRIES = 50;              // 50, 100 nos parecian muchas al visualizarla en el cliente
-        static private int SEASON_DURATION_DAYS = 4;                    // Las competiciones duran N dias
-        static private int SEASON_HOUR_STARTTIME = 0;                   // Hora de comienzo y fin (teorica). Entre 0 y 23. Actualmente, a las 00:00.
+        static public void CreateSeasonIfNotExists()
+        {
+            using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
+            {
+                // Si todavia no tenemos ninguna temporada, es que la DB esta limpia => tenemos que empezar!
+                if (theContext.CompetitionSeasons.Count() == 0)
+                    ResetSeasons(false);
+            }
+        }
 
-        public static void ResetSeasons(bool addCurrentTeams)
+        static public void ResetSeasons(bool addCurrentTeams)
         {
             using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
             {
@@ -66,7 +72,17 @@ namespace HttpService
             }
         }
 
-        public static void CheckSeasonEnd(bool forceEnd)
+        private static CompetitionSeason CreateNewSeason(SoccerDataModelDataContext theContext, DateTime creationDate)
+        {
+            CompetitionSeason newSeason = new CompetitionSeason();
+            newSeason.CreationDate = creationDate;
+
+            theContext.CompetitionSeasons.InsertOnSubmit(newSeason);
+
+            return newSeason;
+        }
+
+        static public void CheckSeasonEnd(bool forceEnd)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -95,14 +111,15 @@ namespace HttpService
         }
 
         // En las fecha de creacion, siempre insertamos la verdadera. Luego los calculos los haremos con la teorica
-        public static DateTime GenerateTheoricalSeasonEndDate(DateTime seasonCreationDate)
+        static public DateTime GenerateTheoricalSeasonEndDate(DateTime seasonCreationDate)
         {
-            return GenerateTheoricalSeasonStartDate(seasonCreationDate).AddDays(SEASON_DURATION_DAYS);
+            return GenerateTheoricalSeasonStartDate(seasonCreationDate).AddDays(GameConstants.SEASON_DURATION_DAYS);
         }
 
         private static DateTime GenerateTheoricalSeasonStartDate(DateTime seasonCreationDate)
         {
-            return new DateTime(seasonCreationDate.Year, seasonCreationDate.Month, seasonCreationDate.Day, SEASON_HOUR_STARTTIME, 0, 0, 0, seasonCreationDate.Kind);
+            return new DateTime(seasonCreationDate.Year, seasonCreationDate.Month, seasonCreationDate.Day, 
+                                GameConstants.SEASON_HOUR_STARTTIME, 0, 0, 0, seasonCreationDate.Kind);
         }
 
         private static void SeasonEndInner(CompetitionSeason oldSeason, SoccerDataModelDataContext theContext, SqlConnection con, SqlTransaction tran)
@@ -151,7 +168,7 @@ namespace HttpService
                                            select entry.Team.TeamID);
 
                 // Numero de grupos en ESTA division, los que vamos a crear
-                int numGroups = (int)(((float)currDivisionTeams.Count() / (float)COMPETITION_GROUP_ENTRIES) + 1.0);
+                int numGroups = (int)(((float)currDivisionTeams.Count() / (float)GameConstants.COMPETITION_GROUP_ENTRIES) + 1.0);
 
                 // Los creamos para a continuacion hacer una insercion Bulk. Haremos tantas inserciones bulk como divisiones
                 List<CompetitionGroup> groups = new List<CompetitionGroup>(numGroups);
@@ -179,7 +196,7 @@ namespace HttpService
 
                 for (int c = 0; c < numGroups; ++c)
                 {
-                    for (var d = c * COMPETITION_GROUP_ENTRIES; d < (c + 1) * COMPETITION_GROUP_ENTRIES; ++d)
+                    for (var d = c * GameConstants.COMPETITION_GROUP_ENTRIES; d < (c + 1) * GameConstants.COMPETITION_GROUP_ENTRIES; ++d)
                     {
                         if (d >= currDivisionTeams.Count())
                             break;
@@ -235,24 +252,13 @@ namespace HttpService
         }
 
         // La unica no finalizada. Tiene que haber 1 y solo 1. Si hubiera mas de una, violacion de invariante, exception aqui
-        public static CompetitionSeason GetCurrentSeason(SoccerDataModelDataContext theContext)
+        static public CompetitionSeason GetCurrentSeason(SoccerDataModelDataContext theContext)
         {
             return theContext.CompetitionSeasons.Single(season => season.EndDate == null);
         }
 
-        private static CompetitionSeason CreateNewSeason(SoccerDataModelDataContext theContext, DateTime creationDate)
-        {
-            CompetitionSeason newSeason = new CompetitionSeason();
-            newSeason.CreationDate = creationDate;
-
-            theContext.CompetitionSeasons.InsertOnSubmit(newSeason);
-
-            return newSeason;
-        }
-
-
         // La unica division que no tiene hijos
-        public static CompetitionDivision GetLowestDivision(SoccerDataModelDataContext theContext)
+        static public CompetitionDivision GetLowestDivision(SoccerDataModelDataContext theContext)
         {
             return theContext.CompetitionDivisions.Single(division => division.CompetitionDivisions.Count() == 0);
         }

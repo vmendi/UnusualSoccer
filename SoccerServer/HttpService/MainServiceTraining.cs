@@ -47,7 +47,7 @@ namespace HttpService
             using (CreateDataForRequest())
             {
                 // Tenemos que sincronizar el equipo puesto que puede q el entrenamiento este expirado
-                bool bSubmit = SyncTeam(mContext, mPlayer.Team);
+                bool bSubmit = TeamUtils.SyncTeam(mContext, mPlayer.Team);
 
                 PendingTraining ret = mPlayer.Team.PendingTraining;
 

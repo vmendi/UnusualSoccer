@@ -53,7 +53,7 @@ namespace SoccerServer
         public void FillProfile()
         {
             LinqDataSource matchesForProfileLinQ = new LinqDataSource();
-            matchesForProfileLinQ.ContextTypeName = "SoccerServer.SoccerDataModelDataContext";
+            matchesForProfileLinQ.ContextTypeName = "HttpService.SoccerDataModelDataContext";
             matchesForProfileLinQ.TableName = "Matches";
             matchesForProfileLinQ.OrderBy = "MatchID desc";
             matchesForProfileLinQ.Where = "MatchParticipations.Any(TeamID == " + mTeamID + ")";
@@ -126,7 +126,7 @@ namespace SoccerServer
         {
             mPlayer.Team.Ticket.TicketPurchaseDate = DateTime.Now;
             mPlayer.Team.Ticket.TicketExpiryDate = mPlayer.Team.Ticket.TicketPurchaseDate;
-            mPlayer.Team.Ticket.RemainingMatches = MainService.DEFAULT_NUM_MACHES;
+            mPlayer.Team.Ticket.RemainingMatches = GameConstants.DEFAULT_NUM_MACHES;
             mDC.SubmitChanges();
 
             FillPurchases();

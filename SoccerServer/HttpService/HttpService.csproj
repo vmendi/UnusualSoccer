@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntityDataReader.cs" />
+    <Compile Include="GameConstants.cs" />
     <Compile Include="MainService.cs" />
     <Compile Include="MainServiceCompetition.cs" />
     <Compile Include="MainServiceRanking.cs" />
@@ -63,12 +64,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="QueryResultCache.cs" />
-    <Compile Include="Seasons.cs" />
+    <Compile Include="SeasonUtils.cs" />
     <Compile Include="SoccerDataModel.designer.cs">
       <DependentUpon>SoccerDataModel.dbml</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="TeamUtils.cs" />
     <Compile Include="TransferModel.cs" />
     <Compile Include="TransferModelCompetition.cs" />
   </ItemGroup>

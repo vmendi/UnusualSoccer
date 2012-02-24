@@ -10,13 +10,6 @@ namespace HttpService
 {
 	public partial class MainService
 	{
-		public const double DEFAULT_INITIAL_MEAN = 25.0;
-		public const double DEFAULT_INITIAL_STANDARD_DEVIATION = 8.333;
-
-        public const int INJURY_DURATION_DAYS = 1;
-        public const int DEFAULT_NUM_MACHES = 5;
-
-
 		public TransferModel.Team RefreshTeam()
 		{
             TransferModel.Team ret = null;
@@ -31,7 +24,7 @@ namespace HttpService
 
                     if (mPlayer.Team != null)
                     {
-                        bool bSubmit = SyncTeam(mContext, mPlayer.Team);
+                        bool bSubmit = TeamUtils.SyncTeam(mContext, mPlayer.Team);
 
                         if (bSubmit)
                             mContext.SubmitChanges();
@@ -44,66 +37,6 @@ namespace HttpService
             return ret;
 		}
                
-
-        // Un nuevo approach os doy...
-        static internal bool SyncTeam(SoccerDataModelDataContext theContext, Team theTeam)
-        {
-            bool bSubmit = false;
-
-            var now = DateTime.Now;
-
-            // Entrenamiento pendiente?
-            if (theTeam.PendingTraining != null && theTeam.PendingTraining.TimeEnd < now)
-            {
-                theTeam.Fitness += theTeam.PendingTraining.TrainingDefinition.FitnessDelta;
-
-                if (theTeam.Fitness > 100)
-                    theTeam.Fitness = 100;
-
-                theContext.PendingTrainings.DeleteOnSubmit(theTeam.PendingTraining);
-                theTeam.PendingTraining = null;
-                bSubmit = true;
-            }
-
-            // Hay que restar fitness?
-            if (theTeam.PendingTraining == null && theTeam.Fitness > 0)
-            {
-                var secondsSinceLastUpdate = (now - theTeam.LastFitnessUpdate).TotalSeconds;
-                var fitnessToSubstract = secondsSinceLastUpdate / 1800;
-
-                // 1 de fitness cada 1728 secs => cada 28.8 minutos => 100 de fitness cada 2880 minutos == 48h
-                // 1 de fitness cada 1800 secs => cada 30   minutos => 100 de fitness cada 3000 minutos == 50h
-                if (fitnessToSubstract > 1)
-                {
-                    // Perderemos algo de substraccion puesto q redondeamos hacia abajo... no importa.
-                    theTeam.Fitness -= (int)fitnessToSubstract;
-                    theTeam.LastFitnessUpdate = now;
-
-                    if (theTeam.Fitness < 0)
-                        theTeam.Fitness = 0;
-
-                    bSubmit = true;
-                }
-            }
-
-            // Deslesionar
-            var injured = (from s in theTeam.SoccerPlayers
-                           where s.IsInjured
-                           select s);
-
-            foreach (var sp in injured)
-            {
-                // Las lesiones duran N dias...
-                if ((now - sp.LastInjuryDate).TotalDays >= INJURY_DURATION_DAYS)
-                {
-                    sp.IsInjured = false;
-                    bSubmit = true;
-                }
-            }
-            
-            return bSubmit;
-        }
-
 		public bool CreateTeam(string name, string predefinedTeamNameID)
 		{
             Stopwatch stopwatch = new Stopwatch();
@@ -152,7 +85,7 @@ namespace HttpService
             theTicket.TicketID = team.TeamID;
             theTicket.TicketPurchaseDate = DateTime.Now;
             theTicket.TicketExpiryDate = theTicket.TicketPurchaseDate;
-            theTicket.RemainingMatches = DEFAULT_NUM_MACHES;
+            theTicket.RemainingMatches = GameConstants.DEFAULT_NUM_MACHES;
 
             mContext.Tickets.InsertOnSubmit(theTicket);
         }
@@ -189,8 +122,8 @@ namespace HttpService
 			ret.Formation = "3-2-2";
 			ret.XP = 0;
 			ret.TrueSkill = 0;
-			ret.Mean = DEFAULT_INITIAL_MEAN;
-			ret.StandardDeviation = DEFAULT_INITIAL_STANDARD_DEVIATION;
+            ret.Mean = GameConstants.DEFAULT_INITIAL_MEAN;
+            ret.StandardDeviation = GameConstants.DEFAULT_INITIAL_STANDARD_DEVIATION;
 			ret.SkillPoints = 200;
 			ret.Energy = 100;
 			ret.Fitness = 50;
