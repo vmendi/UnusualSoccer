@@ -30,7 +30,7 @@
 		import GameView.MainView;		
 		import Match.MatchMain;
 		
-		import SoccerServer.DataTypeInitializer;		
+		import HttpService.DataTypeInitializer;		
 		import mx.events.FlexEvent;
 
 		protected function ApplicationCompleteHandler(event:FlexEvent):void

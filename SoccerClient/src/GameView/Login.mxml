@@ -11,7 +11,7 @@
 			import GameModel.LoginModel;
 			import GameModel.MainGameModel;
 			
-			import SoccerServer.enum.VALID_NAME;
+			import HttpService.enum.VALID_NAME;
 			
 			import mx.events.FlexEvent;
 			

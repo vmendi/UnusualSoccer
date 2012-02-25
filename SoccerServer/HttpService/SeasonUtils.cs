@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
@@ -86,7 +87,7 @@ namespace HttpService
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
             {
                 con.Open();
 
@@ -109,13 +110,18 @@ namespace HttpService
             Log.log(MainService.MAINSERVICE_INVOKE, "CheckSeasonEnd: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
         }
 
+        static public DateTime GenerateTheoricalSeasonEndDate(SoccerDataModelDataContext context)
+        {
+            return GenerateTheoricalSeasonEndDate(SeasonUtils.GetCurrentSeason(context).CreationDate);
+        }
+
         // En las fecha de creacion, siempre insertamos la verdadera. Luego los calculos los haremos con la teorica
-        static public DateTime GenerateTheoricalSeasonEndDate(DateTime seasonCreationDate)
+        static private DateTime GenerateTheoricalSeasonEndDate(DateTime seasonCreationDate)
         {
             return GenerateTheoricalSeasonStartDate(seasonCreationDate).AddDays(GameConstants.SEASON_DURATION_DAYS);
         }
 
-        private static DateTime GenerateTheoricalSeasonStartDate(DateTime seasonCreationDate)
+        static private DateTime GenerateTheoricalSeasonStartDate(DateTime seasonCreationDate)
         {
             return new DateTime(seasonCreationDate.Year, seasonCreationDate.Month, seasonCreationDate.Day, 
                                 GameConstants.SEASON_HOUR_STARTTIME, 0, 0, 0, seasonCreationDate.Kind);

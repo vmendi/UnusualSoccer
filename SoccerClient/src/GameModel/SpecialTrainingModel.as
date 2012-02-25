@@ -1,8 +1,8 @@
 package GameModel
 {
-	import SoccerServer.MainService;
-	import SoccerServer.TransferModel.vo.SpecialTraining;
-	import SoccerServer.TransferModel.vo.SpecialTrainingDefinition;
+	import HttpService.MainService;
+	import HttpService.TransferModel.vo.SpecialTraining;
+	import HttpService.TransferModel.vo.SpecialTrainingDefinition;
 	
 	import com.facebook.graph.Facebook;
 	

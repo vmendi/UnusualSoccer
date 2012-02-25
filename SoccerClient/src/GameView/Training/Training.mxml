@@ -14,7 +14,7 @@
 		
 		import GameView.HierarchyUtils;
 		
-		import SoccerServer.TransferModel.vo.PendingTraining;
+		import HttpService.TransferModel.vo.PendingTraining;
 		
 		import mx.binding.utils.BindingUtils;
 		import mx.events.FlexEvent;

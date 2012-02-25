@@ -199,6 +199,28 @@ namespace HttpService.TransferModel
         public List<int> SpecialSkillsIDs;
     }
 
+    public class CompetitionGroup
+    {
+        public string GroupName;        // 1, 2, 3 ... (o alpha beta gamma)
+        public string DivisionName;     // Segunda Division B
+        public int MinimumPoints;       // Zona de ascenso
+
+        public bool Promoted = false; // El equipo ha promocionado de division desde la ultima vez que se envio el grupo
+
+        public List<CompetitionGroupEntry> GroupEntries = new List<CompetitionGroupEntry>();
+    }
+
+    public class CompetitionGroupEntry
+    {
+        public string Name;
+        public long FacebookID;
+        public string PredefinedTeamNameID;
+        public int Points;
+        public int NumMatchesPlayed;
+        public int NumMatchesWon;
+        public int NumMatchesDraw;
+    }
+
 	public class CopyHelper
 	{
 		static public void Copy(Object source, Object target)

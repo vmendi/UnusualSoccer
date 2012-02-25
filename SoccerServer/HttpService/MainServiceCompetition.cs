@@ -163,7 +163,7 @@ namespace HttpService
             using (var context = new SoccerDataModelDataContext())
             {
                 // Segundos restantes al momento pronosticado en el que se acabara la temporada
-                return TransferModel.Utils.GetConservativeRemainingSeconds(SeasonUtils.GenerateTheoricalSeasonEndDate(SeasonUtils.GetCurrentSeason(context).CreationDate));
+                return TransferModel.Utils.GetConservativeRemainingSeconds(SeasonUtils.GenerateTheoricalSeasonEndDate(context));
             }
         }
     }

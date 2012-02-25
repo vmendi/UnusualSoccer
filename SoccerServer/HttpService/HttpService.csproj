@@ -72,7 +72,6 @@
     </Compile>
     <Compile Include="TeamUtils.cs" />
     <Compile Include="TransferModel.cs" />
-    <Compile Include="TransferModelCompetition.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Settings.settings">

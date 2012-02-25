@@ -11,7 +11,7 @@
 		<![CDATA[
 			import GameModel.PredefinedTeamsModel;
 			
-			import SoccerServer.TransferModel.vo.CompetitionGroupEntry;
+			import HttpService.TransferModel.vo.CompetitionGroupEntry;
 			
 			private function InPromotion(theItem : Object) : Boolean
 			{

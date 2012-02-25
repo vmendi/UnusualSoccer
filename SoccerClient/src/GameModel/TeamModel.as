@@ -1,10 +1,10 @@
 package GameModel
 {	
-	import SoccerServer.MainService;
-	import SoccerServer.TransferModel.vo.SoccerPlayer;
-	import SoccerServer.TransferModel.vo.SpecialTraining;
-	import SoccerServer.TransferModel.vo.Team;
-	import SoccerServer.TransferModel.vo.TeamDetails;
+	import HttpService.MainService;
+	import HttpService.TransferModel.vo.SoccerPlayer;
+	import HttpService.TransferModel.vo.SpecialTraining;
+	import HttpService.TransferModel.vo.Team;
+	import HttpService.TransferModel.vo.TeamDetails;
 	
 	import com.facebook.graph.Facebook;
 	

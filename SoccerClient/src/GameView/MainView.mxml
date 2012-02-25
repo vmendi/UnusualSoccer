@@ -25,7 +25,7 @@
 		import GameView.Match.MatchEndDialog;
 		import GameView.Training.SpecialTrainingCompleteDialog;
 		
-		import SoccerServer.TransferModel.vo.SpecialTrainingDefinition;
+		import HttpService.TransferModel.vo.SpecialTrainingDefinition;
 		
 		import mx.events.FlexEvent;
 		
