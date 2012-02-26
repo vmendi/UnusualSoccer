@@ -7,6 +7,7 @@ using HttpService.BDDModel;
 using Microsoft.Samples.EntityDataReader;
 using Weborb.Service;
 using Weborb.Util.Logging;
+using ServerCommon;
 
 
 namespace HttpService

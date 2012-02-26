@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using HttpService;
+using ServerCommon;
 
 namespace SoccerServer
 {
@@ -126,7 +127,7 @@ namespace SoccerServer
         {
             mPlayer.Team.Ticket.TicketPurchaseDate = DateTime.Now;
             mPlayer.Team.Ticket.TicketExpiryDate = mPlayer.Team.Ticket.TicketPurchaseDate;
-            mPlayer.Team.Ticket.RemainingMatches = GameConstants.DEFAULT_NUM_MACHES;
+            mPlayer.Team.Ticket.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
             mDC.SubmitChanges();
 
             FillPurchases();

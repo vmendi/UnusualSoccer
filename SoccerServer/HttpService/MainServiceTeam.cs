@@ -5,6 +5,7 @@ using System.Linq;
 using HttpService.BDDModel;
 using Weborb.Service;
 using Weborb.Util.Logging;
+using ServerCommon;
 
 namespace HttpService
 {
@@ -85,7 +86,7 @@ namespace HttpService
             theTicket.TicketID = team.TeamID;
             theTicket.TicketPurchaseDate = DateTime.Now;
             theTicket.TicketExpiryDate = theTicket.TicketPurchaseDate;
-            theTicket.RemainingMatches = GameConstants.DEFAULT_NUM_MACHES;
+            theTicket.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
 
             mContext.Tickets.InsertOnSubmit(theTicket);
         }
@@ -122,8 +123,8 @@ namespace HttpService
 			ret.Formation = "3-2-2";
 			ret.XP = 0;
 			ret.TrueSkill = 0;
-            ret.Mean = GameConstants.DEFAULT_INITIAL_MEAN;
-            ret.StandardDeviation = GameConstants.DEFAULT_INITIAL_STANDARD_DEVIATION;
+            ret.Mean = TrueSkillHelper.INITIAL_MEAN;
+            ret.StandardDeviation = TrueSkillHelper.INITIAL_SD;
 			ret.SkillPoints = 200;
 			ret.Energy = 100;
 			ret.Fitness = 50;

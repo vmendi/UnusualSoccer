@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-using System.Collections;
-using Weborb.Writer;
 using System.Reflection;
+using ServerCommon;
+
 
 namespace HttpService.TransferModel
 {
@@ -93,7 +91,7 @@ namespace HttpService.TransferModel
 
             IsInjured = from.IsInjured;
 		    LastInjuryDate = from.LastInjuryDate;
-            RemainingInjurySeconds = Utils.GetConservativeRemainingSeconds(LastInjuryDate.AddDays(GameConstants.INJURY_DURATION_DAYS));
+            RemainingInjurySeconds = Utils.GetConservativeRemainingSeconds(LastInjuryDate.AddDays(GlobalConfig.INJURY_DURATION_DAYS));
         }
 	}
 

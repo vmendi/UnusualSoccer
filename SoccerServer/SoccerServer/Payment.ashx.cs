@@ -8,6 +8,7 @@ using Facebook.Web;
 using HttpService;
 using HttpService.BDDModel;
 using Weborb.Util.Logging;
+using ServerCommon;
 
 
 namespace SoccerServer
@@ -21,7 +22,7 @@ namespace SoccerServer
                 if (new CanvasAuthorizer().Authorize())
                 {
                     var signedRequest = context.Request.Params["signed_request"];
-                    var sig = Facebook.FacebookSignedRequest.Parse(Global.Instance.FacebookSettings, signedRequest);
+                    var sig = Facebook.FacebookSignedRequest.Parse(GlobalConfig.FacebookSettings, signedRequest);
 
                     Log.log(Global.GLOBAL_LOG, "Purchase request from user: " + sig.UserId);
 
@@ -188,7 +189,7 @@ namespace SoccerServer
         static private void AwardTicketTime(Ticket theTicket, int ticketKind, TimeSpan time)
         {
             // A la expiracion del ticket, estara bien
-            theTicket.RemainingMatches = GameConstants.DEFAULT_NUM_MACHES;
+            theTicket.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
 
             // Siempre marca la fecha del ultimo ticket comprado
             theTicket.TicketPurchaseDate = DateTime.Now;

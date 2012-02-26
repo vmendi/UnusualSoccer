@@ -8,6 +8,7 @@ using Facebook;
 using Facebook.Web;
 using HttpService;
 using HttpService.BDDModel;
+using ServerCommon;
 
 namespace SoccerServer
 {
@@ -16,7 +17,7 @@ namespace SoccerServer
         protected void Page_Load(object sender, EventArgs e)
         {
             // Cargamos nuestros settings procedurales que nos deja ahí Global.asax
-            FacebookApplication.SetApplication(Global.Instance.FacebookSettings as IFacebookApplication);
+            FacebookApplication.SetApplication(GlobalConfig.FacebookSettings as IFacebookApplication);
 
             // Asumimos que si no tenemos signed_request es porque nos están intendo cargar desde fuera del canvas: redireccionamos al canvas.
             // Hemos comprobado que nos llaman sin signed_request cuando por ejemplo pasan los crawlers.
@@ -25,13 +26,13 @@ namespace SoccerServer
             // en el canvas, asi que lo dejamos redireccionando.
             if (HttpContext.Current.Request["signed_request"] == null)
             {
-                Response.Redirect(Global.Instance.FacebookSettings.CanvasPage, true);
+                Response.Redirect(GlobalConfig.FacebookSettings.CanvasPage, true);
             }
             
             // Para las versiones no-default (Mahou) el IIS deberia estar configurado para responder con la pagina adecuada.
             // Sin embargo, para que no haya que reconfigurar el IIS para hacer una prueba, comprobamos aqui si somos una 
             // version no-default y hacemos un transfer.
-            if (Global.Instance.ServerSettings.VersionID == "MahouLigaChapas" &&
+            if (GlobalConfig.ServerSettings.VersionID == "MahouLigaChapas" &&
                 !HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.ToLower().Contains("defaultmahou.aspx"))
             {
                 Server.Transfer("~/DefaultMahou.aspx");
@@ -115,8 +116,8 @@ namespace SoccerServer
 
         protected void RunGlobalReplacements(StringBuilder pageSource)
         {
-            var serverSettings = Global.Instance.ServerSettings;
-            var theFBApp = Global.Instance.FacebookSettings;
+            var serverSettings = GlobalConfig.ServerSettings;
+            var theFBApp = GlobalConfig.FacebookSettings;
 
             // Aqui soliamos hacer reemplazos, pero gracias a la limpieza de los meta og ya no hace falta.
 
@@ -126,8 +127,8 @@ namespace SoccerServer
 
         protected void RunDefaultPanelReplacements(StringBuilder pageSource)
         {
-            var theFBApp = Global.Instance.FacebookSettings;
-            var serverSettings = Global.Instance.ServerSettings;
+            var theFBApp = GlobalConfig.FacebookSettings;
+            var serverSettings = GlobalConfig.ServerSettings;
             
             pageSource.Replace("${version_major}", "10");       // Flex SDK 4.1 => Flash Player 10.0.0
             pageSource.Replace("${version_minor}", "0");
@@ -174,7 +175,7 @@ namespace SoccerServer
             var locale = ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["locale"] as string;
 
             // MahouLigaChapas nunca puede ser otro idioma que no sea español de España
-            if (Global.Instance.ServerSettings.VersionID == "MahouLigaChapas")
+            if (GlobalConfig.ServerSettings.VersionID == "MahouLigaChapas")
                 locale = "es_ES";
             else
             if (locale == "es_ES")  // Es un español que esta accediendo a Unusual Soccer -> Lo mutamos a es_LA

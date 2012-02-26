@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Net;
 using System.IO;
+using System.Net;
+using ServerCommon;
 
 namespace SoccerServer
 {
@@ -40,7 +38,7 @@ namespace SoccerServer
         public static string GetApplicationAccessToken()
         {
             var graphApiReq = String.Format("https://graph.facebook.com/oauth/access_token?client_id={0}&client_secret={1}&grant_type=client_credentials",
-                                            Global.Instance.FacebookSettings.AppId, Global.Instance.FacebookSettings.AppSecret);
+                                            GlobalConfig.FacebookSettings.AppId, GlobalConfig.FacebookSettings.AppSecret);
             return GetHttpResponse(graphApiReq, null);  // Lo retorna directamente como "access_token=xxx", sin JSON
         }
 

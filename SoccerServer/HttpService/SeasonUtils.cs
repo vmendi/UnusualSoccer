@@ -7,6 +7,7 @@ using System.Linq;
 using HttpService.BDDModel;
 using Microsoft.Samples.EntityDataReader;
 using Weborb.Util.Logging;
+using ServerCommon;
 
 namespace HttpService
 {
@@ -118,13 +119,13 @@ namespace HttpService
         // En las fecha de creacion, siempre insertamos la verdadera. Luego los calculos los haremos con la teorica
         static private DateTime GenerateTheoricalSeasonEndDate(DateTime seasonCreationDate)
         {
-            return GenerateTheoricalSeasonStartDate(seasonCreationDate).AddDays(GameConstants.SEASON_DURATION_DAYS);
+            return GenerateTheoricalSeasonStartDate(seasonCreationDate).AddDays(GlobalConfig.SEASON_DURATION_DAYS);
         }
 
         static private DateTime GenerateTheoricalSeasonStartDate(DateTime seasonCreationDate)
         {
             return new DateTime(seasonCreationDate.Year, seasonCreationDate.Month, seasonCreationDate.Day, 
-                                GameConstants.SEASON_HOUR_STARTTIME, 0, 0, 0, seasonCreationDate.Kind);
+                                GlobalConfig.SEASON_HOUR_STARTTIME, 0, 0, 0, seasonCreationDate.Kind);
         }
 
         private static void SeasonEndInner(CompetitionSeason oldSeason, SoccerDataModelDataContext theContext, SqlConnection con, SqlTransaction tran)
@@ -173,7 +174,7 @@ namespace HttpService
                                            select entry.Team.TeamID);
 
                 // Numero de grupos en ESTA division, los que vamos a crear
-                int numGroups = (int)(((float)currDivisionTeams.Count() / (float)GameConstants.COMPETITION_GROUP_ENTRIES) + 1.0);
+                int numGroups = (int)(((float)currDivisionTeams.Count() / (float)GlobalConfig.COMPETITION_GROUP_ENTRIES) + 1.0);
 
                 // Los creamos para a continuacion hacer una insercion Bulk. Haremos tantas inserciones bulk como divisiones
                 List<CompetitionGroup> groups = new List<CompetitionGroup>(numGroups);
@@ -201,7 +202,7 @@ namespace HttpService
 
                 for (int c = 0; c < numGroups; ++c)
                 {
-                    for (var d = c * GameConstants.COMPETITION_GROUP_ENTRIES; d < (c + 1) * GameConstants.COMPETITION_GROUP_ENTRIES; ++d)
+                    for (var d = c * GlobalConfig.COMPETITION_GROUP_ENTRIES; d < (c + 1) * GlobalConfig.COMPETITION_GROUP_ENTRIES; ++d)
                     {
                         if (d >= currDivisionTeams.Count())
                             break;

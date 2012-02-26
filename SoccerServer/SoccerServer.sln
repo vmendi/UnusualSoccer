@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpService", "HttpService\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Realtime", "Realtime\Realtime.csproj", "{EC84C8C2-3FD7-4A7D-8438-D0D84E1E1CD2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerCommon", "ServerCommon\ServerCommon.csproj", "{F1DC52CB-B4FD-4BFD-ACA7-268F47D864EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{EC84C8C2-3FD7-4A7D-8438-D0D84E1E1CD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC84C8C2-3FD7-4A7D-8438-D0D84E1E1CD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC84C8C2-3FD7-4A7D-8438-D0D84E1E1CD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1DC52CB-B4FD-4BFD-ACA7-268F47D864EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1DC52CB-B4FD-4BFD-ACA7-268F47D864EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1DC52CB-B4FD-4BFD-ACA7-268F47D864EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1DC52CB-B4FD-4BFD-ACA7-268F47D864EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HttpService.BDDModel;
+using ServerCommon;
 
 namespace HttpService
 {
@@ -57,7 +58,7 @@ namespace HttpService
             foreach (var sp in injured)
             {
                 // Las lesiones duran N dias...
-                if ((now - sp.LastInjuryDate).TotalDays >= GameConstants.INJURY_DURATION_DAYS)
+                if ((now - sp.LastInjuryDate).TotalDays >= GlobalConfig.INJURY_DURATION_DAYS)
                 {
                     sp.IsInjured = false;
                     bSubmit = true;

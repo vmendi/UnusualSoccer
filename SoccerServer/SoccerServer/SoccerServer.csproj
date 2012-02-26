@@ -226,7 +226,6 @@
       <DependentUpon>Cancelled.aspx</DependentUpon>
     </Compile>
     <Compile Include="FBUtils.cs" />
-    <Compile Include="ServerConfig.cs" />
     <Compile Include="Deauthorize.aspx.cs">
       <DependentUpon>Deauthorize.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -335,6 +334,10 @@
     <ProjectReference Include="..\Realtime\Realtime.csproj">
       <Project>{EC84C8C2-3FD7-4A7D-8438-D0D84E1E1CD2}</Project>
       <Name>Realtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerCommon\ServerCommon.csproj">
+      <Project>{F1DC52CB-B4FD-4BFD-ACA7-268F47D864EE}</Project>
+      <Name>ServerCommon</Name>
     </ProjectReference>
     <ProjectReference Include="..\Skills\Skills.csproj">
       <Project>{15AD1345-984C-48ED-AF9A-2EAB44E5AA2B}</Project>

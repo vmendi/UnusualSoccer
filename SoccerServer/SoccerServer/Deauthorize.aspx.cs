@@ -2,6 +2,7 @@
 using System.Linq;
 using HttpService;
 using Weborb.Util.Logging;
+using ServerCommon;
 
 namespace SoccerServer
 {
@@ -13,7 +14,7 @@ namespace SoccerServer
             
             try
             {
-                var sig = Facebook.FacebookSignedRequest.Parse(Global.Instance.FacebookSettings, signedRequest);
+                var sig = Facebook.FacebookSignedRequest.Parse(GlobalConfig.FacebookSettings, signedRequest);
 
                 // Borrar usuarios sigue siendo malo... por ejemplo, si nos borran mientras estamos en medio de un partido, estabamos
                 // fallando en el construtor del RealtimeMatchResult, en GetTooManyTimes. No pasa nada porque hemos soldificado la zona
@@ -47,5 +48,6 @@ namespace SoccerServer
                 }
             }
         }
+
 	}
 }

@@ -3,6 +3,8 @@ using System.Linq;
 using HttpService;
 using HttpService.BDDModel;
 using NetEngine;
+using Realtime;
+using ServerCommon;
 
 namespace SoccerServer
 {
@@ -187,7 +189,7 @@ namespace SoccerServer
             {
                 ticket.TicketPurchaseDate = DateTime.Now;
                 ticket.TicketExpiryDate = ticket.TicketPurchaseDate;
-                ticket.RemainingMatches = GameConstants.DEFAULT_NUM_MACHES;
+                ticket.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
             }
             mDC.SubmitChanges();
         }
@@ -220,8 +222,8 @@ namespace SoccerServer
         private void ShowRestrictions()
         {
             var access_token = FBUtils.GetApplicationAccessToken();
-            var response = FBUtils.GetHttpResponse(String.Format("https://graph.facebook.com/{0}?fields=restrictions&{1}", 
-                                                                  Global.Instance.FacebookSettings.AppId, access_token), null);
+            var response = FBUtils.GetHttpResponse(String.Format("https://graph.facebook.com/{0}?fields=restrictions&{1}",
+                                                                  GlobalConfig.FacebookSettings.AppId, access_token), null);
 
             MyLogConsole.Text += "------------------------Restrictions------------------------<br/>" + response + 
                             "<br/>------------------------------------------------------------<br/>";
@@ -243,7 +245,7 @@ namespace SoccerServer
             var access_token = FBUtils.GetApplicationAccessToken();
 
             var post = String.Format("https://graph.facebook.com/{0}?restrictions={2}&{1}",
-                                     Global.Instance.FacebookSettings.AppId, access_token, "{\"location\":\"" + lang + "\"}");
+                                     GlobalConfig.FacebookSettings.AppId, access_token, "{\"location\":\"" + lang + "\"}");
 
             // El segundo parametro fuerza el POST
             var response = FBUtils.GetHttpResponse(post, new byte[0]);
