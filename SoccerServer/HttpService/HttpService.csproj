@@ -37,11 +37,11 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="weborb">
       <HintPath>..\SoccerServer\bin\weborb.dll</HintPath>
     </Reference>
@@ -63,11 +63,6 @@
     </Compile>
     <Compile Include="QueryResultCache.cs" />
     <Compile Include="SeasonUtils.cs" />
-    <Compile Include="SoccerDataModel.designer.cs">
-      <DependentUpon>SoccerDataModel.dbml</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <Compile Include="TeamUtils.cs" />
     <Compile Include="TransferModel.cs" />
   </ItemGroup>
@@ -76,19 +71,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="SoccerDataModel.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>SoccerDataModel.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SoccerDataModel.dbml.layout">
-      <DependentUpon>SoccerDataModel.dbml</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ServerCommon\ServerCommon.csproj">

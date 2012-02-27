@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
-using HttpService.BDDModel;
-using Microsoft.Samples.EntityDataReader;
+using ServerCommon;
+using ServerCommon.BDDModel;
 using Weborb.Service;
 using Weborb.Util.Logging;
-using ServerCommon;
 
 
 namespace HttpService
@@ -31,7 +30,7 @@ namespace HttpService
                     mContext.LoadOptions = PrecompiledQueries.RefreshGroupForTeam.LoadOptions;
 
                     // Equipo correspondiente al FacebookID
-                    BDDModel.Team theTeam = PrecompiledQueries.RefreshGroupForTeam.GetTeam.Invoke(mContext, facebookID);
+                    Team theTeam = PrecompiledQueries.RefreshGroupForTeam.GetTeam.Invoke(mContext, facebookID);
 
                     // Nuestra propia copia de GetCurrentSeason para poder precompilar (var currentSeason = GetCurrentSeason(mContext))
                     var currentSeason = PrecompiledQueries.RefreshGroupForTeam.GetCurrentSeason.Invoke(mContext);
@@ -68,7 +67,7 @@ namespace HttpService
             }
         }
        
-        private static CompetitionGroupEntry AddInactiveTeamToCompetition(SoccerDataModelDataContext theContext, CompetitionSeason currentSeason, BDDModel.Team theTeam)
+        private static CompetitionGroupEntry AddInactiveTeamToCompetition(SoccerDataModelDataContext theContext, CompetitionSeason currentSeason, Team theTeam)
         {
             // Veamos en que division se quedo la ultima vez que jugo
             var lastDivision = (from e in theTeam.CompetitionGroupEntries

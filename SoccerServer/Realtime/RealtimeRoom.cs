@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using NetEngine;
 using HttpService;
+using ServerCommon;
 
 namespace Realtime
 {

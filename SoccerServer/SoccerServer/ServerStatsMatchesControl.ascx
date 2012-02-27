@@ -17,33 +17,33 @@
 
 		<asp:TemplateField HeaderText="Duration" ItemStyle-Width="40">
 			<ItemTemplate>
-				<asp:Label ID="Label3" runat="server" Text="<%# GetDurationOfMatch((HttpService.BDDModel.Match)Container.DataItem) %>" />
+				<asp:Label ID="Label3" runat="server" Text="<%# GetDurationOfMatch((ServerCommon.BDDModel.Match)Container.DataItem) %>" />
 			</ItemTemplate>
 		</asp:TemplateField>
 
         <asp:TemplateField HeaderText="Player1" ItemStyle-Width="200">
 			<ItemTemplate>
-				<asp:HyperLink ID="Label4" runat="server" Text="<%# GetPlayerNameOfMatch((HttpService.BDDModel.Match)Container.DataItem, 0) %>"
-                                                          NavigateUrl="<%# GetProfileLinkOfMatch((HttpService.BDDModel.Match)Container.DataItem, 0) %>" />
+				<asp:HyperLink ID="Label4" runat="server" Text="<%# GetPlayerNameOfMatch((ServerCommon.BDDModel.Match)Container.DataItem, 0) %>"
+                                                          NavigateUrl="<%# GetProfileLinkOfMatch((ServerCommon.BDDModel.Match)Container.DataItem, 0) %>" />
 			</ItemTemplate>
 		</asp:TemplateField>
 
 		<asp:TemplateField HeaderText="Player2" ItemStyle-Width="200">
 			<ItemTemplate>
-				<asp:HyperLink ID="Label5" runat="server" Text="<%# GetPlayerNameOfMatch((HttpService.BDDModel.Match)Container.DataItem, 1) %>"
-                                                          NavigateUrl="<%# GetProfileLinkOfMatch((HttpService.BDDModel.Match)Container.DataItem, 1) %>" />
+				<asp:HyperLink ID="Label5" runat="server" Text="<%# GetPlayerNameOfMatch((ServerCommon.BDDModel.Match)Container.DataItem, 1) %>"
+                                                          NavigateUrl="<%# GetProfileLinkOfMatch((ServerCommon.BDDModel.Match)Container.DataItem, 1) %>" />
 			</ItemTemplate>
 		</asp:TemplateField>
 
         <asp:TemplateField HeaderText="Goals Player1" ItemStyle-Width="30">
 			<ItemTemplate>
-				<asp:Label ID="Label4" runat="server" Text="<%# GetGoalsOfMatch((HttpService.BDDModel.Match)Container.DataItem, 0) %>" />
+				<asp:Label ID="Label4" runat="server" Text="<%# GetGoalsOfMatch((ServerCommon.BDDModel.Match)Container.DataItem, 0) %>" />
 			</ItemTemplate>
 		</asp:TemplateField>
 
         <asp:TemplateField HeaderText="Goals Player2" ItemStyle-Width="30">
 			<ItemTemplate>
-				<asp:Label ID="Label4" runat="server" Text="<%# GetGoalsOfMatch((HttpService.BDDModel.Match)Container.DataItem, 1) %>" />
+				<asp:Label ID="Label4" runat="server" Text="<%# GetGoalsOfMatch((ServerCommon.BDDModel.Match)Container.DataItem, 1) %>" />
 			</ItemTemplate>
 		</asp:TemplateField>
 

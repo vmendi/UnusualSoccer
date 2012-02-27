@@ -32,16 +32,16 @@
 
 namespace Microsoft.Samples.EntityDataReader
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
-  using System.Data;
-  using System.Reflection;
-  using System.Data.Common;
-  using System.Data.Objects.DataClasses;
-  using System.Data.Metadata.Edm;
-  using System.Data.Objects;
-  using System.Linq.Expressions;
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.Common;
+    using System.Data.Metadata.Edm;
+    using System.Data.Objects;
+    using System.Data.Objects.DataClasses;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Reflection;
 
 
   /// <summary>

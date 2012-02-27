@@ -38,8 +38,8 @@
         </asp:GridView>
 
         <asp:LinqDataSource ID="MyMatchesLinQDataSource"  
-			ContextTypeName="HttpService.SoccerDataModelDataContext" TableName="Matches" 
-			runat="server" OrderBy="MatchID desc">
+			                ContextTypeName="ServerCommon.SoccerDataModelDataContext" TableName="Matches" 
+			                runat="server" OrderBy="MatchID desc">
 		</asp:LinqDataSource>
 
         <br />

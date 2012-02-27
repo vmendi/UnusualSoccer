@@ -2,10 +2,11 @@
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
-using HttpService.BDDModel;
+using ServerCommon;
+using ServerCommon.BDDModel;
 using Weborb.Service;
 using Weborb.Util.Logging;
-using ServerCommon;
+using System.Configuration;
 
 namespace HttpService
 {
@@ -15,7 +16,7 @@ namespace HttpService
 		{
             TransferModel.Team ret = null;
 
-            using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
             {
                 using (mContext = new SoccerDataModelDataContext(con))
                 {
@@ -186,9 +187,9 @@ namespace HttpService
 
             using (mContext = new SoccerDataModelDataContext())
             {
-                BDDModel.Team theTeam = (from t in mContext.Teams
-                                         where t.Player.FacebookID == facebookID
-                                         select t).First();
+                Team theTeam = (from t in mContext.Teams
+                                where t.Player.FacebookID == facebookID
+                                select t).First();
 
                 var ret = new TransferModel.TeamDetails();
 

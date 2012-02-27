@@ -7,7 +7,7 @@ using System.Web.UI;
 using Facebook;
 using Facebook.Web;
 using HttpService;
-using HttpService.BDDModel;
+using ServerCommon.BDDModel;
 using ServerCommon;
 
 namespace SoccerServer

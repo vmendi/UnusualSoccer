@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using HttpService;
-using HttpService.BDDModel;
+using ServerCommon.BDDModel;
 using NetEngine;
 using ServerCommon;
 using Weborb.Util.Logging;

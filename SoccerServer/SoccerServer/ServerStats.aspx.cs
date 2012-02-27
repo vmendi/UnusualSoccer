@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using HttpService;
-using HttpService.BDDModel;
 using NetEngine;
 using Realtime;
 using ServerCommon;
+using ServerCommon.BDDModel;
 
 namespace SoccerServer
 {

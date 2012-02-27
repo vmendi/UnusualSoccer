@@ -21,7 +21,7 @@
 			<Columns>
                 <asp:TemplateField HeaderText="Team name" ItemStyle-Width="220px">
                     <ItemTemplate>
-						<asp:LinkButton ID="LinkButton1" runat="server" Text='<%# ((HttpService.BDDModel.Team)Container.DataItem).Name %>'
+						<asp:LinkButton ID="LinkButton1" runat="server" Text='<%# ((ServerCommon.BDDModel.Team)Container.DataItem).Name %>'
                             CommandName="ViewProfile" CommandArgument='<%# Eval("TeamID") %>'/>
                     </ItemTemplate>
                 </asp:TemplateField>
@@ -34,7 +34,7 @@
 							NavigateUrl = '<%# "http://www.facebook.com/profile.php?id=" + Eval("Player.FacebookID") %>' />
 						</div>
 						<div style="margin-top:15px;">
-							<asp:HyperLink ID="HyperLink2" runat="server" Text='<%# GetFacebookUserName((HttpService.BDDModel.Team)Container.DataItem)%>'
+							<asp:HyperLink ID="HyperLink2" runat="server" Text='<%# GetFacebookUserName((ServerCommon.BDDModel.Team)Container.DataItem)%>'
 							NavigateUrl = '<%# "http://www.facebook.com/profile.php?id=" + Eval("Player.FacebookID") %>'  />
 						</div>
                     </ItemTemplate>
@@ -46,37 +46,37 @@
 
 				<asp:TemplateField HeaderText="Total Matches" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50">
                     <ItemTemplate>
-						<asp:Label runat="server" Text='<%# GetTotalMatchesCount((HttpService.BDDModel.Team)Container.DataItem) %>' />
+						<asp:Label runat="server" Text='<%# GetTotalMatchesCount((ServerCommon.BDDModel.Team)Container.DataItem) %>' />
                     </ItemTemplate>
                 </asp:TemplateField>
 
 				<asp:TemplateField HeaderText="Won Matches" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50">
 					<ItemTemplate>
-					<asp:Label runat="server" Text="<%# GetWonMatchesCount((HttpService.BDDModel.Team)Container.DataItem) %>" />
+					<asp:Label runat="server" Text="<%# GetWonMatchesCount((ServerCommon.BDDModel.Team)Container.DataItem) %>" />
 					</ItemTemplate>
 				</asp:TemplateField>
 
                 <asp:TemplateField HeaderText="Draw Matches" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50">
 					<ItemTemplate>
-					<asp:Label runat="server" Text="<%# GetDrawMatchesCount((HttpService.BDDModel.Team)Container.DataItem) %>" />
+					<asp:Label runat="server" Text="<%# GetDrawMatchesCount((ServerCommon.BDDModel.Team)Container.DataItem) %>" />
 					</ItemTemplate>
 				</asp:TemplateField>
 
 				<asp:TemplateField HeaderText="Lost Matches" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50">
 					<ItemTemplate>
-					<asp:Label runat="server" Text="<%# GetLostMatchesCount((HttpService.BDDModel.Team)Container.DataItem) %>" />
+					<asp:Label runat="server" Text="<%# GetLostMatchesCount((ServerCommon.BDDModel.Team)Container.DataItem) %>" />
 					</ItemTemplate>
 				</asp:TemplateField>
 
 				<asp:TemplateField HeaderText="Goals Scored" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50">
 					<ItemTemplate>
-					<asp:Label runat="server" Text="<%# GetTotalGoalsScored((HttpService.BDDModel.Team)Container.DataItem) %>" />
+					<asp:Label runat="server" Text="<%# GetTotalGoalsScored((ServerCommon.BDDModel.Team)Container.DataItem) %>" />
 					</ItemTemplate>
 				</asp:TemplateField>
 
 				<asp:TemplateField HeaderText="Goals Received" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="50">
 					<ItemTemplate>
-					<asp:Label runat="server" Text="<%# GetTotalGoalsReceived((HttpService.BDDModel.Team)Container.DataItem) %>" />
+					<asp:Label runat="server" Text="<%# GetTotalGoalsReceived((ServerCommon.BDDModel.Team)Container.DataItem) %>" />
 					</ItemTemplate>
 				</asp:TemplateField>
 			</Columns>
@@ -89,7 +89,7 @@
         <asp:HyperLink ID="HyperLink1" runat="server" Text="Back to home" NavigateUrl="~/ServerStats.aspx" />
 
         <asp:LinqDataSource ID="MyRankingLinQDataSource"
-			ContextTypeName="HttpService.SoccerDataModelDataContext" TableName="Teams" 
+			ContextTypeName="ServerCommon.SoccerDataModelDataContext" TableName="Teams" 
 			runat="server" OrderBy="TrueSkill desc, TeamID asc">
 		</asp:LinqDataSource>
     </form>

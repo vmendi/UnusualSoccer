@@ -23,7 +23,7 @@ namespace HttpService.TransferModel
 		public List<SoccerPlayer> SoccerPlayers = new List<SoccerPlayer>();
 		public List<SpecialTraining> SpecialTrainings = new List<SpecialTraining>();
 		
-		public Team(BDDModel.Team from) 
+		public Team(ServerCommon.BDDModel.Team from) 
 		{
 			Name = from.Name;
 			PredefinedTeamNameID = from.PredefinedTeamNameID;
@@ -37,10 +37,10 @@ namespace HttpService.TransferModel
 			if (from.PendingTraining != null)
 				PendingTraining = new PendingTraining(from.PendingTraining);
 
-			foreach (BDDModel.SoccerPlayer soccerPlayer in from.SoccerPlayers)
+			foreach (ServerCommon.BDDModel.SoccerPlayer soccerPlayer in from.SoccerPlayers)
 				SoccerPlayers.Add(new SoccerPlayer(soccerPlayer));
 
-			foreach (BDDModel.SpecialTraining sp in from.SpecialTrainings)
+			foreach (ServerCommon.BDDModel.SpecialTraining sp in from.SpecialTrainings)
 				SpecialTrainings.Add(new SpecialTraining(sp));
 
             Ticket = new Ticket(from.Ticket);
@@ -54,7 +54,7 @@ namespace HttpService.TransferModel
         public DateTime TicketExpiryDate;
         public int      TicketExpiryDateRemainingSeconds;
 
-        public Ticket(BDDModel.Ticket from) 
+        public Ticket(ServerCommon.BDDModel.Ticket from) 
         {
             RemainingMatches = from.RemainingMatches;
             TicketPurchaseDate = from.TicketPurchaseDate;
@@ -78,7 +78,7 @@ namespace HttpService.TransferModel
 		public DateTime LastInjuryDate;
         public int      RemainingInjurySeconds;
 
-		public SoccerPlayer(BDDModel.SoccerPlayer from) 
+		public SoccerPlayer(ServerCommon.BDDModel.SoccerPlayer from) 
         { 
             SoccerPlayerID = from.SoccerPlayerID;
 		    Name = from.Name;
@@ -111,7 +111,7 @@ namespace HttpService.TransferModel
 		public int EnergyStep;
 		public int EnergyTotal;
 
-		public SpecialTrainingDefinition(BDDModel.SpecialTrainingDefinition from) { CopyHelper.Copy(from, this); }
+		public SpecialTrainingDefinition(ServerCommon.BDDModel.SpecialTrainingDefinition from) { CopyHelper.Copy(from, this); }
 	}
 
 	public class SpecialTraining
@@ -120,7 +120,7 @@ namespace HttpService.TransferModel
 		public int EnergyCurrent;
 		public bool IsCompleted;
 
-		public SpecialTraining(BDDModel.SpecialTraining from) 
+		public SpecialTraining(ServerCommon.BDDModel.SpecialTraining from) 
 		{
 			SpecialTrainingDefinition = new SpecialTrainingDefinition(from.SpecialTrainingDefinition);
 			EnergyCurrent = from.EnergyCurrent;
@@ -135,7 +135,7 @@ namespace HttpService.TransferModel
 		public int FitnessDelta;
 		public int Time;
 
-		public TrainingDefinition(BDDModel.TrainingDefinition from) { CopyHelper.Copy(from, this); }
+		public TrainingDefinition(ServerCommon.BDDModel.TrainingDefinition from) { CopyHelper.Copy(from, this); }
 	}
 
 	public class PendingTraining
@@ -145,7 +145,7 @@ namespace HttpService.TransferModel
 		public DateTime TimeEnd;
         public int      RemainingSeconds;
 
-		public PendingTraining(BDDModel.PendingTraining from) 
+		public PendingTraining(ServerCommon.BDDModel.PendingTraining from) 
 		{
             TrainingDefinition = new TrainingDefinition(from.TrainingDefinition);
 			TimeStart = from.TimeStart;

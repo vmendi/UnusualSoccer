@@ -5,7 +5,8 @@ using System.Net;
 using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 using HttpService;
-using HttpService.BDDModel;
+using ServerCommon.BDDModel;
+using ServerCommon;
 
 namespace SoccerServer
 {

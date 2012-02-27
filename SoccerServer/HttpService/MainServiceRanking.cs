@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
-using HttpService.TransferModel;
-using HttpService.BDDModel;
+using ServerCommon;
+using ServerCommon.BDDModel;
 using Weborb.Service;
 
 namespace HttpService
@@ -12,7 +10,7 @@ namespace HttpService
 	public partial class MainService
 	{
         [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 10000)]
-		public RankingPage RefreshRankingPage(int pageIndex)
+        public TransferModel.RankingPage RefreshRankingPage(int pageIndex)
 		{
             using (CreateDataForRequest())
             {
@@ -23,24 +21,24 @@ namespace HttpService
             }
 		}
 
-        private RankingPage RefreshRankingPageInner(int pageIndex)
+        private TransferModel.RankingPage RefreshRankingPageInner(int pageIndex)
         {
             int numTeams = mContext.Teams.Count();
-            int numPages = (int)Math.Ceiling((float)numTeams / (float)RankingPage.RANKING_TEAMS_PER_PAGE);
+            int numPages = (int)Math.Ceiling((float)numTeams / (float)TransferModel.RankingPage.RANKING_TEAMS_PER_PAGE);
 
             if (pageIndex > numPages - 1)
                 pageIndex = numPages - 1;
 
-            int startPosition = RankingPage.RANKING_TEAMS_PER_PAGE * pageIndex;
-            RankingPage ret = new RankingPage(pageIndex, numPages);
+            int startPosition = TransferModel.RankingPage.RANKING_TEAMS_PER_PAGE * pageIndex;
+            TransferModel.RankingPage ret = new TransferModel.RankingPage(pageIndex, numPages);
 
             var ranking = (from team in mContext.Teams
                            orderby team.TrueSkill descending, team.TeamID ascending
-                           select team).Skip(startPosition).Take(RankingPage.RANKING_TEAMS_PER_PAGE);
+                           select team).Skip(startPosition).Take(TransferModel.RankingPage.RANKING_TEAMS_PER_PAGE);
 
-            foreach (BDDModel.Team team in ranking)
+            foreach (ServerCommon.BDDModel.Team team in ranking)
             {
-                RankingTeam rankingTeam = new RankingTeam();
+                TransferModel.RankingTeam rankingTeam = new TransferModel.RankingTeam();
                 rankingTeam.PredefinedTeamNameID = team.PredefinedTeamNameID;
                 rankingTeam.FacebookID = team.Player.FacebookID;
                 rankingTeam.Name = team.Name;
@@ -58,9 +56,9 @@ namespace HttpService
             // Nos ahorramos pedir mSession y mPlayer, para esta query no son necesarios
             using (mContext = new SoccerDataModelDataContext())
             {
-                BDDModel.Team theTeam = (from t in mContext.Teams
-                                         where t.Player.FacebookID == facebookID
-                                         select t).First();
+                Team theTeam = (from t in mContext.Teams
+                                where t.Player.FacebookID == facebookID
+                                select t).First();
                 if (theTeam == null)
                     throw new Exception("Unknown FacebookID");
 
@@ -68,7 +66,7 @@ namespace HttpService
             }
 		}
 
-        private TransferModel.TeamMatchStats GetMatchStatsFor(BDDModel.Team theTeam)
+        private TransferModel.TeamMatchStats GetMatchStatsFor(Team theTeam)
         {
             TransferModel.TeamMatchStats ret = new TransferModel.TeamMatchStats();
 

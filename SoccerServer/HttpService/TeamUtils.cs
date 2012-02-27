@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using HttpService.BDDModel;
 using ServerCommon;
+using ServerCommon.BDDModel;
 
 namespace HttpService
 {

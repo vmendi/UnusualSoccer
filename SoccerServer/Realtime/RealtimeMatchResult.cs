@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HttpService;
-using HttpService.BDDModel;
+using ServerCommon.BDDModel;
 using ServerCommon;
 using Weborb.Util.Logging;
 

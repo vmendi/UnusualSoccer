@@ -13,7 +13,7 @@ namespace SoccerServer
     {
         private SoccerDataModelDataContext mDC;
         private int mTeamID;
-        private HttpService.BDDModel.Player mPlayer;
+        private ServerCommon.BDDModel.Player mPlayer;
 
         protected override void OnLoad(EventArgs e)
         {
@@ -54,7 +54,7 @@ namespace SoccerServer
         public void FillProfile()
         {
             LinqDataSource matchesForProfileLinQ = new LinqDataSource();
-            matchesForProfileLinQ.ContextTypeName = "HttpService.SoccerDataModelDataContext";
+            matchesForProfileLinQ.ContextTypeName = "ServerCommon.SoccerDataModelDataContext";
             matchesForProfileLinQ.TableName = "Matches";
             matchesForProfileLinQ.OrderBy = "MatchID desc";
             matchesForProfileLinQ.Where = "MatchParticipations.Any(TeamID == " + mTeamID + ")";

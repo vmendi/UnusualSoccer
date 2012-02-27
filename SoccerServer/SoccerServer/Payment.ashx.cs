@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Script.Serialization;
 using Facebook.Web;
 using HttpService;
-using HttpService.BDDModel;
+using ServerCommon.BDDModel;
 using Weborb.Util.Logging;
 using ServerCommon;
 

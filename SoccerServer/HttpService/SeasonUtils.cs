@@ -4,10 +4,10 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
-using HttpService.BDDModel;
 using Microsoft.Samples.EntityDataReader;
-using Weborb.Util.Logging;
 using ServerCommon;
+using ServerCommon.BDDModel;
+using Weborb.Util.Logging;
 
 namespace HttpService
 {

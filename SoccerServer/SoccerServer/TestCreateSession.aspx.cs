@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
 using HttpService;
-using HttpService.BDDModel;
+using ServerCommon.BDDModel;
+using ServerCommon;
 
 namespace SoccerServer
 {

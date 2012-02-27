@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Web;
+using ServerCommon;
+using ServerCommon.BDDModel;
 using Weborb.Util.Logging;
-using HttpService.BDDModel;
-using System.Diagnostics;
 
 
 namespace HttpService

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using HttpService;
-using HttpService.BDDModel;
+using ServerCommon.BDDModel;
 using NetEngine;
 using Realtime;
 using Weborb.Messaging.Server;
