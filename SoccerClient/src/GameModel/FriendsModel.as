@@ -1,7 +1,7 @@
 package GameModel
 {
-	import SoccerServer.MainService;
-	import SoccerServer.TransferModel.vo.SoccerPlayer;
+	import HttpService.MainService;
+	import HttpService.TransferModel.vo.SoccerPlayer;
 	
 	import com.facebook.graph.Facebook;
 	

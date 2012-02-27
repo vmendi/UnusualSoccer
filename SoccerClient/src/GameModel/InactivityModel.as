@@ -2,8 +2,8 @@ package GameModel
 {
 	import GameView.Team.Team;
 	
-	import SoccerServer.MainService;
-	import SoccerServer.TransferModel.vo.Team;
+	import HttpService.MainService;
+	import HttpService.TransferModel.vo.Team;
 	
 	import flash.events.Event;
 	import flash.events.TimerEvent;
@@ -50,7 +50,7 @@ package GameModel
 			StopAndDestroyTimer();
 		}
 		
-		private function OnTeamChanged(team : SoccerServer.TransferModel.vo.Team) : void
+		private function OnTeamChanged(team : HttpService.TransferModel.vo.Team) : void
 		{
 			ReevaluateTimerCreation();
 		}

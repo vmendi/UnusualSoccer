@@ -11,7 +11,7 @@
 		
 		import GameView.AnimatableDialog;
 		
-		import SoccerServer.TransferModel.vo.SpecialTrainingDefinition;
+		import HttpService.TransferModel.vo.SpecialTrainingDefinition;
 			
 		public static function Show(specialTraining : SpecialTrainingDefinition) : void
 		{

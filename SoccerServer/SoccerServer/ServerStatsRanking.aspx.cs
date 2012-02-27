@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.Script.Serialization;
-using System.Net;
 using System.IO;
+using System.Net;
+using System.Web.Script.Serialization;
+using System.Web.UI.WebControls;
+using HttpService;
+using HttpService.BDDModel;
 
 namespace SoccerServer
 {
@@ -30,7 +29,7 @@ namespace SoccerServer
             mDC.Dispose();
         }
 
-        public string GetFacebookUserName(BDDModel.Team team)
+        public string GetFacebookUserName(Team team)
         {
             return team.Player.Name + " " + team.Player.Surname;
         }
@@ -49,12 +48,12 @@ namespace SoccerServer
             return (objDeserialized as Dictionary<string, object>)["name"] as string;
         }
 
-        public int GetTotalMatchesCount(BDDModel.Team team)  { return team.TeamStat.NumPlayedMatches; }
-        public int GetWonMatchesCount(BDDModel.Team team)    { return team.TeamStat.NumMatchesWon; }
-        public int GetDrawMatchesCount(BDDModel.Team team)   { return team.TeamStat.NumMatchesDraw; }
-        public int GetLostMatchesCount(BDDModel.Team team)   { return team.TeamStat.NumPlayedMatches - team.TeamStat.NumMatchesWon - team.TeamStat.NumMatchesDraw; }
-        public int GetTotalGoalsScored(BDDModel.Team team)   { return team.TeamStat.ScoredGoals; }
-        public int GetTotalGoalsReceived(BDDModel.Team team) { return team.TeamStat.ReceivedGoals;  }
+        public int GetTotalMatchesCount(Team team)  { return team.TeamStat.NumPlayedMatches; }
+        public int GetWonMatchesCount(Team team)    { return team.TeamStat.NumMatchesWon; }
+        public int GetDrawMatchesCount(Team team)   { return team.TeamStat.NumMatchesDraw; }
+        public int GetLostMatchesCount(Team team)   { return team.TeamStat.NumPlayedMatches - team.TeamStat.NumMatchesWon - team.TeamStat.NumMatchesDraw; }
+        public int GetTotalGoalsScored(Team team)   { return team.TeamStat.ScoredGoals; }
+        public int GetTotalGoalsReceived(Team team) { return team.TeamStat.ReceivedGoals;  }
 
         public void MyRankingTable_OnRowCommand(Object sender, GridViewCommandEventArgs e)
         {

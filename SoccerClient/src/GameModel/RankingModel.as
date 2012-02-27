@@ -2,10 +2,10 @@ package GameModel
 {
 	import GameView.Team.Team;
 	
-	import SoccerServer.MainService;
-	import SoccerServer.TransferModel.vo.RankingPage;
-	import SoccerServer.TransferModel.vo.RankingTeam;
-	import SoccerServer.TransferModel.vo.TeamMatchStats;
+	import HttpService.MainService;
+	import HttpService.TransferModel.vo.RankingPage;
+	import HttpService.TransferModel.vo.RankingTeam;
+	import HttpService.TransferModel.vo.TeamMatchStats;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

@@ -78,7 +78,7 @@
 	<fx:Script><![CDATA[
 		import GameModel.TeamModel;
 		
-		import SoccerServer.TransferModel.vo.SoccerPlayer;
+		import HttpService.TransferModel.vo.SoccerPlayer;
 		
 		import mx.core.UIComponent;
 		import mx.events.DragEvent;

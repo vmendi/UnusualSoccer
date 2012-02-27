@@ -7,8 +7,8 @@ package GameModel
 	import NetEngine.InvokeResponse;
 	import NetEngine.NetPlug;
 	
-	import SoccerServer.MainService;
-	import SoccerServer.TransferModel.vo.Team;
+	import HttpService.MainService;
+	import HttpService.TransferModel.vo.Team;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

@@ -12,7 +12,7 @@
 	
 	<fx:Script><![CDATA[
 		import GameModel.TrainingModel;		
-		import SoccerServer.TransferModel.vo.TrainingDefinition;		
+		import HttpService.TransferModel.vo.TrainingDefinition;		
 		import mx.events.FlexEvent;		
 		import utils.TimeUtils;
 						

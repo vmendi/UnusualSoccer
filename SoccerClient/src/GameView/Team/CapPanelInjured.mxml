@@ -7,7 +7,7 @@
 	<fx:Style source="../styles.css" />
 	
 	<fx:Script><![CDATA[
-		import SoccerServer.TransferModel.vo.SoccerPlayer;
+		import HttpService.TransferModel.vo.SoccerPlayer;
 		
 		import utils.TimeUtils;
 		

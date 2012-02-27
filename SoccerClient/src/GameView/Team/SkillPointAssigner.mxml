@@ -10,7 +10,7 @@
 		
 		import GameView.HierarchyUtils;
 		
-		import SoccerServer.TransferModel.vo.SoccerPlayer;
+		import HttpService.TransferModel.vo.SoccerPlayer;
 		
 		import mx.binding.utils.BindingUtils;
 		import mx.events.FlexEvent;

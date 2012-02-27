@@ -187,7 +187,7 @@ namespace NetEngine
             }
 
             if (msg.MethodName != "OnSecondsTick")
-                Log.log(NetEngineMain.NETENGINE_INVOKE, "DeliverMessageToClient: " + msg.MethodName + " " + ProfileUtils.ElapsedMicroseconds(stopwatch));
+                Log.log(NetEngineMain.NETENGINE_INVOKE, "DeliverMessageToClient: " + msg.MethodName + " " + NetEngineMain.ElapsedMicroseconds(stopwatch));
         }
 
         virtual internal void HandleStringMessage(NetPlug from, byte[] theString, int stringLength)

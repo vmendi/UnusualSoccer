@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Transactions;
 using System.Web.Script.Serialization;
-using Weborb.Util.Logging;
-using System.Collections;
 using Facebook.Web;
+using HttpService;
+using HttpService.BDDModel;
+using Weborb.Util.Logging;
+using ServerCommon;
 
 
 namespace SoccerServer
@@ -20,7 +22,7 @@ namespace SoccerServer
                 if (new CanvasAuthorizer().Authorize())
                 {
                     var signedRequest = context.Request.Params["signed_request"];
-                    var sig = Facebook.FacebookSignedRequest.Parse(Global.Instance.FacebookSettings, signedRequest);
+                    var sig = Facebook.FacebookSignedRequest.Parse(GlobalConfig.FacebookSettings, signedRequest);
 
                     Log.log(Global.GLOBAL_LOG, "Purchase request from user: " + sig.UserId);
 
@@ -72,7 +74,7 @@ namespace SoccerServer
         {
             using (var bddContext = new SoccerDataModelDataContext())
             {
-                BDDModel.PurchaseStatus newStatus = new BDDModel.PurchaseStatus();
+                PurchaseStatus newStatus = new PurchaseStatus();
                 newStatus.Purchase = GetPurchase(httpContext, bddContext);
                 newStatus.Status = "disputed";
                 newStatus.StatusDate = DateTime.Now;
@@ -126,7 +128,7 @@ namespace SoccerServer
         {
             using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
             {
-                BDDModel.Purchase newPurchase = new BDDModel.Purchase();
+                Purchase newPurchase = new Purchase();
 
                 newPurchase.ItemID = itemID;
                 newPurchase.Price = GetItemForSale(itemID).price;
@@ -134,7 +136,7 @@ namespace SoccerServer
                 newPurchase.FacebookBuyerID = buyerFacebookID;
                 newPurchase.FacebookOrderID = facebookOrderID;
 
-                BDDModel.PurchaseStatus currentStatus = new BDDModel.PurchaseStatus();
+                PurchaseStatus currentStatus = new PurchaseStatus();
                 currentStatus.Purchase = newPurchase;
                 currentStatus.Status = "settled";
                 currentStatus.StatusDate = DateTime.Now;
@@ -148,7 +150,7 @@ namespace SoccerServer
             }
         }
 
-        static private void AwardTheItem(SoccerDataModelDataContext bddContext, BDDModel.Purchase thePurchase)
+        static private void AwardTheItem(SoccerDataModelDataContext bddContext, Purchase thePurchase)
         {
             var theTeam = (from t in bddContext.Teams
                            where t.Player.FacebookID == thePurchase.FacebookBuyerID
@@ -184,10 +186,10 @@ namespace SoccerServer
             }
         }
 
-        static private void AwardTicketTime(BDDModel.Ticket theTicket, int ticketKind, TimeSpan time)
+        static private void AwardTicketTime(Ticket theTicket, int ticketKind, TimeSpan time)
         {
             // A la expiracion del ticket, estara bien
-            theTicket.RemainingMatches = MainService.DEFAULT_NUM_MACHES;
+            theTicket.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
 
             // Siempre marca la fecha del ultimo ticket comprado
             theTicket.TicketPurchaseDate = DateTime.Now;
@@ -233,7 +235,7 @@ namespace SoccerServer
             context.Response.Write(ob);
         }
 
-        static private BDDModel.Purchase GetPurchase(HttpContext context, SoccerDataModelDataContext bddContext)
+        static private Purchase GetPurchase(HttpContext context, SoccerDataModelDataContext bddContext)
         {
             long order_id = long.Parse(context.Request.Form["order_id"]);
 

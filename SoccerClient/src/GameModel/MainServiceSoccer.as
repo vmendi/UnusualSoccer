@@ -1,7 +1,7 @@
 package GameModel
 {
-	import SoccerServer.MainService;
-	import SoccerServer.MainServiceModel;
+	import HttpService.MainService;
+	import HttpService.MainServiceModel;
 	
 	import mx.rpc.events.FaultEvent;
 	

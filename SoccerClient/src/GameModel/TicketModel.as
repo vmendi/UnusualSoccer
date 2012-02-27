@@ -1,6 +1,6 @@
 package GameModel
 {
-	import SoccerServer.MainService;
+	import HttpService.MainService;
 
 	public final class TicketModel
 	{

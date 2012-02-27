@@ -1,8 +1,8 @@
 package GameModel
 {
-	import SoccerServer.MainService;
-	import SoccerServer.TransferModel.vo.CompetitionGroup;
-	import SoccerServer.TransferModel.vo.CompetitionGroupEntry;
+	import HttpService.MainService;
+	import HttpService.TransferModel.vo.CompetitionGroup;
+	import HttpService.TransferModel.vo.CompetitionGroupEntry;
 	
 	import mx.collections.Sort;
 	import mx.collections.SortField;

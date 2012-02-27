@@ -1,6 +1,6 @@
 package GameModel
 {
-	import SoccerServer.TransferModel.vo.SoccerPlayer;
+	import HttpService.TransferModel.vo.SoccerPlayer;
 	
 	import mx.binding.utils.BindingUtils;
 

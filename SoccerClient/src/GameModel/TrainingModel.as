@@ -1,9 +1,9 @@
 package GameModel
 {
-	import SoccerServer.MainService;
-	import SoccerServer.MainServiceModel;
-	import SoccerServer.TransferModel.vo.PendingTraining;
-	import SoccerServer.TransferModel.vo.TrainingDefinition;
+	import HttpService.MainService;
+	import HttpService.MainServiceModel;
+	import HttpService.TransferModel.vo.PendingTraining;
+	import HttpService.TransferModel.vo.TrainingDefinition;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

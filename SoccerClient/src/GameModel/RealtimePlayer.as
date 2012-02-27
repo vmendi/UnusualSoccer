@@ -1,6 +1,6 @@
 package GameModel
 {
-	import SoccerServer.TransferModel.vo.TeamDetails;
+	import HttpService.TransferModel.vo.TeamDetails;
 	
 	import flash.events.EventDispatcher;
 	

@@ -1,26 +1,22 @@
 ﻿using System;
-using System.Linq;
-using SoccerServer.BDDModel;
-using Weborb.Util.Logging;
-using Weborb.Messaging.Server;
-using NetEngine;
-using System.Threading;
-using Facebook;
 using System.Diagnostics;
-using System.Configuration;
-using System.Web;
+using System.Threading;
+using HttpService;
+using HttpService.BDDModel;
+using NetEngine;
+using Realtime;
+using Weborb.Messaging.Server;
+using Weborb.Util.Logging;
+using ServerCommon;
 
 
 namespace SoccerServer
 {
 	public class Global : System.Web.HttpApplication
 	{
-        static public Global Instance { get { return mInstance; } }
-
         public const String GLOBAL_LOG = "GLOBAL";
 
-        public ServerConfig ServerSettings { get { return mServerSettings; } }        
-        public IFacebookApplication FacebookSettings { get { return mFBSettings; } }
+        static public Global Instance { get { return mInstance; } }
 
         public NetEngineMain TheNetEngine { get { return mNetEngine; } }
         
@@ -32,13 +28,10 @@ namespace SoccerServer
             // Unica instancia global
             mInstance = this;
 
-            // Necesitamos inicializar ya nuestros settings para que no falle la primera query
-            mFBSettings     = ConfigurationManager.GetSection("facebookSettings") as FacebookConfigurationSection;
-            mServerSettings = ConfigurationManager.GetSection("soccerServerConfig") as ServerConfig;
+            // Queremos que la configuración esté bien definida cuando llega la primera query
+            GlobalConfig.Init();
             
-            // Y tambien el NetEngine, por el mismo motivo
-            mNetEngine = new NetEngineMain(new RealtimeLobby());
-            
+            // La inicialización del log es necesaria hacerla pasado el Application_Start, por esto, inicializamos en un thread aparte
             var starterThread = new Thread(StarterThread);
             starterThread.Name = "StarterThread";
             starterThread.Start();
@@ -61,12 +54,14 @@ namespace SoccerServer
 
             Log.log(GLOBAL_LOG, "******************* Initialization from " + this.Server.MachineName + " Global.asax *******************");
 
-            ConfigureDB();
+            SeasonUtils.CreateInitialSeasonIfNotExists();
             PrecompiledQueries.PrecompileAll();
 
             // Servidor HTTP nebuloso?
-            if (ServerSettings.EnableRealtime)
+            if (GlobalConfig.ServerSettings.EnableRealtime)
             {
+                mNetEngine = new NetEngineMain(new RealtimeLobby());
+
                 mNetEngine.Start();
 
                 mStopWatch = new Stopwatch();
@@ -76,16 +71,6 @@ namespace SoccerServer
                 mTotalSeconds = 0;
                 mStopWatch.Start();
                 mSecondsTimer.Start();
-            }
-        }
-
-        private void ConfigureDB()
-        {
-            using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
-            {
-                // Si todavia no tenemos ninguna temporada, es que la DB esta limpia => tenemos que empezar!
-                if (theContext.CompetitionSeasons.Count() == 0)
-                    MainService.ResetSeasons(false);
             }
         }
 
@@ -125,7 +110,7 @@ namespace SoccerServer
             {
                 Log.log(GLOBAL_LOG, "Running Hourly process");
 
-                MainService.CheckSeasonEnd(false);
+                SeasonUtils.CheckSeasonEnd(false);
 
                 mLastHourlyProcessedDateTime = now;
             }
@@ -142,7 +127,7 @@ namespace SoccerServer
 
                 using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
                 {
-                    theContext.ExecuteCommand("UPDATE [SoccerV2].[dbo].[Tickets] SET [RemainingMatches] = 3");
+                    theContext.ExecuteCommand("UPDATE [SoccerV2].[dbo].[Tickets] SET [RemainingMatches] = {0}", GlobalConfig.DAILY_NUM_MATCHES);
                 }               
 
                 mLast24hProcessedDateTime = now;
@@ -174,9 +159,6 @@ namespace SoccerServer
         private float mTotalSeconds;
 		
         private DateTime mLast24hProcessedDateTime = DateTime.Now;
-        private DateTime mLastHourlyProcessedDateTime = DateTime.Now;
-
-        private ServerConfig mServerSettings;
-        private FacebookConfigurationSection mFBSettings;
+        private DateTime mLastHourlyProcessedDateTime = DateTime.Now;        
 	}
 }

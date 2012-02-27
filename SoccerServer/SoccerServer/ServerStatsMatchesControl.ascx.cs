@@ -29,7 +29,7 @@ namespace SoccerServer
             MyMatchGridView.DataBind();
         }
 
-        public string GetDurationOfMatch(SoccerServer.BDDModel.Match match)
+        public string GetDurationOfMatch(HttpService.BDDModel.Match match)
         {
             string ret = "";
 
@@ -39,7 +39,7 @@ namespace SoccerServer
             return ret;
         }
 
-        public string GetPlayerNameOfMatch(SoccerServer.BDDModel.Match theMatch, int thePlayerIdx)
+        public string GetPlayerNameOfMatch(HttpService.BDDModel.Match theMatch, int thePlayerIdx)
         {
             if (theMatch.MatchParticipations[thePlayerIdx].Team != null)
                 return theMatch.MatchParticipations[thePlayerIdx].Team.Name;
@@ -47,7 +47,7 @@ namespace SoccerServer
                 return "DELETED";
         }
 
-        public string GetProfileLinkOfMatch(SoccerServer.BDDModel.Match theMatch, int thePlayerIdx)
+        public string GetProfileLinkOfMatch(HttpService.BDDModel.Match theMatch, int thePlayerIdx)
         {
             if (theMatch.MatchParticipations[thePlayerIdx].Team != null)
                 return "ServerStatsProfile.aspx?TeamID=" + theMatch.MatchParticipations[thePlayerIdx].Team.TeamID;
@@ -55,7 +55,7 @@ namespace SoccerServer
                 return "ServerStatsProfile.aspx";
         }
 
-        public string GetGoalsOfMatch(SoccerServer.BDDModel.Match theMatch, int thePlayerIdx)
+        public string GetGoalsOfMatch(HttpService.BDDModel.Match theMatch, int thePlayerIdx)
         {
             return theMatch.MatchParticipations[thePlayerIdx].Goals.ToString();
         }
