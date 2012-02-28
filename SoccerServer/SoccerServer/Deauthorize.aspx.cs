@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Linq;
 using HttpService;
-using Weborb.Util.Logging;
 using ServerCommon;
+
+using log4net;
 
 namespace SoccerServer
 {
 	public partial class Deauthorize : System.Web.UI.Page
 	{
+        private static readonly ILog Log = LogManager.GetLogger(typeof(Deauthorize));
+
 		protected void Page_Load(object sender, EventArgs e)
 		{
             string signedRequest = Request.Form["signed_request"];
@@ -24,13 +27,13 @@ namespace SoccerServer
             }
             catch (Exception exc)
             {                
-                Log.log(Global.GLOBAL_LOG, "Exception while deauthorizing: " + exc);
+                Log.Error("Exception while deauthorizing", exc);
             }
 		}
 
         private void DeleteUser(long facebookID)
         {
-            Log.log(Global.GLOBAL_LOG, "Deleting User " + facebookID + "...");
+            Log.Info("Deleting User " + facebookID + "...");
 
             using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
             {

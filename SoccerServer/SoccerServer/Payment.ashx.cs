@@ -7,14 +7,16 @@ using System.Web.Script.Serialization;
 using Facebook.Web;
 using HttpService;
 using ServerCommon.BDDModel;
-using Weborb.Util.Logging;
 using ServerCommon;
+using log4net;
 
 
 namespace SoccerServer
 {
     public class Payment : IHttpHandler
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(Payment));
+
         public void ProcessRequest(HttpContext context)
         {
             try
@@ -24,7 +26,7 @@ namespace SoccerServer
                     var signedRequest = context.Request.Params["signed_request"];
                     var sig = Facebook.FacebookSignedRequest.Parse(GlobalConfig.FacebookSettings, signedRequest);
 
-                    Log.log(Global.GLOBAL_LOG, "Purchase request from user: " + sig.UserId);
+                    Log.Info("Purchase request from user: " + sig.UserId);
 
                     string method = context.Request.Form["method"];
 
@@ -55,7 +57,7 @@ namespace SoccerServer
                     }
                     else if (method == null)
                     {
-                        Log.log(Global.GLOBAL_LOG, "Call to payment.ashx without method (probably manually)");
+                        Log.Error("Call to payment.ashx without method (probably manually)");
                     }
                     else
                     {
@@ -82,9 +84,9 @@ namespace SoccerServer
                 bddContext.PurchaseStatus.InsertOnSubmit(newStatus);
                 bddContext.SubmitChanges();
 
-                Log.log(Global.GLOBAL_LOG, ">----------------------------------------------------------");
-                Log.log(Global.GLOBAL_LOG, "----------------- Nueva orden disputada  ------------------");
-                Log.log(Global.GLOBAL_LOG, ">----------------------------------------------------------");
+                Log.Warn(">----------------------------------------------------------");
+                Log.Warn("----------------- Nueva orden disputada  ------------------");
+                Log.Warn(">----------------------------------------------------------");
             }
         }
 
@@ -204,12 +206,12 @@ namespace SoccerServer
 
         static private void CriticalLog(string message)
         { 
-            Log.log(Global.GLOBAL_LOG, ">-----------------------------------------------------------------------");
-            Log.log(Global.GLOBAL_LOG, "----------------- Big blunder in the purchase system  ------------------");
-            Log.log(Global.GLOBAL_LOG, "------------------------ Inmediate review!!!  --------------------------");
-            Log.log(Global.GLOBAL_LOG, "------------------------------------------------------------------------");
-            Log.log(Global.GLOBAL_LOG, message);
-            Log.log(Global.GLOBAL_LOG, "------------------------------------------------------------------------");
+            Log.Fatal(">-----------------------------------------------------------------------");
+            Log.Fatal("----------------- Big blunder in the purchase system  ------------------");
+            Log.Fatal("------------------------ Inmediate review!!!  --------------------------");
+            Log.Fatal("------------------------------------------------------------------------");
+            Log.Fatal(message);
+            Log.Fatal("------------------------------------------------------------------------");
         }
 
         private void ProcessGetItems(HttpContext context)
@@ -261,17 +263,17 @@ namespace SoccerServer
 
                 if (thePurchase != null)
                 {
-                    Log.log(Global.GLOBAL_LOG, "Order ID: " + thePurchase.FacebookOrderID);
-                    Log.log(Global.GLOBAL_LOG, "FacebookBuyerID: " + thePurchase.FacebookBuyerID + " - " + fb_id);
-                    Log.log(Global.GLOBAL_LOG, "Price: " + thePurchase.Price + " - " + credsspent);
-                    Log.log(Global.GLOBAL_LOG, "Item ID: " + thePurchase.ItemID + " - " + item_id);
+                    Log.Fatal("Order ID: " + thePurchase.FacebookOrderID);
+                    Log.Fatal("FacebookBuyerID: " + thePurchase.FacebookBuyerID + " - " + fb_id);
+                    Log.Fatal("Price: " + thePurchase.Price + " - " + credsspent);
+                    Log.Fatal("Item ID: " + thePurchase.ItemID + " - " + item_id);
                 }
                 else
                 {
-                    Log.log(Global.GLOBAL_LOG, "Order ID not found: " + order_id);
+                    Log.Fatal("Order ID not found: " + order_id);
                 }
 
-                Log.log(Global.GLOBAL_LOG, "-----------------------------------------------------------------------<");
+                Log.Fatal("-----------------------------------------------------------------------<");
             }
 
             return thePurchase;

@@ -2,19 +2,20 @@
 using System.Diagnostics;
 using System.Threading;
 using HttpService;
-using ServerCommon.BDDModel;
+using log4net;
+using log4net.Config;
 using NetEngine;
 using Realtime;
-using Weborb.Messaging.Server;
-using Weborb.Util.Logging;
 using ServerCommon;
-
+using ServerCommon.BDDModel;
+using Weborb.Messaging.Server;
+using System.IO;
 
 namespace SoccerServer
 {
 	public class Global : System.Web.HttpApplication
 	{
-        public const String GLOBAL_LOG = "GLOBAL";
+        private static readonly ILog Log = LogManager.GetLogger(typeof(Global));
 
         static public Global Instance { get { return mInstance; } }
 
@@ -25,34 +26,24 @@ namespace SoccerServer
             if (mInstance != null)
                 throw new Exception("WTF 666");
             
-            // Unica instancia global
             mInstance = this;
 
-            // Queremos que la configuración esté bien definida cuando llega la primera query
-            GlobalConfig.Init();
-            
-            // La inicialización del log es necesaria hacerla pasado el Application_Start, por esto, inicializamos en un thread aparte
-            var starterThread = new Thread(StarterThread);
-            starterThread.Name = "StarterThread";
-            starterThread.Start();
+            InitSoccerServer();
 		}
 
-        public void StarterThread()
+        public void InitSoccerServer()
         {
-            var forcedWeborbLogInit = Weborb.Config.ORBConfig.GetInstance();
+            // The log uses it: %property{ServerName}
+            GlobalContext.Properties["ServerName"] = Server.MachineName;
 
-            Log.startLogging(GLOBAL_LOG);
-            Log.startLogging(MainService.MAINSERVICE);
-            Log.startLogging(MainService.MAINSERVICE_INVOKE);
-            Log.startLogging(MainService.CLIENT_ERROR);
-            Log.startLogging(RealtimeLobby.REALTIME);
-            Log.startLogging(RealtimeLobby.REALTIME_INVOKE);
-            Log.startLogging(RealtimeLobby.REALTIME_DEBUG);
-            Log.startLogging(RealtimeMatch.MATCHLOG_ERROR);
-            Log.startLogging(RealtimeMatch.MATCHLOG_CHAT);
-            //Log.startLogging(RealtimeMatch.MATCHLOG_VERBOSE);
+            // Read from config file
+            log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(@Server.MapPath("~/Log4net.config")));
 
-            Log.log(GLOBAL_LOG, "******************* Initialization from " + this.Server.MachineName + " Global.asax *******************");
+            // First log
+            Log.InfoFormat("******************* Initialization from {0} Global.asax *******************", Server.MachineName);
+            
+            // Queremos que la configuración esté bien definida cuando llega la primera query
+            GlobalConfig.Init();
 
             SeasonUtils.CreateInitialSeasonIfNotExists();
             PrecompiledQueries.PrecompileAll();
@@ -76,6 +67,8 @@ namespace SoccerServer
 
 		void SecondsTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
+            Log.Info("SecondsTimer_Elapsed");
+
             float elapsed = (float)mStopWatch.Elapsed.TotalSeconds;
             mStopWatch.Restart();
             mTotalSeconds += elapsed;
@@ -94,7 +87,7 @@ namespace SoccerServer
             }
             catch (Exception excp)
             {
-                Log.log(GLOBAL_LOG, excp);
+                Log.Error("While running our Secondly process", excp);
             }
             finally
             {
@@ -108,7 +101,7 @@ namespace SoccerServer
 
             if (now.Hour != mLastHourlyProcessedDateTime.Hour)
             {
-                Log.log(GLOBAL_LOG, "Running Hourly process");
+                Log.Info("Running Hourly process");
 
                 SeasonUtils.CheckSeasonEnd(false);
 
@@ -123,7 +116,7 @@ namespace SoccerServer
 
             if (now.Date != mLast24hProcessedDateTime.Date)
             {
-                Log.log(GLOBAL_LOG, "Running 24h process");
+                Log.Info("Running 24h process");
 
                 using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
                 {
@@ -136,13 +129,12 @@ namespace SoccerServer
 
 		protected void Application_Error(object sender, EventArgs e)
 		{
-            Log.log(GLOBAL_LOG, "Application_Error: " + Request.Url.ToString() + 
-                                ". LastError:" + Server.GetLastError().ToString());
+            Log.FatalFormat("Application_Error: {0}. LastError: {1} ", Request.Url, Server.GetLastError());
         }
 
 		protected void Application_End(object sender, EventArgs e)
 		{
-			Log.log(GLOBAL_LOG, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Application_End !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+			Log.Info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Application_End !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
             mSecondsTimer.Stop();
             mSecondsTimer.Dispose();

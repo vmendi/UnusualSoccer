@@ -65,7 +65,6 @@
         <asp:HyperLink runat="server" Text="Purchases" NavigateUrl="~/ServerStatsPurchases.aspx" /><br /><br />
         <asp:HyperLink runat="server" Text="Hall of Fame" NavigateUrl="~/ServerStatsRanking.aspx" /><br /><br />
         
-        <asp:Button runat="server" Text="Mistical Refresh" OnClick="MisticalRefresh_Click" /><br />
         <asp:Button runat="server" Text="Erase Orphan Matches" OnClick="EraseOrphanMatches_Click" /><br />
 
         <asp:Button runat="server" Text="Reset Season" OnClick="ResetSeasons_Click" />        
@@ -77,6 +76,9 @@
         <div class="borderedBox">
             <asp:Literal runat="server" id="MyLogConsole"/>
         </div>
+
+        <asp:Button ID="Button1" runat="server" Text="Mistical Refresh" OnClick="MisticalRefresh_Click" /><br />
+        <asp:Button ID="Button2" runat="server" Text="Init Don't Click Me!" OnClick="Init_Click" /><br />
 
 	</form>
 

@@ -48,7 +48,7 @@ namespace SoccerServer
         {
             NetEngineMain netEngineMain = Global.Instance.TheNetEngine;
 
-            if (netEngineMain.IsRunning)
+            if (netEngineMain != null && netEngineMain.IsRunning)
             {
                 RealtimeLobby theMainRealtime = netEngineMain.NetServer.NetLobby as RealtimeLobby;
                 MyRealtimeConsole.Text = "Currently in play matches: " + theMainRealtime.GetNumMatches().ToString() + "<br/>";
@@ -226,7 +226,7 @@ namespace SoccerServer
                                                                   GlobalConfig.FacebookSettings.AppId, access_token), null);
 
             MyLogConsole.Text += "------------------------Restrictions------------------------<br/>" + response + 
-                            "<br/>------------------------------------------------------------<br/>";
+                                 "<br/>------------------------------------------------------------<br/>";
         }
 
         protected void SetRestrictionsES_Click(object sender, EventArgs e)
@@ -253,6 +253,12 @@ namespace SoccerServer
             // Logeamos, refrescamos
             MyLogConsole.Text += "SetRestrictionsES response: " + response + "<br/>";
             ShowRestrictions();
+        }
+
+        protected void Init_Click(object sender, EventArgs e)
+        {
+            // Para poder hacer pruebas de inicialización...
+            Global.Instance.Init();
         }
 	}
 }

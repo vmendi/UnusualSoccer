@@ -519,7 +519,6 @@ namespace Realtime
         // Uno de los dos players se ha desconectado
         override public void LeaveActor(NetActor who)
         {
-
             LogEx("LeaveActor: Player: " + GetIdPlayer(who as RealtimePlayer));
 
             RealtimePlayer self = who as RealtimePlayer;
