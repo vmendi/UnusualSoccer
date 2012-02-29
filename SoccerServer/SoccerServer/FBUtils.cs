@@ -26,10 +26,17 @@ namespace SoccerServer
                 }
             }
 
-            using (HttpWebResponse resp = (HttpWebResponse)req.GetResponse())
+            try
             {
-                StreamReader strmReader = new StreamReader(resp.GetResponseStream());
-                responseData = strmReader.ReadToEnd().Trim();
+                using (HttpWebResponse resp = (HttpWebResponse)req.GetResponse())
+                {
+                    StreamReader strmReader = new StreamReader(resp.GetResponseStream());
+                    responseData = strmReader.ReadToEnd().Trim();
+                }
+            }
+            catch (Exception)
+            {
+                // Salta una excepcion si FB no responde en breve...
             }
 
             return responseData;

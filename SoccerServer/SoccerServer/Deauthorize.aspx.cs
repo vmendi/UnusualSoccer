@@ -2,14 +2,13 @@
 using System.Linq;
 using HttpService;
 using ServerCommon;
-
-using log4net;
+using NLog;
 
 namespace SoccerServer
 {
 	public partial class Deauthorize : System.Web.UI.Page
 	{
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Deauthorize));
+        private static readonly Logger Log = LogManager.GetLogger(typeof(Deauthorize).FullName);
 
 		protected void Page_Load(object sender, EventArgs e)
 		{

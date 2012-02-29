@@ -3,16 +3,15 @@ using System.Linq;
 using System.Web;
 using ServerCommon;
 using ServerCommon.BDDModel;
-using Weborb.Util.Logging;
+using NLog;
 
 
 namespace HttpService
 {
 	public partial class MainService
 	{
-		public const String MAINSERVICE = "MAINSERVICE";
-        public const String MAINSERVICE_INVOKE = "MAINSERVICE INVOKE";
-		public const String CLIENT_ERROR = "CLIENT_ERROR";
+        private static readonly Logger Log = LogManager.GetLogger(typeof(MainService).FullName);
+        private static readonly Logger LogPerf = LogManager.GetLogger(typeof(MainService).FullName + ".Perf");
 
         private SoccerDataModelDataContext CreateDataForRequest()
         {
@@ -136,7 +135,7 @@ namespace HttpService
 
 		public void OnError(string msg)
 		{
-			Log.log(CLIENT_ERROR, msg);
+			Log.Error("CLIENT_ERROR:" + msg);
 		}
 
 		public int OnLiked()

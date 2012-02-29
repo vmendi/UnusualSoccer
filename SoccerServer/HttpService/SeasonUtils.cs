@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.Samples.EntityDataReader;
 using ServerCommon;
 using ServerCommon.BDDModel;
-using Weborb.Util.Logging;
+using NLog;
+using System.Diagnostics;
 
 namespace HttpService
 {
     public class SeasonUtils
     {
+        private static readonly Logger Log = LogManager.GetLogger(typeof(SeasonUtils).FullName);
+        private static readonly Logger LogPerf = LogManager.GetLogger(typeof(SeasonUtils).FullName + ".Perf");
+
         static public void CreateInitialSeasonIfNotExists()
         {
             using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
@@ -108,7 +111,7 @@ namespace HttpService
                 }
             }
 
-            Log.log(MainService.MAINSERVICE_INVOKE, "CheckSeasonEnd: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
+            LogPerf.Info("CheckSeasonEnd: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
         }
 
         static public DateTime GenerateTheoricalSeasonEndDate(SoccerDataModelDataContext context)
@@ -130,7 +133,7 @@ namespace HttpService
 
         private static void SeasonEndInner(CompetitionSeason oldSeason, SoccerDataModelDataContext theContext, SqlConnection con, SqlTransaction tran)
         {
-            Log.log(MainService.MAINSERVICE, "SeasonEndInner");
+            Log.Info("Processing SeasonEndInner");
 
             // Queremos que a lo largo de toda la query, el momento actual sea el mismo
             var now = DateTime.Now;

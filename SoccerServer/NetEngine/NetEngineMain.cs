@@ -2,20 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Weborb.Util.Logging;
 using System.Diagnostics;
 
 namespace NetEngine
 {
     public class NetEngineMain
     {
-        internal const String NETENGINE_DEBUG = "NETENGINE DEBUG";
-        internal const String NETENGINE_VERBOSE = "NETENGINE VERBOSE";
-        internal const String NETENGINE_INVOKE = "NETENGINE INVOKE";
-        internal const String NETENGINE_DEBUG_BUFFER = "NETENGINE DEBUG BUFFER";
-        internal const String NETENGINE_DEBUG_THREADING = "NETENGINE DEBUG THREADING";
-        internal const String NETENGINE_DEBUG_KEEPALIVE = "NETENGINE DEBUG KEEPALIVE";
-
         public NetEngineMain(NetLobby netLobby)
         {
             mNetLobby = netLobby;
@@ -23,13 +15,6 @@ namespace NetEngine
 
         public void Start()
         {
-            Log.startLogging(NETENGINE_DEBUG);
-            Log.startLogging(NETENGINE_VERBOSE);
-            //Log.startLogging(NETENGINE_INVOKE);
-            //Log.startLogging(NETENGINE_DEBUG_BUFFER);
-            //Log.startLogging(NETENGINE_DEBUG_THREADING);
-            //Log.startLogging(NETENGINE_DEBUG_KEEPALIVE);
-
             mPolicyServer = new NetServer(true, null);
             mNetServer = new NetServer(false, mNetLobby);
         }

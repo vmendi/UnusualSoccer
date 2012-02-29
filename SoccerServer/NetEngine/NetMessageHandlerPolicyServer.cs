@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Weborb.Util.Logging;
+using NLog;
 
 namespace NetEngine
 {
@@ -21,7 +21,7 @@ namespace NetEngine
             if (msg.IndexOf("<policy-file-request/>") != -1)
                 from.SendStringSuffix(POLICY);
             else
-                Log.log(NetEngineMain.NETENGINE_DEBUG, "Failed policy request");
+                Log.Error("Failed policy request");
             
             from.CloseRequest();
         }
@@ -30,5 +30,7 @@ namespace NetEngine
         {
             throw new NetEngineException("Not supported");
         }
+
+        private static readonly Logger Log = LogManager.GetLogger(typeof(NetMessageHandlerPolicyServer).FullName);
     }
 }

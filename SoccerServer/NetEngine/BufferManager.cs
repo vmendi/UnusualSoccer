@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Net.Sockets;
-using Weborb.Util.Logging;
+using NLog;
 
 namespace NetEngine
 {
@@ -96,8 +96,8 @@ namespace NetEngine
 
         internal void LogMemoryStats()
         {
-            Log.log(NetEngineMain.NETENGINE_DEBUG, "Free index pool: " + this.freeIndexPool.Count);
-            Log.log(NetEngineMain.NETENGINE_DEBUG, "Free remaining SAEAs: " + ((totalBytesInBufferBlock - currentIndex) / bufferBytesAllocatedForEachSaea).ToString());
+            Log.Debug("Free index pool: " + this.freeIndexPool.Count);
+            Log.Debug("Free remaining SAEAs: " + ((totalBytesInBufferBlock - currentIndex) / bufferBytesAllocatedForEachSaea).ToString());
         }
 
         readonly Int32 totalBytesInBufferBlock;
@@ -107,6 +107,8 @@ namespace NetEngine
         readonly object mSyncLock = new object();
 
         Stack<int> freeIndexPool;
-        Int32 currentIndex;        
+        Int32 currentIndex;
+
+        private static readonly Logger Log = LogManager.GetLogger(typeof(BufferManager).FullName);
     }
 }

@@ -6,7 +6,6 @@ using System.Linq;
 using ServerCommon;
 using ServerCommon.BDDModel;
 using Weborb.Service;
-using Weborb.Util.Logging;
 
 
 namespace HttpService
@@ -60,7 +59,7 @@ namespace HttpService
                         mContext.SubmitChanges();
                     }
 
-                    Log.log(MAINSERVICE, "RefreshGroupForTeam: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
+                    LogPerf.Info("RefreshGroupForTeam: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
 
                     return ret;
                 }

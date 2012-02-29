@@ -4,12 +4,14 @@ using System.Linq;
 using HttpService;
 using ServerCommon.BDDModel;
 using ServerCommon;
-using Weborb.Util.Logging;
+using NLog;
 
 namespace Realtime
 {
     public class RealtimeMatchResult
     {
+        private static readonly Logger Log = LogManager.GetLogger(typeof(RealtimeMatchResult).FullName);
+        
         public class RealtimeMatchResultPlayer
         {
             public String Name;
@@ -166,7 +168,7 @@ namespace Realtime
 
             if (entryPlayer1 == null || entryPlayer2 == null)
             {
-                Log.log(RealtimeLobby.REALTIME, "Descartando partido de competicion por problema de paralelismo SeasonEnd, partido " + mBDDMatch.MatchID);
+                Log.Error("Descartando partido de competicion por problema de paralelismo SeasonEnd, partido " + mBDDMatch.MatchID);
                 return;
             }
 

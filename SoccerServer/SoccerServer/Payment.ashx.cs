@@ -8,14 +8,14 @@ using Facebook.Web;
 using HttpService;
 using ServerCommon.BDDModel;
 using ServerCommon;
-using log4net;
+using NLog;
 
 
 namespace SoccerServer
 {
     public class Payment : IHttpHandler
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Payment));
+        private static readonly Logger Log = LogManager.GetLogger(typeof(Payment).FullName);
 
         public void ProcessRequest(HttpContext context)
         {

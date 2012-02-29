@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Weborb.Util.Logging;
 using System.Reflection;
 using Weborb.Reader;
 using Weborb.Types;
 using System.Diagnostics;
+using NLog;
 
 namespace NetEngine
 {
@@ -54,7 +54,7 @@ namespace NetEngine
                 {
                     // Shouldn't happen. The NetServer called CloseRequest on the NetPlugs, all the OnClientDisconnected must be processed, no
                     // more messages should arrive after the CloseRequests calls
-                    Log.log(NetEngineMain.NETENGINE_DEBUG, "WTF: Messages lost!");
+                    Log.Error("WTF: Messages lost!");
                 }
             }
         }
@@ -94,7 +94,7 @@ namespace NetEngine
             }
             catch (Exception e)
             {
-                Log.log(NetEngineMain.NETENGINE_DEBUG, e.ToString());
+                Log.Error(e.ToString());
             }
         }
 
@@ -175,7 +175,7 @@ namespace NetEngine
             }
             catch (NetEngineException exc)
             {
-                Log.log(NetEngineMain.NETENGINE_DEBUG, exc.ToString());
+                Log.Error(exc.ToString());
 
                 // Any bad behaviour from the client => we disconnect it
                 if (msg.Source != null)
@@ -183,11 +183,8 @@ namespace NetEngine
             }
             catch (Exception e)
             {
-                Log.log(NetEngineMain.NETENGINE_DEBUG, e.ToString());
+                Log.Error(e.ToString());
             }
-
-            if (msg.MethodName != "OnSecondsTick")
-                Log.log(NetEngineMain.NETENGINE_INVOKE, "DeliverMessageToClient: " + msg.MethodName + " " + NetEngineMain.ElapsedMicroseconds(stopwatch));
         }
 
         virtual internal void HandleStringMessage(NetPlug from, byte[] theString, int stringLength)
@@ -342,6 +339,8 @@ namespace NetEngine
                 Source = src;
             }
         }
+
+        private static readonly Logger Log = LogManager.GetLogger(typeof(NetMessageHandler).FullName);
     }
 
 }

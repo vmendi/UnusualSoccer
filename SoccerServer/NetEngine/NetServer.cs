@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Net.Sockets;
 using System.Net;
-using Weborb.Util.Logging;
+using NLog;
 
 namespace NetEngine
 {
@@ -17,9 +17,6 @@ namespace NetEngine
     //
     // - TODO: IDisposable!
     //
-    // - The client is ignoring IsForRoom in the outgoing NetInvokeMessages (it just looks for "MethodName" among the clients subscribed to the NetPlug)
-    //   If we wanted multiroom support, we should change this IsForRoom to a RoomID
-    //
     public class NetServer
     {
         const int MAX_CONNECTIONS = 60000;
@@ -27,7 +24,7 @@ namespace NetEngine
         const int POLICY_SERVER_PORT = 843;
         const int REGULAR_PORT = 2020;
         const int GHOST_TIME = 120;             // Seconds
-
+        
         
         /// <param name="bPolicyServerMode">Adobe policy server behaviour *only*</param>
         public NetServer(bool bPolicyServerMode, NetLobby netLobby)
@@ -73,7 +70,7 @@ namespace NetEngine
             }
             catch (Exception exc)
             {
-                Log.log(NetEngineMain.NETENGINE_DEBUG, exc.ToString());
+                Log.Fatal(exc.ToString());
                 Stop();
                 throw;
             }
@@ -133,7 +130,7 @@ namespace NetEngine
             }
             catch (Exception exc)
             {
-                Log.log(NetEngineMain.NETENGINE_DEBUG, exc.ToString());
+                Log.Error(exc.ToString());
             }
         }
 
@@ -213,7 +210,7 @@ namespace NetEngine
             }
             catch (Exception exc)
             {
-                Log.log(NetEngineMain.NETENGINE_DEBUG, exc.ToString());
+                Log.Error(exc.ToString());
             }
         }
 
@@ -245,8 +242,6 @@ namespace NetEngine
                         mMaxConcurrentPlugs = mNetPlugs.Count;
 
                     mCumulativePlugs++;
-
-                    Log.log(NetEngineMain.NETENGINE_DEBUG_BUFFER, "NetPlugs: " + mNetPlugs.Count + " Allocated: " + mBufferManager.AllocatedCount );
                 }
                 
                 newNetConnection.Start();
@@ -312,7 +307,7 @@ namespace NetEngine
                     }
 
                     if (dead.Count != 0)
-                        Log.log(NetEngineMain.NETENGINE_DEBUG, "There are dead NetPlugs: " + dead.Count);
+                        Log.Info("There are dead NetPlugs: " + dead.Count);
 
                     foreach (NetPlug np in dead)
                         np.CloseRequest();
@@ -325,11 +320,11 @@ namespace NetEngine
             }
             catch (ThreadInterruptedException)
             {
-                Log.log(NetEngineMain.NETENGINE_DEBUG, "GhostCleanupThread interrupted");
+                Log.Warn("GhostCleanupThread interrupted");
             }
             catch (Exception exc)
             {
-                Log.log(NetEngineMain.NETENGINE_DEBUG, "GhostCleanupThread: " + exc.ToString());
+                Log.Error("GhostCleanupThread: " + exc.ToString());
             }
         }
 
@@ -357,5 +352,7 @@ namespace NetEngine
         DateTime mLastStartTime;
        
         readonly Semaphore mMaxConnectionsEnforcer;
+
+        private static readonly Logger Log = LogManager.GetLogger(typeof(NetServer).FullName);
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Weborb.Util.Logging;
+using NLog;
 
 namespace NetEngine
 {
@@ -23,7 +23,7 @@ namespace NetEngine
 
         public NetRoom AddRoom(NetRoom theRoom)
         {
-            Log.log(NetEngineMain.NETENGINE_VERBOSE, "Room Added: " + theRoom.Name);
+            Log.Info("Room Added: " + theRoom.Name);
 
             mRooms.Add(theRoom);
 
@@ -32,7 +32,7 @@ namespace NetEngine
 
         public void RemoveRoom(NetRoom theRoom)
         {
-            Log.log(NetEngineMain.NETENGINE_VERBOSE, "Room Removed: " + theRoom.Name);
+            Log.Info("Room Removed: " + theRoom.Name);
 
             mRooms.Remove(theRoom);
         }
@@ -52,5 +52,7 @@ namespace NetEngine
         }
 
         private List<NetRoom> mRooms = new List<NetRoom>();
+
+        private static readonly Logger Log = LogManager.GetLogger(typeof(NetLobby).FullName);
     }
 }

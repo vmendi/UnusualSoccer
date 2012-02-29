@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading;
 using HttpService;
 using NetEngine;
+using NLog;
 using Realtime;
 using ServerCommon;
 using ServerCommon.BDDModel;
-using Weborb.Messaging.Server;
-using System.IO;
-using NLog;
 
 namespace SoccerServer
 {
 	public class Global : System.Web.HttpApplication
 	{
-        private static readonly Logger Log = LogManager.GetLogger(typeof(Global).FullName); 
+        private static readonly Logger Log = LogManager.GetLogger(typeof(Global).FullName);
 
         static public Global Instance { get { return mInstance; } }
 
@@ -58,10 +55,7 @@ namespace SoccerServer
         }
 
 		void SecondsTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-		{
-            Log.Info("TheInfo");
-            Log.Fatal("Leches");
-            
+		{            
             float elapsed = (float)mStopWatch.Elapsed.TotalSeconds;
             mStopWatch.Restart();
             mTotalSeconds += elapsed;
@@ -122,12 +116,12 @@ namespace SoccerServer
 
 		protected void Application_Error(object sender, EventArgs e)
 		{
-            Log.Fatal("Application_Error: {0}. LastError: {1} ", Request.Url, Server.GetLastError());
+            Log.Error("Application_Error: {0}. LastError: {1} ", Request.Url, Server.GetLastError());
         }
 
 		protected void Application_End(object sender, EventArgs e)
 		{
-			Log.Info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Application_End !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Log.Info("******************* Application_End *******************");
 
             mSecondsTimer.Stop();
             mSecondsTimer.Dispose();

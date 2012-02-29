@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Threading;
-using Weborb.Util.Logging;
 using System.Net;
 using System.Collections.Generic;
+using NLog;
 
 namespace NetEngine
 {
@@ -47,7 +47,7 @@ namespace NetEngine
             }
             catch (Exception e)
             {
-                Log.log(NetEngineMain.NETENGINE_DEBUG, e.ToString());
+                Log.Error(e.ToString());
             }
         }
 
@@ -77,7 +77,7 @@ namespace NetEngine
             RefreshLastActionTimestamp();
 
             if (mRandomDelay != null)
-                Log.log(NetEngineMain.NETENGINE_DEBUG, "====== Using network emulation delay ======");
+                Log.Warn("====== Using network emulation delay ======");
         }
 
         internal enum MessageMode
@@ -113,7 +113,7 @@ namespace NetEngine
                 {
                     if (IsClosed)
                     {
-                        Log.log(NetEngineMain.NETENGINE_DEBUG_BUFFER, "StartReceiving(): FREEOP" + ID);
+                        Log.Debug("DebugBuffer: StartReceiving() FREEOP " + ID);
 
                         // We won't reenter a ReceiveAsync => free resources
                         mNetServer.BufferManager.FreeBuffer(mReceiveSAEA);
@@ -143,7 +143,7 @@ namespace NetEngine
             }
             catch (Exception exc)
             {
-                Log.log(NetEngineMain.NETENGINE_DEBUG, exc.ToString());
+                Log.Error(exc.ToString());
 
                 // Any bad behaviour from the client => we disconnect it
                 CloseRequest();
@@ -158,7 +158,7 @@ namespace NetEngine
         {
             if (e.BytesTransferred == 0 || e.SocketError != SocketError.Success)
             {
-                Log.log(NetEngineMain.NETENGINE_DEBUG_THREADING, "Exiting through ProcessReceive " + ID + " - " + e.SocketError + " - " + e.BytesTransferred);
+                Log.Debug("Threading: Exiting through ProcessReceive " + ID + " - " + e.SocketError + " - " + e.BytesTransferred);
 
                 // No data was received => Normal. The remote host closed the connection.
                 // Socket error => Not normal. Close anyway.
@@ -250,7 +250,7 @@ namespace NetEngine
                     }
                     else
                     {
-                        Log.log(NetEngineMain.NETENGINE_DEBUG_KEEPALIVE, "Keep alive from NetPlug: " + ID);
+                        Log.Debug("Keep alive from NetPlug: " + ID);
 
                         // The message was a Keep-Alive => next
                         mReceived.BytesSoFar = 0;
@@ -268,7 +268,7 @@ namespace NetEngine
                     if (IsClosed)
                         return;
 
-                    Log.log(NetEngineMain.NETENGINE_DEBUG_THREADING, "Exiting through CloseRequest " + ID);
+                    Log.Debug("Threading: Exiting through CloseRequest " + ID);
                     
                     try
                     {
@@ -278,7 +278,7 @@ namespace NetEngine
                     }
                     catch (Exception ex)
                     {
-                        Log.log(NetEngineMain.NETENGINE_DEBUG, "Exception: " + ex.ToString());
+                        Log.Error(ex.ToString());
                     }
                     finally
                     {
@@ -296,7 +296,7 @@ namespace NetEngine
                     // No pending operation, time to free resources
                     if (mSendSAEA.UserToken == null)
                     {
-                        Log.log(NetEngineMain.NETENGINE_DEBUG_BUFFER, "CloseRequest(): FREEOP" + ID);
+                        Log.Debug("DebugBuffer: CloseRequest() FREEOP " + ID);
                         mNetServer.BufferManager.FreeBuffer(mSendSAEA);
                         mSendQueue.Clear();
                     }
@@ -311,7 +311,7 @@ namespace NetEngine
             }
             catch (Exception ex)
             {
-                Log.log(NetEngineMain.NETENGINE_DEBUG, "Exception: " + ex.ToString());
+                Log.Error(ex.ToString());
             }
         }
 
@@ -397,7 +397,7 @@ namespace NetEngine
         {
             if (mSendSAEA.SocketError != SocketError.Success || mSendSAEA.BytesTransferred == 0)
             {
-                Log.log(NetEngineMain.NETENGINE_DEBUG_THREADING, "Exiting through ProcessSend " + ID + " - " + mSendSAEA.SocketError + " - " + mSendSAEA.BytesTransferred);
+                Log.Debug("Threading: Exiting through ProcessSend " + ID + " - " + mSendSAEA.SocketError + " - " + mSendSAEA.BytesTransferred);
 
                 // We leave the Receive process in charge of the CloseRequest
                 mSendSAEA.UserToken = null;
@@ -427,7 +427,7 @@ namespace NetEngine
                     {
                         if (IsClosed && mSendSAEA.UserToken != null)
                         {
-                            Log.log(NetEngineMain.NETENGINE_DEBUG_BUFFER, "SendSAEA_Completed: FREEOP" + ID);
+                            Log.Debug("DebugBuffer: SendSAEA_Completed() FREEOP " + ID);
 
                             // CloseRequest couldn't free resources because there was a pending operation. Time to free ourselves.
                             mNetServer.BufferManager.FreeBuffer(mSendSAEA);
@@ -445,7 +445,7 @@ namespace NetEngine
             }
             catch (Exception ex)
             {
-                Log.log(NetEngineMain.NETENGINE_DEBUG, "Exception: " + ex.ToString());
+                Log.Error(ex.ToString());
             }
         }
 
@@ -479,7 +479,7 @@ namespace NetEngine
         {
             if (!IsClosed)
             {
-                Log.log(NetEngineMain.NETENGINE_DEBUG, "Destruction of a Not-Closed Netplug!!!!");
+                Log.Error("Destruction of a Not-Closed Netplug!!!!");
             }
         }
 
@@ -517,5 +517,7 @@ namespace NetEngine
         }
 
         private NetActor mActor;
+
+        private static readonly Logger Log = LogManager.GetLogger(typeof(NetPlug).FullName);
     }
 }

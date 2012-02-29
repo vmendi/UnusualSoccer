@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NetEngine;
-using Weborb.Util.Logging;
 
 namespace Realtime
 {
@@ -20,7 +19,7 @@ namespace Realtime
         public void TestMethod02(NetPlug src, float input)
         {
             if (input != 666.666f)
-                Log.log(REALTIME, "TestMethod02");
+                Log.Error("TestMethod02");
         }
 
         public string TestMethod03(NetPlug src)

@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using ServerCommon;
 using ServerCommon.BDDModel;
 using Weborb.Service;
-using Weborb.Util.Logging;
-using System.Configuration;
 
 namespace HttpService
 {
@@ -70,11 +69,11 @@ namespace HttpService
                 }
                 catch (Exception e)
                 {
-                    Log.log(MAINSERVICE, e.Message);
+                    Log.Error(e.Message);
                     theNewTeam = null;
                 }
 
-                Log.log(MAINSERVICE_INVOKE, "CreateTeam: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
+                LogPerf.Info("CreateTeam: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
 
                 return theNewTeam != null;
             }
@@ -154,7 +153,7 @@ namespace HttpService
                 mContext.SubmitChanges();
             }
 
-            Log.log(MAINSERVICE_INVOKE, "SwapFormationPosition: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
+            LogPerf.Info("SwapFormationPosition: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
 		}
 
 		public void ChangeFormation(string newFormationName)
@@ -176,7 +175,7 @@ namespace HttpService
                 }
             }
 
-            Log.log(MAINSERVICE_INVOKE, "ChangeFormation: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
+            LogPerf.Info("ChangeFormation: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
 		}
 
         [WebORBCache(CacheScope = CacheScope.Global, ExpirationTimespan = 60000)]
@@ -209,7 +208,7 @@ namespace HttpService
                                         where s.IsCompleted
                                         select s.SpecialTrainingDefinitionID).ToList();
 
-                Log.log(MAINSERVICE_INVOKE, "RefreshTeamDetails: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
+                LogPerf.Info("RefreshTeamDetails: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
 
                 return ret;
             }
@@ -238,7 +237,7 @@ namespace HttpService
                     // Miramos si el partido ha acabado, fue justo/toomanytimes, etc..
                     if (match.DateEnded == null ||  match.WasTooManyTimes.Value || !match.WasJust.Value || match.WasAbandonedSameIP.Value)
                     {
-                        Log.log(MAINSERVICE, "GetExtraRewardForMatch: Se ha pedido recompensa de un partido que no puede tenerla! " + mPlayer.PlayerID + " " + matchID);
+                        Log.Error("GetExtraRewardForMatch: Se ha pedido recompensa de un partido que no puede tenerla! " + mPlayer.PlayerID + " " + matchID);
                     }
                     else
                     // Ganador o empate? En cualquier caso, duplicamos lo que ya hemos dado en RealtimeMatchResult.GiveRewards                    
@@ -257,7 +256,7 @@ namespace HttpService
                     }
                     else
                     {
-                        Log.log(MAINSERVICE, "El perdedor no puede solicitar GetExtraRewardForMatch " + mPlayer.PlayerID + " " + matchID);
+                        Log.Error("El perdedor no puede solicitar GetExtraRewardForMatch " + mPlayer.PlayerID + " " + matchID);
                     }
                 }
 
@@ -268,7 +267,7 @@ namespace HttpService
                 }
             }
 
-            Log.log(MAINSERVICE_INVOKE, "GetExtraRewardForMatch: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
+            LogPerf.Info("GetExtraRewardForMatch: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
 
             return bRet;
         }

@@ -6,13 +6,16 @@ using HttpService;
 using ServerCommon.BDDModel;
 using NetEngine;
 using ServerCommon;
-using Weborb.Util.Logging;
+using NLog;
 
  
 namespace Realtime
 {
     public partial class RealtimeLobby : NetLobby
     {
+        private static readonly Logger Log = LogManager.GetLogger(typeof(RealtimeLobby).FullName);
+        private static readonly Logger LogPerf = LogManager.GetLogger(typeof(RealtimeLobby).FullName + ".Perf");
+        
         public static readonly int[] MATCH_DURATION_SECONDS = new int[] { 5 * 60, 10 * 60, 15 * 60 };
         public static readonly int[] TURN_DURATION_SECONDS = new int[] { 5, 10, 15 };
 
@@ -20,7 +23,7 @@ namespace Realtime
 
         public override void OnLobbyStart(NetServer netServer)
         {             
-            Log.log(REALTIME, "************************* Realtime Starting *************************");
+            Log.Info("************************* Realtime Starting *************************");
 
             mNetServer = netServer;
             mLookingForMatch = new List<RealtimePlayer>();
@@ -28,7 +31,7 @@ namespace Realtime
 
         public override void OnLobbyEnd()
         {
-            Log.log(REALTIME, "************************* Realtime Stopping *************************");
+            Log.Info("************************* Realtime Stopping *************************");
         }
 
 
@@ -46,7 +49,7 @@ namespace Realtime
 
         public override void OnClientConnected(NetPlug client)
         {
-            Log.log(REALTIME_DEBUG, "************************* OnClientConnected  " + client.ID + " *************************");
+            Log.Info("************************* OnClientConnected  " + client.ID + " *************************");
 
             if (mBroadcastMsg != "")
                 client.Invoke("PushedBroadcastMsg", mBroadcastMsg);
@@ -82,16 +85,16 @@ namespace Realtime
                 CloseOldConnectionFor(newPlayer);
                 JoinActorToBestRoom(newPlayer);
 
-                Log.log(REALTIME_DEBUG, newPlayer.FacebookID + " " + newPlayer.ActorID + " logged in: " + newPlayer.Name);
+                Log.Info(newPlayer.FacebookID + " " + newPlayer.ActorID + " logged in: " + newPlayer.Name);
             }
             catch (Exception e)
             {
                 bRet = false;
-                Log.log(REALTIME, "Exception in LogInToDefaultRoom: " + e.ToString());
+                Log.Error("Exception in LogInToDefaultRoom: " + e.ToString());
             }
 
 
-            Log.log(REALTIME_INVOKE, "LogInToDefaultRoom: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
+            LogPerf.Info("LogInToDefaultRoom: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
            
             return bRet;
         }
@@ -215,7 +218,7 @@ namespace Realtime
             // Creacion del RealtimeMatch. El mismo se añade al lobby (nosotros) como Room.
             RealtimeMatch theNewMatch = new RealtimeMatch(bddMatchCreator, this);
 
-            Log.log(REALTIME_INVOKE, "StartMatch: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
+            LogPerf.Info("StartMatch: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
         }
 
         public bool SwitchLookingForMatch(NetPlug from)
@@ -243,7 +246,7 @@ namespace Realtime
                 }
             }
 
-            Log.log(REALTIME_INVOKE, "SwitchLookingForMatch: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
+            LogPerf.Info("SwitchLookingForMatch: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
                                     
             return bRet;
         }
@@ -320,7 +323,7 @@ namespace Realtime
             catch (Exception e)
             {
                 // No queremos que falle el matchmaking si se produce algun error dentro del partido
-                Log.log(REALTIME, "OnSecondsTick Exception: " + e.ToString());
+                Log.Error("OnSecondsTick Exception: " + e.ToString());
             }
                 
             // Cada X segundos evaluamos los matcheos automaticos
@@ -365,12 +368,6 @@ namespace Realtime
         {
             return mBroadcastMsg;
         }
-
-
-        public const String REALTIME = "REALTIME";
-        public const String REALTIME_DEBUG = "REALTIME DEBUG";
-        public const String REALTIME_INVOKE = "REALTIME INVOKE";
-
         
         private NetServer mNetServer;
 
