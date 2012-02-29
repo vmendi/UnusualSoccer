@@ -2,20 +2,19 @@
 using System.Diagnostics;
 using System.Threading;
 using HttpService;
-using log4net;
-using log4net.Config;
 using NetEngine;
 using Realtime;
 using ServerCommon;
 using ServerCommon.BDDModel;
 using Weborb.Messaging.Server;
 using System.IO;
+using NLog;
 
 namespace SoccerServer
 {
 	public class Global : System.Web.HttpApplication
 	{
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Global));
+        private static readonly Logger Log = LogManager.GetLogger(typeof(Global).FullName); 
 
         static public Global Instance { get { return mInstance; } }
 
@@ -33,14 +32,7 @@ namespace SoccerServer
 
         public void InitSoccerServer()
         {
-            // The log uses it: %property{ServerName}
-            GlobalContext.Properties["ServerName"] = Server.MachineName;
-
-            // Read from config file
-            log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(@Server.MapPath("~/Log4net.config")));
-
-            // First log
-            Log.InfoFormat("******************* Initialization from {0} Global.asax *******************", Server.MachineName);
+            Log.Info("******************* Initialization from {0} Global.asax *******************", Server.MachineName);
             
             // Queremos que la configuración esté bien definida cuando llega la primera query
             GlobalConfig.Init();
@@ -67,8 +59,9 @@ namespace SoccerServer
 
 		void SecondsTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
-            Log.Info("SecondsTimer_Elapsed");
-
+            Log.Info("TheInfo");
+            Log.Fatal("Leches");
+            
             float elapsed = (float)mStopWatch.Elapsed.TotalSeconds;
             mStopWatch.Restart();
             mTotalSeconds += elapsed;
@@ -129,7 +122,7 @@ namespace SoccerServer
 
 		protected void Application_Error(object sender, EventArgs e)
 		{
-            Log.FatalFormat("Application_Error: {0}. LastError: {1} ", Request.Url, Server.GetLastError());
+            Log.Fatal("Application_Error: {0}. LastError: {1} ", Request.Url, Server.GetLastError());
         }
 
 		protected void Application_End(object sender, EventArgs e)
