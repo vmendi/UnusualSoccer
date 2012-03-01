@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Weborb.Util.Logging;
+
 using System.Threading;
 using System.Collections;
+
+using Weborb.Util.Logging;
+using NLog;
 
 namespace ServerCommon
 {
@@ -37,26 +40,19 @@ namespace ServerCommon
 
     class WeborbLogRedirector : AbstractLogger
     {
+        private static readonly Logger Log = LogManager.GetLogger("Weborb");
+
         public override void fireEvent(string category, object eventObject, DateTime timestamp)
         {
             if (eventObject is ExceptionHolder)
                 eventObject = ((ExceptionHolder)eventObject).ExceptionObject.ToString();
             
             StringBuilder builder = new StringBuilder();
-            
-            if (base.logThreadName)
-                builder.Append("[Thread-").Append(Thread.CurrentThread.ManagedThreadId).Append("] ");
-            
-            builder.Append(category);
-
-            if (base.dateFormatter != null)
-                builder.Append(":").Append(timestamp.ToString(base.dateFormatter));
-            
+                        
+            builder.Append(category);            
             builder.Append(":").Append(eventObject);
 
-            var result = builder.ToString();
-
-            System.Diagnostics.Trace.WriteLine(result);
+            Log.Error(builder.ToString());
         }
     }
 }

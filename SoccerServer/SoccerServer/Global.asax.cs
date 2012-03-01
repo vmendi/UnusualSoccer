@@ -55,7 +55,7 @@ namespace SoccerServer
         }
 
 		void SecondsTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-		{            
+		{
             float elapsed = (float)mStopWatch.Elapsed.TotalSeconds;
             mStopWatch.Restart();
             mTotalSeconds += elapsed;
