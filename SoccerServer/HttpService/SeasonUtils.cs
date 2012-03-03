@@ -28,7 +28,7 @@ namespace HttpService
 
         static public void ResetSeasons(bool addCurrentTeams)
         {
-            using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
             {
                 con.Open();
 

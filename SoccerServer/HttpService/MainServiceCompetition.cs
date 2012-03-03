@@ -6,6 +6,7 @@ using System.Linq;
 using ServerCommon;
 using ServerCommon.BDDModel;
 using Weborb.Service;
+using System.Configuration;
 
 
 namespace HttpService
@@ -20,7 +21,7 @@ namespace HttpService
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            using (SqlConnection con = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
             {
                 con.Open();
 

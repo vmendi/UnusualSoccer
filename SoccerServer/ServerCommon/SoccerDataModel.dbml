@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SoccerV2" EntityNamespace="ServerCommon.BDDModel" Class="SoccerDataModelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=localhost;Initial Catalog=SoccerV2;Integrated Security=True" SettingsObjectName="ServerCommon.Properties.Settings" SettingsPropertyName="SoccerV2ConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.CompetitionDivisions" Member="CompetitionDivisions">
     <Type Name="CompetitionDivision">
       <Column Name="CompetitionDivisionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />

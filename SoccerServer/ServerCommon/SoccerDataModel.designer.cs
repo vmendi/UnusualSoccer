@@ -90,12 +90,6 @@ namespace ServerCommon
     partial void DeleteTicket(ServerCommon.BDDModel.Ticket instance);
     #endregion
 		
-		public SoccerDataModelDataContext() : 
-				base(global::ServerCommon.Properties.Settings.Default.SoccerV2ConnectionString, mappingSource)
-		{
-			OnCreated();
-		}
-		
 		public SoccerDataModelDataContext(string connection) : 
 				base(connection, mappingSource)
 		{

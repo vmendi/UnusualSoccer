@@ -5,10 +5,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Script.Serialization;
 using Facebook.Web;
-using HttpService;
-using ServerCommon.BDDModel;
-using ServerCommon;
 using NLog;
+using ServerCommon;
+using ServerCommon.BDDModel;
 
 
 namespace SoccerServer
