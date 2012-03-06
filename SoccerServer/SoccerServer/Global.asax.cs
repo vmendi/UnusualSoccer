@@ -74,7 +74,7 @@ namespace SoccerServer
             }
             catch (Exception excp)
             {
-                Log.Error("While running our Secondly process", excp);
+                Log.ErrorException("While running our Secondly process", excp);
             }
             finally
             {

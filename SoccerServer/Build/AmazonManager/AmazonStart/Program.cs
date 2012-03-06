@@ -20,14 +20,19 @@ using Amazon.ElasticLoadBalancing.Model;
 /* NOTES "To my beloved future self":
  * 
  * 1) eu-west in hardcoded.
- * 2) It assumes that all "Named" servers are dedicated to the game (UnusualSoccer).
- *    If not, you will need to add another Tag "Game" and filter by it.
+ * 2) The project name (in AWS, the tag "Project") & the load balancer name is hard coded
+ * 3) ConfigureLoadBalancer asumes that the name of the instances to add starts with "http"
+ * 4) La zona del DNS esta harcodeada
  */
 
 namespace AmazonStart
 {
     class Program
     {
+        private const string PROJECT = "UnusualSoccer";
+        private const string PROJECT_LOAD_BALANCER = "TheBalancer";
+        private const string HOSTED_ZONE = "ZHCBCSDXFPZMH";
+
         static public void Main(string[] args)
         {
             // Sobre las regiones: http://aws.amazon.com/articles/3912#endpoints
@@ -59,20 +64,6 @@ namespace AmazonStart
         }
 
 
-        static private string GetHostedZoneIDUnusualSoccer(AmazonRoute53 r53)
-        {
-            /*
-            GetHostedZoneRequest r53Request = new GetHostedZoneRequest();
-            r53Request.Id = "ZHCBCSDXFPZMH";
-
-            GetHostedZoneResponse r53Response = r53.GetHostedZone(r53Request);
-            var test = r53Response.GetHostedZoneResult.HostedZone;
-            */
-
-            return "ZHCBCSDXFPZMH";
-        }
-
-
         static private IEnumerable<ResourceRecordSet> ListRecordSets(AmazonRoute53 r53)
         {
             Console.WriteLine("Listing ResourceRecordSets...\n");
@@ -82,7 +73,7 @@ namespace AmazonStart
             try
             {
                 ListResourceRecordSetsRequest listRequest = new ListResourceRecordSetsRequest();
-                listRequest.HostedZoneId = GetHostedZoneIDUnusualSoccer(r53);
+                listRequest.HostedZoneId = HOSTED_ZONE; // Ya sabes... GetHostedZoneID(r53, PROJECT);
 
                 ListResourceRecordSetsResponse listResponse = r53.ListResourceRecordSets(listRequest);
 
@@ -126,27 +117,35 @@ namespace AmazonStart
 
                     var instanceName = GetInstanceName(instance);
 
-                    if (instanceName != null)
+                    if (instanceName == null)
                     {
-                        if (instance.InstanceState.Name == "pending")
-                        {
-                            Console.WriteLine("Instance {0} is PENDING. We will wait until ready.", instanceName);
-                            pendingInstancesIDs.Add(instance.InstanceId);
-                        }
-                        else if (instance.InstanceState.Name == "stopped")
-                        {
-                            Console.WriteLine("Instance {0} is STOPPED. Starting it.", instanceName);
-                            stoppedInstancesIDs.Add(instance.InstanceId);
-                        }
-                        else if (instance.InstanceState.Name == "running")
-                        {
-                            Console.WriteLine("Instance {0} is RUNNING.", instanceName);
-                            runningInstances.Add(instance);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ignoring instance {0} in state {1}", instanceName, instance.InstanceState.Name);
-                        }
+                        Console.WriteLine("Ignoring instance {0} without name", instance.InstanceId);
+                        continue;
+                    }
+                    if (!IsInstanceFromProject(instance))
+                    {
+                        Console.WriteLine("Ignoring instance {0} not in project {1}", instanceName, PROJECT);
+                        continue;
+                    }
+
+                    if (instance.InstanceState.Name == "pending")
+                    {
+                        Console.WriteLine("Instance {0} is PENDING. We will wait until ready.", instanceName);
+                        pendingInstancesIDs.Add(instance.InstanceId);
+                    }
+                    else if (instance.InstanceState.Name == "stopped")
+                    {
+                        Console.WriteLine("Instance {0} is STOPPED. Starting it.", instanceName);
+                        stoppedInstancesIDs.Add(instance.InstanceId);
+                    }
+                    else if (instance.InstanceState.Name == "running")
+                    {
+                        Console.WriteLine("Instance {0} is RUNNING.", instanceName);
+                        runningInstances.Add(instance);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ignoring instance {0} in state {1}", instanceName, instance.InstanceState.Name);
                     }
                 }
 
@@ -216,6 +215,12 @@ namespace AmazonStart
             return tagWithName == null ? null : tagWithName.Value;
         }
 
+        static private bool IsInstanceFromProject(RunningInstance instance)
+        {
+            var tagWithKey = instance.Tag.Find(tag => tag.Key == "Project");
+            return tagWithKey == null ? false : tagWithKey.Value == PROJECT;
+        }
+
         static private ResourceRecordSet GetResourceRecordSetForInstanceName(string instanceName, IEnumerable<ResourceRecordSet> resourceRecordSets)
         {
             return resourceRecordSets.SingleOrDefault(rrs => rrs.Name.StartsWith(instanceName.ToLower()));
@@ -244,7 +249,7 @@ namespace AmazonStart
                 AmazonRoute53 r53 = AWSClientFactory.CreateAmazonRoute53Client();
 
                 ChangeResourceRecordSetsRequest changeRequest = new ChangeResourceRecordSetsRequest();
-                changeRequest.HostedZoneId = GetHostedZoneIDUnusualSoccer(r53);
+                changeRequest.HostedZoneId = HOSTED_ZONE;
                 changeRequest.ChangeBatch = new ChangeBatch() { Changes = changes };
 
                 Console.WriteLine("\nSending ChangeRequest with batch size {0}", changes.Count);
@@ -318,12 +323,12 @@ namespace AmazonStart
 
         static private void ConfigureLoadBalancer(AmazonElasticLoadBalancing elb, List<RunningInstance> runningInstances)
         {
-            Console.WriteLine("\nConfiguring the Load Balancer...\n");
+            Console.WriteLine("\nConfiguring the Load Balancer '{0}'...\n", PROJECT_LOAD_BALANCER);
 
-            var request = new DescribeLoadBalancersRequest() { LoadBalancerNames = new List<string>() { "TheBalancer" } };
+            var request = new DescribeLoadBalancersRequest() { LoadBalancerNames = new List<string>() { PROJECT_LOAD_BALANCER } };
 
             // Sacamos todas las instancias que esten out of service
-            var healthResponse = elb.DescribeInstanceHealth(new DescribeInstanceHealthRequest() { LoadBalancerName = "TheBalancer" });
+            var healthResponse = elb.DescribeInstanceHealth(new DescribeInstanceHealthRequest() { LoadBalancerName = PROJECT_LOAD_BALANCER });
             var instancesToRemove = new List<Instance>();
             var instancesInService = new List<Instance>();
 
@@ -346,7 +351,7 @@ namespace AmazonStart
                 var deregisterResponse = elb.DeregisterInstancesFromLoadBalancer(new DeregisterInstancesFromLoadBalancerRequest()
                 {
                     Instances = instancesToRemove,
-                    LoadBalancerName = "TheBalancer"
+                    LoadBalancerName = PROJECT_LOAD_BALANCER
                 });
             }
 
@@ -370,7 +375,7 @@ namespace AmazonStart
                 var registerReponse = elb.RegisterInstancesWithLoadBalancer(new RegisterInstancesWithLoadBalancerRequest()
                 {
                     Instances = instancesToAdd,
-                    LoadBalancerName = "TheBalancer"
+                    LoadBalancerName = PROJECT_LOAD_BALANCER
                 });
             }
 
