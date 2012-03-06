@@ -8,8 +8,8 @@
     <ProjectGuid>{6C2FFFA4-84EB-4E5F-B1D7-87D94B64D93A}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MainManager</RootNamespace>
-    <AssemblyName>MainManager</AssemblyName>
+    <RootNamespace>AmazonStart</RootNamespace>
+    <AssemblyName>AmazonStart</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -117,8 +117,7 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>copy  $(TargetPath) $(ProjectDir)..\
-copy  $(ProjectDir)..\_Out\*.dll $(ProjectDir)..\
-copy  $(ProjectDir)..\_Out\MainManager.exe.config $(ProjectDir)..\</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MainManager", "MainManager.csproj", "{6C2FFFA4-84EB-4E5F-B1D7-87D94B64D93A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonStart", "AmazonStart.csproj", "{6C2FFFA4-84EB-4E5F-B1D7-87D94B64D93A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

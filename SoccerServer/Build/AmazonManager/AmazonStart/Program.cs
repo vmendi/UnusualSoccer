@@ -17,7 +17,14 @@ using System.Net;
 using Amazon.ElasticLoadBalancing;
 using Amazon.ElasticLoadBalancing.Model;
 
-namespace MainManager
+/* NOTES "To my beloved future self":
+ * 
+ * 1) eu-west in hardcoded.
+ * 2) It assumes that all "Named" servers are dedicated to the game (UnusualSoccer).
+ *    If not, you will need to add another Tag "Game" and filter by it.
+ */
+
+namespace AmazonStart
 {
     class Program
     {
@@ -33,10 +40,10 @@ namespace MainManager
             AmazonEC2 ec2 = AWSClientFactory.CreateAmazonEC2Client(ec2Config);
             AmazonElasticLoadBalancing elb = AWSClientFactory.CreateAmazonElasticLoadBalancingClient(elbConfig);
 
-            // Listamos todos los RecordSets de tipo "CNAME", listamos todas nuestras instancias en funcionamiento,
+            // Listamos todos los RecordSets de tipo "CNAME", levantamos y listamos todas nuestras instancias en funcionamiento,
             // generamos la lista de cambios comparando con el PublicDNS de las instancias y aplicamos los cambios
             var recordSets = ListRecordSets(r53);
-            var runningInstances = ListRunningInstances(ec2);
+            var runningInstances = StartInstances(ec2);
             var changeList = GenerateChangeList(ec2, recordSets, runningInstances);
 
             ApplyResourceRecordSetsChanges(changeList);
@@ -45,10 +52,10 @@ namespace MainManager
             // Internamente Volvera a pedir toda la lista de ResourceRecordSets con los cambios ya aplicados.
             VerifyChanges(ec2, r53, runningInstances);
 
+            // We remove the old instances, add the new ones and wait until all are InService
             ConfigureLoadBalancer(elb, runningInstances);
 
             Console.WriteLine("\nDone.");
-            Console.ReadKey();
         }
 
 
@@ -97,10 +104,11 @@ namespace MainManager
             return ret;
         }
 
-        static private List<RunningInstance> ListRunningInstances(AmazonEC2 ec2)
+        static private List<RunningInstance> StartInstances(AmazonEC2 ec2)
         {
             List<RunningInstance> runningInstances = new List<RunningInstance>();
             List<string> pendingInstancesIDs = new List<string>();
+            List<string> stoppedInstancesIDs = new List<string>();
 
             DescribeInstancesResponse ec2Response = ec2.DescribeInstances(new DescribeInstancesRequest());
             Console.WriteLine("You have " + ec2Response.DescribeInstancesResult.Reservation.Count + " Amazon EC2 instance(s) in the region:");
@@ -125,6 +133,11 @@ namespace MainManager
                             Console.WriteLine("Instance {0} is PENDING. We will wait until ready.", instanceName);
                             pendingInstancesIDs.Add(instance.InstanceId);
                         }
+                        else if (instance.InstanceState.Name == "stopped")
+                        {
+                            Console.WriteLine("Instance {0} is STOPPED. Starting it.", instanceName);
+                            stoppedInstancesIDs.Add(instance.InstanceId);
+                        }
                         else if (instance.InstanceState.Name == "running")
                         {
                             Console.WriteLine("Instance {0} is RUNNING.", instanceName);
@@ -135,6 +148,13 @@ namespace MainManager
                             Console.WriteLine("Ignoring instance {0} in state {1}", instanceName, instance.InstanceState.Name);
                         }
                     }
+                }
+
+                if (stoppedInstancesIDs.Count != 0)
+                {
+                    var response = ec2.StartInstances(new StartInstancesRequest() { InstanceId = stoppedInstancesIDs });
+                    pendingInstancesIDs.AddRange(stoppedInstancesIDs);
+                    stoppedInstancesIDs.Clear();
                 }
 
                 if (pendingInstancesIDs.Count != 0)
@@ -403,77 +423,23 @@ namespace MainManager
                 Console.WriteLine("Request ID: " + ex.RequestId);
             }
         }
+
+        static private void PrintS53Exception(AmazonS3Exception ex)
+        {
+            if (ex.ErrorCode != null && (ex.ErrorCode.Equals("InvalidAccessKeyId") || ex.ErrorCode.Equals("InvalidSecurity")))
+            {
+                Console.WriteLine("Please check the provided AWS Credentials.");
+                Console.WriteLine("If you haven't signed up for Amazon S3, please visit http://aws.amazon.com/s3");
+            }
+            else
+            {
+                Console.WriteLine("Caught Exception: " + ex.Message);
+                Console.WriteLine("Response Status Code: " + ex.StatusCode);
+                Console.WriteLine("Error Code: " + ex.ErrorCode);
+                Console.WriteLine("Request ID: " + ex.RequestId);
+                Console.WriteLine("XML: " + ex.XML);
+            }
+        }
         
     }
 }
-
-/*
-  // Print the number of Amazon SimpleDB domains.
-                AmazonSimpleDB sdb = AWSClientFactory.CreateAmazonSimpleDBClient();
-                ListDomainsRequest sdbRequest = new ListDomainsRequest();
-
-                try
-                {
-                    ListDomainsResponse sdbResponse = sdb.ListDomains(sdbRequest);
-
-                    if (sdbResponse.IsSetListDomainsResult())
-                    {
-                        int numDomains = 0;
-                        numDomains = sdbResponse.ListDomainsResult.DomainName.Count;
-                        sr.WriteLine("You have " + numDomains + " Amazon SimpleDB domain(s) in the US-East (Northern Virginia) region.");
-                    }
-                }
-                catch (AmazonSimpleDBException ex)
-                {
-                    if (ex.ErrorCode != null && ex.ErrorCode.Equals("AuthFailure"))
-                    {
-                        sr.WriteLine("The account you are using is not signed up for Amazon SimpleDB.");
-                        sr.WriteLine("You can sign up for Amazon SimpleDB at http://aws.amazon.com/simpledb");
-                    }
-                    else
-                    {
-                        sr.WriteLine("Caught Exception: " + ex.Message);
-                        sr.WriteLine("Response Status Code: " + ex.StatusCode);
-                        sr.WriteLine("Error Code: " + ex.ErrorCode);
-                        sr.WriteLine("Error Type: " + ex.ErrorType);
-                        sr.WriteLine("Request ID: " + ex.RequestId);
-                        sr.WriteLine("XML: " + ex.XML);
-                    }
-                }
-                sr.WriteLine();
-
-                // Print the number of Amazon S3 Buckets.
-                AmazonS3 s3Client = AWSClientFactory.CreateAmazonS3Client();
-
-                try
-                {
-                    ListBucketsResponse response = s3Client.ListBuckets();
-                    int numBuckets = 0;
-                    if (response.Buckets != null &&
-                        response.Buckets.Count > 0)
-                    {
-                        numBuckets = response.Buckets.Count;
-                    }
-                    sr.WriteLine("You have " + numBuckets + " Amazon S3 bucket(s) in the US Standard region.");
-                }
-                catch (AmazonS3Exception ex)
-                {
-                    if (ex.ErrorCode != null && (ex.ErrorCode.Equals("InvalidAccessKeyId") ||
-                        ex.ErrorCode.Equals("InvalidSecurity")))
-                    {
-                        sr.WriteLine("Please check the provided AWS Credentials.");
-                        sr.WriteLine("If you haven't signed up for Amazon S3, please visit http://aws.amazon.com/s3");
-                    }
-                    else
-                    {
-                        sr.WriteLine("Caught Exception: " + ex.Message);
-                        sr.WriteLine("Response Status Code: " + ex.StatusCode);
-                        sr.WriteLine("Error Code: " + ex.ErrorCode);
-                        sr.WriteLine("Request ID: " + ex.RequestId);
-                        sr.WriteLine("XML: " + ex.XML);
-                    }
-                }
-                sr.WriteLine("Press any key to continue...");
-            }
-            return sb.ToString();
-*/
