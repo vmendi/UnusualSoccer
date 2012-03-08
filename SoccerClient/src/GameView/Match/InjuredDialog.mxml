@@ -2,7 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 xmlns:Team="GameView.Team.*" xmlns:GameView="GameView.*"
-		 width="400" height="265">
+		 width="480" height="285">
 	
 	<fx:Style source="../styles.css"/>
 	
@@ -47,8 +47,9 @@
 	</fx:Script>
 	
 	<GameView:PopupBackground width="100%" height="100%" />
+	<s:BitmapImage x="2" y="2" source="@Embed(source='/Assets/General.swf', symbol='InjuredDialogHeader')" fillMode="clip" />
 	
-	<s:Group x="0" y="20">
+	<s:Group horizontalCenter="0" y="20">
 		<s:layout>
 			<s:VerticalLayout />
 		</s:layout>
@@ -78,7 +79,7 @@
 		<s:layout><s:HorizontalLayout gap="20" /></s:layout>
 	</s:List>
 	
-	<s:Label width="400" text="{resourceManager.getString('main','InjuredSignUpTxt')}" bottom="47" styleName="yellowBoldBig" textAlign="center"/>	
+	<s:Label width="400" text="{resourceManager.getString('main','InjuredSignUpTxt')}" bottom="43" styleName="yellowBoldVeryBig" textAlign="center" horizontalCenter="0"/>	
 	<s:Button label="{resourceManager.getString('main','FriendSelectorTitle')}" horizontalCenter="0" bottom="15" click="SignUpClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonGreySkin" />
 	<s:Button label="X" minHeight="23" minWidth="23" top="15" right="15" click="CloseClickHandler(event)" skinClass="GameView.Skins.ButtonGreySkin" />
 	
