@@ -63,16 +63,19 @@
         <field name="SkillPoints" type="int" fulltype="int" nativetype="int" />
         <field name="Energy" type="int" fulltype="int" nativetype="int" />
         <field name="Fitness" type="int" fulltype="int" nativetype="int" />
-        <field name="Ticket" type="Ticket" fulltype="HttpService.TransferModel.Ticket" nativetype="HttpService.TransferModel.Ticket" typeNamespace="HttpService.TransferModel" />
+        <field name="TeamPurchase" type="TeamPurchase" fulltype="HttpService.TransferModel.TeamPurchase" nativetype="HttpService.TransferModel.TeamPurchase" typeNamespace="HttpService.TransferModel" />
         <field name="PendingTraining" type="PendingTraining" fulltype="HttpService.TransferModel.PendingTraining" nativetype="HttpService.TransferModel.PendingTraining" typeNamespace="HttpService.TransferModel" />
         <field name="SoccerPlayers" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.SoccerPlayer&gt;" />
         <field name="SpecialTrainings" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.SpecialTraining&gt;" />
       </datatype>
-      <datatype name="Ticket" fullname="HttpService.TransferModel.Ticket" typeNamespace="HttpService.TransferModel">
+      <datatype name="TeamPurchase" fullname="HttpService.TransferModel.TeamPurchase" typeNamespace="HttpService.TransferModel">
         <field name="RemainingMatches" type="int" fulltype="int" nativetype="int" />
         <field name="TicketPurchaseDate" type="Date" fulltype="Date" nativetype="DateTime" />
         <field name="TicketExpiryDate" type="Date" fulltype="Date" nativetype="DateTime" />
+        <field name="TrainerPurchaseDate" type="Date" fulltype="Date" nativetype="DateTime" />
+        <field name="TrainerExpiryDate" type="Date" fulltype="Date" nativetype="DateTime" />
         <field name="TicketExpiryDateRemainingSeconds" type="int" fulltype="int" nativetype="int" />
+        <field name="TrainerExpiryDateRemainingSeconds" type="int" fulltype="int" nativetype="int" />
       </datatype>
       <datatype name="PendingTraining" fullname="HttpService.TransferModel.PendingTraining" typeNamespace="HttpService.TransferModel">
         <field name="TrainingDefinition" type="TrainingDefinition" fulltype="HttpService.TransferModel.TrainingDefinition" nativetype="HttpService.TransferModel.TrainingDefinition" typeNamespace="HttpService.TransferModel" />

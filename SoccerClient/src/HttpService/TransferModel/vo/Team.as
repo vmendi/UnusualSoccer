@@ -15,7 +15,7 @@ package HttpService.TransferModel.vo
 {
   import flash.utils.ByteArray;
   import mx.collections.ArrayCollection;
-import HttpService.TransferModel.vo.Ticket;import HttpService.TransferModel.vo.PendingTraining;
+import HttpService.TransferModel.vo.TeamPurchase;import HttpService.TransferModel.vo.PendingTraining;
 	[Bindable]
 	[RemoteClass(alias="HttpService.TransferModel.Team")]
 	public class Team
@@ -30,7 +30,7 @@ import HttpService.TransferModel.vo.Ticket;import HttpService.TransferModel.vo.P
 		public var SkillPoints:int;
 		public var Energy:int;
 		public var Fitness:int;
-		public var Ticket:HttpService.TransferModel.vo.Ticket;
+		public var TeamPurchase:HttpService.TransferModel.vo.TeamPurchase;
 		public var PendingTraining:HttpService.TransferModel.vo.PendingTraining;
 		public var SoccerPlayers:ArrayCollection;
 		public var SpecialTrainings:ArrayCollection;

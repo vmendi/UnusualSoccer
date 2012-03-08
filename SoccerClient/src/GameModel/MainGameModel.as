@@ -26,7 +26,7 @@ package GameModel
 			mFormationModel = new FormationModel(mMainService, this);
 			mSpecialTrainingModel = new SpecialTrainingModel(mMainService, this);
 			mPredefinedTeamsModel = new PredefinedTeamsModel(mMainService, this);
-			mTicketModel = new TicketModel(mMainService, this);
+			mTeamPurchaseModel = new TeamPurchaseModel(mMainService, this);
 			mCompetitionModel = new CompetitionModel(mMainService, this);
 			mFriendsModel = new FriendsModel(mMainService, this);
 			mInactivityModel = new InactivityModel(mMainService, this);
@@ -44,7 +44,7 @@ package GameModel
 		{
 			try {
 				mTeamModel.OnTimerSeconds();
-				mTicketModel.OnTimerSeconds();
+				mTeamPurchaseModel.OnTimerSeconds();
 				mCompetitionModel.OnTimerSeconds();
 				mTrainingModel.OnTimerSeconds();
 			}
@@ -108,7 +108,7 @@ package GameModel
 		public function get ThePredefinedTeamsModel() : PredefinedTeamsModel { return mPredefinedTeamsModel; }
 		
 		[Bindable(event="dummy")]
-		public function get TheTicketModel() : TicketModel { return mTicketModel; }
+		public function get TheTeamPurchaseModel() : TeamPurchaseModel { return mTeamPurchaseModel; }
 		
 		[Bindable(event="dummy")]
 		public function get TheCompetitionModel() : CompetitionModel { return mCompetitionModel; }
@@ -130,7 +130,7 @@ package GameModel
 		private var mRankingModel : RankingModel;
 		private var mPredefinedTeamsModel : PredefinedTeamsModel;
 		private var mRealtimeModel : RealtimeModel;
-		private var mTicketModel : TicketModel;
+		private var mTeamPurchaseModel : TeamPurchaseModel;
 		private var mCompetitionModel : CompetitionModel;
 		private var mFriendsModel : FriendsModel;
 		private var mInactivityModel : InactivityModel;

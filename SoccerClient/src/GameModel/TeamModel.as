@@ -135,7 +135,7 @@ package GameModel
 			
 			UpdateFieldPositions();
 			UpdateTeamDetails();
-			mMainModel.TheTicketModel.UpdateTicket();	// Preferimos pushearlo en vez de que él lo lea mediante binding porque asi tenemos garantizado el "cuando"
+			mMainModel.TheTeamPurchaseModel.UpdatePurchases();	// Preferimos pushearlo en vez de que él lo lea mediante binding porque asi tenemos garantizado el "cuando"
 														// se actualiza su estado (antes del callback por ejemplo)
 			if (callback != null)
 				callback();

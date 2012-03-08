@@ -189,6 +189,17 @@
       <Association Name="Team_SpecialTraining" Member="Team" ThisKey="TeamID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
+  <Table Name="dbo.TeamPurchases" Member="TeamPurchases">
+    <Type Name="TeamPurchase">
+      <Column Name="TeamPurchaseID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RemainingMatches" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TicketPurchaseDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TicketExpiryDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TrainerPurchaseDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TrainerExpiryDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Team_TeamPurchase" Member="Team" ThisKey="TeamPurchaseID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.Teams" Member="Teams">
     <Type Name="Team">
       <Column Name="TeamID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -210,8 +221,8 @@
       <Association Name="Team_Request" Member="Requests" ThisKey="TeamID" OtherKey="SourceTeamID" Type="Request" />
       <Association Name="Team_SoccerPlayer" Member="SoccerPlayers" ThisKey="TeamID" OtherKey="TeamID" Type="SoccerPlayer" />
       <Association Name="Team_SpecialTraining" Member="SpecialTrainings" ThisKey="TeamID" OtherKey="TeamID" Type="SpecialTraining" />
+      <Association Name="Team_TeamPurchase" Member="TeamPurchase" ThisKey="TeamID" OtherKey="TeamPurchaseID" Type="TeamPurchase" Cardinality="One" />
       <Association Name="Team_TeamStat" Member="TeamStat" ThisKey="TeamID" OtherKey="TeamStatsID" Type="TeamStat" Cardinality="One" />
-      <Association Name="Team_Ticket" Member="Ticket" ThisKey="TeamID" OtherKey="TicketID" Type="Ticket" Cardinality="One" />
       <Association Name="CompetitionDivision_Team" Member="CompetitionDivision" ThisKey="LastDivisionQueriedID" OtherKey="CompetitionDivisionID" Type="CompetitionDivision" IsForeignKey="true" DeleteRule="SET NULL" />
       <Association Name="Player_Team" Member="Player" ThisKey="TeamID" OtherKey="PlayerID" Type="Player" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
@@ -225,15 +236,6 @@
       <Column Name="ScoredGoals" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ReceivedGoals" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Team_TeamStat" Member="Team" ThisKey="TeamStatsID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Tickets" Member="Tickets">
-    <Type Name="Ticket">
-      <Column Name="TicketID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="RemainingMatches" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="TicketPurchaseDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="TicketExpiryDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Team_Ticket" Member="Team" ThisKey="TicketID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
 </Database>

@@ -46,7 +46,7 @@
 		
 		private function OnConnectionChanged(isConnected : Boolean) : void
 		{
-			if (mMainGameModel.TheTicketModel.HasCredit)
+			if (mMainGameModel.TheTeamPurchaseModel.HasCredit)
 			{
 				if (isConnected)
 					currentState = "AvailableCredit";

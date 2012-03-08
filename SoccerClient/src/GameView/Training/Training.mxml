@@ -10,6 +10,7 @@
 	
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
+		import GameModel.TeamPurchaseModel;
 		import GameModel.TrainingModel;
 		
 		import GameView.HierarchyUtils;
@@ -28,6 +29,7 @@
 		{
 			mMainGameModel = SoccerClient.GetMainGameModel();	
 			mTrainingModel = mMainGameModel.TheTrainingModel;
+			mTeamPurchaseModel = mMainGameModel.TheTeamPurchaseModel;
 			
 			for (var c:int=0; c < MyTrainingItemsGroup.numElements; c++)
 			{
@@ -83,6 +85,7 @@
 		
 		[Bindable] private var mMainGameModel : MainGameModel;
 		[Bindable] private var mTrainingModel : TrainingModel;
+		[Bindable] private var mTeamPurchaseModel : TeamPurchaseModel;
 		
 	]]></fx:Script>
 	
@@ -90,7 +93,7 @@
 		
 		<s:Label x="20" y="14" width="700" text="{resourceManager.getString('main','TrainingPanelTxt')}" styleName="whiteBoldBig" textAlign="center" />
 		
-		<s:Group x="10" y="64" id="MyTrainingItemsGroup">
+		<s:Group x="10" y="64" id="MyTrainingItemsGroup" visible="{!mTeamPurchaseModel.HasTrainer}">
 			<s:layout>
 				<s:TileLayout columnWidth="355" rowHeight="115" horizontalGap="10" verticalGap="10"/>
 			</s:layout>
@@ -103,6 +106,8 @@
 			<Training:TrainingItem click="Trainingitem_clickHandler(event)"/>
 			<Training:TrainingItem click="Trainingitem_clickHandler(event)"/>
 		</s:Group>
+		
+		<Training:TrainerPanel id="MyTrainerPanel" y="30" x="0" />
 		
 	</s:Panel>	
 	
