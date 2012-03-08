@@ -35,6 +35,8 @@ namespace AmazonStart
 
         static public void Main(string[] args)
         {
+            //if (args.Length == 2)
+
             // Sobre las regiones: http://aws.amazon.com/articles/3912#endpoints
             AmazonEC2Config ec2Config = new AmazonEC2Config() { ServiceURL = "https://ec2.eu-west-1.amazonaws.com" };
             AmazonElasticLoadBalancingConfig elbConfig = new AmazonElasticLoadBalancingConfig() { ServiceURL = "https://elasticloadbalancing.eu-west-1.amazonaws.com" };
