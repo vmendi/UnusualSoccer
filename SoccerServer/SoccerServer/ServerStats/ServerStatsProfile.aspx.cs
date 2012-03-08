@@ -91,7 +91,8 @@ namespace SoccerServer.ServerStats
         {
             MyPurchasesInfo.Text = "Num purchases: " + GetNumPurchases().ToString() + "<br/>" +
                                    "Remaining matches: " + GetRemainingMatches().ToString() + "<br/>" +
-                                   "Ticket: " + GetTicketString();
+                                   "Ticket: " + GetTicketString() + "<br/>" +
+                                   "Trainer: " + GetTrainerString();
         }
 
         private int GetRemainingMatches()
@@ -103,6 +104,12 @@ namespace SoccerServer.ServerStats
         {
             return "Purchase Date: " + mPlayer.Team.TeamPurchase.TicketPurchaseDate +
                    "<br/>Expiry Date: " + mPlayer.Team.TeamPurchase.TicketExpiryDate;
+        }
+
+        private string GetTrainerString()
+        {
+            return "Purchase Date: " + mPlayer.Team.TeamPurchase.TrainerPurchaseDate +
+                   "<br/>Expiry Date: " + mPlayer.Team.TeamPurchase.TrainerExpiryDate;
         }
 
         private int GetNumPurchases()
@@ -128,6 +135,15 @@ namespace SoccerServer.ServerStats
             mPlayer.Team.TeamPurchase.TicketPurchaseDate = DateTime.Now;
             mPlayer.Team.TeamPurchase.TicketExpiryDate = mPlayer.Team.TeamPurchase.TicketPurchaseDate;
             mPlayer.Team.TeamPurchase.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
+            mDC.SubmitChanges();
+
+            FillPurchases();
+        }
+
+        protected void MyResetTrainerButton_Click(object sender, EventArgs e)
+        {
+            mPlayer.Team.TeamPurchase.TrainerPurchaseDate = DateTime.Now;
+            mPlayer.Team.TeamPurchase.TrainerExpiryDate = mPlayer.Team.TeamPurchase.TrainerPurchaseDate;
             mDC.SubmitChanges();
 
             FillPurchases();

@@ -157,33 +157,37 @@ namespace SoccerServer
                            where t.Player.FacebookID == thePurchase.FacebookBuyerID
                            select t).First();
 
-            if (thePurchase.ItemID == "SkillPoints100")
+            switch(thePurchase.ItemID)
             {
-                theTeam.SkillPoints += 100;
-            }
-            else if (thePurchase.ItemID == "SkillPoints300")
-            {
-                theTeam.SkillPoints += 300;
-            }
-            else if (thePurchase.ItemID == "SkillPoints500")
-            {
-                theTeam.SkillPoints += 500;
-            }
-            else if (thePurchase.ItemID == "BronzeTicket")
-            {
-                AwardTicketTime(theTeam.TeamPurchase, 0, new TimeSpan(0, 0, 3, 0));
-            } 
-            else if (thePurchase.ItemID == "SilverTicket")
-            {
-                AwardTicketTime(theTeam.TeamPurchase, 1, new TimeSpan(0, 1, 0, 0));                
-            }
-            else if (thePurchase.ItemID == "GoldTicket")
-            {
-                AwardTicketTime(theTeam.TeamPurchase, 2, new TimeSpan(1, 0, 0, 0));
-            }
-            else
-            {
-                throw new Exception("Unknown thePurchase.ItemID: " + thePurchase.ItemID);
+                case "SkillPoints100":
+                    theTeam.SkillPoints += 100;
+                    break;
+                case "SkillPoints300":
+                    theTeam.SkillPoints += 300;
+                    break;
+                case "SkillPoints500":
+                    theTeam.SkillPoints += 500;
+                    break;
+                case "BronzeTicket":
+                    AwardTicketTime(theTeam.TeamPurchase, 0, new TimeSpan(0, 0, 3, 0));
+                    break;
+                case "SilverTicket":
+                    AwardTicketTime(theTeam.TeamPurchase, 1, new TimeSpan(0, 1, 0, 0));                
+                    break;
+                case "GoldTicket":
+                    AwardTicketTime(theTeam.TeamPurchase, 2, new TimeSpan(1, 0, 0, 0));
+                    break;
+                case "Trainer01":
+                    AwardTrainer(theTeam.TeamPurchase, new TimeSpan(1, 0, 0, 0));
+                    break;
+                case "Trainer02":
+                    AwardTrainer(theTeam.TeamPurchase, new TimeSpan(1, 0, 0, 0));
+                    break;
+                case "Trainer03":
+                    AwardTrainer(theTeam.TeamPurchase, new TimeSpan(1, 0, 0, 0));
+                    break;
+                default:
+                    throw new Exception("Unknown thePurchase.ItemID: " + thePurchase.ItemID);
             }
         }
 
@@ -202,6 +206,16 @@ namespace SoccerServer
                 theTeamPurchase.TicketExpiryDate = theTeamPurchase.TicketPurchaseDate + time;
         }
 
+        static private void AwardTrainer(TeamPurchase theTeamPurchase, TimeSpan time)
+        {
+            theTeamPurchase.TrainerPurchaseDate = DateTime.Now;
+
+            // Idem AwardTicketTime
+            if (theTeamPurchase.TrainerExpiryDate > DateTime.Now)
+                theTeamPurchase.TrainerExpiryDate += time;
+            else
+                theTeamPurchase.TrainerExpiryDate = theTeamPurchase.TrainerPurchaseDate + time;
+        }
 
         static private void CriticalLog(string message)
         { 
@@ -280,7 +294,7 @@ namespace SoccerServer
 
         static private ItemForSale GetItemForSale(string orderInfoFromClient_itemID)
         {
-            // TODO
+            // TODO: Pensar antes de mover a la DB si no esta mejor aqui, dadas las miles de llamadas por segundo potenciales...
             List<ItemForSale> ITEMS_FOR_SALE = new List<ItemForSale>()
             {
                 new ItemForSale()
@@ -339,6 +353,36 @@ namespace SoccerServer
                         description = "Unlimited matches during XXX days",
                         price = 3,
                         title = "Unlimited matches during XXX days",
+                        product_url = "http://www.facebook.com/images/gifts/22.png",
+                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        data = ""
+                    },
+                new ItemForSale()
+                    {
+                        item_id = "Trainer01",
+                        description = "Trainer during XXX days",
+                        price = 3,
+                        title = "Trainer during XXX days",
+                        product_url = "http://www.facebook.com/images/gifts/22.png",
+                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        data = ""
+                    },
+                new ItemForSale()
+                    {
+                        item_id = "Trainer02",
+                        description = "Trainer during XXX days",
+                        price = 4,
+                        title = "Trainer during XXX days",
+                        product_url = "http://www.facebook.com/images/gifts/22.png",
+                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        data = ""
+                    },
+                new ItemForSale()
+                    {
+                        item_id = "Trainer03",
+                        description = "Trainer during XXX days",
+                        price = 5,
+                        title = "Trainer during XXX days",
                         product_url = "http://www.facebook.com/images/gifts/22.png",
                         image_url = "http://www.facebook.com/images/gifts/22.png",
                         data = ""

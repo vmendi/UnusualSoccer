@@ -15,6 +15,7 @@
 
         <asp:Button ID="MyResetTicketButton" runat="server" Text="Delete Ticket" onclick="MyResetTicketButton_Click" /><br />
         <asp:Button ID="MySet0RemainingMatchesButton" runat="server" Text="Delete & Set 0 remaining matches" onclick="MySet0RemainingMatchesButton_Click" /><br />
+        <asp:Button ID="MyResetTrainerButton" runat="server" Text="Delete Trainer" onclick="MyResetTrainerButton_Click" /><br />
         <br />
         <br />
         

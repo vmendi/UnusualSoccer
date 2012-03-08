@@ -58,7 +58,7 @@
 			<s:HorizontalLayout gap="4" verticalAlign="middle" />
 		</s:layout>
 		<s:RichText styleName="blackBoldBig" whiteSpaceCollapse="preserve" textAlign="center" kerning="auto" lineHeight="104%">
-			<s:content><s:p><s:span>Blahblahblah Not Purchased blablabli</s:span></s:p></s:content>
+			<s:content><s:p><s:span>Trainer (TO-DO)</s:span></s:p></s:content>
 		</s:RichText>
 	</s:Group>
 
