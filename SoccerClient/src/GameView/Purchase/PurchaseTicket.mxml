@@ -34,7 +34,7 @@
 	<s:BitmapImage left="2" top="2" source="@Embed(source='/Assets/General.swf', symbol='PopupTicketCabecera')" fillMode="clip" />
 	<s:Label id="myTit" horizontalCenter="0" top="15" text="{resourceManager.getString('main','PurchaseTitTicket')}" styleName="whiteBoldHuge" /> 
 	
-	<s:Group horizontalCenter="0" top="105">
+	<s:Group horizontalCenter="0" top="105" includeIn="ChoosingItem">
 		<s:Group horizontalCenter="0" verticalCenter="0" >
 			<s:layout>
 				<s:HorizontalLayout gap="10" />
