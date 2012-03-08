@@ -147,7 +147,7 @@
 	
 	]]></fx:Script>
 	
-	<s:BitmapImage source="{resourceManager.getClass('main','BackGeneral')}" fillMode="clip" top="131"/>
+	<s:BitmapImage source="{resourceManager.getClass('main','LoginBg')}" fillMode="clip" top="0"/>
 	
 	<local:ServerTests id="MyServerTests" visible="false" width="100%" height="100%"/>
 			

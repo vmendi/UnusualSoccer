@@ -107,7 +107,7 @@
             <tr>
                 <td><a href="#" onclick="sendRequestViaMultiFriendSelector(); return false;"><img alt="" src="Imgs/NavIconInvita_${locale}.png" hspace="20" border="0" /></a></td>
                 <td><a href="//www.facebook.com/pages/Unusual-Soccer/302667959787764" target="_parent"><img alt="" src="Imgs/NavIconMuro_${locale}.png" hspace="20" border="0" /></a></td>
-                <td><a href="//www.facebook.com/pages/Unusual-Soccer/302667959787764" target="_parent"><img alt="" src="Imgs/NavIconInfo_${locale}.png" hspace="20" border="0" /></a></td>
+                <td><a href="//www.facebook.com/pages/Unusual-Soccer/302667959787764#!/pages/Unusual-Soccer/302667959787764?sk=info" target="_parent"><img alt="" src="Imgs/NavIconInfo_${locale}.png" hspace="20" border="0" /></a></td>
             </tr>
         </table>
     </div>
