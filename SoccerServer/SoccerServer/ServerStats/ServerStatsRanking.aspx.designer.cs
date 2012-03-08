@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SoccerServer {
+namespace SoccerServer.ServerStats {
     
     
-    public partial class ServerStatsGlobalMatches {
+    public partial class ServerStatsRanking {
         
         /// <summary>
         /// form1 control.
@@ -22,39 +22,30 @@ namespace SoccerServer {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// MyGlobalMatches control.
+        /// MyRankingTable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::SoccerServer.ServerStatsMatchesControl MyGlobalMatches;
+        protected global::System.Web.UI.WebControls.GridView MyRankingTable;
         
         /// <summary>
-        /// Label1 control.
+        /// HyperLink1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.WebControls.HyperLink HyperLink1;
         
         /// <summary>
-        /// MyNumMatchesStats control.
+        /// MyRankingLinQDataSource control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView MyNumMatchesStats;
-        
-        /// <summary>
-        /// MyMatchesLinQDataSource control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinqDataSource MyMatchesLinQDataSource;
+        protected global::System.Web.UI.WebControls.LinqDataSource MyRankingLinQDataSource;
     }
 }

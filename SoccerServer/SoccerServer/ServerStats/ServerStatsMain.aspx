@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ServerStats.aspx.cs" Inherits="SoccerServer.ServerStats" MaintainScrollPositionOnPostback="true" %> 
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ServerStatsMain.aspx.cs" Inherits="SoccerServer.ServerStats.ServerStatsMain" MaintainScrollPositionOnPostback="true" %> 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -61,9 +61,9 @@
 
         <div class="borderedBox"><asp:Literal runat="server" id="MyConsoleLabel"/></div><br/><br/>
         
-        <asp:HyperLink runat="server" Text="Matches" NavigateUrl="~/ServerStatsGlobalMatches.aspx" /><br /><br />
-        <asp:HyperLink runat="server" Text="Purchases" NavigateUrl="~/ServerStatsPurchases.aspx" /><br /><br />
-        <asp:HyperLink runat="server" Text="Hall of Fame" NavigateUrl="~/ServerStatsRanking.aspx" /><br /><br />
+        <asp:HyperLink runat="server" Text="Matches" NavigateUrl="ServerStatsGlobalMatches.aspx" /><br /><br />
+        <asp:HyperLink runat="server" Text="Purchases" NavigateUrl="ServerStatsPurchases.aspx" /><br /><br />
+        <asp:HyperLink runat="server" Text="Hall of Fame" NavigateUrl="ServerStatsRanking.aspx" /><br /><br />
         
         <asp:Button runat="server" Text="Erase Orphan Matches" OnClick="EraseOrphanMatches_Click" /><br />
 

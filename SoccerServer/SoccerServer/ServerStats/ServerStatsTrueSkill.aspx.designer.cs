@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SoccerServer {
+namespace SoccerServer.ServerStats {
     
     
     public partial class ServerStatsTrueSkill {

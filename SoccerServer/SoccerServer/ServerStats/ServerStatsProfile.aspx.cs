@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 using HttpService;
 using ServerCommon;
 
-namespace SoccerServer
+namespace SoccerServer.ServerStats
 {
     public partial class ServerStatsProfile : System.Web.UI.Page
     {
@@ -96,13 +96,13 @@ namespace SoccerServer
 
         private int GetRemainingMatches()
         {
-            return mPlayer.Team.Ticket.RemainingMatches;
+            return mPlayer.Team.TeamPurchase.RemainingMatches;
         }
 
         private string GetTicketString()
         {
-            return "Purchase Date: " + mPlayer.Team.Ticket.TicketPurchaseDate +
-                   "<br/>Expiry Date: " + mPlayer.Team.Ticket.TicketExpiryDate;
+            return "Purchase Date: " + mPlayer.Team.TeamPurchase.TicketPurchaseDate +
+                   "<br/>Expiry Date: " + mPlayer.Team.TeamPurchase.TicketExpiryDate;
         }
 
         private int GetNumPurchases()
@@ -125,9 +125,9 @@ namespace SoccerServer
 
         protected void MyResetTicketButton_Click(object sender, EventArgs e)
         {
-            mPlayer.Team.Ticket.TicketPurchaseDate = DateTime.Now;
-            mPlayer.Team.Ticket.TicketExpiryDate = mPlayer.Team.Ticket.TicketPurchaseDate;
-            mPlayer.Team.Ticket.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
+            mPlayer.Team.TeamPurchase.TicketPurchaseDate = DateTime.Now;
+            mPlayer.Team.TeamPurchase.TicketExpiryDate = mPlayer.Team.TeamPurchase.TicketPurchaseDate;
+            mPlayer.Team.TeamPurchase.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
             mDC.SubmitChanges();
 
             FillPurchases();
@@ -135,9 +135,9 @@ namespace SoccerServer
 
         protected void MySet0RemainingMatchesButton_Click(object sender, EventArgs e)
         {
-            mPlayer.Team.Ticket.TicketPurchaseDate = DateTime.Now;
-            mPlayer.Team.Ticket.TicketExpiryDate = mPlayer.Team.Ticket.TicketPurchaseDate;
-            mPlayer.Team.Ticket.RemainingMatches = 0;
+            mPlayer.Team.TeamPurchase.TicketPurchaseDate = DateTime.Now;
+            mPlayer.Team.TeamPurchase.TicketExpiryDate = mPlayer.Team.TeamPurchase.TicketPurchaseDate;
+            mPlayer.Team.TeamPurchase.RemainingMatches = 0;
             mDC.SubmitChanges();
 
             FillPurchases();

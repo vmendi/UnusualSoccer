@@ -18,6 +18,7 @@
 				/* Las "usamos" aqui para que linke */
 				new PurchaseSkillPoints();
 				new PurchaseTicket();
+				new PurchaseTrainer();
 				
 				var inst : Group = new theClass() as Group;
 				var parent : Sprite = FlexGlobals.topLevelApplication as Sprite;

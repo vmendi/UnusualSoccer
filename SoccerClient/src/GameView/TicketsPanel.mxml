@@ -16,7 +16,7 @@
 		<![CDATA[
 			import GameModel.MainGameModel;
 			import GameModel.TeamModel;
-			import GameModel.TicketModel;
+			import GameModel.TeamPurchaseModel;
 			
 			import GameView.Purchase.PurchaseBase;
 			
@@ -27,10 +27,10 @@
 			{
 				mMainGameModel = SoccerClient.GetMainGameModel();
 				mTeamModel = mMainGameModel.TheTeamModel;
-				mTicketModel = mMainGameModel.TheTicketModel;
+				mTeamPurchaseModel = mMainGameModel.TheTeamPurchaseModel;
 				
-				BindingUtils.bindSetter(OnHasTicketChanged, mTicketModel, ["HasTicket"]);
-				BindingUtils.bindSetter(OnTicketRemainingMatchesChanged, mTeamModel, ["TheTeam", "Ticket", "RemainingMatches"]);
+				BindingUtils.bindSetter(OnHasTicketChanged, mTeamPurchaseModel, ["HasTicket"]);
+				BindingUtils.bindSetter(OnTicketRemainingMatchesChanged, mTeamModel, ["TheTeam", "TeamPurchase", "RemainingMatches"]);
 			}
 			
 			private function OnTicketRemainingMatchesChanged(newVal : int) : void
@@ -64,7 +64,7 @@
 			
 			[Bindable] private var mMainGameModel : MainGameModel;
 			[Bindable] private var mTeamModel : TeamModel;
-			[Bindable] private var mTicketModel : TicketModel;
+			[Bindable] private var mTeamPurchaseModel : TeamPurchaseModel;
 		]]>
 	</fx:Script>
 
@@ -74,7 +74,7 @@
 		<s:layout>
 			<s:HorizontalLayout gap="4" verticalAlign="middle" />
 		</s:layout>
-		<s:Label id="MyRemainingMatches"  text="{mTeamModel.TheTeam.Ticket.RemainingMatches}" styleName="blackBoldHuge" />
+		<s:Label id="MyRemainingMatches"  text="{mTeamModel.TheTeam.TeamPurchase.RemainingMatches}" styleName="blackBoldHuge" />
 		<s:RichText id="MyRemainingMatchesTitle" styleName="blackBoldBig" whiteSpaceCollapse="preserve" textAlign="center" kerning="auto" lineHeight="104%">
 			<s:content><s:p><s:span>MATCHES</s:span></s:p><s:p><s:span>TODAY</s:span></s:p></s:content>
 		</s:RichText>
@@ -85,8 +85,8 @@
 			 textAlign="center" />
 	
 	<s:Group includeIn="Purchased" left="0" right="0">
-		<s:Label text="{mTeamModel.TheTeam.Ticket.TicketExpiryDate.toDateString()}" styleName="whiteBoldBig" y="5" left="0" right="0" textAlign="center" />
-		<s:Label text="{mTeamModel.TheTeam.Ticket.TicketExpiryDate.toLocaleTimeString()}" styleName="whiteBoldBig" y="20" left="0" right="0" textAlign="center" />
+		<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate.toDateString()}" styleName="whiteBoldBig" y="5" left="0" right="0" textAlign="center" />
+		<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate.toLocaleTimeString()}" styleName="whiteBoldBig" y="20" left="0" right="0" textAlign="center" />
 	</s:Group>
 	
 	<s:Button id="MyBuyTicketsButton"

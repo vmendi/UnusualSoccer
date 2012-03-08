@@ -62,7 +62,7 @@ namespace HttpService
                     theNewTeam.PredefinedTeamNameID = predefinedTeamNameID;
                     
                     // Uno por equipo, siempre. No se puede forzar 1:1 desde la BDD
-                    GenerateTicket(theNewTeam);
+                    GenerateTeamPurchase(theNewTeam);
                     GenerateTeamStats(theNewTeam);
 
                     mContext.SubmitChanges();
@@ -79,16 +79,19 @@ namespace HttpService
             }
 		}
 
-        private void GenerateTicket(Team team)
+        private void GenerateTeamPurchase(Team team)
         {
-            Ticket theTicket = new Ticket();
+            DateTime now = DateTime.Now;
+            TeamPurchase theTeamPurchase = new TeamPurchase();
             
-            theTicket.TicketID = team.TeamID;
-            theTicket.TicketPurchaseDate = DateTime.Now;
-            theTicket.TicketExpiryDate = theTicket.TicketPurchaseDate;
-            theTicket.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
+            theTeamPurchase.TeamPurchaseID = team.TeamID;
+            theTeamPurchase.TicketPurchaseDate = now;
+            theTeamPurchase.TicketExpiryDate = now;
+            theTeamPurchase.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
+            theTeamPurchase.TrainerPurchaseDate = now;
+            theTeamPurchase.TrainerExpiryDate = now;
 
-            mContext.Tickets.InsertOnSubmit(theTicket);
+            mContext.TeamPurchases.InsertOnSubmit(theTeamPurchase);
         }
 
         private void GenerateTeamStats(Team team)

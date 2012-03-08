@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SoccerServer {
+namespace SoccerServer.ServerStats {
     
     
-    public partial class ServerStats {
+    public partial class ServerStatsMain {
         
         /// <summary>
         /// ServerStatsForm control.

@@ -7,19 +7,37 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SoccerServer {
+namespace SoccerServer.ServerStats {
     
     
-    public partial class ServerStatsPurchases {
+    public partial class ServerStatsProfile {
         
         /// <summary>
-        /// MainPurchasesForm control.
+        /// form1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm MainPurchasesForm;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        
+        /// <summary>
+        /// MyTeamInfo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal MyTeamInfo;
+        
+        /// <summary>
+        /// MyTeamStats control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal MyTeamStats;
         
         /// <summary>
         /// MyPurchasesInfo control.
@@ -31,66 +49,39 @@ namespace SoccerServer {
         protected global::System.Web.UI.WebControls.Label MyPurchasesInfo;
         
         /// <summary>
-        /// MyTicketsInfo control.
+        /// MyResetTicketButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyTicketsInfo;
+        protected global::System.Web.UI.WebControls.Button MyResetTicketButton;
         
         /// <summary>
-        /// MyDisputedOrdersGridView control.
+        /// MySet0RemainingMatchesButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView MyDisputedOrdersGridView;
+        protected global::System.Web.UI.WebControls.Button MySet0RemainingMatchesButton;
         
         /// <summary>
-        /// MyResolveDisputePanel control.
+        /// MyProfileMatches control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel MyResolveDisputePanel;
+        protected global::SoccerServer.ServerStats.ServerStatsMatchesControl MyProfileMatches;
         
         /// <summary>
-        /// MyInfoMsgLiteral control.
+        /// HyperLink1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal MyInfoMsgLiteral;
-        
-        /// <summary>
-        /// MyMessageTextBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MyMessageTextBox;
-        
-        /// <summary>
-        /// MyRefundButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button MyRefundButton;
-        
-        /// <summary>
-        /// MySettleButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button MySettleButton;
+        protected global::System.Web.UI.WebControls.HyperLink HyperLink1;
     }
 }

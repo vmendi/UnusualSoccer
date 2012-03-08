@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ServerStatsRanking.aspx.cs" Inherits="SoccerServer.ServerStatsRanking" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ServerStatsRanking.aspx.cs" Inherits="SoccerServer.ServerStats.ServerStatsRanking" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -86,7 +86,7 @@
         <br />
         <br />
 
-        <asp:HyperLink ID="HyperLink1" runat="server" Text="Back to home" NavigateUrl="~/ServerStats.aspx" />
+        <asp:HyperLink ID="HyperLink1" runat="server" Text="Back to home" NavigateUrl="ServerStatsMain.aspx" />
 
         <asp:LinqDataSource ID="MyRankingLinQDataSource"
 			ContextTypeName="ServerCommon.SoccerDataModelDataContext" TableName="Teams" 

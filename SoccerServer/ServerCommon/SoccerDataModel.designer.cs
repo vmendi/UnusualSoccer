@@ -90,12 +90,6 @@ namespace ServerCommon
     partial void DeleteTeamStat(ServerCommon.BDDModel.TeamStat instance);
     #endregion
 		
-		public SoccerDataModelDataContext() : 
-				base("Data Source=localhost;Initial Catalog=SoccerV2;Integrated Security=True", mappingSource)
-		{
-			OnCreated();
-		}
-		
 		public SoccerDataModelDataContext(string connection) : 
 				base(connection, mappingSource)
 		{

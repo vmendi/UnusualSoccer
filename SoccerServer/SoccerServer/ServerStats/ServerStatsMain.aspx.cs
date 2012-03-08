@@ -6,9 +6,9 @@ using Realtime;
 using ServerCommon;
 using ServerCommon.BDDModel;
 
-namespace SoccerServer
+namespace SoccerServer.ServerStats
 {
-	public partial class ServerStats : System.Web.UI.Page
+	public partial class ServerStatsMain : System.Web.UI.Page
 	{
 		SoccerDataModelDataContext mDC;
 
@@ -185,11 +185,11 @@ namespace SoccerServer
 
         protected void ResetAllTickets_Click(object sender, EventArgs e)
         {
-            foreach (var ticket in mDC.Tickets)
+            foreach (var teamPurchase in mDC.TeamPurchases)
             {
-                ticket.TicketPurchaseDate = DateTime.Now;
-                ticket.TicketExpiryDate = ticket.TicketPurchaseDate;
-                ticket.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
+                teamPurchase.TicketPurchaseDate = DateTime.Now;
+                teamPurchase.TicketExpiryDate = teamPurchase.TicketPurchaseDate;
+                teamPurchase.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
             }
             mDC.SubmitChanges();
         }

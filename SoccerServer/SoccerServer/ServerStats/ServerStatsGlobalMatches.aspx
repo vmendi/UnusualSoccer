@@ -1,5 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ServerStatsGlobalMatches.aspx.cs" Inherits="SoccerServer.ServerStatsGlobalMatches" %>
-<%@ Register TagPrefix="local" TagName="MatchesControl" Src="~/ServerStatsMatchesControl.ascx" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ServerStatsGlobalMatches.aspx.cs" Inherits="SoccerServer.ServerStats.ServerStatsGlobalMatches" %>
+<%@ Register TagPrefix="local" TagName="MatchesControl" Src="ServerStatsMatchesControl.ascx" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -46,7 +46,7 @@
         <br />
         <br />
 
-        <asp:HyperLink runat="server" Text="Back to home" NavigateUrl="~/ServerStats.aspx" />
+        <asp:HyperLink runat="server" Text="Back to home" NavigateUrl="ServerStatsMain.aspx" />
 
     </form>
 </body>

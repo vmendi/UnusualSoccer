@@ -256,11 +256,11 @@ namespace Realtime
             if (!GlobalConfig.ServerSettings.TicketingSystem)
                 return true;
 
-            var ticket = (from p in theContext.Players
-                          where p.PlayerID == dbPlayerID
-                          select p.Team.Ticket).First();
+            var teamPurchase = (from p in theContext.Players
+                                where p.PlayerID == dbPlayerID
+                                select p.Team.TeamPurchase).First();
 
-            return ticket.TicketExpiryDate > DateTime.Now || ticket.RemainingMatches > 0;
+            return teamPurchase.TicketExpiryDate > DateTime.Now || teamPurchase.RemainingMatches > 0;
         }
 
         private void ProcessMatchMaking()

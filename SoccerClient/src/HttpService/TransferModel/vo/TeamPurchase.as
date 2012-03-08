@@ -1,5 +1,5 @@
 /*******************************************************************
-* Ticket.as
+* TeamPurchase.as
 * Copyright (C) 2006-2010 Midnight Coders, Inc.
 *
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
@@ -17,14 +17,17 @@ package HttpService.TransferModel.vo
   import mx.collections.ArrayCollection;
 
 	[Bindable]
-	[RemoteClass(alias="HttpService.TransferModel.Ticket")]
-	public class Ticket
+	[RemoteClass(alias="HttpService.TransferModel.TeamPurchase")]
+	public class TeamPurchase
 	{
-		public function Ticket(){}
+		public function TeamPurchase(){}
 	
 		public var RemainingMatches:int;
 		public var TicketPurchaseDate:Date;
 		public var TicketExpiryDate:Date;
+		public var TrainerPurchaseDate:Date;
+		public var TrainerExpiryDate:Date;
 		public var TicketExpiryDateRemainingSeconds:int;
+		public var TrainerExpiryDateRemainingSeconds:int;
 	}
 }

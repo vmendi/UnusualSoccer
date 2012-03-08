@@ -104,6 +104,8 @@
 			<Training:TrainingItem click="Trainingitem_clickHandler(event)"/>
 		</s:Group>
 		
+		<Training:TrainerPanel id="MyTrainerPanel" y="20" horizontalCenter="0" />
+		
 	</s:Panel>	
 	
 </s:Group>

@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace SoccerServer
+namespace SoccerServer.ServerStats
 {
     public partial class ServerStatsMatchesControl : System.Web.UI.UserControl
     {

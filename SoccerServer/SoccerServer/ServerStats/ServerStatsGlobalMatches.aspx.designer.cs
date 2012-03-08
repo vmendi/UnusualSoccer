@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SoccerServer {
+namespace SoccerServer.ServerStats {
     
     
-    public partial class ServerStatsRanking {
+    public partial class ServerStatsGlobalMatches {
         
         /// <summary>
         /// form1 control.
@@ -22,30 +22,39 @@ namespace SoccerServer {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// MyRankingTable control.
+        /// MyGlobalMatches control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView MyRankingTable;
+        protected global::SoccerServer.ServerStats.ServerStatsMatchesControl MyGlobalMatches;
         
         /// <summary>
-        /// HyperLink1 control.
+        /// Label1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink HyperLink1;
+        protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
-        /// MyRankingLinQDataSource control.
+        /// MyNumMatchesStats control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinqDataSource MyRankingLinQDataSource;
+        protected global::System.Web.UI.WebControls.GridView MyNumMatchesStats;
+        
+        /// <summary>
+        /// MyMatchesLinQDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinqDataSource MyMatchesLinQDataSource;
     }
 }

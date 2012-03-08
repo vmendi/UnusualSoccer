@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 using HttpService;
 using ServerCommon;
 
-namespace SoccerServer
+namespace SoccerServer.ServerStats
 {
     public partial class ServerStatsGlobalMatches : System.Web.UI.Page
     {

@@ -8,7 +8,7 @@ using HttpService;
 using ServerCommon.BDDModel;
 using ServerCommon;
 
-namespace SoccerServer
+namespace SoccerServer.ServerStats
 {
     public partial class ServerStatsRanking : System.Web.UI.Page
     {

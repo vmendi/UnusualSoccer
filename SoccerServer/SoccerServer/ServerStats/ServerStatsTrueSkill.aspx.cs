@@ -2,7 +2,7 @@
 using Moserware.Skills;
 using ServerCommon;
 
-namespace SoccerServer
+namespace SoccerServer.ServerStats
 {
     public partial class ServerStatsTrueSkill : System.Web.UI.Page
     {

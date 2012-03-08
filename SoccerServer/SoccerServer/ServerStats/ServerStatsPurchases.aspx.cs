@@ -7,7 +7,7 @@ using HttpService;
 using ServerCommon.BDDModel;
 using ServerCommon;
 
-namespace SoccerServer
+namespace SoccerServer.ServerStats
 {
     public partial class ServerStatsPurchases : System.Web.UI.Page
     {
@@ -132,7 +132,7 @@ namespace SoccerServer
 
         private int GetNumNonExpiredTickets()
         {
-            return (from p in mDC.Tickets
+            return (from p in mDC.TeamPurchases
                     where p.TicketExpiryDate >= DateTime.Now
                     select p).Count();
         }

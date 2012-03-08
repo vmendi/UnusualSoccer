@@ -171,15 +171,15 @@ namespace SoccerServer
             }
             else if (thePurchase.ItemID == "BronzeTicket")
             {
-                AwardTicketTime(theTeam.Ticket, 0, new TimeSpan(0, 0, 3, 0));
+                AwardTicketTime(theTeam.TeamPurchase, 0, new TimeSpan(0, 0, 3, 0));
             } 
             else if (thePurchase.ItemID == "SilverTicket")
             {
-                AwardTicketTime(theTeam.Ticket, 1, new TimeSpan(0, 1, 0, 0));                
+                AwardTicketTime(theTeam.TeamPurchase, 1, new TimeSpan(0, 1, 0, 0));                
             }
             else if (thePurchase.ItemID == "GoldTicket")
             {
-                AwardTicketTime(theTeam.Ticket, 2, new TimeSpan(1, 0, 0, 0));
+                AwardTicketTime(theTeam.TeamPurchase, 2, new TimeSpan(1, 0, 0, 0));
             }
             else
             {
@@ -187,19 +187,19 @@ namespace SoccerServer
             }
         }
 
-        static private void AwardTicketTime(Ticket theTicket, int ticketKind, TimeSpan time)
+        static private void AwardTicketTime(TeamPurchase theTeamPurchase, int ticketKind, TimeSpan time)
         {
             // A la expiracion del ticket, estara bien
-            theTicket.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
+            theTeamPurchase.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
 
             // Siempre marca la fecha del ultimo ticket comprado
-            theTicket.TicketPurchaseDate = DateTime.Now;
+            theTeamPurchase.TicketPurchaseDate = DateTime.Now;
 
             // Quedaba tiempo en el anterior todavía?
-            if (theTicket.TicketExpiryDate > DateTime.Now)
-                theTicket.TicketExpiryDate += time;         // se lo sumamos a la expiración anterior, para que el restante que tuviera esté incluido
+            if (theTeamPurchase.TicketExpiryDate > DateTime.Now)
+                theTeamPurchase.TicketExpiryDate += time;         // se lo sumamos a la expiración anterior, para que el restante que tuviera esté incluido
             else
-                theTicket.TicketExpiryDate = theTicket.TicketPurchaseDate + time;
+                theTeamPurchase.TicketExpiryDate = theTeamPurchase.TicketPurchaseDate + time;
         }
 
 

@@ -51,7 +51,7 @@
 		
 		private function RefreshState() : void
 		{
-			if (mMainGameModel.TheTicketModel.HasCredit)
+			if (mMainGameModel.TheTeamPurchaseModel.HasCredit)
 			{
 				if (mRealtimeModel.IsConnected)
 				{
