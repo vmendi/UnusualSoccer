@@ -2,8 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
-		 creationComplete="CreationCompleteHandler(event)" 
-		 width="170" height="65">
+		 creationComplete="CreationCompleteHandler(event)">
 	
 	<fx:Style source="../styles.css"/>
 	
@@ -51,8 +50,39 @@
 		]]>
 	</fx:Script>
 
-	<mx:Image source="@Embed(source='/Assets/General.swf', symbol='TicketBg')" alpha.NotPurchased="1" alpha.Purchased="1" />
 	
+	<s:Group>
+		<s:layout>
+			<s:HorizontalLayout verticalAlign="middle" gap="20" />
+		</s:layout>
+		
+		<mx:Image source="@Embed(source='/Assets/General.swf', symbol='TrainerPanelCoachIcon')" />
+		
+		<s:Group includeIn="NotPurchased">
+			<s:layout>
+				<s:VerticalLayout horizontalAlign="center" gap="0" />
+			</s:layout>
+			<s:Label text="{resourceManager.getString('main','TrainerPanelHireIntroTxt')}" styleName="whiteBoldBig"/>
+			<s:Label text="{resourceManager.getString('main','TrainerPanelHireTxt')}" styleName="yellowBoldVeryBig"/>
+		</s:Group>
+		
+		<s:Group includeIn="Purchased">
+			<s:layout>
+				<s:HorizontalLayout verticalAlign="middle" gap="10" />
+			</s:layout>
+			<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDate.toDateString()}" styleName="whiteBoldBig" textAlign="center" />
+			<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDate.toLocaleTimeString()}" styleName="whiteBoldBig" textAlign="center" />
+		</s:Group>
+		
+		<s:Button includeIn="NotPurchased"
+				  label="{resourceManager.getString('main','TrainerPanelHireButton')}"
+				  click="MyBuyTrainerButton_clickHandler(event)"
+				  skinClass="GameView.Skins.ButtonGreySkin"
+				  width="100" height="24" x="40" y="41"/>		
+	</s:Group>
+	
+	
+	<!--
 	<s:Group height="40" x="0" horizontalCenter="0" includeIn="NotPurchased">
 		<s:layout>
 			<s:HorizontalLayout gap="4" verticalAlign="middle" />
@@ -61,16 +91,8 @@
 			<s:content><s:p><s:span>Trainer (TO-DO)</s:span></s:p></s:content>
 		</s:RichText>
 	</s:Group>
-
-	<s:Group includeIn="Purchased" left="0" right="0">
-		<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDate.toDateString()}" styleName="whiteBoldBig" y="5" left="0" right="0" textAlign="center" />
-		<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDate.toLocaleTimeString()}" styleName="whiteBoldBig" y="20" left="0" right="0" textAlign="center" />
-	</s:Group>
+	-->
 	
-	<s:Button includeIn="NotPurchased"
-			  label="{resourceManager.getString('main','TODO')}"
-			  click="MyBuyTrainerButton_clickHandler(event)"
-			  skinClass="GameView.Skins.ButtonDarkGreySkin"
-			  width="110" height="18" x="40" y="41"/>
+
 
 </s:Group>
