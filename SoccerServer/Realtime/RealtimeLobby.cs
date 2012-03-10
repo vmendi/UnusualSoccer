@@ -37,8 +37,6 @@ namespace Realtime
 
         public override void OnServerAboutToShutdown()
         {
-            mLookingForMatch = null;
-
             IList<NetPlug> plugs = mNetServer.GetNetPlugs();
 
             foreach (NetPlug plug in plugs)

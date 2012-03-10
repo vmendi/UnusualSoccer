@@ -137,6 +137,9 @@
         <arg name="matchID" type="int" nativetype="int" />
       </method>
       <method name="HasTeam" type="Boolean" nativetype="bool" containsvalues="0" />
+      <method name="HealInjury" type="Boolean" nativetype="bool" containsvalues="0">
+        <arg name="soccerPlayerID" type="int" nativetype="int" />
+      </method>
       <method name="IsNameValid" type="String" nativetype="HttpService.VALID_NAME" containsvalues="0">
         <arg name="name" type="String" nativetype="String" />
       </method>

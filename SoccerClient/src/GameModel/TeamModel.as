@@ -16,6 +16,7 @@ package GameModel
 	import mx.collections.ArrayCollection;
 	import mx.collections.Sort;
 	import mx.collections.SortField;
+	import mx.messaging.messages.ErrorMessage;
 	import mx.rpc.Responder;
 	import mx.rpc.events.ResultEvent;
 	
@@ -265,6 +266,31 @@ package GameModel
 			function onGetExtraRewardForMatchResult(rewarded : Boolean) : void
 			{
 				RefreshTeam(null);
+			}
+		}
+		
+		public function HealInjury(callback : Function) : void
+		{
+			if (mSelectedSoccerPlayer == null || TheTeam.SkillPoints < MainGameModel.HEAL_INJURY_COST)
+				return;
+			
+			// Queremos conservarlo en el estado de la funcion porque el SelectedSoccerPlayer puede cambiar mientras va y vuelve el mensaje 
+			var selectedSoccerPlayerID : int = mSelectedSoccerPlayer.SoccerPlayerID;
+			
+			mMainService.HealInjury(selectedSoccerPlayerID, new Responder(onFixInjuryResult, ErrorMessages.Fault));
+			
+			function onFixInjuryResult(success : Boolean) : void
+			{
+				if (success)
+				{
+					var forSureSelected : SoccerPlayer = GetSoccerPlayerByID(selectedSoccerPlayerID);
+					forSureSelected.IsInjured = false;
+					forSureSelected.RemainingInjurySeconds = 0;
+					TheTeam.SkillPoints -= MainGameModel.HEAL_INJURY_COST;
+				}
+				
+				if (callback != null)
+					callback(success);
 			}
 		}
 

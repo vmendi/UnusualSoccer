@@ -65,6 +65,8 @@
         
         remoteObject.HasTeam.addEventListener("result",HasTeamHandler);
         
+        remoteObject.HealInjury.addEventListener("result",HealInjuryHandler);
+        
         remoteObject.IsNameValid.addEventListener("result",IsNameValidHandler);
         
         remoteObject.OnError.addEventListener("result",OnErrorHandler);
@@ -164,6 +166,15 @@
       public function HasTeam( responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.HasTeam();
+        
+        if( responder != null )
+            asyncToken.addResponder( responder );
+
+      }
+    
+      public function HealInjury(soccerPlayerID:int, responder:IResponder = null ):void
+      {
+        var asyncToken:AsyncToken = remoteObject.HealInjury(soccerPlayerID);
         
         if( responder != null )
             asyncToken.addResponder( responder );
@@ -341,6 +352,14 @@
         
           var returnValue:Boolean = event.result as Boolean;
           model.HasTeamResult = returnValue;
+        
+      }
+         
+      public virtual function HealInjuryHandler(event:ResultEvent):void
+      {
+        
+          var returnValue:Boolean = event.result as Boolean;
+          model.HealInjuryResult = returnValue;
         
       }
          
