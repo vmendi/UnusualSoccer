@@ -51,7 +51,7 @@
 
 	]]></fx:Script>
 	
-	<s:Group x="12" y="91">
+	<s:Group x="12" y="80">
 		<s:layout><s:VerticalLayout horizontalAlign="left" gap="0"/></s:layout>
 		
 		<GameView:AssignerSpinner id="MyPowerAssigner" width="164" AnimationEnabled="false" DisplayName="POTENCIA:"
@@ -67,7 +67,7 @@
 								  Val="@{mSkillPointAssignerPM.Weight}"/>		
 	</s:Group>
 		
-	<s:Group y="210" x="0" width="188">
+	<s:Group y="190" x="0" width="188">
 		<s:layout><s:VerticalLayout horizontalAlign="center"/></s:layout>
 		<s:Group>
 			<s:BitmapImage source="{resourceManager.getClass('main','TeamPanelPlayerPoints')}" fillMode="clip" />

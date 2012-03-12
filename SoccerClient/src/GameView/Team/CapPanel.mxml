@@ -74,7 +74,7 @@
 	
 	<Team:CapDetail TheSoccerPlayer="{mTeamModel.SelectedSoccerPlayer}" excludeFrom="Empty"/>
 		
-	<s:Group x="12" y="91">	
+	<s:Group x="12" y="80">	
 		<s:layout><s:VerticalLayout horizontalAlign="left" gap="0"/></s:layout>
 					
 		<GameView:AssignerSpinner width="164" excludeFrom="Assigning, Empty" DisplayName="{resourceManager.getString('main','MatchDefinitionPower')}:" 
@@ -85,7 +85,7 @@
 								  Val="{mTeamModel.SelectedSoccerPlayer.Weight}" Max="100" Min="0" ShowSpinner="false"/>
 	</s:Group>	
 
-	<s:Group id="MyUnassignedGroup" y="210" x="0" width="188" includeIn="Unassigned">
+	<s:Group id="MyUnassignedGroup" y="190" x="0" width="188" includeIn="Unassigned">
 		<s:layout><s:VerticalLayout horizontalAlign="center"/></s:layout>
 		<s:Group>
 			<s:BitmapImage source="{resourceManager.getClass('main','TeamPanelPlayerPoints')}" fillMode="clip" />
@@ -98,6 +98,6 @@
 	
 	<Team:SkillPointAssigner width="80%" includeIn="Assigning" itemDestructionPolicy="auto"/>
 
-	<Team:CapPanelInjured x="0" y="310" TheSoccerPlayer="{mTeamModel.SelectedSoccerPlayer}" visible="false"/>
+	<Team:CapPanelInjured x="0" y="285" TheSoccerPlayer="{mTeamModel.SelectedSoccerPlayer}" visible="false"/>
 
 </s:Panel>

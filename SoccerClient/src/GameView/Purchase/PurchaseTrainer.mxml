@@ -3,7 +3,7 @@
 					   xmlns:s="library://ns.adobe.com/flex/spark"
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   xmlns:Purchase="GameView.Purchase.*"
-					   width="600" height="455" xmlns:GameView="GameView.*">
+					   width="540" height="375" xmlns:GameView="GameView.*">
 	
 	<fx:Style source="../styles.css"/>
 	
@@ -30,8 +30,8 @@
 	]]></fx:Script>
 	
 	<GameView:PopupBackground width="100%" height="100%" />
+	<s:BitmapImage left="2" top="2" source="@Embed(source='/Assets/General.swf', symbol='PurchaseTrainerHeader')" fillMode="clip" />
 	
-	<s:BitmapImage left="2" top="2" source="@Embed(source='/Assets/General.swf', symbol='PopupTicketCabecera')" fillMode="clip" />
 	<s:Label id="myTit" horizontalCenter="0" top="15" text="{resourceManager.getString('main','PurchaseTitTicket')}" styleName="whiteBoldHuge" /> 
 	
 	<s:Group horizontalCenter="0" top="105" includeIn="ChoosingItem">
@@ -39,7 +39,7 @@
 			<s:layout>
 				<s:HorizontalLayout gap="10" />
 			</s:layout>
-			<s:Rect width="180" height="230" alpha="1" radiusX="8" filters="{[ticketBoxShadow]}">
+			<s:Rect width="160" height="150" alpha="1" radiusX="8" filters="{[ticketBoxShadow]}">
 				<s:stroke>
 					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
 				</s:stroke>
@@ -47,7 +47,7 @@
 					<s:SolidColor alpha="0.6" color="#242424"/>
 				</s:fill>
 			</s:Rect>
-			<s:Rect width="180" height="230" alpha="1" radiusX="8" filters="{[ticketBoxShadow]}">
+			<s:Rect width="160" height="150" alpha="1" radiusX="8" filters="{[ticketBoxShadow]}">
 				<s:stroke>
 					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
 				</s:stroke>
@@ -55,7 +55,7 @@
 					<s:SolidColor alpha="0.6" color="#242424"/>
 				</s:fill>
 			</s:Rect>
-			<s:Rect width="180" height="230" alpha="1" radiusX="8" filters="{[ticketBoxShadow]}">
+			<s:Rect width="160" height="150" alpha="1" radiusX="8" filters="{[ticketBoxShadow]}">
 				<s:stroke>
 					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
 				</s:stroke>
@@ -68,25 +68,46 @@
 		<s:Group id="MyChooseItemGroup" includeIn="ChoosingItem" horizontalCenter="0" verticalCenter="0" >
 			<s:layout><s:HorizontalLayout gap="10" horizontalAlign="center" verticalAlign="middle"/></s:layout>
 			
-			<s:Group width="180">
+			<s:Group width="160">
 				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				
+				<s:Label id="GoldTicketLabel" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTicket1Time')}"></s:Label>			
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout gap="4" verticalAlign="middle" />
+					</s:layout>
+					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
+					<s:Label id="BronzePrice" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
+				</s:Group>
 				<s:Button id="Trainer01" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
 			
-			<s:Group width="180">
+			<s:Group width="160">
 				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				
+				<s:Label id="SilverTicketLabel" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTicket2Time')}"></s:Label>
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout gap="4" verticalAlign="middle" />
+					</s:layout>
+					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
+					<s:Label id="SilverPrice" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
+				</s:Group>
 				<s:Button id="Trainer02" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
 			
-			<s:Group width="180">
+			<s:Group width="160">
 				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-
+				<s:Label id="BronzeTicketLabel" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTicket1Time')}"></s:Label>
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout gap="4" verticalAlign="middle" />
+					</s:layout>
+					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
+					<s:Label id="GoldPrice" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
+				</s:Group>
 				<s:Button id="Trainer03" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
@@ -107,7 +128,7 @@
 	
 	<s:Label id="myTxtTerms" horizontalCenter="0" bottom="65" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTxtTerms')}" includeIn="ChoosingItem"/>
 	
-	<s:Button id="MyCloseButton" label.ChoosingItem="{resourceManager.getString('main','Cancel')}" label="{resourceManager.getString('main','Close')}" click="CloseClickHandler(event)" minWidth="80"  horizontalCenter="0" bottom="15"
+	<s:Button id="MyCloseButton" label.ChoosingItem="{resourceManager.getString('main','Cancel')}" label="{resourceManager.getString('main','Close')}" click="CloseClickHandler(event)" minWidth="80"  horizontalCenter="0" bottom="20"
 			  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 	
 </Purchase:PurchaseBase>

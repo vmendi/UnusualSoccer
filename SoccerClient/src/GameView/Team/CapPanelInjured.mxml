@@ -52,9 +52,9 @@
 	<mx:Image x="0" y="0" source="@Embed(source='/Assets/General.swf', symbol='CapDetailInjuredBg')" />
 	<s:Group x="0" y="0" width="187">
 		<s:layout>
-			<s:VerticalLayout gap="6" horizontalAlign="center" />
+			<s:VerticalLayout gap="4" horizontalAlign="center" />
 		</s:layout>
-		<s:Group height="53">
+		<s:Group height="42">
 			<s:layout>
 				<s:HorizontalLayout verticalAlign="middle" gap="10" />
 			</s:layout>
@@ -63,7 +63,14 @@
 		</s:Group>
 		<s:Label text="{resourceManager.getString('main','CapDetailTimeToRecover')} :" styleName="whiteBoldMedium" />
 		<s:Label id="MyTimeLabel" text="{TimeUtils.ConvertSecondsToStringVerbose(TheSoccerPlayer.RemainingInjurySeconds)}" styleName="whiteBoldBig" />
-			
+		<s:Graphic>
+			<s:Line xFrom="0" xTo="150" yFrom="0" yTo="0">
+				<s:stroke>
+					<s:SolidColorStroke color="0xFFFFFF" weight="1"/>
+				</s:stroke>
+			</s:Line>
+		</s:Graphic>
+		<s:Label id="MyHealNow" width="170" text="{resourceManager.getString('main','HealInjuryNowTitle')}" styleName="yellowBoldBig" textAlign="center" />
 		<s:Button id="MyHealInjuryButton" label="{resourceManager.getString('main','HealInjuryButton')}" skinClass="GameView.Skins.ButtonGreySkin"
 				  width="150" click="MyHealInjuryButton_clickHandler(event)" visible="{CanHeal(mTeamModel.TheTeam.SkillPoints)}"/>
 		
