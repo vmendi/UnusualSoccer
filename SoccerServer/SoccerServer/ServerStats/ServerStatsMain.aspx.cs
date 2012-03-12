@@ -46,7 +46,7 @@ namespace SoccerServer.ServerStats
 
         private void UpdateRealtimeData()
         {
-            NetEngineMain netEngineMain = Global.Instance.TheNetEngine;
+            NetEngineMain netEngineMain = GlobalSoccerServer.Instance.TheNetEngine;
 
             if (netEngineMain != null && netEngineMain.IsRunning)
             {
@@ -139,7 +139,7 @@ namespace SoccerServer.ServerStats
 
         protected void Run_Click(object sender, EventArgs e)
         {
-            NetEngineMain netEngineMain = Global.Instance.TheNetEngine;
+            NetEngineMain netEngineMain = GlobalSoccerServer.Instance.TheNetEngine;
 
             if (!netEngineMain.IsRunning)
                 netEngineMain.Start();
@@ -151,7 +151,7 @@ namespace SoccerServer.ServerStats
 
         protected void MyBroadcastMsgButtton_Click(object sender, EventArgs e)
         {
-            NetEngineMain netEngineMain = Global.Instance.TheNetEngine;
+            NetEngineMain netEngineMain = GlobalSoccerServer.Instance.TheNetEngine;
 
             if (netEngineMain.IsRunning)
             {
@@ -253,12 +253,6 @@ namespace SoccerServer.ServerStats
             // Logeamos, refrescamos
             MyLogConsole.Text += "SetRestrictionsES response: " + response + "<br/>";
             ShowRestrictions();
-        }
-
-        protected void Init_Click(object sender, EventArgs e)
-        {
-            // Para poder hacer pruebas de inicialización...
-            Global.Instance.Init();
         }
 	}
 }

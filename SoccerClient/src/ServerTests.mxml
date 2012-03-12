@@ -155,8 +155,7 @@
 			SoccerClient.GetFacebookFacade().Init(startTest);
 			
 			var counter : int = 0;
-			startTest();
-			
+				
 			function startTest() : void
 			{
 				counter++;
@@ -178,8 +177,7 @@
 			mMainGameModel.TheInactivityModel.SupressActivity();
 						
 			var counter : int = 0;
-			startTest();
-			
+				
 			function startTest() : void
 			{
 				counter++;
@@ -195,6 +193,53 @@
 			{
 				SetLine(1, "onGroupRefreshed " + counter.toString());
 				startTest();
+			}
+		}
+		
+		private function Test23() : void
+		{
+			SoccerClient.GetFacebookFacade().Init(startTest);
+			
+			var counter : int = 0;
+			
+			function startTest() : void
+			{			
+				mMainGameModel.TheTeamModel.RefreshTeam(loopTest);
+			}
+			
+			function loopTest() : void
+			{
+				counter++;
+				var prevFormation : String = mMainGameModel.TheFormationModel.Formation;
+				var nextFormation : String = prevFormation;
+				
+				while (prevFormation == nextFormation)
+				{
+					mMainGameModel.TheFormationModel.NextAnyFormation();
+					nextFormation = mMainGameModel.TheFormationModel.Formation;
+				}
+				
+				TweenLite.delayedCall(0.1, onFormationRefreshed);
+			}
+			
+			function onFormationRefreshed() : void
+			{
+				SetLine(1, "NextAnyFormation: " + counter.toString());
+				loopTest();
+			}
+		}
+		
+		private function Test24() : void
+		{
+			SoccerClient.GetFacebookFacade().Init(startTest);
+			
+			var counter : int = 0;
+			
+			function startTest() : void
+			{	
+				counter++;
+				SetLine(1, "RefreshTeam: " + counter.toString());
+				mMainGameModel.TheTeamModel.RefreshTeam(startTest);
 			}
 		}
 		

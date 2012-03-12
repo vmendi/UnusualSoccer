@@ -78,8 +78,6 @@
         </div>
 
         <asp:Button ID="Button1" runat="server" Text="Mistical Refresh" OnClick="MisticalRefresh_Click" /><br />
-        <asp:Button ID="Button2" runat="server" Text="Init Don't Click Me!" OnClick="Init_Click" /><br />
-
 	</form>
 
 </body>

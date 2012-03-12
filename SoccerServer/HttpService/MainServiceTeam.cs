@@ -13,6 +13,9 @@ namespace HttpService
 	{
 		public TransferModel.Team RefreshTeam()
 		{
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             TransferModel.Team ret = null;
 
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
@@ -34,6 +37,8 @@ namespace HttpService
                     }
                 }
             }
+
+            LogPerf.Info("RefreshTeam: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
 
             return ret;
 		}

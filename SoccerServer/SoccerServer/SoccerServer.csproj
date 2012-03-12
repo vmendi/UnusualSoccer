@@ -297,6 +297,7 @@
     <Compile Include="ServerStats\ServerStatsRanking.aspx.designer.cs">
       <DependentUpon>ServerStatsRanking.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSoccerServer.cs" />
     <Compile Include="TestCreateSession.aspx.cs">
       <DependentUpon>TestCreateSession.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
