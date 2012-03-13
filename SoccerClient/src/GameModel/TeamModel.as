@@ -277,7 +277,7 @@ package GameModel
 			// Queremos conservarlo en el estado de la funcion porque el SelectedSoccerPlayer puede cambiar mientras va y vuelve el mensaje 
 			var selectedSoccerPlayerID : int = mSelectedSoccerPlayer.SoccerPlayerID;
 			
-			mMainService.HealInjury(selectedSoccerPlayerID, new Responder(onFixInjuryResult, ErrorMessages.Fault));
+			mMainService.HealInjury(selectedSoccerPlayerID, new Responder(onFixInjuryResult, fault));
 			
 			function onFixInjuryResult(success : Boolean) : void
 			{
@@ -291,6 +291,14 @@ package GameModel
 				
 				if (callback != null)
 					callback(success);
+			}
+			
+			function fault(info:Object) : void
+			{
+				ErrorMessages.Fault(info);
+					
+				if (callback != null)
+					callback(false);
 			}
 		}
 

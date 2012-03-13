@@ -33,7 +33,7 @@
 	<s:layout><s:HorizontalLayout verticalAlign="middle" /></s:layout>
 	
 	<s:Group>
-		<s:Button id="MyPrevFormationButton" skinClass="GameView.Skins.ButtonDarkGreySkin" 
+		<s:Button id="MyPrevFormationButton" skinClass="GameView.Skins.ButtonDarkGreySkin"
 				  click="mMainGameModel.TheFormationModel.PrevAnyFormation()"/>
 		<s:Path data="M 90.86 78.67 L 0.04 78.67 45.45 0.02 Z " height="5" rotation="-90" width="8" x="7" y="15">
 			<s:fill>
@@ -59,7 +59,7 @@
 	</s:Group>
 	
 	<s:Group>
-		<s:Button id="MyNextFormationButton" skinClass="GameView.Skins.ButtonDarkGreySkin" 
+		<s:Button id="MyNextFormationButton" skinClass="GameView.Skins.ButtonDarkGreySkin"
 				  click="mMainGameModel.TheFormationModel.NextAnyFormation()"/>
 		<s:Path data="M 90.86 78.67 L 0.04 78.67 45.45 0.02 Z " height="5" rotation="90" width="8" x="14" y="7">
 			<s:fill>
