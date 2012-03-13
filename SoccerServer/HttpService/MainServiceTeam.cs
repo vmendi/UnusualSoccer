@@ -179,7 +179,7 @@ namespace HttpService
                     var team = PrecompiledQueries.ChangeFormation.GetTeam.Invoke(mContext, GetSessionKeyFromRequest());
 
                     team.Formation = newFormationName;
-                    mContext.SubmitChanges();            
+                    mContext.SubmitChanges();
                 }
             }
 
