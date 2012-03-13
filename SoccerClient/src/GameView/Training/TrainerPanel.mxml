@@ -2,7 +2,8 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
-		 creationComplete="CreationCompleteHandler(event)">
+		 creationComplete="CreationCompleteHandler(event)"
+		 width="760">
 	
 	<fx:Style source="../styles.css"/>
 	
@@ -50,13 +51,12 @@
 		]]>
 	</fx:Script>
 
+	<mx:Image source="@Embed(source='/Assets/General.swf', symbol='TrainerPanelCoachBg')" left="10" />
 	
-	<s:Group>
+	<s:Group horizontalCenter="0" verticalCenter="0">
 		<s:layout>
 			<s:HorizontalLayout verticalAlign="middle" gap="20" />
 		</s:layout>
-		
-		<mx:Image source="@Embed(source='/Assets/General.swf', symbol='TrainerPanelCoachIcon')" />
 		
 		<s:Group includeIn="NotPurchased">
 			<s:layout>
@@ -73,13 +73,15 @@
 			<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDate.toDateString()}" styleName="whiteBoldBig" textAlign="center" />
 			<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDate.toLocaleTimeString()}" styleName="whiteBoldBig" textAlign="center" />
 		</s:Group>
-		
-		<s:Button includeIn="NotPurchased"
-				  label="{resourceManager.getString('main','TrainerPanelHireButton')}"
-				  click="MyBuyTrainerButton_clickHandler(event)"
-				  skinClass="GameView.Skins.ButtonGreySkin"
-				  width="100" height="24" x="40" y="41"/>		
+
 	</s:Group>
+	
+	<s:Button includeIn="NotPurchased"
+			  label="{resourceManager.getString('main','TrainerPanelHireButton')}"
+			  click="MyBuyTrainerButton_clickHandler(event)"
+			  skinClass="GameView.Skins.ButtonGreySkin"
+			  width="120" height="26"
+			  verticalCenter="0" right="55"/>		
 	
 	
 	<!--
