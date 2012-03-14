@@ -60,11 +60,11 @@ namespace AmazonStart
                 if (OPTIONS.WaitForELB)
                     WaitForAllInstancesInELB();
                 else
-                    ProjectStart();
+                    StartProject();
             }
         }
 
-        static private void ProjectStart()
+        static private void StartProject()
         {
             // Sobre las regiones: http://aws.amazon.com/articles/3912#endpoints
             AmazonEC2Config ec2Config = new AmazonEC2Config() { ServiceURL = EC2_SERVICE_URL };
