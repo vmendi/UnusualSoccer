@@ -71,7 +71,7 @@
 				<s:VerticalLayout horizontalAlign="center" gap="0" />
 			</s:layout>
 			<s:Label text="{resourceManager.getString('main','TrainerPanelCoachHiredTit')}" styleName="whiteBoldVeryBig"/>
-			<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDate.toDateString()} - {mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDate.toLocaleTimeString()}" styleName="yellowBoldBig"  />
+			<s:Label text="{resourceManager.getString('main','TrainerPanelCoachRemaining')}: {mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDate.toDateString()} - {mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDate.toLocaleTimeString()}" styleName="yellowBoldBig"  />
 		</s:Group>
 
 	</s:Group>
