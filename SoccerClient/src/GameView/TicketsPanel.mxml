@@ -80,7 +80,7 @@
 		</s:RichText>
 	</s:Group>
 
-	<s:Label id="MyZeroRemaining" text="You don't have available matches for today." styleName="blackBoldMediumHN"  includeIn="NotPurchased"
+	<s:Label id="MyZeroRemaining" text="{resourceManager.getString('main','CompetitionNotAvailableMatches')}" styleName="blackBoldMediumHN"  includeIn="NotPurchased"
 			 width="124" x="32" y="7"
 			 textAlign="center" />
 	

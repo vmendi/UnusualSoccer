@@ -68,10 +68,10 @@
 		
 		<s:Group includeIn="Purchased">
 			<s:layout>
-				<s:HorizontalLayout verticalAlign="middle" gap="10" />
+				<s:VerticalLayout horizontalAlign="center" gap="0" />
 			</s:layout>
-			<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDate.toDateString()}" styleName="whiteBoldBig" textAlign="center" />
-			<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDate.toLocaleTimeString()}" styleName="whiteBoldBig" textAlign="center" />
+			<s:Label text="{resourceManager.getString('main','TrainerPanelCoachHiredTit')}" styleName="whiteBoldVeryBig"/>
+			<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDate.toDateString()} - {mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDate.toLocaleTimeString()}" styleName="yellowBoldBig"  />
 		</s:Group>
 
 	</s:Group>
@@ -82,19 +82,5 @@
 			  skinClass="GameView.Skins.ButtonGreySkin"
 			  width="120" height="26"
 			  verticalCenter="0" right="55"/>		
-	
-	
-	<!--
-	<s:Group height="40" x="0" horizontalCenter="0" includeIn="NotPurchased">
-		<s:layout>
-			<s:HorizontalLayout gap="4" verticalAlign="middle" />
-		</s:layout>
-		<s:RichText styleName="blackBoldBig" whiteSpaceCollapse="preserve" textAlign="center" kerning="auto" lineHeight="104%">
-			<s:content><s:p><s:span>Trainer (TO-DO)</s:span></s:p></s:content>
-		</s:RichText>
-	</s:Group>
-	-->
-	
-
 
 </s:Group>
