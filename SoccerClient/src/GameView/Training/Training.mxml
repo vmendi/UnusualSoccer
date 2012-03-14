@@ -39,7 +39,8 @@
 					trItem.TheTrainingDefinition = mTrainingModel.TrainingDefinitions[c];
 			}
 			
-			BindingUtils.bindSetter(RefreshItemsState, mMainGameModel.TheTeamModel, ["TheTeam", "PendingTraining"]);
+			BindingUtils.bindSetter(PendingTrainingChanged, mMainGameModel.TheTeamModel, ["TheTeam", "PendingTraining"]);
+			BindingUtils.bindSetter(TrainerChanged, mMainGameModel.TheTeamPurchaseModel, ["HasTrainer"]);
 		}
 		
 		protected function Trainingitem_clickHandler(event:MouseEvent):void
@@ -54,7 +55,24 @@
 			}
 		}
 		
-		private function RefreshItemsState(currTraining : PendingTraining) : void
+		private function TrainerChanged(hasTrainer : Boolean) : void
+		{
+			if (hasTrainer)
+			{
+				for (var c:int=0; c < MyTrainingItemsGroup.numElements; c++)
+				{
+					var trItem : TrainingItem = MyTrainingItemsGroup.getElementAt(c) as TrainingItem;
+					trItem.currentState = "NotAvailable";
+				}
+			}
+			else
+			{
+				if (mMainGameModel.TheTeamModel.TheTeam != null) 
+					PendingTrainingChanged(mMainGameModel.TheTeamModel.TheTeam.PendingTraining);
+			}
+		}
+		
+		private function PendingTrainingChanged(currTraining : PendingTraining) : void
 		{
 			if (currTraining != null)
 			{
@@ -97,7 +115,7 @@
 		
 		<s:Label x="20" y="14" width="700" text="{resourceManager.getString('main','TrainingPanelTxt')}" styleName="whiteBoldBig" textAlign="center" visible="{!resourceManager.getBoolean('main','TicketsPanelVisible')}"/>
 		
-		<s:Group x="10" y="64" id="MyTrainingItemsGroup" visible="{!mTeamPurchaseModel.HasTrainer}">
+		<s:Group x="10" y="64" id="MyTrainingItemsGroup">
 			<s:layout>
 				<s:TileLayout columnWidth="355" rowHeight="115" horizontalGap="10" verticalGap="10"/>
 			</s:layout>
