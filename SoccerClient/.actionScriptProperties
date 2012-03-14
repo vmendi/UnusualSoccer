@@ -5,7 +5,6 @@
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
       <libraryPathEntry kind="3" linkType="1" path="/Utils/bin/Utils.swc" useDefaultLinkType="false"/>
-      <libraryPathEntry kind="3" linkType="1" path="${DOCUMENTS}/SoccerServer/SoccerServer/weborbassets/wdm/weborb.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="3" linkType="1" path="src/Assets/Loading.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="4" path="">
         <excludedEntries>

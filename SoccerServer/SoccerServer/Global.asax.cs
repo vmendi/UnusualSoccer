@@ -16,7 +16,9 @@ namespace SoccerServer
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            Application["GlobalSoccerServer"] = new GlobalSoccerServer(Server.MachineName);
+            Log.Info("******************* Initialization from {0} Global.asax *******************", Server.MachineName);
+
+            Application["GlobalSoccerServer"] = new GlobalSoccerServer();
         }
 
 		protected void Application_Error(object sender, EventArgs e)

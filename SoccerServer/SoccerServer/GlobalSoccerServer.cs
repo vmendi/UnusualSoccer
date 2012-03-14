@@ -14,14 +14,13 @@ namespace SoccerServer
         public NetEngineMain TheNetEngine { get { return mNetEngine; } }
         public static GlobalSoccerServer Instance { get { return mInstance; } }
 
-        public GlobalSoccerServer(String serverName)
+        public GlobalSoccerServer()
         {
             if (mInstance != null)
                 throw new Exception("WTF 666");
 
             mInstance = this;
-            mServerName = serverName;
-
+            
             InitSoccerServer();
         }
 
@@ -35,8 +34,6 @@ namespace SoccerServer
 
         private void InitSoccerServer()
         {
-            Log.Info("******************* Initialization from {0} Global.asax *******************", mServerName);
-
             // Queremos que la configuración esté bien definida cuando llega la primera query
             GlobalConfig.Init();
 
@@ -131,6 +128,5 @@ namespace SoccerServer
 
         private DateTime mLast24hProcessedDateTime = DateTime.Now;
         private DateTime mLastHourlyProcessedDateTime = DateTime.Now;
-        private String mServerName;
     }
 }

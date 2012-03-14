@@ -126,7 +126,12 @@
 			if (mMainGameModel != null)
 			{
 				mMainGameModel.OnCleaningShutdown();
-				mMainGameModel = null;
+				
+				// Antes lo poniamos a null pero hemos comprobado que cuando llega un OnCleaningShutdown es posible que aun llegue alguna 
+				// respuesta desde el servidor. Por ejemplo, la respuesta del cambio de formación, provoca un updateDisplayList dentro del
+				// FormationLayout que a su vez llama a GetPointsForFielPos que asume que SoccerClient.GetMainGameModel() != null. Se asume
+				// además en un monton de sitios.
+				// mMainGameModel = null;
 			}
 			
 			// Quitamos la mMainView pero tb todos los posibles popups q hubiera

@@ -68,6 +68,9 @@
     <Reference Include="AWSSDK, Version=1.4.3.0, Culture=neutral, PublicKeyToken=cd2d24cd2bace800, processorArchitecture=MSIL">
       <HintPath>packages\AWSSDK.1.4.3.0\lib\AWSSDK.dll</HintPath>
     </Reference>
+    <Reference Include="CommandLine">
+      <HintPath>..\libcmdline-1.8-stable-bin\libcmdline\bin\Release\CommandLine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">

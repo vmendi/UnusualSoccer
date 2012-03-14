@@ -23,6 +23,8 @@ package
 		static public const GET_SKILL : String = "Get_Skill";
 		static public const LOOK_FOR_MATCH : String = "Look_For_Match"; 
 		static public const DO_TRAINING : String = "Do_Training";
+		static public const CANT_CONNECT_REALTIME : String = "Cant_Connect_Realtime";
+	
 		
 		static public function Init(dobject:DisplayObject) : void
 		{			
