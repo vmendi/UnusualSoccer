@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1385ACED-37B7-4202-A700-44A82BF900D5}</ProjectGuid>
+    <ProjectGuid>{F6C3F2F6-28EA-4209-AB99-18096357F0B7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AmazonCore</RootNamespace>
-    <AssemblyName>AmazonCore</AssemblyName>
+    <RootNamespace>AmazonCmdlet</RootNamespace>
+    <AssemblyName>AmazonCmdlet</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AWSSDK">
-      <HintPath>..\packages\AWSSDK.1.4.6.2\lib\AWSSDK.dll</HintPath>
+      <HintPath>..\AmazonStart\packages\AWSSDK.1.4.6.2\lib\AWSSDK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,7 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AmazonCore.cs" />
+    <Compile Include="Core.cs" />
+    <Compile Include="ExceptionPrint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

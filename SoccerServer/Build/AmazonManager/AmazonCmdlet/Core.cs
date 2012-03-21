@@ -1,86 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-
+using System.Net;
 using Amazon;
 using Amazon.EC2;
 using Amazon.EC2.Model;
-using Amazon.SimpleDB;
-using Amazon.SimpleDB.Model;
-using Amazon.S3;
-using Amazon.S3.Model;
-using Amazon.Route53;
-using Amazon.Route53.Model;
-using System.Net;
 using Amazon.ElasticLoadBalancing;
 using Amazon.ElasticLoadBalancing.Model;
+using Amazon.Route53;
+using Amazon.Route53.Model;
 
-namespace AmazonCore
-{
-    public class AmazonCore
+/* 
+ * NOTES "To my beloved future self":
+ * 
+ * 1) eu-west in hardcoded.
+ * 2) ConfigureLoadBalancer asumes that the name of the instances to add starts with "http"
+ * 
+ */
+namespace AmazonCmdlet
+{   
+    public class Core
     {
-        static private void StartProject()
+        private const string EC2_SERVICE_URL = "https://ec2.eu-west-1.amazonaws.com";
+        private const string ELB_SERVICE_URL = "https://elasticloadbalancing.eu-west-1.amazonaws.com";
+
+        private const string AWS_ACCESS_KEY = "AKIAJ3LOZJQHKEPHXZDQ";
+        private const string AWS_SECRET_KEY = "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";
+        
+        static public void StartProject(string project, string loadBalancerName, string hostedZone)
         {
-            // Sobre las regiones: http://aws.amazon.com/articles/3912#endpoints
+            // About regions: http://aws.amazon.com/articles/3912#endpoints
             AmazonEC2Config ec2Config = new AmazonEC2Config() { ServiceURL = EC2_SERVICE_URL };
             AmazonElasticLoadBalancingConfig elbConfig = new AmazonElasticLoadBalancingConfig() { ServiceURL = ELB_SERVICE_URL };
 
             Console.WriteLine("Using region eu-west for all operations.\n");
 
-            AmazonRoute53 r53 = AWSClientFactory.CreateAmazonRoute53Client();
-            AmazonEC2 ec2 = AWSClientFactory.CreateAmazonEC2Client(ec2Config);
-            AmazonElasticLoadBalancing elb = AWSClientFactory.CreateAmazonElasticLoadBalancingClient(elbConfig);
+            AmazonRoute53 r53 = AWSClientFactory.CreateAmazonRoute53Client(AWS_ACCESS_KEY, AWS_SECRET_KEY);
+            AmazonEC2 ec2 = AWSClientFactory.CreateAmazonEC2Client(AWS_ACCESS_KEY, AWS_SECRET_KEY, ec2Config);
+            AmazonElasticLoadBalancing elb = AWSClientFactory.CreateAmazonElasticLoadBalancingClient(AWS_ACCESS_KEY, AWS_SECRET_KEY, elbConfig);
 
-            // All operations require the ID and can't operate with just the name
-            string hostedZoneID = GetHostedZoneID(r53);
+            // Listamos y levantamos todas nuestras instancias asociadas al projecto
+            var runningInstances = StartInstances(ec2, project);
 
-            // Listamos todos los RecordSets de tipo "CNAME", levantamos y listamos todas nuestras instancias en funcionamiento,
-            // generamos la lista de cambios comparando con el PublicDNS de las instancias y aplicamos los cambios
-            var recordSets = ListRecordSets(r53, hostedZoneID);
-            var runningInstances = StartInstances(ec2);
-            var changeList = GenerateChangeList(ec2, recordSets, runningInstances);
+            // Makes sure that Route53 is properly configured and running
+            ConfigureDNS(ec2, r53, hostedZone, runningInstances);
+            
+            // Remove the old instances and add the new ones to the Load Balancer
+            ConfigureLoadBalancer(elb, loadBalancerName, runningInstances);
 
-            ApplyResourceRecordSetsChanges(changeList, hostedZoneID);
-
-            // Verificamos contra el DNS. Este metodo no retorna hasta que todos los cambios son visibles en el DNS desde nuestra maquina. 
-            // Internamente Volvera a pedir toda la lista de ResourceRecordSets con los cambios ya aplicados.
-            VerifyChanges(ec2, r53, hostedZoneID, runningInstances);
-
-            // We remove the old instances, add the new ones
-            ConfigureLoadBalancer(elb, runningInstances);
-
-            // We wait for all the instances to pass the 2 AWS health checks. This makes sure that the SO is started.
+            // Wait for all the instances to pass the 2 AWS health checks. This makes sure that the OS is started.
             WaitForHealthCheck(ec2, runningInstances);
 
-            Console.WriteLine("\nProjectStart Done!.\n\n");
+            Console.WriteLine("StartProject Done!\n");
         }
 
-        static private string GetHostedZoneID(AmazonRoute53 r53)
-        {
-            var result = r53.ListHostedZones(new ListHostedZonesRequest());
 
-            foreach (var zone in result.ListHostedZonesResult.HostedZones)
-            {
-                if (zone.Name == OPTIONS.HostedZone + ".")
-                    return zone.Id;
-            }
-            return null;
-        }
-
-        static private void WaitForAllInstancesInELB()
+        static public void WaitAllInstancesInELB(string loadBalancerName)
         {
             AmazonElasticLoadBalancingConfig elbConfig = new AmazonElasticLoadBalancingConfig() { ServiceURL = ELB_SERVICE_URL };
-            AmazonElasticLoadBalancing elb = AWSClientFactory.CreateAmazonElasticLoadBalancingClient(elbConfig);
+            AmazonElasticLoadBalancing elb = AWSClientFactory.CreateAmazonElasticLoadBalancingClient(AWS_ACCESS_KEY, AWS_SECRET_KEY, elbConfig);
 
             bool bAllReady = false;
 
             do
             {
-                Console.WriteLine("\nWaiting for all instances to be InService...");
+                Console.WriteLine("Waiting for all instances to be InService...");
 
-                var healthResponse = elb.DescribeInstanceHealth(new DescribeInstanceHealthRequest() { LoadBalancerName = "TheBalancer" });
+                var healthResponse = elb.DescribeInstanceHealth(new DescribeInstanceHealthRequest() { LoadBalancerName = loadBalancerName });
                 bAllReady = healthResponse.DescribeInstanceHealthResult.InstanceStates.All(inst => inst.State == "InService");
 
                 if (!bAllReady)
@@ -88,9 +74,36 @@ namespace AmazonCore
 
             } while (!bAllReady);
 
-            Console.WriteLine("WaitForAllInstancesInELB Done!.\n\n");
+            Console.WriteLine("WaitAllInstancesInELB Done!\n");
         }
 
+        static private void ConfigureDNS(AmazonEC2 ec2, AmazonRoute53 r53, string hostedZone, IEnumerable<RunningInstance> runningInstances)
+        {
+            // All operations require the ID and can't operate with just the name
+            string hostedZoneID = GetHostedZoneID(r53, hostedZone);
+
+            // Listamos todos los RecordSets de tipo "CNAME", generamos la lista de cambios comparando con el PublicDNS de las instancias y aplicamos los cambios.
+            var recordSets = ListRecordSets(r53, hostedZoneID);
+            var changeList = GenerateChangeList(ec2, recordSets, runningInstances);
+            ApplyResourceRecordSetsChanges(changeList, hostedZoneID);
+
+            // Verificamos contra el DNS. Este metodo no retorna hasta que todos los cambios son visibles en el DNS desde nuestra maquina. 
+            // Internamente volvera a pedir toda la lista de ResourceRecordSets con los cambios ya aplicados.
+            VerifyChanges(ec2, r53, hostedZoneID, runningInstances);
+        }
+
+
+        static private string GetHostedZoneID(AmazonRoute53 r53, string hostedZone)
+        {
+            var result = r53.ListHostedZones(new ListHostedZonesRequest());
+
+            foreach (var zone in result.ListHostedZonesResult.HostedZones)
+            {
+                if (zone.Name == hostedZone + ".")
+                    return zone.Id;
+            }
+            return null;
+        }
 
         static private IEnumerable<ResourceRecordSet> ListRecordSets(AmazonRoute53 r53, string hostedZoneID)
         {
@@ -109,7 +122,7 @@ namespace AmazonCore
             }
             catch (AmazonRoute53Exception ex)
             {
-                PrintR53Exception(ex);
+                ExceptionPrint.PrintR53Exception(ex);
             }
 
             Console.WriteLine("{0} ResourceRecordSets 'CNAME' retrieved", ret.Count());
@@ -123,7 +136,7 @@ namespace AmazonCore
             return ret;
         }
 
-        static private List<RunningInstance> StartInstances(AmazonEC2 ec2)
+        static private List<RunningInstance> StartInstances(AmazonEC2 ec2, string project)
         {
             List<RunningInstance> runningInstances = new List<RunningInstance>();
             List<string> pendingInstancesIDs = new List<string>();
@@ -150,9 +163,9 @@ namespace AmazonCore
                         Console.WriteLine("Ignoring instance {0} without name", instance.InstanceId);
                         continue;
                     }
-                    if (!IsInstanceInProject(instance))
+                    if (!IsInstanceInProject(project, instance))
                     {
-                        Console.WriteLine("Ignoring instance {0} not in project {1}", instanceName, OPTIONS.Project);
+                        Console.WriteLine("Ignoring instance {0} not in project {1}", instanceName, project);
                         continue;
                     }
 
@@ -236,7 +249,7 @@ namespace AmazonCore
 
         static private List<Change> GenerateChangeList(AmazonEC2 ec2, IEnumerable<ResourceRecordSet> resourceRecordSets, IEnumerable<RunningInstance> runningInstances)
         {
-            Console.WriteLine("\nGenerating change list for {0} running instances:", runningInstances.Count());
+            Console.WriteLine("Generating change list for {0} running instances:", runningInstances.Count());
 
             List<Change> changes = new List<Change>();
 
@@ -266,7 +279,7 @@ namespace AmazonCore
             }
             catch (AmazonEC2Exception ex)
             {
-                PrintEC2Exception(ex);
+                ExceptionPrint.PrintEC2Exception(ex);
             }
 
             return changes;
@@ -278,10 +291,10 @@ namespace AmazonCore
             return tagWithName == null ? null : tagWithName.Value;
         }
 
-        static private bool IsInstanceInProject(RunningInstance instance)
+        static private bool IsInstanceInProject(string project, RunningInstance instance)
         {
             var tagWithKey = instance.Tag.Find(tag => tag.Key == "Project");
-            return tagWithKey == null ? false : tagWithKey.Value == OPTIONS.Project;
+            return tagWithKey == null ? false : tagWithKey.Value == project;
         }
 
         static private ResourceRecordSet GetResourceRecordSetForInstanceName(string instanceName, IEnumerable<ResourceRecordSet> resourceRecordSets)
@@ -322,7 +335,7 @@ namespace AmazonCore
         {
             if (changes.Count > 0)
             {
-                AmazonRoute53 r53 = AWSClientFactory.CreateAmazonRoute53Client();
+                AmazonRoute53 r53 = AWSClientFactory.CreateAmazonRoute53Client(AWS_ACCESS_KEY, AWS_SECRET_KEY);
 
                 ChangeResourceRecordSetsRequest changeRequest = new ChangeResourceRecordSetsRequest();
                 changeRequest.HostedZoneId = hostedZoneID;
@@ -387,7 +400,7 @@ namespace AmazonCore
 
             } while (!bAllReady);
 
-            Console.WriteLine("All ready!");
+            Console.WriteLine("VerifyChanges: All ready!\n");
         }
 
 
@@ -397,14 +410,14 @@ namespace AmazonCore
                                            WithSetIdentifier(o.SetIdentifier).WithTTL(o.TTL).WithType(o.Type);
         }
 
-        static private void ConfigureLoadBalancer(AmazonElasticLoadBalancing elb, List<RunningInstance> runningInstances)
+        static private void ConfigureLoadBalancer(AmazonElasticLoadBalancing elb, string loadBalancerName, List<RunningInstance> runningInstances)
         {
-            Console.WriteLine("\nConfiguring the Load Balancer '{0}'...", OPTIONS.LoadBalancerName);
+            Console.WriteLine("\nConfiguring the Load Balancer '{0}'...", loadBalancerName);
 
-            var request = new DescribeLoadBalancersRequest() { LoadBalancerNames = new List<string>() { OPTIONS.LoadBalancerName } };
+            var request = new DescribeLoadBalancersRequest() { LoadBalancerNames = new List<string>() { loadBalancerName } };
 
             // Sacamos todas las instancias que esten out of service
-            var healthResponse = elb.DescribeInstanceHealth(new DescribeInstanceHealthRequest() { LoadBalancerName = OPTIONS.LoadBalancerName });
+            var healthResponse = elb.DescribeInstanceHealth(new DescribeInstanceHealthRequest() { LoadBalancerName = loadBalancerName });
             var instancesToRemove = new List<Instance>();
             var instancesInService = new List<Instance>();
 
@@ -427,7 +440,7 @@ namespace AmazonCore
                 var deregisterResponse = elb.DeregisterInstancesFromLoadBalancer(new DeregisterInstancesFromLoadBalancerRequest()
                 {
                     Instances = instancesToRemove,
-                    LoadBalancerName = OPTIONS.LoadBalancerName
+                    LoadBalancerName = loadBalancerName
                 });
             }
 
@@ -451,62 +464,11 @@ namespace AmazonCore
                 var registerReponse = elb.RegisterInstancesWithLoadBalancer(new RegisterInstancesWithLoadBalancerRequest()
                 {
                     Instances = instancesToAdd,
-                    LoadBalancerName = OPTIONS.LoadBalancerName
+                    LoadBalancerName = loadBalancerName
                 });
             }
 
-            Console.WriteLine("Load Balancer ready...", OPTIONS.LoadBalancerName);
-        }
-
-        static private void PrintEC2Exception(AmazonEC2Exception ex)
-        {
-            if (ex.ErrorCode != null && ex.ErrorCode.Equals("AuthFailure"))
-            {
-                Console.WriteLine("The account you are using is not signed up for Amazon EC2.");
-                Console.WriteLine("You can sign up for Amazon EC2 at http://aws.amazon.com/ec2");
-            }
-            else
-            {
-                Console.WriteLine("Caught Exception: " + ex.Message);
-                Console.WriteLine("Response Status Code: " + ex.StatusCode);
-                Console.WriteLine("Error Code: " + ex.ErrorCode);
-                Console.WriteLine("Error Type: " + ex.ErrorType);
-                Console.WriteLine("Request ID: " + ex.RequestId);
-                Console.WriteLine("XML: " + ex.XML);
-            }
-        }
-
-        static private void PrintR53Exception(AmazonRoute53Exception ex)
-        {
-            if (ex.ErrorCode != null && ex.ErrorCode.Equals("AuthFailure"))
-            {
-                Console.WriteLine("The account you are using is not signed up for Amazon Route 53.");
-            }
-            else
-            {
-                Console.WriteLine("Caught Exception: " + ex.Message);
-                Console.WriteLine("Response Status Code: " + ex.StatusCode);
-                Console.WriteLine("Error Code: " + ex.ErrorCode);
-                Console.WriteLine("Error Type: " + ex.ErrorType);
-                Console.WriteLine("Request ID: " + ex.RequestId);
-            }
-        }
-
-        static private void PrintS3Exception(AmazonS3Exception ex)
-        {
-            if (ex.ErrorCode != null && (ex.ErrorCode.Equals("InvalidAccessKeyId") || ex.ErrorCode.Equals("InvalidSecurity")))
-            {
-                Console.WriteLine("Please check the provided AWS Credentials.");
-                Console.WriteLine("If you haven't signed up for Amazon S3, please visit http://aws.amazon.com/s3");
-            }
-            else
-            {
-                Console.WriteLine("Caught Exception: " + ex.Message);
-                Console.WriteLine("Response Status Code: " + ex.StatusCode);
-                Console.WriteLine("Error Code: " + ex.ErrorCode);
-                Console.WriteLine("Request ID: " + ex.RequestId);
-                Console.WriteLine("XML: " + ex.XML);
-            }
+            Console.WriteLine("Load Balancer ready...", loadBalancerName);
         }
     }
 }
