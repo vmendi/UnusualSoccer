@@ -33,7 +33,6 @@ namespace SoccerServer
             Log.Info("******************* Application_End *******************");
 		}
 
-        /*
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
             mStopwatch.Start();
@@ -44,7 +43,6 @@ namespace SoccerServer
             LogPerf.Info("EndRequest: " + ProfileUtils.ElapsedMicroseconds(mStopwatch));
             mStopwatch.Reset();
         }
-         */
         
         Stopwatch mStopwatch = new Stopwatch();
 	}
