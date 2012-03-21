@@ -27,7 +27,7 @@ namespace AmazonCmdlet
         private const string AWS_ACCESS_KEY = "AKIAJ3LOZJQHKEPHXZDQ";
         private const string AWS_SECRET_KEY = "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";
         
-        static public void StartProject(string project, string loadBalancerName, string hostedZone)
+        static public IEnumerable<string> StartProject(string project, string loadBalancerName, string hostedZone)
         {
             // About regions: http://aws.amazon.com/articles/3912#endpoints
             AmazonEC2Config ec2Config = new AmazonEC2Config() { ServiceURL = EC2_SERVICE_URL };
@@ -51,7 +51,9 @@ namespace AmazonCmdlet
             // Wait for all the instances to pass the 2 AWS health checks. This makes sure that the OS is started.
             WaitForHealthCheck(ec2, runningInstances);
 
-            Console.WriteLine("StartProject Done!\n");
+            Console.WriteLine("\nStartProject Done!\n");
+
+            return runningInstances.Select(r => GetInstanceName(r).ToLower() + "." + hostedZone);
         }
 
 
@@ -151,42 +153,40 @@ namespace AmazonCmdlet
             {
                 foreach (var reservationInstance in ec2Response.DescribeInstancesResult.Reservation)
                 {
-                    if (reservationInstance.RunningInstance.Count != 1)
-                        continue;
+                    foreach (var instance in reservationInstance.RunningInstance)
+                    {
+                        var instanceName = GetInstanceName(instance);
 
-                    RunningInstance instance = reservationInstance.RunningInstance[0];
+                        if (instanceName == null)
+                        {
+                            Console.WriteLine("Ignoring instance {0} without name", instance.InstanceId);
+                            continue;
+                        }
+                        if (!IsInstanceInProject(project, instance))
+                        {
+                            Console.WriteLine("Ignoring instance {0} not in project {1}", instanceName, project);
+                            continue;
+                        }
 
-                    var instanceName = GetInstanceName(instance);
-
-                    if (instanceName == null)
-                    {
-                        Console.WriteLine("Ignoring instance {0} without name", instance.InstanceId);
-                        continue;
-                    }
-                    if (!IsInstanceInProject(project, instance))
-                    {
-                        Console.WriteLine("Ignoring instance {0} not in project {1}", instanceName, project);
-                        continue;
-                    }
-
-                    if (instance.InstanceState.Name == "pending")
-                    {
-                        Console.WriteLine("Instance {0} is PENDING. We will wait until ready.", instanceName);
-                        pendingInstancesIDs.Add(instance.InstanceId);
-                    }
-                    else if (instance.InstanceState.Name == "stopped")
-                    {
-                        Console.WriteLine("Instance {0} is STOPPED. Starting it.", instanceName);
-                        stoppedInstancesIDs.Add(instance.InstanceId);
-                    }
-                    else if (instance.InstanceState.Name == "running")
-                    {
-                        Console.WriteLine("Instance {0} is RUNNING.", instanceName);
-                        runningInstances.Add(instance);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Ignoring instance {0} in state {1}", instanceName, instance.InstanceState.Name);
+                        if (instance.InstanceState.Name == "pending")
+                        {
+                            Console.WriteLine("Instance {0} is PENDING. We will wait until ready.", instanceName);
+                            pendingInstancesIDs.Add(instance.InstanceId);
+                        }
+                        else if (instance.InstanceState.Name == "stopped")
+                        {
+                            Console.WriteLine("Instance {0} is STOPPED. Starting it.", instanceName);
+                            stoppedInstancesIDs.Add(instance.InstanceId);
+                        }
+                        else if (instance.InstanceState.Name == "running")
+                        {
+                            Console.WriteLine("Instance {0} is RUNNING.", instanceName);
+                            runningInstances.Add(instance);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ignoring instance {0} in state {1}", instanceName, instance.InstanceState.Name);
+                        }
                     }
                 }
 
@@ -209,6 +209,8 @@ namespace AmazonCmdlet
                     bAllReady = true;
                 }
             }
+
+            Console.WriteLine("StartInstances: All instances RUNNING!\n");
 
             return runningInstances;
         }
@@ -363,7 +365,7 @@ namespace AmazonCmdlet
 
         static private void VerifyChanges(AmazonEC2 ec2, AmazonRoute53 r53, string hostedZoneID, IEnumerable<RunningInstance> runningInstances)
         {
-            Console.WriteLine("\n\nVerifying that changes are visible from our computer by querying the DNS:\n");
+            Console.WriteLine("\nVerifying that changes are visible from our computer by querying the DNS:\n");
 
             // We list the ResourceRecorSets again, after being INSYNC...
             IEnumerable<ResourceRecordSet> resourceRecordSets = ListRecordSets(r53, hostedZoneID);
