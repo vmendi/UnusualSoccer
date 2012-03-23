@@ -9,11 +9,14 @@ using Facebook.Web;
 using HttpService;
 using ServerCommon.BDDModel;
 using ServerCommon;
+using System.Collections.Specialized;
 
 namespace SoccerServer
 {
     public partial class Default : Page
     {
+        readonly public NameValueCollection SWF_SETTINGS = System.Configuration.ConfigurationManager.GetSection("swfSettings") as NameValueCollection;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             // Cargamos nuestros settings procedurales que nos deja ahí Global.asax
@@ -105,44 +108,24 @@ namespace SoccerServer
             HtmlTextWriter htmlWriter = new HtmlTextWriter(sw);
             base.Render(htmlWriter);
 
-            RunGlobalReplacements(pageSource);
+            // El {locale} no podemos reemplazarlo a pesar de leerse tambien fuera del panel, puesto que aqui operamos
+            // como si no tuvieramos signed_request (por ejemplo, para cuando pase el linter)
 
             // Reemplazos del panel donde va el swf (cuando ya estamos autorizados, etc)
+            // Seleccionamos por ejemplo el Javascript SDK que se cargara.
             if (MyDefaultPanel.Visible)
-                RunDefaultPanelReplacements(pageSource);
+                pageSource.Replace("${locale}", GetLocaleFromSignedRequest(FacebookWebContext.Current.SignedRequest));
             
             writer.Write(pageSource.ToString());
         }
 
-        protected void RunGlobalReplacements(StringBuilder pageSource)
-        {
-            var serverSettings = GlobalConfig.ServerSettings;
-            var theFBApp = GlobalConfig.FacebookSettings;
-
-            // Aqui soliamos hacer reemplazos, pero gracias a la limpieza de los meta og ya no hace falta.
-
-            // El {locale} no podemos reemplazarlo a pesar de estar fuera del panel, puesto que aqui operamos
-            // como si no tuvieramos signed_request (por ejemplo, para cuando pase el linter)
-        }
-
-        protected void RunDefaultPanelReplacements(StringBuilder pageSource)
+        public string GetFlashVars()
         {
             var theFBApp = GlobalConfig.FacebookSettings;
             var serverSettings = GlobalConfig.ServerSettings;
-            
-            pageSource.Replace("${version_major}", "10");       // Flex SDK 4.1 => Flash Player 10.0.0
-            pageSource.Replace("${version_minor}", "0");
-            pageSource.Replace("${version_revision}", "0");
-            pageSource.Replace("${swf}", "SoccerClient/SoccerClient");
-            pageSource.Replace("${application}", "SoccerClient");
-            pageSource.Replace("${width}", "760");
-            pageSource.Replace("${height}", "650");
-            
-            // Seleccionamos por ejemplo el Javascript SDK que se cargara.
-            pageSource.Replace("${locale}", GetLocaleFromSignedRequest(FacebookWebContext.Current.SignedRequest));
 
             // Parametros de entrada al SWF. Todo lo que nos viene en la QueryString mas algunos del ServerSettings
-            string flashVars = " { "; 
+            string flashVars = " { ";
             foreach (string key in Request.QueryString.AllKeys)
                 flashVars += key + ": '" + Request.QueryString[key] + "' ,";
 
@@ -156,10 +139,10 @@ namespace SoccerServer
 
             flashVars += "SessionKey: '" + FacebookWebContext.Current.AccessToken + "' ,";
             flashVars += "Locale: '" + GetLocaleFromSignedRequest(FacebookWebContext.Current.SignedRequest) + "'";
-                                    
+
             flashVars += " } ";
-            
-            pageSource.Replace("${flashVars}", flashVars);
+
+            return flashVars;
         }
 
         private string GetCountryFromSignedRequest(FacebookSignedRequest fbSignedRequest)
