@@ -31,7 +31,7 @@
 
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-	<script type="text/javascript" src="//connect.facebook.net/${locale}/all.js"></script>
+	<script type="text/javascript" src="<%= GetFBSDK() %>"></script>
 	
     <script type="text/javascript">
         var flashVars = <%= GetFlashVars() %>
@@ -48,7 +48,7 @@
         attributes.name = '<%= SWF_SETTINGS["application"] %>';
         attributes.align = "middle";
 	    
-        swfobject.embedSWF('<%= SWF_SETTINGS["swf"] %>.swf', "flashContent", 
+        swfobject.embedSWF('<%= GetRsc(SWF_SETTINGS["swf"]) %>', "flashContent", 
                 		   '<%= SWF_SETTINGS["width"] %>', '<%= SWF_SETTINGS["height"] %>',
                 		   '<%= SWF_SETTINGS["version_string"] %>', "", 
                 		   flashVars, params, attributes);
@@ -87,22 +87,31 @@
 
     <div id="fb-root"></div>
 
-    <div style="margin-bottom:10px;width:760px;height:74px;"><img src="Imgs/MainHeader_en_US.jpg" alt= "" width="760" height="74" style="display:block;border:0;" /></div>
+    <div style="margin-bottom:10px;width:760px;height:74px;">
+        <img src="<%= GetRsc("Imgs/MainHeader_en_US.jpg") %>" alt= "" width="760" height="74" style="display:block;border:0;" />
+    </div>
 
     <!-- Banner y botón Like mecanismo XFBML -->
-    <asp:Panel id="MyLikePanel" style="width:760px; height:38px; background:url(Imgs/BannerMeGustaBg_en_US.png); margin-bottom:10px;" runat="server">
+    <asp:Panel runat="server" id="MyLikePanel" style="width:760px; height:38px; margin-bottom:10px; position:relative;">
+        <img src="<%= GetRsc("Imgs/BannerMeGustaBg_${locale}.png") %>" alt="" width="760" height="38" style="display:block;border:0;position:absolute;" />
 	    <div style="float:left; padding-left:32px; padding-top:10px; width:150px;">
-		    <fb:like send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
+		    <fb:like href="//www.facebook.com/UnusualSoccer" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
 	    </div>
     </asp:Panel>
 
     <!-- Navegación -->		
-    <div align="center" style="width:760px; height:33px; background:url(Imgs/NavBg.png);" >
+    <div align="center" style="width:760px; height:33px; background:url(<%= GetRsc("Imgs/NavBg.png") %>);" >
         <table border="0" cellpadding="0" cellspacing="0">
             <tr>
-                <td><a href="#" onclick="sendRequestViaMultiFriendSelector(); return false;"><img alt="" src="Imgs/NavIconInvita_${locale}.png" hspace="20" border="0" /></a></td>
-                <td><a href="//www.facebook.com/pages/Unusual-Soccer/302667959787764" target="_parent"><img alt="" src="Imgs/NavIconMuro_${locale}.png" hspace="20" border="0" /></a></td>
-                <td><a href="//www.facebook.com/pages/Unusual-Soccer/302667959787764#!/pages/Unusual-Soccer/302667959787764?sk=info" target="_parent"><img alt="" src="Imgs/NavIconInfo_${locale}.png" hspace="20" border="0" /></a></td>
+                <td><a href="#" onclick="sendRequestViaMultiFriendSelector(); return false;">
+                    <img alt="" src="<%= GetRsc("Imgs/NavIconInvita_${locale}.png") %>" hspace="20" border="0" /></a>
+                </td>
+                <td><a href="//www.facebook.com/UnusualSoccer" target="_parent">
+                    <img alt="" src="<%= GetRsc("Imgs/NavIconMuro_${locale}.png") %>" hspace="20" border="0" /></a>
+                </td>
+                <td><a href="//www.facebook.com/UnusualSoccer?sk=info" target="_parent">
+                    <img alt="" src="<%= GetRsc("Imgs/NavIconInfo_${locale}.png") %>" hspace="20" border="0" /></a>
+                </td>
             </tr>
         </table>
     </div>
