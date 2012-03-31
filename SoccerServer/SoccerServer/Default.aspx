@@ -34,13 +34,8 @@
 	<script type="text/javascript" src="//connect.facebook.net/${locale}/all.js"></script>
 	
     <script type="text/javascript">
-			
-		/* The query string as a hash */
-		var flashVars = ${flashVars};
+        var flashVars = <%= GetFlashVars() %>
 
-        /* For version detection, set to min. required Flash Player version, or 0 (or 0.0.0), for no version detection. */
-        var swfVersionStr = "${version_major}.${version_minor}.${version_revision}";
-			
         var params = {};
         params.quality = "high";
         params.bgcolor = "#FFFFFF";
@@ -49,14 +44,14 @@
         params.wmode = "opaque";
             
         var attributes = {};
-        attributes.id = "${application}";
-        attributes.name = "${application}";
+        attributes.id = '<%= SWF_SETTINGS["application"] %>';
+        attributes.name = '<%= SWF_SETTINGS["application"] %>';
         attributes.align = "middle";
 	    
-        swfobject.embedSWF("${swf}.swf", "flashContent", 
-                			"${width}", "${height}", 
-                			swfVersionStr, "", 
-                			flashVars, params, attributes);
+        swfobject.embedSWF('<%= SWF_SETTINGS["swf"] %>.swf', "flashContent", 
+                		   '<%= SWF_SETTINGS["width"] %>', '<%= SWF_SETTINGS["height"] %>',
+                		   '<%= SWF_SETTINGS["version_string"] %>', "", 
+                		   flashVars, params, attributes);
 
 		/* JavaScript enabled so display the flashContent div in case it is not replaced with a swf object. */
 		swfobject.createCSS("#flashContent", "display:block;text-align:left;");
@@ -115,7 +110,7 @@
     <div id="flashContent">
         <p>
 	        To view this page ensure that Adobe Flash Player version 
-		    ${version_major}.${version_minor}.${version_revision} or greater is installed. 
+		    <%= SWF_SETTINGS["version_string"] %> or greater is installed. 
 	    </p>
 	    <script type="text/javascript">
 	        var pageHost = ((document.location.protocol == "https:") ? "https://" : "http://");
