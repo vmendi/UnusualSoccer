@@ -1,6 +1,0 @@
-2012-02-15 00:43:48,180 [1] INFO  Photon.SocketServer.ApplicationBase - Application start: AppId=MmoDemo; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\MmoDemo
-2012-02-15 10:51:44,198 [1] INFO  Photon.SocketServer.ApplicationBase - Application start: AppId=MmoDemo; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\MmoDemo
-2012-02-15 12:49:43,885 [1] INFO  Photon.SocketServer.ApplicationBase - Application is stopping: AppId=MmoDemo
-2012-02-15 12:49:44,590 [1] INFO  PhotonHostRuntime.PhotonDomainManager - Stop
-2012-02-15 12:49:44,677 [1] INFO  Photon.SocketServer.ApplicationBase - Application stop: AppId=MmoDemo
-2012-02-15 12:57:54,564 [1] INFO  Photon.SocketServer.ApplicationBase - Application start: AppId=MmoDemo; AppPath=C:\Santiago\Repo\QuizServer\ExitGames-Photon-Server-SDK_v3-0-15-2544-RC7\deploy\MmoDemo
