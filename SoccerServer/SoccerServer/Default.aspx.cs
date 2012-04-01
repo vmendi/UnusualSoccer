@@ -129,9 +129,7 @@ namespace SoccerServer
 
         public string GetRsc(string rscStandardPath)
         {
-            string CDN = "";
-
-            return CDN + rscStandardPath.Replace("${locale}", GetLocale());
+            return GlobalConfig.ServerSettings.CDN + rscStandardPath.Replace("${locale}", GetLocale());
         }
 
         private string GetCountryFromSignedRequest(FacebookSignedRequest fbSignedRequest)

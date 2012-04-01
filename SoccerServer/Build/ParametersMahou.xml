@@ -13,5 +13,7 @@
 	<setParameter name="ticketingSystem" value="false" />
 	<setParameter name="sameIPAbandonsChecked" value="true" />
 
+	<setParameter name="cdn" value="//cdn-mahouligachapas.unusualwonder.com/" />
+
 	<setParameter name="networkLog" value="udp4://log.unusualsoccer.com:1002" />
 </parameters>
