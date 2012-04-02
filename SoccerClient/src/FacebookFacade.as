@@ -50,7 +50,7 @@ package
 					RealtimeModel.SetDefaultURI(AppConfig.REALTIME_SERVER + ":2020");
 								
 				// Cogemos la SessionKey del parametro que nos pasa el servidor por flashVars
-				SetWeborbSessionKey();
+				SetWeborbURL();
 				
 				// Esto generara una llamada a FB para conseguir un nuevo access_token, distinto al primero 
 				// que se le pasa por POST al servidor (dentro del signed_request)
@@ -97,29 +97,32 @@ package
 		{
 			mFakeSessionKey = requestedFakeSessionKey;
 			
-			SetWeborbSessionKey();
+			SetWeborbURL();
 		
 			// Tenemos que asegurar que la SessionKey está insertada en la BDD en el server
 			EnsureSessionIsCreatedOnServer(mFakeSessionKey, callback);
 		}
 		
-		public function SetWeborbSessionKey() : void
+		public function SetWeborbURL() : void
 		{
 			// En caso de entrar por https, hay que asegurar que el channel es del tipo SecureAMFChannel
 			if (FlexGlobals.topLevelApplication.url.indexOf("https") != -1)
 				ServerConfig.xml[0].channels.channel.(@id=='my-amf').@type = "mx.messaging.channels.SecureAMFChannel";
-							
-			var current : String = ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
+
+			// Antes haciamos caso a la string que nos venia en el .xml, ahora ya, despues del cdn, no.
+			var current : String = ""; // ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
 			
 			// Cuando nos llaman una segunda vez debido a un Fault o a un ServerTest
 			if (current.indexOf("?") != -1)
 				current = current.substr(0, current.indexOf("?"));
+			else
+				current = AppConfig.CANVAS_URL + "/weborb.aspx";
 			
 			ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri = current + "?SessionKey=" + SessionKey;
 
 			var channelSet : ChannelSet = ServerConfig.getChannelSet("GenericDestination");
 			channelSet.disconnectAll();
-						
+
 			var theChannel : Channel = ServerConfig.getChannel("my-amf");
 			theChannel.uri = ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
 		}

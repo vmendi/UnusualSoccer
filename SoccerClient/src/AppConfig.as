@@ -1,6 +1,8 @@
 package
 {
 	import mx.collections.ArrayCollection;
+	import mx.core.FlexGlobals;
+	import mx.utils.URLUtil;
 
 	public final class AppConfig
 	{
@@ -21,6 +23,17 @@ package
 		// Una pregunta que nos hacemos en varios sitios, por tenerla centralizada
 		static public function get IsMahouLigaChapas() : Boolean { return VERSION_ID=='MahouLigaChapas'; }
 		
+		static public function get LOADED_FROM_URL() : String
+		{
+			var serverName : String = URLUtil.getServerName(FlexGlobals.topLevelApplication.url);
+			
+			if (URLUtil.isHttpsURL(FlexGlobals.topLevelApplication.url))
+				serverName = "https://" + serverName;
+			else
+				serverName = "http://" + serverName;
+			
+			return serverName;			
+		}
 		
 		static public function Init(parameters : Object) : void
 		{
