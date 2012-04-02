@@ -27,15 +27,20 @@
 
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
-		import GameView.MainView;		
+		
+		import GameView.MainView;
+		
+		import HttpService.DataTypeInitializer;
+		
 		import Match.MatchMain;
 		
-		import HttpService.DataTypeInitializer;		
 		import mx.events.FlexEvent;
 
 		protected function ApplicationCompleteHandler(event:FlexEvent):void
 		{
 			// FPSCounter.Init(this.stage, new Point(0,0));
+			
+			Security.allowDomain("*");	// CDN
 						
 			// Excepciones globales capturadas
 			if (loaderInfo.hasOwnProperty("uncaughtErrorEvents"))

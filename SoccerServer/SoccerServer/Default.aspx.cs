@@ -101,24 +101,6 @@ namespace SoccerServer
             MyLikePanel.Visible = showLikePanel;
         }
 
-        protected override void Render(HtmlTextWriter writer)
-        {
-            StringBuilder pageSource = new StringBuilder();
-            StringWriter sw = new StringWriter(pageSource);
-            HtmlTextWriter htmlWriter = new HtmlTextWriter(sw);
-            base.Render(htmlWriter);
-
-            // El {locale} no podemos reemplazarlo a pesar de leerse tambien fuera del panel, puesto que aqui operamos
-            // como si no tuvieramos signed_request (por ejemplo, para cuando pase el linter)
-
-            // Reemplazos del panel donde va el swf (cuando ya estamos autorizados, etc)
-            // Seleccionamos por ejemplo el Javascript SDK que se cargara.
-            if (MyDefaultPanel.Visible)
-                pageSource.Replace("${locale}", GetLocaleFromSignedRequest(FacebookWebContext.Current.SignedRequest));
-            
-            writer.Write(pageSource.ToString());
-        }
-
         public string GetFlashVars()
         {
             var theFBApp = GlobalConfig.FacebookSettings;
@@ -138,16 +120,35 @@ namespace SoccerServer
             flashVars += "CanvasUrl: '" + theFBApp.CanvasUrl + "' ,";
 
             flashVars += "SessionKey: '" + FacebookWebContext.Current.AccessToken + "' ,";
-            flashVars += "Locale: '" + GetLocaleFromSignedRequest(FacebookWebContext.Current.SignedRequest) + "'";
+            flashVars += "Locale: '" + GetLocale() + "'";
 
             flashVars += " } ";
 
             return flashVars;
         }
 
+        public string GetRsc(string rscStandardPath)
+        {
+            return GlobalConfig.ServerSettings.CDN + rscStandardPath.Replace("${locale}", GetLocale());
+        }
+
         private string GetCountryFromSignedRequest(FacebookSignedRequest fbSignedRequest)
         {
             return ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["country"] as string;
+        }
+        
+        private string GetLocale()
+        {
+            if (mLocale == null)
+                mLocale = GetLocaleFromSignedRequest(FacebookWebContext.Current.SignedRequest);
+            
+            return mLocale;
+        }
+        private string mLocale = null;
+
+        public string GetFBSDK()
+        {
+            return "//connect.facebook.net/" + GetLocale() + "/all.js";
         }
 
         //

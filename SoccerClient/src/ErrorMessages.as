@@ -75,7 +75,7 @@ package
 		//
 		static public function Fault(info:Object):void
 		{
-			SoccerClient.GetFacebookFacade().SetWeborbSessionKey();
+			SoccerClient.GetFacebookFacade().SetWeborbURL();
 		}
 		
 		// Cuando quieres hacer una llamada al servicio y no escuchar a su Success, si falla hay que llamar a Fault anyway!

@@ -48,7 +48,7 @@
         attributes.name = '<%= SWF_SETTINGS["application"] %>';
         attributes.align = "middle";
 	    
-        swfobject.embedSWF('<%= SWF_SETTINGS["swf"] %>.swf', "flashContent", 
+        swfobject.embedSWF('<%= SWF_SETTINGS["swf"] %>', "flashContent", 
                 		    '<%= SWF_SETTINGS["width"] %>', '<%= SWF_SETTINGS["height"] %>',
                 		    '<%= SWF_SETTINGS["version_string"] %>', "", 
                 		    flashVars, params, attributes);

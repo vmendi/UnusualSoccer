@@ -13,6 +13,7 @@
 	<setParameter name="ticketingSystem" value="true" />
 	<setParameter name="sameIPAbandonsChecked" value="true" />
 	<setParameter name="realtimeServer" value="realtime01.unusualsoccer.com" />
+	<setParameter name="cdn" value="//cdn.unusualsoccer.com/" />
 	
 	<setParameter name="networkLog" value="udp4://log.unusualsoccer.com:1003" />
 </parameters>
