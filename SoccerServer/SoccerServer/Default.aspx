@@ -31,32 +31,7 @@
 
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-	<script type="text/javascript" src="<%= GetFBSDK() %>"></script>
 	
-    <script type="text/javascript">
-        var flashVars = <%= GetFlashVars() %>
-
-        var params = {};
-        params.quality = "high";
-        params.bgcolor = "#FFFFFF";
-        params.allowscriptaccess = "always";
-        params.allowfullscreen = "true";
-        params.wmode = "opaque";
-            
-        var attributes = {};
-        attributes.id = '<%= SWF_SETTINGS["application"] %>';
-        attributes.name = '<%= SWF_SETTINGS["application"] %>';
-        attributes.align = "middle";
-	    
-        swfobject.embedSWF('<%= GetRsc(SWF_SETTINGS["swf"]) %>', "flashContent", 
-                		   '<%= SWF_SETTINGS["width"] %>', '<%= SWF_SETTINGS["height"] %>',
-                		   '<%= SWF_SETTINGS["version_string"] %>', "", 
-                		   flashVars, params, attributes);
-
-		/* JavaScript enabled so display the flashContent div in case it is not replaced with a swf object. */
-		swfobject.createCSS("#flashContent", "display:block;text-align:left;");
-    </script>
-    
     <!-- Google Analytics -->
     <script type="text/javascript">
 
@@ -79,13 +54,49 @@
             }, null);
         }
     </script>
+
 </head>
 	
 <body>
 
-<asp:Panel id="MyDefaultPanel" runat="server" Visible="false">
+<div id='fb-root'></div>
 
-    <div id="fb-root"></div>
+<script type="text/javascript">
+    window.fbAsyncInit = function () {
+        var flashVars = <%= GetFlashVars() %>
+
+        var params = {};
+        params.quality = "high";
+        params.bgcolor = "#FFFFFF";
+        params.allowscriptaccess = "always";
+        params.allowfullscreen = "true";
+        params.wmode = "opaque";
+            
+        var attributes = {};
+        attributes.id = '<%= SWF_SETTINGS["application"] %>';
+        attributes.name = '<%= SWF_SETTINGS["application"] %>';
+        attributes.align = "middle";
+	    
+        swfobject.embedSWF('<%= GetRsc(SWF_SETTINGS["swf"]) %>', "flashContent", 
+                		    '<%= SWF_SETTINGS["width"] %>', '<%= SWF_SETTINGS["height"] %>',
+                		    '<%= SWF_SETTINGS["version_string"] %>', "", 
+                		    flashVars, params, attributes);
+
+		/* JavaScript enabled so display the flashContent div in case it is not replaced with a swf object. */
+		swfobject.createCSS("#flashContent", "display:block;text-align:left;");
+    };
+
+    /* Load the FB SDK asynchronously */
+    (function() {
+        var e = document.createElement('script');
+        e.src = document.location.protocol + '<%= GetFBSDK() %>';
+        e.async = true;
+        document.getElementById('fb-root').appendChild(e);
+    }());
+</script>
+
+
+<asp:Panel id="MyDefaultPanel" runat="server" Visible="false">
 
     <div style="margin-bottom:10px;width:760px;height:74px;">
         <img src="<%= GetRsc("Imgs/MainHeader_en_US.jpg") %>" alt= "" width="760" height="74" style="display:block;border:0;" />
