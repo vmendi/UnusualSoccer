@@ -70,13 +70,11 @@
 			
 			<s:Group width="160">
 				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				<s:Label id="GoldTicketLabel" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTicket1Time')}"></s:Label>			
+				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTrainer1Time')}"></s:Label>			
 				<s:Group>
-					<s:layout>
-						<s:HorizontalLayout gap="4" verticalAlign="middle" />
-					</s:layout>
+					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label id="BronzePrice" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
+					<s:Label styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTrainer1Price')}"></s:Label>	
 				</s:Group>
 				<s:Button id="Trainer01" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
@@ -85,13 +83,11 @@
 			
 			<s:Group width="160">
 				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				<s:Label id="SilverTicketLabel" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTicket2Time')}"></s:Label>
+				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTrainer2Time')}"></s:Label>
 				<s:Group>
-					<s:layout>
-						<s:HorizontalLayout gap="4" verticalAlign="middle" />
-					</s:layout>
+					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label id="SilverPrice" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
+					<s:Label styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTrainer2Price')}"></s:Label>	
 				</s:Group>
 				<s:Button id="Trainer02" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
@@ -100,13 +96,11 @@
 			
 			<s:Group width="160">
 				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				<s:Label id="BronzeTicketLabel" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTicket1Time')}"></s:Label>
+				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTrainer3Time')}"></s:Label>
 				<s:Group>
-					<s:layout>
-						<s:HorizontalLayout gap="4" verticalAlign="middle" />
-					</s:layout>
+					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label id="GoldPrice" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
+					<s:Label styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTrainer3Price')}"></s:Label>	
 				</s:Group>
 				<s:Button id="Trainer03" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"

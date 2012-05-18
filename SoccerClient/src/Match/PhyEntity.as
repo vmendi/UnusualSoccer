@@ -1,5 +1,6 @@
 package Match
 {
+	import Box2D.Collision.Shapes.b2MassData;
 	import Box2D.Common.*;
 	import Box2D.Common.Math.*;
 	import Box2D.actionsnippet.qbox.QuickObject;
@@ -87,6 +88,22 @@ package Match
 		public function get IsMoving() : Boolean
 		{
 			return !PhyObject.body.IsSleeping();
+		}
+		
+		//
+		// Immovable Goalkeeper...
+		//
+		public function SetImmovable(immovable : Boolean) : void
+		{
+			var massData : b2MassData = new b2MassData();			
+			massData.I = PhyObject.body.m_I;
+									
+			if (immovable)
+				massData.mass = 0;				
+			else
+				massData.mass = MatchConfig.CapMass;
+			
+			PhyObject.body.SetMass(massData);
 		}
 	}
 

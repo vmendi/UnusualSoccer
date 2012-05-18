@@ -165,26 +165,32 @@ namespace SoccerServer
                 case "SkillPoints300":
                     theTeam.SkillPoints += 300;
                     break;
-                case "SkillPoints500":
-                    theTeam.SkillPoints += 500;
+                case "SkillPoints1000":
+                    theTeam.SkillPoints += 1000;
+                    break;
+                case "SkillPoints2000":
+                    theTeam.SkillPoints += 2000;
+                    break;
+                case "SkillPoints3000":
+                    theTeam.SkillPoints += 3000;
                     break;
                 case "BronzeTicket":
-                    AwardTicketTime(theTeam.TeamPurchase, 0, new TimeSpan(0, 0, 3, 0));
+                    AwardTicketTime(theTeam.TeamPurchase, 0, new TimeSpan(3, 0, 0, 0));
                     break;
                 case "SilverTicket":
-                    AwardTicketTime(theTeam.TeamPurchase, 1, new TimeSpan(0, 1, 0, 0));                
+                    AwardTicketTime(theTeam.TeamPurchase, 1, new TimeSpan(7, 0, 0, 0));                
                     break;
                 case "GoldTicket":
-                    AwardTicketTime(theTeam.TeamPurchase, 2, new TimeSpan(1, 0, 0, 0));
+                    AwardTicketTime(theTeam.TeamPurchase, 2, new TimeSpan(31, 0, 0, 0));
                     break;
                 case "Trainer01":
-                    AwardTrainer(theTeam.TeamPurchase, new TimeSpan(1, 0, 0, 0));
+                    AwardTrainer(theTeam.TeamPurchase, new TimeSpan(2, 0, 0, 0));
                     break;
                 case "Trainer02":
-                    AwardTrainer(theTeam.TeamPurchase, new TimeSpan(1, 0, 0, 0));
+                    AwardTrainer(theTeam.TeamPurchase, new TimeSpan(7, 0, 0, 0));
                     break;
                 case "Trainer03":
-                    AwardTrainer(theTeam.TeamPurchase, new TimeSpan(1, 0, 0, 0));
+                    AwardTrainer(theTeam.TeamPurchase, new TimeSpan(31, 0, 0, 0));
                     break;
                 default:
                     throw new Exception("Unknown thePurchase.ItemID: " + thePurchase.ItemID);
@@ -301,7 +307,7 @@ namespace SoccerServer
                     {
                         item_id = "SkillPoints100",
                         description = "A package of 100 Skill points",
-                        price = 1,
+                        price = 30,
                         title = "100 Skill Points",
                         product_url = "http://www.facebook.com/images/gifts/20.png",
                         image_url = "http://www.facebook.com/images/gifts/20.png",
@@ -311,7 +317,7 @@ namespace SoccerServer
                     {
                         item_id = "SkillPoints300",
                         description = "A package of 300 Skill points",
-                        price = 22,
+                        price = 80,
                         title = "300 Skill Points",
                         product_url = "http://www.facebook.com/images/gifts/21.png",
                         image_url = "http://www.facebook.com/images/gifts/21.png",
@@ -319,72 +325,93 @@ namespace SoccerServer
                     },
                 new ItemForSale()
                     {
-                        item_id = "SkillPoints500",
-                        description = "A package of 500 Skill points",
-                        price = 3,
-                        title = "500 Skill Points",
+                        item_id = "SkillPoints1000",
+                        description = "A package of 1000 Skill points",
+                        price = 250,
+                        title = "1000 Skill Points",
                         product_url = "http://www.facebook.com/images/gifts/22.png",
                         image_url = "http://www.facebook.com/images/gifts/22.png",
                         data = ""
                     },
+                 new ItemForSale()
+                    {
+                        item_id = "SkillPoints2000",
+                        description = "A package of 2000 Skill points",
+                        price = 450,
+                        title = "2000 Skill Points",
+                        product_url = "http://www.facebook.com/images/gifts/22.png",
+                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        data = ""
+                    },
+                 new ItemForSale()
+                    {
+                        item_id = "SkillPoints3000",
+                        description = "A package of 3000 Skill points",
+                        price = 700,
+                        title = "3000 Skill Points",
+                        product_url = "http://www.facebook.com/images/gifts/22.png",
+                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        data = ""
+                    },
+
                 new ItemForSale()
                     {
                         item_id = "BronzeTicket",
-                        description = "Unlimited matches during XXX days",
-                        price = 1,
-                        title = "Unlimited matches during XXX days",
-                        product_url = "http://www.facebook.com/images/gifts/22.png",
-                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        description = "Unlimited matches for 3 days",
+                        price = 30,
+                        title = "Unlimited matches for 3 days",
+                        product_url = "http://www.facebook.com/images/gifts/23.png",
+                        image_url = "http://www.facebook.com/images/gifts/23.png",
                         data = ""
                     },
                 new ItemForSale()
                     {
                         item_id = "SilverTicket",
-                        description = "Unlimited matches during XXX days",
-                        price = 2,
-                        title = "Unlimited matches during XXX days",
-                        product_url = "http://www.facebook.com/images/gifts/22.png",
-                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        description = "Unlimited matches for 1 week",
+                        price = 60,
+                        title = "Unlimited matches for 1 week",
+                        product_url = "http://www.facebook.com/images/gifts/24.png",
+                        image_url = "http://www.facebook.com/images/gifts/24.png",
                         data = ""
                     },
                 new ItemForSale()
                     {
                         item_id = "GoldTicket",
-                        description = "Unlimited matches during XXX days",
-                        price = 3,
-                        title = "Unlimited matches during XXX days",
-                        product_url = "http://www.facebook.com/images/gifts/22.png",
-                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        description = "Unlimited matches for 1 month",
+                        price = 250,
+                        title = "Unlimited matches for 1 month",
+                        product_url = "http://www.facebook.com/images/gifts/25.png",
+                        image_url = "http://www.facebook.com/images/gifts/25.png",
                         data = ""
                     },
                 new ItemForSale()
                     {
                         item_id = "Trainer01",
-                        description = "Trainer during XXX days",
-                        price = 3,
-                        title = "Trainer during XXX days",
-                        product_url = "http://www.facebook.com/images/gifts/22.png",
-                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        description = "Trainer during 2 days",
+                        price = 30,
+                        title = "Trainer during 2 days",
+                        product_url = "http://www.facebook.com/images/gifts/26.png",
+                        image_url = "http://www.facebook.com/images/gifts/26.png",
                         data = ""
                     },
                 new ItemForSale()
                     {
                         item_id = "Trainer02",
-                        description = "Trainer during XXX days",
-                        price = 4,
-                        title = "Trainer during XXX days",
-                        product_url = "http://www.facebook.com/images/gifts/22.png",
-                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        description = "Trainer during 1 week",
+                        price = 60,
+                        title = "Trainer during 1 week",
+                        product_url = "http://www.facebook.com/images/gifts/27.png",
+                        image_url = "http://www.facebook.com/images/gifts/27.png",
                         data = ""
                     },
                 new ItemForSale()
                     {
                         item_id = "Trainer03",
-                        description = "Trainer during XXX days",
-                        price = 5,
-                        title = "Trainer during XXX days",
-                        product_url = "http://www.facebook.com/images/gifts/22.png",
-                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        description = "Trainer during 1 month",
+                        price = 200,
+                        title = "Trainer during 1 month",
+                        product_url = "http://www.facebook.com/images/gifts/28.png",
+                        image_url = "http://www.facebook.com/images/gifts/28.png",
                         data = ""
                     }
             };

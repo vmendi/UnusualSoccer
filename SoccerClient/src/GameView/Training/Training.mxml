@@ -113,8 +113,9 @@
 			<GameView:HelpCallout HelpText="{resourceManager.getString('main','TrainingPanelTxt')}" visible="{resourceManager.getBoolean('main','TicketsPanelVisible')}"/>
 		</s:controlBarContent>
 		
-		<s:Label x="20" y="14" width="700" text="{resourceManager.getString('main','TrainingPanelTxt')}" styleName="whiteBoldBig" textAlign="center" visible="{!resourceManager.getBoolean('main','TicketsPanelVisible')}"/>
-		
+		<s:Label x="20" y="14" width="700" text="{resourceManager.getString('main','TrainingPanelTxt')}" styleName="whiteBoldBig" textAlign="center" 
+				 visible="{!resourceManager.getBoolean('main','TicketsPanelVisible')}"/>
+
 		<s:Group x="10" y="64" id="MyTrainingItemsGroup">
 			<s:layout>
 				<s:TileLayout columnWidth="355" rowHeight="115" horizontalGap="10" verticalGap="10"/>
@@ -129,8 +130,8 @@
 			<Training:TrainingItem click="Trainingitem_clickHandler(event)"/>
 		</s:Group>
 		
-		<Training:TrainerPanel id="MyTrainerPanel" y="0" horizontalCenter="0"/>
-		
+		<Training:TrainerPanel id="MyTrainerPanel" y="0" horizontalCenter="0" visible="{resourceManager.getBoolean('main','TicketsPanelVisible')}" />
+				
 	</s:Panel>	
 	
 </s:Group>

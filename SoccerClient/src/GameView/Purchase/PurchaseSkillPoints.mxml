@@ -86,20 +86,16 @@
 			
 			<s:Group width="106">
 				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" /></s:layout>
-				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_5')" fillMode="clip" />
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_1')" fillMode="clip" />
 				<s:Group horizontalCenter="0">
-					<s:layout>
-						<s:VerticalLayout gap="0" horizontalAlign="center" />
-					</s:layout>
-					<s:Label id="SkillPoints500Label" styleName="yellowBoldVeryBig" text="XXX"></s:Label>
+					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
+					<s:Label styleName="yellowBoldVeryBig" text="100"></s:Label>
 					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
 				</s:Group>
 				<s:Group>
-					<s:layout>
-						<s:HorizontalLayout gap="4" verticalAlign="middle" />
-					</s:layout>
+					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label id="Packet5" width="46" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
+					<s:Label width="46" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseSkillPoints1Price')}"></s:Label>	
 				</s:Group>
 				<s:Button id="SkillPoints100" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
@@ -108,20 +104,16 @@
 			
 			<s:Group width="106">
 				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_4')" fillMode="clip" />
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_2')" fillMode="clip" />
 				<s:Group horizontalCenter="0">
-					<s:layout>
-						<s:VerticalLayout gap="0" horizontalAlign="center" />
-					</s:layout>
-					<s:Label id="SkillPoints400Label" styleName="yellowBoldVeryBig" text="XXX"></s:Label>
+					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
+					<s:Label styleName="yellowBoldVeryBig" text="300"></s:Label>
 					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
 				</s:Group>
 				<s:Group>
-					<s:layout>
-						<s:HorizontalLayout gap="4" verticalAlign="middle" />
-					</s:layout>
+					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label id="Packet4" width="46" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
+					<s:Label width="46" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseSkillPoints2Price')}"></s:Label>	
 				</s:Group>
 				<s:Button id="SkillPoints300" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
@@ -132,64 +124,52 @@
 				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_3')" fillMode="clip" />
 				<s:Group horizontalCenter="0">
-					<s:layout>
-						<s:VerticalLayout gap="0" horizontalAlign="center" />
-					</s:layout>
-					<s:Label id="SkillPoints300Label" styleName="yellowBoldVeryBig" text="XXX"></s:Label>
+					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
+					<s:Label styleName="yellowBoldVeryBig" text="1000"></s:Label>
 					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
 				</s:Group>		
 				<s:Group>
-					<s:layout>
-						<s:HorizontalLayout gap="4" verticalAlign="middle" />
-					</s:layout>
+					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label id="Packet3" width="46" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
+					<s:Label width="46" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseSkillPoints3Price')}"></s:Label>	
 				</s:Group>				
-				<s:Button id="SkillPoints500" label="{resourceManager.getString('main','Select')}"
-						  click="MySelectItemButton_clickHandler(event)"
-						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
-			</s:Group>
-			
-			<s:Group width="106">
-				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_2')" fillMode="clip" />
-				<s:Group horizontalCenter="0">
-					<s:layout>
-						<s:VerticalLayout gap="0" horizontalAlign="center" />
-					</s:layout>
-					<s:Label id="SkillPoints200Label" styleName="yellowBoldVeryBig" text="XXX"></s:Label>
-					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
-				</s:Group>			
-				<s:Group>
-					<s:layout>
-						<s:HorizontalLayout gap="4" verticalAlign="middle" />
-					</s:layout>
-					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label id="Packet2" width="46" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
-				</s:Group>
-				<s:Button id="SkillPoints700" label="{resourceManager.getString('main','Select')}"
-						  click="MySelectItemButton_clickHandler(event)"
-						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
-			</s:Group>
-			
-			<s:Group width="106">
-				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_1')" fillMode="clip" />
-				<s:Group horizontalCenter="0">
-					<s:layout>
-						<s:VerticalLayout gap="0" horizontalAlign="center" />
-					</s:layout>
-					<s:Label id="SkillPoints100Label" styleName="yellowBoldVeryBig" text="XXX"></s:Label>
-					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
-				</s:Group>			
-				<s:Group>
-					<s:layout>
-						<s:HorizontalLayout gap="4" verticalAlign="middle" />
-					</s:layout>
-					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label id="Packet1" width="46" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
-				</s:Group>
 				<s:Button id="SkillPoints1000" label="{resourceManager.getString('main','Select')}"
+						  click="MySelectItemButton_clickHandler(event)"
+						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>
+			
+			<s:Group width="106">
+				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_4')" fillMode="clip" />
+				<s:Group horizontalCenter="0">
+					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
+					<s:Label styleName="yellowBoldVeryBig" text="2000"></s:Label>
+					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
+				</s:Group>			
+				<s:Group>
+					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
+					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
+					<s:Label width="46" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseSkillPoints4Price')}"></s:Label>	
+				</s:Group>
+				<s:Button id="SkillPoints2000" label="{resourceManager.getString('main','Select')}"
+						  click="MySelectItemButton_clickHandler(event)"
+						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>
+			
+			<s:Group width="106">
+				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_5')" fillMode="clip" />
+				<s:Group horizontalCenter="0">
+					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
+					<s:Label styleName="yellowBoldVeryBig" text="3000"></s:Label>
+					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
+				</s:Group>			
+				<s:Group>
+					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
+					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
+					<s:Label width="46" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseSkillPoints5Price')}"></s:Label>	
+				</s:Group>
+				<s:Button id="SkillPoints3000" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>				
