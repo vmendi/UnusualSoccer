@@ -39,8 +39,9 @@ package
 			// Kontagent
 			//sendToURL(new URLRequest("http://api.geo.kontagent.net/api/v1/75bcc0495d1b49d8a5c8ad62d989dcf7/evt/?s="+uid+"&n="+event));
 			
-			// Kissmetrics
-			ExternalInterface.call("_kmq.push", ['record', event, properties]);
+			// Kissmetrics. We disable MahouLigaChapas temporarily, we don't want to spend.
+			if (!AppConfig.IsMahouLigaChapas)
+				ExternalInterface.call("_kmq.push", ['record', event, properties]);
 		}
 		
 		static public function ReportPageView(page:String) : void
