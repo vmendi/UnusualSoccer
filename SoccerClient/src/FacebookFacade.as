@@ -8,6 +8,7 @@ package
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.external.ExternalInterface;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
@@ -69,6 +70,9 @@ package
 				// Querido yo del futuro: quiero que sepas que esta funcion la van a renombrar, asi que tendras que bajar un nuevo SDK y
 				// cambiar la llamada
 				Facebook.setCanvasAutoResize(true);
+				
+				// It's at this moment, after the SDK init, when we insert and display the banner ads
+				ExternalInterface.call("createBannerAds");
 				
 				// Aseguramos que tenemos los permisos frescos
 				// Antes obteniamos aqui el /me, ahora no hace falta puesto que el locale viene del server

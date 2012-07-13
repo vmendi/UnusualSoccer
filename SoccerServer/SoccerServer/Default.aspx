@@ -93,6 +93,16 @@
         e.async = true;
         document.getElementById('fb-root').appendChild(e);
     }());
+
+    // This method will be called from AS3 when the SDK is ready
+    function createBannerAds() {
+        FB.api('/me?fields=third_party_id', function(response) {
+            if (response && !response.error)
+            {
+                $("#BannerAdsIFrame").attr("src", 'http://app.appatyze.com/gateway.php?a=<%= GetAppID() %>&aid=' + response.third_party_id);
+            }
+        });
+    }
 </script>
 
 
@@ -101,6 +111,8 @@
     <div style="margin-bottom:10px;width:760px;height:74px;">
         <img src="<%= GetRsc("Imgs/MainHeader_en_US.jpg") %>" alt= "" width="760" height="74" style="display:block;border:0;" />
     </div>
+
+    <iframe id="BannerAdsIFrame" src="" frameborder="0" width="100%" height="90" scrolling="no" marginwidth="0" marginheight="0"></iframe>
 
     <!-- Banner y botón Like mecanismo XFBML -->
     <asp:Panel runat="server" id="MyLikePanel" style="width:760px; height:38px; margin-bottom:10px; position:relative;">

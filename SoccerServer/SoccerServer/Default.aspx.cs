@@ -151,6 +151,11 @@ namespace SoccerServer
             return "//connect.facebook.net/" + GetLocale() + "/all.js";
         }
 
+        public string GetAppID()
+        {
+            return GlobalConfig.FacebookSettings.AppId;
+        }
+
         //
         // NOTE: En el servidor, como no tenemos cadenas de fallback, tenemos que tener todo en todos los idiomas soportados!
         //
