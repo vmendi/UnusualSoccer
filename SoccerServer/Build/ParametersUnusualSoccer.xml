@@ -14,7 +14,7 @@
 	<setParameter name="sameIPAbandonsChecked" value="true" />
 
 	<setParameter name="realtimeServer" value="canvas.unusualsoccer.com" />
-	<setParameter name="cdn" value="//cdn.unusualsoccer.com/" />
+	<setParameter name="cdn" value="//d3gkkiro3subwc.cloudfront.net/" />
 		
 	<setParameter name="networkLog" value="udp4://log.unusualsoccer.com:1003" />
 </parameters>

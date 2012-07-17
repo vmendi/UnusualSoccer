@@ -137,6 +137,7 @@
     <Content Include="Imgs\LoginLogo_es_ES.swf" />
     <Content Include="Imgs\Logo100x100.png" />
     <Content Include="Imgs\Logo100x100_en_US.png" />
+    <Content Include="Imgs\Logo16x16_en_US.png" />
     <Content Include="Imgs\Logo75x75.png" />
     <Content Include="Imgs\Logo75x75_en_US.png" />
     <Content Include="Imgs\MainHeader.jpg" />

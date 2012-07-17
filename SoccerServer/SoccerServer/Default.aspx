@@ -99,12 +99,27 @@
         FB.api('/me?fields=third_party_id', function(response) {
             if (response && !response.error)
             {
-                $("#BannerAdsIFrame").attr("src", 'http://app.appatyze.com/gateway.php?a=<%= GetAppID() %>&aid=' + response.third_party_id);
+                if (Math.random() >= 0.5)
+                {
+                    $("#AppatyzeIFrame").attr("src", '//app.appatyze.com/gateway.php?a=1176&aid=' + response.third_party_id);
+                    $("#AppatyzeIFrame").attr("height", "90");
+                }
+                else
+                {
+                    (function () {
+                        window.applifierAsyncInit = function () {
+                            Applifier.init({ applicationId: 2276, thirdPartyId: response.third_party_id });
+                            var bar = new Applifier.Bar({ barType: "bar", barContainer: "#ApplifierBar", autoBar: true });
+                        };
+                        var a = document.createElement('script'); a.type = 'text/javascript'; a.async = true;
+                        a.src = (('https:' == document.location.protocol) ? 'https://secure' : 'http://cdn') + '.applifier.com/applifier.min.js';
+                        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(a, s);
+                    })();
+                }
             }
         });
     }
 </script>
-
 
 <asp:Panel id="MyDefaultPanel" runat="server" Visible="false">
 
@@ -112,7 +127,8 @@
         <img src="<%= GetRsc("Imgs/MainHeader_en_US.jpg") %>" alt= "" width="760" height="74" style="display:block;border:0;" />
     </div>
 
-    <iframe id="BannerAdsIFrame" src="" frameborder="0" width="100%" height="90" scrolling="no" marginwidth="0" marginheight="0"></iframe>
+    <div id="ApplifierBar"></div>
+    <iframe id="AppatyzeIFrame" src="" frameborder="0" width="100%" height="0" scrolling="no" marginwidth="0" marginheight="0"></iframe>
 
     <!-- Banner y botón Like mecanismo XFBML -->
     <asp:Panel runat="server" id="MyLikePanel" style="width:760px; height:38px; margin-bottom:10px; position:relative;">
