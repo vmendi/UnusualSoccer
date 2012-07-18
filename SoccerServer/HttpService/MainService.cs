@@ -4,7 +4,6 @@ using System.Web;
 using ServerCommon;
 using ServerCommon.BDDModel;
 using NLog;
-using System.Diagnostics;
 
 
 namespace HttpService
@@ -53,19 +52,10 @@ namespace HttpService
 
 		public bool HasTeam()
 		{
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            bool bRet = false;
-
             using (mContext = new SoccerDataModelDataContext())
             {
-                bRet = PrecompiledQueries.HasTeam.GetTeam.Invoke(mContext, GetSessionKeyFromRequest()) != null;
+                return PrecompiledQueries.HasTeam.GetTeam.Invoke(mContext, GetSessionKeyFromRequest()) != null;
             }
-
-            LogPerf.Info("HasTeam: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
-
-            return bRet;
 		}
                 
 		public VALID_NAME IsNameValid(string name)

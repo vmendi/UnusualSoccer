@@ -43,11 +43,5 @@ namespace ServerCommon
         {
             get { return (bool)this["enableRealtime"]; }
         }
-
-        [ConfigurationProperty("cdn", IsRequired = false, DefaultValue = "")]
-        public string CDN
-        {
-            get { return (string)this["cdn"]; }
-        }
     }
 }

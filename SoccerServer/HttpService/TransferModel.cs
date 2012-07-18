@@ -17,7 +17,7 @@ namespace HttpService.TransferModel
 		public int SkillPoints;
 		public int Energy;
 		public int Fitness;
-        public TeamPurchase TeamPurchase;
+        public Ticket Ticket;
 		
 		public PendingTraining PendingTraining;
 		public List<SoccerPlayer> SoccerPlayers = new List<SoccerPlayer>();
@@ -43,29 +43,23 @@ namespace HttpService.TransferModel
 			foreach (ServerCommon.BDDModel.SpecialTraining sp in from.SpecialTrainings)
 				SpecialTrainings.Add(new SpecialTraining(sp));
 
-            TeamPurchase = new TeamPurchase(from.TeamPurchase);
+            Ticket = new Ticket(from.Ticket);
 		}
 	}
 
-    public class TeamPurchase
+    public class Ticket
     {
         public int      RemainingMatches;
         public DateTime TicketPurchaseDate;
         public DateTime TicketExpiryDate;
-        public DateTime TrainerPurchaseDate;
-        public DateTime TrainerExpiryDate;
         public int      TicketExpiryDateRemainingSeconds;
-        public int      TrainerExpiryDateRemainingSeconds;
 
-        public TeamPurchase(ServerCommon.BDDModel.TeamPurchase from) 
+        public Ticket(ServerCommon.BDDModel.Ticket from) 
         {
             RemainingMatches = from.RemainingMatches;
             TicketPurchaseDate = from.TicketPurchaseDate;
             TicketExpiryDate = from.TicketExpiryDate;
             TicketExpiryDateRemainingSeconds = Utils.GetConservativeRemainingSeconds(TicketExpiryDate);
-            TrainerPurchaseDate = from.TrainerPurchaseDate;
-            TrainerExpiryDate = from.TrainerExpiryDate;
-            TrainerExpiryDateRemainingSeconds = Utils.GetConservativeRemainingSeconds(TrainerExpiryDate);
         }
     }
 

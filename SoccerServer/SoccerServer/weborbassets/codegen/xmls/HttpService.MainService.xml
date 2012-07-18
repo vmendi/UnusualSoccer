@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <namespaces>
-  <runtime path="F:/UnusualGit/UnusualSoccer/SoccerServer/SoccerServer/" weborbRootURL="ENTER WEBORB URL HERE" />
+  <runtime path="C:/Santiago/FootballChallenge/SoccerServer/SoccerServer/" weborbRootURL="ENTER WEBORB URL HERE" />
   <namespace name="HttpService" fullname="HttpService">
     <enum name="VALID_NAME" fullname="HttpService.VALID_NAME" typeNamespace="HttpService">
       <field name="VALID" type="String" fulltype="String" nativetype="String" />
@@ -63,19 +63,16 @@
         <field name="SkillPoints" type="int" fulltype="int" nativetype="int" />
         <field name="Energy" type="int" fulltype="int" nativetype="int" />
         <field name="Fitness" type="int" fulltype="int" nativetype="int" />
-        <field name="TeamPurchase" type="TeamPurchase" fulltype="HttpService.TransferModel.TeamPurchase" nativetype="HttpService.TransferModel.TeamPurchase" typeNamespace="HttpService.TransferModel" />
+        <field name="Ticket" type="Ticket" fulltype="HttpService.TransferModel.Ticket" nativetype="HttpService.TransferModel.Ticket" typeNamespace="HttpService.TransferModel" />
         <field name="PendingTraining" type="PendingTraining" fulltype="HttpService.TransferModel.PendingTraining" nativetype="HttpService.TransferModel.PendingTraining" typeNamespace="HttpService.TransferModel" />
         <field name="SoccerPlayers" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.SoccerPlayer&gt;" />
         <field name="SpecialTrainings" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.SpecialTraining&gt;" />
       </datatype>
-      <datatype name="TeamPurchase" fullname="HttpService.TransferModel.TeamPurchase" typeNamespace="HttpService.TransferModel">
+      <datatype name="Ticket" fullname="HttpService.TransferModel.Ticket" typeNamespace="HttpService.TransferModel">
         <field name="RemainingMatches" type="int" fulltype="int" nativetype="int" />
         <field name="TicketPurchaseDate" type="Date" fulltype="Date" nativetype="DateTime" />
         <field name="TicketExpiryDate" type="Date" fulltype="Date" nativetype="DateTime" />
-        <field name="TrainerPurchaseDate" type="Date" fulltype="Date" nativetype="DateTime" />
-        <field name="TrainerExpiryDate" type="Date" fulltype="Date" nativetype="DateTime" />
         <field name="TicketExpiryDateRemainingSeconds" type="int" fulltype="int" nativetype="int" />
-        <field name="TrainerExpiryDateRemainingSeconds" type="int" fulltype="int" nativetype="int" />
       </datatype>
       <datatype name="PendingTraining" fullname="HttpService.TransferModel.PendingTraining" typeNamespace="HttpService.TransferModel">
         <field name="TrainingDefinition" type="TrainingDefinition" fulltype="HttpService.TransferModel.TrainingDefinition" nativetype="HttpService.TransferModel.TrainingDefinition" typeNamespace="HttpService.TransferModel" />
@@ -137,9 +134,6 @@
         <arg name="matchID" type="int" nativetype="int" />
       </method>
       <method name="HasTeam" type="Boolean" nativetype="bool" containsvalues="0" />
-      <method name="HealInjury" type="Boolean" nativetype="bool" containsvalues="0">
-        <arg name="soccerPlayerID" type="int" nativetype="int" />
-      </method>
       <method name="IsNameValid" type="String" nativetype="HttpService.VALID_NAME" containsvalues="0">
         <arg name="name" type="String" nativetype="String" />
       </method>

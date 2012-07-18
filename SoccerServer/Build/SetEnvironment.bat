@@ -1,5 +1,3 @@
-@echo off
-
 rem Cambia el directorio y unidad al path del bat que estamos ejecutando (%0)
 cd /D %~dp0
 

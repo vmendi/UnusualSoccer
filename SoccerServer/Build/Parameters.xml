@@ -43,9 +43,6 @@
 	<parameter name="realtimeServer" defaultValue="">
 		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@realtimeServer"/>
 	</parameter>
-	<parameter name="cdn" defaultValue="">
-		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@cdn"/>
-	</parameter>
 
 	<!-- Se hace con el * para que sea "en cualquier namespace", por el problema de que NLog.config tiene aplicado un xmlns.
 		 http://social.msdn.microsoft.com/Forums/eu/xmlandnetfx/thread/20cae029-62eb-4795-97c5-f741c2f01e07

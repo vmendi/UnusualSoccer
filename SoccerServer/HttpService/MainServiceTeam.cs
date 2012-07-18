@@ -13,9 +13,6 @@ namespace HttpService
 	{
 		public TransferModel.Team RefreshTeam()
 		{
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-
             TransferModel.Team ret = null;
 
             using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
@@ -37,8 +34,6 @@ namespace HttpService
                     }
                 }
             }
-
-            LogPerf.Info("RefreshTeam: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
 
             return ret;
 		}
@@ -67,7 +62,7 @@ namespace HttpService
                     theNewTeam.PredefinedTeamNameID = predefinedTeamNameID;
                     
                     // Uno por equipo, siempre. No se puede forzar 1:1 desde la BDD
-                    GenerateTeamPurchase(theNewTeam);
+                    GenerateTicket(theNewTeam);
                     GenerateTeamStats(theNewTeam);
 
                     mContext.SubmitChanges();
@@ -84,19 +79,16 @@ namespace HttpService
             }
 		}
 
-        private void GenerateTeamPurchase(Team team)
+        private void GenerateTicket(Team team)
         {
-            DateTime now = DateTime.Now;
-            TeamPurchase theTeamPurchase = new TeamPurchase();
+            Ticket theTicket = new Ticket();
             
-            theTeamPurchase.TeamPurchaseID = team.TeamID;
-            theTeamPurchase.TicketPurchaseDate = now;
-            theTeamPurchase.TicketExpiryDate = now;
-            theTeamPurchase.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
-            theTeamPurchase.TrainerPurchaseDate = now;
-            theTeamPurchase.TrainerExpiryDate = now;
+            theTicket.TicketID = team.TeamID;
+            theTicket.TicketPurchaseDate = DateTime.Now;
+            theTicket.TicketExpiryDate = theTicket.TicketPurchaseDate;
+            theTicket.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
 
-            mContext.TeamPurchases.InsertOnSubmit(theTeamPurchase);
+            mContext.Tickets.InsertOnSubmit(theTicket);
         }
 
         private void GenerateTeamStats(Team team)
@@ -179,7 +171,7 @@ namespace HttpService
                     var team = PrecompiledQueries.ChangeFormation.GetTeam.Invoke(mContext, GetSessionKeyFromRequest());
 
                     team.Formation = newFormationName;
-                    mContext.SubmitChanges();
+                    mContext.SubmitChanges();            
                 }
             }
 

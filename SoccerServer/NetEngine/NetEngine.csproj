@@ -35,7 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NLog">
-      <HintPath>..\SoccerServer\bin\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="weborb, Version=4.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SoccerServer\bin\weborb.dll</HintPath>
+      <HintPath>..\SoccerServer\weborbassets\weborbbuilds\.NET4.0\bin\weborb.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -13,15 +13,15 @@ namespace ServerCommon
         public const int DEFAULT_NUM_MACHES = 5;                        // Inicial al entrar en el juego
         public const int DAILY_NUM_MATCHES = 3;                         // Se resetea todas las noches a las 0:00
 
-        public const int HEAL_INJURY_COST = 100;                         // Coste de deslesionar, en Unusual Points (SkillPoints)
-
         static public ServerConfig ServerSettings { get { return mServerSettings; } }
+        static public TuentiConfig TuentiSettings { get { return mTuentiSettings; } }
         static public IFacebookApplication FacebookSettings { get { return mFBSettings; } }
 
         // Queremos tener el orden de inicialización bien definido, Init explicita.
         static public void Init()
         {
             mFBSettings = ConfigurationManager.GetSection("facebookSettings") as FacebookConfigurationSection;
+            mTuentiSettings = ConfigurationManager.GetSection("tuentiSettings") as TuentiConfig;
             mServerSettings = ConfigurationManager.GetSection("soccerServerConfig") as ServerConfig;
         }
 
@@ -30,6 +30,7 @@ namespace ServerCommon
         }
 
         static private ServerConfig mServerSettings;
+        static private TuentiConfig mTuentiSettings;
         static private FacebookConfigurationSection mFBSettings;
     }
 }

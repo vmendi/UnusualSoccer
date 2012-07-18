@@ -72,10 +72,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="Npgsql, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL" />
+    <Reference Include="SgmlReaderDll">
+      <HintPath>..\..\..\..\Users\Yo\Desktop\tuenti-net-tuenti-net\TuentiLibrary\bin\Debug\SgmlReaderDll.dll</HintPath>
+    </Reference>
     <Reference Include="Spring.Core, Version=1.3.0.20349, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -137,7 +142,6 @@
     <Content Include="Imgs\LoginLogo_es_ES.swf" />
     <Content Include="Imgs\Logo100x100.png" />
     <Content Include="Imgs\Logo100x100_en_US.png" />
-    <Content Include="Imgs\Logo16x16_en_US.png" />
     <Content Include="Imgs\Logo75x75.png" />
     <Content Include="Imgs\Logo75x75_en_US.png" />
     <Content Include="Imgs\MainHeader.jpg" />
@@ -191,15 +195,15 @@
     <Content Include="News.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="ServerStats\ServerStatsMain.aspx" />
-    <Content Include="ServerStats\ServerStatsGlobalMatches.aspx" />
-    <Content Include="ServerStats\ServerStatsMatchesControl.ascx" />
-    <Content Include="ServerStats\ServerStatsProfile.aspx" />
-    <Content Include="ServerStats\ServerStatsPurchases.aspx" />
-    <Content Include="ServerStats\ServerStatsRanking.aspx" />
+    <Content Include="ServerStats.aspx" />
+    <Content Include="ServerStatsGlobalMatches.aspx" />
+    <Content Include="ServerStatsMatchesControl.ascx" />
+    <Content Include="ServerStatsProfile.aspx" />
+    <Content Include="ServerStatsPurchases.aspx" />
+    <Content Include="ServerStatsRanking.aspx" />
     <Content Include="SoccerClient\SoccerClient.swf" />
     <Content Include="TestCreateSession.aspx" />
-    <Content Include="ServerStats\ServerStatsTrueSkill.aspx" />
+    <Content Include="ServerStatsTrueSkill.aspx" />
     <Content Include="WEB-INF\flex\data-management-config.xml" />
     <Content Include="WEB-INF\flex\dynamic-remoting-config.xml" />
     <Content Include="WEB-INF\flex\messaging-config.xml" />
@@ -228,7 +232,7 @@
     <Compile Include="Cancelled.aspx.designer.cs">
       <DependentUpon>Cancelled.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ServerStats\FBUtils.cs" />
+    <Compile Include="FBUtils.cs" />
     <Compile Include="Deauthorize.aspx.cs">
       <DependentUpon>Deauthorize.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -249,6 +253,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="JSON.cs" />
     <Compile Include="Payment.ashx.cs">
       <DependentUpon>Payment.ashx</DependentUpon>
     </Compile>
@@ -256,49 +261,48 @@
       <DependentUpon>Ping.ashx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServerStats\ServerStatsMain.aspx.cs">
-      <DependentUpon>ServerStatsMain.aspx</DependentUpon>
+    <Compile Include="ServerStats.aspx.cs">
+      <DependentUpon>ServerStats.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ServerStats\ServerStatsMain.aspx.designer.cs">
-      <DependentUpon>ServerStatsMain.aspx</DependentUpon>
+    <Compile Include="ServerStats.aspx.designer.cs">
+      <DependentUpon>ServerStats.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ServerStats\ServerStatsGlobalMatches.aspx.cs">
+    <Compile Include="ServerStatsGlobalMatches.aspx.cs">
       <DependentUpon>ServerStatsGlobalMatches.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ServerStats\ServerStatsGlobalMatches.aspx.designer.cs">
+    <Compile Include="ServerStatsGlobalMatches.aspx.designer.cs">
       <DependentUpon>ServerStatsGlobalMatches.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ServerStats\ServerStatsMatchesControl.ascx.cs">
+    <Compile Include="ServerStatsMatchesControl.ascx.cs">
       <DependentUpon>ServerStatsMatchesControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ServerStats\ServerStatsMatchesControl.ascx.designer.cs">
+    <Compile Include="ServerStatsMatchesControl.ascx.designer.cs">
       <DependentUpon>ServerStatsMatchesControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="ServerStats\ServerStatsProfile.aspx.cs">
+    <Compile Include="ServerStatsProfile.aspx.cs">
       <DependentUpon>ServerStatsProfile.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ServerStats\ServerStatsProfile.aspx.designer.cs">
+    <Compile Include="ServerStatsProfile.aspx.designer.cs">
       <DependentUpon>ServerStatsProfile.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ServerStats\ServerStatsPurchases.aspx.cs">
+    <Compile Include="ServerStatsPurchases.aspx.cs">
       <DependentUpon>ServerStatsPurchases.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ServerStats\ServerStatsPurchases.aspx.designer.cs">
+    <Compile Include="ServerStatsPurchases.aspx.designer.cs">
       <DependentUpon>ServerStatsPurchases.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ServerStats\ServerStatsRanking.aspx.cs">
+    <Compile Include="ServerStatsRanking.aspx.cs">
       <DependentUpon>ServerStatsRanking.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ServerStats\ServerStatsRanking.aspx.designer.cs">
+    <Compile Include="ServerStatsRanking.aspx.designer.cs">
       <DependentUpon>ServerStatsRanking.aspx</DependentUpon>
     </Compile>
-    <Compile Include="GlobalSoccerServer.cs" />
     <Compile Include="TestCreateSession.aspx.cs">
       <DependentUpon>TestCreateSession.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -306,13 +310,15 @@
     <Compile Include="TestCreateSession.aspx.designer.cs">
       <DependentUpon>TestCreateSession.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ServerStats\ServerStatsTrueSkill.aspx.cs">
+    <Compile Include="ServerStatsTrueSkill.aspx.cs">
       <DependentUpon>ServerStatsTrueSkill.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ServerStats\ServerStatsTrueSkill.aspx.designer.cs">
+    <Compile Include="ServerStatsTrueSkill.aspx.designer.cs">
       <DependentUpon>ServerStatsTrueSkill.aspx</DependentUpon>
     </Compile>
+    <Compile Include="TuentiData.cs" />
+    <Compile Include="TUENTIUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="NLog.config">

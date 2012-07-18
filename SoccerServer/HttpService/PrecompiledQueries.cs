@@ -83,7 +83,7 @@ namespace HttpService
                 LoadOptions.LoadWith<Team>(t => t.SoccerPlayers);
                 LoadOptions.LoadWith<Team>(t => t.PendingTraining);
                 LoadOptions.LoadWith<Team>(t => t.SpecialTrainings);
-                LoadOptions.LoadWith<Team>(t => t.TeamPurchase);
+                LoadOptions.LoadWith<Team>(t => t.Ticket);
                 LoadOptions.LoadWith<SpecialTraining>(t => t.SpecialTrainingDefinition);
                 LoadOptions.LoadWith<PendingTraining>(t => t.TrainingDefinition);
 

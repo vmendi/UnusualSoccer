@@ -65,8 +65,8 @@
   </Target>
   -->
   <ItemGroup>
-    <Reference Include="CmdLine">
-      <HintPath>packages\CmdLine.1.0.5.120\lib\net40-Client\CmdLine.dll</HintPath>
+    <Reference Include="AWSSDK, Version=1.4.3.0, Culture=neutral, PublicKeyToken=cd2d24cd2bace800, processorArchitecture=MSIL">
+      <HintPath>packages\AWSSDK.1.4.3.0\lib\AWSSDK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -109,13 +109,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AmazonCmdlet\AmazonCmdlet.csproj">
-      <Project>{F6C3F2F6-28EA-4209-AB99-18096357F0B7}</Project>
-      <Name>AmazonCmdlet</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>

@@ -32,10 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Facebook">
-      <HintPath>..\SoccerServer\bin\Facebook.dll</HintPath>
+      <HintPath>..\packages\Facebook.5.4.1.0\lib\net40-client\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="Facebook.Web">
-      <HintPath>..\SoccerServer\bin\Facebook.Web.dll</HintPath>
+      <HintPath>..\packages\FacebookWeb.5.4.1.0\lib\net40\Facebook.Web.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -54,9 +54,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TuentiConfig.cs" />
     <Compile Include="GlobalConfig.cs" />
     <Compile Include="ProfileUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="ServerConfig.cs" />
     <Compile Include="SoccerDataModel.designer.cs">
       <DependentUpon>SoccerDataModel.dbml</DependentUpon>
@@ -78,7 +84,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="SoccerDataModel.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>SoccerDataModel.designer.cs</LastGenOutput>

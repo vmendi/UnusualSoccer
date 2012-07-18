@@ -9,19 +9,41 @@ using Facebook.Web;
 using HttpService;
 using ServerCommon.BDDModel;
 using ServerCommon;
-using System.Collections.Specialized;
+using System.Net;
+using System.Collections;
 
 namespace SoccerServer
 {
     public partial class Default : Page
     {
-        readonly public NameValueCollection SWF_SETTINGS = System.Configuration.ConfigurationManager.GetSection("swfSettings") as NameValueCollection;
-
+        // aqui guardamos la info que nos pasa tuenti por JSON
+        TuentiData mTuenti;
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Cargamos nuestros settings procedurales que nos deja ahí Global.asax
-            FacebookApplication.SetApplication(GlobalConfig.FacebookSettings as IFacebookApplication);
 
+            if (Request.QueryString.AllKeys.Contains("tuentiData"))
+            {                
+                //var jsonparse = Request.QueryString["tuentiData"];
+               Hashtable tuentiData = JSON.JsonDecode(HttpContext.Current.Request.QueryString["tuentiData"]) as Hashtable;
+                mTuenti = new TuentiData(tuentiData);
+            }
+            else
+            { 
+                
+            }
+
+           // Preguntamos a Tuenti por el numero de usuario q está iniciando la app
+           // var access_token = TUENTIUtils.GetApplicationAccessToken();
+           // var response = TUENTIUtils.GetHttpResponse(String.Format("https://graph.facebook.com/{0}?fields=restrictions&{1}",
+           //                                                       GlobalConfig.FacebookSettings.AppId, access_token), null);
+
+           // Console.WriteLine("------------------------Restrictions------------------------<br/>" + response + 
+           //                      "<br/>------------------------------------------------------------<br/>");
+
+
+            // Cargamos nuestros settings procedurales que nos deja ahí Global.asax
+           ////////// FacebookApplication.SetApplication(GlobalConfig.FacebookSettings as IFacebookApplication);
+            /*
             // Asumimos que si no tenemos signed_request es porque nos están intendo cargar desde fuera del canvas: redireccionamos al canvas.
             // Hemos comprobado que nos llaman sin signed_request cuando por ejemplo pasan los crawlers.
             // También hemos comprobado que el SignedRequest tb se puede obtener a partir de la cookie. En ese caso, despues de haber cargado los settings
@@ -31,7 +53,7 @@ namespace SoccerServer
             {
                 Response.Redirect(GlobalConfig.FacebookSettings.CanvasPage, true);
             }
-            
+            */
             // Para las versiones no-default (Mahou) el IIS deberia estar configurado para responder con la pagina adecuada.
             // Sin embargo, para que no haya que reconfigurar el IIS para hacer una prueba, comprobamos aqui si somos una 
             // version no-default y hacemos un transfer.
@@ -40,7 +62,7 @@ namespace SoccerServer
             {
                 Server.Transfer("~/DefaultMahou.aspx");
             }
-
+            
             // Incluso sin estar autorizados, siempre tenemos un signed_request en el que esta contenido el country (geolocalizado) y el locale
             // TODO: Usarlo para redireccionar si es Mahou y no es España            
             /*
@@ -48,21 +70,8 @@ namespace SoccerServer
              *      var fbSignedRequest = FacebookSignedRequest.Parse(Global.Instance.FacebookSettings as IFacebookApplication, 
              *                                                        HttpContext.Current.Request["signed_request"]);
              */
-            var country = GetCountryFromSignedRequest(FacebookWebContext.Current.SignedRequest);
-
-            if (Request.QueryString.AllKeys.Contains("FakeSessionKey"))
-            {
-                ShowFakeSessionKeyContent();
-            }
-            else
-            {
-                var auth = new CanvasAuthorizer(); // { Permissions = new[] { "publish_actions" } };
-                                                
-                // Si no estamos logeados o autorizados, nos redireccionara automaticamente a la pagina de login/autorizacion
-                // En el web.config hay un handler de facebookredirect.axd, a traves de el se hacen las redirecciones
-                if (auth.Authorize())
-                    ShowFacebookContent();
-            }
+            var country = mTuenti.language;//GetCountryFromSignedRequest(FacebookWebContext.Current.SignedRequest);
+            ShowTuentiContent();
         }
 
         private void ShowFakeSessionKeyContent()
@@ -79,6 +88,23 @@ namespace SoccerServer
             InjectContentPanel(true);
         }
 
+
+        private void ShowTuentiContent()
+        {
+            using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
+            {
+                var fb = new FacebookWebClient();
+
+                // Usamos un delegate para que solo se haga la llamada sincrona en caso necesario
+                Player player = EnsureTuentiPlayerIsCreated(theContext, mTuenti);
+                EnsureTuentiSessionIsCreated(theContext, player, mTuenti.sessionToken);
+                theContext.SubmitChanges();
+
+                // Ahora podemos hacer visible todo el contenido flash
+                InjectContentPanel(!player.Liked);
+            }
+        }
+        /*
         private void ShowFacebookContent()
 		{
 			using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
@@ -94,66 +120,85 @@ namespace SoccerServer
                 InjectContentPanel(!player.Liked);
 			}
 		}
-
+        */
         private void InjectContentPanel(Boolean showLikePanel)
         {
             MyDefaultPanel.Visible = true;
-            MyLikePanel.Visible = showLikePanel;
+            //MyLikePanel.Visible = showLikePanel;
         }
 
-        public string GetFlashVars()
+        protected override void Render(HtmlTextWriter writer)
+        {
+            StringBuilder pageSource = new StringBuilder();
+            StringWriter sw = new StringWriter(pageSource);
+            HtmlTextWriter htmlWriter = new HtmlTextWriter(sw);
+            base.Render(htmlWriter);
+
+            RunGlobalReplacements(pageSource);
+
+            // Reemplazos del panel donde va el swf (cuando ya estamos autorizados, etc)
+            if (MyDefaultPanel.Visible)
+                RunDefaultPanelReplacements(pageSource);
+            
+            writer.Write(pageSource.ToString());
+        }
+
+        protected void RunGlobalReplacements(StringBuilder pageSource)
+        {
+            var serverSettings = GlobalConfig.ServerSettings;
+            var theFBApp = GlobalConfig.FacebookSettings;
+            var tuentiApp = GlobalConfig.TuentiSettings;
+            // Aqui soliamos hacer reemplazos, pero gracias a la limpieza de los meta og ya no hace falta.
+
+            // El {locale} no podemos reemplazarlo a pesar de estar fuera del panel, puesto que aqui operamos
+            // como si no tuvieramos signed_request (por ejemplo, para cuando pase el linter)
+        }
+
+        protected void RunDefaultPanelReplacements(StringBuilder pageSource)
         {
             var theFBApp = GlobalConfig.FacebookSettings;
             var serverSettings = GlobalConfig.ServerSettings;
+            var tuentiSettings = GlobalConfig.TuentiSettings;
+            pageSource.Replace("${tuentiAPI}", mTuenti.apiLink);
+            pageSource.Replace("${version_major}", "10");       // Flex SDK 4.1 => Flash Player 10.0.0
+            pageSource.Replace("${version_minor}", "0");
+            pageSource.Replace("${version_revision}", "0");
+            pageSource.Replace("${swf}", "SoccerClient/SoccerClient");
+            pageSource.Replace("${application}", "SoccerClient");
+            pageSource.Replace("${appName}", "Mahou Liga Chapas");
+            pageSource.Replace("${width}", "760");
+            pageSource.Replace("${height}", "650");
 
             // Parametros de entrada al SWF. Todo lo que nos viene en la QueryString mas algunos del ServerSettings
-            string flashVars = " { ";
+            string flashVars = " { "; 
             foreach (string key in Request.QueryString.AllKeys)
                 flashVars += key + ": '" + Request.QueryString[key] + "' ,";
 
-            flashVars += "VersionID: '" + serverSettings.VersionID + "' ,";
-            flashVars += "RemoteServer: '" + serverSettings.RemoteServer + "' ,";
-            flashVars += "RealtimeServer: '" + serverSettings.RealtimeServer + "' ,";
+            flashVars += "VersionID: '"         + serverSettings.VersionID + "' ,";
+            flashVars += "RemoteServer: '"      + serverSettings.RemoteServer + "' ,";
+            flashVars += "RealtimeServer: '"    + serverSettings.RealtimeServer + "' ,";
 
-            flashVars += "AppId: '" + theFBApp.AppId + "' ,";
-            flashVars += "CanvasPage: '" + theFBApp.CanvasPage + "' ,";
-            flashVars += "CanvasUrl: '" + theFBApp.CanvasUrl + "' ,";
+            flashVars += "CanvasPage: '"        + tuentiSettings.CanvasPage + "#m=" + tuentiSettings.M + "&func=" + tuentiSettings.Func + "&page_key=" + tuentiSettings.Page_Key + "' ,";//tuenti.getCanvasURL() + "' ,";
+            flashVars += "CanvasURL: '"         + tuentiSettings.CanvasUrl + "' ,"; ;
 
-            flashVars += "SessionKey: '" + FacebookWebContext.Current.AccessToken + "' ,";
-            flashVars += "Locale: '" + GetLocale() + "'";
-
+            flashVars += "TUENTI_locale: '"     + mTuenti.language + "' ,";
+            flashVars += "TUENTI_v_source: '"   + mTuenti.v_source + "' ,";
+            flashVars += "TUENTI_gamerId: '"    + mTuenti.gamerId + "' ,";
+            flashVars += "TUENTI_apiLink: '"    + mTuenti.apiLink + "' ,";
+            flashVars += "TUENTI_signature: '"  + mTuenti.signature + "' ,";
+            flashVars += "TUENTI_name: '"       + mTuenti.name + "' ,";
+            flashVars += "TUENTI_SessionKey: '" + mTuenti.sessionToken + "' ,";
+            flashVars += "TUENTI_timeStamp: '"  + mTuenti.timeStamp + "' ,";
+            flashVars += "TUENTI_UserID: '"     + mTuenti.userId + "' ,";
+            flashVars += "TUENTI_AppId: '"      + mTuenti.page_key + "' ,";    
             flashVars += " } ";
 
-            return flashVars;
-        }
-
-        public string GetRsc(string rscStandardPath)
-        {
-            return GlobalConfig.ServerSettings.CDN + rscStandardPath.Replace("${locale}", GetLocale());
+            pageSource.Replace("${flashVars}", flashVars);
         }
 
         private string GetCountryFromSignedRequest(FacebookSignedRequest fbSignedRequest)
         {
             return ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["country"] as string;
-        }
-        
-        private string GetLocale()
-        {
-            if (mLocale == null)
-                mLocale = GetLocaleFromSignedRequest(FacebookWebContext.Current.SignedRequest);
-            
-            return mLocale;
-        }
-        private string mLocale = null;
-
-        public string GetFBSDK()
-        {
-            return "//connect.facebook.net/" + GetLocale() + "/all.js";
-        }
-
-        public string GetAppID()
-        {
-            return GlobalConfig.FacebookSettings.AppId;
         }
 
         //
@@ -242,5 +287,49 @@ namespace SoccerServer
 
 			return player;
 		}
+
+
+
+        static public Session EnsureTuentiSessionIsCreated(SoccerDataModelDataContext theContext, Player thePlayer, string sessionKey)
+        {
+            var session = (from dbSession in theContext.Sessions
+                           where dbSession.FacebookSession == sessionKey
+                           select dbSession).FirstOrDefault();
+
+            if (session == null)
+            {
+                session = new Session();
+                session.Player = thePlayer;
+                session.FacebookSession = sessionKey;
+                session.CreationDate = DateTime.Now;    // En horario del servidor
+
+                theContext.Sessions.InsertOnSubmit(session);
+            }
+
+            return session;
+        }
+
+        static public Player EnsureTuentiPlayerIsCreated(SoccerDataModelDataContext theContext, TuentiData tuenti)
+        {
+            var player = (from dbPlayer in theContext.Players
+                          where dbPlayer.FacebookID == tuenti.userId
+                          select dbPlayer).FirstOrDefault();
+
+            if (player == null)
+            {
+                // Tenemos un nuevo jugador (unico punto donde se crea)
+                player = new Player();
+
+                player.FacebookID = tuenti.userId;
+                player.CreationDate = DateTime.Now;		// En horario del servidor...
+                player.Liked = false;
+                player.Name = tuenti.name;
+                player.Surname = "-";
+
+                theContext.Players.InsertOnSubmit(player);
+            }
+
+            return player;
+        }
     }
 }

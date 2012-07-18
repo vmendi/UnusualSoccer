@@ -37,6 +37,8 @@ namespace Realtime
 
         public override void OnServerAboutToShutdown()
         {
+            mLookingForMatch = null;
+
             IList<NetPlug> plugs = mNetServer.GetNetPlugs();
 
             foreach (NetPlug plug in plugs)
@@ -254,11 +256,11 @@ namespace Realtime
             if (!GlobalConfig.ServerSettings.TicketingSystem)
                 return true;
 
-            var teamPurchase = (from p in theContext.Players
-                                where p.PlayerID == dbPlayerID
-                                select p.Team.TeamPurchase).First();
+            var ticket = (from p in theContext.Players
+                          where p.PlayerID == dbPlayerID
+                          select p.Team.Ticket).First();
 
-            return teamPurchase.TicketExpiryDate > DateTime.Now || teamPurchase.RemainingMatches > 0;
+            return ticket.TicketExpiryDate > DateTime.Now || ticket.RemainingMatches > 0;
         }
 
         private void ProcessMatchMaking()

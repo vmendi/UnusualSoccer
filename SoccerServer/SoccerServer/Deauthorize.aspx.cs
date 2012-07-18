@@ -26,7 +26,7 @@ namespace SoccerServer
             }
             catch (Exception exc)
             {                
-                Log.ErrorException("Exception while deauthorizing", exc);
+                Log.Error("Exception while deauthorizing", exc);
             }
 		}
 

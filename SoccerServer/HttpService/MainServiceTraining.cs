@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using ServerCommon.BDDModel;
 using Weborb.Service;
-using ServerCommon;
 
 namespace HttpService
 {
@@ -165,36 +164,6 @@ namespace HttpService
 
                 mContext.SubmitChanges();
             }
-        }
-
-        public bool HealInjury(int soccerPlayerID)
-        {
-            using (CreateDataForRequest())
-            {
-                Team playerTeam = mPlayer.Team;
-
-                if (playerTeam.SkillPoints < GlobalConfig.HEAL_INJURY_COST)
-                {
-                    Log.Error("Not enough SkillPoints. Hack attempt? Too many consecutive requests?");
-                    return false;
-                }
-
-                SoccerPlayer soccerPlayer = (from sp in playerTeam.SoccerPlayers
-                                             where sp.SoccerPlayerID == soccerPlayerID
-                                             select sp).FirstOrDefault();
-                if (soccerPlayer == null)
-                {
-                    Log.Error("Invalid SoccerPlayer {0} in HealInjury", soccerPlayerID);
-                    return false;
-                }
-                
-                soccerPlayer.IsInjured = false;
-                playerTeam.SkillPoints -= GlobalConfig.HEAL_INJURY_COST;
-
-                mContext.SubmitChanges();
-            }
-
-            return true;
         }
 	}
 }

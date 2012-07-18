@@ -74,12 +74,12 @@ namespace Realtime
 
         static private void DiscountTicketsInner(SoccerDataModelDataContext theContext, Player thePlayer)
         {
-            if (thePlayer.Team.TeamPurchase.TicketExpiryDate < DateTime.Now)
+            if (thePlayer.Team.Ticket.TicketExpiryDate < DateTime.Now)
             {
-                if (thePlayer.Team.TeamPurchase.RemainingMatches == 0)
+                if (thePlayer.Team.Ticket.RemainingMatches == 0)
                     throw new Exception("WTF");
 
-                thePlayer.Team.TeamPurchase.RemainingMatches--;
+                thePlayer.Team.Ticket.RemainingMatches--;
             }
             theContext.SubmitChanges();
         }
