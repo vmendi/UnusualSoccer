@@ -12,9 +12,6 @@
 	
 	<fx:Script><![CDATA[
 		import com.greensock.TweenNano;
-		
-		import mx.core.FlexGlobals;
-		import mx.utils.URLUtil;
 				
 		protected function AddedToStageHandler(event:Event):void
 		{
@@ -23,8 +20,8 @@
 		}
 		
 		private function Start() : void
-		{			
-			mLoader = new URLLoader(new URLRequest(AppConfig.LOADED_FROM_URL + "/News.xml"));
+		{
+			mLoader = new URLLoader(new URLRequest("/News.xml"));
 			mLoader.addEventListener(Event.COMPLETE, OnXMLLoaded);
 			mLoader.addEventListener(IOErrorEvent.IO_ERROR, OnXMLError);
 			mLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, OnXMLError);

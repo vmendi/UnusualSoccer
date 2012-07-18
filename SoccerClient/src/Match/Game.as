@@ -903,14 +903,6 @@ package Match
 			// Y pintamos el halo alrededor de las chapas!
 			CurTeam.ShowMyTurnVisualCue(reason);
 			
-			// Immoveable goalkeeper
-			CurTeam.GoalKeeper.SetImmovable(false);
-			
-			if (TheField.IsCapCenterInsideSmallArea(CurTeam.AgainstTeam().GoalKeeper) && reason != Enums.TurnGoalKeeperSet)
-				CurTeam.AgainstTeam().GoalKeeper.SetImmovable(true);
-			else
-				CurTeam.AgainstTeam().GoalKeeper.SetImmovable(false);
-			
 			// Damos una oportunidad al codigo que ha querido cambiar el turno de hacer mas cosas una vez que ya se lo hemos dado
 			if (callback != null)
 				callback();

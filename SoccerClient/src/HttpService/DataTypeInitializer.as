@@ -17,7 +17,7 @@ package HttpService
 	import HttpService.TransferModel.vo.RankingTeam;
 	import HttpService.TransferModel.vo.SpecialTrainingDefinition;
 	import HttpService.TransferModel.vo.Team;
-	import HttpService.TransferModel.vo.TeamPurchase;
+	import HttpService.TransferModel.vo.Ticket;
 	import HttpService.TransferModel.vo.PendingTraining;
 	import HttpService.TransferModel.vo.TrainingDefinition;
 	import HttpService.TransferModel.vo.SoccerPlayer;
@@ -35,7 +35,7 @@ package HttpService
 			new HttpService.TransferModel.vo.RankingTeam();	
 			new HttpService.TransferModel.vo.SpecialTrainingDefinition();	
 			new HttpService.TransferModel.vo.Team();	
-			new HttpService.TransferModel.vo.TeamPurchase();	
+			new HttpService.TransferModel.vo.Ticket();	
 			new HttpService.TransferModel.vo.PendingTraining();	
 			new HttpService.TransferModel.vo.TrainingDefinition();	
 			new HttpService.TransferModel.vo.SoccerPlayer();	

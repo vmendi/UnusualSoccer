@@ -51,7 +51,7 @@
 		
 		private function RefreshState() : void
 		{
-			if (mMainGameModel.TheTeamPurchaseModel.HasCredit)
+			if (mMainGameModel.TheTicketModel.HasCredit)
 			{
 				if (mRealtimeModel.IsConnected)
 				{
@@ -81,10 +81,10 @@
 			mMainGameModel.TheInactivityModel.LogNewActivity();
 		}
 		
-		protected function MyBuyTicketsButton_clickHandler(event:MouseEvent):void
+		/*protected function MyBuyTicketsButton_clickHandler(event:MouseEvent):void
 		{
 			PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseTicket") as Class);
-		}
+		}*/
 
 		
 		[Bindable] private var mMainGameModel : MainGameModel;
@@ -132,11 +132,11 @@
 			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='WarningIcon')" fillMode="clip" />
 			<s:Label width="170" text="{resourceManager.getString('main','TicketNoAvailableTime')}" styleName="whiteBoldMedium" textAlign="center" />
 		</s:Group>
-		<s:Button id="MyBuyTicketsButton"
+		<!--<s:Button id="MyBuyTicketsButton"
 				  label="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
 				  skinClass="GameView.Skins.ButtonDarkGreySkin"
 				  click="MyBuyTicketsButton_clickHandler(event)"
-				  width="110" height="18" x="40" y="41"/>
+				  width="110" height="18" x="40" y="41"/>-->
 	</s:Group>
 	
 </s:Group>

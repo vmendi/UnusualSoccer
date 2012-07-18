@@ -54,7 +54,7 @@ package GameModel
 			mIsConnected = false;
 			
 			// Basamos nuestra conexion/desconexion en la disponibilidad de credito...
-			BindingUtils.bindSetter(OnConnectionConditionsChanged, mMainModel, ["TheTeamPurchaseModel", "HasCredit"]);
+			BindingUtils.bindSetter(OnConnectionConditionsChanged, mMainModel, ["TheTicketModel", "HasCredit"]);
 			
 			// ...y tambien en funcion de la inactividad
 			BindingUtils.bindSetter(OnConnectionConditionsChanged, mMainModel, ["TheInactivityModel", "IsActive"]);
@@ -74,10 +74,10 @@ package GameModel
 		
 		private function OnConnectionConditionsChanged(v:Boolean) : void
 		{
-			if (mMainModel.TheTeamPurchaseModel == null || mMainModel.TheInactivityModel == null)
+			if (mMainModel.TheTicketModel == null || mMainModel.TheInactivityModel == null)
 				return;
 			
-			if (!mMainModel.TheTeamPurchaseModel.HasCredit || !mMainModel.TheInactivityModel.IsActive)
+			if (!mMainModel.TheTicketModel.HasCredit || !mMainModel.TheInactivityModel.IsActive)
 				Disconnect();
 			else
 			if (!IsConnected)
@@ -297,7 +297,7 @@ package GameModel
 			// Esto ocurre cuando se produce un Shutdown debido a un OnCleaningShutdown.
 			if (e.Data != null)
 			{
-				// Refresco de por ejemplo del TeamPurchase
+				// Refresco de por ejemplo el Ticket
 				mMainModel.TheTeamModel.RefreshTeam(null);
 				
 				// De vuelta a nuestra habitación, el servidor nos deja en el limbo, como si acabáramos de conectar

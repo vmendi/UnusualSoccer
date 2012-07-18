@@ -4,7 +4,7 @@ package GameModel
 	import HttpService.TransferModel.vo.SpecialTraining;
 	import HttpService.TransferModel.vo.SpecialTrainingDefinition;
 	
-	import com.facebook.graph.Facebook;
+	//import com.facebook.graph.Facebook;
 	
 	import flash.events.EventDispatcher;
 	
@@ -34,7 +34,9 @@ package GameModel
 			BindingUtils.bindSetter(OnSpecialTrainingsChanged, mMainModel, ["TheTeamModel", "TheTeam", "SpecialTrainings"]);
 						
 			// Subscripcion al evento de cualquier Like. Si, se llama edge.create. El boton concreto vendra en el href
-			Facebook.addJSEventListener('edge.create', OnLikeButtonPressed);
+			
+			//TODO Pensar como capturar un megusta en tuenti.... ¿Esto existe?
+			//Facebook.addJSEventListener('edge.create', OnLikeButtonPressed);
 		}
 		
 		public function InitialRefresh(callback : Function) : void
@@ -59,7 +61,7 @@ package GameModel
 			}
 			return null;
 		}
-				
+		
 		//
 		// Tenemos que mantener nuestra copia sincronizada Y CON TODOS los SpecialTrainings aunque no esten entrenados (el servidor
 		// solo nos manda los que alguna vez han sido entrenados)
@@ -69,8 +71,6 @@ package GameModel
 		{
 			if (mTeamModel.TheTeam == null)
 				return;
-			
-			VerifyLikeAnotated();
 												
 			if (mTeamModel.TheTeam.SpecialTrainings == null)
 				mTeamModel.TheTeam.SpecialTrainings = new ArrayCollection();
@@ -121,23 +121,6 @@ package GameModel
 			if (mMainModel.TheTeamModel.TheTeam != null)
 			{
 				mMainService.OnLiked(new mx.rpc.Responder(OnLikedResponse, ErrorMessages.Fault));
-			}
-			else
-			{
-				mLikeAnotated = true;
-			}
-		}
-		
-		// Verifica cada vez que nos vienen los specialtrainings (cada vez que viene el Team) si se clicko el Like cuando todavia no teníamos equipo 
-		private function VerifyLikeAnotated() : void
-		{
-			if (mTeamModel.TheTeam == null)
-				throw new Error("WTF 592");
-			
-			if (mLikeAnotated)
-			{
-				mMainService.OnLiked(new mx.rpc.Responder(OnLikedResponse, ErrorMessages.Fault));
-				mLikeAnotated = false;
 			}
 		}
 		
@@ -215,7 +198,5 @@ package GameModel
 		private var mMainModel : MainGameModel;
 		private var mTeamModel : TeamModel;
 		private var mMainService : MainService;
-		
-		private var mLikeAnotated : Boolean = false;
 	}
 }

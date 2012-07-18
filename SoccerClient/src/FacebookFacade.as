@@ -1,14 +1,13 @@
 package
 {
 	import GameModel.RealtimeModel;
-	
+	/*
 	import com.facebook.graph.Facebook;
 	import com.facebook.graph.data.FacebookAuthResponse;
 	import com.facebook.graph.data.FacebookSession;
-	
+	*/
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.external.ExternalInterface;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
@@ -51,13 +50,14 @@ package
 					RealtimeModel.SetDefaultURI(AppConfig.REALTIME_SERVER + ":2020");
 								
 				// Cogemos la SessionKey del parametro que nos pasa el servidor por flashVars
-				SetWeborbURL();
+				SetWeborbSessionKey();
 				
 				// Esto generara una llamada a FB para conseguir un nuevo access_token, distinto al primero 
 				// que se le pasa por POST al servidor (dentro del signed_request)
-				Facebook.init(AppConfig.APP_ID, Delegate.create(OnFacebookInit, callback), 
+				/*Facebook.init(AppConfig.APP_ID, Delegate.create(OnFacebookInit, callback), 
 							  { status:true, xfbml: true, oauth: true, cookie:true,	frictionlessRequests:true,
 								channelUrl: AppConfig.CANVAS_URL + "/channel.html" });
+				*/
 			}
 		}
 		
@@ -65,18 +65,15 @@ package
 		{
 			if (result != null)
 			{
-				mFBAuthResponse = result as FacebookAuthResponse;
+				//mFBAuthResponse = result as FacebookAuthResponse;
 			
 				// Querido yo del futuro: quiero que sepas que esta funcion la van a renombrar, asi que tendras que bajar un nuevo SDK y
 				// cambiar la llamada
-				Facebook.setCanvasAutoResize(true);
-				
-				// It's at this moment, after the SDK init, when we insert and display the banner ads
-				ExternalInterface.call("createBannerAds");
+				//Facebook.setCanvasAutoResize(true);
 				
 				// Aseguramos que tenemos los permisos frescos
 				// Antes obteniamos aqui el /me, ahora no hace falta puesto que el locale viene del server
-				RefreshPermisions(callback);
+				//RefreshPermisions(callback);
 			}
 			else
 			{
@@ -101,32 +98,29 @@ package
 		{
 			mFakeSessionKey = requestedFakeSessionKey;
 			
-			SetWeborbURL();
+			SetWeborbSessionKey();
 		
 			// Tenemos que asegurar que la SessionKey está insertada en la BDD en el server
 			EnsureSessionIsCreatedOnServer(mFakeSessionKey, callback);
 		}
 		
-		public function SetWeborbURL() : void
+		public function SetWeborbSessionKey() : void
 		{
 			// En caso de entrar por https, hay que asegurar que el channel es del tipo SecureAMFChannel
 			if (FlexGlobals.topLevelApplication.url.indexOf("https") != -1)
 				ServerConfig.xml[0].channels.channel.(@id=='my-amf').@type = "mx.messaging.channels.SecureAMFChannel";
-
-			// Antes haciamos caso a la string que nos venia en el .xml, ahora ya, despues del cdn, no.
-			var current : String = ""; // ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
+							
+			var current : String = ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
 			
 			// Cuando nos llaman una segunda vez debido a un Fault o a un ServerTest
 			if (current.indexOf("?") != -1)
 				current = current.substr(0, current.indexOf("?"));
-			else
-				current = AppConfig.CANVAS_URL + "/weborb.aspx";
 			
 			ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri = current + "?SessionKey=" + SessionKey;
 
 			var channelSet : ChannelSet = ServerConfig.getChannelSet("GenericDestination");
 			channelSet.disconnectAll();
-
+						
 			var theChannel : Channel = ServerConfig.getChannel("my-amf");
 			theChannel.uri = ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
 		}
@@ -173,16 +167,16 @@ package
 			if (mFakeSessionKey != null)
 				return mFakeSessionKey;
 			
-			if (mFBAuthResponse != null)
+			/*if (mFBAuthResponse != null)
 				return mFBAuthResponse.uid;
-			
+			*/
 			return null;
 		}
 		
 		private function RefreshPermisions(callback : Function) : void
 		{
 			// http://facebook.stackoverflow.com/questions/3388367/check-for-extended-permissions-with-new-facebook-javascript-sdk
-			Facebook.api("/me/permissions", onPermissions);
+			//Facebook.api("/me/permissions", onPermissions);
 			
 			function onPermissions(result:Object, fail:Object) : void
 			{
@@ -229,12 +223,12 @@ package
 			// Si no los teniamos ya, los pedimos en este momento (popup)
 			if (!checker())
 			{
-				Facebook.login(onAskResponse, { scope: permisionName } );
+				//Facebook.login(onAskResponse, { scope: permisionName } );
 				
 				function onAskResponse(result : Object, fail : Object) : void
 				{
 					// Como no sabemos cómo sacar del result as FacebookAuthResponse si ha sido "Allow" or "Don't Allow", refrescamos
-					RefreshPermisions(onRefresh);
+					//RefreshPermisions(onRefresh);
 					
 					function onRefresh() : void
 					{
@@ -249,7 +243,7 @@ package
 		}
 		
 		private var mFakeSessionKey : String;
-		private var mFBAuthResponse:FacebookAuthResponse;						
+		//private var mFBAuthResponse:FacebookAuthResponse;						
 		private var mSessionKeyURLLoader : URLLoader;
 		private var mMe : Object;							// El objeto /me tal y como nos lo devuelve FB
 		private var mPermissions : Object;

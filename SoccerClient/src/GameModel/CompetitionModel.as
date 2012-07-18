@@ -44,7 +44,9 @@ package GameModel
 			mRemainingSeconds = e.result as int;
 			
 			// Refrescamos ahora el grupo
-			mMainService.RefreshGroupForTeam(parseInt(SoccerClient.GetFacebookFacade().FacebookID), 
+			//mMainService.RefreshGroupForTeam(parseInt(SoccerClient.GetFacebookFacade().FacebookID),
+			//Santi
+			mMainService.RefreshGroupForTeam(parseInt(AppConfig.GAMER_ID),
 											 new Responder(Delegate.create(OnGroupForTeamRefreshed, callback), ErrorMessages.Fault));
 		}
 
@@ -69,7 +71,9 @@ package GameModel
 		{			
 			for each (var entry : CompetitionGroupEntry in mGroup.GroupEntries)
 			{
-				if (entry.FacebookID.toString() == SoccerClient.GetFacebookFacade().FacebookID)
+				//if (entry.FacebookID.toString() == SoccerClient.GetFacebookFacade().FacebookID)
+				//Santi
+				if (entry.FacebookID.toString() == AppConfig.GAMER_ID)
 					return entry;
 			}
 			return null;

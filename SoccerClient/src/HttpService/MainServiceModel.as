@@ -23,7 +23,6 @@
         public var CreateTeamResult:Boolean;     
         public var GetExtraRewardForMatchResult:Boolean;     
         public var HasTeamResult:Boolean;     
-        public var HealInjuryResult:Boolean;     
         public var IsNameValidResult:String;     
         public var OnLikedResult:int;     
         public var RefreshGroupForTeamResult:CompetitionGroup;     

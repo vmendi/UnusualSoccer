@@ -23,10 +23,10 @@
 			mTeamModel = mMainGameModel.TheTeamModel;
 		}
 		
-		protected function MyAddSkillPoints_clickHandler(event:MouseEvent):void
+		/*protected function MyAddSkillPoints_clickHandler(event:MouseEvent):void
 		{
 			PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseSkillPoints") as Class);
-		}
+		}*/
 		
 		[Bindable] private var mMainGameModel : MainGameModel;
 		[Bindable] private var mTeamModel : TeamModel;
@@ -66,7 +66,7 @@
 				</s:layout>
 				<mx:Image source="@Embed(source='/Assets/General.swf', symbol='IconUnusualPoints')" />
 				<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MySkillPointsLabel" styleName="whiteBoldHuge" textAlign="left" filters="{txtGlowFilter}"/>
-				<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="{resourceManager.getString('main','PurchaseUnusualPointsAdd')}" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+				<!--<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="{resourceManager.getString('main','PurchaseUnusualPointsAdd')}" skinClass="GameView.Skins.ButtonDarkGreySkin" />-->
 			</s:Group>
 		</s:Group>
 		<GameView:TicketsPanel right="0" y="6" />

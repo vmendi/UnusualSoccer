@@ -75,7 +75,7 @@ package
 		//
 		static public function Fault(info:Object):void
 		{
-			SoccerClient.GetFacebookFacade().SetWeborbURL();
+			SoccerClient.GetFacebookFacade().SetWeborbSessionKey();
 		}
 		
 		// Cuando quieres hacer una llamada al servicio y no escuchar a su Success, si falla hay que llamar a Fault anyway!
@@ -94,8 +94,6 @@ package
 		
 		static public function RealtimeConnectionFailed(reason:String) : void
 		{
-			GameMetrics.ReportEvent(GameMetrics.CANT_CONNECT_REALTIME, { 'Reason':reason } );
-			
 			OnCleaningShutdownSignal.dispatch();
 			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorRealtimeConnFailedMsg"),
 							 ResourceManager.getInstance().getString("main", "ErrorRealtimeConnFailedTit"), "center");
@@ -159,8 +157,11 @@ package
 		{
 			var facebookID : String = "Unknown FacebookID";
 			
-			if (SoccerClient.GetFacebookFacade() != null && SoccerClient.GetFacebookFacade().FacebookID != null)
-				facebookID = SoccerClient.GetFacebookFacade().FacebookID;
+			//if (SoccerClient.GetFacebookFacade() != null && SoccerClient.GetFacebookFacade().FacebookID != null)
+			//Santi
+			if (SoccerClient.GetFacebookFacade() != null && AppConfig.GAMER_ID != null)
+				//facebookID = SoccerClient.GetFacebookFacade().FacebookID;
+				facebookID = AppConfig.GAMER_ID;
 			
 			(new MainServiceSoccer()).OnError(facebookID + " - " + message);
 		}	

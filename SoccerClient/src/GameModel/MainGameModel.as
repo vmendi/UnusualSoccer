@@ -14,8 +14,6 @@ package GameModel
 		static public const POSSIBLE_MATCH_LENGTH_MINUTES : ArrayCollection = new ArrayCollection([ 10, 15, 5 ]);
 		static public const POSSIBLE_TURN_LENGTH_SECONDS : ArrayCollection = new ArrayCollection([ 10, 15, 5 ]);
 		
-		static public const HEAL_INJURY_COST : int = 100;
-		
 		public function MainGameModel()
 		{
 			mMainService = new MainServiceSoccer();
@@ -28,7 +26,7 @@ package GameModel
 			mFormationModel = new FormationModel(mMainService, this);
 			mSpecialTrainingModel = new SpecialTrainingModel(mMainService, this);
 			mPredefinedTeamsModel = new PredefinedTeamsModel(mMainService, this);
-			mTeamPurchaseModel = new TeamPurchaseModel(mMainService, this);
+			mTicketModel = new TicketModel(mMainService, this);
 			mCompetitionModel = new CompetitionModel(mMainService, this);
 			mFriendsModel = new FriendsModel(mMainService, this);
 			mInactivityModel = new InactivityModel(mMainService, this);
@@ -46,7 +44,7 @@ package GameModel
 		{
 			try {
 				mTeamModel.OnTimerSeconds();
-				mTeamPurchaseModel.OnTimerSeconds();
+				mTicketModel.OnTimerSeconds();
 				mCompetitionModel.OnTimerSeconds();
 				mTrainingModel.OnTimerSeconds();
 			}
@@ -110,7 +108,7 @@ package GameModel
 		public function get ThePredefinedTeamsModel() : PredefinedTeamsModel { return mPredefinedTeamsModel; }
 		
 		[Bindable(event="dummy")]
-		public function get TheTeamPurchaseModel() : TeamPurchaseModel { return mTeamPurchaseModel; }
+		public function get TheTicketModel() : TicketModel { return mTicketModel; }
 		
 		[Bindable(event="dummy")]
 		public function get TheCompetitionModel() : CompetitionModel { return mCompetitionModel; }
@@ -132,7 +130,7 @@ package GameModel
 		private var mRankingModel : RankingModel;
 		private var mPredefinedTeamsModel : PredefinedTeamsModel;
 		private var mRealtimeModel : RealtimeModel;
-		private var mTeamPurchaseModel : TeamPurchaseModel;
+		private var mTicketModel : TicketModel;
 		private var mCompetitionModel : CompetitionModel;
 		private var mFriendsModel : FriendsModel;
 		private var mInactivityModel : InactivityModel;

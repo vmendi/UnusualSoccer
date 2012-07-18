@@ -1,45 +1,108 @@
 package
 {
 	import mx.collections.ArrayCollection;
-	import mx.core.FlexGlobals;
-	import mx.utils.URLUtil;
 
 	public final class AppConfig
 	{
 		static public var VERSION_ID : String = null; 				// "UnusualSoccer", "MahouLigaChapas"... 
-		static public var LOCALE : String = null; 					// "en_US", "es_ES"...
-		static public var CANVAS_PAGE : String = null; 				// "http://apps.facebook.com/unusualsoccerdev";
-		static public var CANVAS_URL : String = null; 				// "http://mahouligachapas.unusualwonder.com";
-		static public var APP_ID : String = null;
 		static public var REMOTE : String = null;					// true/false (solo para debug!)
 		static public var REMOTE_SERVER : String = null;			// "mahouligachapas.unusualwonder.com"; (CANVAS_URL puede ser localhost)
 		static public var REALTIME_SERVER : String = null;			// Servidor realtime para tenerlo separado en la nube
-		static public var SESSION_KEY : String = null;				
-		static public var FAKE_SESSION_KEY : String = null;
-		static public var TEST : String = null;
 		
+		static public var CANVAS_PAGE : String = null; 				// "http://apps.facebook.com/unusualsoccerdev";
+		static public var CANVAS_URL : String = null; 				// "http://mahouligachapas.unusualwonder.com";
+		
+		
+		static public var LOCALE   			: String = null;		// "en_US", "es_ES"...
+		static public var V_SOURCE 			: String = null;		// Desde donde ha accedido el usuario a la aplicación
+		static public var GAMER_ID 			: String = null;
+		static public var API_LINK 			: String = null;		// ruta del api de Tuenti
+		static public var SIGNATURE			: String = null;
+		static public var USER_NAME			: String = null;
+		static public var SESSION_KEY		: String = null;
+		static public var TIME_STAMP		: String = null;
+		static public var USER_ID			: String = null;		
+		static public var APP_ID   			: String = null;
+						
+		static public var FAKE_SESSION_KEY 	: String = null;
+		static public var TEST 				: String = null;
+
 		static public var REQUEST_IDS : ArrayCollection = null;
 		
 		// Una pregunta que nos hacemos en varios sitios, por tenerla centralizada
 		static public function get IsMahouLigaChapas() : Boolean { return VERSION_ID=='MahouLigaChapas'; }
 		
-		static public function get LOADED_FROM_URL() : String
-		{
-			var serverName : String = URLUtil.getServerName(FlexGlobals.topLevelApplication.url);
-			
-			if (URLUtil.isHttpsURL(FlexGlobals.topLevelApplication.url))
-				serverName = "https://" + serverName;
-			else
-				serverName = "http://" + serverName;
-			
-			return serverName;			
-		}
 		
 		static public function Init(parameters : Object) : void
 		{
 			if (parameters.hasOwnProperty("VersionID"))
 				VERSION_ID = parameters["VersionID"];
+			
+			if (parameters.hasOwnProperty("Remote"))
+				REMOTE = parameters["Remote"];
+			
+			if (parameters.hasOwnProperty("RemoteServer"))
+				REMOTE_SERVER = parameters["RemoteServer"];
+			
+			if (parameters.hasOwnProperty("RealtimeServer"))
+				REALTIME_SERVER = parameters["RealtimeServer"];
 						
+			
+			// Quitamos la / final, nos conviene para que luego quien sea concatene respecto al root (/Imgs/...)
+			if (parameters.hasOwnProperty("CanvasPage"))
+				CANVAS_PAGE = parameters["CanvasPage"].substr(0, parameters["CanvasPage"].length-1);
+			
+			if (parameters.hasOwnProperty("CanvasUrl"))
+				CANVAS_URL = parameters["CanvasUrl"].substr(0, parameters["CanvasUrl"].length-1);
+			
+			
+			if (parameters.hasOwnProperty("TUENTI_locale"))
+				LOCALE = parameters["TUENTI_locale"];	
+			
+			if (parameters.hasOwnProperty("TUENTI_v_source"))
+				V_SOURCE = parameters["TUENTI_v_source"];	
+			
+			if (parameters.hasOwnProperty("TUENTI_gamerId"))
+				GAMER_ID = parameters["TUENTI_gamerId"];
+			
+			if (parameters.hasOwnProperty("TUENTI_apiLink"))
+				API_LINK = parameters["TUENTI_apiLink"];
+			
+			if (parameters.hasOwnProperty("TUENTI_signature"))
+				SIGNATURE = parameters["TUENTI_signature"];	
+			
+			if (parameters.hasOwnProperty("TUENTI_name"))
+				USER_NAME = parameters["TUENTI_name"];
+			
+			if (parameters.hasOwnProperty("TUENTI_SessionKey"))
+				SESSION_KEY = parameters["TUENTI_SessionKey"];
+			
+			if (parameters.hasOwnProperty("TUENTI_timeStamp"))
+				TIME_STAMP = parameters["TUENTI_timeStamp"];
+			
+			if (parameters.hasOwnProperty("TUENTI_UserID"))
+				USER_ID = parameters["TUENTI_UserID"];
+			
+			if (parameters.hasOwnProperty("TUENTI_AppId"))
+				APP_ID = parameters["TUENTI_AppId"];
+			
+			
+			if (parameters.hasOwnProperty("FakeSessionKey"))
+				FAKE_SESSION_KEY = parameters["FakeSessionKey"];
+			
+			if (parameters.hasOwnProperty("Test"))
+				TEST = parameters["Test"];
+			
+			
+			if (parameters.hasOwnProperty("request_ids"))
+				REQUEST_IDS = new ArrayCollection(parameters["request_ids"].split(","));
+		}
+		
+		/*static public function Init(parameters : Object) : void
+		{
+			if (parameters.hasOwnProperty("VersionID"))
+				VERSION_ID = parameters["VersionID"];
+			
 			if (parameters.hasOwnProperty("Locale"))
 				LOCALE = parameters["Locale"];
 			
@@ -49,7 +112,7 @@ package
 			
 			if (parameters.hasOwnProperty("CanvasUrl"))
 				CANVAS_URL = parameters["CanvasUrl"].substr(0, parameters["CanvasUrl"].length-1);
-						
+			
 			if (parameters.hasOwnProperty("AppId"))
 				APP_ID = parameters["AppId"];
 			
@@ -73,6 +136,6 @@ package
 			
 			if (parameters.hasOwnProperty("request_ids"))
 				REQUEST_IDS = new ArrayCollection(parameters["request_ids"].split(","));
-		}
+		}*/
 	}
 }

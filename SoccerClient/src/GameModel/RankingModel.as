@@ -29,7 +29,9 @@ package GameModel
 			// Los dejamos de momento sin bindear. Si luego el TrueSkill se muestra a traves de este RankingTeam, 
 			// hay q refrescarlo mediante bindeo. Los demas campos son estaticos y no cambian durante el juego
 			mSelfRankingTeam.Name = mMainGameModel.TheTeamModel.TheTeam.Name;
-			mSelfRankingTeam.FacebookID = parseFloat(SoccerClient.GetFacebookFacade().FacebookID);
+			//mSelfRankingTeam.FacebookID = parseFloat(SoccerClient.GetFacebookFacade().FacebookID);
+			//Santi
+			mSelfRankingTeam.FacebookID = parseFloat(AppConfig.GAMER_ID);
 			mSelfRankingTeam.PredefinedTeamNameID = mMainGameModel.TheTeamModel.TheTeam.PredefinedTeamNameID;
 			mSelfRankingTeam.TrueSkill = mMainGameModel.TheTeamModel.TheTeam.TrueSkill;
 			

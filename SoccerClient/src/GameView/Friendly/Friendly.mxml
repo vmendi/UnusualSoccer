@@ -46,7 +46,7 @@
 		
 		private function OnConnectionChanged(isConnected : Boolean) : void
 		{
-			if (mMainGameModel.TheTeamPurchaseModel.HasCredit)
+			if (mMainGameModel.TheTicketModel.HasCredit)
 			{
 				if (isConnected)
 					currentState = "AvailableCredit";
@@ -83,11 +83,11 @@
 			MyPlayersInRoomList.selectedItem = null;
 		}
 		
-		protected function MyBuyTicketsButton_clickHandler(event:MouseEvent):void
+	/*	protected function MyBuyTicketsButton_clickHandler(event:MouseEvent):void
 		{
 		 	PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseTicket") as Class);
 		}
-		
+	*/	
 		[Bindable] private var mMainGameModel : MainGameModel;
 		[Bindable] private var mRoomModel : RoomModel;
 		
@@ -106,9 +106,9 @@
 				<s:layout><s:VerticalLayout horizontalAlign="center" gap="10" /></s:layout>
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='WarningIcon')" fillMode="clip" />
 				<s:Label width="170" text="{resourceManager.getString('main','TicketNoAvailableTime')}" styleName="whiteBoldBig" textAlign="center" />
-				<s:Button id="MyBuyTicketsButton" width="110" height="18" x="40" y="41" skinClass="GameView.Skins.ButtonDarkGreySkin"
+				<!--<s:Button id="MyBuyTicketsButton" width="110" height="18" x="40" y="41" skinClass="GameView.Skins.ButtonDarkGreySkin"
 						  label="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"						  
-						  click="MyBuyTicketsButton_clickHandler(event)" />
+						  click="MyBuyTicketsButton_clickHandler(event)" />-->
 			</s:Group>
 		</s:Group>
 	</s:Group>

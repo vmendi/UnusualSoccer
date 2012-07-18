@@ -1,6 +1,6 @@
 package
 {
-	import com.facebook.graph.Facebook;
+	//import com.facebook.graph.Facebook;
 	
 	import flash.net.URLRequestMethod;
 	
@@ -66,7 +66,8 @@ package
 			// Publicacion asumiendo que tenemos el permiso?
 			if (directPublish)
 			{
-				Facebook.api("/me/feed", onPublishResponse, data, URLRequestMethod.POST);
+				//Facebook.api("/me/feed", onPublishResponse, data, URLRequestMethod.POST);
+				//TODO Función para publicar en el muro de Tuenti
 				
 				function onPublishResponse(response : Object, fail : Object) : void
 				{
@@ -75,7 +76,9 @@ package
 			else
 			{
 				// Popup modal en un IFrame sobre el flash
-				Facebook.ui('feed', data, streamPublishResponse);
+				//Facebook.ui('feed', data, streamPublishResponse);
+				
+				//TODO Función para publicar en el muro de Tuenti
 				
 				function streamPublishResponse(response : Object) : void
 				{

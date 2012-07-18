@@ -6,7 +6,7 @@ package GameModel
 	import HttpService.TransferModel.vo.Team;
 	import HttpService.TransferModel.vo.TeamDetails;
 	
-	import com.facebook.graph.Facebook;
+	//import com.facebook.graph.Facebook;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -16,7 +16,6 @@ package GameModel
 	import mx.collections.ArrayCollection;
 	import mx.collections.Sort;
 	import mx.collections.SortField;
-	import mx.messaging.messages.ErrorMessage;
 	import mx.rpc.Responder;
 	import mx.rpc.events.ResultEvent;
 	
@@ -108,7 +107,9 @@ package GameModel
 			{
 				// Hay que concatenar... http://developers.facebook.com/docs/reference/dialogs/requests/
 				// DELETE https://graph.facebook,.com/[<request_id>_<user_id>]?access_token=[USER or APP ACCESS TOKEN]
-				Facebook.deleteObject(request_id + "_" + SoccerClient.GetFacebookFacade().FacebookID, onDeleted);
+				//Facebook.deleteObject(request_id + "_" + SoccerClient.GetFacebookFacade().FacebookID, onDeleted);
+				//Santi
+				//Facebook.deleteObject(request_id + "_" + AppConfig.GAMER_ID, onDeleted);
 			}
 			
 			// Aqui se llamara a RefreshTeam
@@ -136,8 +137,8 @@ package GameModel
 			
 			UpdateFieldPositions();
 			UpdateTeamDetails();
-			mMainModel.TheTeamPurchaseModel.UpdatePurchases();	// Preferimos pushearlo en vez de que él lo lea mediante binding porque asi tenemos garantizado el "cuando"
-																// se actualiza su estado (antes del callback por ejemplo)
+			mMainModel.TheTicketModel.UpdateTicket();	// Preferimos pushearlo en vez de que él lo lea mediante binding porque asi tenemos garantizado el "cuando"
+														// se actualiza su estado (antes del callback por ejemplo)
 			if (callback != null)
 				callback();
 			
@@ -266,39 +267,6 @@ package GameModel
 			function onGetExtraRewardForMatchResult(rewarded : Boolean) : void
 			{
 				RefreshTeam(null);
-			}
-		}
-		
-		public function HealInjury(callback : Function) : void
-		{
-			if (mSelectedSoccerPlayer == null || TheTeam.SkillPoints < MainGameModel.HEAL_INJURY_COST)
-				return;
-			
-			// Queremos conservarlo en el estado de la funcion porque el SelectedSoccerPlayer puede cambiar mientras va y vuelve el mensaje 
-			var selectedSoccerPlayerID : int = mSelectedSoccerPlayer.SoccerPlayerID;
-			
-			mMainService.HealInjury(selectedSoccerPlayerID, new Responder(onFixInjuryResult, fault));
-			
-			function onFixInjuryResult(success : Boolean) : void
-			{
-				if (success)
-				{
-					var forSureSelected : SoccerPlayer = GetSoccerPlayerByID(selectedSoccerPlayerID);
-					forSureSelected.IsInjured = false;
-					forSureSelected.RemainingInjurySeconds = 0;
-					TheTeam.SkillPoints -= MainGameModel.HEAL_INJURY_COST;
-				}
-				
-				if (callback != null)
-					callback(success);
-			}
-			
-			function fault(info:Object) : void
-			{
-				ErrorMessages.Fault(info);
-					
-				if (callback != null)
-					callback(false);
 			}
 		}
 
