@@ -27,6 +27,7 @@
 
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
+		import GameModel.RealtimeModel;
 		
 		import GameView.MainView;
 		
@@ -34,13 +35,15 @@
 		
 		import Match.MatchMain;
 		
+		import mx.core.FlexGlobals;
 		import mx.events.FlexEvent;
-
+		import mx.messaging.Channel;
+		import mx.messaging.ChannelSet;
+		import mx.messaging.config.ServerConfig;
+		
 		protected function ApplicationCompleteHandler(event:FlexEvent):void
 		{
 			// FPSCounter.Init(this.stage, new Point(0,0));
-			
-			Security.allowDomain("*");	// CDN
 						
 			// Excepciones globales capturadas
 			if (loaderInfo.hasOwnProperty("uncaughtErrorEvents"))
@@ -68,9 +71,41 @@
 			}
 			else
 			{
-				mFacebookFacade = new FacebookFacade();
-				mFacebookFacade.Init(OnFacebookInitSuccess);
+						// Desde el servidor nos pueden decir a qué servidor Realtime nos tenemos que conectar. Si no, nos conectaremos a la propia URL
+						// desde donde se está cargando el SWF (se encarga la propia RealtimeModel.GetDefaultURI)
+						if (AppConfig.REALTIME_SERVER != null && AppConfig.REALTIME_SERVER != "")
+							RealtimeModel.SetDefaultURI(AppConfig.REALTIME_SERVER + ":2020");
+						
+						// Cogemos la SessionKey del parametro que nos pasa el servidor por flashVars
+						SetWeborbSessionKey();
+						
+						//Santi: Iniciamos 
+						mFacebookFacade = new FacebookFacade();
+						//mFacebookFacade.FacebookID = AppConfig.GAMER_ID; // probando con GAMERID, si este no nos vale cuando pruebe con mas jugadores, necesitaré a lo mejor el USERID
+						//mFacebookFacade.SessionKey = AppConfig.SESSION_KEY;
+						OnFacebookInitSuccess();
 			}
+		}
+		
+		public function SetWeborbSessionKey() : void
+		{
+			// En caso de entrar por https, hay que asegurar que el channel es del tipo SecureAMFChannel
+			if (FlexGlobals.topLevelApplication.url.indexOf("https") != -1)
+				ServerConfig.xml[0].channels.channel.(@id=='my-amf').@type = "mx.messaging.channels.SecureAMFChannel";
+			
+			var current : String = ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
+			
+			// Cuando nos llaman una segunda vez debido a un Fault o a un ServerTest
+			if (current.indexOf("?") != -1)
+				current = current.substr(0, current.indexOf("?")); 
+			
+			ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri = current + "?SessionKey=" + AppConfig.SESSION_KEY;
+			
+			var channelSet : ChannelSet = ServerConfig.getChannelSet("GenericDestination");
+			channelSet.disconnectAll();
+			
+			var theChannel : Channel = ServerConfig.getChannel("my-amf");
+			theChannel.uri = ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri;
 		}
 		
 		private function OnFacebookInitSuccess():void
@@ -131,12 +166,7 @@
 			if (mMainGameModel != null)
 			{
 				mMainGameModel.OnCleaningShutdown();
-				
-				// Antes lo poniamos a null pero hemos comprobado que cuando llega un OnCleaningShutdown es posible que aun llegue alguna 
-				// respuesta desde el servidor. Por ejemplo, la respuesta del cambio de formación, provoca un updateDisplayList dentro del
-				// FormationLayout que a su vez llama a GetPointsForFielPos que asume que SoccerClient.GetMainGameModel() != null. Se asume
-				// además en un monton de sitios.
-				// mMainGameModel = null;
+				mMainGameModel = null;
 			}
 			
 			// Quitamos la mMainView pero tb todos los posibles popups q hubiera
@@ -157,7 +187,7 @@
 	
 	]]></fx:Script>
 	
-	<s:BitmapImage source="{resourceManager.getClass('main','LoginBg')}" fillMode="clip" top="0"/>
+	<s:BitmapImage source="{resourceManager.getClass('main','BackGeneral')}" fillMode="clip" top="131"/>
 	
 	<local:ServerTests id="MyServerTests" visible="false" width="100%" height="100%"/>
 			

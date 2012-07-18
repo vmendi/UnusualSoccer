@@ -1,60 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx"
-		 creationComplete="CreationComplete_creationCompleteHandler(event)"
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 visible="{TheSoccerPlayer.IsInjured}">
 	
 	<fx:Style source="../styles.css" />
 	
 	<fx:Script><![CDATA[
-		import GameModel.MainGameModel;
-		import GameModel.TeamModel;
-		
 		import HttpService.TransferModel.vo.SoccerPlayer;
 		
-		import mx.events.FlexEvent;
-		
 		import utils.TimeUtils;
-		
-		
-		protected function CreationComplete_creationCompleteHandler(event:FlexEvent):void
-		{
-			mTeamModel = SoccerClient.GetMainGameModel().TheTeamModel;	
-		}
 		
 		[Bindable]
 		public function get TheSoccerPlayer() : SoccerPlayer { return mSoccerPlayer; }
 		public function set TheSoccerPlayer(v:SoccerPlayer) : void { mSoccerPlayer = v;	}
 		private var mSoccerPlayer : SoccerPlayer;
 		
-		protected function MyHealInjuryButton_clickHandler(event:MouseEvent):void
-		{
-			MyHealInjuryButton.enabled = false;
-			mTeamModel.HealInjury(OnHealInjuryCallback);
-			
-			function OnHealInjuryCallback(success : Boolean) : void
-			{
-				MyHealInjuryButton.enabled = true;
-			}
-		}
-		
-		private function CanHeal(skillPoints : int) : Boolean
-		{
-			return skillPoints >=  MainGameModel.HEAL_INJURY_COST;
-		}
-		
-		
-		[Bindable] private var mTeamModel : TeamModel;
-		
 	]]></fx:Script>
 		
 	<mx:Image x="0" y="0" source="@Embed(source='/Assets/General.swf', symbol='CapDetailInjuredBg')" />
 	<s:Group x="0" y="0" width="187">
 		<s:layout>
-			<s:VerticalLayout gap="4" horizontalAlign="center" />
+			<s:VerticalLayout gap="6" horizontalAlign="center" />
 		</s:layout>
-		<s:Group height="42">
+		<s:Group height="53">
 			<s:layout>
 				<s:HorizontalLayout verticalAlign="middle" gap="10" />
 			</s:layout>
@@ -63,17 +32,6 @@
 		</s:Group>
 		<s:Label text="{resourceManager.getString('main','CapDetailTimeToRecover')} :" styleName="whiteBoldMedium" />
 		<s:Label id="MyTimeLabel" text="{TimeUtils.ConvertSecondsToStringVerbose(TheSoccerPlayer.RemainingInjurySeconds)}" styleName="whiteBoldBig" />
-		<s:Graphic>
-			<s:Line xFrom="0" xTo="150" yFrom="0" yTo="0">
-				<s:stroke>
-					<s:SolidColorStroke color="0xFFFFFF" weight="1"/>
-				</s:stroke>
-			</s:Line>
-		</s:Graphic>
-		<s:Label id="MyHealNow" width="170" text="{resourceManager.getString('main','HealInjuryNowTitle')}" styleName="yellowBoldBig" textAlign="center" />
-		<s:Button id="MyHealInjuryButton" label="{resourceManager.getString('main','HealInjuryButton')}" skinClass="GameView.Skins.ButtonGreySkin"
-				  width="150" click="MyHealInjuryButton_clickHandler(event)" visible="{CanHeal(mTeamModel.TheTeam.SkillPoints)}"/>
-		
 	</s:Group>
-	
+		
 </s:Group>

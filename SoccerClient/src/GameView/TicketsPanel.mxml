@@ -16,7 +16,7 @@
 		<![CDATA[
 			import GameModel.MainGameModel;
 			import GameModel.TeamModel;
-			import GameModel.TeamPurchaseModel;
+			import GameModel.TicketModel;
 			
 			import GameView.Purchase.PurchaseBase;
 			
@@ -27,10 +27,10 @@
 			{
 				mMainGameModel = SoccerClient.GetMainGameModel();
 				mTeamModel = mMainGameModel.TheTeamModel;
-				mTeamPurchaseModel = mMainGameModel.TheTeamPurchaseModel;
+				mTicketModel = mMainGameModel.TheTicketModel;
 				
-				BindingUtils.bindSetter(OnHasTicketChanged, mTeamPurchaseModel, ["HasTicket"]);
-				BindingUtils.bindSetter(OnTicketRemainingMatchesChanged, mTeamModel, ["TheTeam", "TeamPurchase", "RemainingMatches"]);
+				BindingUtils.bindSetter(OnHasTicketChanged, mTicketModel, ["HasTicket"]);
+				BindingUtils.bindSetter(OnTicketRemainingMatchesChanged, mTeamModel, ["TheTeam", "Ticket", "RemainingMatches"]);
 			}
 			
 			private function OnTicketRemainingMatchesChanged(newVal : int) : void
@@ -57,14 +57,14 @@
 					currentState = "NotPurchased";
 			}
 			
-			protected function MyBuyTicketsButton_clickHandler(event:MouseEvent):void
+			/*protected function MyBuyTicketsButton_clickHandler(event:MouseEvent):void
 			{
 				PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseTicket") as Class);
-			}
+			}*/
 			
 			[Bindable] private var mMainGameModel : MainGameModel;
 			[Bindable] private var mTeamModel : TeamModel;
-			[Bindable] private var mTeamPurchaseModel : TeamPurchaseModel;
+			[Bindable] private var mTicketModel : TicketModel;
 		]]>
 	</fx:Script>
 
@@ -74,26 +74,26 @@
 		<s:layout>
 			<s:HorizontalLayout gap="4" verticalAlign="middle" />
 		</s:layout>
-		<s:Label id="MyRemainingMatches"  text="{mTeamModel.TheTeam.TeamPurchase.RemainingMatches}" styleName="blackBoldHuge" />
+		<s:Label id="MyRemainingMatches"  text="{mTeamModel.TheTeam.Ticket.RemainingMatches}" styleName="blackBoldHuge" />
 		<s:RichText id="MyRemainingMatchesTitle" styleName="blackBoldBig" whiteSpaceCollapse="preserve" textAlign="center" kerning="auto" lineHeight="104%">
-			<s:content><s:p><s:span>{resourceManager.getString('main','Matches')}</s:span></s:p><s:p><s:span>{resourceManager.getString('main','Today')}</s:span></s:p></s:content>
+			<s:content><s:p><s:span>MATCHES</s:span></s:p><s:p><s:span>TODAY</s:span></s:p></s:content>
 		</s:RichText>
 	</s:Group>
 
-	<s:Label id="MyZeroRemaining" text="{resourceManager.getString('main','CompetitionNotAvailableMatches')}" styleName="blackBoldMediumHN"  includeIn="NotPurchased"
+	<s:Label id="MyZeroRemaining" text="You don't have available matches for today." styleName="blackBoldMediumHN"  includeIn="NotPurchased"
 			 width="124" x="32" y="7"
 			 textAlign="center" />
 	
 	<s:Group includeIn="Purchased" left="0" right="0">
-		<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate.toDateString()}" styleName="whiteBoldBig" y="5" left="0" right="0" textAlign="center" />
-		<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate.toLocaleTimeString()}" styleName="whiteBoldBig" y="20" left="0" right="0" textAlign="center" />
+		<s:Label text="{mTeamModel.TheTeam.Ticket.TicketExpiryDate.toDateString()}" styleName="whiteBoldBig" y="5" left="0" right="0" textAlign="center" />
+		<s:Label text="{mTeamModel.TheTeam.Ticket.TicketExpiryDate.toLocaleTimeString()}" styleName="whiteBoldBig" y="20" left="0" right="0" textAlign="center" />
 	</s:Group>
 	
-	<s:Button id="MyBuyTicketsButton"
+	<!--<s:Button id="MyBuyTicketsButton"
 			  label.NotPurchased="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
 			  label.Purchased="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
 			  click="MyBuyTicketsButton_clickHandler(event)"
 			  skinClass="GameView.Skins.ButtonDarkGreySkin"
-			  width="110" height="18" x="40" y="41"/>
+			  width="110" height="18" x="40" y="41"/>-->
 
 </s:Group>

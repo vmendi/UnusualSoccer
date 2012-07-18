@@ -20,7 +20,7 @@
 		
 		import GameView.ImportantMessageDialog;
 		
-		import com.facebook.graph.Facebook;
+		//import com.facebook.graph.Facebook;
 		
 		import mx.collections.ArrayCollection;
 		import mx.core.FlexGlobals;
@@ -115,7 +115,8 @@
 									to: user_ids
 									};
 	
-				Facebook.ui("apprequests", data, OnSendRequestsCallback);
+				//TODO Lo comentado a continuación debe de ser algo referente a invitar amigos
+				//Facebook.ui("apprequests", data, OnSendRequestsCallback);
 			}
 			else
 			{

@@ -1,8 +1,8 @@
 package GameModel
 {
-	import HttpService.MainService;
-	
 	import Match.Formations;
+	
+	import HttpService.MainService;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -10,10 +10,6 @@ package GameModel
 	
 	import mx.binding.utils.BindingUtils;
 	import mx.collections.ArrayCollection;
-	import mx.rpc.Responder;
-	import mx.rpc.events.ResultEvent;
-	
-	import utils.Delegate;
 	
 	public class FormationModel extends EventDispatcher
 	{
@@ -70,7 +66,9 @@ package GameModel
 		[Bindable(event="FormationChanged")]
 		public function get IsAnyFormationAvailable() : Boolean
 		{
-			return mAnyFormationIdx <= GetLastAvailableFormationBasedOnXP();
+			if (mAnyFormationIdx <= GetLastAvailableFormationBasedOnXP())
+				return true;
+			return false;
 		}
 		
 		
@@ -100,49 +98,37 @@ package GameModel
 		
 		public function NextAnyFormation() : void
 		{
-			SetAnyFormation(mAnyFormationIdx < mFormations.length-1? mAnyFormationIdx + 1 : 0);
+			if (mAnyFormationIdx < mFormations.length-1)
+				mAnyFormationIdx++;
+			else
+				mAnyFormationIdx = 0;
+			
+			if (mAnyFormationIdx <= GetLastAvailableFormationBasedOnXP())
+			{
+				mFormationIdx = mAnyFormationIdx;
+				mMainService.ChangeFormation(mFormations[mFormationIdx].Name, ErrorMessages.FaultResponder);
+			}
+			
+			dispatchEvent(new Event("FormationChanged"));
 		}
 		
 		public function PrevAnyFormation() : void
 		{
-			SetAnyFormation(mAnyFormationIdx > 0? mAnyFormationIdx - 1 : mFormations.length-1);
+			if (mAnyFormationIdx > 0)
+				mAnyFormationIdx--;
+			else
+				mAnyFormationIdx = mFormations.length-1;
+			
+			if (mAnyFormationIdx <= GetLastAvailableFormationBasedOnXP())
+			{
+				mFormationIdx = mAnyFormationIdx;
+				mMainService.ChangeFormation(mFormations[mFormationIdx].Name, ErrorMessages.FaultResponder);
+			}
+			
+			dispatchEvent(new Event("FormationChanged"));
 		}
 		
-		private function SetAnyFormation(anyFormation : int) : void
-		{
-			if (mWaitingForServerReply)
-				return;
-			
-			if (anyFormation <= GetLastAvailableFormationBasedOnXP())
-			{
-				mWaitingForServerReply = true;
-				mMainService.ChangeFormation(mFormations[anyFormation].Name, new Responder(onChangeFormationResponded, fault));
-			}
-			else
-			{
-				mAnyFormationIdx = anyFormation;
-				dispatchEvent(new Event("FormationChanged"));
-			}
-			
-			function fault(info:Object) : void
-			{
-				mWaitingForServerReply = false;
-				ErrorMessages.Fault(info);
-			}
-			
-			function onChangeFormationResponded(e:ResultEvent) : void
-			{	
-				mWaitingForServerReply = false;
-				
-				mAnyFormationIdx = anyFormation;
-				mFormationIdx = mAnyFormationIdx;
-				
-				dispatchEvent(new Event("FormationChanged"));
-			}
-		}				
-		private var mWaitingForServerReply : Boolean = false;
 		
-				
 		private var mFormations : ArrayCollection;
 		private var mFormationIdx : int = 0;
 		private var mAnyFormationIdx : int = 0;		

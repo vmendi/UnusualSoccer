@@ -10,7 +10,6 @@
 	
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
-		import GameModel.TeamPurchaseModel;
 		import GameModel.TrainingModel;
 		
 		import GameView.HierarchyUtils;
@@ -29,7 +28,6 @@
 		{
 			mMainGameModel = SoccerClient.GetMainGameModel();	
 			mTrainingModel = mMainGameModel.TheTrainingModel;
-			mTeamPurchaseModel = mMainGameModel.TheTeamPurchaseModel;
 			
 			for (var c:int=0; c < MyTrainingItemsGroup.numElements; c++)
 			{
@@ -39,8 +37,7 @@
 					trItem.TheTrainingDefinition = mTrainingModel.TrainingDefinitions[c];
 			}
 			
-			BindingUtils.bindSetter(PendingTrainingChanged, mMainGameModel.TheTeamModel, ["TheTeam", "PendingTraining"]);
-			BindingUtils.bindSetter(TrainerChanged, mMainGameModel.TheTeamPurchaseModel, ["HasTrainer"]);
+			BindingUtils.bindSetter(RefreshItemsState, mMainGameModel.TheTeamModel, ["TheTeam", "PendingTraining"]);
 		}
 		
 		protected function Trainingitem_clickHandler(event:MouseEvent):void
@@ -55,24 +52,7 @@
 			}
 		}
 		
-		private function TrainerChanged(hasTrainer : Boolean) : void
-		{
-			if (hasTrainer)
-			{
-				for (var c:int=0; c < MyTrainingItemsGroup.numElements; c++)
-				{
-					var trItem : TrainingItem = MyTrainingItemsGroup.getElementAt(c) as TrainingItem;
-					trItem.currentState = "NotAvailable";
-				}
-			}
-			else
-			{
-				if (mMainGameModel.TheTeamModel.TheTeam != null) 
-					PendingTrainingChanged(mMainGameModel.TheTeamModel.TheTeam.PendingTraining);
-			}
-		}
-		
-		private function PendingTrainingChanged(currTraining : PendingTraining) : void
+		private function RefreshItemsState(currTraining : PendingTraining) : void
 		{
 			if (currTraining != null)
 			{
@@ -103,19 +83,13 @@
 		
 		[Bindable] private var mMainGameModel : MainGameModel;
 		[Bindable] private var mTrainingModel : TrainingModel;
-		[Bindable] private var mTeamPurchaseModel : TeamPurchaseModel;
 		
 	]]></fx:Script>
 	
 	<s:Panel title="{resourceManager.getString('main','TrainingPanelTitle')}" skinClass="GameView.Skins.DefaultPanelSkin" top="10" left="10" width="740" height="470">
-
-		<s:controlBarContent>
-			<GameView:HelpCallout HelpText="{resourceManager.getString('main','TrainingPanelTxt')}" visible="{resourceManager.getBoolean('main','TicketsPanelVisible')}"/>
-		</s:controlBarContent>
 		
-		<s:Label x="20" y="14" width="700" text="{resourceManager.getString('main','TrainingPanelTxt')}" styleName="whiteBoldBig" textAlign="center" 
-				 visible="{!resourceManager.getBoolean('main','TicketsPanelVisible')}"/>
-
+		<s:Label x="20" y="14" width="700" text="{resourceManager.getString('main','TrainingPanelTxt')}" styleName="whiteBoldBig" textAlign="center" />
+		
 		<s:Group x="10" y="64" id="MyTrainingItemsGroup">
 			<s:layout>
 				<s:TileLayout columnWidth="355" rowHeight="115" horizontalGap="10" verticalGap="10"/>
@@ -130,8 +104,6 @@
 			<Training:TrainingItem click="Trainingitem_clickHandler(event)"/>
 		</s:Group>
 		
-		<Training:TrainerPanel id="MyTrainerPanel" y="0" horizontalCenter="0" visible="{resourceManager.getBoolean('main','TicketsPanelVisible')}" />
-				
 	</s:Panel>	
 	
 </s:Group>

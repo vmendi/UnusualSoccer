@@ -80,7 +80,7 @@ package Match
 		
 
 		public function Cap(team:Team, id:int, descCap:Object, useSecondaryEquipment:Boolean) : void
-		{				
+		{	
 			var phyInit : Object = { radius: MatchConfig.Screen2Physic( Radius ),
 									 isBullet: true, 								// UseCCD: Detección de colisión continua (Ninguna chapa se debe atravesar)
 									 mass: MatchConfig.CapMass,
@@ -97,8 +97,8 @@ package Match
 			phyInit.categoryBits = 1;
 			
 			// Elegimos el asset de jugador o portero y con la equipación primaria o secundaria
-			PrepareVisualCap(_Visual, team.PredefinedTeamNameID, useSecondaryEquipment, id == 0)
-						
+			PrepareVisualCap(_Visual, team.PredefinedTeamNameID, useSecondaryEquipment, id == 0) 
+			
 			// Reasignamos la escala de la chapa, ya que la física la escala para que encaje con el radio físico asignado
 			_Visual.scaleX = 1.0;
 			_Visual.scaleY = 1.0;

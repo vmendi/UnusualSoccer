@@ -5,7 +5,8 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import com.facebook.graph.Facebook;
+			/*
+			//import com.facebook.graph.Facebook;
 			
 			import mx.core.FlexGlobals;
 			import mx.core.IFlexModule;
@@ -15,10 +16,9 @@
 			
 			public static function ShowPurchase(theClass : Class) : void
 			{
-				/* Las "usamos" aqui para que linke */
+				/ * Las "usamos" aqui para que linke * /
 				new PurchaseSkillPoints();
 				new PurchaseTicket();
-				new PurchaseTrainer();
 				
 				var inst : Group = new theClass() as Group;
 				var parent : Sprite = FlexGlobals.topLevelApplication as Sprite;
@@ -70,6 +70,8 @@
 			private function OnTeamRefreshedSuccessfulPurchase() : void
 			{
 			}
+			
+			*/
 		]]>
 	</fx:Script>
 	

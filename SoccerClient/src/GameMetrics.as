@@ -23,25 +23,24 @@ package
 		static public const GET_SKILL : String = "Get_Skill";
 		static public const LOOK_FOR_MATCH : String = "Look_For_Match"; 
 		static public const DO_TRAINING : String = "Do_Training";
-		static public const CANT_CONNECT_REALTIME : String = "Cant_Connect_Realtime";
-	
 		
 		static public function Init(dobject:DisplayObject) : void
 		{			
-			var uid : String = SoccerClient.GetFacebookFacade().FacebookID
+			var uid : String = AppConfig.USER_ID;
 			ExternalInterface.call("_kmq.push", ['identify', uid]);
 		}
 		
 		static public function ReportEvent(event:String, properties:Object) : void
 		{
-			var uid : String = SoccerClient.GetFacebookFacade().FacebookID; 
+			//var uid : String = SoccerClient.GetFacebookFacade().FacebookID;
+			//Santi
+			var uid : String = AppConfig.GAMER_ID;
 			
 			// Kontagent
 			//sendToURL(new URLRequest("http://api.geo.kontagent.net/api/v1/75bcc0495d1b49d8a5c8ad62d989dcf7/evt/?s="+uid+"&n="+event));
 			
-			// Kissmetrics. We disable MahouLigaChapas temporarily, we don't want to spend.
-			if (!AppConfig.IsMahouLigaChapas)
-				ExternalInterface.call("_kmq.push", ['record', event, properties]);
+			// Kissmetrics
+			ExternalInterface.call("_kmq.push", ['record', event, properties]);
 		}
 		
 		static public function ReportPageView(page:String) : void

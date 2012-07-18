@@ -12,6 +12,8 @@
 			
 			import GameView.AnimatableDialog;
 			
+			import flash.utils.getDefinitionByName;
+			
 			import mx.collections.ArrayCollection;
 			import mx.resources.ResourceManager;
 			
