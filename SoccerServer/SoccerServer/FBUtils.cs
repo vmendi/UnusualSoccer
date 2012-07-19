@@ -45,7 +45,7 @@ namespace SoccerServer
         public static string GetApplicationAccessToken()
         {
             var graphApiReq = String.Format("https://graph.facebook.com/oauth/access_token?client_id={0}&client_secret={1}&grant_type=client_credentials",
-                                            GlobalConfig.FacebookSettings.AppId, GlobalConfig.FacebookSettings.AppSecret);
+                                            GlobalConfig.TuentiSettings.Page_Key, GlobalConfig.TuentiSettings.ApiKey);
             return GetHttpResponse(graphApiReq, null);  // Lo retorna directamente como "access_token=xxx", sin JSON
         }
 

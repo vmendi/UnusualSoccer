@@ -223,7 +223,7 @@ namespace SoccerServer
         {
             var access_token = FBUtils.GetApplicationAccessToken();
             var response = FBUtils.GetHttpResponse(String.Format("https://graph.facebook.com/{0}?fields=restrictions&{1}",
-                                                                  GlobalConfig.FacebookSettings.AppId, access_token), null);
+                                                                  GlobalConfig.TuentiSettings.Page_Key, access_token), null);
 
             MyLogConsole.Text += "------------------------Restrictions------------------------<br/>" + response + 
                                  "<br/>------------------------------------------------------------<br/>";
@@ -245,7 +245,7 @@ namespace SoccerServer
             var access_token = FBUtils.GetApplicationAccessToken();
 
             var post = String.Format("https://graph.facebook.com/{0}?restrictions={2}&{1}",
-                                     GlobalConfig.FacebookSettings.AppId, access_token, "{\"location\":\"" + lang + "\"}");
+                                     GlobalConfig.TuentiSettings.Page_Key, access_token, "{\"location\":\"" + lang + "\"}");
 
             // El segundo parametro fuerza el POST
             var response = FBUtils.GetHttpResponse(post, new byte[0]);

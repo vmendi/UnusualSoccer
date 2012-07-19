@@ -44,7 +44,7 @@ namespace SoccerServer
         private void FillDisputedOrdersGridView()
         {
             var accessToken = FBUtils.GetApplicationAccessToken();
-            string graphApiReq = String.Format("https://graph.facebook.com/{0}/payments?status=disputed&{1}", GlobalConfig.FacebookSettings.AppId, accessToken);
+            string graphApiReq = String.Format("https://graph.facebook.com/{0}/payments?status=disputed&{1}", GlobalConfig.TuentiSettings.Page_Key, accessToken);
 
             var response = FBUtils.GetHttpResponse(graphApiReq, null);
 

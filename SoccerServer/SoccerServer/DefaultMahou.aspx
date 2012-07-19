@@ -116,7 +116,7 @@
 <body>
 
 <asp:Panel id="MyDefaultPanel" runat="server" Visible="false">
-    <div style="margin-bottom:10px;width:760px;height:74px;"><img src="Imgs/MainHeader_en_US.jpg" alt= "" width="760" height="74" style="display:block;border:0;" /></div>
+    <div style="margin-bottom:10px;width:760px;height:74px;"><img src="Imgs/MainHeader.jpg" alt= "" width="760" height="74" style="display:block;border:0;" /></div>
     <div id="flashContent">
         <p>
 	        To view this page ensure that Adobe Flash Player version 

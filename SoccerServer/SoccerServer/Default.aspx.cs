@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
-using Facebook;
-using Facebook.Web;
 using HttpService;
 using ServerCommon.BDDModel;
 using ServerCommon;
@@ -93,7 +91,7 @@ namespace SoccerServer
         {
             using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
             {
-                var fb = new FacebookWebClient();
+                //var fb = new FacebookWebClient();
 
                 // Usamos un delegate para que solo se haga la llamada sincrona en caso necesario
                 Player player = EnsureTuentiPlayerIsCreated(theContext, mTuenti);
@@ -146,7 +144,7 @@ namespace SoccerServer
         protected void RunGlobalReplacements(StringBuilder pageSource)
         {
             var serverSettings = GlobalConfig.ServerSettings;
-            var theFBApp = GlobalConfig.FacebookSettings;
+            //var theFBApp = GlobalConfig.FacebookSettings;
             var tuentiApp = GlobalConfig.TuentiSettings;
             // Aqui soliamos hacer reemplazos, pero gracias a la limpieza de los meta og ya no hace falta.
 
@@ -156,7 +154,7 @@ namespace SoccerServer
 
         protected void RunDefaultPanelReplacements(StringBuilder pageSource)
         {
-            var theFBApp = GlobalConfig.FacebookSettings;
+            var theFBApp = GlobalConfig.TuentiSettings;
             var serverSettings = GlobalConfig.ServerSettings;
             var tuentiSettings = GlobalConfig.TuentiSettings;
             pageSource.Replace("${tuentiAPI}", mTuenti.apiLink);
@@ -195,12 +193,13 @@ namespace SoccerServer
 
             pageSource.Replace("${flashVars}", flashVars);
         }
-
+        /*
         private string GetCountryFromSignedRequest(FacebookSignedRequest fbSignedRequest)
         {
             return ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["country"] as string;
         }
 
+        /*
         //
         // NOTE: En el servidor, como no tenemos cadenas de fallback, tenemos que tener todo en todos los idiomas soportados!
         //
@@ -230,7 +229,7 @@ namespace SoccerServer
 
             return locale;
         }
-
+        */
 		static public Session EnsureSessionIsCreated(SoccerDataModelDataContext theContext, Player thePlayer, string sessionKey)
 		{
 			var session = (from dbSession in theContext.Sessions
