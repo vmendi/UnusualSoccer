@@ -24,8 +24,7 @@
 		}		
 	</fx:Style>
 	
-
-	<fx:Script><![CDATA[
+	<fx:Script><![CDATA[ 
 		import GameModel.MainGameModel;
 		import GameModel.RealtimeModel;
 		
