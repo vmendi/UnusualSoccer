@@ -50,7 +50,9 @@
 		
 		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionDivisionUp')" fillMode="clip" visible="{InPromotion(data)}" />
 		
-		<GameView:FacebookPicture FacebookID="{data.FacebookID}" />
+		<!-- <GameView:FacebookPicture FacebookID="{data.FacebookID}" />  -->
+		<!-- Santi: Cambio a Tuenti Picture -->
+		<GameView:TuentiPicture Avatar="{data.Avatar}" />
 		
 		<s:Group>
 			<s:layout><s:VerticalLayout paddingTop="4" /></s:layout>

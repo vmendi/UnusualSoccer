@@ -19,7 +19,7 @@
 	
 	<s:Group filters.normal="{[shadowNormal]}" filters.hovered="{[shadowHovered]}">
 		<s:BitmapImage x="0" y="0" source="{resourceManager.getClass('main','CapFriendSelection')}" />
-		<GameView:FacebookPicture FacebookID="{data.FacebookID}" maskType="alpha" scaleX="0.88" scaleY="0.88" top="10" left="8">
+		<!--<GameView:FacebookPicture FacebookID="{data.FacebookID}" maskType="alpha" scaleX="0.88" scaleY="0.88" top="10" left="8">
 			<GameView:mask>
 				<s:Group>
 					<s:Ellipse width="50" height="50">
@@ -29,7 +29,19 @@
 					</s:Ellipse>
 				</s:Group>
 			</GameView:mask>
-		</GameView:FacebookPicture>
+		</GameView:FacebookPicture> -->
+		<!-- Santi: La foto la tenemos dentro del objeto data: data.avatar --> 
+		<GameView:TuentiPicture Avatar="{data.Avatar}" maskType="alpha" scaleX="0.88" scaleY="0.88" top="10" left="8">
+			<GameView:mask>
+				<s:Group>
+					<s:Ellipse width="50" height="50">
+						<s:fill>
+							<s:SolidColor color="#000000" alpha="1" />
+						</s:fill>
+					</s:Ellipse>
+				</s:Group>
+			</GameView:mask>
+		</GameView:TuentiPicture>
 	</s:Group>
 	
 	<s:Label text="{data.Name}" maxDisplayedLines="2" width="90" height="30" textAlign="center" styleName="blackBoldMediumHN"/>

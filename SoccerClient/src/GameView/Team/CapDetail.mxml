@@ -66,6 +66,8 @@
 		<s:Label text="{TheSoccerPlayer.DorsalNumber.toString()}" horizontalCenter="0" top="18" styleName="whiteBoldBig" textAlign="center" filters="{DorsalNumberStrokeFilter}"/>
 	</s:Group>
 		
+	<!--TODO (Santi): Cambio a TuentiPicture-->
+	<!--
 	<GameView:FacebookPicture FacebookID="{TheSoccerPlayer.FacebookID}" maskType="alpha" scaleX="0.96" scaleY="0.96" top="14" left="15">
 		<GameView:mask>
 			<s:Group>
@@ -75,6 +77,16 @@
 			</s:Group>
 		</GameView:mask>
 	</GameView:FacebookPicture>
+	-->
+	<GameView:TuentiPicture Avatar="{TheSoccerPlayer.Avatar}" maskType="alpha" scaleX="0.96" scaleY="0.96" top="14" left="15">
+		<GameView:mask>
+			<s:Group>
+				<s:Ellipse width="50" height="50">
+					<s:fill><s:SolidColor color="#000000" alpha="1" /></s:fill>
+				</s:Ellipse>
+			</s:Group>
+		</GameView:mask>
+	</GameView:TuentiPicture>
 	
 	<s:Label text="{TheSoccerPlayer.Name}" left="75" top="21" styleName="whiteBoldMedium" />
 		

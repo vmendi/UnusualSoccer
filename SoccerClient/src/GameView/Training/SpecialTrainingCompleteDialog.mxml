@@ -36,10 +36,13 @@
 			// Esto por dentro vera si ya tenemos los permisos o intentara adquirirlos...
 			PublishMessages.TryPermissionsAndPublish(PublishMessages.BuildSpecialTrainingPublishMessage(mSpecialTrainingDef.SpecialTrainingDefinitionID), onPublishCallback);
 			
+			//Santi: Cerramos la ventana tras pulsar "Publicar"
+			ClickHandler(null);
+			
 			function onPublishCallback(published : Boolean) : void
 			{				
 				// Cerramos el dialogo por el flujo normal
-				ClickHandler(null);
+				ClickHandler(null);				
 			}
 		}
 		

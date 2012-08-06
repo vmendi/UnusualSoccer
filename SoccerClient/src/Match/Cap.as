@@ -129,7 +129,7 @@ package Match
 						
 			// Solo mostramos la foto de los amigos del equipo local (privacidad...)
 			if (team.IsLocalUser)
-				LoadFacebookPicture(descCap.FacebookID);
+				LoadFacebookPicture(descCap.FacebookID); //TODO (Santi: Aqui hay que pasar la String con la url del avatar
 			
 			// Auto-añadimos al manager de entidades
 			MatchMain.Ref.Game.TheEntityManager.AddTagged(this, "Team"+(team.IdxTeam +1).toString() + "_" + _CapId.toString());

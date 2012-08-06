@@ -10,7 +10,7 @@
 			import GameView.FriendSelection.FriendSelector;
 			
 			protected function OnClickHandler(event:MouseEvent):void
-			{
+			{	
 				FriendSelector.Show();
 			}
 		]]>

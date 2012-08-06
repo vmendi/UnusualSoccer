@@ -5,6 +5,7 @@ package GameModel
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
+	import flash.external.ExternalInterface;
 	import flash.utils.Timer;
 	
 	import mx.collections.ArrayCollection;
@@ -75,7 +76,7 @@ package GameModel
 
 		public function InitialRefresh(callback : Function) : void
 		{
-			mTrainingModel.InitialRefresh(initialRefreshStage01Completed);
+			mTrainingModel.InitialRefresh(initialRefreshStage01Completed); 
 						
 			function initialRefreshStage01Completed() : void
 			{
@@ -99,7 +100,10 @@ package GameModel
 		public function get TheRealtimeModel() : RealtimeModel { return mRealtimeModel; }
 		
 		[Bindable(event="dummy")]
-		public function get TheTeamModel() : TeamModel { return mTeamModel; }
+		public function get TheTeamModel() : TeamModel { 
+			
+			
+			return mTeamModel; }
 		
 		[Bindable(event="dummy")]
 		public function get TheRankingModel() : RankingModel { return mRankingModel; }

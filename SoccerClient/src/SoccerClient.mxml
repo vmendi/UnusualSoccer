@@ -25,6 +25,7 @@
 	</fx:Style>
 	
 	<fx:Script><![CDATA[ 
+		import GameModel.FriendsModel;
 		import GameModel.MainGameModel;
 		import GameModel.RealtimeModel;
 		
@@ -70,19 +71,19 @@
 			}
 			else
 			{
-						// Desde el servidor nos pueden decir a qué servidor Realtime nos tenemos que conectar. Si no, nos conectaremos a la propia URL
-						// desde donde se está cargando el SWF (se encarga la propia RealtimeModel.GetDefaultURI)
-						if (AppConfig.REALTIME_SERVER != null && AppConfig.REALTIME_SERVER != "")
-							RealtimeModel.SetDefaultURI(AppConfig.REALTIME_SERVER + ":2020");
-						
-						// Cogemos la SessionKey del parametro que nos pasa el servidor por flashVars
-						SetWeborbSessionKey();
-						
-						//Santi: Iniciamos 
-						mFacebookFacade = new FacebookFacade();
-						//mFacebookFacade.FacebookID = AppConfig.GAMER_ID; // probando con GAMERID, si este no nos vale cuando pruebe con mas jugadores, necesitaré a lo mejor el USERID
-						//mFacebookFacade.SessionKey = AppConfig.SESSION_KEY;
-						OnFacebookInitSuccess();
+				// Desde el servidor nos pueden decir a qué servidor Realtime nos tenemos que conectar. Si no, nos conectaremos a la propia URL
+				// desde donde se está cargando el SWF (se encarga la propia RealtimeModel.GetDefaultURI)
+				if (AppConfig.REALTIME_SERVER != null && AppConfig.REALTIME_SERVER != "")
+					RealtimeModel.SetDefaultURI(AppConfig.REALTIME_SERVER + ":2020");
+				
+				// Cogemos la SessionKey del parametro que nos pasa el servidor por flashVars
+				SetWeborbSessionKey();
+				
+				//Santi: Iniciamos 
+				mFacebookFacade = new FacebookFacade();
+				//mFacebookFacade.FacebookID = AppConfig.GAMER_ID; // probando con GAMERID, si este no nos vale cuando pruebe con mas jugadores, necesitaré a lo mejor el USERID
+				//mFacebookFacade.SessionKey = AppConfig.SESSION_KEY;
+				OnFacebookInitSuccess();
 			}
 		}
 		
@@ -119,9 +120,12 @@
 			{
 				mMainView = new MainView();
 				addElement(mMainView);
+				/*if (ExternalInterface.available) {
+					var friendsData:Object = ExternalInterface.call("getUsersData");	
+				}*/
 			}
 		}
-		
+		 
 		private function ConfigureLocale() : void
 		{
 			// El servidor siempre nos pasa un locale coherente con el VERSION_ID, aqui no tenemos que hacer nada
@@ -130,7 +134,7 @@
 			function GetLocaleChain(locale : String) : Array
 			{
 				// El idioma que soportamos es el [0], los fallback que aplicara Flex cuando no 
-				// encuentra un recurso en ese idioma estan a continuacion
+				// encuentra un recurso en ese idioma estan a continuacion 
 				var chains : Array = [ 
 										["en_US", "es_ES"],
 										["es_ES", "en_US"],				// Español MahouLigachapas

@@ -37,7 +37,9 @@
 	<s:Group width="100%" height="43">
 		<s:layout><s:HorizontalLayout/></s:layout>
 		
-		<GameView:FacebookPicture FacebookID="{data.FacebookID}" />
+		<!--<GameView:FacebookPicture FacebookID="{data.FacebookID}" />-->
+		<!--Santi: Cambio a TuentiPicture -->
+		<GameView:TuentiPicture Avatar="{data.Avatar}" />
 
 		<s:Group>
 			<s:layout><s:VerticalLayout paddingTop="4" /></s:layout>

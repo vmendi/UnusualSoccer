@@ -20,9 +20,14 @@ package
 		static public var SIGNATURE			: String = null;
 		static public var USER_NAME			: String = null;
 		static public var SESSION_KEY		: String = null;
-		static public var TIME_STAMP		: String = null;
+		static public var TIME_STAMP		: Number = 0;
 		static public var USER_ID			: String = null;		
 		static public var APP_ID   			: String = null;
+		
+		static public var SECRET    		: String = null;
+		
+		static public var DEV_SIGNATURE		: String = 'Tuenti20kind0fr0ckZ';
+		static public var DEV_TIMESTAMP		: Number = 0;
 						
 		static public var FAKE_SESSION_KEY 	: String = null;
 		static public var TEST 				: String = null;
@@ -50,10 +55,10 @@ package
 			
 			// Quitamos la / final, nos conviene para que luego quien sea concatene respecto al root (/Imgs/...)
 			if (parameters.hasOwnProperty("CanvasPage"))
-				CANVAS_PAGE = parameters["CanvasPage"].substr(0, parameters["CanvasPage"].length-1);
+				CANVAS_PAGE = parameters["CanvasPage"];
 			
 			if (parameters.hasOwnProperty("CanvasUrl"))
-				CANVAS_URL = parameters["CanvasUrl"].substr(0, parameters["CanvasUrl"].length-1);
+				CANVAS_URL = parameters["CanvasUrl"];
 			
 			
 			if (parameters.hasOwnProperty("TUENTI_locale"))
@@ -87,7 +92,7 @@ package
 				APP_ID = parameters["TUENTI_AppId"];
 			
 			
-			if (parameters.hasOwnProperty("FakeSessionKey"))
+			if (parameters.hasOwnProperty("FakeSessionKey"))parameters["FakeSessionKey"];
 				FAKE_SESSION_KEY = parameters["FakeSessionKey"];
 			
 			if (parameters.hasOwnProperty("Test"))
@@ -96,6 +101,9 @@ package
 			
 			if (parameters.hasOwnProperty("request_ids"))
 				REQUEST_IDS = new ArrayCollection(parameters["request_ids"].split(","));
+			
+			if (parameters.hasOwnProperty("TUENTI_SECRET"))
+				SECRET = parameters["TUENTI_SECRET"];
 		}
 		
 		/*static public function Init(parameters : Object) : void

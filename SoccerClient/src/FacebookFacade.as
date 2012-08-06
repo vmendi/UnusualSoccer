@@ -1,11 +1,7 @@
 package
 {
 	import GameModel.RealtimeModel;
-	/*
-	import com.facebook.graph.Facebook;
-	import com.facebook.graph.data.FacebookAuthResponse;
-	import com.facebook.graph.data.FacebookSession;
-	*/
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.net.URLLoader;
@@ -170,7 +166,8 @@ package
 			/*if (mFBAuthResponse != null)
 				return mFBAuthResponse.uid;
 			*/
-			return null;
+			return AppConfig.GAMER_ID;
+			//return null;
 		}
 		
 		private function RefreshPermisions(callback : Function) : void

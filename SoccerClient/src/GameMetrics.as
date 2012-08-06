@@ -34,7 +34,7 @@ package
 		{
 			//var uid : String = SoccerClient.GetFacebookFacade().FacebookID;
 			//Santi
-			var uid : String = AppConfig.GAMER_ID;
+			var uid : String = AppConfig.GAMER_ID.toString();
 			
 			// Kontagent
 			//sendToURL(new URLRequest("http://api.geo.kontagent.net/api/v1/75bcc0495d1b49d8a5c8ad62d989dcf7/evt/?s="+uid+"&n="+event));

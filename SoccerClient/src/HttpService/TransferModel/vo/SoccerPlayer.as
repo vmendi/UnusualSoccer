@@ -33,5 +33,8 @@ package HttpService.TransferModel.vo
 		public var IsInjured:Boolean;
 		public var LastInjuryDate:Date;
 		public var RemainingInjurySeconds:int;
+		
+		//Santi 
+		public var Avatar:String;
 	}
 }

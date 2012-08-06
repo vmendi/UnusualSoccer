@@ -2,6 +2,9 @@ package
 {
 	//import com.facebook.graph.Facebook;
 	
+	import com.adobe.crypto.*;
+	
+	import flash.external.ExternalInterface;
 	import flash.net.URLRequestMethod;
 	
 	import mx.core.Application;
@@ -54,6 +57,7 @@ package
 		//
 		static private function Publish(publishMessage : Object, directPublish : Boolean) : void
 		{				
+			/*
 			var data : Object = {
 									link:AppConfig.CANVAS_PAGE,
 									picture: AppConfig.CANVAS_URL + publishMessage.daPicture,
@@ -62,7 +66,41 @@ package
 									caption:publishMessage.daCaption,
 									description:publishMessage.daDescription
 								};
+			*/		
 			
+			var alParams:Object 		= {params:{}};
+			var bod:String 			    = publishMessage.daMsg + '\n' + publishMessage.daDescription;
+			var cbParams:Object 		= {params:{}};
+			var icon:String 			= AppConfig.CANVAS_URL + publishMessage.daPicture;
+			var tstamp : Number 		= new Date().time;			
+			var title:String 			= publishMessage.daCaption;
+			
+			
+			var mSignature:String = "";				
+				mSignature +='actionLinkParams=' 	+ alParams + '.';
+				mSignature +='body='				+ bod + '.';
+				mSignature +='callbackParams=' 		+ cbParams + '.',
+				mSignature +='iconUrl=' 			+ icon + '.';
+				mSignature +='timestamp='  			+ tstamp + '.';	
+				mSignature +='title='  				+ title + '.';				
+				mSignature += AppConfig.SECRET;
+			
+			var sign:String = MD5.hash(mSignature);
+				
+			var params : Object = {					
+					'actionLinkParams':{params:{}},
+					'body':bod,
+					'callbackParams':{params:{}},
+					'iconUrl':icon,
+					'timestamp':tstamp, //AppConfig.DEV_TIMESTAMP
+					'title':title,										
+					'signature':sign //AppConfig.DEV_SIGNATURE,										
+			};
+			
+			ExternalInterface.call("publishMessage", params);	
+			
+			
+			/*
 			// Publicacion asumiendo que tenemos el permiso?
 			if (directPublish)
 			{
@@ -85,7 +123,7 @@ package
 					//if (response && response.post_id) { alert('Post was published.'); } 
 					//else { alert('Post was not published.'); }
 				}
-			}
+			}*/
 		}
 		
 		// Intento de obtener permisos y publicar. Como lo hacemos al menos en dos sitios (MatchEndDialog y SpecialTrainingCompleteDialog), 
@@ -93,18 +131,18 @@ package
 		static public function TryPermissionsAndPublish(publishMessage : Object, callback : Function) : void
 		{
 			// Vamos a ver si ya tenemos los permisos o intentamos adquirirlos...
-			SoccerClient.GetFacebookFacade().EnsurePublishStreamPermission(onPermissions);
-			
-			function onPermissions(gotPermissions : Boolean) : void
-			{
-				if (gotPermissions)
-				{
+			//SoccerClient.GetFacebookFacade().EnsurePublishStreamPermission(onPermissions);
+			//
+			//function onPermissions(gotPermissions : Boolean) : void
+			//{
+			//	if (gotPermissions)
+			//	{
 					// A publicar directamente
 					PublishMessages.Publish(publishMessage, true);
-				}
+			//	}
 				
-				callback(gotPermissions);
-			}
+			//	callback(gotPermissions);
+			//}
 		}		
 	}
 }

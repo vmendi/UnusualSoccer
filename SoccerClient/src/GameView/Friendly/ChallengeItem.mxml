@@ -46,7 +46,9 @@
 	<s:Group width="423" height="43">	
 		<s:layout><s:HorizontalLayout gap="0"/></s:layout>
 
-		<GameView:FacebookPicture FacebookID="{data.SourcePlayer.FacebookID}" />
+		<!--<GameView:FacebookPicture FacebookID="{data.SourcePlayer.FacebookID}" />-->
+		<!-- TODO (Santi): Cambio a Tuenti Picture -->
+		<GameView:TuentiPicture Avatar="{data.SourcePlayer.Avatar}" />
 		
 		<s:Group>
 			<s:layout><s:VerticalLayout paddingTop="4" /></s:layout>

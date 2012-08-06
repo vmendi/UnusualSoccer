@@ -32,16 +32,15 @@
   
     package HttpService
     {
-    import mx.rpc.remoting.RemoteObject;
+    import HttpService.TransferModel.vo.*;
+    
+    import mx.collections.ArrayCollection;
     import mx.controls.Alert;
-    import mx.rpc.events.ResultEvent;
-    import mx.rpc.events.FaultEvent;
     import mx.rpc.AsyncToken;
     import mx.rpc.IResponder;
-    import mx.collections.ArrayCollection;
-
-    
-    import HttpService.TransferModel.vo.*;
+    import mx.rpc.events.FaultEvent;
+    import mx.rpc.events.ResultEvent;
+    import mx.rpc.remoting.RemoteObject;
         
     public class MainService
     {
@@ -199,7 +198,7 @@
     
       public function RefreshGroupForTeam(facebookID:Number, responder:IResponder = null ):void
       {
-        var asyncToken:AsyncToken = remoteObject.RefreshGroupForTeam(facebookID);
+        var asyncToken:AsyncToken = remoteObject.RefreshGroupForTeam(parseInt(AppConfig.GAMER_ID.toString()));
         
         if( responder != null )
             asyncToken.addResponder( responder );

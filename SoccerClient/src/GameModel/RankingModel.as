@@ -31,7 +31,7 @@ package GameModel
 			mSelfRankingTeam.Name = mMainGameModel.TheTeamModel.TheTeam.Name;
 			//mSelfRankingTeam.FacebookID = parseFloat(SoccerClient.GetFacebookFacade().FacebookID);
 			//Santi
-			mSelfRankingTeam.FacebookID = parseFloat(AppConfig.GAMER_ID);
+			mSelfRankingTeam.FacebookID = parseInt(AppConfig.GAMER_ID.toString());
 			mSelfRankingTeam.PredefinedTeamNameID = mMainGameModel.TheTeamModel.TheTeam.PredefinedTeamNameID;
 			mSelfRankingTeam.TrueSkill = mMainGameModel.TheTeamModel.TheTeam.TrueSkill;
 			

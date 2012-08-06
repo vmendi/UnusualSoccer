@@ -20,6 +20,8 @@
 		
 		import mx.events.FlexEvent;
 		
+		import utils.MD5;
+		
 		protected function AddedToStageHandler(event:Event):void
 		{
 			// TODO Auto-generated method stub
@@ -66,8 +68,8 @@
 		</s:Panel>
 	</s:Group>	
 	
-	<Team:Field top="0" horizontalCenter="0" /> 
-	<Team:Substitutes top="344" horizontalCenter="0" />
+	<Team:Field top="50" horizontalCenter="0" /> 
+	<!--<Team:Substitutes top="344" horizontalCenter="0" />-->
 	
 	<Team:CapPanel width="188" right="10" top="10" bottom="10" title="{resourceManager.getString('main','TeamPanelPlayerTitle')}"/>
 	
