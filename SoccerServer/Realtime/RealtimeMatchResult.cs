@@ -147,7 +147,8 @@ namespace Realtime
                 {
                     var randInjured = rand.Next(0, soccerPlayers.Count());
 
-                    soccerPlayers[randInjured].IsInjured = true;
+                    // cambiar el valor a "true" cuadno queramos permitir lesiones
+                    soccerPlayers[randInjured].IsInjured = false;
                     soccerPlayers[randInjured].LastInjuryDate = DateTime.Now;
                     ret.Add(soccerPlayers[randInjured].SoccerPlayerID);
                 }

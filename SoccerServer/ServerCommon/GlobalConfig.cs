@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using Facebook;
 
 namespace ServerCommon
 {
@@ -15,12 +14,10 @@ namespace ServerCommon
 
         static public ServerConfig ServerSettings { get { return mServerSettings; } }
         static public TuentiConfig TuentiSettings { get { return mTuentiSettings; } }
-        static public IFacebookApplication FacebookSettings { get { return mFBSettings; } }
 
         // Queremos tener el orden de inicialización bien definido, Init explicita.
         static public void Init()
         {
-            mFBSettings = ConfigurationManager.GetSection("facebookSettings") as FacebookConfigurationSection;
             mTuentiSettings = ConfigurationManager.GetSection("tuentiSettings") as TuentiConfig;
             mServerSettings = ConfigurationManager.GetSection("soccerServerConfig") as ServerConfig;
         }
@@ -31,6 +28,5 @@ namespace ServerCommon
 
         static private ServerConfig mServerSettings;
         static private TuentiConfig mTuentiSettings;
-        static private FacebookConfigurationSection mFBSettings;
     }
 }

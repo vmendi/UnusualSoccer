@@ -20,7 +20,7 @@ namespace SoccerServer
         public string signature { get; set; }
         public string name { get; set; }
         public string sessionToken { get; set; }
-        public string timeStamp { get; set; }
+        public double timeStamp { get; set; }
         public long userId { get; set; }
         // parametro de la página del canvas m -> indica el módulo de tuenti en el que estamos (default: 'Games')
         public string m { get; set; }
@@ -64,8 +64,8 @@ namespace SoccerServer
             if (tuentiData.ContainsKey("sessionToken"))
                 sessionToken = tuentiData["sessionToken"].ToString();
 
-            if (tuentiData.ContainsKey("timeStamp"))
-                timeStamp = tuentiData["timeStamp"].ToString();
+            if (tuentiData.ContainsKey("timestamp"))
+                timeStamp = (double)tuentiData["timestamp"];
 
             if (tuentiData.ContainsKey("userId"))
                 userId = long.Parse(tuentiData["userId"].ToString());

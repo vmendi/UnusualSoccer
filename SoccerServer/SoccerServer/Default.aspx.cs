@@ -51,7 +51,7 @@ namespace SoccerServer
             {
                 Response.Redirect(GlobalConfig.FacebookSettings.CanvasPage, true);
             }
-            */
+            
             // Para las versiones no-default (Mahou) el IIS deberia estar configurado para responder con la pagina adecuada.
             // Sin embargo, para que no haya que reconfigurar el IIS para hacer una prueba, comprobamos aqui si somos una 
             // version no-default y hacemos un transfer.
@@ -60,7 +60,7 @@ namespace SoccerServer
             {
                 Server.Transfer("~/DefaultMahou.aspx");
             }
-            
+            */
             // Incluso sin estar autorizados, siempre tenemos un signed_request en el que esta contenido el country (geolocalizado) y el locale
             // TODO: Usarlo para redireccionar si es Mahou y no es España            
             /*
@@ -102,23 +102,7 @@ namespace SoccerServer
                 InjectContentPanel(!player.Liked);
             }
         }
-        /*
-        private void ShowFacebookContent()
-		{
-			using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
-			{
-                var fb = new FacebookWebClient();
-                
-                // Usamos un delegate para que solo se haga la llamada sincrona en caso necesario
-				Player player = EnsurePlayerIsCreated(theContext, FacebookWebContext.Current.UserId, () => fb.Get("me"));                
-				EnsureSessionIsCreated(theContext, player, FacebookWebContext.Current.AccessToken);
-				theContext.SubmitChanges();
 
-                // Ahora podemos hacer visible todo el contenido flash
-                InjectContentPanel(!player.Liked);
-			}
-		}
-        */
         private void InjectContentPanel(Boolean showLikePanel)
         {
             MyDefaultPanel.Visible = true;
@@ -144,7 +128,6 @@ namespace SoccerServer
         protected void RunGlobalReplacements(StringBuilder pageSource)
         {
             var serverSettings = GlobalConfig.ServerSettings;
-            //var theFBApp = GlobalConfig.FacebookSettings;
             var tuentiApp = GlobalConfig.TuentiSettings;
             // Aqui soliamos hacer reemplazos, pero gracias a la limpieza de los meta og ya no hace falta.
 
@@ -154,7 +137,6 @@ namespace SoccerServer
 
         protected void RunDefaultPanelReplacements(StringBuilder pageSource)
         {
-            var theFBApp = GlobalConfig.TuentiSettings;
             var serverSettings = GlobalConfig.ServerSettings;
             var tuentiSettings = GlobalConfig.TuentiSettings;
             pageSource.Replace("${tuentiAPI}", mTuenti.apiLink);
@@ -177,7 +159,7 @@ namespace SoccerServer
             flashVars += "RealtimeServer: '"    + serverSettings.RealtimeServer + "' ,";
 
             flashVars += "CanvasPage: '"        + tuentiSettings.CanvasPage + "#m=" + tuentiSettings.M + "&func=" + tuentiSettings.Func + "&page_key=" + tuentiSettings.Page_Key + "' ,";//tuenti.getCanvasURL() + "' ,";
-            flashVars += "CanvasURL: '"         + tuentiSettings.CanvasUrl + "' ,"; ;
+            flashVars += "CanvasUrl: '"         + tuentiSettings.CanvasUrl + "' ,"; ;
 
             flashVars += "TUENTI_locale: '"     + mTuenti.language + "' ,";
             flashVars += "TUENTI_v_source: '"   + mTuenti.v_source + "' ,";
@@ -188,18 +170,21 @@ namespace SoccerServer
             flashVars += "TUENTI_SessionKey: '" + mTuenti.sessionToken + "' ,";
             flashVars += "TUENTI_timeStamp: '"  + mTuenti.timeStamp + "' ,";
             flashVars += "TUENTI_UserID: '"     + mTuenti.userId + "' ,";
-            flashVars += "TUENTI_AppId: '"      + mTuenti.page_key + "' ,";    
+            flashVars += "TUENTI_AppId: '"      + mTuenti.page_key + "' ,";
+            flashVars += "TUENTI_SECRET: '"     + tuentiSettings.ApiKey + "'"; 
             flashVars += " } ";
 
             pageSource.Replace("${flashVars}", flashVars);
         }
+
         /*
+
         private string GetCountryFromSignedRequest(FacebookSignedRequest fbSignedRequest)
         {
             return ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["country"] as string;
         }
 
-        /*
+
         //
         // NOTE: En el servidor, como no tenemos cadenas de fallback, tenemos que tener todo en todos los idiomas soportados!
         //

@@ -110,10 +110,11 @@
     <Content Include="console\woeeoverview.htm" />
     <Content Include="console\woeestandalone.htm" />
     <Content Include="console\yesflex-yesdotnet.htm" />
-    <Content Include="crossdomain.xml" />
+    <Content Include="crossdomain.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Deauthorize.aspx" />
     <Content Include="Default.aspx" />
-    <Content Include="DefaultMahou.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Imgs\BannerMeGustaBg.png" />
     <Content Include="Imgs\BannerMeGustaBg_en_US.png" />
@@ -238,9 +239,6 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="DefaultMahou.aspx.designer.cs">
-      <DependentUpon>DefaultMahou.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
