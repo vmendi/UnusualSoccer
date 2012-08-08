@@ -57,47 +57,115 @@ package
 		//
 		static private function Publish(publishMessage : Object, directPublish : Boolean) : void
 		{				
+			//variables que pasaremos al mensaje
+			var theActionLinkParams:Array   = new Array();
+			var theBody:String 			    = publishMessage.daMsg + '\n' + publishMessage.daDescription;
+			var theCallbackParams:Array 	= new Array();
+			var theIconUrl:String 			= AppConfig.CANVAS_URL + publishMessage.daPicture;
+			var theTitle:String 			= publishMessage.daCaption;
+			var signatureStr:String 		= "";
+			
+			var date:Date 				= new Date();
+			var theUnixEpoch:Number 	= Math.round(date.getTime() /1000);
+			
+			trace('-La fecha actual en milisegundos es: ' + date);
+			trace('-El UNIX Epoch es: ' + theUnixEpoch);
+			
+			//-------------------------------------------------//
+			//(Ayuda)//Tuenti example from their stuff//(Ayuda)//
+			//-------------------------------------------------//
+			
+			/*var 	mSignature:String = "";
+					mSignature +='actionLinkParams=' + actionLinkParams;
+					mSignature +='body=' + bod;
+					mSignature +='callbackParams=' + callbackParams,
+					mSignature +='iconUrl=' + icon;
+					mSignature +='timestamp=' + tstamp;
+					mSignature +='title=' + title;
+					mSignature +=AppConfig.SECRET;
+			*/
+			
+			var mSignature:String = "";
+			mSignature +='actionLinkParams=' + theActionLinkParams	;
+			mSignature +='body=' + theBody;
+			mSignature +='callbackParams=' + theCallbackParams,
+			mSignature +='iconUrl=' + theIconUrl;
+			mSignature +='timestamp=' + theUnixEpoch;
+			mSignature +='title=' + theTitle;
+			mSignature +=AppConfig.SECRET;
+			
+			var sign:String = MD5.hash(mSignature);
+			
+			var params : Object = 	{					
+				'actionLinkParams':{},
+				'body':theBody,
+				'callbackParams':{},
+				'iconUrl':theIconUrl,
+				'timestamp':theUnixEpoch, //AppConfig.DEV_TIMESTAMP
+				'title':theTitle,										
+				'signature':sign //AppConfig.DEV_SIGNATURE,										
+			};
+			
+			//Decimos a Javascript que ejecute la llamada con los parametros configurados
+			ExternalInterface.call("publishMessage", params);	
+			
 			/*
-			var data : Object = {
-									link:AppConfig.CANVAS_PAGE,
-									picture: AppConfig.CANVAS_URL + publishMessage.daPicture,
-									name:publishMessage.daName,
-									message:publishMessage.daMsg,
-									caption:publishMessage.daCaption,
-									description:publishMessage.daDescription
-								};
-			*/		
-			
-			var alParams:Object 		= {params:{}};
-			var bod:String 			    = publishMessage.daMsg + '\n' + publishMessage.daDescription;
-			var cbParams:Object 		= {params:{}};
-			var icon:String 			= AppConfig.CANVAS_URL + publishMessage.daPicture;
-			var tstamp : Number 		= new Date().time;			
-			var title:String 			= publishMessage.daCaption;
-			
-			
 			var mSignature:String = "";				
-				mSignature +='actionLinkParams=' 	+ alParams + '.';
-				mSignature +='body='				+ bod + '.';
-				mSignature +='callbackParams=' 		+ cbParams + '.',
-				mSignature +='iconUrl=' 			+ icon + '.';
-				mSignature +='timestamp='  			+ tstamp + '.';	
-				mSignature +='title='  				+ title + '.';				
+				mSignature +='actionLinkParams=' 	+ alParams;
+				mSignature +=' body='				+ bod;
+				mSignature +=' callbackParams=' 	+ cbParams,
+				mSignature +=' iconUrl=' 			+ icon;
+				mSignature +=' signature='
+				mSignature +=' timestamp='  		+ tstamp;	
+				mSignature +=' title='  			+ title;				
 				mSignature += AppConfig.SECRET;
+			
+			
+
 			
 			var sign:String = MD5.hash(mSignature);
 				
-			var params : Object = {					
-					'actionLinkParams':{params:{}},
-					'body':bod,
-					'callbackParams':{params:{}},
-					'iconUrl':icon,
-					'timestamp':tstamp, //AppConfig.DEV_TIMESTAMP
-					'title':title,										
-					'signature':sign //AppConfig.DEV_SIGNATURE,										
-			};
+			var params : Object = 	{					
+											'actionLinkParams':{params:{}},
+											'body':bod,
+											'callbackParams':{params:{}},
+											'iconUrl':icon,
+											'timestamp':tstamp, //AppConfig.DEV_TIMESTAMP
+											'title':title,										
+											'signature':sign //AppConfig.DEV_SIGNATURE,										
+									};
 			
+			*/
+			/*
+			
+			var params : Object = 	{					
+				'actionLinkParams':alParams,
+				'body':bod,
+				'callbackParams':cbParams,
+				'iconUrl':icon,
+				'signature':'', //AppConfig.DEV_SIGNATURE,			
+				'timestamp':tstamp, //AppConfig.DEV_TIMESTAMP
+				'title':title																	
+			};
+						
+			//Borramos la firma si hubiera
+			params['signature'] = '';
+			// Ordenamos los 'parmas' por Value Orden Alfabético
+			
+			//Recorremos el array ordenador y vamos concatenando todo en una cadena 'cadena += mKey + '=' + mValue
+			for (var key:String in params)
+			{
+				signatureStr += key + '=' + params[key];
+			}
+			//Añadimos el ApiSecret al final de la cadena
+			signatureStr += AppConfig.SECRET;
+			//Calculamso el MD5 de la cadena
+			var tmpSignature:String = MD5.hash(signatureStr);
+			//metemos el valor de la firma en el mensaje en el campo signature
+			params['signature'] = tmpSignature;
+			//Decimos a Javascript que ejecute la llamada con los parametros configurados
 			ExternalInterface.call("publishMessage", params);	
+		*/
 			
 			
 			/*

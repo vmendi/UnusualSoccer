@@ -67,8 +67,9 @@
 					  click="TrainClickHandler(event)"/>
 		</s:Panel>
 	</s:Group>	
-	
-	<Team:Field top="50" horizontalCenter="0" /> 
+	<s:Panel  title="{resourceManager.getString('main','TeamPanelAlignTitle')}" skinClass="GameView.Skins.DefaultPanelSkin" controlBarVisible="true" top="10" height="470" horizontalCenter="0">
+		<Team:Field top="10"/> 
+	</s:Panel>
 	<!--<Team:Substitutes top="344" horizontalCenter="0" />-->
 	
 	<Team:CapPanel width="188" right="10" top="10" bottom="10" title="{resourceManager.getString('main','TeamPanelPlayerTitle')}"/>

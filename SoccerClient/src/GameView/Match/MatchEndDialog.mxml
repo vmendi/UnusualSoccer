@@ -53,6 +53,10 @@
 			// Esto por dentro vera si ya tenemos los permisos o intentara adquirirlos...
 			PublishMessages.TryPermissionsAndPublish(msgToPublish, onPublishCallback);
 			
+			//Santi
+			AceptarClickHandler(event);
+			
+			//En tuenti, no hay callback
 			function onPublishCallback(published : Boolean) : void
 			{
 				if (published)

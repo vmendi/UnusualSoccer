@@ -84,10 +84,11 @@
 			}
 			if (currentState == "Incomplete")
 			{
-				if (mSpecialTrainingDef.Name != "SUPERPOTENCIA")
+				//if (mSpecialTrainingDef.Name != "SUPERPOTENCIA")
 					MyDoTrainButton.visible = true;
-				else
-					MyLikeText.visible = true;
+				//Santi : Descomentar para retomar la funcionalidad del me gusta
+				//else
+					//MyLikeText.visible = true;
 			}
 		}
 
