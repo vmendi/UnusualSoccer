@@ -100,7 +100,8 @@ namespace Realtime
                     ProcessCompetition();
 
                 // Lesionamos a futbolistas
-                ProcessInjured();
+                //Santi: En tuenti no hay lesionados
+                //ProcessInjured();
                 
                 mContext.SubmitChanges();
             }
@@ -148,7 +149,7 @@ namespace Realtime
                     var randInjured = rand.Next(0, soccerPlayers.Count());
 
                     // cambiar el valor a "true" cuadno queramos permitir lesiones
-                    soccerPlayers[randInjured].IsInjured = false;
+                    soccerPlayers[randInjured].IsInjured = true;
                     soccerPlayers[randInjured].LastInjuryDate = DateTime.Now;
                     ret.Add(soccerPlayers[randInjured].SoccerPlayerID);
                 }

@@ -42,7 +42,7 @@
 
         // Función que se ejecuta cuando la JS API TUENTI está cargada
         var onApiReady = function () {
-            console.log('la Api de tuenti está cargada');
+            //console.log('la Api de tuenti está cargada');
             //Pedimos el ID de Usuario
             tuenti.api.users.getUserId(this.onGetUserIdSuccess, this.onGetUserIdError);
             //Pedimos los IDs de amigos. (Tuenti solo nos da los amigos que juegan a este juego)
@@ -82,17 +82,15 @@
         var onErrorFriendsData = function (data) {
            // console.log("onError");
            // console.log(data);
-            alert("(ERROR) The users data:" + usersData);
+           // alert("(ERROR) The users data:" + usersData);
         };
         
         //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getFriendIds' no se ejecuta correctamente
         var onErrorFriendIDs = function (data) {
-            alert('(ERROR) al recibir IDs de amigos');
+            //alert('(ERROR) al recibir IDs de amigos');
             //console.log("onError:" + data);
-           // console.log(data);
+            //console.log(data);
         };
-
-
 
         //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getUserId' se realiza con éxito
         var onGetUserIdSuccess = function (userId) {
@@ -102,7 +100,7 @@
         //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getUserId' NO se ejecuta correctamente
         var onGetUserIdError = function (data) {
            // console.log("onUserIDError: " + data);
-            alert("onUserIDError: " + data);
+           // alert("onUserIDError: " + data);
         };
 
         var getUsersData = function () {
@@ -110,26 +108,33 @@
             return friendsData;
         };
         //Testing Publicaciones
-        var publishMessage = function (params) {
-           // alert('Me llaman para publicar un mensaje en el muro de Tuenti: \n -Parametros:' + params);
-            tuenti.api.apps.postToWall(params, onSuccesPublish, onErrorPublish);
+        var publishMessage = function (data) {
+            /* alert('Me llaman para publicar un mensaje en el muro de Tuenti: \n -Parametros:' + data);
+            var par = "";
+            for (key in data) {
+                par += "[" + key + "] = " + data[key] + "\n";
+            }
+            alert(par);
+            */
+            tuenti.api.apps.postToWall(data, onSuccesPublish, onErrorPublish);
         };
 
         //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.apps.postToWall' se realiza con éxito
         var onSuccesPublish = function (data) {
-            alert('post publicado' + data);
-            console.log('post publicado' + data);
+            //alert('post publicado' + data);
+            //console.log('post publicado' + data);
         };
 
         //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.apps.postToWall' NO se ejecuta correctamente
         var onErrorPublish = function (data) {
-            var error = "";
+            /*var error = "";
             for (key in data) {
                 error += "[" + key + "] = " + data[key] + "\n";
             }
 
             console.log('Error al publicar post ==> \n' + error);
             alert('Error al publicar post ==> \n' + error);
+            */
         };
 
     </script>
