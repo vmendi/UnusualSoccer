@@ -1,11 +1,11 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="SoccerServer.Default" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"
 	  xmlns:og="http://opengraphprotocol.org/schema/">
 
 <head id="TheHead">
+    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; " /> 
     <title>Mahou Liga Chapas</title>
 
     <!-- Kissmetrics -->
@@ -44,7 +44,7 @@
         var onApiReady = function () {
             //console.log('la Api de tuenti está cargada');
             //Pedimos el ID de Usuario
-            tuenti.api.users.getUserId(this.onGetUserIdSuccess, this.onGetUserIdError);
+            //tuenti.api.users.getUserId(this.onGetUserIdSuccess, this.onGetUserIdError);
             //Pedimos los IDs de amigos. (Tuenti solo nos da los amigos que juegan a este juego)
             tuenti.api.users.getFriendIds(this.onSuccessFriendIDs, this.onErrorFriendIDs);           
         };
