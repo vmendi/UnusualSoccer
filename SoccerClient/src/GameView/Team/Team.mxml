@@ -39,6 +39,10 @@
 			(HierarchyUtils.FindParentOfType(this, "GameView::MainView") as MainView).ChangeStateToSpecialTrainings();
 		}
 		
+		protected function TrainingTeamClickHandler(event:MouseEvent):void
+		{
+			(HierarchyUtils.FindParentOfType(this, "GameView::MainView") as MainView).ChangeStateToTeamTraining();
+		}
 		
 		[Bindable]
 		private var mTeamModel : TeamModel;
@@ -68,8 +72,14 @@
 		</s:Panel>
 	</s:Group>	
 	<s:Panel  title="{resourceManager.getString('main','TeamPanelAlignTitle')}" skinClass="GameView.Skins.DefaultPanelSkin" controlBarVisible="true" top="10" height="470" horizontalCenter="0">
-		<Team:Field top="10"/> 
+		<s:layout><s:VerticalLayout horizontalAlign="center" gap="10" /></s:layout>
+		<Team:Field/> 
+		<s:Label width="300" textAlign="center" maxDisplayedLines="3"
+				 text="{resourceManager.getString('main','TeamPanelTeamTraningsTxt')}" styleName="whiteBoldMediumArial" />
+		<s:Button width="168" height="27" label="{resourceManager.getString('main','TeamPanelTeamTrainingButton')}" skinClass="GameView.Skins.ButtonGreySkin"
+				  click="TrainingTeamClickHandler(event)"/>
 	</s:Panel>
+	<!-- Los substitutos quedan al margen en la primera versión de tuenti chapas-->
 	<!--<Team:Substitutes top="344" horizontalCenter="0" />-->
 	
 	<Team:CapPanel width="188" right="10" top="10" bottom="10" title="{resourceManager.getString('main','TeamPanelPlayerTitle')}"/>

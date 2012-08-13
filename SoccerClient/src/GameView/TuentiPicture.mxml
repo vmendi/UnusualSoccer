@@ -59,7 +59,7 @@
 			
 			// http://yourpalmark.com/2011/12/28/updated-solution-as3-security-error-2122-with-300-redirects/
 			mLoader.load(new URLRequest(mAvatar),
-				new LoaderContext(false, ApplicationDomain.currentDomain, SecurityDomain.currentDomain));
+				new LoaderContext(true, ApplicationDomain.currentDomain, SecurityDomain.currentDomain));
 		}
 		
 		private function OnError(e:Event):void

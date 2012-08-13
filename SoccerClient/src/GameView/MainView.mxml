@@ -117,6 +117,13 @@
 			MainMenuButtonBar.selectedIndex = 4;
 			currentState = "TrainingSpecial";
 		}
+		public function ChangeStateToTeamTraining() : void
+		{
+			MainMenuButtonBar.selectedIndex = 3;
+			currentState = "Training";
+		}
+		
+		//Santi: Navegamos a la ventana de entrenemiento de equipo
 		
 		public function ChangeStateToRanking() : void
 		{

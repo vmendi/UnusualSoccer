@@ -309,8 +309,11 @@ package Match
 				mFacebookPictureLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, OnLoadComplete);
 				mFacebookPictureLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, OnError);
 				mFacebookPictureLoader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, OnError);
-				mFacebookPictureLoader.load(new URLRequest("//graph.facebook.com/"+facebookID+"/picture/?type=square"),
+				
+				//Santi - Deshabilitado de momento
+				/*mFacebookPictureLoader.load(new URLRequest("//graph.facebook.com/"+facebookID+"/picture/?type=square"),
 											new LoaderContext(true, ApplicationDomain.currentDomain, SecurityDomain.currentDomain));
+				*/
 			}
 			
 			function OnLoadComplete(e:Event) : void
