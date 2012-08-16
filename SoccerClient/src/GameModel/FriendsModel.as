@@ -91,16 +91,19 @@ package GameModel
 		public function get Friends() : ArrayCollection {  
 			
 			//////Santi : LLamo a la función de Javascript que está almacenando la información de los amigos que están participando en la APP.
+			var friendsData:Object;
+			var mFriends:ArrayCollection = new ArrayCollection();
 			if (ExternalInterface.available) {
-				var friendsData:Object = ExternalInterface.call("getUsersData");	
+				 friendsData = ExternalInterface.call("getUsersData");	
 			}
-			
-			mFriends = new ArrayCollection();
-			for each(var friend:* in friendsData) 
-			{
-				var a:Friend = new Friend (friend.name, friend.gamerId, friend.avatar);
-				mFriends.addItemAt(a,parseInt(friend.toString()));
-			}	
+			if(friendsData!= null)
+			{			
+				for each(var friend:* in friendsData) 
+				{
+					var a:Friend = new Friend (friend.name, friend.gamerId, friend.avatar);
+					mFriends.addItemAt(a,parseInt(friend.toString()));
+				}
+			}
 
 			return mFriends; 
 		}

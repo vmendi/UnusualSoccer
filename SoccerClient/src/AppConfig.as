@@ -43,6 +43,7 @@ package
 			if (parameters.hasOwnProperty("VersionID"))
 				VERSION_ID = parameters["VersionID"];
 			
+			//Santi: Boolean, para saber si accedemos al juego desde fuera de tuenti... se usa para crear la fakesession
 			if (parameters.hasOwnProperty("Remote"))
 				REMOTE = parameters["Remote"];
 			

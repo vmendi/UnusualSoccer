@@ -11,9 +11,11 @@ package GameModel
 		
 		//Santi : Añado la variable avatar que guardará la foto del amigo
 		
-		public function Friend(name:String, facebookID:Number, avatar:String = null)
+		public function Friend(name:String, facebookID:Number, avatar:String = '')
 		{
-			Name = name; FacebookID = facebookID; Avatar = avatar;
+			Name = name; FacebookID = facebookID;
+			if(avatar != '')
+				Avatar = avatar;
 		}
 	}
 }

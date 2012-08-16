@@ -29,5 +29,8 @@ package HttpService.TransferModel.vo
 		public var NumMatchesPlayed:int;
 		public var NumMatchesWon:int;
 		public var NumMatchesDraw:int;
+		
+		//Santi: añadido
+		public var Avatar:String;
 	}
 }
