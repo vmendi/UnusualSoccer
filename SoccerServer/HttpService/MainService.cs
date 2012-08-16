@@ -23,7 +23,7 @@ namespace HttpService
                        where s.FacebookSession == sessionKey
                        select s.Player).FirstOrDefault();
 
-            if (mPlayer == null)
+            if (mPlayer  == null)
                 throw new Exception("Invalid SessionKey: " + sessionKey);
 
             return mContext;

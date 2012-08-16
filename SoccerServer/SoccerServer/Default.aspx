@@ -1,144 +1,120 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="SoccerServer.Default" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"
-	  xmlns:og="http://opengraphprotocol.org/schema/">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es_ES" lang="es_ES">
 
 <head id="TheHead">
-    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; " /> 
-    <title>Mahou Liga Chapas</title>
-
-    <!-- Kissmetrics -->
-    <script type="text/javascript">
-        var _kmq = _kmq || [];
-        function _kms(u) {
-            setTimeout(function () {
-                var s = document.createElement('script'); var f = document.getElementsByTagName('script')[0]; s.type = 'text/javascript'; s.async = true;
-                s.src = u; f.parentNode.insertBefore(s, f);
-            }, 1);
-        }
-        _kms('//i.kissmetrics.com/i.js'); _kms('//doug1izaerwt3.cloudfront.net/ae86ab550667e1579736f7bbf25066047d01b340.1.js');
-    </script>
-
+    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8;" /> 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Mahou Liga Chapas</title>
+    <script type="text/javascript" src="http://www.tuenti.com/?m=Games&func=js_api&page_key=6_677_723&ajax=1"></script>
 
     <style type="text/css" media="screen"> 
 		html, body	{ height:100%; }
 		body { margin:0; padding:0; overflow:auto; background-color: #FFFFFF; }
 		#flashContent { display:none; }
     </style>
-    
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-	 
      <!-- TUENTI -->
-    <script type="text/javascript" src="${tuentiAPI}"></script>
     <script type="text/javascript">
         var friendsData = new Object();
+        var myData = new Object();
         
         //*********************************************************
         //Estas funciones son con las que interactuamos con tuenti
         //*********************************************************
-
         // Función que se ejecuta cuando la JS API TUENTI está cargada
         var onApiReady = function () {
-            //console.log('la Api de tuenti está cargada');
-            //Pedimos el ID de Usuario
-            //tuenti.api.users.getUserId(this.onGetUserIdSuccess, this.onGetUserIdError);
             //Pedimos los IDs de amigos. (Tuenti solo nos da los amigos que juegan a este juego)
-            tuenti.api.users.getFriendIds(this.onSuccessFriendIDs, this.onErrorFriendIDs);           
+            //tuenti.api.users.getFriendIds(this.onSuccessFriendIDs, this.onErrorFriendIDs);        
+            //Pedimos el ID de Usuario
+            tuenti.api.users.getUserId(this.onGetUserIdSuccess, this.onGetUserIdError);     
         };
 
         //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getFriendIds' se realiza con éxito
         var onSuccessFriendIDs = function (friendIds) {
-            /*var texto = "This is my friend ids:\n";
-            for (var i in friendIds) {
-                alert(" -ID: [" + friendIds[i] + "]");
-            }*/
-         //   console.log(friendIds);
-            //alert('IDs de amigos recibidos: ' + friendIds);
             //Ya tenemos los IDs de los amigos de Tuenti, que tb juegan a Tuenti Liga Chapas... Pedimos sus datos
             tuenti.api.users.getUsersData(friendIds, onSuccessFriendsData, onErrorFriendsData);
         };
 
-        // Recibimos los datos de los amigos.
-        var onSuccessFriendsData = function (usersData) {
-         //   console.log("The users data:");
-         //   console.log(usersData);
-            //friendsData = usersData;
+                // Recibimos los datos de los amigos.
+                var onSuccessFriendsData = function (usersData) {
+                    for (var i in usersData) {
+                        friendsData[i] = usersData[i];
+                    }
+                };    
 
-            for (var i in usersData) {
-              //  alert(usersData[i].avatar);
-                friendsData[i] = usersData[i];
-            }
-            //// DEBUG   
-            /*for (var i in friendsData) {
-                alert("friendData Copiada: " + friendsData[i].avatar);
-            }*/
-        };
-    
-
-        // Error al recibir los datos de los amigos.
-        var onErrorFriendsData = function (data) {
-           // console.log("onError");
-           // console.log(data);
-           // alert("(ERROR) The users data:" + usersData);
-        };
+                // Error al recibir los datos de los amigos.
+                var onErrorFriendsData = function (data) {
+                    //console.log(data);
+                    return;
+                };
         
-        //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getFriendIds' no se ejecuta correctamente
-        var onErrorFriendIDs = function (data) {
-            //alert('(ERROR) al recibir IDs de amigos');
-            //console.log("onError:" + data);
-            //console.log(data);
-        };
+                //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getFriendIds' no se ejecuta correctamente
+                var onErrorFriendIDs = function (data) {
+                    //console.log("onError:" + data);
+                    //console.log(data);
+                    return;
+                };
 
         //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getUserId' se realiza con éxito
         var onGetUserIdSuccess = function (userId) {
-           // console.log("My user id is: " + userId);
+            //console.log("My user id is: " + userId);
+            tuenti.api.users.getUsersData([userId], onSuccessMyData, onErrorMyData);
         };
+
+                // Recibo mis datos.
+                var onSuccessMyData = function (data) {
+                    //console.log("The users data:");
+                    //console.log(data);
+                    myData = data;
+                };
+
+
+                // Error al recibir mis datos.
+                var onErrorMyData = function (data) {
+                    //console.log("getMyDataError:");
+                    //console.log(data);
+                    return;
+                    // alert("(ERROR) The users data:" + usersData);
+                };
 
         //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getUserId' NO se ejecuta correctamente
-        var onGetUserIdError = function (data) {
-           // console.log("onUserIDError: " + data);
-           // alert("onUserIDError: " + data);
-        };
+                var onGetUserIdError = function (data) {
+                    //console.log("onUserIDError: " + data);
+                    return;
+                };
 
+        //Publico el mensaje con los parametros que me pasa flash
+        var publishMessage = function (data) {
+            tuenti.api.apps.postToWall(data, onSuccesPublish, onErrorPublish);              
+        };
+                //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.apps.postToWall' se realiza con éxito
+                var onSuccesPublish = function (data) {
+                    //console.log('post publicado' + data);
+                };
+
+                //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.apps.postToWall' NO se ejecuta correctamente
+                var onErrorPublish = function (data) {
+                    var error = "";
+                    for (key in data) {
+                        error += "[" + key + "] = " + data[key] + "\n";
+                    }
+                    //console.log('Error al publicar post ==> \n' + error);
+                };
+
+        //devuelvo los datos de mis amigos al flash
         var getUsersData = function () {
-            //alert("Me llaman y tengo q devolver los datos de amigos: " + friendsData );
             return friendsData;
         };
-        //Testing Publicaciones
-        var publishMessage = function (data) {
-            /* alert('Me llaman para publicar un mensaje en el muro de Tuenti: \n -Parametros:' + data);
-            var par = "";
-            for (key in data) {
-                par += "[" + key + "] = " + data[key] + "\n";
-            }
-            alert(par);
-            */
-            tuenti.api.apps.postToWall(data, onSuccesPublish, onErrorPublish);
+
+        //Devuelvo mis datos al flash
+        var getMyData = function () {
+            return myData;
         };
-
-        //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.apps.postToWall' se realiza con éxito
-        var onSuccesPublish = function (data) {
-            //alert('post publicado' + data);
-            //console.log('post publicado' + data);
-        };
-
-        //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.apps.postToWall' NO se ejecuta correctamente
-        var onErrorPublish = function (data) {
-            /*var error = "";
-            for (key in data) {
-                error += "[" + key + "] = " + data[key] + "\n";
-            }
-
-            console.log('Error al publicar post ==> \n' + error);
-            alert('Error al publicar post ==> \n' + error);
-            */
-        };
-
     </script>
-	
+	 
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
     <script type="text/javascript">
 			
 		/* The query string as a hash */
@@ -180,7 +156,17 @@
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
     </script>
-    
+        <!-- Kissmetrics -->
+    <script type="text/javascript">
+        var _kmq = _kmq || [];
+        function _kms(u) {
+            setTimeout(function () {
+                var s = document.createElement('script'); var f = document.getElementsByTagName('script')[0]; s.type = 'text/javascript'; s.async = true;
+                s.src = u; f.parentNode.insertBefore(s, f);
+            }, 1);
+        }
+        _kms('//i.kissmetrics.com/i.js'); _kms('//doug1izaerwt3.cloudfront.net/ae86ab550667e1579736f7bbf25066047d01b340.1.js');
+    </script>
     <!--
     <script type="text/javascript">
         function sendRequestViaMultiFriendSelector() {

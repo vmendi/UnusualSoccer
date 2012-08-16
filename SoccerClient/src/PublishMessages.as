@@ -63,28 +63,11 @@ package
 			var theCallbackParams:Array 	= new Array();
 			var theIconUrl:String 			= AppConfig.CANVAS_URL + publishMessage.daPicture;
 			var theTitle:String 			= publishMessage.daCaption;
-			var signatureStr:String 		= "";
-			
-			var date:Date 				= new Date();
-			var theUnixEpoch:Number 	= Math.round(date.getTime() /1000);
-			
-			trace('-La fecha actual en milisegundos es: ' + date);
-			trace('-El UNIX Epoch es: ' + theUnixEpoch);
-			
-			//-------------------------------------------------//
-			//(Ayuda)//Tuenti example from their stuff//(Ayuda)//
-			//-------------------------------------------------//
-			
-			/*var 	mSignature:String = "";
-					mSignature +='actionLinkParams=' + actionLinkParams;
-					mSignature +='body=' + bod;
-					mSignature +='callbackParams=' + callbackParams,
-					mSignature +='iconUrl=' + icon;
-					mSignature +='timestamp=' + tstamp;
-					mSignature +='title=' + title;
-					mSignature +=AppConfig.SECRET;
-			*/
-			
+			var signatureStr:String 		= "";			
+			var date:Date 					= new Date();
+			var theUnixEpoch:Number 		= Math.round(date.getTime() /1000);
+		
+			//Generamos la firma del mensaje
 			var mSignature:String = "";
 			mSignature +='actionLinkParams=' + theActionLinkParams	;
 			mSignature +='body=' + theBody;
@@ -94,104 +77,22 @@ package
 			mSignature +='title=' + theTitle;
 			mSignature +=AppConfig.SECRET;
 			
+			//la firma es el hash MD5 de los parametros concatenados alfabéticamente key + value
 			var sign:String = MD5.hash(mSignature);
 			
+			//los parametros los pasamos en un Object al javascript
 			var params : Object = 	{					
 				'actionLinkParams':{},
 				'body':theBody,
 				'callbackParams':{},
 				'iconUrl':theIconUrl,
-				'timestamp':theUnixEpoch, //AppConfig.DEV_TIMESTAMP
+				'timestamp':theUnixEpoch,
 				'title':theTitle,										
-				'signature':sign //AppConfig.DEV_SIGNATURE,										
+				'signature':sign										
 			};
 			
 			//Decimos a Javascript que ejecute la llamada con los parametros configurados
-			ExternalInterface.call("publishMessage", params);	
-			
-			/*
-			var mSignature:String = "";				
-				mSignature +='actionLinkParams=' 	+ alParams;
-				mSignature +=' body='				+ bod;
-				mSignature +=' callbackParams=' 	+ cbParams,
-				mSignature +=' iconUrl=' 			+ icon;
-				mSignature +=' signature='
-				mSignature +=' timestamp='  		+ tstamp;	
-				mSignature +=' title='  			+ title;				
-				mSignature += AppConfig.SECRET;
-			
-			
-
-			
-			var sign:String = MD5.hash(mSignature);
-				
-			var params : Object = 	{					
-											'actionLinkParams':{params:{}},
-											'body':bod,
-											'callbackParams':{params:{}},
-											'iconUrl':icon,
-											'timestamp':tstamp, //AppConfig.DEV_TIMESTAMP
-											'title':title,										
-											'signature':sign //AppConfig.DEV_SIGNATURE,										
-									};
-			
-			*/
-			/*
-			
-			var params : Object = 	{					
-				'actionLinkParams':alParams,
-				'body':bod,
-				'callbackParams':cbParams,
-				'iconUrl':icon,
-				'signature':'', //AppConfig.DEV_SIGNATURE,			
-				'timestamp':tstamp, //AppConfig.DEV_TIMESTAMP
-				'title':title																	
-			};
-						
-			//Borramos la firma si hubiera
-			params['signature'] = '';
-			// Ordenamos los 'parmas' por Value Orden Alfabético
-			
-			//Recorremos el array ordenador y vamos concatenando todo en una cadena 'cadena += mKey + '=' + mValue
-			for (var key:String in params)
-			{
-				signatureStr += key + '=' + params[key];
-			}
-			//Añadimos el ApiSecret al final de la cadena
-			signatureStr += AppConfig.SECRET;
-			//Calculamso el MD5 de la cadena
-			var tmpSignature:String = MD5.hash(signatureStr);
-			//metemos el valor de la firma en el mensaje en el campo signature
-			params['signature'] = tmpSignature;
-			//Decimos a Javascript que ejecute la llamada con los parametros configurados
-			ExternalInterface.call("publishMessage", params);	
-		*/
-			
-			
-			/*
-			// Publicacion asumiendo que tenemos el permiso?
-			if (directPublish)
-			{
-				//Facebook.api("/me/feed", onPublishResponse, data, URLRequestMethod.POST);
-				//TODO Función para publicar en el muro de Tuenti
-				
-				function onPublishResponse(response : Object, fail : Object) : void
-				{
-				}
-			}
-			else
-			{
-				// Popup modal en un IFrame sobre el flash
-				//Facebook.ui('feed', data, streamPublishResponse);
-				
-				//TODO Función para publicar en el muro de Tuenti
-				
-				function streamPublishResponse(response : Object) : void
-				{
-					//if (response && response.post_id) { alert('Post was published.'); } 
-					//else { alert('Post was not published.'); }
-				}
-			}*/
+			ExternalInterface.call("publishMessage", params);
 		}
 		
 		// Intento de obtener permisos y publicar. Como lo hacemos al menos en dos sitios (MatchEndDialog y SpecialTrainingCompleteDialog), 

@@ -18,17 +18,17 @@ namespace SoccerServer
         TuentiData mTuenti;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Response.AppendHeader("X-XSS-Protection", "0");
             if (Request.QueryString.AllKeys.Contains("tuentiData"))
             {                
                 //var jsonparse = Request.QueryString["tuentiData"];
                Hashtable tuentiData = JSON.JsonDecode(HttpContext.Current.Request.QueryString["tuentiData"]) as Hashtable;
                 mTuenti = new TuentiData(tuentiData);
             }
-            else
+            /*else
             { 
                 
-            }
+            }*/
 
            // Preguntamos a Tuenti por el numero de usuario q está iniciando la app
            // var access_token = TUENTIUtils.GetApplicationAccessToken();
@@ -68,7 +68,7 @@ namespace SoccerServer
              *      var fbSignedRequest = FacebookSignedRequest.Parse(Global.Instance.FacebookSettings as IFacebookApplication, 
              *                                                        HttpContext.Current.Request["signed_request"]);
              */
-            var country = mTuenti.language;//GetCountryFromSignedRequest(FacebookWebContext.Current.SignedRequest);
+            var country = "es_ES";// mTuenti.language;//GetCountryFromSignedRequest(FacebookWebContext.Current.SignedRequest);
             ShowTuentiContent();
         }
 
@@ -151,8 +151,8 @@ namespace SoccerServer
 
             // Parametros de entrada al SWF. Todo lo que nos viene en la QueryString mas algunos del ServerSettings
             string flashVars = " { "; 
-            foreach (string key in Request.QueryString.AllKeys)
-                flashVars += key + ": '" + Request.QueryString[key] + "' ,";
+          //  foreach (string key in Request.QueryString.AllKeys)
+          //      flashVars += key + ": '" + Request.QueryString[key] + "' ,";
 
             flashVars += "VersionID: '"         + serverSettings.VersionID + "' ,";
             flashVars += "RemoteServer: '"      + serverSettings.RemoteServer + "' ,";
@@ -161,7 +161,7 @@ namespace SoccerServer
             flashVars += "CanvasPage: '"        + tuentiSettings.CanvasPage + "#m=" + tuentiSettings.M + "&func=" + tuentiSettings.Func + "&page_key=" + tuentiSettings.Page_Key + "' ,";//tuenti.getCanvasURL() + "' ,";
             flashVars += "CanvasUrl: '"         + tuentiSettings.CanvasUrl + "' ,"; ;
 
-            flashVars += "TUENTI_locale: '"     + mTuenti.language + "' ,";
+            flashVars += "TUENTI_locale: '" + "es_ES" + "' ,"; //mTuenti.language + "' ,";
             flashVars += "TUENTI_v_source: '"   + mTuenti.v_source + "' ,";
             flashVars += "TUENTI_gamerId: '"    + mTuenti.gamerId + "' ,";
             flashVars += "TUENTI_apiLink: '"    + mTuenti.apiLink + "' ,";

@@ -13,6 +13,7 @@ package Match
 					"Valencia",
 					"Zaragoza",
 					"Rayo",
+					"Celta",
 					// Unusual Soccer
 					"ENGLAND",
 					"GERMANY",
@@ -30,6 +31,7 @@ package Match
 					"Espanyol",
 					"R. Sociedad",
 					"Betis",
+					"Valladolid",
 					// Unusual Soccer
 					"ARGENTINA",
 					"FRANCE",
