@@ -22,6 +22,8 @@ package GameModel
 				teamIDs.addItem("Atlético");
 				teamIDs.addItem("Barcelona");
 				teamIDs.addItem("Betis");
+				teamIDs.addItem("Celta");
+				teamIDs.addItem("Deportivo");
 				teamIDs.addItem("Espanyol");
 				teamIDs.addItem("Getafe");
 				teamIDs.addItem("Granada");
@@ -29,14 +31,15 @@ package GameModel
 				teamIDs.addItem("Málaga");
 				teamIDs.addItem("Mallorca");
 				teamIDs.addItem("Osasuna");
-				teamIDs.addItem("Racing");
+			//	teamIDs.addItem("Racing");
 				teamIDs.addItem("Rayo");
 				teamIDs.addItem("R. Madrid");
 				teamIDs.addItem("R. Sociedad");
 				teamIDs.addItem("Sevilla");
-				teamIDs.addItem("Sporting");
+			//	teamIDs.addItem("Sporting");
 				teamIDs.addItem("Valencia");
-				teamIDs.addItem("Villarreal");
+				teamIDs.addItem("Valladolid");
+			//	teamIDs.addItem("Villarreal");
 				teamIDs.addItem("Zaragoza");
 			}
 			else
