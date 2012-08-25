@@ -29,15 +29,27 @@ package GameModel
 				teamIDs.addItem("Málaga");
 				teamIDs.addItem("Mallorca");
 				teamIDs.addItem("Osasuna");
-				teamIDs.addItem("Racing");
+				
 				teamIDs.addItem("Rayo");
 				teamIDs.addItem("R. Madrid");
 				teamIDs.addItem("R. Sociedad");
 				teamIDs.addItem("Sevilla");
-				teamIDs.addItem("Sporting");
+				
 				teamIDs.addItem("Valencia");
-				teamIDs.addItem("Villarreal");
+				
 				teamIDs.addItem("Zaragoza");
+				
+				// 8/24/2012 -----------------
+				
+				//teamIDs.addItem("Sporting");
+				//teamIDs.addItem("Racing");
+				//teamIDs.addItem("Villarreal");
+				
+				teamIDs.addItem("Deportivo");
+				teamIDs.addItem("Celta");
+				teamIDs.addItem("Valladolid");
+				
+				// ---------------------------
 			}
 			else
 			{	
