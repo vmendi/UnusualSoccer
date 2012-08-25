@@ -63,6 +63,8 @@
 
 <script type="text/javascript">
     window.fbAsyncInit = function () {
+        FB.Canvas.setAutoGrow();
+
         var flashVars = <%= GetFlashVars() %>
 
         var params = {};
@@ -99,6 +101,7 @@
         FB.api('/me?fields=third_party_id', function(response) {
             if (response && !response.error)
             {
+                /*
                 if (Math.random() >= 0.5)
                 {
                     $("#AppatyzeIFrame").attr("src", '//app.appatyze.com/gateway.php?a=1176&aid=' + response.third_party_id);
@@ -116,6 +119,7 @@
                         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(a, s);
                     })();
                 }
+                */
             }
         });
     }
