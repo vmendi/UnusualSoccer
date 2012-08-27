@@ -55,8 +55,7 @@
 			// Carga de parametros y configuracion global
 			AppConfig.Init(parameters);
 
-			// Podemos ir cargando recursos que luego necesitaremos
-			MatchMain.LoadMatchResources(null);
+
 			
 			// Para que las estructuras creadas por weborb existan
 			var dataTypeInit : DataTypeInitializer = new DataTypeInitializer();
@@ -110,6 +109,9 @@
 		
 		private function OnFacebookInitSuccess():void
 		{
+			// Podemos ir cargando recursos que luego necesitaremos
+			MatchMain.LoadMatchResources(null);
+			
 			ConfigureLocale();
 			GameMetrics.Init(this);	
 			
@@ -135,11 +137,17 @@
 			{
 				// El idioma que soportamos es el [0], los fallback que aplicara Flex cuando no 
 				// encuentra un recurso en ese idioma estan a continuacion 
+				/* Antiguo:
 				var chains : Array = [ 
-										["en_US", "es_ES"],
-										["es_ES", "en_US"],				// Español MahouLigachapas
-										["es_LA", "es_ES", "en_US"],	// Español mundo
-									];
+					["es_ES", "en_US" ],
+					["es_ES", "en_US"],				// Español MahouLigachapas
+					["es_ES", "es_LA", "en_US"],	// Español mundo
+				];*/
+				var chains : Array = [ 
+					["es_ES", "es_ES" ],
+					["es_ES", "es_ES"],				// Español MahouLigachapas
+					["es_ES", "es_ES", "es_ES"],	// Español mundo
+				];
 				
 				var ret : Array = null;
 				
@@ -157,7 +165,7 @@
 				if (ret == null)
 				{
 					ErrorMessages.LogToServer("WARNING: Unrecognized locale from server " + locale);
-					ret = ["en_US", "es_ES"];
+					ret = ["es_ES","es_ES"];
 				}
 				
 				return ret;
