@@ -4,10 +4,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es_ES" lang="es_ES">
 
 <head id="TheHead">
-    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8;" /> 
+    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7" /> 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Mahou Liga Chapas</title>
-    <script type="text/javascript" src="http://www.tuenti.com/?m=Games&func=js_api&page_key=6_677_723&ajax=1"></script>
+    <script type="text/javascript" src="${tuentiAPI}"></script>
 
     <style type="text/css" media="screen"> 
 		html, body	{ height:100%; }
