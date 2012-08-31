@@ -26,7 +26,7 @@ package
 		static public const CANT_CONNECT_REALTIME : String = "Cant_Connect_Realtime";
 	
 		
-		static public function Init(dobject:DisplayObject) : void
+		static public function Init() : void
 		{			
 			var uid : String = SoccerClient.GetFacebookFacade().FacebookID
 			ExternalInterface.call("_kmq.push", ['identify', uid]);

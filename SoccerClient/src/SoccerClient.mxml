@@ -51,9 +51,6 @@
 			
 			// Carga de parametros y configuracion global
 			AppConfig.Init(parameters);
-
-			// Podemos ir cargando recursos que luego necesitaremos
-			MatchMain.LoadMatchResources(null);
 			
 			// Para que las estructuras creadas por weborb existan
 			var dataTypeInit : DataTypeInitializer = new DataTypeInitializer();
@@ -76,11 +73,14 @@
 		private function OnFacebookInitSuccess():void
 		{
 			ConfigureLocale();
-			GameMetrics.Init(this);	
+			GameMetrics.Init();	
+			
+			// Podemos ir cargando recursos que luego necesitaremos (despues de tener el Locale configurado)
+			MatchMain.LoadMatchResources(null);
 			
 			mMainGameModel = new MainGameModel();
 			mMainGameModel.InitialRefresh(OnInitialRefreshSuccess);
-						
+
 			function OnInitialRefreshSuccess() : void
 			{
 				mMainView = new MainView();
