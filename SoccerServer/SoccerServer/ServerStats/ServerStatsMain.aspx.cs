@@ -219,6 +219,30 @@ namespace SoccerServer.ServerStats
             mDC.SubmitChanges();                
         }
 
+        protected void MisticalRefresh2_Click(object sender, EventArgs e)
+        {
+            // 8/31/2012: Untested yet -> Bring the DB to the localhost and test it first!
+            foreach (Team theTeam in mDC.Teams)
+            {
+                SpecialTraining theTraining = (from t in theTeam.SpecialTrainings
+                                               where t.SpecialTrainingDefinitionID == 1
+                                               select t).FirstOrDefault();
+
+                if (theTraining == null)
+                {
+                    theTraining = new SpecialTraining();
+                    theTraining.SpecialTrainingDefinitionID = 1;
+                    theTraining.TeamID = theTeam.TeamID;
+                    theTraining.EnergyCurrent = 0;
+                    theTraining.IsCompleted = true;
+
+                    mDC.SpecialTrainings.InsertOnSubmit(theTraining);
+                }
+            }
+
+            mDC.SubmitChanges();
+        }
+
         private void ShowRestrictions()
         {
             var access_token = FBUtils.GetApplicationAccessToken();

@@ -148,7 +148,7 @@ namespace SoccerServer
 
         public string GetFBSDK()
         {
-            return "//connect.facebook.net/" + GetLocale() + "/all.js";
+            return "//connect.facebook.net/" + GetLocale() + "/all.js#xfbml=1&appId=" + GetAppID();
         }
 
         public string GetAppID()

@@ -84,10 +84,15 @@
 			}
 			if (currentState == "Incomplete")
 			{
+				// TEMP -> The like button is not working, so we allow the players to train this without liking
+				MyDoTrainButton.visible = true;
+				
+				/*
 				if (mSpecialTrainingDef.Name != "SUPERPOTENCIA")
 					MyDoTrainButton.visible = true;
 				else
 					MyLikeText.visible = true;
+				*/
 			}
 		}
 

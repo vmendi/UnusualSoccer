@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"
 	  xmlns:og="http://opengraphprotocol.org/schema/"
-      xmlns:fb="http://www.facebook.com/2008/fbml">
+      xmlns:fb="http://ogp.me/ns/fb#">
 
 <head id="TheHead">
     <title>Unusual Soccer</title>
@@ -63,8 +63,7 @@
 
 <script type="text/javascript">
     window.fbAsyncInit = function () {
-        FB.Canvas.setAutoGrow();
-
+            
         var flashVars = <%= GetFlashVars() %>
 
         var params = {};
@@ -101,7 +100,7 @@
         FB.api('/me?fields=third_party_id', function(response) {
             if (response && !response.error)
             {
-                /*
+            /*
                 if (Math.random() >= 0.5)
                 {
                     $("#AppatyzeIFrame").attr("src", '//app.appatyze.com/gateway.php?a=1176&aid=' + response.third_party_id);
@@ -119,7 +118,7 @@
                         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(a, s);
                     })();
                 }
-                */
+            */
             }
         });
     }
@@ -138,6 +137,7 @@
     <asp:Panel runat="server" id="MyLikePanel" style="width:760px; height:38px; margin-bottom:10px; position:relative;">
         <img src="<%= GetRsc("Imgs/BannerMeGustaBg_${locale}.png") %>" alt="" width="760" height="38" style="display:block;border:0;position:absolute;" />
 	    <div style="float:left; padding-left:32px; padding-top:10px; width:150px;">
+            <!-- Temporalmente estropeado... -->
 		    <fb:like href="//www.facebook.com/UnusualSoccer" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
 	    </div>
     </asp:Panel>

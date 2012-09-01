@@ -66,7 +66,11 @@ package
 			if (result != null)
 			{
 				mFBAuthResponse = result as FacebookAuthResponse;
-							
+				
+				// The as3 sdk is so obsolete that we can't call setAutoGrow using it (it's still using the 
+				// previous setCanvasAutoResize)
+				ExternalInterface.call("FB.Canvas.setAutoGrow");
+
 				// It's at this moment, after the SDK init, when we insert and display the banner ads
 				ExternalInterface.call("createBannerAds");
 				
