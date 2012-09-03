@@ -17,6 +17,7 @@ namespace HttpService
         {
             mContext = new SoccerDataModelDataContext();
 
+            //Santi: Passamos la sessionKey que nos ha dado Tuenti
             var sessionKey = GetSessionKeyFromRequest();
 
             mPlayer = (from s in mContext.Sessions

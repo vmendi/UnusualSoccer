@@ -4,21 +4,59 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es_ES" lang="es_ES">
 
 <head id="TheHead">
-    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7" /> 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7" /> 
     <title>Mahou Liga Chapas</title>
-    <script type="text/javascript" src="${tuentiAPI}"></script>
 
     <style type="text/css" media="screen"> 
 		html, body	{ height:100%; }
 		body { margin:0; padding:0; overflow:auto; background-color: #FFFFFF; }
 		#flashContent { display:none; }
     </style>
+
      <!-- TUENTI -->
+    <script type="text/javascript" src="${tuentiAPI}"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>    
     <script type="text/javascript">
         var friendsData = new Object();
         var myData = new Object();
-        
+
+        var showFlash = function () { 
+         /* The query string as a hash */
+		        var flashVars = ${flashVars};
+                
+                var avatar= "";
+                for (var i in myData) {
+                        avatar = myData[i].avatar;
+                        //alert(avatar);
+                }
+                flashVars.avatar = avatar;
+
+                /* For version detection, set to min. required Flash Player version, or 0 (or 0.0.0), for no version detection. */
+                var swfVersionStr = "${version_major}.${version_minor}.${version_revision}";
+			
+                var params = {};
+                params.quality = "high";
+                params.bgcolor = "#FFFFFF";
+                params.allowscriptaccess = "always";
+                params.allowfullscreen = "true";
+                params.wmode = "opaque";
+            
+                var attributes = {};
+                attributes.id = "${application}";
+                attributes.name = "${appName}";
+                attributes.align = "middle";
+	    
+                swfobject.embedSWF("${swf}.swf", "flashContent", 
+                			        "${width}", "${height}", 
+                			        swfVersionStr, "", 
+                			        flashVars, params, attributes);
+
+		        /* JavaScript enabled so display the flashContent div in case it is not replaced with a swf object. */
+		        swfobject.createCSS("#flashContent", "display:block;text-align:left;");
+        }
+
         //*********************************************************
         //Estas funciones son con las que interactuamos con tuenti
         //*********************************************************
@@ -29,11 +67,11 @@
             //Pedimos el ID de Usuario
             tuenti.api.users.getUserId(this.onGetUserIdSuccess, this.onGetUserIdError);     
         };
-
+       /* 
         //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getFriendIds' se realiza con éxito
-        var onSuccessFriendIDs = function (friendIds) {
+       var onSuccessFriendIDs = function (friendIds) {
             //Ya tenemos los IDs de los amigos de Tuenti, que tb juegan a Tuenti Liga Chapas... Pedimos sus datos
-            tuenti.api.users.getUsersData(friendIds, onSuccessFriendsData, onErrorFriendsData);
+           // tuenti.api.users.getUsersData(friendIds, onSuccessFriendsData, onErrorFriendsData);
         };
 
                 // Recibimos los datos de los amigos.
@@ -55,7 +93,7 @@
                     //console.log(data);
                     return;
                 };
-
+        */
         //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getUserId' se realiza con éxito
         var onGetUserIdSuccess = function (userId) {
             //console.log("My user id is: " + userId);
@@ -67,22 +105,23 @@
                     //console.log("The users data:");
                     //console.log(data);
                     myData = data;
+                    showFlash();
                 };
 
 
                 // Error al recibir mis datos.
                 var onErrorMyData = function (data) {
-                    //console.log("getMyDataError:");
-                    //console.log(data);
-                    return;
+                    console.log("getMyDataError:");
+                    console.log(data);
+                    //return new Object;
                     // alert("(ERROR) The users data:" + usersData);
                 };
 
         //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getUserId' NO se ejecuta correctamente
-                var onGetUserIdError = function (data) {
-                    //console.log("onUserIDError: " + data);
-                    return;
-                };
+        var onGetUserIdError = function (data)  {
+            //console.log("onUserIDError: " + data);
+            return;
+        };
 
         //Publico el mensaje con los parametros que me pasa flash
         var publishMessage = function (data) {
@@ -103,47 +142,15 @@
                 };
 
         //devuelvo los datos de mis amigos al flash
-        var getUsersData = function () {
+       /* var getUsersData = function () {
             return friendsData;
-        };
+        };*/
 
         //Devuelvo mis datos al flash
-        var getMyData = function () {
+       /* var getMyData = function () {
             return myData;
-        };
-    </script>
-	 
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-    <script type="text/javascript">
-			
-		/* The query string as a hash */
-		var flashVars = ${flashVars};
-
-        /* For version detection, set to min. required Flash Player version, or 0 (or 0.0.0), for no version detection. */
-        var swfVersionStr = "${version_major}.${version_minor}.${version_revision}";
-			
-        var params = {};
-        params.quality = "high";
-        params.bgcolor = "#FFFFFF";
-        params.allowscriptaccess = "always";
-        params.allowfullscreen = "true";
-        params.wmode = "opaque";
-            
-        var attributes = {};
-        attributes.id = "${application}";
-        attributes.name = "${appName}";
-        attributes.align = "middle";
-	    
-        swfobject.embedSWF("${swf}.swf", "flashContent", 
-                			"${width}", "${height}", 
-                			swfVersionStr, "", 
-                			flashVars, params, attributes);
-
-		/* JavaScript enabled so display the flashContent div in case it is not replaced with a swf object. */
-		swfobject.createCSS("#flashContent", "display:block;text-align:left;");
-    </script>
-    
+        };*/
+    </script>    
     
     <!-- Google Analytics -->
     <script type="text/javascript">
@@ -156,7 +163,8 @@
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
     </script>
-        <!-- Kissmetrics -->
+    
+    <!-- Kissmetrics -->
     <script type="text/javascript">
         var _kmq = _kmq || [];
         function _kms(u) {

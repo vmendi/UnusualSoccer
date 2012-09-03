@@ -126,7 +126,8 @@ namespace Realtime
         static private List<int> InjureSoccerPlayers(Team theTeam)
         {
             var ret = new List<int>();
-
+            return ret;
+            /*
             // Los lesionables (los que han jugado el partido)
             var soccerPlayers = (from p in theTeam.SoccerPlayers
                                  where p.FieldPosition < 100 && !p.IsInjured
@@ -146,17 +147,14 @@ namespace Realtime
                 if (rand.Next(100) < 33)
                 {
                     var randInjured = rand.Next(0, soccerPlayers.Count());
-
-                    // cambiar el valor a "true" cuando queramos permitir lesiones
-                    soccerPlayers[randInjured].IsInjured = false;
-                    // Debug: Comento, para que no meta a nadie en la lista y así no hay lesionados
-                    //soccerPlayers[randInjured].LastInjuryDate = DateTime.Now;
-                    //Santi: En tuenti no hay lesionados
-                    //ret.Add(soccerPlayers[randInjured].SoccerPlayerID);
+                    soccerPlayers[randInjured].IsInjured = true;
+                    soccerPlayers[randInjured].LastInjuryDate = DateTime.Now;
+                    ret.Add(soccerPlayers[randInjured].SoccerPlayerID);
                 }
             }
 
             return ret;
+            */ 
         }
 
         private void ProcessCompetition()

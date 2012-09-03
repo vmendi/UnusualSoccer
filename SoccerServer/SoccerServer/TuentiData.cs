@@ -15,7 +15,7 @@ namespace SoccerServer
 
         public string language { get; set; }
         public string v_source { get; set; }
-        public string gamerId { get; set; }
+        public long gamerId { get; set; }
         public string apiLink { get; set; }
         public string signature { get; set; }
         public string name { get; set; }
@@ -44,13 +44,13 @@ namespace SoccerServer
         public void setTuentiData(Hashtable tuentiData)
         {
             if(tuentiData.ContainsKey("language"))
-                language = tuentiData["language"].ToString();
+                language = "es_ES";// tuentiData["language"].ToString();
 
             if (tuentiData.ContainsKey("v_source"))
                 v_source= tuentiData["v_source"].ToString();
 
             if (tuentiData.ContainsKey("gamerId"))
-                gamerId = tuentiData["gamerId"].ToString();
+                gamerId = long.Parse(tuentiData["gamerId"].ToString());
 
             if (tuentiData.ContainsKey("apiLink"))
                 apiLink = tuentiData["apiLink"].ToString();
