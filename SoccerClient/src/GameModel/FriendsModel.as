@@ -93,9 +93,9 @@ package GameModel
 			//////Santi : LLamo a la función de Javascript que está almacenando la información de los amigos que están participando en la APP.
 			var friendsData:Object;
 			var mFriends:ArrayCollection = new ArrayCollection();
-			if (ExternalInterface.available) {
-				 friendsData = ExternalInterface.call("getUsersData");	
-			}
+			//if (ExternalInterface.available) {
+				 //friendsData = ExternalInterface.call("getUsersData");	
+			//}
 			if(friendsData!= null)
 			{			
 				for each(var friend:* in friendsData) 

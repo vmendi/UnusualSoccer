@@ -75,7 +75,10 @@ package GameModel
 				//if (entry.FacebookID.toString() == SoccerClient.GetFacebookFacade().FacebookID)
 				//Santi
 				if (entry.FacebookID.toString() == AppConfig.GAMER_ID.toString())
+				{
+					trace("FB ID ?:" + entry.FacebookID.toString());
 					return entry;
+				}
 			}
 			return null;
 		}

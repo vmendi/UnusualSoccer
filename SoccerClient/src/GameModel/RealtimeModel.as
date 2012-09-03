@@ -2,13 +2,13 @@ package GameModel
 {
 	import GameView.ImportantMessageDialog;
 	
+	import HttpService.MainService;
+	import HttpService.TransferModel.vo.Team;
+	
 	import Match.MatchMain;
 	
 	import NetEngine.InvokeResponse;
 	import NetEngine.NetPlug;
-	
-	import HttpService.MainService;
-	import HttpService.TransferModel.vo.Team;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -197,8 +197,9 @@ package GameModel
 			
 			TheRoomModel = new RoomModel(mServerConnection, mMainService, mMainModel);
 						
-			mServerConnection.Invoke("LogInToDefaultRoom", new InvokeResponse(this, Delegate.create(OnLoginPlayerResponded, onSuccess)), 
-									 SoccerClient.GetFacebookFacade().SessionKey);
+			//mServerConnection.Invoke("LogInToDefaultRoom", new InvokeResponse(this, Delegate.create(OnLoginPlayerResponded, onSuccess)), SoccerClient.GetFacebookFacade().SessionKey);
+			//Santi: Ya no usamos FacebookFacade
+			mServerConnection.Invoke("LogInToDefaultRoom", new InvokeResponse(this, Delegate.create(OnLoginPlayerResponded, onSuccess)), AppConfig.SESSION_KEY);
 		}
 		
 		private function OnLoginPlayerResponded(logged : Boolean, onSuccess : Function) : void

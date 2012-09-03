@@ -159,7 +159,7 @@ package
 			
 			//if (SoccerClient.GetFacebookFacade() != null && SoccerClient.GetFacebookFacade().FacebookID != null)
 			//Santi
-			if (SoccerClient.GetFacebookFacade() != null && AppConfig.GAMER_ID != null)
+			if (AppConfig.GAMER_ID != null)
 				//facebookID = SoccerClient.GetFacebookFacade().FacebookID;
 				facebookID = AppConfig.GAMER_ID;
 			

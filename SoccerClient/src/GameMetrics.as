@@ -27,7 +27,7 @@ package
 		static public function Init(dobject:DisplayObject) : void
 		{			
 			var uid : String = AppConfig.USER_ID;
-			ExternalInterface.call("_kmq.push", ['identify', uid]);
+			//ExternalInterface.call("_kmq.push", ['identify', uid]);
 		}
 		
 		static public function ReportEvent(event:String, properties:Object) : void
@@ -40,14 +40,14 @@ package
 			//sendToURL(new URLRequest("http://api.geo.kontagent.net/api/v1/75bcc0495d1b49d8a5c8ad62d989dcf7/evt/?s="+uid+"&n="+event));
 			
 			// Kissmetrics
-			ExternalInterface.call("_kmq.push", ['record', event, properties]);
+			//ExternalInterface.call("_kmq.push", ['record', event, properties]);
 		}
 		
 		static public function ReportPageView(page:String) : void
 		{
 			// Unicamente a Google Analytics
 			// ExternalInterface.call("_gaq.push(['_trackEvent', CATEGORY, ACTION, Opt_LABEL, Opt_VALUE])");
-			ExternalInterface.call(StringUtil.substitute("_gaq.push(['_trackEvent', {0}, {1}])", "Manager", page));
+			//ExternalInterface.call(StringUtil.substitute("_gaq.push(['_trackEvent', {0}, {1}])", "Manager", page));
 		}
 	}
 }

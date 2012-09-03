@@ -55,7 +55,7 @@
 			// Carga de parametros y configuracion global
 			AppConfig.Init(parameters);
 
-
+			
 			
 			// Para que las estructuras creadas por weborb existan
 			var dataTypeInit : DataTypeInitializer = new DataTypeInitializer();

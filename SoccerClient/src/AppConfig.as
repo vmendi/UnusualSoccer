@@ -23,6 +23,7 @@ package
 		static public var TIME_STAMP		: Number = 0;
 		static public var USER_ID			: String = null;		
 		static public var APP_ID   			: String = null;
+		static public var AVATAR   			: String = null;
 		
 		static public var SECRET    		: String = null;
 		
@@ -105,6 +106,9 @@ package
 			
 			if (parameters.hasOwnProperty("TUENTI_SECRET"))
 				SECRET = parameters["TUENTI_SECRET"];
+			
+			if (parameters.hasOwnProperty("avatar"))
+				AVATAR = parameters["avatar"];
 		}
 		
 		/*static public function Init(parameters : Object) : void

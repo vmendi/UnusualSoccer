@@ -62,16 +62,17 @@
 		{
 			var myData:Object;
 			var myAvatar:String;
-			if (ExternalInterface.available) {
-				//myID = ExternalInterface.call("getMyId");
-				myData = ExternalInterface.call("getMyData");	
+			/*if (ExternalInterface.available) {
+				// * //myID = ExternalInterface.call("getMyId");
+				myData =ExternalInterface.call("getMyData");	
 			}
 			
 			for( var key:* in myData)		
 			{	
 				myAvatar = myData[key].avatar;
-			}
-			return myAvatar;
+			}*/
+			
+			return  AppConfig.AVATAR;//myAvatar;
 		}
 		
 		[Bindable] 

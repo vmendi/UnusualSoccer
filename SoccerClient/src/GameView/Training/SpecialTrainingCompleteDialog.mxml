@@ -37,7 +37,7 @@
 			PublishMessages.TryPermissionsAndPublish(PublishMessages.BuildSpecialTrainingPublishMessage(mSpecialTrainingDef.SpecialTrainingDefinitionID), onPublishCallback);
 			
 			//Santi: Cerramos la ventana tras pulsar "Publicar"
-			ClickHandler(null);
+			onPublishCallback(true);
 			
 			function onPublishCallback(published : Boolean) : void
 			{				
