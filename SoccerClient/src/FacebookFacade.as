@@ -112,7 +112,7 @@ package
 			if (current.indexOf("?") != -1)
 				current = current.substr(0, current.indexOf("?"));
 			
-			ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri = current + "?SessionKey=" + SessionKey;
+			ServerConfig.xml[0].channels.channel.(@id=='my-amf').endpoint.@uri = current + "?SessionKey=" + AppConfig.SESSION_KEY;
 
 			var channelSet : ChannelSet = ServerConfig.getChannelSet("GenericDestination");
 			channelSet.disconnectAll();

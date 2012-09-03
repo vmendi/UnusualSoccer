@@ -26,7 +26,7 @@ package
 		
 		static public function Init(dobject:DisplayObject) : void
 		{			
-			var uid : String = AppConfig.USER_ID;
+			var uid : String = AppConfig.GAMER_ID.toString();
 			//ExternalInterface.call("_kmq.push", ['identify', uid]);
 		}
 		
