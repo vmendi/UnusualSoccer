@@ -98,10 +98,7 @@ namespace SoccerServer
         private void InjectContentPanel(Boolean showLikePanel)
         {
             MyDefaultPanel.Visible = true;
-            
-            // Temporary while the Like button is not working
-            MyLikePanel.Visible = false;
-            //MyLikePanel.Visible = showLikePanel;
+            MyLikePanel.Visible = showLikePanel;
         }
 
         public string GetFlashVars()

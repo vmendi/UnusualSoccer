@@ -90,8 +90,7 @@
     <!-- Banner y botón Like mecanismo XFBML -->
     <asp:Panel id="MyLikePanel" style="width:760px; height:38px; background:url(Imgs/BannerMeGustaBg.png); margin-bottom:10px;" runat="server">
 	    <div style="float:left; padding-left:32px; padding-top:10px; width:150px;">
-            <!-- Temporalmente estropeado... -->
-		    <fb:like href="//www.facebook.com/MahouLigaChapas" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
+		    <fb:like href="www.facebook.com/MahouLigaChapas" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
 	    </div>
     </asp:Panel>
 

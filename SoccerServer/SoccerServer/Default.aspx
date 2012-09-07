@@ -138,7 +138,7 @@
         <img src="<%= GetRsc("Imgs/BannerMeGustaBg_${locale}.png") %>" alt="" width="760" height="38" style="display:block;border:0;position:absolute;" />
 	    <div style="float:left; padding-left:32px; padding-top:10px; width:150px;">
             <!-- Temporalmente estropeado... -->
-		    <fb:like href="//www.facebook.com/UnusualSoccer" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
+		    <fb:like href="www.facebook.com/UnusualSoccer" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
 	    </div>
     </asp:Panel>
 
