@@ -28,7 +28,12 @@ namespace SoccerServer
         public string func {get; set;}
         // parametro de la página del canvas page_key -> indica la el ¿ID de la applicacion?
         public string page_key { get; set; }
-             
+        // Párametro extra para usar en el debug
+        public string[] ext_source { get; set; }
+        public double fakeSessionKey { get; set; }
+        // Párametro extra para los test del servidor
+        public string TestNo { get; set; }
+            
         public TuentiData()
         {}
 
@@ -69,6 +74,19 @@ namespace SoccerServer
 
             if (tuentiData.ContainsKey("userId"))
                 userId = long.Parse(tuentiData["userId"].ToString());
+
+            if (tuentiData.Contains("ext_source"))
+            {
+                ext_source = tuentiData["ext_source"].ToString().Split('_');
+                foreach (string st in ext_source)
+                { 
+                    if(st.Contains("TestNo"))
+                        TestNo = st.Replace("TestNo",string.Empty);
+                    if (st.Contains("FakeSessionKey"))
+                        fakeSessionKey = double.Parse(st.Replace("FakeSessionKey", string.Empty));
+
+                }
+            }
 
             var tmp = this.apiLink.Split('?')[1];
             var urlParams = tmp.Split('&');

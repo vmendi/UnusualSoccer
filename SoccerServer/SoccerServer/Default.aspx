@@ -175,15 +175,6 @@
         }
         _kms('//i.kissmetrics.com/i.js'); _kms('//doug1izaerwt3.cloudfront.net/ae86ab550667e1579736f7bbf25066047d01b340.1.js');
     </script>
-    <!--
-    <script type="text/javascript">
-        function sendRequestViaMultiFriendSelector() {
-            FB.ui({ method: 'apprequests',
-                message: ' Come to play a match with me!'
-            }, null);
-        }
-    </script>
-    -->
 </head>
 	
 <body>
