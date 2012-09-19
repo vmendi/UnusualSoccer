@@ -97,10 +97,9 @@ package
 			if (parameters.hasOwnProperty("FakeSessionKey"))parameters["FakeSessionKey"];
 				FAKE_SESSION_KEY = parameters["FakeSessionKey"];
 			
-			if (parameters.hasOwnProperty("Test"))
-				TEST = parameters["Test"];
-			
-			
+			if (parameters.hasOwnProperty("TestNo"))
+				TEST = parameters["TestNo"];
+						
 			if (parameters.hasOwnProperty("request_ids"))
 				REQUEST_IDS = new ArrayCollection(parameters["request_ids"].split(","));
 			

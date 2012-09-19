@@ -128,7 +128,7 @@ package
 			
 			if (AppConfig.REMOTE)
 				domainBase = "http://" + AppConfig.REMOTE_SERVER;
-						
+			// En tuenti, los ids de prueba los uso en negativo						
 			var request : URLRequest = new URLRequest(domainBase + "/TestCreateSession.aspx?FakeSessionKey="+sessionKey);
 			request.method = URLRequestMethod.POST;
 			

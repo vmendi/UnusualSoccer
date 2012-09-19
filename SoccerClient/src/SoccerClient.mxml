@@ -62,6 +62,7 @@
 
 			if (AppConfig.TEST != null)
 			{
+				//Santi TODO: Activar los test. Ya recibimos el dato en el AppConfig.TEST 
 				mFacebookFacade = new FacebookFacade();
 				mMainGameModel = new MainGameModel();
 				
