@@ -3,7 +3,8 @@
 		 			   xmlns:s="library://ns.adobe.com/flex/spark"
 		 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 		 			   xmlns:Purchase="GameView.Purchase.*"
-		 			   width="600" height="455" xmlns:GameView="GameView.*">
+		 			   width="600" height="455" xmlns:GameView="GameView.*"
+					   addedToStage="AddedToStageHandler(event)">
 	
 	<fx:Style source="../styles.css"/>
 	
@@ -24,6 +25,21 @@
 		{			
 			// El ID del button es directamente lo que espera el servidor que le mandemos
 			ProcessPurchase((event.currentTarget as Button).id);
+		}
+		
+		protected function AddedToStageHandler(event:Event):void
+		{
+			GameMetrics.ReportPageView(GameMetrics.VIEW_ADD_UNUSUAL_POINTS);
+			GameMetrics.ReportEvent(GameMetrics.ADD_UNUSUAL_POINTS, null);
+		}
+		
+		override public function CloseClickHandler(event:MouseEvent):void
+		{
+			// The CANCELED event is reserved for when the user hasn't selected any of the products (they haven't entered the purchase cycle)
+			if (currentState == "ChoosingItem")
+				GameMetrics.ReportEvent(GameMetrics.CANCELED_UNUSUAL_POINTS, null);
+			
+			super.CloseClickHandler(event);
 		}
 		
 	]]></fx:Script>

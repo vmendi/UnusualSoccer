@@ -26,10 +26,15 @@
 			dialog.mMatchResult = matchResult;
 			dialog.mWinner =  MatchResultUtils.AmITheWinner(matchResult, dialog.mTeamModel);
 			dialog.mOpponentName = MatchResultUtils.GetOpponentResult(matchResult, dialog.mTeamModel).Name;
+			
+			GameMetrics.ReportPageView(GameMetrics.VIEW_MATCHEND_DIALOG);
+			GameMetrics.ReportEvent(GameMetrics.MATCHEND_DIALOG, null);		
 		}
-				
-		protected function AceptarClickHandler(event:MouseEvent):void
+
+		protected function AceptarClickHandler(event:MouseEvent) : void
 		{
+			GameMetrics.ReportEvent(GameMetrics.MATCHEND_CLOSED, null);
+			
 			if ((MatchResultUtils.GetMyResult(mMatchResult, mTeamModel).InjuredSoccerPlayers as ArrayCollection).length != 0)
 				AnimatableDialog.Dismiss(this, ShowInjuredDialog);
 			else
@@ -42,7 +47,9 @@
 		}
 		
 		protected function PublicarClickHandler(event:MouseEvent):void
-		{			
+		{
+			GameMetrics.ReportEvent(GameMetrics.MATCHEND_PUBLISH, null);
+			
 			var msgToPublish : Object = PublishMessages.BuildMatchEndPublishMessage();
 			
 			// Hacemos los reemplazos, la mismas palabras (CONTRARIO, RESULTADO) para todos los idiomas
@@ -62,7 +69,17 @@
 					{
 						// Le pedimos al servidor que nos conceda los rewards extras... esto por dentro hará un TeamRefresh
 						mTeamModel.GetExtraRewardForMatch(mMatchResult.MatchID);
+						
+						GameMetrics.ReportEvent(GameMetrics.MATCHEND_PUBLISH_SUCCESS_X2, null);
 					}
+					else
+					{
+						GameMetrics.ReportEvent(GameMetrics.MATCHEND_PUBLISH_SUCCESS, null);
+					}
+				}
+				else
+				{
+					GameMetrics.ReportEvent(GameMetrics.MATCHEND_PUBLISH_CANCELED_AFTERFB, null);
 				}
 				
 				// Cerramos el dialogo por el flujo normal

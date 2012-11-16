@@ -98,7 +98,7 @@ namespace SoccerServer
         private void InjectContentPanel(Boolean showLikePanel)
         {
             MyDefaultPanel.Visible = true;
-            MyLikePanel.Visible = showLikePanel;
+            //MyLikePanel.Visible = showLikePanel;
         }
 
         public string GetFlashVars()
@@ -154,6 +154,13 @@ namespace SoccerServer
         public string GetAppID()
         {
             return GlobalConfig.FacebookSettings.AppId;
+        }
+
+        public long GetUserFacebookID()
+        {
+            // The Current.UserId is only available after the auth.Authorize() call, so, be careful
+            // where you call GetUserFacebookID() (just saying, I haven't proved anything...)
+            return FacebookWebContext.Current.UserId;
         }
 
         //

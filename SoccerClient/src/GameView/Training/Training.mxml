@@ -50,7 +50,7 @@
 			if (theTrainingItem.currentState == "Normal")
 			{
 				var trainingName : String = (event.currentTarget as TrainingItem).TheTrainingDefinition.Name;
-				GameMetrics.ReportEvent(GameMetrics.DO_TRAINING, {'Training':trainingName});
+				GameMetrics.ReportEvent(GameMetrics.DO_TRAINING, {'training':trainingName});
 				mTrainingModel.Train(trainingName, null);			
 			}
 		}

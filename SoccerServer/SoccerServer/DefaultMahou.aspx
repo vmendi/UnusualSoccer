@@ -9,18 +9,6 @@
 <head id="TheHead">
     <title>Mahou Liga Chapas</title>
 
-    <!-- Kissmetrics -->
-    <script type="text/javascript">
-        var _kmq = _kmq || [];
-        function _kms(u) {
-            setTimeout(function () {
-                var s = document.createElement('script'); var f = document.getElementsByTagName('script')[0]; s.type = 'text/javascript'; s.async = true;
-                s.src = u; f.parentNode.insertBefore(s, f);
-            }, 1);
-        }
-        _kms('//i.kissmetrics.com/i.js'); _kms('//doug1izaerwt3.cloudfront.net/97ae4b481c68dbb45bd7c09efe3036ea503bd37f.1.js');
-    </script>
-
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   
     <style type="text/css" media="screen"> 
@@ -81,6 +69,10 @@
 	
 <body>
 
+<!-- This div is intended to center the content in a fluid canvas. The fluid canvas is needed 
+     because the feedback widget won't fit in the old 760px -->
+<div id="ContentCenteringDiv" style="margin-left:auto;margin-right:auto;width:760px;">
+
 <asp:Panel id="MyDefaultPanel" runat="server" Visible="false">
 
     <div id="fb-root"></div>
@@ -117,6 +109,8 @@
     <noscript><p>Either scripts and active content are not permitted to run or Adobe Flash Player version 10.0.0 or greater is not installed.</p></noscript>
 
 </asp:Panel>
+
+</div>
 
 </body>
 

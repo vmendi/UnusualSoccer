@@ -94,7 +94,7 @@ package
 		
 		static public function RealtimeConnectionFailed(reason:String) : void
 		{
-			GameMetrics.ReportEvent(GameMetrics.CANT_CONNECT_REALTIME, { 'Reason':reason } );
+			GameMetrics.ReportEvent(GameMetrics.CANT_CONNECT_REALTIME, { 'reason':reason } );
 			
 			OnCleaningShutdownSignal.dispatch();
 			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorRealtimeConnFailedMsg"),

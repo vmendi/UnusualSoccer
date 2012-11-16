@@ -21,7 +21,7 @@
 			fontFamily: MyFontHelveticaNeueLTBold;
 			font-weight: bold;
 			embedAsCFF: true;
-		}		
+		}
 	</fx:Style>
 	
 
@@ -38,8 +38,10 @@
 
 		protected function ApplicationCompleteHandler(event:FlexEvent):void
 		{
-			// FPSCounter.Init(this.stage, new Point(0,0));
+			GameMetrics.ReportEvent(GameMetrics.SWF_LOADED, null);
 			
+			// FPSCounter.Init(this.stage, new Point(0,0));
+						
 			Security.allowDomain("*");	// CDN
 						
 			// Excepciones globales capturadas
@@ -73,8 +75,7 @@
 		private function OnFacebookInitSuccess():void
 		{
 			ConfigureLocale();
-			GameMetrics.Init();	
-			
+
 			// Podemos ir cargando recursos que luego necesitaremos (despues de tener el Locale configurado)
 			MatchMain.LoadMatchResources(null);
 			

@@ -2,53 +2,93 @@ package
 {
 	import flash.display.DisplayObject;
 	import flash.external.ExternalInterface;
+	import flash.utils.setTimeout;
 	
 	import mx.utils.StringUtil;
 	
 	public final class GameMetrics
 	{
-		// Secciones
+		// PageViews
 		static public const VIEW_COMPETITION : String = "View_Competition";
 		static public const VIEW_FRIENDLY : String = "View_Friendly";
 		static public const VIEW_TEAM : String = "View_Team";
 		static public const VIEW_TRAINING : String = "View_Training";
 		static public const VIEW_TRAININGSPECIAL : String = "View_TrainingSpecial";
-		static public const VIEW_RANKING : String = "View_Ranking"; 
-		static public const VIEW_LOGIN : String = "View_Login"; 
+		static public const VIEW_RANKING : String = "View_Ranking";
+		static public const VIEW_LOGIN : String = "View_Login";
+		static public const VIEW_ADD_GAME_TIME : String = "Add_Game_Time";
+		static public const VIEW_ADD_UNUSUAL_POINTS : String = "Add_Unusual_Points";
+		static public const VIEW_ADD_TRAINER_TIME : String = "Add_Trainer_Time";
+		static public const VIEW_MATCHEND_DIALOG : String = "Matchend_Dialog";
 		
-		// Acciones
-		static public const TEAM_SELECTED : String = "Team_Selected"; // Al seleccionar el primer equipo y entrar al juego por primera vez
-		static public const PLAY_MATCH : String = "Play_Match";
-		static public const UPGRADE_PLAYER : String = "Upgrade_Player";  
-		static public const GET_SKILL : String = "Get_Skill";
-		static public const LOOK_FOR_MATCH : String = "Look_For_Match"; 
-		static public const DO_TRAINING : String = "Do_Training";
-		static public const CANT_CONNECT_REALTIME : String = "Cant_Connect_Realtime";
+		// Events
+		static public const SWF_LOADED: String = "SWF Loaded";
+		static public const LOGIN_SCREEN : String = "Login Screen";
+		static public const TEAM_SELECTED : String = "Team Selected"; // Al seleccionar el primer equipo y entrar al juego por primera vez
+		static public const PLAY_MATCH : String = "Play Match";
+		static public const UPGRADE_PLAYER : String = "Upgrade Player"; 
+		static public const LOOK_FOR_MATCH : String = "Look For Match"; 
+		static public const DO_TRAINING : String = "Do Training";
+		static public const CANT_CONNECT_REALTIME : String = "Cant Connect Realtime";
+		
+		static public const ADD_GAME_TIME : String = "Add Game Time";
+		static public const CANCELED_GAME_TIME : String = "Canceled Game Time";
+		
+		static public const ADD_UNUSUAL_POINTS : String = "Add Unusual Points";
+		static public const CANCELED_UNUSUAL_POINTS : String = "Canceled Unusual Points";
+		
+		static public const ADD_TRAINER_TIME : String = "Add Trainer Time";
+		static public const CANCELED_TRAINER_TIME : String = "Canceled Trainer Time";
+		
+		static public const PURCHASE_SELECTED : String = "Purchase Selected";
+		static public const PURCHASE_SUCCESS : String = "Purchase Success";
+		static public const PURCHASE_CANCELED : String = "Purchase Canceled";
+		static public const PURCHASE_FAILURE : String = "Purchase Failure";
+		
+		static public const GET_SKILL : String = "Get Skill";
+		static public const SKILL_PUBLISH : String = "Skill Publish";
+		static public const SKILL_PUBLISH_CLOSED : String = "Skill Publish Closed";
+		static public const SKILL_PUBLISH_SUCCESS : String = "Skill Publish Success";
+		static public const SKILL_PUBLISH_CANCELED_AFTERFB : String = "Skill Publish Canceled AfterFB";
+		
+		static public const MATCHEND_DIALOG : String = "MatchEnd Dialog";
+		static public const MATCHEND_CLOSED : String = "MatchEnd Closed";	
+		static public const MATCHEND_PUBLISH : String = "MatchEnd Publish";
+		static public const MATCHEND_PUBLISH_SUCCESS : String = "MatchEnd Publish Success";
+		static public const MATCHEND_PUBLISH_SUCCESS_X2 : String = "MatchEnd Publish Success X2";
+		static public const MATCHEND_PUBLISH_CANCELED_AFTERFB : String = "MatchEnd Publish Canceled AfterFB";
 	
-		
-		static public function Init() : void
-		{			
-			var uid : String = SoccerClient.GetFacebookFacade().FacebookID
-			ExternalInterface.call("_kmq.push", ['identify', uid]);
-		}
 		
 		static public function ReportEvent(event:String, properties:Object) : void
 		{
-			var uid : String = SoccerClient.GetFacebookFacade().FacebookID; 
-			
-			// Kontagent
-			//sendToURL(new URLRequest("http://api.geo.kontagent.net/api/v1/75bcc0495d1b49d8a5c8ad62d989dcf7/evt/?s="+uid+"&n="+event));
-			
-			// Kissmetrics. We disable MahouLigaChapas temporarily, we don't want to spend.
+			// Mixpanel. MahouLigaChapas lo eliminamos puesto que no nos molestamos ni siquiera en inicializarlo en default.aspx.
+			// Para tener stats en MahouLigaChapas habria que crear un nuevo proyecto en Mixpanel y cambiar la forma
+			// de inicializar para que al mixpanel.init se le pasara el ID correcto
 			if (!AppConfig.IsMahouLigaChapas)
-				ExternalInterface.call("_kmq.push", ['record', event, properties]);
+			{
+				mEventQueue.push({ Event:event, Properties: properties });
+				
+				if (mEventQueue.length == 1)
+					setTimeout(DelayedExternalInterface, 1000);
+			}
+		}
+		
+		static private function DelayedExternalInterface() : void
+		{
+			var currentEvent : Object = mEventQueue.shift();
+			
+			ExternalInterface.call("mixpanel.track", currentEvent.Event, currentEvent.Properties);
+			
+			if (mEventQueue.length != 0)
+				setTimeout(DelayedExternalInterface, 1000);
 		}
 		
 		static public function ReportPageView(page:String) : void
 		{
 			// Unicamente a Google Analytics
-			// ExternalInterface.call("_gaq.push(['_trackEvent', CATEGORY, ACTION, Opt_LABEL, Opt_VALUE])");
 			ExternalInterface.call(StringUtil.substitute("_gaq.push(['_trackEvent', {0}, {1}])", "Manager", page));
 		}
+		
+		static private var mEventQueue : Array = new Array();
 	}
 }

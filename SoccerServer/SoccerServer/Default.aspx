@@ -9,18 +9,6 @@
 <head id="TheHead">
     <title>Unusual Soccer</title>
 
-    <!-- Kissmetrics -->
-    <script type="text/javascript">
-        var _kmq = _kmq || [];
-        function _kms(u) {
-            setTimeout(function () {
-                var s = document.createElement('script'); var f = document.getElementsByTagName('script')[0]; s.type = 'text/javascript'; s.async = true;
-                s.src = u; f.parentNode.insertBefore(s, f);
-            }, 1);
-        }
-        _kms('//i.kissmetrics.com/i.js'); _kms('//doug1izaerwt3.cloudfront.net/ae86ab550667e1579736f7bbf25066047d01b340.1.js');
-    </script>
-
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <style type="text/css" media="screen"> 
@@ -34,7 +22,6 @@
 	
     <!-- Google Analytics -->
     <script type="text/javascript">
-
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-6476735-8']);
         _gaq.push(['_trackPageview']);
@@ -44,7 +31,6 @@
             ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
-
     </script>
 
     <script type="text/javascript">
@@ -55,73 +41,95 @@
         }
     </script>
 
+    <!-- start Mixpanel -->
+    <script type="text/javascript">(function (c, a) {
+        window.mixpanel = a; var b, d, h, e; b = c.createElement("script"); b.type = "text/javascript"; b.async = !0; b.src = ("https:" === c.location.protocol ? "https:" : "http:") + '//cdn.mxpnl.com/libs/mixpanel-2.1.min.js'; d = c.getElementsByTagName("script")[0]; d.parentNode.insertBefore(b, d); a._i = []; a.init = function (b, c, f) {
+        function d(a, b) { var c = b.split("."); 2 == c.length && (a = a[c[0]], b = c[1]); a[b] = function () { a.push([b].concat(Array.prototype.slice.call(arguments, 0))) } } var g = a; "undefined" !== typeof f ?
+        g = a[f] = [] : f = "mixpanel"; g.people = g.people || []; h = "disable track track_pageview track_links track_forms register register_once unregister identify name_tag set_config people.identify people.set people.increment".split(" "); for (e = 0; e < h.length; e++) d(g, h[e]); a._i.push([b, c, f])
+        }; a.__SV = 1.1
+        })(document, window.mixpanel || []);
+        mixpanel.init("61e2b133bbe6f10c2d90c2a88c127e89");
+        mixpanel.identify("<%= GetUserFacebookID() %>");
+        mixpanel.track("Default.aspx loaded");
+    </script>
+    <!-- end Mixpanel -->
+
+    <script type="text/javascript">
+        /* This method will be called after the FB SDK is loaded asynchronously */
+        window.fbAsyncInit = function () {
+            
+            var flashVars = <%= GetFlashVars() %>
+
+            var params = {};
+            params.quality = "high";
+            params.bgcolor = "#FFFFFF";
+            params.allowscriptaccess = "always";
+            params.allowfullscreen = "true";
+            params.wmode = "opaque";
+            
+            var attributes = {};
+            attributes.id = '<%= SWF_SETTINGS["application"] %>';
+            attributes.name = '<%= SWF_SETTINGS["application"] %>';
+            attributes.align = "middle";
+	    
+            swfobject.embedSWF('<%= GetRsc(SWF_SETTINGS["swf"]) %>', "flashContent", 
+                		        '<%= SWF_SETTINGS["width"] %>', '<%= SWF_SETTINGS["height"] %>',
+                		        '<%= SWF_SETTINGS["version_string"] %>', "", 
+                		        flashVars, params, attributes);
+
+		    /* JavaScript enabled so display the flashContent div in case it is not replaced with a swf object. */
+		    swfobject.createCSS("#flashContent", "display:block;text-align:left;");
+        };
+
+        // This method will be called from AS3 when the FB SDK is initialized (with FB.init)
+        function onFacebookInitialized() {
+            FB.api('/me?fields=third_party_id,name', function(response) {
+                if (response && !response.error)
+                {
+                    mixpanel.name_tag(response.name + " (" + response.id + ")");
+
+                    /*
+                    if (Math.random() >= 0.5)
+                    {
+                        $("#AppatyzeIFrame").attr("src", '//app.appatyze.com/gateway.php?a=1176&aid=' + response.third_party_id);
+                        $("#AppatyzeIFrame").attr("height", "90");
+                    }
+                    else
+                    {
+                        (function () {
+                            window.applifierAsyncInit = function () {
+                                Applifier.init({ applicationId: 2276, thirdPartyId: response.third_party_id });
+                                var bar = new Applifier.Bar({ barType: "bar", barContainer: "#ApplifierBar", autoBar: true });
+                            };
+                            var a = document.createElement('script'); a.type = 'text/javascript'; a.async = true;
+                            a.src = (('https:' == document.location.protocol) ? 'https://secure' : 'http://cdn') + '.applifier.com/applifier.min.js';
+                            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(a, s);
+                        })();
+                    }
+                    */
+                }
+            });
+        }
+    </script>
+
 </head>
 	
 <body>
 
+<!-- This div is intended to center the content in a fluid canvas. The fluid canvas is needed 
+     because the feedback widget won't fit in the old 760px -->
+<div id="ContentCenteringDiv" style="margin-left:auto;margin-right:auto;width:760px;">
+
 <div id='fb-root'></div>
 
 <script type="text/javascript">
-    window.fbAsyncInit = function () {
-            
-        var flashVars = <%= GetFlashVars() %>
-
-        var params = {};
-        params.quality = "high";
-        params.bgcolor = "#FFFFFF";
-        params.allowscriptaccess = "always";
-        params.allowfullscreen = "true";
-        params.wmode = "opaque";
-            
-        var attributes = {};
-        attributes.id = '<%= SWF_SETTINGS["application"] %>';
-        attributes.name = '<%= SWF_SETTINGS["application"] %>';
-        attributes.align = "middle";
-	    
-        swfobject.embedSWF('<%= GetRsc(SWF_SETTINGS["swf"]) %>', "flashContent", 
-                		    '<%= SWF_SETTINGS["width"] %>', '<%= SWF_SETTINGS["height"] %>',
-                		    '<%= SWF_SETTINGS["version_string"] %>', "", 
-                		    flashVars, params, attributes);
-
-		/* JavaScript enabled so display the flashContent div in case it is not replaced with a swf object. */
-		swfobject.createCSS("#flashContent", "display:block;text-align:left;");
-    };
-
-    /* Load the FB SDK asynchronously */
-    (function() {
+    /* Load the FB SDK asynchronously. We need to be in the body because we do an appendChild */
+    (function () {
         var e = document.createElement('script');
         e.src = document.location.protocol + '<%= GetFBSDK() %>';
         e.async = true;
         document.getElementById('fb-root').appendChild(e);
-    }());
-
-    // This method will be called from AS3 when the SDK is ready
-    function createBannerAds() {
-        FB.api('/me?fields=third_party_id', function(response) {
-            if (response && !response.error)
-            {
-            /*
-                if (Math.random() >= 0.5)
-                {
-                    $("#AppatyzeIFrame").attr("src", '//app.appatyze.com/gateway.php?a=1176&aid=' + response.third_party_id);
-                    $("#AppatyzeIFrame").attr("height", "90");
-                }
-                else
-                {
-                    (function () {
-                        window.applifierAsyncInit = function () {
-                            Applifier.init({ applicationId: 2276, thirdPartyId: response.third_party_id });
-                            var bar = new Applifier.Bar({ barType: "bar", barContainer: "#ApplifierBar", autoBar: true });
-                        };
-                        var a = document.createElement('script'); a.type = 'text/javascript'; a.async = true;
-                        a.src = (('https:' == document.location.protocol) ? 'https://secure' : 'http://cdn') + '.applifier.com/applifier.min.js';
-                        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(a, s);
-                    })();
-                }
-            */
-            }
-        });
-    }
+    } ());
 </script>
 
 <asp:Panel id="MyDefaultPanel" runat="server" Visible="false">
@@ -137,7 +145,6 @@
     <asp:Panel runat="server" id="MyLikePanel" style="width:760px; height:38px; margin-bottom:10px; position:relative;">
         <img src="<%= GetRsc("Imgs/BannerMeGustaBg_${locale}.png") %>" alt="" width="760" height="38" style="display:block;border:0;position:absolute;" />
 	    <div style="float:left; padding-left:32px; padding-top:10px; width:150px;">
-            <!-- Temporalmente estropeado... -->
 		    <fb:like href="www.facebook.com/UnusualSoccer" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
 	    </div>
     </asp:Panel>
@@ -174,6 +181,18 @@
     <noscript><p>Either scripts and active content are not permitted to run or Adobe Flash Player version 10.0.0 or greater is not installed.</p></noscript>
 
 </asp:Panel>
+
+</div>
+
+<!-- User Voice widget --> 
+<script type="text/javascript">
+    var uvOptions = {};
+    (function () {
+        var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+        uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/AWlR8IG2uu9gJaUcad47ig.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+    })();
+</script>
 
 </body>
 

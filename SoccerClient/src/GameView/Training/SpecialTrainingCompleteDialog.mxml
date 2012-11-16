@@ -12,6 +12,8 @@
 		import GameView.AnimatableDialog;
 		
 		import HttpService.TransferModel.vo.SpecialTrainingDefinition;
+		
+		import mx.core.UIComponent;
 			
 		public static function Show(specialTraining : SpecialTrainingDefinition) : void
 		{
@@ -28,17 +30,26 @@
 				
 		protected function ClickHandler(event:MouseEvent) : void
 		{
+			GameMetrics.ReportEvent(GameMetrics.SKILL_PUBLISH_CLOSED, null);
+			
 			AnimatableDialog.Dismiss(this, null);
 		}
-		
+
 		protected function PublishHandler(event:MouseEvent) : void
 		{
+			GameMetrics.ReportEvent(GameMetrics.SKILL_PUBLISH, null);
+			
 			// Esto por dentro vera si ya tenemos los permisos o intentara adquirirlos...
 			PublishMessages.TryPermissionsAndPublish(PublishMessages.BuildSpecialTrainingPublishMessage(mSpecialTrainingDef.SpecialTrainingDefinitionID), onPublishCallback);
 			
 			function onPublishCallback(published : Boolean) : void
-			{				
-				// Cerramos el dialogo por el flujo normal
+			{
+				if (published)
+					GameMetrics.ReportEvent(GameMetrics.SKILL_PUBLISH_SUCCESS, null);
+				else
+					GameMetrics.ReportEvent(GameMetrics.SKILL_PUBLISH_CANCELED_AFTERFB, null);
+				
+				// Close using the normal flow
 				ClickHandler(null);
 			}
 		}

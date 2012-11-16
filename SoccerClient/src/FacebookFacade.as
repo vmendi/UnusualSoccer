@@ -71,8 +71,11 @@ package
 				// previous setCanvasAutoResize)
 				ExternalInterface.call("FB.Canvas.setAutoGrow");
 
-				// It's at this moment, after the SDK init, when we insert and display the banner ads
-				ExternalInterface.call("createBannerAds");
+				// It's at this moment, after the SDK init, when we:
+				// - Call FB.api("/me") so that we can...
+				// 	- Insert and display the banner ads
+				//	- Tell mixpanel the user name
+				ExternalInterface.call("onFacebookInitialized");
 				
 				// Aseguramos que tenemos los permisos frescos
 				// Antes obteniamos aqui el /me, ahora no hace falta puesto que el locale viene del server

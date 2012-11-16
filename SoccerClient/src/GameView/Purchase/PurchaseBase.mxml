@@ -13,6 +13,8 @@
 			
 			import spark.components.Group;
 			
+			import utils.Delegate;
+			
 			public static function ShowPurchase(theClass : Class) : void
 			{
 				/* Las "usamos" aqui para que linke */
@@ -29,28 +31,32 @@
 				PopUpManager.centerPopUp(inst);
 			}
 			
-			protected function CloseClickHandler(event:MouseEvent):void
+			public function CloseClickHandler(event:MouseEvent):void
 			{
 				PopUpManager.removePopUp(this);
 			}
 			
 			protected function ProcessPurchase(orderInfo : String) : void
-			{				
+			{
+				GameMetrics.ReportEvent(GameMetrics.PURCHASE_SELECTED, {item: orderInfo});
+				
 				var obj : Object = {
 					order_info: orderInfo,
 					purchase_type: 'item',
 					dev_purchase_params: {'oscif': true}		 // JSON Object
 				};
 				
-				Facebook.ui("pay", obj, PurchaseCallback);
+				Facebook.ui("pay", obj, Delegate.create(PurchaseCallback, orderInfo));
 			}
 						
-			private function PurchaseCallback(ret : Object) : Boolean
+			private function PurchaseCallback(ret : Object, orderInfo : String) : Boolean
 			{
 				var bRet : Boolean = false;
 				
 				if (ret['order_id']) 
 				{
+					GameMetrics.ReportEvent(GameMetrics.PURCHASE_SUCCESS, {item: orderInfo});
+					
 					SoccerClient.GetMainGameModel().TheTeamModel.RefreshTeam(OnTeamRefreshedSuccessfulPurchase);
 					currentState = "Success";
 					
@@ -59,9 +65,15 @@
 				else
 				{
 					if (ret["error_code"] == "1383010")
+					{
+						GameMetrics.ReportEvent(GameMetrics.PURCHASE_CANCELED, {item: orderInfo});
 						currentState = "Canceled";
+					}
 					else
+					{
+						GameMetrics.ReportEvent(GameMetrics.PURCHASE_FAILURE, {item: orderInfo});
 						currentState = "Failure";
+					}
 				}
 				
 				return bRet;

@@ -10,8 +10,6 @@
 	
 		protected function AddedToStageHandler(event:Event):void
 		{
-			GameMetrics.ReportEvent(GameMetrics.PLAY_MATCH, null);
-			
 			if (SoccerClient.GetMainGameModel().TheRealtimeModel.TheMatch == null)
 				throw new Error("WTF 693487");
 			
