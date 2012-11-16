@@ -29,6 +29,6 @@
 				
 	]]></fx:Script>
 	
-	<mx:Image id="MyBitmap" visible="false" complete="Refresh()" source="{resourceManager.getString('main','CompetitionDivisionBadgeSource')}"/>
+	<s:SWFLoader id="MyBitmap" visible="false" complete="Refresh()" source="{resourceManager.getString('main','CompetitionDivisionBadgeSource')}"/>
 	
 </s:Group>

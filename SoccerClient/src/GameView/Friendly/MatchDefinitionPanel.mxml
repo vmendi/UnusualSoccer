@@ -123,8 +123,7 @@
 			<GameView:OptionsSelector id="MyTurnLengthSelector" width="110" DataOptions="{MainGameModel.POSSIBLE_TURN_LENGTH_SECONDS}" />	
 		</s:Group>
 		
-		<GameView:PromptingTextInput left="0" right="0" top="60" skinClass="GameView.Skins.PromptingTextInputSkin"
-									 id="MyChallengeMsgInput" text="" maxChars="50" prompt="{resourceManager.getString('main','FriendlyDefinitionMessage')}" />
+		<s:TextInput left="0" right="0" top="60" id="MyChallengeMsgInput" text="" maxChars="50" prompt="{resourceManager.getString('main','FriendlyDefinitionMessage')}" />
 		
 		<s:Button horizontalCenter="0" top="95"
 				  skinClass="GameView.Skins.ButtonGreySkin" label="{resourceManager.getString('main','FriendlyDefinitionChallenge')}" click="LaunchChallenge_clickHandler(event)" />

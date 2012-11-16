@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<flexProperties aspUseIIS="true" enableServiceManager="false" flexServerFeatures="0" flexServerType="32" serverContextRoot="" serverRoot="${DOCUMENTS}/SoccerServer/SoccerServer" serverRootURL="http://localhost/" toolCompile="true" useServerFlexSDK="false" version="2"/>
+<flexProperties aspUseIIS="true" enableServiceManager="false" flexServerFeatures="0" flexServerType="0" toolCompile="true" useServerFlexSDK="false" version="2"/>
