@@ -4,7 +4,6 @@ package
 	
 	import flash.net.URLRequestMethod;
 	
-	import mx.core.Application;
 	import mx.resources.ResourceManager;
 
 	public final class PublishMessages

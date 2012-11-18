@@ -32,16 +32,14 @@
   
     package HttpService
     {
-    import mx.rpc.remoting.RemoteObject;
-    import mx.controls.Alert;
-    import mx.rpc.events.ResultEvent;
-    import mx.rpc.events.FaultEvent;
+    import HttpService.TransferModel.vo.*;
+    
+    import mx.collections.ArrayCollection;
     import mx.rpc.AsyncToken;
     import mx.rpc.IResponder;
-    import mx.collections.ArrayCollection;
-
-    
-    import HttpService.TransferModel.vo.*;
+    import mx.rpc.events.FaultEvent;
+    import mx.rpc.events.ResultEvent;
+    import mx.rpc.remoting.RemoteObject;
         
     public class MainService
     {
@@ -476,7 +474,7 @@
     
       public function onFault (event:FaultEvent):void
       {
-        Alert.show(event.fault.faultString, "Error");
+        //Alert.show(event.fault.faultString, "Error");
       }
     }
   } 

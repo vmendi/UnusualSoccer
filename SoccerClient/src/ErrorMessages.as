@@ -9,7 +9,6 @@ package
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	
-	import mx.controls.Alert;
 	import mx.resources.ResourceManager;
 	import mx.rpc.Responder;
 	
@@ -58,8 +57,8 @@ package
 		static public function ServerClosedConnectionUnknownReason() : void
 		{
 			OnCleaningShutdownSignal.dispatch();		
-			Alert.show(ResourceManager.getInstance().getString("main", "ErrorClosedConnectionUnknownMsg"),
-					   ResourceManager.getInstance().getString("main", "ErrorClosedConnectionUnknownTit"), Alert.OK);
+			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorClosedConnectionUnknownMsg"),
+					   		 ResourceManager.getInstance().getString("main", "ErrorClosedConnectionUnknownTit"), "center");
 		}		
 		
 		//
@@ -87,8 +86,8 @@ package
 		{
 			OnCleaningShutdownSignal.dispatch();			
 			
-			Alert.show(ResourceManager.getInstance().getString("main", "ErrorRealtimeLoginFailedMsg"),
-					   ResourceManager.getInstance().getString("main", "ErrorRealtimeLoginFailedTit"), Alert.OK);
+			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorRealtimeLoginFailedMsg"),
+					   		 ResourceManager.getInstance().getString("main", "ErrorRealtimeLoginFailedTit"), "center");
 			LogToServer("RealtimeLoginFailed");
 		}
 		
@@ -137,21 +136,21 @@ package
 					message = innerError.toString();
 			}
 						
-			Alert.show("UncaughtError: " + message, ResourceManager.getInstance().getString("main", "ErrorPleaseNotifyDeveloperTit"));
+			ErrorDialog.Show("UncaughtError: " + message, ResourceManager.getInstance().getString("main", "ErrorPleaseNotifyDeveloperTit"));
 			LogToServer("UncaughtError: " + message);
 		}
 		
 		static public function AsyncError(e:AsyncErrorEvent) : void
 		{
 			OnCleaningShutdownSignal.dispatch();
-			Alert.show("AsyncError: " + e.error.message, ResourceManager.getInstance().getString("main", "ErrorPleaseNotifyDeveloperTit"));
+			ErrorDialog.Show("AsyncError: " + e.error.message, ResourceManager.getInstance().getString("main", "ErrorPleaseNotifyDeveloperTit"));
 			LogToServer("AsyncError: " + e.error.message);
 		}
 		
 		static public function IOError(e:IOErrorEvent) : void
 		{
 			OnCleaningShutdownSignal.dispatch();
-			Alert.show("IOError: " + e.text, ResourceManager.getInstance().getString("main", "ErrorPleaseNotifyDeveloperTit"));
+			ErrorDialog.Show("IOError: " + e.text, ResourceManager.getInstance().getString("main", "ErrorPleaseNotifyDeveloperTit"));
 			LogToServer("IOError: " + e.text);
 		}
 		

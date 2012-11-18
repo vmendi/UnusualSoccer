@@ -10,13 +10,15 @@
 		import GameModel.RealtimePlayer;
 		import GameModel.RoomModel;
 		
+		import GameView.ErrorDialog;
+		
+		import HttpService.MainService;
+		import HttpService.TransferModel.vo.RankingPage;
+		
 		import Match.MatchMain;
 		
 		import NetEngine.InvokeResponse;
 		import NetEngine.NetPlug;
-		
-		import HttpService.MainService;
-		import HttpService.TransferModel.vo.RankingPage;
 		
 		import com.greensock.TweenLite;
 		import com.greensock.TweenMax;
@@ -24,7 +26,6 @@
 		
 		import mx.binding.utils.BindingUtils;
 		import mx.collections.ArrayCollection;
-		import mx.controls.Alert;
 		import mx.rpc.Responder;
 		import mx.rpc.events.ResultEvent;
 		
@@ -500,7 +501,7 @@
 				
 				if (ret != "TestMethod01Return")
 				{
-					Alert.show("Failed", "FAILED");
+					ErrorDialog.Show("Failed", "FAILED");
 				}
 				else
 				{
@@ -519,8 +520,8 @@
 							}
 						}
 						
-						Alert.show("NumResponseReceived: " + numResponsesReceived + 
-								   " Closed from server: " + numClosedFromServer, "ALL CLOSED - TEST END");
+						ErrorDialog.Show("NumResponseReceived: " + numResponsesReceived + 
+								   		 " Closed from server: " + numClosedFromServer, "ALL CLOSED - TEST END");
 					}
 				}
 			}
@@ -531,7 +532,7 @@
 				
 				if (numClosedFromServer == sockets.length)
 				{
-					Alert.show("ALL CLOSED FROM SERVER", "ALL CLOSED - TEST END");
+					ErrorDialog.Show("ALL CLOSED FROM SERVER", "ALL CLOSED - TEST END");
 				}
 				
 				sockets[idx] = null;
@@ -539,7 +540,7 @@
 			
 			function onSocketError(reason : String) : void
 			{
-				Alert.show(reason, "ERROR");
+				ErrorDialog.Show(reason, "ERROR");
 			}
 		}
 		

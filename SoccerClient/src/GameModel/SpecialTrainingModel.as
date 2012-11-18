@@ -11,7 +11,6 @@ package GameModel
 	import mx.binding.utils.BindingUtils;
 	import mx.collections.ArrayCollection;
 	import mx.collections.Sort;
-	import mx.controls.Alert;
 	import mx.resources.ResourceManager;
 	import mx.rpc.Responder;
 	import mx.rpc.events.ResultEvent;

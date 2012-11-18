@@ -25,7 +25,6 @@
 		import mx.collections.ArrayCollection;
 		import mx.core.FlexGlobals;
 		import mx.core.IFlexModule;
-		import mx.core.ScrollPolicy;
 		import mx.events.FlexEvent;
 		import mx.managers.PopUpManager;
 		
@@ -205,9 +204,10 @@
 				itemRenderer="GameView.FriendSelection.FriendItem" useVirtualLayout="true" 
 				change="OnMyFriendListChangeHandler(event)"
 				skinClass="GameView.Skins.DefaultListSkin"
-				creationComplete="MyFriendsList.scroller.setStyle('verticalScrollPolicy', mx.core.ScrollPolicy.ON);"
+				verticalScrollPolicy="on"
+				horizontalScrollPolicy="off"
 				>
-			<s:layout><s:TileLayout verticalGap="10" horizontalGap="10" columnWidth="90" rowHeight="100" /></s:layout>
+			<s:layout><s:TileLayout verticalGap="10" horizontalGap="10" columnWidth="90" rowHeight="100" paddingLeft="10" paddingRight="10" paddingTop="5"/></s:layout>
 		</s:List>
 		
 		<s:Rect left="20" right="20" bottom="50" height="120" radiusX="4">
@@ -231,7 +231,8 @@
 				itemRenderer="GameView.FriendSelection.FriendItem" useVirtualLayout="true"
 				change="OnMySelectedListChangeHandler(event)"
 				skinClass="GameView.Skins.DefaultListSkin"
-				creationComplete="MySelectedList.scroller.setStyle('horizontalScrollPolicy', mx.core.ScrollPolicy.AUTO);"
+				horizontalScrollPolicy="auto"
+				verticalScrollPolicy="off"
 				>
 			<s:layout><s:HorizontalLayout gap="10" columnWidth="90" /></s:layout>
 		</s:List>	
