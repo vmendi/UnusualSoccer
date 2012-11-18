@@ -36,7 +36,7 @@
 			{
 				if (MyRootGroup != null)
 					MyRootGroup.visible = true;
-				
+								
 				if (MyNormalBitmap != null)
 					(MyNormalBitmap.content as MovieClip).gotoAndStop(mTeamNameID);
 				
@@ -65,7 +65,7 @@
 	]]></fx:Script>
 	
 	<s:Group includeIn="Normal, Big" id="MyRootGroup">
-		<mx:Image id="MyNormalBitmap" includeIn="Normal" source="{resourceManager.getClass('main','Badges')}"/>
-		<mx:Image id="MyBigBitmap" includeIn="Big" source="{resourceManager.getClass('main','BadgesBig')}"/>
+		<s:SWFLoader id="MyNormalBitmap" includeIn="Normal" source="{resourceManager.getClass('main','Badges')}"/>
+		<s:SWFLoader id="MyBigBitmap" includeIn="Big" source="{resourceManager.getClass('main','BadgesBig')}"/>
 	</s:Group>
 </s:Group>

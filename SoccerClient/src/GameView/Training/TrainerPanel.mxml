@@ -51,7 +51,7 @@
 		]]>
 	</fx:Script>
 
-	<mx:Image source="@Embed(source='/Assets/General.swf', symbol='TrainerPanelCoachBg')" left="10" />
+	<s:Image source="@Embed(source='/Assets/General.swf', symbol='TrainerPanelCoachBg')" left="10" />
 	
 	<s:Group horizontalCenter="0" verticalCenter="0">
 		<s:layout>

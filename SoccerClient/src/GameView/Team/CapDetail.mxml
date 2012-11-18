@@ -47,8 +47,8 @@
 		private var mSoccerPlayer : SoccerPlayer;
 		
 		[Bindable] 
-		public function  get TheSoccerPlayerDerived() : SoccerPlayerDerived { return mSoccerPlayerDerived; }
-		public function set TheSoccerPlayerDerived(v:SoccerPlayerDerived) : void { mSoccerPlayerDerived = v; }
+		public  function get TheSoccerPlayerDerived() : SoccerPlayerDerived { return mSoccerPlayerDerived; }
+		private function set TheSoccerPlayerDerived(v:SoccerPlayerDerived) : void { mSoccerPlayerDerived = v; }
 		private var mSoccerPlayerDerived : SoccerPlayerDerived;
 
 	]]></fx:Script>
@@ -62,7 +62,7 @@
 	</s:Graphic>
 	
 	<s:Group left="10" top="10" width="59" height="59">
-		<mx:Image top="29" left="29" id="MyCapMC" source="{resourceManager.getClass('main','CapDetail')}" />
+		<s:SWFLoader top="29" left="29" id="MyCapMC" source="{resourceManager.getClass('main','CapDetail')}" />
 		<s:Label text="{TheSoccerPlayer.DorsalNumber.toString()}" horizontalCenter="0" top="18" styleName="whiteBoldBig" textAlign="center" filters="{DorsalNumberStrokeFilter}"/>
 	</s:Group>
 		
@@ -78,7 +78,7 @@
 	
 	<s:Label text="{TheSoccerPlayer.Name}" left="75" top="21" styleName="whiteBoldMedium" />
 		
-	<mx:Image left="74" top="42" id="MyCapStars" source="@Embed(source='/Assets/General.swf', symbol='CapDetailsStars')"/>
+	<s:SWFLoader left="74" top="42" id="MyCapStars" source="@Embed(source='/Assets/General.swf', symbol='CapDetailsStars')"/>
 	
 	<s:Label text="{TheSoccerPlayerDerived.Quality}" left="164" top="42" styleName="whiteBoldMedium" />
 		

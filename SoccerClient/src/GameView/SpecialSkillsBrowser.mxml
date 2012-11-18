@@ -6,12 +6,12 @@
 	
 	<s:layout><s:TileLayout columnWidth="46" rowHeight="46" /></s:layout>
 		
-	<mx:Image visible="false" id="MySpecialSkillTemplate" includeInLayout="false"
+	<s:Image visible="false" id="MySpecialSkillTemplate" includeInLayout="false"
 			 source="{resourceManager.getClass('main','SpecialSkills')}"/>
 	
 	<fx:Script><![CDATA[
-		import mx.binding.utils.BindingUtils;
 		import mx.collections.ArrayCollection;
+		import mx.controls.SWFLoader;
 		import mx.core.IVisualElement;
 		import mx.events.CollectionEvent;
 		import mx.events.FlexEvent;
@@ -48,7 +48,7 @@
 			// Rellenamos los 9 spots, al final los vacios
 			for (var i:int = 0; i < 9; ++i)
 			{
-				var cloned : Image = CreateImage();
+				var cloned : SWFLoader = CreateSWFLoader();
 				
 				if (mSpecialSkillIDs.length > i)
 					(cloned.content as MovieClip).gotoAndStop("SpecialSkill" + mSpecialSkillIDs[i]);
@@ -62,9 +62,9 @@
 				removeElement(element);
 		}
 		
-		private function CreateImage() : Image
+		private function CreateSWFLoader() : SWFLoader
 		{
-			var cloned : Image = new Image();
+			var cloned : SWFLoader = new SWFLoader();
 			cloned.source = MySpecialSkillTemplate.source;
 			cloned.load();
 						

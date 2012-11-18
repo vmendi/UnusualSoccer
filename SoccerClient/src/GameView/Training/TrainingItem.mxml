@@ -45,8 +45,7 @@
 		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='TrainingRegularBg')" fillMode="clip" />
 	</s:Graphic>
 	
-	<mx:Image x="3" y="3" id="MyTraining" scaleContent="false" alpha.NotAvailable="0.3"
-				  source="{resourceManager.getString('main','TrainingItemSource')}" complete="Refresh()"/>
+	<s:SWFLoader x="3" y="3" id="MyTraining" alpha.NotAvailable="0.3" source="{resourceManager.getString('main','TrainingItemSource')}" complete="Refresh()"/>
 		
 	<s:Group left="0" right="0" top="0" bottom="0" alpha.NotAvailable="0.3">
 		<s:Graphic includeIn="NotAvailable">

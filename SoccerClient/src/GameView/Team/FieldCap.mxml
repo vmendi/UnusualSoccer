@@ -32,8 +32,7 @@
 		</s:layout>
 		
 		<s:Group>
-			<mx:Image id="MyCapMC" scaleContent="false"
-					  	 source="{resourceManager.getClass('main','CapBase')}"/>
+			<s:SWFLoader id="MyCapMC" scaleContent="false" source="{resourceManager.getClass('main','CapBase')}"/>
 			<s:Label id="MyBackNumberLabel" text="{data.DorsalNumber}" horizontalCenter="0" top="17" styleName="whiteBoldMedium" textAlign="center" filters="{DorsalNumberStrokeFilter}"/>
 			<GameView:FacebookPicture FacebookID="{data.FacebookID}" maskType="alpha" scaleX="0.67" scaleY="0.67" left="8" top="7">
 				<GameView:mask>
@@ -67,7 +66,7 @@
 		
 	</s:Group>
 	
-	<mx:Image x="38" y="0" source="@Embed(source='/Assets/General.swf', symbol='CapInjured')" visible="{data.IsInjured}" />
+	<s:Image x="38" y="0" source="@Embed(source='/Assets/General.swf', symbol='CapInjured')" visible="{data.IsInjured}" />
 		
 	<s:filters>
 		<s:DropShadowFilter distance="10" angle="124" blurX="8" blurY="8" includeIn="selected"/>

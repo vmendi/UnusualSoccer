@@ -24,5 +24,5 @@
 
 	]]></fx:Script>
 	
-	<mx:Image id="MyBitmap" width="64" visible="false" source="@Embed(source='/Assets/General.swf', symbol='Categories')" />
+	<s:SWFLoader id="MyBitmap" width="64" visible="false" source="@Embed(source='/Assets/General.swf', symbol='Categories')" />
 </s:Group>

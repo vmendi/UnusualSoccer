@@ -36,7 +36,7 @@
 		<s:GlowFilter id="txtGlowFilter" blurX="10" blurY="10" color="0x000000" alpha="0.6"/>
 	</fx:Declarations>
 	
-	<mx:Image source="@Embed(source='/Assets/General.swf', symbol='StatusPanelBackground')"/>
+	<s:Image source="@Embed(source='/Assets/General.swf', symbol='StatusPanelBackground')"/>
 	
 	<GameView:BadgeTeam x="10" y="22" TeamNameID="{mTeamModel.TheTeam.PredefinedTeamNameID}" BigMode="true" />
 	
@@ -64,7 +64,7 @@
 				<s:layout>
 					<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
 				</s:layout>
-				<mx:Image source="@Embed(source='/Assets/General.swf', symbol='IconUnusualPoints')" />
+				<s:Image source="@Embed(source='/Assets/General.swf', symbol='IconUnusualPoints')" />
 				<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MySkillPointsLabel" styleName="whiteBoldHuge" textAlign="left" filters="{txtGlowFilter}"/>
 				<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="{resourceManager.getString('main','PurchaseUnusualPointsAdd')}" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
@@ -82,11 +82,11 @@
 				<s:layout>
 					<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
 				</s:layout>
-				<mx:Image source="@Embed(source='/Assets/General.swf', symbol='IconMahouPoints')" />
+				<s:Image source="@Embed(source='/Assets/General.swf', symbol='IconMahouPoints')" />
 				<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MyMahouPointsLabel" styleName="whiteBoldHuge" textAlign="left" filters="{txtGlowFilter}"/>
 			</s:Group>
 		</s:Group>
-		<mx:Image source="@Embed(source='/Assets/General.swf', symbol='LogoMahouLFP')" y="6" right="0" />
+		<s:Image source="@Embed(source='/Assets/General.swf', symbol='LogoMahouLFP')" y="6" right="0" />
 	</s:Group>
 		
 </s:Group>
