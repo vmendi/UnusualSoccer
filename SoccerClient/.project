@@ -20,12 +20,12 @@
 		<link>
 			<name>bin-debug</name>
 			<type>2</type>
-			<location>C:/UnusualGit/UnusualSoccer/SoccerServer/SoccerServer/SoccerClient</location>
+			<locationURI>$%7BDOCUMENTS%7D/SoccerServer/SoccerServer/SoccerClient</locationURI>
 		</link>
 		<link>
 			<name>bin-release</name>
 			<type>2</type>
-			<location>C:/UnusualGit/UnusualSoccer/SoccerServer/SoccerServer/SoccerClient</location>
+			<locationURI>$%7BDOCUMENTS%7D/SoccerServer/SoccerServer/SoccerClient</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
