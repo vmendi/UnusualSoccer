@@ -109,6 +109,7 @@
       <Column Name="Surname" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="CreationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="Liked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Params" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Association Name="Player_Session" Member="Sessions" ThisKey="PlayerID" OtherKey="PlayerID" Type="Session" />
       <Association Name="Player_Team" Member="Team" ThisKey="PlayerID" OtherKey="TeamID" Type="Team" Cardinality="One" />
     </Type>

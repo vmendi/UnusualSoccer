@@ -50,7 +50,31 @@
         })(document, window.mixpanel || []);
         mixpanel.init("61e2b133bbe6f10c2d90c2a88c127e89");
         mixpanel.identify("<%= GetUserFacebookID() %>");
+        // Because Safari doesn't allow persistent cookies in an Iframe, we need to register them every time.
+        mixpanel.register(extractUTMParams("<%= GetPlayerParams() %>"));
         mixpanel.track("Default.aspx loaded");
+
+        // We are only interested in registering with mixpanel the UTM params
+        function extractUTMParams(theParams) {
+            var ret = {};
+            var allKeyValues = theParams.split('&');
+            
+            for (var c = 0; c < allKeyValues.length; c++) {    
+                var splitted = allKeyValues[c].split('=');
+                
+                if (splitted[0].indexOf('utm') == 0) {
+                    ret[splitted[0]] = splitted[1];
+                }
+                else
+                if (splitted[0].indexOf('fb_source') == 0) {
+                    // For FB campaigns, we need to make the next translation
+                    ret['utm_source'] = 'facebook';
+                    ret['utm_campaign'] = 'fb_default';
+                    ret['utm_medium'] = splitted[1];
+                }
+            }
+            return ret;
+        }
     </script>
     <!-- end Mixpanel -->
 

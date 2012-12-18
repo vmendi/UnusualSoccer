@@ -231,7 +231,7 @@
 				itemRenderer="GameView.FriendSelection.FriendItem" useVirtualLayout="true"
 				change="OnMySelectedListChangeHandler(event)"
 				skinClass="GameView.Skins.DefaultListSkin"
-				horizontalScrollPolicy="auto"
+				horizontalScrollPolicy="on"
 				verticalScrollPolicy="off"
 				>
 			<s:layout><s:HorizontalLayout gap="10" columnWidth="90" /></s:layout>

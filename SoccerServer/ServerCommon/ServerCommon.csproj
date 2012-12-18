@@ -57,6 +57,11 @@
     <Compile Include="GlobalConfig.cs" />
     <Compile Include="ProfileUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="ServerConfig.cs" />
     <Compile Include="SoccerDataModel.designer.cs">
       <DependentUpon>SoccerDataModel.dbml</DependentUpon>
@@ -79,6 +84,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="SoccerDataModel.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>SoccerDataModel.designer.cs</LastGenOutput>

@@ -16,6 +16,7 @@ namespace SoccerServer
     public partial class Default : Page
     {
         readonly public NameValueCollection SWF_SETTINGS = System.Configuration.ConfigurationManager.GetSection("swfSettings") as NameValueCollection;
+        private Player mPlayer;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -71,8 +72,8 @@ namespace SoccerServer
 
             using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
             {
-                Player thePlayer = EnsurePlayerIsCreated(theContext, sessionKey, null);
-                EnsureSessionIsCreated(theContext, thePlayer, sessionKey.ToString());
+                mPlayer = EnsurePlayerIsCreated(theContext, sessionKey, Request.QueryString, null);
+                EnsureSessionIsCreated(theContext, mPlayer, sessionKey.ToString());
                 theContext.SubmitChanges();
             }
 
@@ -86,12 +87,12 @@ namespace SoccerServer
                 var fb = new FacebookWebClient();
                 
                 // Usamos un delegate para que solo se haga la llamada sincrona en caso necesario
-				Player player = EnsurePlayerIsCreated(theContext, FacebookWebContext.Current.UserId, () => fb.Get("me"));                
-				EnsureSessionIsCreated(theContext, player, FacebookWebContext.Current.AccessToken);
+				mPlayer = EnsurePlayerIsCreated(theContext, FacebookWebContext.Current.UserId, Request.QueryString, () => fb.Get("me"));
+                EnsureSessionIsCreated(theContext, mPlayer, FacebookWebContext.Current.AccessToken);
 				theContext.SubmitChanges();
 
                 // Ahora podemos hacer visible todo el contenido flash
-                InjectContentPanel(!player.Liked);
+                InjectContentPanel(!mPlayer.Liked);
 			}
 		}
 
@@ -125,6 +126,11 @@ namespace SoccerServer
             flashVars += " } ";
 
             return flashVars;
+        }
+
+        public string GetPlayerParams()
+        {
+            return mPlayer.Params;
         }
 
         public string GetRsc(string rscStandardPath)
@@ -214,7 +220,8 @@ namespace SoccerServer
 
         public delegate dynamic GetFBUserDelegate();
 
-        static public Player EnsurePlayerIsCreated(SoccerDataModelDataContext theContext, long facebookUserID, GetFBUserDelegate theFBUserInfo)
+        static public Player EnsurePlayerIsCreated(SoccerDataModelDataContext theContext, long facebookUserID, NameValueCollection queryString,
+                                                   GetFBUserDelegate theFBUserInfo)
 		{
 			var player = (from dbPlayer in theContext.Players
 						  where dbPlayer.FacebookID == facebookUserID
@@ -222,16 +229,21 @@ namespace SoccerServer
 
 			if (player == null)
 			{
-				// Tenemos un nuevo jugador (unico punto donde se crea)
+                // We save the querystring in the DB as "Params"
+                var theParams = queryString.AllKeys.Aggregate("", (theAccumulated, theCurrentKey) =>
+                                                              theAccumulated + theCurrentKey + "=" + queryString[theCurrentKey] + "&").TrimEnd('&');
+                
+				// Tenemos un nuevo jugador (único punto donde se crea)
 				player = new Player();
 
 				player.FacebookID = facebookUserID;
 				player.CreationDate = DateTime.Now;		// En horario del servidor...
 				player.Liked = false;
+                player.Params = theParams;
 
 				if (theFBUserInfo != null)
 				{
-                    // Aqui es cuando realmente se hace la llamada al API
+                    // Aqui es cuando realmente se hace la llamada al API (bloqueando el server!)
                     dynamic result = theFBUserInfo();
 
                     player.Name = result.first_name;
