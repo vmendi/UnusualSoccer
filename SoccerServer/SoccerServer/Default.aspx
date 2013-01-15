@@ -20,10 +20,10 @@
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 	
-    <!-- Google Analytics -->
+    <!-- Google Analytics, unusualwonder@gmail.com -->
     <script type="text/javascript">
         var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-6476735-8']);
+        _gaq.push(['_setAccount', 'UA-37167226-1']);
         _gaq.push(['_trackPageview']);
 
         (function () {
@@ -32,6 +32,7 @@
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
     </script>
+    <!-- End Google analytics -->
 
     <script type="text/javascript">
         function sendRequestViaMultiFriendSelector() {

@@ -144,13 +144,14 @@
 	</s:Group>
 	
 	<s:Group x="426" y="12" alpha.Complete="0.7" alpha.NotAvailable="0.5">
-		<s:layout><s:VerticalLayout gap="0" /></s:layout>
+		<s:layout><s:VerticalLayout gap="3" /></s:layout>
 		<s:Label text="{resourceManager.getString('main','TrainingSpecialItemRequire')}" styleName="greyBoldMedium" />
+		<!-- 1/14/2013 We remove the XP requirement 
 		<s:Label text="{resourceManager.getString('main','GeneralXP')}:  {data.SpecialTrainingDefinition.RequiredXP}" styleName="whiteBoldBig" />
-		<s:Label text="{resourceManager.getString('main','GeneralUnusualPoints')}" styleName="whiteBoldMedium" />
+		-->
+		<s:Label text="{resourceManager.getString('main','GeneralUnusualPoints')}: {data.SpecialTrainingDefinition.EnergyTotal}" styleName="whiteBoldMedium" />
 	</s:Group>
 
-	<s:Label x="511" y="44" text="{data.SpecialTrainingDefinition.EnergyTotal}" styleName="whiteBoldMedium" />
 
 	<!--<GameView:ProgressBar width="160" x="554" y="12" 
 						  Percent="{100*data.EnergyCurrent/data.SpecialTrainingDefinition.EnergyTotal}" 

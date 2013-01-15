@@ -40,6 +40,9 @@
 			
 			PopUpManager.addPopUp(dlg, parent, true, null);
 			PopUpManager.centerPopUp(dlg);
+			
+			GameMetrics.ReportPageView(GameMetrics.VIEW_FRIEND_SELECTOR);
+			GameMetrics.ReportEvent(GameMetrics.FRIEND_SELECTOR, null);
 		}
 		
 		protected function CloseClickHandler(event:MouseEvent):void
@@ -97,11 +100,13 @@
 		{
 			return (obj as Friend).Name.toLowerCase().indexOf(MySearchInput.text.toLowerCase()) != -1;
 		}
-		
+				
 		private function SendRequests() : void
 		{
 			currentState = "Waiting";
 			
+			GameMetrics.ReportEvent(GameMetrics.FRIEND_SELECTOR_REQUEST, {numSelectedFriends:mSelectedFriends.length});
+									
 			var user_ids : Array = [];
 			
 			if (mSelectedFriends.length > 0)

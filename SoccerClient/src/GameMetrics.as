@@ -8,7 +8,7 @@ package
 	
 	public final class GameMetrics
 	{
-		// PageViews
+		// PageViews (for Google Analitycs)
 		static public const VIEW_COMPETITION : String = "View_Competition";
 		static public const VIEW_FRIENDLY : String = "View_Friendly";
 		static public const VIEW_TEAM : String = "View_Team";
@@ -16,12 +16,13 @@ package
 		static public const VIEW_TRAININGSPECIAL : String = "View_TrainingSpecial";
 		static public const VIEW_RANKING : String = "View_Ranking";
 		static public const VIEW_LOGIN : String = "View_Login";
-		static public const VIEW_ADD_GAME_TIME : String = "Add_Game_Time";
-		static public const VIEW_ADD_UNUSUAL_POINTS : String = "Add_Unusual_Points";
-		static public const VIEW_ADD_TRAINER_TIME : String = "Add_Trainer_Time";
-		static public const VIEW_MATCHEND_DIALOG : String = "Matchend_Dialog";
-		
-		// Events
+		static public const VIEW_ADD_GAME_TIME : String = "View_Add_Game_Time";
+		static public const VIEW_ADD_UNUSUAL_POINTS : String = "View_Add_Unusual_Points";
+		static public const VIEW_ADD_TRAINER_TIME : String = "View_Add_Trainer_Time";
+		static public const VIEW_MATCHEND_DIALOG : String = "View_MatchEnd_Dialog";
+		static public const VIEW_FRIEND_SELECTOR : String = "View_Friend_Selector";
+				
+		// Events (for Mixpanel)
 		static public const SWF_LOADED: String = "SWF Loaded";
 		static public const LOGIN_SCREEN : String = "Login Screen";
 		static public const TEAM_SELECTED : String = "Team Selected"; // Al seleccionar el primer equipo y entrar al juego por primera vez
@@ -40,23 +41,32 @@ package
 		static public const ADD_TRAINER_TIME : String = "Add Trainer Time";
 		static public const CANCELED_TRAINER_TIME : String = "Canceled Trainer Time";
 		
+		// Purchase flow, independent of the product (GAME_TIME, UNUSUAL_POINTS, TRAINER_TIME, etc...) the player is buying.
+		// The kind of product is included in a PURCHASE_SELECTED property.
 		static public const PURCHASE_SELECTED : String = "Purchase Selected";
 		static public const PURCHASE_SUCCESS : String = "Purchase Success";
 		static public const PURCHASE_CANCELED : String = "Purchase Canceled";
 		static public const PURCHASE_FAILURE : String = "Purchase Failure";
 		
 		static public const GET_SKILL : String = "Get Skill";
+		
+		// After getting a skill, FB wall publication flow
 		static public const SKILL_PUBLISH : String = "Skill Publish";
 		static public const SKILL_PUBLISH_CLOSED : String = "Skill Publish Closed";
 		static public const SKILL_PUBLISH_SUCCESS : String = "Skill Publish Success";
 		static public const SKILL_PUBLISH_CANCELED_AFTERFB : String = "Skill Publish Canceled AfterFB";
 		
+		// Match end dialog and afterwards flow
 		static public const MATCHEND_DIALOG : String = "MatchEnd Dialog";
 		static public const MATCHEND_CLOSED : String = "MatchEnd Closed";	
 		static public const MATCHEND_PUBLISH : String = "MatchEnd Publish";
 		static public const MATCHEND_PUBLISH_SUCCESS : String = "MatchEnd Publish Success";
 		static public const MATCHEND_PUBLISH_SUCCESS_X2 : String = "MatchEnd Publish Success X2";
 		static public const MATCHEND_PUBLISH_CANCELED_AFTERFB : String = "MatchEnd Publish Canceled AfterFB";
+		
+		static public const FRIEND_SELECTOR : String = "FriendSelector Dialog";
+		static public const FRIEND_SELECTOR_REQUEST : String = "FriendSelector Request";
+		
 	
 		
 		static public function ReportEvent(event:String, properties:Object) : void

@@ -49,7 +49,7 @@ namespace HttpService
             {
                 // Tenemos que sincronizar el equipo puesto que puede q el entrenamiento este expirado
                 bool bSubmit = TeamUtils.SyncTeam(mContext, mPlayer.Team);
-
+                 
                 PendingTraining ret = mPlayer.Team.PendingTraining;
 
                 if (ret == null)
@@ -101,7 +101,8 @@ namespace HttpService
 
                     mContext.SpecialTrainings.InsertOnSubmit(theTraining);
                 }
-                
+
+                // 1/14/2013 The XP requirement is disconnected by assigning 0 to RequiredXP in the DB.
                 if (theTeam.XP < theTraining.SpecialTrainingDefinition.RequiredXP)
                     throw new Exception("Nice try");
 

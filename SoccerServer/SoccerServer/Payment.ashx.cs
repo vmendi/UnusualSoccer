@@ -300,7 +300,7 @@ namespace SoccerServer
 
         static private ItemForSale GetItemForSale(string orderInfoFromClient_itemID)
         {
-            // TODO: Pensar antes de mover a la DB si no esta mejor aqui, dadas las miles de llamadas por segundo potenciales...
+            // TODO: Pensar antes de mover a la DB si no esta mejor aqui, dadas las miles de llamadas por segundo potenciales... :)
             List<ItemForSale> ITEMS_FOR_SALE = new List<ItemForSale>()
             {
                 new ItemForSale()
