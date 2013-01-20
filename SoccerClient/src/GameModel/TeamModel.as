@@ -255,7 +255,7 @@ package GameModel
 				if (sp.IsCompleted)
 					teamDetails.SpecialSkillsIDs.addItem(sp.SpecialTrainingDefinition.SpecialTrainingDefinitionID);
 			}
-						
+
 			TheTeamDetails = teamDetails;
 		}
 		

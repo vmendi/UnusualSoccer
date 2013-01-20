@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <namespaces>
-  <runtime path="F:/UnusualGit/UnusualSoccer/SoccerServer/SoccerServer/" weborbRootURL="ENTER WEBORB URL HERE" />
+  <runtime path="C:/UnusualGit/UnusualSoccer/SoccerServer/SoccerServer/" weborbRootURL="ENTER WEBORB URL HERE" />
   <namespace name="HttpService" fullname="HttpService">
-    <enum name="VALID_NAME" fullname="HttpService.VALID_NAME" typeNamespace="HttpService">
-      <field name="VALID" type="String" fulltype="String" nativetype="String" />
-      <field name="DUPLICATED" type="String" fulltype="String" nativetype="String" />
-      <field name="INAPPROPIATE" type="String" fulltype="String" nativetype="String" />
-      <field name="TOO_SHORT" type="String" fulltype="String" nativetype="String" />
-      <field name="WHITE_SPACE_TRIM" type="String" fulltype="String" nativetype="String" />
-      <field name="TOO_MANY_WHITESPACES" type="String" fulltype="String" nativetype="String" />
-      <field name="EMPTY" type="String" fulltype="String" nativetype="String" />
-    </enum>
     <namespace name="TransferModel" fullname="HttpService.TransferModel">
+      <datatype name="ItemForSale" fullname="HttpService.TransferModel.ItemForSale" typeNamespace="HttpService.TransferModel">
+        <field name="item_id" type="String" fulltype="String" nativetype="String" />
+        <field name="title" type="String" fulltype="String" nativetype="String" />
+        <field name="description" type="String" fulltype="String" nativetype="String" />
+        <field name="image_url" type="String" fulltype="String" nativetype="String" />
+        <field name="product_url" type="String" fulltype="String" nativetype="String" />
+        <field name="price" type="int" fulltype="int" nativetype="int" />
+        <field name="data" type="String" fulltype="String" nativetype="String" />
+      </datatype>
       <datatype name="CompetitionGroup" fullname="HttpService.TransferModel.CompetitionGroup" typeNamespace="HttpService.TransferModel">
         <field name="GroupName" type="String" fulltype="String" nativetype="String" />
         <field name="DivisionName" type="String" fulltype="String" nativetype="String" />
@@ -115,6 +115,15 @@
         <field name="SpecialSkillsIDs" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;int&gt;" />
       </datatype>
     </namespace>
+    <enum name="VALID_NAME" fullname="HttpService.VALID_NAME" typeNamespace="HttpService">
+      <field name="VALID" type="String" fulltype="String" nativetype="String" />
+      <field name="DUPLICATED" type="String" fulltype="String" nativetype="String" />
+      <field name="INAPPROPIATE" type="String" fulltype="String" nativetype="String" />
+      <field name="TOO_SHORT" type="String" fulltype="String" nativetype="String" />
+      <field name="WHITE_SPACE_TRIM" type="String" fulltype="String" nativetype="String" />
+      <field name="TOO_MANY_WHITESPACES" type="String" fulltype="String" nativetype="String" />
+      <field name="EMPTY" type="String" fulltype="String" nativetype="String" />
+    </enum>
     <service name="MainService" fullname="HttpService.MainService" namespace="HttpService" url="http://ENTER WEBORB URL HERE/weborb.aspx">
       <method name="AssignSkillPoints" type="void" nativetype="Void" containsvalues="0">
         <arg name="soccerPlayerID" type="int" nativetype="int" />
@@ -136,6 +145,10 @@
       <method name="GetExtraRewardForMatch" type="Boolean" nativetype="bool" containsvalues="0">
         <arg name="matchID" type="int" nativetype="int" />
       </method>
+      <method name="GetItemForSale" type="ItemForSale" nativetype="HttpService.TransferModel.ItemForSale" containsvalues="0">
+        <arg name="orderInfoFromClient_itemID" type="String" nativetype="String" />
+      </method>
+      <method name="GetItemsForSale" type="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.ItemForSale&gt;" containsvalues="0" />
       <method name="HasTeam" type="Boolean" nativetype="bool" containsvalues="0" />
       <method name="HealInjury" type="Boolean" nativetype="bool" containsvalues="0">
         <arg name="soccerPlayerID" type="int" nativetype="int" />

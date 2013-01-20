@@ -10,6 +10,7 @@
 
 package HttpService
 {
+	import HttpService.TransferModel.vo.ItemForSale;
 	import HttpService.TransferModel.vo.CompetitionGroup;
 	import HttpService.TransferModel.vo.CompetitionGroupEntry;
 	import HttpService.TransferModel.vo.TeamMatchStats;
@@ -28,6 +29,7 @@ package HttpService
 	{
 		public function DataTypeInitializer()
 		{
+			new HttpService.TransferModel.vo.ItemForSale();	
 			new HttpService.TransferModel.vo.CompetitionGroup();	
 			new HttpService.TransferModel.vo.CompetitionGroupEntry();	
 			new HttpService.TransferModel.vo.TeamMatchStats();	

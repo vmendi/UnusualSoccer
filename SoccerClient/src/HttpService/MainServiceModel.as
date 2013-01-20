@@ -22,6 +22,8 @@
       {     
         public var CreateTeamResult:Boolean;     
         public var GetExtraRewardForMatchResult:Boolean;     
+        public var GetItemForSaleResult:ItemForSale;     
+        public var GetItemsForSaleResult:ArrayCollection;     
         public var HasTeamResult:Boolean;     
         public var HealInjuryResult:Boolean;     
         public var IsNameValidResult:String;     

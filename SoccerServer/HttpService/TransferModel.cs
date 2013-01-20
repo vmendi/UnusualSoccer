@@ -225,6 +225,23 @@ namespace HttpService.TransferModel
         public int NumMatchesDraw;
     }
 
+    // Custom Facebook Item object (for credit callback returns).
+    // Here is where the server defines the items prices. The client gets
+    // the prices for every item from this struct. This is the same struct
+    // that we return to FB in the "payments_get_items" callback ->
+    // the var names have to be lower case.
+    //------------------------------------------------------------------ 
+    public class ItemForSale
+    {
+        public string item_id { get; set; }
+        public string title { get; set; }
+        public string description { get; set; }
+        public string image_url { get; set; }
+        public string product_url { get; set; }
+        public int price { get; set; }            // Price of purchase IN FACEBOOK CREDITS
+        public string data { get; set; }
+    }
+
 	public class CopyHelper
 	{
 		static public void Copy(Object source, Object target)

@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx">
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 creationComplete="CreationCompleteHandler(event)">
 	
 	<fx:Script>
 		<![CDATA[
+			import GameModel.MainGameModel;
+			import GameModel.TeamPurchaseModel;
+			
 			import com.facebook.graph.Facebook;
 			
 			import mx.core.FlexGlobals;
 			import mx.core.IFlexModule;
+			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 			
 			import spark.components.Group;
 			
 			import utils.Delegate;
+			
 			
 			public static function ShowPurchase(theClass : Class) : void
 			{
@@ -31,6 +37,13 @@
 				PopUpManager.centerPopUp(inst);
 			}
 			
+			protected function CreationCompleteHandler(event:FlexEvent):void
+			{
+				mGameModel = SoccerClient.GetMainGameModel();
+				mTeamPurchaseModel = mGameModel.TheTeamPurchaseModel;				
+			}
+
+			
 			public function CloseClickHandler(event:MouseEvent):void
 			{
 				PopUpManager.removePopUp(this);
@@ -42,7 +55,7 @@
 				
 				var obj : Object = {
 					order_info: orderInfo,
-					purchase_type: 'item',
+					purchase_type: 'buy_item',
 					dev_purchase_params: {'oscif': true}		 // JSON Object
 				};
 				
@@ -82,6 +95,10 @@
 			private function OnTeamRefreshedSuccessfulPurchase() : void
 			{
 			}
+			
+			[Bindable]
+			protected var mTeamPurchaseModel : TeamPurchaseModel;
+			protected var mGameModel : MainGameModel;
 		]]>
 	</fx:Script>
 	

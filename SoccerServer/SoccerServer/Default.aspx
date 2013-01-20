@@ -55,7 +55,7 @@
         mixpanel.register(extractUTMParams("<%= GetPlayerParams() %>"));
         mixpanel.track("Default.aspx loaded");
 
-        // We are only interested in registering with mixpanel the UTM params
+        // The UTM params are the only thing we register in mixpanel
         function extractUTMParams(theParams) {
             var ret = {};
             var allKeyValues = theParams.split('&');
@@ -68,7 +68,7 @@
                 }
                 else
                 if (splitted[0].indexOf('fb_source') == 0) {
-                    // For FB campaigns, we need to make the next translation
+                    // For FB campaigns, we make the following translation:
                     ret['utm_source'] = 'facebook';
                     ret['utm_campaign'] = 'fb_default';
                     ret['utm_medium'] = splitted[1];
@@ -106,34 +106,70 @@
 		    swfobject.createCSS("#flashContent", "display:block;text-align:left;");
         };
 
-        // This method will be called from AS3 when the FB SDK is initialized (with FB.init)
-        function onFacebookInitialized() {
-            FB.api('/me?fields=third_party_id,name', function(response) {
+        // This method will be called from AS3 after the FB SDK is initialized (with FB.init). We avoid calling Facebook.api("/me") 
+        // multiple times. We call only once from JS and pass the information back to AS3 using onFacebookMeRefreshed
+        function refreshFacebookMe() {
+
+            FB.api('/me?fields=third_party_id,name,currency,friends', function(response) {
+                
+                var theSWF = document.getElementById('<%= SWF_SETTINGS["application"] %>');
+
                 if (response && !response.error)
-                {
+                {                                                    
                     mixpanel.name_tag(response.name + " (" + response.id + ")");
 
-                    /*
-                    if (Math.random() >= 0.5)
-                    {
-                        $("#AppatyzeIFrame").attr("src", '//app.appatyze.com/gateway.php?a=1176&aid=' + response.third_party_id);
-                        $("#AppatyzeIFrame").attr("height", "90");
-                    }
-                    else
-                    {
-                        (function () {
-                            window.applifierAsyncInit = function () {
-                                Applifier.init({ applicationId: 2276, thirdPartyId: response.third_party_id });
-                                var bar = new Applifier.Bar({ barType: "bar", barContainer: "#ApplifierBar", autoBar: true });
-                            };
-                            var a = document.createElement('script'); a.type = 'text/javascript'; a.async = true;
-                            a.src = (('https:' == document.location.protocol) ? 'https://secure' : 'http://cdn') + '.applifier.com/applifier.min.js';
-                            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(a, s);
-                        })();
-                    }
-                    */
+                    // setupPromotionBars();
+
+                    theSWF.onRefreshFacebookMeResponse(response);
+                }
+                else
+                {
+                    theSWF.onRefreshFacebookMeResponse(null);
                 }
             });
+        }
+
+        function setupPromotionBars(third_party_id) {
+            if (Math.random() >= 0.5) {
+                $("#AppatyzeIFrame").attr("src", '//app.appatyze.com/gateway.php?a=1176&aid=' + third_party_id);
+                $("#AppatyzeIFrame").attr("height", "90");
+            }
+            else {
+                (function () {
+                    window.applifierAsyncInit = function () {
+                        Applifier.init({ applicationId: 2276, thirdPartyId: third_party_id });
+                        var bar = new Applifier.Bar({ barType: "bar", barContainer: "#ApplifierBar", autoBar: true });
+                    };
+                    var a = document.createElement('script'); a.type = 'text/javascript'; a.async = true;
+                    a.src = (('https:' == document.location.protocol) ? 'https://secure' : 'http://cdn') + '.applifier.com/applifier.min.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(a, s);
+                })();
+            }
+        }
+
+        // Helper function copypasted from http://developers.facebook.com/docs/payments/user_currency/
+        function convertPrice(price, currency) {
+           var currmap = {
+                USD: '$',
+                EUR: '€', //... cover whichever currencies are relevant to your app
+            }
+            var currencyString = currmap[currency.user_currency]
+                || currency.user_currency, // in case the map doesn't cover it
+            rate = currency.currency_exchange_inverse,
+            offset = currency.currency_offset;
+
+            // JS Math.round only rounds to int, so work around that
+            var localPrice = String(Math.round(price * rate * offset)); 
+    
+            // Using string operations - you could also use floor(division) and mod
+            offset = {1:0, 10:-1, 100:-2}[offset];
+            var minorUnits = localPrice.substr(offset),
+                majorUnits = localPrice.substring(0, localPrice.length + offset) || "0",
+                separator = (1.1).toLocaleString()[1]; // use the locale-correct decimal
+
+            var displayPrice = currencyString + String(majorUnits) +
+                (minorUnits ? separator + minorUnits : '');
+            return displayPrice;
         }
     </script>
 
@@ -148,7 +184,7 @@
 <div id='fb-root'></div>
 
 <script type="text/javascript">
-    /* Load the FB SDK asynchronously. We need to be in the body because we do an appendChild */
+    /* Load the FB SDK asynchronously. We need to be inside the body because we call appendChild */
     (function () {
         var e = document.createElement('script');
         e.src = document.location.protocol + '<%= GetFBSDK() %>';
@@ -170,7 +206,7 @@
     <asp:Panel runat="server" id="MyLikePanel" style="width:760px; height:38px; margin-bottom:10px; position:relative;">
         <img src="<%= GetRsc("Imgs/BannerMeGustaBg_${locale}.png") %>" alt="" width="760" height="38" style="display:block;border:0;position:absolute;" />
 	    <div style="float:left; padding-left:32px; padding-top:10px; width:150px;">
-		    <fb:like href="www.facebook.com/UnusualSoccer" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
+		    <fb:like href="http://www.facebook.com/UnusualSoccer" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
 	    </div>
     </asp:Panel>
 

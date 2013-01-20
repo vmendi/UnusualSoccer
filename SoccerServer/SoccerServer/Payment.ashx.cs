@@ -8,6 +8,7 @@ using Facebook.Web;
 using NLog;
 using ServerCommon;
 using ServerCommon.BDDModel;
+using HttpService;
 
 
 namespace SoccerServer
@@ -132,7 +133,7 @@ namespace SoccerServer
                 Purchase newPurchase = new Purchase();
 
                 newPurchase.ItemID = itemID;
-                newPurchase.Price = GetItemForSale(itemID).price;
+                newPurchase.Price = MainService.GetItemForSale(itemID).price;
 
                 newPurchase.FacebookBuyerID = buyerFacebookID;
                 newPurchase.FacebookOrderID = facebookOrderID;
@@ -242,7 +243,7 @@ namespace SoccerServer
             string order_info = context.Request.Form["order_info"];
             order_info = order_info.Substring(1, (order_info.Length - 2)); // remove the quotes 
             
-            var theItem = GetItemForSale(order_info);
+            var theItem = MainService.GetItemForSale(order_info);
 
             var res = new Dictionary<string, object>();
             res["method"] = "payments_get_items";
@@ -298,147 +299,9 @@ namespace SoccerServer
             return thePurchase;
         }
 
-        static private ItemForSale GetItemForSale(string orderInfoFromClient_itemID)
-        {
-            // TODO: Pensar antes de mover a la DB si no esta mejor aqui, dadas las miles de llamadas por segundo potenciales... :)
-            List<ItemForSale> ITEMS_FOR_SALE = new List<ItemForSale>()
-            {
-                new ItemForSale()
-                    {
-                        item_id = "SkillPoints100",
-                        description = "A package of 100 Skill points",
-                        price = 30,
-                        title = "100 Skill Points",
-                        product_url = "http://www.facebook.com/images/gifts/20.png",
-                        image_url = "http://www.facebook.com/images/gifts/20.png",
-                        data = ""
-                    },
-                new ItemForSale()
-                    {
-                        item_id = "SkillPoints300",
-                        description = "A package of 300 Skill points",
-                        price = 80,
-                        title = "300 Skill Points",
-                        product_url = "http://www.facebook.com/images/gifts/21.png",
-                        image_url = "http://www.facebook.com/images/gifts/21.png",
-                        data = ""
-                    },
-                new ItemForSale()
-                    {
-                        item_id = "SkillPoints1000",
-                        description = "A package of 1000 Skill points",
-                        price = 250,
-                        title = "1000 Skill Points",
-                        product_url = "http://www.facebook.com/images/gifts/22.png",
-                        image_url = "http://www.facebook.com/images/gifts/22.png",
-                        data = ""
-                    },
-                 new ItemForSale()
-                    {
-                        item_id = "SkillPoints2000",
-                        description = "A package of 2000 Skill points",
-                        price = 450,
-                        title = "2000 Skill Points",
-                        product_url = "http://www.facebook.com/images/gifts/22.png",
-                        image_url = "http://www.facebook.com/images/gifts/22.png",
-                        data = ""
-                    },
-                 new ItemForSale()
-                    {
-                        item_id = "SkillPoints3000",
-                        description = "A package of 3000 Skill points",
-                        price = 700,
-                        title = "3000 Skill Points",
-                        product_url = "http://www.facebook.com/images/gifts/22.png",
-                        image_url = "http://www.facebook.com/images/gifts/22.png",
-                        data = ""
-                    },
-
-                new ItemForSale()
-                    {
-                        item_id = "BronzeTicket",
-                        description = "Unlimited matches for 3 days",
-                        price = 30,
-                        title = "Unlimited matches for 3 days",
-                        product_url = "http://www.facebook.com/images/gifts/23.png",
-                        image_url = "http://www.facebook.com/images/gifts/23.png",
-                        data = ""
-                    },
-                new ItemForSale()
-                    {
-                        item_id = "SilverTicket",
-                        description = "Unlimited matches for 1 week",
-                        price = 60,
-                        title = "Unlimited matches for 1 week",
-                        product_url = "http://www.facebook.com/images/gifts/24.png",
-                        image_url = "http://www.facebook.com/images/gifts/24.png",
-                        data = ""
-                    },
-                new ItemForSale()
-                    {
-                        item_id = "GoldTicket",
-                        description = "Unlimited matches for 1 month",
-                        price = 250,
-                        title = "Unlimited matches for 1 month",
-                        product_url = "http://www.facebook.com/images/gifts/25.png",
-                        image_url = "http://www.facebook.com/images/gifts/25.png",
-                        data = ""
-                    },
-                new ItemForSale()
-                    {
-                        item_id = "Trainer01",
-                        description = "Trainer during 2 days",
-                        price = 30,
-                        title = "Trainer during 2 days",
-                        product_url = "http://www.facebook.com/images/gifts/26.png",
-                        image_url = "http://www.facebook.com/images/gifts/26.png",
-                        data = ""
-                    },
-                new ItemForSale()
-                    {
-                        item_id = "Trainer02",
-                        description = "Trainer during 1 week",
-                        price = 60,
-                        title = "Trainer during 1 week",
-                        product_url = "http://www.facebook.com/images/gifts/27.png",
-                        image_url = "http://www.facebook.com/images/gifts/27.png",
-                        data = ""
-                    },
-                new ItemForSale()
-                    {
-                        item_id = "Trainer03",
-                        description = "Trainer during 1 month",
-                        price = 200,
-                        title = "Trainer during 1 month",
-                        product_url = "http://www.facebook.com/images/gifts/28.png",
-                        image_url = "http://www.facebook.com/images/gifts/28.png",
-                        data = ""
-                    }
-            };
-            
-            var theItem = (from items in ITEMS_FOR_SALE
-                           where items.item_id == orderInfoFromClient_itemID
-                           select items).First();
-
-            return theItem;
-        }
-
         public bool IsReusable
         {
             get { return false; }
-        }
-
-        // Custom Facebook Item object (for credit callback returns) 
-        //------------------------------------------------------------------ 
-        public class ItemForSale
-        {
-            public string item_id { get; set; }
-            public string title { get; set; }
-            public string description { get; set; }
-            public string image_url { get; set; }
-            public string product_url { get; set; }
-            public int price { get; set; }            // Price of purchase IN FACEBOOK CREDITS
-            public string data { get; set; }
         }
     }
 }

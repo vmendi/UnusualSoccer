@@ -54,6 +54,7 @@
     <Compile Include="EntityDataReader.cs" />
     <Compile Include="MainService.cs" />
     <Compile Include="MainServiceCompetition.cs" />
+    <Compile Include="MainServicePurchase.cs" />
     <Compile Include="MainServiceRanking.cs" />
     <Compile Include="MainServiceRequests.cs" />
     <Compile Include="MainServiceTeam.cs" />

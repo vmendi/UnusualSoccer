@@ -1,6 +1,13 @@
 package GameModel
 {
 	import HttpService.MainService;
+	import HttpService.TransferModel.vo.ItemForSale;
+	
+	import flash.external.ExternalInterface;
+	
+	import mx.collections.ArrayCollection;
+	import mx.rpc.Responder;
+	import mx.rpc.events.ResultEvent;
 
 	public final class TeamPurchaseModel
 	{
@@ -9,6 +16,20 @@ package GameModel
 			mMainService = mainService;
 			mMainGameModel = mainModel;
 			mTeamModel = mMainGameModel.TheTeamModel;
+
+			mLocalCurrencyInfo = SoccerClient.GetFacebookFacade().FacebookMe.currency;
+		}
+		
+		public function InitialRefresh(callback : Function) : void
+		{
+			mMainService.GetItemsForSale(new mx.rpc.Responder(OnGetItemsForSaleResponse, ErrorMessages.Fault));
+			
+			function OnGetItemsForSaleResponse(e:ResultEvent) : void
+			{
+				mItemsForSale = e.result as ArrayCollection;
+				
+				callback();
+			}
 		}
 		
 		// TeamModel nos llama cada vez que cambia el equipo. Lo queremos hacer asi y no por subscripcion para que este claro
@@ -32,6 +53,45 @@ package GameModel
 			}
 		}
 		
+		public function GetPriceInCreditsForItem(itemID : String) : String
+		{
+			var theItem : ItemForSale = GetItemByID(itemID);
+			
+			if (theItem == null)
+			{
+				ErrorMessages.LogToServer("WTF 832, product itemID unknown");
+
+				return "Error";	
+			}
+				
+			return theItem.price + " Facebook Credits";			
+		}
+		
+		public function GetPriceInLocalCurrencyForItem(itemID : String) : String
+		{
+			var theItem : ItemForSale = GetItemByID(itemID);
+			
+			if (theItem == null)
+			{
+				ErrorMessages.LogToServer("WTF 833, product itemID unknown");
+				
+				return "Error";	
+			}
+			
+			return ExternalInterface.call("convertPrice", theItem.price, mLocalCurrencyInfo);
+		}
+		
+		private function GetItemByID(itemID : String) : ItemForSale
+		{
+			for each(var item : ItemForSale in mItemsForSale)
+			{
+				if (item.item_id == itemID)
+					return item;				// Artists can take license with established rules...
+			}
+			
+			return null;
+		}
+		
 		internal function OnTimerSeconds() : void
 		{
 			UpdatePurchases();
@@ -53,6 +113,10 @@ package GameModel
 		private function set HasTrainer(val : Boolean) : void { mHasTrainer = val; }
 		private var mHasTrainer : Boolean = false;
 		
+		private var mItemsForSale : ArrayCollection;
+		
+		// http://developers.facebook.com/docs/payments/user_currency/
+		private var mLocalCurrencyInfo : Object;
 		
 		private var mMainService : MainService;
 		private var mMainGameModel : MainGameModel;

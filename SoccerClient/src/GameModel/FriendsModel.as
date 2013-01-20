@@ -3,8 +3,6 @@ package GameModel
 	import HttpService.MainService;
 	import HttpService.TransferModel.vo.SoccerPlayer;
 	
-	import com.facebook.graph.Facebook;
-	
 	import mx.binding.utils.BindingUtils;
 	import mx.collections.ArrayCollection;
 
@@ -16,19 +14,8 @@ package GameModel
 			mMainService = mainService;
 			
 			BindingUtils.bindSetter(OnSoccerPlayersChanged, mMainModel.TheTeamModel, [ "TheTeam", "SoccerPlayers" ]);
-			
-			// No necesitamos pasar por el InitialRefresh, no es una llamada a nuestro servidor
-			Facebook.api("/me/friends", OnFriendsLoaded);
-		}
-		
-		private function OnFriendsLoaded(response:Object, fail:Object) : void 
-		{
-			mFriends.removeAll();
-			
-			if (fail != null) 
-				return; 
-			
-			var friends:Array = response as Array;
+						
+			var friends:Array = SoccerClient.GetFacebookFacade().FacebookMe.friends.data as Array;
 			
 			for each(var friend:Object in friends)
 			{

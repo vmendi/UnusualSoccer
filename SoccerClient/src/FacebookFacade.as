@@ -71,27 +71,28 @@ package
 				// previous setCanvasAutoResize)
 				ExternalInterface.call("FB.Canvas.setAutoGrow");
 
+				// RefreshMe is going to call us back
+				ExternalInterface.addCallback("onRefreshFacebookMeResponse", onRefreshFacebookMeResponse);
+
 				// It's at this moment, after the SDK init, when we:
 				// - Call FB.api("/me") so that we can...
 				// 	- Insert and display the banner ads
 				//	- Tell mixpanel the user name
-				ExternalInterface.call("onFacebookInitialized");
-				
-				// Aseguramos que tenemos los permisos frescos
-				// Antes obteniamos aqui el /me, ahora no hace falta puesto que el locale viene del server
-				RefreshPermisions(callback);
+				ExternalInterface.call("refreshFacebookMe");
 			}
 			else
 			{
 				ErrorMessages.FacebookConnectionError();
 			}
 			
-			function onFacebookMeResponse(result:Object, fail:Object) : void
+			function onRefreshFacebookMeResponse(response:Object) : void
 			{
-				if (fail == null)
+				if (response != null)
 				{
-					mMe = result;
-					callback();
+					mMe = response;
+					
+					// Aseguramos que tenemos los permisos frescos
+					RefreshPermisions(callback);
 				}
 				else
 				{
@@ -178,8 +179,13 @@ package
 			
 			if (mFBAuthResponse != null)
 				return mFBAuthResponse.uid;
-			
+						
 			return null;
+		}
+		
+		public function get FacebookMe() : Object
+		{
+			return mMe;
 		}
 		
 		private function RefreshPermisions(callback : Function) : void

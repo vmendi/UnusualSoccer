@@ -32,14 +32,15 @@
   
     package HttpService
     {
-    import HttpService.TransferModel.vo.*;
-    
-    import mx.collections.ArrayCollection;
+    import mx.rpc.remoting.RemoteObject;
+    import mx.rpc.events.ResultEvent;
+    import mx.rpc.events.FaultEvent;
     import mx.rpc.AsyncToken;
     import mx.rpc.IResponder;
-    import mx.rpc.events.FaultEvent;
-    import mx.rpc.events.ResultEvent;
-    import mx.rpc.remoting.RemoteObject;
+    import mx.collections.ArrayCollection;
+
+    
+    import HttpService.TransferModel.vo.*;
         
     public class MainService
     {
@@ -60,6 +61,10 @@
         remoteObject.CreateTeam.addEventListener("result",CreateTeamHandler);
         
         remoteObject.GetExtraRewardForMatch.addEventListener("result",GetExtraRewardForMatchHandler);
+        
+        remoteObject.GetItemForSale.addEventListener("result",GetItemForSaleHandler);
+        
+        remoteObject.GetItemsForSale.addEventListener("result",GetItemsForSaleHandler);
         
         remoteObject.HasTeam.addEventListener("result",HasTeamHandler);
         
@@ -155,6 +160,24 @@
       public function GetExtraRewardForMatch(matchID:int, responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.GetExtraRewardForMatch(matchID);
+        
+        if( responder != null )
+            asyncToken.addResponder( responder );
+
+      }
+    
+      public function GetItemForSale(orderInfoFromClient_itemID:String, responder:IResponder = null ):void
+      {
+        var asyncToken:AsyncToken = remoteObject.GetItemForSale(orderInfoFromClient_itemID);
+        
+        if( responder != null )
+            asyncToken.addResponder( responder );
+
+      }
+    
+      public function GetItemsForSale( responder:IResponder = null ):void
+      {
+        var asyncToken:AsyncToken = remoteObject.GetItemsForSale();
         
         if( responder != null )
             asyncToken.addResponder( responder );
@@ -342,6 +365,22 @@
         
           var returnValue:Boolean = event.result as Boolean;
           model.GetExtraRewardForMatchResult = returnValue;
+        
+      }
+         
+      public virtual function GetItemForSaleHandler(event:ResultEvent):void
+      {
+        
+          var returnValue:ItemForSale = event.result as ItemForSale;
+          model.GetItemForSaleResult = returnValue;
+        
+      }
+         
+      public virtual function GetItemsForSaleHandler(event:ResultEvent):void
+      {
+        
+          var returnValue:ArrayCollection = event.result as ArrayCollection;
+          model.GetItemsForSaleResult = returnValue;
         
       }
          
