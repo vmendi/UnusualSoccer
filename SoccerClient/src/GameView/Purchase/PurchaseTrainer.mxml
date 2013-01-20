@@ -86,11 +86,12 @@
 			
 			<s:Group width="160">
 				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTrainer1Time')}"></s:Label>			
+				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTrainer01Desc')}"></s:Label>			
 				<s:Group>
 					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTrainer1Price')}"></s:Label>	
+					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('Trainer01')}"></s:Label>
+					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('Trainer01')}"></s:Label>
 				</s:Group>
 				<s:Button id="Trainer01" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
@@ -99,11 +100,12 @@
 			
 			<s:Group width="160">
 				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTrainer2Time')}"></s:Label>
+				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTrainer02Desc')}"></s:Label>
 				<s:Group>
 					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTrainer2Price')}"></s:Label>	
+					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('Trainer02')}"></s:Label>	
+					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('Trainer02')}"></s:Label>
 				</s:Group>
 				<s:Button id="Trainer02" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
@@ -112,13 +114,42 @@
 			
 			<s:Group width="160">
 				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTrainer3Time')}"></s:Label>
+				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTrainer03Desc')}"></s:Label>
 				<s:Group>
 					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTrainer3Price')}"></s:Label>	
+					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('Trainer03')}"></s:Label>
+					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('Trainer03')}"></s:Label>
 				</s:Group>
 				<s:Button id="Trainer03" label="{resourceManager.getString('main','Select')}"
+						  click="MySelectItemButton_clickHandler(event)"
+						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>
+			
+			<s:Group width="160">
+				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTrainer04Desc')}"></s:Label>
+				<s:Group>
+					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
+					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
+					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('Trainer04')}"></s:Label>
+					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('Trainer04')}"></s:Label>
+				</s:Group>
+				<s:Button id="Trainer04" label="{resourceManager.getString('main','Select')}"
+						  click="MySelectItemButton_clickHandler(event)"
+						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>
+			
+			<s:Group width="160">
+				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTrainer05Desc')}"></s:Label>
+				<s:Group>
+					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
+					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
+					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('Trainer05')}"></s:Label>
+					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('Trainer05')}"></s:Label>
+				</s:Group>
+				<s:Button id="Trainer05" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>

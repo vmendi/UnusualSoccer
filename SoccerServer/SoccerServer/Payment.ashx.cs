@@ -160,9 +160,6 @@ namespace SoccerServer
 
             switch(thePurchase.ItemID)
             {
-                case "SkillPoints100":
-                    theTeam.SkillPoints += 100;
-                    break;
                 case "SkillPoints300":
                     theTeam.SkillPoints += 300;
                     break;

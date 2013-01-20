@@ -66,7 +66,7 @@ namespace HttpService
                     {
                         item_id = "SkillPoints10000",
                         description = "A package of 10000 Skill points",
-                        price = 700,
+                        price = 1000,
                         title = "10000 Skill Points",
                         product_url = "http://www.facebook.com/images/gifts/22.png",
                         image_url = "http://www.facebook.com/images/gifts/22.png",
@@ -76,7 +76,7 @@ namespace HttpService
                     {
                         item_id = "SkillPoints30000",
                         description = "A package of 30000 Skill points",
-                        price = 700,
+                        price = 1300,
                         title = "30000 Skill Points",
                         product_url = "http://www.facebook.com/images/gifts/22.png",
                         image_url = "http://www.facebook.com/images/gifts/22.png",
@@ -86,9 +86,9 @@ namespace HttpService
                 new TransferModel.ItemForSale()
                     {
                         item_id = "BronzeTicket",
-                        description = "Unlimited matches for 3 days",
+                        description = "Unlimited games for 3 days",
                         price = 30,
-                        title = "Unlimited matches for 3 days",
+                        title = "Unlimited games for 3 days",
                         product_url = "http://www.facebook.com/images/gifts/23.png",
                         image_url = "http://www.facebook.com/images/gifts/23.png",
                         data = ""
@@ -96,9 +96,9 @@ namespace HttpService
                 new TransferModel.ItemForSale()
                     {
                         item_id = "SilverTicket",
-                        description = "Unlimited matches for 1 week",
+                        description = "Unlimited games for 1 week",
                         price = 60,
-                        title = "Unlimited matches for 1 week",
+                        title = "Unlimited games for 1 week",
                         product_url = "http://www.facebook.com/images/gifts/24.png",
                         image_url = "http://www.facebook.com/images/gifts/24.png",
                         data = ""
@@ -106,19 +106,40 @@ namespace HttpService
                 new TransferModel.ItemForSale()
                     {
                         item_id = "GoldTicket",
-                        description = "Unlimited matches for 1 month",
+                        description = "Unlimited games for 1 month",
                         price = 250,
-                        title = "Unlimited matches for 1 month",
+                        title = "Unlimited games for 1 month",
                         product_url = "http://www.facebook.com/images/gifts/25.png",
                         image_url = "http://www.facebook.com/images/gifts/25.png",
                         data = ""
                     },
                 new TransferModel.ItemForSale()
                     {
+                        item_id = "PlatinumTicket",
+                        description = "Unlimited games for 3 months",
+                        price = 500,
+                        title = "Unlimited games for 3 months",
+                        product_url = "http://www.facebook.com/images/gifts/25.png",
+                        image_url = "http://www.facebook.com/images/gifts/25.png",
+                        data = ""
+                    },
+                new TransferModel.ItemForSale()
+                    {
+                        item_id = "DiamondTicket",
+                        description = "Unlimited games forever",
+                        price = 1000,
+                        title = "Unlimited games forever",
+                        product_url = "http://www.facebook.com/images/gifts/25.png",
+                        image_url = "http://www.facebook.com/images/gifts/25.png",
+                        data = ""
+                    },
+
+                new TransferModel.ItemForSale()
+                    {
                         item_id = "Trainer01",
-                        description = "Trainer during 2 days",
+                        description = "Trainer for 3 days",
                         price = 30,
-                        title = "Trainer during 2 days",
+                        title = "Trainer during 3 days",
                         product_url = "http://www.facebook.com/images/gifts/26.png",
                         image_url = "http://www.facebook.com/images/gifts/26.png",
                         data = ""
@@ -126,9 +147,9 @@ namespace HttpService
                 new TransferModel.ItemForSale()
                     {
                         item_id = "Trainer02",
-                        description = "Trainer during 1 week",
+                        description = "Trainer for 1 week",
                         price = 60,
-                        title = "Trainer during 1 week",
+                        title = "Trainer for 1 week",
                         product_url = "http://www.facebook.com/images/gifts/27.png",
                         image_url = "http://www.facebook.com/images/gifts/27.png",
                         data = ""
@@ -136,9 +157,29 @@ namespace HttpService
                 new TransferModel.ItemForSale()
                     {
                         item_id = "Trainer03",
-                        description = "Trainer during 1 month",
+                        description = "Trainer for 1 month",
                         price = 200,
-                        title = "Trainer during 1 month",
+                        title = "Trainer for 1 month",
+                        product_url = "http://www.facebook.com/images/gifts/28.png",
+                        image_url = "http://www.facebook.com/images/gifts/28.png",
+                        data = ""
+                    },
+                new TransferModel.ItemForSale()
+                    {
+                        item_id = "Trainer04",
+                        description = "Trainer for 3 months",
+                        price = 400,
+                        title = "Trainer for 3 months",
+                        product_url = "http://www.facebook.com/images/gifts/28.png",
+                        image_url = "http://www.facebook.com/images/gifts/28.png",
+                        data = ""
+                    },
+                new TransferModel.ItemForSale()
+                    {
+                        item_id = "Trainer05",
+                        description = "Trainer forever",
+                        price = 600,
+                        title = "Trainer forever",
                         product_url = "http://www.facebook.com/images/gifts/28.png",
                         image_url = "http://www.facebook.com/images/gifts/28.png",
                         data = ""
