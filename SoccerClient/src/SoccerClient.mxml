@@ -35,9 +35,14 @@
 		import Match.MatchMain;
 		
 		import mx.events.FlexEvent;
+		
+		import utils.UIComponentWrapper;
 
 		protected function ApplicationCompleteHandler(event:FlexEvent):void
 		{
+			// While we initialize FB, etc we also need to show the "Wait" screen (after the preloader)
+			createLoadingScreen();
+			
 			GameMetrics.ReportEvent(GameMetrics.SWF_LOADED, null);
 			
 			// FPSCounter.Init(this.stage, new Point(0,0));
@@ -85,6 +90,11 @@
 			function OnInitialRefreshSuccess() : void
 			{
 				mMainView = new MainView();
+				mMainView.addEventListener(Event.ADDED_TO_STAGE, function() : void
+				{
+					// Hide our loading screen
+					removeElement(mLoadingScreen);
+				});
 				addElement(mMainView);
 			}
 		}
@@ -145,8 +155,27 @@
 			mMainView = null;
 		}
 		
+		private function createLoadingScreen():void
+		{    			
+			var loadingIcon : mcLoading = new mcLoading();
+			
+			if (AppConfig.IsMahouLigaChapas)
+				loadingIcon.gotoAndStop(1);
+			else
+				loadingIcon.gotoAndStop(2);
+										
+			loadingIcon.x = 0;
+			loadingIcon.y = 0;
+			
+			mLoadingScreen = new UIComponentWrapper(loadingIcon); 
+			
+			addElement(mLoadingScreen);
+		}		
 		
 		private var mMainView : MainView;
+		
+		// Here we also want a "Wait" (in addition to the preloader). Currently, it's a screen that covers the whole area
+		private var mLoadingScreen : UIComponentWrapper;
 		
 		/// En vez de andar pasándolo por ahí en Inits, singletonizamos
 		static private var mMainGameModel : MainGameModel;
