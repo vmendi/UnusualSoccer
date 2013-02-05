@@ -145,7 +145,7 @@ package GameModel
 				
 		private function NetPlugError(reason : String) : void
 		{
-			ErrorMessages.RealtimeConnectionFailed(reason);
+			ErrorMessages.RealtimeConnectionFailed(reason + " RemoteServer: " + GetDefaultURI());
 			
 			// NOTE01: Idem
 		}
