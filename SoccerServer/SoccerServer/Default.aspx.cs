@@ -63,6 +63,11 @@ namespace SoccerServer
                 // En el web.config hay un handler de facebookredirect.axd, a traves de el se hacen las redirecciones
                 if (auth.Authorize())
                     ShowFacebookContent();
+                else
+                    Response.End(); // Si no estamos autorizamos, queremos que pare inmediatamente el proceso de la pagina. auth.Authorize ya ha inyectado
+                                    // en la respuesta su trozo de código que hace el redirect al cuadro de Allow, y si no ponemos esto se inyectará el resto
+                                    // de Default.aspx, cosa que es innecesaria además de provocar que se llame a funciones como GetPlayerParams cuando no
+                                    // no hay mPlayer (por esto ha sido por lo que detectamos que era necesario controlar bien este caso).
             }
         }
 
