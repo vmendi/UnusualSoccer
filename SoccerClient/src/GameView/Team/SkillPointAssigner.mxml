@@ -54,15 +54,15 @@
 	<s:Group x="12" y="80">
 		<s:layout><s:VerticalLayout horizontalAlign="left" gap="0"/></s:layout>
 		
-		<GameView:AssignerSpinner id="MyPowerAssigner" width="164" AnimationEnabled="false" DisplayName="POTENCIA:"
+		<GameView:AssignerSpinner id="MyPowerAssigner" width="164" AnimationEnabled="false" DisplayName="{resourceManager.getString('main','MatchDefinitionPower')}:"
 								  Max="{mSkillPointAssignerPM.MaxPower}" Min="{mSkillPointAssignerPM.MinPower}"
 								  Val="@{mSkillPointAssignerPM.Power}"/>
 		
-		<GameView:AssignerSpinner id="MySlidingAssigner" width="164" AnimationEnabled="false" DisplayName="CONTROL:" 
+		<GameView:AssignerSpinner id="MySlidingAssigner" width="164" AnimationEnabled="false" DisplayName="{resourceManager.getString('main','MatchDefinitionControl')}:" 
 								  Max="{mSkillPointAssignerPM.MaxSliding}" Min="{mSkillPointAssignerPM.MinSliding}"
 								  Val="@{mSkillPointAssignerPM.Sliding}"/>		
 		
-		<GameView:AssignerSpinner id="MyWeightAssigner" width="164" AnimationEnabled="false" DisplayName="DEFENSA:" 
+		<GameView:AssignerSpinner id="MyWeightAssigner" width="164" AnimationEnabled="false" DisplayName="{resourceManager.getString('main','MatchDefinitionDefense')}:" 
 								  Max="{mSkillPointAssignerPM.MaxWeight}" Min="{mSkillPointAssignerPM.MinWeight}"
 								  Val="@{mSkillPointAssignerPM.Weight}"/>		
 	</s:Group>
