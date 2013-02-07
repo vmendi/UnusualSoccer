@@ -3,7 +3,7 @@
 		 			   xmlns:s="library://ns.adobe.com/flex/spark"
 		 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 		 			   xmlns:Purchase="GameView.Purchase.*"
-		 			   width="600" height="455" xmlns:GameView="GameView.*"
+		 			   width="720" height="458" xmlns:GameView="GameView.*"
 					   addedToStage="AddedToStageHandler(event)">
 	
 	<fx:Style source="../styles.css"/>
@@ -55,7 +55,7 @@
 			<s:layout>
 				<s:HorizontalLayout gap="10" />
 			</s:layout>
-			<s:Rect width="106" height="230" alpha="1" radiusX="8" filters="{[shadowNormal]}">
+			<s:Rect width="126" height="260" alpha="1" radiusX="8" filters="{[shadowNormal]}">
 				<s:stroke>
 					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
 				</s:stroke>
@@ -63,7 +63,7 @@
 					<s:SolidColor alpha="0.6" color="#242424"/>
 				</s:fill>
 			</s:Rect>
-			<s:Rect width="106" height="230" alpha="1" radiusX="8" filters="{[shadowNormal]}">
+			<s:Rect width="126" height="260" alpha="1" radiusX="8" filters="{[shadowNormal]}">
 				<s:stroke>
 					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
 				</s:stroke>
@@ -71,7 +71,7 @@
 					<s:SolidColor alpha="0.6" color="#242424"/>
 				</s:fill>
 			</s:Rect>
-			<s:Rect width="106" height="230" alpha="1" radiusX="8" filters="{[shadowNormal]}">
+			<s:Rect width="126" height="260" alpha="1" radiusX="8" filters="{[shadowNormal]}">
 				<s:stroke>
 					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
 				</s:stroke>
@@ -79,7 +79,7 @@
 					<s:SolidColor alpha="0.6" color="#242424"/>
 				</s:fill>
 			</s:Rect>
-			<s:Rect width="106" height="230" alpha="1" radiusX="8" filters="{[shadowNormal]}">
+			<s:Rect width="126" height="260" alpha="1" radiusX="8" filters="{[shadowNormal]}">
 				<s:stroke>
 					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
 				</s:stroke>
@@ -87,7 +87,7 @@
 					<s:SolidColor alpha="0.6" color="#242424"/>
 				</s:fill>
 			</s:Rect>
-			<s:Rect width="106" height="230" alpha="1" radiusX="8" filters="{[shadowNormal]}">
+			<s:Rect width="126" height="260" alpha="1" radiusX="8" filters="{[shadowNormal]}">
 				<s:stroke>
 					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
 				</s:stroke>
@@ -97,11 +97,11 @@
 			</s:Rect>
 		</s:Group>
 		
-		<s:Group id="MyChooseItemGroup" includeIn="ChoosingItem" horizontalCenter="0" verticalCenter="0">
+		<s:Group id="MyChooseItemGroup" includeIn="ChoosingItem" horizontalCenter="0" top="7">
 			<s:layout><s:HorizontalLayout gap="12" horizontalAlign="center" verticalAlign="top"/></s:layout>
 						
-			<s:Group width="106">
-				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+			<s:Group width="126">
+				<s:layout><s:VerticalLayout gap="10" horizontalAlign="center" verticalAlign="middle"/></s:layout>
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_2')" fillMode="clip" />
 				<s:Group horizontalCenter="0">
 					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
@@ -109,21 +109,21 @@
 					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
 				</s:Group>
 				<s:Group>
-					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
+					<s:layout><s:VerticalLayout gap="4" horizontalAlign="center" /></s:layout>
 					<s:Group>
 						<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 						<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-						<s:Label width="46" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SkillPoints300')}"></s:Label>
+						<s:Label width="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SkillPoints300')}"></s:Label>
 					</s:Group>					
-					<s:Label width="46" styleName="whiteBoldMedium" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SkillPoints300')})"></s:Label>
+					<s:Label width="86" textAlign="center" styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SkillPoints300')})"></s:Label>
 				</s:Group>
 				<s:Button id="SkillPoints300" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
 			
-			<s:Group width="106">
-				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+			<s:Group width="126">
+				<s:layout><s:VerticalLayout gap="10" horizontalAlign="center" verticalAlign="middle"/></s:layout>
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_3')" fillMode="clip" />
 				<s:Group horizontalCenter="0">
 					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
@@ -131,21 +131,21 @@
 					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
 				</s:Group>		
 				<s:Group>
-					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
+					<s:layout><s:VerticalLayout gap="4" horizontalAlign="center" /></s:layout>
 					<s:Group>
 						<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 						<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-						<s:Label width="46" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SkillPoints1000')}"></s:Label>
+						<s:Label width="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SkillPoints1000')}"></s:Label>
 					</s:Group>					
-					<s:Label width="46" styleName="whiteBoldMedium" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SkillPoints1000')})"></s:Label>	
+					<s:Label width="86" textAlign="center" styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SkillPoints1000')})"></s:Label>	
 				</s:Group>				
 				<s:Button id="SkillPoints1000" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
 						
-			<s:Group width="106">
-				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+			<s:Group width="126">
+				<s:layout><s:VerticalLayout gap="10" horizontalAlign="center" verticalAlign="middle"/></s:layout>
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_5')" fillMode="clip" />
 				<s:Group horizontalCenter="0">
 					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
@@ -153,21 +153,21 @@
 					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
 				</s:Group>			
 				<s:Group>
-					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
+					<s:layout><s:VerticalLayout gap="4" horizontalAlign="center" /></s:layout>
 					<s:Group>
 						<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 						<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-						<s:Label width="46" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SkillPoints3000')}"></s:Label>
+						<s:Label width="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SkillPoints3000')}"></s:Label>
 					</s:Group>					
-					<s:Label width="46" styleName="whiteBoldMedium" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SkillPoints3000')})"></s:Label>	
+					<s:Label width="86" textAlign="center" styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SkillPoints3000')})"></s:Label>	
 				</s:Group>
 				<s:Button id="SkillPoints3000" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
 			
-			<s:Group width="106">
-				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+			<s:Group width="126">
+				<s:layout><s:VerticalLayout gap="10" horizontalAlign="center" verticalAlign="middle"/></s:layout>
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_4')" fillMode="clip" />
 				<s:Group horizontalCenter="0">
 					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
@@ -175,21 +175,21 @@
 					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
 				</s:Group>			
 				<s:Group>
-					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
+					<s:layout><s:VerticalLayout gap="4" horizontalAlign="center" /></s:layout>
 					<s:Group>
 						<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 						<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-						<s:Label width="46" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SkillPoints10000')}"></s:Label>
+						<s:Label width="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SkillPoints10000')}"></s:Label>
 					</s:Group>					
-					<s:Label width="46" styleName="whiteBoldMedium" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SkillPoints10000')})"></s:Label>	
+					<s:Label width="86" textAlign="center" styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SkillPoints10000')})"></s:Label>	
 				</s:Group>
 				<s:Button id="SkillPoints10000" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
 			
-			<s:Group width="106">
-				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+			<s:Group width="126">
+				<s:layout><s:VerticalLayout gap="10" horizontalAlign="center" verticalAlign="middle"/></s:layout>
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_4')" fillMode="clip" />
 				<s:Group horizontalCenter="0">
 					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
@@ -197,13 +197,13 @@
 					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
 				</s:Group>			
 				<s:Group>
-					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
+					<s:layout><s:VerticalLayout gap="4" horizontalAlign="center" /></s:layout>
 					<s:Group>
 						<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 						<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-						<s:Label width="46" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SkillPoints30000')}"></s:Label>
+						<s:Label width="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SkillPoints30000')}"></s:Label>
 					</s:Group>					
-					<s:Label width="46" styleName="whiteBoldMedium" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SkillPoints30000')})"></s:Label>	
+					<s:Label width="86" textAlign="center" styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SkillPoints30000')})"></s:Label>	
 				</s:Group>
 				<s:Button id="SkillPoints30000" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
@@ -224,9 +224,13 @@
 				 />
 	</s:Group>
 
-	<s:Label id="myTxtTerms" horizontalCenter="0" bottom="65" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTxtTerms')}" includeIn="ChoosingItem"/>
+	<s:Label id="myTxtTerms" horizontalCenter="0" bottom="56" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTxtTerms')}" includeIn="ChoosingItem"/>
 	
 	<s:Button id="MyCloseButton" label.ChoosingItem="{resourceManager.getString('main','Cancel')}" label="Close" click="CloseClickHandler(event)" minWidth="80" horizontalCenter="0" bottom="20" 
 			  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+	
+	<s:BitmapImage x="527" y="277" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestValue')" fillMode="clip" />
+	<s:BitmapImage x="665" y="277" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestBuy')" fillMode="clip" />
+
 	
 </Purchase:PurchaseBase>

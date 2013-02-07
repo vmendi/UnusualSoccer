@@ -60,10 +60,15 @@
 		
 		<s:Group includeIn="NotPurchased">
 			<s:layout>
-				<s:VerticalLayout horizontalAlign="center" gap="0" />
+				<s:VerticalLayout horizontalAlign="center" gap="4" />
 			</s:layout>
 			<s:Label text="{resourceManager.getString('main','TrainerPanelHireIntroTxt')}" styleName="whiteBoldBig"/>
-			<s:Label text="{resourceManager.getString('main','TrainerPanelHireTxt')}" styleName="yellowBoldVeryBig"/>
+			<!--<s:Label text="{resourceManager.getString('main','TrainerPanelHireTxt')}" styleName="yellowBoldVeryBig"/>-->
+			<s:Button label="{resourceManager.getString('main','TrainerPanelHireTxt')}"
+					  click="MyBuyTrainerButton_clickHandler(event)"
+					  skinClass="GameView.Skins.ButtonGreySkin"
+					  width="120" height="26"
+					  verticalCenter="0"/>
 		</s:Group>
 		
 		<s:Group includeIn="Purchased">
@@ -76,11 +81,11 @@
 
 	</s:Group>
 	
-	<s:Button includeIn="NotPurchased"
+	<!--<s:Button includeIn="NotPurchased"
 			  label="{resourceManager.getString('main','TrainerPanelHireButton')}"
 			  click="MyBuyTrainerButton_clickHandler(event)"
 			  skinClass="GameView.Skins.ButtonGreySkin"
 			  width="120" height="26"
-			  verticalCenter="0" right="55"/>		
+			  verticalCenter="0" right="55"/>-->		
 
 </s:Group>

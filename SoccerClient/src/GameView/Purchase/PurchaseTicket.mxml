@@ -3,7 +3,7 @@
 					   xmlns:s="library://ns.adobe.com/flex/spark"
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   xmlns:Purchase="GameView.Purchase.*"
-					   width="600" height="455" xmlns:GameView="GameView.*"
+					   width="720" height="470" xmlns:GameView="GameView.*"
 					   addedToStage="AddedToStageHandler(event);">
 	
 	<fx:Style source="../styles.css"/>
@@ -51,97 +51,106 @@
 	<s:Label id="myTit" horizontalCenter="0" top="15" text="{resourceManager.getString('main','PurchaseTitTicket')}" styleName="whiteBoldHuge" /> 
 	
 	<s:Group horizontalCenter="0" top="105" includeIn="ChoosingItem">
-		<s:Group horizontalCenter="0" verticalCenter="0" >
+		<s:Group horizontalCenter="0" >
 			<s:layout>
 				<s:HorizontalLayout gap="10" />
 			</s:layout>
-			<s:Rect width="180" height="230" alpha="1" radiusX="8" filters="{[ticketBoxShadow]}">
+			
+			<s:Rect width="126" height="270" alpha="1" radiusX="8" filters="{[ticketBoxShadow]}">
 				<s:stroke><s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/></s:stroke>
 				<s:fill><s:SolidColor alpha="0.6" color="#242424"/></s:fill>
 			</s:Rect>
-			<s:Rect width="180" height="230" alpha="1" radiusX="8" filters="{[ticketBoxShadow]}">
+			<s:Rect width="126" height="270" alpha="1" radiusX="8" filters="{[ticketBoxShadow]}">
 				<s:stroke><s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/></s:stroke>
 				<s:fill><s:SolidColor alpha="0.6" color="#242424"/></s:fill>
 			</s:Rect>
-			<s:Rect width="180" height="230" alpha="1" radiusX="8" filters="{[ticketBoxShadow]}">
+			<s:Rect width="126" height="270" alpha="1" radiusX="8" filters="{[ticketBoxShadow]}">
+				<s:stroke><s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/></s:stroke>
+				<s:fill><s:SolidColor alpha="0.6" color="#242424"/></s:fill>
+			</s:Rect>
+			<s:Rect width="126" height="270" alpha="1" radiusX="8" filters="{[ticketBoxShadow]}">
+				<s:stroke><s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/></s:stroke>
+				<s:fill><s:SolidColor alpha="0.6" color="#242424"/></s:fill>
+			</s:Rect>
+			<s:Rect width="126" height="270" alpha="1" radiusX="8" filters="{[ticketBoxShadow]}">
 				<s:stroke><s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/></s:stroke>
 				<s:fill><s:SolidColor alpha="0.6" color="#242424"/></s:fill>
 			</s:Rect>
 		</s:Group>
 		
-		<s:Group id="MyChooseItemGroup" includeIn="ChoosingItem" horizontalCenter="0" verticalCenter="0" >
-			<s:layout><s:HorizontalLayout gap="10" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+		<s:Group id="MyChooseItemGroup" includeIn="ChoosingItem" horizontalCenter="0" top="0" >
+			<s:layout><s:HorizontalLayout gap="14" horizontalAlign="center"/></s:layout>
 			
-			<s:Group width="180">
-				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+			<s:Group width="124">
+				<s:layout><s:VerticalLayout gap="10" horizontalAlign="center"/></s:layout>
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='TicketBronze')" fillMode="clip" />
-				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseBronzeTicketDesc')}"></s:Label>
+				<s:Label width="120" maxDisplayedLines="3" textAlign="center" styleName="yellowBoldBigger" text="{resourceManager.getString('main','PurchaseBronzeTicketDesc')}"></s:Label>
 				<s:Group>
 					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('BronzeTicket')}"></s:Label>	
-					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('BronzeTicket')}"></s:Label>
+					<s:Label maxWidth="80" styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('BronzeTicket')}"></s:Label>	
 				</s:Group>
+				<s:Label styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('BronzeTicket')})"></s:Label>
 				<s:Button id="BronzeTicket" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
 
-			<s:Group width="180">
-				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+			<s:Group width="124">
+				<s:layout><s:VerticalLayout gap="10" horizontalAlign="center" verticalAlign="middle"/></s:layout>
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='TicketSilver')" fillMode="clip" />
-				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseSilverTicketDesc')}"></s:Label>
+				<s:Label width="120" maxDisplayedLines="3" textAlign="center" styleName="yellowBoldBigger" text="{resourceManager.getString('main','PurchaseSilverTicketDesc')}"></s:Label>
 				<s:Group>
 					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SilverTicket')}"></s:Label>
-					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SilverTicket')}"></s:Label>
+					<s:Label maxWidth="80" styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SilverTicket')}"></s:Label>
 				</s:Group>
+				<s:Label styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SilverTicket')})"></s:Label>
 				<s:Button id="SilverTicket" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
 			
-			<s:Group width="180">
-				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+			<s:Group width="124">
+				<s:layout><s:VerticalLayout gap="10" horizontalAlign="center" verticalAlign="middle"/></s:layout>
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='TicketGold')" fillMode="clip" />
-				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseGoldTicketDesc')}"/>			
+				<s:Label width="120" maxDisplayedLines="3" textAlign="center" styleName="yellowBoldBigger" text="{resourceManager.getString('main','PurchaseGoldTicketDesc')}"/>			
 				<s:Group>
 					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('GoldTicket')}"></s:Label>
-					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('GoldTicket')}"></s:Label>
+					<s:Label maxWidth="80" styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('GoldTicket')}"></s:Label>
 				</s:Group>
+				<s:Label styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('GoldTicket')})"></s:Label>
 				<s:Button id="GoldTicket" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
 			
-			<s:Group width="180">
-				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='TicketGold')" fillMode="clip" />
-				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchasePlatinumTicketDesc')}"/>			
+			<s:Group width="124">
+				<s:layout><s:VerticalLayout gap="10" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='TicketPlatinum')" fillMode="clip" />
+				<s:Label width="120" maxDisplayedLines="3" textAlign="center" styleName="yellowBoldBigger" text="{resourceManager.getString('main','PurchasePlatinumTicketDesc')}"/>			
 				<s:Group>
 					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('PlatinumTicket')}"></s:Label>
-					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('PlatinumTicket')}"></s:Label>
+					<s:Label maxWidth="80" styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('PlatinumTicket')}"></s:Label>
 				</s:Group>
+				<s:Label styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('PlatinumTicket')})"></s:Label>
 				<s:Button id="PlatinumTicket" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
 			</s:Group>
 			
-			<s:Group width="180">
-				<s:layout><s:VerticalLayout gap="15" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='TicketGold')" fillMode="clip" />
-				<s:Label width="160" maxDisplayedLines="2" textAlign="center" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseDiamondTicketDesc')}"/>			
+			<s:Group width="124">
+				<s:layout><s:VerticalLayout gap="10" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='TicketDiamond')" fillMode="clip" />
+				<s:Label width="120" maxDisplayedLines="3" textAlign="center" styleName="yellowBoldBigger" text="{resourceManager.getString('main','PurchaseDiamondTicketDesc')}"/>			
 				<s:Group>
 					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('DiamondTicket')}"></s:Label>
-					<s:Label styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('DiamondTicket')}"></s:Label>
+					<s:Label maxWidth="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('DiamondTicket')}"></s:Label>
 				</s:Group>
+				<s:Label styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('DiamondTicket')})"></s:Label>
 				<s:Button id="DiamondTicket" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
@@ -161,9 +170,13 @@
 				 text.Canceled="{resourceManager.getString('main','PurchaseTxtCanceled')}" />
 	</s:Group>
 	
-	<s:Label id="myTxtTerms" horizontalCenter="0" bottom="65" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTxtTerms')}" includeIn="ChoosingItem"/>
+	<s:Label id="myTxtTerms" horizontalCenter="0" bottom="55" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTxtTerms')}" includeIn="ChoosingItem"/>
 	
-	<s:Button id="MyCloseButton" label.ChoosingItem="{resourceManager.getString('main','Cancel')}" label="{resourceManager.getString('main','Close')}" click="CloseClickHandler(event)" minWidth="80"  horizontalCenter="0" bottom="15"
+	<s:Button id="MyCloseButton" label.ChoosingItem="{resourceManager.getString('main','Cancel')}" label="{resourceManager.getString('main','Close')}" click="CloseClickHandler(event)" minWidth="80"  horizontalCenter="0" bottom="20"
 			  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+	
+	<s:BitmapImage x="527" y="285" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestValue')" fillMode="clip" />
+	<s:BitmapImage x="666" y="285" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestBuy')" fillMode="clip" />
+
 	
 </Purchase:PurchaseBase>

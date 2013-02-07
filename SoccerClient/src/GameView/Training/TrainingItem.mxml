@@ -72,6 +72,6 @@
 				 text="{resourceManager.getString('main','TrainingPanelRemaining')}: {TimeUtils.ConvertSecondsToStringWithHours(mTrainingModel.RemainingSeconds)}" styleName="whiteBoldBig" 
 				 includeIn="Training" />
 		
-		<s:Button id="MyDoTrainButton" label="{resourceManager.getString('main','TrainingPanelDoTraining')}" x="188" y="78" width="154" height="24" skinClass="GameView.Skins.ButtonGreySkin" includeIn="Normal"/>	
+		<s:Button id="MyDoTrainButton" label="{resourceManager.getString('main','TrainingPanelDoTraining')}" x="195" y="78" width="140" skinClass="GameView.Skins.ButtonDarkGreySkin" includeIn="Normal"/>	
 	</s:Group>
 </s:Group>
