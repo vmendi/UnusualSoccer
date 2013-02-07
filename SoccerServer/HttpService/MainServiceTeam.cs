@@ -243,7 +243,7 @@ namespace HttpService
                     var match = theMatchParticipation.Match;
 
                     // Miramos si el partido ha acabado, fue justo/toomanytimes, etc..
-                    if (match.DateEnded == null ||  match.WasTooManyTimes.Value || !match.WasJust.Value || match.WasAbandonedSameIP.Value)
+                    if (match.DateEnded == null ||  match.WasTooManyTimes.Value || !match.WasJust.Value || match.WasSameIP.Value)
                     {
                         Log.Error("GetExtraRewardForMatch: Se ha pedido recompensa de un partido que no puede tenerla! " + mPlayer.PlayerID + " " + matchID);
                     }

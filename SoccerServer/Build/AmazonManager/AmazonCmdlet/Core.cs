@@ -13,7 +13,7 @@ using Amazon.Route53.Model;
 /* 
  * NOTES "To my beloved future self":
  * 
- * 1) eu-west in hardcoded.
+ * 1) eu-west is hardcoded.
  * 2) ConfigureLoadBalancer asumes that the name of the instances to add starts with "http"
  * 
  */

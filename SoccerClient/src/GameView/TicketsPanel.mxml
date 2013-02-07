@@ -62,6 +62,31 @@
 				PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseTicket") as Class);
 			}
 			
+			private function FilterTicketExpiryDate(expiryDate : Date) : String
+			{
+				if (expiryDate == null)
+					return "";
+				
+				// If our expiry date is more than 5 years away, it's forever!
+				if (expiryDate.fullYear - new Date().fullYear > 5)
+				{
+					return "Unlimited Forever";
+				}
+				
+				return expiryDate.toDateString();
+			}
+			
+			private function FilterTicketExpiryTime(expiryDate : Date) : String
+			{
+				if (expiryDate == null)
+					return "";
+				
+				if (expiryDate.fullYear - new Date().fullYear > 5)
+					return "";
+
+				return expiryDate.toLocaleTimeString();
+			}
+			
 			[Bindable] private var mMainGameModel : MainGameModel;
 			[Bindable] private var mTeamModel : TeamModel;
 			[Bindable] private var mTeamPurchaseModel : TeamPurchaseModel;
@@ -85,8 +110,8 @@
 			 textAlign="center" />
 	
 	<s:Group includeIn="Purchased" left="0" right="0">
-		<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate.toDateString()}" styleName="whiteBoldBig" y="5" left="0" right="0" textAlign="center" />
-		<s:Label text="{mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate.toLocaleTimeString()}" styleName="whiteBoldBig" y="20" left="0" right="0" textAlign="center" />
+		<s:Label text="{FilterTicketExpiryDate(mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate)}" styleName="whiteBoldBig" y="5" left="0" right="0" textAlign="center" />
+		<s:Label text="{FilterTicketExpiryTime(mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate)}" styleName="whiteBoldBig" y="20" left="0" right="0" textAlign="center" />
 	</s:Group>
 	
 	<s:Button id="MyBuyTicketsButton"

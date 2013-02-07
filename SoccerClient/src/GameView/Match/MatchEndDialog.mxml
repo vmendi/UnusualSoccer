@@ -93,14 +93,14 @@
 			// WasTooManyTimes: Estos dos jugadores han jugado ya mas de N veces en el dia de hoy, asi que no les damos puntos.
 			// WasJust: el resultado es justo... o sea, q la diff de niveles no era exagerada, o q sí lo era pero gano o empato el de menor nivel
 			// WasAbandoned: Ha habido un abandono. Como no tenemos boton de abandonar, sera siempre el del oponente.
-			// WasAbandonedSameIP: Los dos jugadores tenían la misma IP
+			// WasSameIP: Los dos jugadores tenían la misma IP
 			//
-			if (mMatchResult.WasAbandonedSameIP)
+			if (mMatchResult.WasSameIP)
 			{
 				currentState = "SameIP";
 				
-				mTitular = resourceManager.getString("main", "MatchEndGenericAbandonTit");
-				mSpeech = resourceManager.getString("main", "MatchEndAbandonSameIP");
+				mTitular = resourceManager.getString("main", "MatchEndSameIPTit");
+				mSpeech = resourceManager.getString("main", "MatchEndSameIP");
 			}
 			else 
 			{			

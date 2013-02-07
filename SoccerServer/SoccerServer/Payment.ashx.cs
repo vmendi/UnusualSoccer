@@ -166,11 +166,14 @@ namespace SoccerServer
                 case "SkillPoints1000":
                     theTeam.SkillPoints += 1000;
                     break;
-                case "SkillPoints2000":
-                    theTeam.SkillPoints += 2000;
-                    break;
                 case "SkillPoints3000":
                     theTeam.SkillPoints += 3000;
+                    break;
+                case "SkillPoints10000":
+                    theTeam.SkillPoints += 10000;
+                    break;
+                case "SkillPoints30000":
+                    theTeam.SkillPoints += 30000;
                     break;
                 case "BronzeTicket":
                     AwardTicketTime(theTeam.TeamPurchase, 0, new TimeSpan(3, 0, 0, 0));
@@ -181,14 +184,26 @@ namespace SoccerServer
                 case "GoldTicket":
                     AwardTicketTime(theTeam.TeamPurchase, 2, new TimeSpan(31, 0, 0, 0));
                     break;
+                case "PlatinumTicket":
+                    AwardTicketTime(theTeam.TeamPurchase, 3, new TimeSpan(31*3, 0, 0, 0));
+                    break;
+                case "DiamondTicket":
+                    AwardTicketTime(theTeam.TeamPurchase, 4, new TimeSpan(31*100, 0, 0, 0));
+                    break;
                 case "Trainer01":
-                    AwardTrainer(theTeam.TeamPurchase, new TimeSpan(2, 0, 0, 0));
+                    AwardTrainer(theTeam.TeamPurchase, new TimeSpan(3, 0, 0, 0));
                     break;
                 case "Trainer02":
                     AwardTrainer(theTeam.TeamPurchase, new TimeSpan(7, 0, 0, 0));
                     break;
                 case "Trainer03":
                     AwardTrainer(theTeam.TeamPurchase, new TimeSpan(31, 0, 0, 0));
+                    break;
+                case "Trainer04":
+                    AwardTrainer(theTeam.TeamPurchase, new TimeSpan(31*3, 0, 0, 0));
+                    break;
+                case "Trainer05":
+                    AwardTrainer(theTeam.TeamPurchase, new TimeSpan(31*100, 0, 0, 0));
                     break;
                 default:
                     throw new Exception("Unknown thePurchase.ItemID: " + thePurchase.ItemID);

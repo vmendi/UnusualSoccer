@@ -20,10 +20,10 @@ namespace ServerCommon
             get { return (bool)this["ticketingSystem"]; }
         }
 
-        [ConfigurationProperty("sameIPAbandonsChecked", IsRequired = true)]
-        public bool SameIPAbandonsChecked
+        [ConfigurationProperty("sameIPChecked", IsRequired = true)]
+        public bool SameIPChecked
         {
-            get { return (bool)this["sameIPAbandonsChecked"]; }
+            get { return (bool)this["sameIPChecked"]; }
         }
 
         [ConfigurationProperty("remoteServer", IsRequired = false, DefaultValue="")]

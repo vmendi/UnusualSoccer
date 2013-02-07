@@ -36,7 +36,7 @@ namespace HttpService
                     {
                         item_id = "SkillPoints300",
                         description = "A package of 300 Skill points",
-                        price = 80,
+                        price = 30,
                         title = "300 Skill Points",
                         product_url = "http://www.facebook.com/images/gifts/21.png",
                         image_url = "http://www.facebook.com/images/gifts/21.png",
@@ -46,7 +46,7 @@ namespace HttpService
                     {
                         item_id = "SkillPoints1000",
                         description = "A package of 1000 Skill points",
-                        price = 250,
+                        price = 80,
                         title = "1000 Skill Points",
                         product_url = "http://www.facebook.com/images/gifts/22.png",
                         image_url = "http://www.facebook.com/images/gifts/22.png",
@@ -56,7 +56,7 @@ namespace HttpService
                     {
                         item_id = "SkillPoints3000",
                         description = "A package of 3000 Skill points",
-                        price = 700,
+                        price = 150,
                         title = "3000 Skill Points",
                         product_url = "http://www.facebook.com/images/gifts/22.png",
                         image_url = "http://www.facebook.com/images/gifts/22.png",
@@ -66,7 +66,7 @@ namespace HttpService
                     {
                         item_id = "SkillPoints10000",
                         description = "A package of 10000 Skill points",
-                        price = 1000,
+                        price = 300,
                         title = "10000 Skill Points",
                         product_url = "http://www.facebook.com/images/gifts/22.png",
                         image_url = "http://www.facebook.com/images/gifts/22.png",
@@ -76,7 +76,7 @@ namespace HttpService
                     {
                         item_id = "SkillPoints30000",
                         description = "A package of 30000 Skill points",
-                        price = 1300,
+                        price = 600,
                         title = "30000 Skill Points",
                         product_url = "http://www.facebook.com/images/gifts/22.png",
                         image_url = "http://www.facebook.com/images/gifts/22.png",
@@ -97,7 +97,7 @@ namespace HttpService
                     {
                         item_id = "SilverTicket",
                         description = "Unlimited games for 1 week",
-                        price = 60,
+                        price = 50,
                         title = "Unlimited games for 1 week",
                         product_url = "http://www.facebook.com/images/gifts/24.png",
                         image_url = "http://www.facebook.com/images/gifts/24.png",
@@ -107,7 +107,7 @@ namespace HttpService
                     {
                         item_id = "GoldTicket",
                         description = "Unlimited games for 1 month",
-                        price = 250,
+                        price = 150,
                         title = "Unlimited games for 1 month",
                         product_url = "http://www.facebook.com/images/gifts/25.png",
                         image_url = "http://www.facebook.com/images/gifts/25.png",
@@ -117,7 +117,7 @@ namespace HttpService
                     {
                         item_id = "PlatinumTicket",
                         description = "Unlimited games for 3 months",
-                        price = 500,
+                        price = 250,
                         title = "Unlimited games for 3 months",
                         product_url = "http://www.facebook.com/images/gifts/25.png",
                         image_url = "http://www.facebook.com/images/gifts/25.png",
@@ -127,7 +127,7 @@ namespace HttpService
                     {
                         item_id = "DiamondTicket",
                         description = "Unlimited games forever",
-                        price = 1000,
+                        price = 600,
                         title = "Unlimited games forever",
                         product_url = "http://www.facebook.com/images/gifts/25.png",
                         image_url = "http://www.facebook.com/images/gifts/25.png",
@@ -138,7 +138,7 @@ namespace HttpService
                     {
                         item_id = "Trainer01",
                         description = "Trainer for 3 days",
-                        price = 30,
+                        price = 15,
                         title = "Trainer during 3 days",
                         product_url = "http://www.facebook.com/images/gifts/26.png",
                         image_url = "http://www.facebook.com/images/gifts/26.png",
@@ -148,7 +148,7 @@ namespace HttpService
                     {
                         item_id = "Trainer02",
                         description = "Trainer for 1 week",
-                        price = 60,
+                        price = 25,
                         title = "Trainer for 1 week",
                         product_url = "http://www.facebook.com/images/gifts/27.png",
                         image_url = "http://www.facebook.com/images/gifts/27.png",
@@ -158,7 +158,7 @@ namespace HttpService
                     {
                         item_id = "Trainer03",
                         description = "Trainer for 1 month",
-                        price = 200,
+                        price = 50,
                         title = "Trainer for 1 month",
                         product_url = "http://www.facebook.com/images/gifts/28.png",
                         image_url = "http://www.facebook.com/images/gifts/28.png",
@@ -168,7 +168,7 @@ namespace HttpService
                     {
                         item_id = "Trainer04",
                         description = "Trainer for 3 months",
-                        price = 400,
+                        price = 90,
                         title = "Trainer for 3 months",
                         product_url = "http://www.facebook.com/images/gifts/28.png",
                         image_url = "http://www.facebook.com/images/gifts/28.png",
@@ -178,7 +178,7 @@ namespace HttpService
                     {
                         item_id = "Trainer05",
                         description = "Trainer forever",
-                        price = 600,
+                        price = 130,
                         title = "Trainer forever",
                         product_url = "http://www.facebook.com/images/gifts/28.png",
                         image_url = "http://www.facebook.com/images/gifts/28.png",

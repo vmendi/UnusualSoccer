@@ -39,25 +39,27 @@ package
 				SetFakeSessionKey(callback, AppConfig.FAKE_SESSION_KEY);
 			}
 			else
-			if (AppConfig.FAKE_SESSION_KEY != null || requestedFakeSessionKey != null)
-			{
-				SetFakeSessionKey(callback, requestedFakeSessionKey != null? requestedFakeSessionKey : AppConfig.FAKE_SESSION_KEY);  
-			}
-			else
 			{
 				// Desde el servidor nos pueden decir a qué servidor Realtime nos tenemos que conectar. Si no, nos conectaremos a la propia URL
 				// desde donde se está cargando el SWF (se encarga la propia RealtimeModel.GetDefaultURI)
 				if (AppConfig.REALTIME_SERVER != null && AppConfig.REALTIME_SERVER != "")
 					RealtimeModel.SetDefaultURI(AppConfig.REALTIME_SERVER + ":2020");
-								
-				// Cogemos la SessionKey del parametro que nos pasa el servidor por flashVars
-				SetWeborbURL();
 				
-				// Esto generara una llamada a FB para conseguir un nuevo access_token, distinto al primero 
-				// que se le pasa por POST al servidor (dentro del signed_request)
-				Facebook.init(AppConfig.APP_ID, Delegate.create(OnFacebookInit, callback), 
-							  { status:true, xfbml: true, oauth: true, cookie:true,	frictionlessRequests:true,
-								channelUrl: AppConfig.CANVAS_URL + "/channel.html" });
+				if (AppConfig.FAKE_SESSION_KEY != null || requestedFakeSessionKey != null)
+				{
+					SetFakeSessionKey(callback, requestedFakeSessionKey != null? requestedFakeSessionKey : AppConfig.FAKE_SESSION_KEY);  
+				}
+				else
+				{
+					// Cogemos la SessionKey del parametro que nos pasa el servidor por flashVars
+					SetWeborbURL();
+					
+					// Esto generara una llamada a FB para conseguir un nuevo access_token, distinto al primero 
+					// que se le pasa por POST al servidor (dentro del signed_request)
+					Facebook.init(AppConfig.APP_ID, Delegate.create(OnFacebookInit, callback), 
+								  { status:true, xfbml: true, oauth: true, cookie:true,	frictionlessRequests:true,
+									channelUrl: AppConfig.CANVAS_URL + "/channel.html" });
+				}
 			}
 		}
 		
@@ -104,6 +106,7 @@ package
 		private function SetFakeSessionKey(callback:Function, requestedFakeSessionKey : String) : void
 		{
 			mFakeSessionKey = requestedFakeSessionKey;
+			mMe = { currency:{}, friends:{data:[]} };
 			
 			SetWeborbURL();
 		

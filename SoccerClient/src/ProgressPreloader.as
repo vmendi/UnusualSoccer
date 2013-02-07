@@ -64,8 +64,7 @@ package
 				{
 					mPreloaderMovieclip.gotoAndStop(2);
 				}
-				//mPreloaderMovieclip.gotoAndStop(1);
-				
+								
 				mPreloaderMovieclip.x = 0;
 				mPreloaderMovieclip.y = 0;
 				

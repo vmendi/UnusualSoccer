@@ -34,8 +34,8 @@
 	<parameter name="ticketingSystem">
 		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@ticketingSystem"/>
 	</parameter>
-	<parameter name="sameIPAbandonsChecked">
-		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@sameIPAbandonsChecked"/>
+	<parameter name="sameIPChecked">
+		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@sameIPChecked"/>
 	</parameter>
 	<parameter name="remoteServer" defaultValue="">
 		<parameterEntry kind="XmlFile" scope="web\.config$" match="/configuration/soccerServerConfig/@remoteServer"/>

@@ -50,7 +50,7 @@
 		<asp:BoundField HeaderText="TooManyTimes" DataField="WasTooManyTimes" ItemStyle-HorizontalAlign='Center'/>
 		<asp:BoundField HeaderText="Just" DataField="WasJust" ItemStyle-HorizontalAlign='Center'/>
 		<asp:BoundField HeaderText="Abandoned" DataField="WasAbandoned" ItemStyle-HorizontalAlign='Center'/>
-		<asp:BoundField HeaderText="AbaSameIP" DataField="WasAbandonedSameIP" ItemStyle-HorizontalAlign='Center'/>
+		<asp:BoundField HeaderText="SameIP" DataField="WasSameIP" ItemStyle-HorizontalAlign='Center'/>
 
 	</Columns>
 </asp:GridView>

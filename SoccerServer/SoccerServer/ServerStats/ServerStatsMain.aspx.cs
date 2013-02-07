@@ -37,7 +37,7 @@ namespace SoccerServer.ServerStats
                 MyConsoleLabel.Text += "Total too many times matches: " + GetTooManyTimes() + "<br/>";
                 MyConsoleLabel.Text += "Total non-ended matches: " + GetNonEndedMatchesCount() + "<br/>";
                 MyConsoleLabel.Text += "Abandoned matches: " + GetAbandonedMatchesCount() + "<br/>";
-                MyConsoleLabel.Text += "Same IP abandoned matches: " + GetSameIPAbandondedMatchesCount() + "<br/>";
+                MyConsoleLabel.Text += "Same IP matches: " + GetSameIPMatchesCount() + "<br/>";
                 MyConsoleLabel.Text += "Unjust matches: " + GetUnjustMatchesCount() + "<br/>";
 
                 ShowRestrictions();
@@ -125,10 +125,10 @@ namespace SoccerServer.ServerStats
 					select m).Count();
 		}
 
-		public int GetSameIPAbandondedMatchesCount()
+		public int GetSameIPMatchesCount()
 		{
 			return (from m in mDC.Matches
-					where m.WasAbandonedSameIP.Value
+					where m.WasSameIP.Value
 					select m).Count();
 		}
 

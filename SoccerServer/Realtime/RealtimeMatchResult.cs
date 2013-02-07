@@ -31,7 +31,7 @@ namespace Realtime
         public Boolean WasJust = true;
         public Boolean WasTooManyTimes = false;				// Se han jugado hoy mas de N partidos
         public Boolean WasAbandoned = false;
-        public Boolean WasAbandonedSameIP = false;			// Si el abandono se produce desde la misma IP
+        public Boolean WasSameIP = false;			        // Se jugo el partido desde la misma IP
 
         public RealtimeMatchResultPlayer ResultPlayer1 = new RealtimeMatchResultPlayer();
         public RealtimeMatchResultPlayer ResultPlayer2 = new RealtimeMatchResultPlayer();
@@ -68,7 +68,7 @@ namespace Realtime
                 UpdateFlags();
                 UpdateAbandon();
 
-                if (!WasAbandonedSameIP && !WasTooManyTimes && WasJust)
+                if (!WasSameIP && !WasTooManyTimes && WasJust)
                 {
                     RecomputeRatings(); // Recalculo del TrueSkill
                     GiveRewards();      // XP, SkillPoints, etc
@@ -82,7 +82,7 @@ namespace Realtime
                 mBDDMatch.WasTooManyTimes = WasTooManyTimes;
                 mBDDMatch.WasJust = WasJust;
                 mBDDMatch.WasAbandoned = WasAbandoned;
-                mBDDMatch.WasAbandonedSameIP = WasAbandonedSameIP;
+                mBDDMatch.WasSameIP = WasSameIP;
 
                 // ... y de las MatchParticipations de la BDD
                 mParticipation1 = (from p in mContext.MatchParticipations
@@ -95,8 +95,8 @@ namespace Realtime
                                    select p).First();
                 mParticipation2.Goals = ResultPlayer2.Goals;
 
-                // Puntos de Competicion. Solo si abandonan en la misma IP no cuenta.
-                if (!mBDDMatch.IsFriendly && !WasAbandonedSameIP)
+                // Puntos de Competicion. Solo si estan en la misma IP no cuenta.
+                if (!mBDDMatch.IsFriendly && !WasSameIP)
                     ProcessCompetition();
 
                 // Lesionamos a futbolistas
@@ -298,6 +298,15 @@ namespace Realtime
             // Partido de competicion o amistoso?
             WasCompetition = !mBDDMatch.IsFriendly;
 
+            // Esto siempre se había hecho en UpdateAbandon. Ahora el flag se pone a true independientemente de si el 
+            // partido fue abandonado o no, es decir, cancelamos dar recompensas aunque el partido este acabado correctamente 
+            // si estaban en la misma IP
+            if (mRealtimePlayer1.NetPlug.RemoteAddress == mRealtimePlayer2.NetPlug.RemoteAddress &&
+                GlobalConfig.ServerSettings.SameIPChecked)
+            {
+                WasSameIP = true;
+            }
+            
             if (!WasCompetition)
             {
                 // Han jugado demasiados partidos juntos?
@@ -325,24 +334,15 @@ namespace Realtime
             
             WasAbandoned = true;
 
-            if (mRealtimePlayer1.NetPlug.RemoteAddress == mRealtimePlayer2.NetPlug.RemoteAddress &&
-                GlobalConfig.ServerSettings.SameIPAbandonsChecked)
+            if (mMatch.HasPlayerAbandoned(mRealtimePlayer1))
             {
-                // No tocamos los goles, el resultado nos da igual puesto que el partido no se va a tener en cuenta
-                WasAbandonedSameIP = true;
+                ResultPlayer1.Goals = 0;
+                ResultPlayer2.Goals = ResultPlayer2.Goals < 3 ? 3 : ResultPlayer2.Goals;
             }
             else
             {
-                if (mMatch.HasPlayerAbandoned(mRealtimePlayer1))
-                {
-                    ResultPlayer1.Goals = 0;
-                    ResultPlayer2.Goals = ResultPlayer2.Goals < 3 ? 3 : ResultPlayer2.Goals;
-                }
-                else
-                {
-                    ResultPlayer2.Goals = 0;
-                    ResultPlayer1.Goals = ResultPlayer1.Goals < 3 ? 3 : ResultPlayer1.Goals;
-                }
+                ResultPlayer2.Goals = 0;
+                ResultPlayer1.Goals = ResultPlayer1.Goals < 3 ? 3 : ResultPlayer1.Goals;
             }
         }
 
