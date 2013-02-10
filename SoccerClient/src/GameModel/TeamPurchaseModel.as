@@ -53,32 +53,29 @@ package GameModel
 			}
 		}
 		
-		public function GetPriceInCreditsForItem(itemID : String) : String
+		public function GetPriceInCreditsForItem(itemID : String) : int
 		{
 			var theItem : ItemForSale = GetItemByID(itemID);
 			
 			if (theItem == null)
 			{
-				ErrorMessages.LogToServer("WTF 832, product itemID unknown");
-
-				return "Error";	
-			}
+				ErrorMessages.LogToServer("WTF 831, product itemID unknown");
 				
-			return theItem.price + " Facebook Credits";			
+				return 0;
+			}
+			
+			return theItem.price;
+		}
+
+		
+		public function GetPriceStringInCreditsForItem(itemID : String) : String
+		{				
+			return GetPriceInCreditsForItem(itemID) + " Facebook Credits";			
 		}
 		
-		public function GetPriceInLocalCurrencyForItem(itemID : String) : String
-		{
-			var theItem : ItemForSale = GetItemByID(itemID);
-			
-			if (theItem == null)
-			{
-				ErrorMessages.LogToServer("WTF 833, product itemID unknown");
-				
-				return "Error";	
-			}
-			
-			return ExternalInterface.call("convertPrice", theItem.price, mLocalCurrencyInfo);
+		public function GetPriceStringInLocalCurrencyForItem(itemID : String) : String
+		{			
+			return ExternalInterface.call("convertPrice", GetPriceInCreditsForItem(itemID), mLocalCurrencyInfo);
 		}
 		
 		private function GetItemByID(itemID : String) : ItemForSale

@@ -21,6 +21,7 @@ package
 		static public const VIEW_ADD_TRAINER_TIME : String = "View_Add_Trainer_Time";
 		static public const VIEW_MATCHEND_DIALOG : String = "View_MatchEnd_Dialog";
 		static public const VIEW_FRIEND_SELECTOR : String = "View_Friend_Selector";
+		static public const VIEW_MATCH : String = "View_Match";
 				
 		// Events (for Mixpanel)
 		static public const SWF_LOADED: String = "SWF Loaded";
@@ -96,7 +97,7 @@ package
 		static public function ReportPageView(page:String) : void
 		{
 			// Unicamente a Google Analytics
-			ExternalInterface.call(StringUtil.substitute("_gaq.push(['_trackEvent', {0}, {1}])", "Manager", page));
+			ExternalInterface.call(StringUtil.substitute("_gaq.push(['_trackPageview', '/{0}'])", page));
 		}
 		
 		static private var mEventQueue : Array = new Array();

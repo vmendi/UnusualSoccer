@@ -81,6 +81,7 @@ package Match
 		// Inicialización de los datos del partido. Invocado desde el servidor
 		public function InitFromServer(matchId:int, descTeam1:Object, descTeam2:Object, idLocalPlayerTeam:int, matchTimeSecs:int, turnTimeSecs:int, minClientVersion:int) : void
 		{
+			GameMetrics.ReportPageView(GameMetrics.VIEW_MATCH);
 			GameMetrics.ReportEvent(GameMetrics.PLAY_MATCH, {matchTime: matchTimeSecs, turnTime: turnTimeSecs});
 
 			if (MatchConfig.ClientVersion < minClientVersion)

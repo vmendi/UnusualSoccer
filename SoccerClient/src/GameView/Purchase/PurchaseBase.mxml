@@ -68,7 +68,7 @@
 				
 				if (ret['order_id']) 
 				{
-					GameMetrics.ReportEvent(GameMetrics.PURCHASE_SUCCESS, {item: orderInfo});
+					GameMetrics.ReportEvent(GameMetrics.PURCHASE_SUCCESS, {item: orderInfo, priceInFBCredits: mTeamPurchaseModel.GetPriceInCreditsForItem(orderInfo)});
 					
 					SoccerClient.GetMainGameModel().TheTeamModel.RefreshTeam(OnTeamRefreshedSuccessfulPurchase);
 					currentState = "Success";
