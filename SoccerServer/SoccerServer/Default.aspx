@@ -67,8 +67,7 @@
             mixpanel.register({ 'invitee': true });
 
             // http://blog.mixpanel.com/2012/11/13/getting-serious-about-measuring-virality/
-            // We impersonate the person who invited us to close the viral funnel. Using this event as the funnel end, you can
-            // now how many new people per invite we have (K factor)
+            // We impersonate the person who invited us to close the viral funnel
             mixpanel.track('Invitee Default.aspx loaded', { 'distinct_id': playerParams['viral_srcid'] });
         }
 
@@ -83,11 +82,9 @@
             return ret;
         }
 
-        // The UTM params are the only thing we register in mixpanel
         function extractUTMParams(theParams) {
             var ret = {};
             for (var propt in theParams) {
-                console.log(propt + ': ' + theParams[propt]);
                 if (propt.indexOf('utm') == 0)
                     ret[propt] = theParams[propt];
                 else
@@ -96,10 +93,8 @@
                     // When FB sends us a user, we make the following translation:
                     ret['utm_source'] = 'facebook';
                     ret['utm_campaign'] = 'default';
-                    ret['utm_medium'] = theParams[propt];    // ad, search, canvasbookmark, canvasbookmark_recommended...
-
-                    // All utm params translated...
-                    break;
+                    ret['utm_medium'] = theParams[propt];   // ad, search, canvasbookmark, canvasbookmark_recommended...
+                    break;                                  // All utm params translated...
                 }
             }
             return ret;
