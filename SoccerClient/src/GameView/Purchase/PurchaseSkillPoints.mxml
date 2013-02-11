@@ -45,11 +45,10 @@
 	]]></fx:Script>
 	
 	<GameView:PopupBackground width="100%" height="100%" />
-	
 	<s:BitmapImage left="2" top="2" source="@Embed(source='/Assets/General.swf', symbol='UnusualPointsCabecera')" fillMode="clip" />
 	<s:Label id="myTit" horizontalCenter="0" top="15" text="{resourceManager.getString('main','PurchaseTitPoints')}" styleName="whiteBoldHuge" /> 
 	
-	<s:Group horizontalCenter="0" top="105">	
+	<s:Group horizontalCenter="0" top="105" includeIn="ChoosingItem">	
 	
 		<s:Group horizontalCenter="0" verticalCenter="0" includeIn="ChoosingItem">
 			<s:layout>
@@ -102,7 +101,7 @@
 						
 			<s:Group width="126">
 				<s:layout><s:VerticalLayout gap="10" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_2')" fillMode="clip" />
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_1')" fillMode="clip" />
 				<s:Group horizontalCenter="0">
 					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
 					<s:Label styleName="yellowBoldVeryBig" text="300"></s:Label>
@@ -124,7 +123,7 @@
 			
 			<s:Group width="126">
 				<s:layout><s:VerticalLayout gap="10" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_3')" fillMode="clip" />
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_2')" fillMode="clip" />
 				<s:Group horizontalCenter="0">
 					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
 					<s:Label styleName="yellowBoldVeryBig" text="1000"></s:Label>
@@ -146,7 +145,7 @@
 						
 			<s:Group width="126">
 				<s:layout><s:VerticalLayout gap="10" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_5')" fillMode="clip" />
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_3')" fillMode="clip" />
 				<s:Group horizontalCenter="0">
 					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
 					<s:Label styleName="yellowBoldVeryBig" text="3000"></s:Label>
@@ -190,7 +189,7 @@
 			
 			<s:Group width="126">
 				<s:layout><s:VerticalLayout gap="10" horizontalAlign="center" verticalAlign="middle"/></s:layout>
-				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_4')" fillMode="clip" />
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_5')" fillMode="clip" />
 				<s:Group horizontalCenter="0">
 					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
 					<s:Label styleName="yellowBoldVeryBig" text="2000"></s:Label>
@@ -212,7 +211,10 @@
 		</s:Group>
 		
 	</s:Group>
-		
+	
+	<s:BitmapImage x="527" y="277" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestValue')" fillMode="clip" />
+	<s:BitmapImage x="665" y="277" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestBuy')" fillMode="clip" />
+	
 	<s:Group includeIn="Success" horizontalCenter="0" verticalCenter="0">
 		<s:Label id="MySuccessLabel" styleName="whiteBoldBig" text="TODO: Successful purchase"/>
 	</s:Group>
@@ -226,11 +228,7 @@
 
 	<s:Label id="myTxtTerms" horizontalCenter="0" bottom="56" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTxtTerms')}" includeIn="ChoosingItem"/>
 	
-	<s:Button id="MyCloseButton" label.ChoosingItem="{resourceManager.getString('main','Cancel')}" label="Close" click="CloseClickHandler(event)" minWidth="80" horizontalCenter="0" bottom="20" 
+	<s:Button id="MyCloseButton" label.ChoosingItem="{resourceManager.getString('main','Cancel')}" label="{resourceManager.getString('main','Close')}" click="CloseClickHandler(event)" minWidth="80" horizontalCenter="0" bottom="20" 
 			  skinClass="GameView.Skins.ButtonDarkGreySkin" />
-	
-	<s:BitmapImage x="527" y="277" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestValue')" fillMode="clip" />
-	<s:BitmapImage x="665" y="277" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestBuy')" fillMode="clip" />
-
 	
 </Purchase:PurchaseBase>

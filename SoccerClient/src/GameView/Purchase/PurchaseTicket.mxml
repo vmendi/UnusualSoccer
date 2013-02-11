@@ -46,7 +46,6 @@
 	]]></fx:Script>
 	
 	<GameView:PopupBackground width="100%" height="100%" />
-	
 	<s:BitmapImage left="2" top="2" source="@Embed(source='/Assets/General.swf', symbol='PopupTicketCabecera')" fillMode="clip" />
 	<s:Label id="myTit" horizontalCenter="0" top="15" text="{resourceManager.getString('main','PurchaseTitTicket')}" styleName="whiteBoldHuge" /> 
 	
@@ -160,6 +159,9 @@
 		
 	</s:Group>
 	
+	<s:BitmapImage x="527" y="285" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestValue')" fillMode="clip" />
+	<s:BitmapImage x="666" y="285" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestBuy')" fillMode="clip" />
+	
 	<s:Group includeIn="Success" horizontalCenter="0" verticalCenter="0">
 		<s:Label id="MySuccessLabel" styleName="whiteBoldBig" text="TODO: Successful purchase"/>
 	</s:Group>
@@ -174,9 +176,5 @@
 	
 	<s:Button id="MyCloseButton" label.ChoosingItem="{resourceManager.getString('main','Cancel')}" label="{resourceManager.getString('main','Close')}" click="CloseClickHandler(event)" minWidth="80"  horizontalCenter="0" bottom="20"
 			  skinClass="GameView.Skins.ButtonDarkGreySkin" />
-	
-	<s:BitmapImage x="527" y="285" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestValue')" fillMode="clip" />
-	<s:BitmapImage x="666" y="285" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestBuy')" fillMode="clip" />
-
 	
 </Purchase:PurchaseBase>
