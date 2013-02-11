@@ -170,7 +170,7 @@
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_4')" fillMode="clip" />
 				<s:Group horizontalCenter="0">
 					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
-					<s:Label styleName="yellowBoldVeryBig" text="2000"></s:Label>
+					<s:Label styleName="yellowBoldVeryBig" text="10000"></s:Label>
 					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
 				</s:Group>			
 				<s:Group>
@@ -192,7 +192,7 @@
 				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_5')" fillMode="clip" />
 				<s:Group horizontalCenter="0">
 					<s:layout><s:VerticalLayout gap="0" horizontalAlign="center" /></s:layout>
-					<s:Label styleName="yellowBoldVeryBig" text="2000"></s:Label>
+					<s:Label styleName="yellowBoldVeryBig" text="30000"></s:Label>
 					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
 				</s:Group>			
 				<s:Group>

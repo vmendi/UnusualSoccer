@@ -38,8 +38,8 @@ namespace HttpService
                         description = "A package of 300 Skill points",
                         price = 30,
                         title = "300 Skill Points",
-                        product_url = "http://www.facebook.com/images/gifts/21.png",
-                        image_url = "http://www.facebook.com/images/gifts/21.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/SkillPoints300.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/SkillPoints300.png",
                         data = ""
                     },
                 new TransferModel.ItemForSale()
@@ -48,8 +48,8 @@ namespace HttpService
                         description = "A package of 1000 Skill points",
                         price = 80,
                         title = "1000 Skill Points",
-                        product_url = "http://www.facebook.com/images/gifts/22.png",
-                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/SkillPoints1000.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/SkillPoints1000.png",
                         data = ""
                     },
                  new TransferModel.ItemForSale()
@@ -58,8 +58,8 @@ namespace HttpService
                         description = "A package of 3000 Skill points",
                         price = 150,
                         title = "3000 Skill Points",
-                        product_url = "http://www.facebook.com/images/gifts/22.png",
-                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/SkillPoints3000.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/SkillPoints3000.png",
                         data = ""
                     },
                 new TransferModel.ItemForSale()
@@ -68,8 +68,8 @@ namespace HttpService
                         description = "A package of 10000 Skill points",
                         price = 300,
                         title = "10000 Skill Points",
-                        product_url = "http://www.facebook.com/images/gifts/22.png",
-                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/SkillPoints10000.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/SkillPoints10000.png",
                         data = ""
                     },
                 new TransferModel.ItemForSale()
@@ -78,8 +78,8 @@ namespace HttpService
                         description = "A package of 30000 Skill points",
                         price = 600,
                         title = "30000 Skill Points",
-                        product_url = "http://www.facebook.com/images/gifts/22.png",
-                        image_url = "http://www.facebook.com/images/gifts/22.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/SkillPoints30000.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/SkillPoints30000.png",
                         data = ""
                     },
 
@@ -89,8 +89,8 @@ namespace HttpService
                         description = "Unlimited games for 3 days",
                         price = 30,
                         title = "Unlimited games for 3 days",
-                        product_url = "http://www.facebook.com/images/gifts/23.png",
-                        image_url = "http://www.facebook.com/images/gifts/23.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/TicketBronze.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/TicketBronze.png",
                         data = ""
                     },
                 new TransferModel.ItemForSale()
@@ -99,8 +99,8 @@ namespace HttpService
                         description = "Unlimited games for 1 week",
                         price = 50,
                         title = "Unlimited games for 1 week",
-                        product_url = "http://www.facebook.com/images/gifts/24.png",
-                        image_url = "http://www.facebook.com/images/gifts/24.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/TicketSilver.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/TicketSilver.png",
                         data = ""
                     },
                 new TransferModel.ItemForSale()
@@ -109,8 +109,8 @@ namespace HttpService
                         description = "Unlimited games for 1 month",
                         price = 150,
                         title = "Unlimited games for 1 month",
-                        product_url = "http://www.facebook.com/images/gifts/25.png",
-                        image_url = "http://www.facebook.com/images/gifts/25.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/TicketGold.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/TicketGold.png",
                         data = ""
                     },
                 new TransferModel.ItemForSale()
@@ -119,8 +119,8 @@ namespace HttpService
                         description = "Unlimited games for 3 months",
                         price = 250,
                         title = "Unlimited games for 3 months",
-                        product_url = "http://www.facebook.com/images/gifts/25.png",
-                        image_url = "http://www.facebook.com/images/gifts/25.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/TicketPlatinum.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/TicketPlatinum.png",
                         data = ""
                     },
                 new TransferModel.ItemForSale()
@@ -129,8 +129,8 @@ namespace HttpService
                         description = "Unlimited games forever",
                         price = 600,
                         title = "Unlimited games forever",
-                        product_url = "http://www.facebook.com/images/gifts/25.png",
-                        image_url = "http://www.facebook.com/images/gifts/25.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/TicketDiamond.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/TicketDiamond.png",
                         data = ""
                     },
 
@@ -140,8 +140,8 @@ namespace HttpService
                         description = "Trainer for 3 days",
                         price = 15,
                         title = "Trainer during 3 days",
-                        product_url = "http://www.facebook.com/images/gifts/26.png",
-                        image_url = "http://www.facebook.com/images/gifts/26.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer.png",
                         data = ""
                     },
                 new TransferModel.ItemForSale()
@@ -150,8 +150,8 @@ namespace HttpService
                         description = "Trainer for 1 week",
                         price = 25,
                         title = "Trainer for 1 week",
-                        product_url = "http://www.facebook.com/images/gifts/27.png",
-                        image_url = "http://www.facebook.com/images/gifts/27.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer.png",
                         data = ""
                     },
                 new TransferModel.ItemForSale()
@@ -160,8 +160,8 @@ namespace HttpService
                         description = "Trainer for 1 month",
                         price = 50,
                         title = "Trainer for 1 month",
-                        product_url = "http://www.facebook.com/images/gifts/28.png",
-                        image_url = "http://www.facebook.com/images/gifts/28.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer.png",
                         data = ""
                     },
                 new TransferModel.ItemForSale()
@@ -170,8 +170,8 @@ namespace HttpService
                         description = "Trainer for 3 months",
                         price = 90,
                         title = "Trainer for 3 months",
-                        product_url = "http://www.facebook.com/images/gifts/28.png",
-                        image_url = "http://www.facebook.com/images/gifts/28.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer_BestValue.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer_BestValue.png",
                         data = ""
                     },
                 new TransferModel.ItemForSale()
@@ -180,8 +180,8 @@ namespace HttpService
                         description = "Trainer forever",
                         price = 130,
                         title = "Trainer forever",
-                        product_url = "http://www.facebook.com/images/gifts/28.png",
-                        image_url = "http://www.facebook.com/images/gifts/28.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer_BestBuy.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer_BestBuy.png",
                         data = ""
                     }
             };
