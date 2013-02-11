@@ -29,6 +29,8 @@ package
 			ret.daCaption = ResourceManager.getInstance().getString("main", "PublishGenericCaption");
 			ret.daPicture = ResourceManager.getInstance().getString("main", "PublishVictoryImg");
 			
+			ret.daLinkParams = "?utm_source=wall_post&utm_medium=link&utm_campaign=MatchEnd&viral_srcid=" + SoccerClient.GetFacebookFacade().FacebookID;
+			
 			return ret;
 		}
 		
@@ -43,6 +45,8 @@ package
 			ret.daCaption = ResourceManager.getInstance().getString("training", "SpecialTrainingPublishCaption" + spDefID);
 			ret.daPicture = ResourceManager.getInstance().getString("training", "SpecialTrainingPublishPicture" + spDefID);
 			
+			ret.daLinkParams = "?utm_source=wall_post&utm_medium=link&utm_campaign=SpecialTraining" + spDefID + "&viral_srcid=" + SoccerClient.GetFacebookFacade().FacebookID;
+			
 			return ret;
 		}
 		
@@ -54,7 +58,7 @@ package
 		static private function Publish(publishMessage : Object, directPublish : Boolean) : void
 		{				
 			var data : Object = {
-									link:AppConfig.CANVAS_PAGE,
+									link:AppConfig.CANVAS_PAGE + publishMessage.daLinkParams,
 									picture: AppConfig.CANVAS_URL + publishMessage.daPicture,
 									name:publishMessage.daName,
 									message:publishMessage.daMsg,

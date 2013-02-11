@@ -112,9 +112,9 @@
 					<s:Group>
 						<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 						<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-						<s:Label width="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SkillPoints300')}"></s:Label>
+						<s:Label width="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceStringInCreditsForItem('SkillPoints300')}"></s:Label>
 					</s:Group>					
-					<s:Label width="86" textAlign="center" styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SkillPoints300')})"></s:Label>
+					<s:Label width="86" textAlign="center" styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceStringInLocalCurrencyForItem('SkillPoints300')})"></s:Label>
 				</s:Group>
 				<s:Button id="SkillPoints300" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
@@ -134,9 +134,9 @@
 					<s:Group>
 						<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 						<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-						<s:Label width="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SkillPoints1000')}"></s:Label>
+						<s:Label width="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceStringInCreditsForItem('SkillPoints1000')}"></s:Label>
 					</s:Group>					
-					<s:Label width="86" textAlign="center" styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SkillPoints1000')})"></s:Label>	
+					<s:Label width="86" textAlign="center" styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceStringInLocalCurrencyForItem('SkillPoints1000')})"></s:Label>	
 				</s:Group>				
 				<s:Button id="SkillPoints1000" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
@@ -156,9 +156,9 @@
 					<s:Group>
 						<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 						<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-						<s:Label width="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SkillPoints3000')}"></s:Label>
+						<s:Label width="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceStringInCreditsForItem('SkillPoints3000')}"></s:Label>
 					</s:Group>					
-					<s:Label width="86" textAlign="center" styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SkillPoints3000')})"></s:Label>	
+					<s:Label width="86" textAlign="center" styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceStringInLocalCurrencyForItem('SkillPoints3000')})"></s:Label>	
 				</s:Group>
 				<s:Button id="SkillPoints3000" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
@@ -178,9 +178,9 @@
 					<s:Group>
 						<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 						<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-						<s:Label width="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SkillPoints10000')}"></s:Label>
+						<s:Label width="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceStringInCreditsForItem('SkillPoints10000')}"></s:Label>
 					</s:Group>					
-					<s:Label width="86" textAlign="center" styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SkillPoints10000')})"></s:Label>	
+					<s:Label width="86" textAlign="center" styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceStringInLocalCurrencyForItem('SkillPoints10000')})"></s:Label>	
 				</s:Group>
 				<s:Button id="SkillPoints10000" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
@@ -200,9 +200,9 @@
 					<s:Group>
 						<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 						<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-						<s:Label width="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SkillPoints30000')}"></s:Label>
+						<s:Label width="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceStringInCreditsForItem('SkillPoints30000')}"></s:Label>
 					</s:Group>					
-					<s:Label width="86" textAlign="center" styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SkillPoints30000')})"></s:Label>	
+					<s:Label width="86" textAlign="center" styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceStringInLocalCurrencyForItem('SkillPoints30000')})"></s:Label>	
 				</s:Group>
 				<s:Button id="SkillPoints30000" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"

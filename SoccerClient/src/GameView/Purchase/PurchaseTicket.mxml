@@ -87,9 +87,9 @@
 				<s:Group>
 					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label maxWidth="80" styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('BronzeTicket')}"></s:Label>	
+					<s:Label maxWidth="80" styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceStringInCreditsForItem('BronzeTicket')}"></s:Label>	
 				</s:Group>
-				<s:Label styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('BronzeTicket')})"></s:Label>
+				<s:Label styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceStringInLocalCurrencyForItem('BronzeTicket')})"></s:Label>
 				<s:Button id="BronzeTicket" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
@@ -102,9 +102,9 @@
 				<s:Group>
 					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label maxWidth="80" styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('SilverTicket')}"></s:Label>
+					<s:Label maxWidth="80" styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceStringInCreditsForItem('SilverTicket')}"></s:Label>
 				</s:Group>
-				<s:Label styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('SilverTicket')})"></s:Label>
+				<s:Label styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceStringInLocalCurrencyForItem('SilverTicket')})"></s:Label>
 				<s:Button id="SilverTicket" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
@@ -117,9 +117,9 @@
 				<s:Group>
 					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label maxWidth="80" styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('GoldTicket')}"></s:Label>
+					<s:Label maxWidth="80" styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceStringInCreditsForItem('GoldTicket')}"></s:Label>
 				</s:Group>
-				<s:Label styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('GoldTicket')})"></s:Label>
+				<s:Label styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceStringInLocalCurrencyForItem('GoldTicket')})"></s:Label>
 				<s:Button id="GoldTicket" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
@@ -132,9 +132,9 @@
 				<s:Group>
 					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label maxWidth="80" styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('PlatinumTicket')}"></s:Label>
+					<s:Label maxWidth="80" styleName="whiteBoldBig" text="{mTeamPurchaseModel.GetPriceStringInCreditsForItem('PlatinumTicket')}"></s:Label>
 				</s:Group>
-				<s:Label styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('PlatinumTicket')})"></s:Label>
+				<s:Label styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceStringInLocalCurrencyForItem('PlatinumTicket')})"></s:Label>
 				<s:Button id="PlatinumTicket" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
@@ -147,9 +147,9 @@
 				<s:Group>
 					<s:layout><s:HorizontalLayout gap="4" verticalAlign="middle" /></s:layout>
 					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
-					<s:Label maxWidth="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceInCreditsForItem('DiamondTicket')}"></s:Label>
+					<s:Label maxWidth="80" styleName="whiteBoldMedium" text="{mTeamPurchaseModel.GetPriceStringInCreditsForItem('DiamondTicket')}"></s:Label>
 				</s:Group>
-				<s:Label styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceInLocalCurrencyForItem('DiamondTicket')})"></s:Label>
+				<s:Label styleName="yellowBoldBig" text="({mTeamPurchaseModel.GetPriceStringInLocalCurrencyForItem('DiamondTicket')})"></s:Label>
 				<s:Button id="DiamondTicket" label="{resourceManager.getString('main','Select')}"
 						  click="MySelectItemButton_clickHandler(event)"
 						  skinClass="GameView.Skins.ButtonDarkGreySkin" />

@@ -49,29 +49,52 @@
         g = a[f] = [] : f = "mixpanel"; g.people = g.people || []; h = "disable track track_pageview track_links track_forms register register_once unregister identify name_tag set_config people.identify people.set people.increment".split(" "); for (e = 0; e < h.length; e++) d(g, h[e]); a._i.push([b, c, f])
         }; a.__SV = 1.1
         })(document, window.mixpanel || []);
+
         mixpanel.init("61e2b133bbe6f10c2d90c2a88c127e89");
         mixpanel.identify("<%= GetUserFacebookID() %>");
+
+        // The player params is the query string inserted into the DB only the first time the player is created
+        var playerParams = processQueryString("<%= GetPlayerParams() %>");
+        
         // Because Safari doesn't allow persistent cookies in an Iframe, we need to register them every time.
-        mixpanel.register(extractUTMParams("<%= GetPlayerParams() %>"));
+        mixpanel.register(extractUTMParams(playerParams));
+
+        // Initial load event
         mixpanel.track("Default.aspx loaded");
 
-        // The UTM params are the only thing we register in mixpanel
-        function extractUTMParams(theParams) {
+        // Virality funnel
+        if (playerParams['utm_source'] == "wall_post") {
+            mixpanel.register({ 'invitee': true });
+
+            // http://blog.mixpanel.com/2012/11/13/getting-serious-about-measuring-virality/
+            // We impersonate the person who invited us to close the viral funnel
+            mixpanel.track('Invitee Default.aspx loaded', { 'distinct_id': playerParams['viral_srcid'] });
+        }
+
+        function processQueryString(theQueryString) {
             var ret = {};
-            var allKeyValues = theParams.split('&');
+            var allKeyValues = theQueryString.split('&');
             
             for (var c = 0; c < allKeyValues.length; c++) {    
                 var splitted = allKeyValues[c].split('=');
-                
-                if (splitted[0].indexOf('utm') == 0) {
-                    ret[splitted[0]] = splitted[1];
-                }
+                ret[splitted[0]] = splitted[1];
+            }
+            return ret;
+        }
+
+        function extractUTMParams(theParams) {
+            var ret = {};
+            for (var propt in theParams) {
+                if (propt.indexOf('utm') == 0)
+                    ret[propt] = theParams[propt];
                 else
-                if (splitted[0].indexOf('fb_source') == 0) {
-                    // For FB campaigns, we make the following translation:
+                if (propt.indexOf('fb_source') == 0) {
+                    // Refer to asana to know more about our marketing sources https://app.asana.com/0/1650247067545/4017030359817
+                    // When FB sends us a user, we make the following translation:
                     ret['utm_source'] = 'facebook';
-                    ret['utm_campaign'] = 'fb_default';
-                    ret['utm_medium'] = splitted[1];
+                    ret['utm_campaign'] = 'default';
+                    ret['utm_medium'] = theParams[propt];   // ad, search, canvasbookmark, canvasbookmark_recommended...
+                    break;                                  // All utm params translated...
                 }
             }
             return ret;
