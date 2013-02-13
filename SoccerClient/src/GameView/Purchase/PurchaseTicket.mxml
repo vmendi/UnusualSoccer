@@ -159,8 +159,7 @@
 		
 	</s:Group>
 	
-	<s:BitmapImage x="527" y="285" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestValue')" fillMode="clip" />
-	<s:BitmapImage x="666" y="285" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestBuy')" fillMode="clip" />
+	<s:SWFLoader x="527" y="285" id="MyRibbon" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestValue')" />
 	
 	<s:Group includeIn="Success" horizontalCenter="0" verticalCenter="0">
 		<s:Label id="MySuccessLabel" styleName="whiteBoldBig" text="TODO: Successful purchase"/>
