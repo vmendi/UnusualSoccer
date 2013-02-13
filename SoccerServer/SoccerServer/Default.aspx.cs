@@ -234,10 +234,13 @@ namespace SoccerServer
 
 			if (player == null)
 			{
-                // We save the querystring in the DB as "Params"
+                // We save the querystring in the DB as "Params".
                 var theParams = queryString.AllKeys.Aggregate("", (theAccumulated, theCurrentKey) =>
                                                               theAccumulated + theCurrentKey + "=" + queryString[theCurrentKey] + "&").TrimEnd('&');
                 
+                // NVarchar(300)
+                theParams = theParams.Substring(0, Math.Min(theParams.Length, 300));
+
 				// Tenemos un nuevo jugador (único punto donde se crea)
 				player = new Player();
 

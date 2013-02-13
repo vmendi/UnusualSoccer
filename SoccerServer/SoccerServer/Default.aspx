@@ -54,7 +54,7 @@
         mixpanel.identify("<%= GetUserFacebookID() %>");
 
         // The player params is the query string inserted into the DB only the first time the player is created
-        var playerParams = processQueryString("<%= GetPlayerParams() %>");
+        var playerParams = processQueryString('<%= GetPlayerParams() %>');
         
         // Because Safari doesn't allow persistent cookies in an Iframe, we need to register them every time.
         mixpanel.register(extractUTMParams(playerParams));
@@ -62,13 +62,28 @@
         // Initial load event
         mixpanel.track("Default.aspx loaded");
 
-        // Virality funnel
-        if (playerParams['utm_source'] == "wall_post") {
+        // Virality
+        if (playerParams['utm_source'] == "wall_post" ||
+            playerParams['fb_action_types'] == 'og.likes' ||
+            typeof playerParams['request_ids'] !== 'undefined')
+        {
+            // The user is an invitee, meaning, acquired through viral channels
             mixpanel.register({ 'invitee': true });
+
+            var viral_srcid = "";
+
+            // If our viral click is a Like button, the viral_srcid comes in the fb_ref parameter (configured with ref="GetUserFacebookID()" in the <fb:like/> tag)
+            if (playerParams['fb_action_types'] == 'og.likes')
+                viral_srcid = playerParams['fb_ref'];
+            else
+                viral_srcid = playerParams['viral_srcid'];
 
             // http://blog.mixpanel.com/2012/11/13/getting-serious-about-measuring-virality/
             // We impersonate the person who invited us to close the viral funnel
-            mixpanel.track('Invitee Default.aspx loaded', { 'distinct_id': playerParams['viral_srcid'] });
+            mixpanel.track('Invitee Default.aspx loaded', { 'distinct_id': viral_srcid });
+        }
+        else {
+            mixpanel.register({ 'invitee': false });
         }
 
         function processQueryString(theQueryString) {
@@ -229,7 +244,7 @@
     <asp:Panel runat="server" id="MyLikePanel" style="width:760px; height:38px; margin-bottom:10px; position:relative;">
         <img src="<%= GetRsc("Imgs/BannerMeGustaBg_${locale}.png") %>" alt="" width="760" height="38" style="display:block;border:0;position:absolute;" />
 	    <div style="float:left; padding-left:32px; padding-top:10px; width:150px;">
-		    <fb:like href="http://www.facebook.com/UnusualSoccer" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
+            <fb:like href="http://apps.facebook.com/unusualsoccer/" ref="<%= GetUserFacebookID() %>" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
 	    </div>
     </asp:Panel>
 
