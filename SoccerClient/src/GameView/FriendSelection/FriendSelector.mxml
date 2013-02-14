@@ -112,7 +112,11 @@
 			if (mSelectedFriends.length > 0)
 			{
 				for each(var friend : Friend in mSelectedFriends)
+				{
 					user_ids.push(friend.FacebookID.toString());
+					
+					GameMetrics.ReportEvent(GameMetrics.FRIEND_SELECTOR_INVITE_SENT, {friendID:friend.FacebookID.toString()});
+				}
 				
 				var data : Object =	{ 
 									message: resourceManager.getString('main','FriendSelectorRequestTxt'),

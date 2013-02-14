@@ -67,6 +67,7 @@ package
 		
 		static public const FRIEND_SELECTOR : String = "FriendSelector Dialog";
 		static public const FRIEND_SELECTOR_REQUEST : String = "FriendSelector Request";
+		static public const FRIEND_SELECTOR_INVITE_SENT : String = "FriendSelector Invite Sent";
 		
 	
 		

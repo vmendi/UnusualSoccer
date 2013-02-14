@@ -36,16 +36,19 @@ namespace HttpService
 
             using (CreateDataForRequest())
             {
-                // Ignoramos los requests que nos entran, procesamos cualquier request donde el player que nos llama sea el target.
+                // Ignoramos los requests que nos entran (sólo de un player fuente en concreto, puesto que nuestro jugador actual habrá clickado en un request concreto) 
+                // y procesamos cualquier request donde nuestro jugador actual sea el target.
                 // Era: where request_ids.Contains(s.FacebookRequestID) &&
                 var allRequests = (from s in mContext.Requests
                                    where s.TargetFacebookID == mPlayer.FacebookID && 
                                          s.AnswerDate == null
                                    select s);
 
+                var now = DateTime.Now;
+
                 foreach (var request in allRequests)
                 {
-                    request.AnswerDate = DateTime.Now;
+                    request.AnswerDate = now;
 
                     if (request.RequestType != 0)
                         continue;

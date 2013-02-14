@@ -91,7 +91,7 @@ package GameModel
 		{
 			mMainService.TargetProcessedRequests(AppConfig.REQUEST_IDS, 
 									 		     new Responder(Delegate.create(OnTargetProcessedRequestsResponse, finalCallback), ErrorMessages.Fault));
-				
+
 			// Una vez procesados los requests, continuamos por la respuesta habitual... a veces adoro as3...
 			function finalCallback() : void
 			{
@@ -103,7 +103,9 @@ package GameModel
 		{
 			var processedRequests : ArrayCollection = e.result as ArrayCollection;
 			
-			// Mandamos a FB a borrar los requests
+			// Mandamos a FB a borrar los requests:
+			// No podemos hacerlo antes (nada más cargar la aplicación sería lo correcto) porque no tenemos el equipo
+			// creado y por lo tanto no podemos "regalar" los futbolistas!
 			for each(var request_id : String in processedRequests)
 			{
 				// Hay que concatenar... http://developers.facebook.com/docs/reference/dialogs/requests/

@@ -13,3 +13,7 @@ GO
 DELETE FROM [SoccerV2].[dbo].[Purchases] 
 DBCC CHECKIDENT('[SoccerV2].[dbo].[Purchases]', RESEED, 0)
 GO
+
+DELETE FROM [SoccerV2].[dbo].[Requests] 
+DBCC CHECKIDENT('[SoccerV2].[dbo].[Requests]', RESEED, 0)
+GO
