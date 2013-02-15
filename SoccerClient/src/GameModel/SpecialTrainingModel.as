@@ -116,6 +116,8 @@ package GameModel
 		
 		public function OnLikeButtonPressed(href : Object) : void
 		{		
+			GameMetrics.ReportEvent(GameMetrics.LIKED, {});
+			
 			// Es posible que se pulse el boton Like antes de tener creado un equipo, por ejemplo durante la pantalla de Login.mxml
 			if (mMainModel.TheTeamModel.TheTeam != null)
 			{

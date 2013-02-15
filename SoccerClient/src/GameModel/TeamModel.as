@@ -10,13 +10,10 @@ package GameModel
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	
 	import mx.collections.ArrayCollection;
 	import mx.collections.Sort;
 	import mx.collections.SortField;
-	import mx.messaging.messages.ErrorMessage;
 	import mx.rpc.Responder;
 	import mx.rpc.events.ResultEvent;
 	
@@ -73,17 +70,53 @@ package GameModel
 			mMainService.RefreshTeam(new Responder(Delegate.create(OnRefreshTeamResponse, callback), ErrorMessages.Fault));
 		}
 		
-		public function CreateTeam(name : String, predefinedTeamNameID : String, success : Function, failed : Function):void
+		public function CreateTeam(name : String, predefinedTeamNameID : String, success : Function, failed : Function) : void
 		{
 			mMainService.CreateTeam(name, predefinedTeamNameID,
 									new Responder(Delegate.create(OnTeamCreatedResponse, success, failed), ErrorMessages.Fault));	
 		}
-		private function OnTeamCreatedResponse(e:ResultEvent, success:Function, failed:Function):void
+		private function OnTeamCreatedResponse(e:ResultEvent, success:Function, failed:Function) : void
 		{
 			if (e.result)
-				InitialRefreshTeam(success);
+				CloseViralityFunnel(success);
 			else
 				failed();
+		}
+		
+		// http://blog.mixpanel.com/2012/11/13/getting-serious-about-measuring-virality/
+		// Global concept: We impersonate the person who invited us to close the viral funnel. We send only one event (on team
+		// 				   creation) because we are asking facebook for the request.from.id and after that we are deleting the requests,
+		//				   which means we don't have that information available for any other time
+		private function CloseViralityFunnel(callback : Function) : void
+		{
+			var playerParams : Object = AppConfig.PLAYER_PARAMS;
+			
+			if (playerParams.hasOwnProperty('request_ids'))
+			{
+				// There could be multiple request_ids, but we assume that all come from the same src player. When a source player
+				// sends multiple requests to a target player, facebook collapses them all in the same link (displayed in the
+				// notifications list)
+				Facebook.api("/" + playerParams['request_ids'].split(',')[0], function (result:Object, fail:Object) : void 
+				{
+					if (fail == null)
+						GameMetrics.ReportEvent(GameMetrics.INVITEE_CREATED_TEAM, { 'distinct_id': result.from.id });
+					
+					// Let's continue our flow. We delete the requests from Facebook after reporting!
+					InitialRefreshTeam(callback);
+				});
+			}
+			else 
+			{
+				// If our viral click is a Like button, the viral_srcid comes in the fb_ref parameter (configured with ref="GetUserFacebookID()" in the <fb:like/> tag)
+				if (playerParams['fb_action_types'] == 'og.likes')
+					GameMetrics.ReportEvent(GameMetrics.INVITEE_CREATED_TEAM, { 'distinct_id': playerParams['fb_ref'] });
+				else
+				// For everything else we need to include a "viral_srcid=GetUserFacebookID()" in the link URL
+				if (playerParams.hasOwnProperty('viral_srcid'))
+					GameMetrics.ReportEvent(GameMetrics.INVITEE_CREATED_TEAM, { 'distinct_id': playerParams['viral_srcid'] });
+				
+				InitialRefreshTeam(callback);
+			}
 		}
 		
 		// Cuando es el primer RefreshTeam de la aplicacion, queremos tener control especial para procesar los requests

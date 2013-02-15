@@ -255,7 +255,7 @@ package GameModel
 				
 		// Si el comienzo de partido viene de la aceptación de un challenge, firstActorID será siempre el aceptador, y
 		// secondActorID será el que lanzó el challenge
-		public function PushedStartMatch(firstActorID : int, secondActorID : int, bFriendly : Boolean) : void
+		public function PushedStartMatch(firstActorID : int, secondActorID : int) : void
 		{
 			if (TheRoomModel == null || mMatch != null)
 				throw new Error("WTF 12333333 " + (TheRoomModel==null? "R0" : "R1") + (mMatch == null? "M0" : "M1"));
@@ -272,7 +272,7 @@ package GameModel
 			mMatch.addEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage);
 
 			// Nosotros lanzamos la señal y alguien (RealtimeMatch.mxml) se encargara de añadirlo a la stage
-			MatchStarted.dispatch();			
+			MatchStarted.dispatch();		
 		}
 		
 		private function OnMatchAddedToStage(e:Event) : void

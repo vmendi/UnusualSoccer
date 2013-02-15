@@ -46,7 +46,7 @@
 			GameMetrics.ReportEvent(GameMetrics.SWF_LOADED, null);
 			
 			// FPSCounter.Init(this.stage, new Point(0,0));
-						
+
 			Security.allowDomain("*");	// CDN
 						
 			// Excepciones globales capturadas

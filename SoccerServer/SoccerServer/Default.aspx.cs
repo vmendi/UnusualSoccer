@@ -126,7 +126,9 @@ namespace SoccerServer
             flashVars += "CanvasUrl: '" + theFBApp.CanvasUrl + "' ,";
 
             flashVars += "SessionKey: '" + FacebookWebContext.Current.AccessToken + "' ,";
-            flashVars += "Locale: '" + GetLocale() + "'";
+            flashVars += "Locale: '" + GetLocale() + "' ,";
+
+            flashVars += "PlayerParams: '" + HttpUtility.UrlEncode(GetPlayerParams()) + "'";
 
             flashVars += " } ";
 

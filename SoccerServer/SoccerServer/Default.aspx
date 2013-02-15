@@ -59,6 +59,18 @@
         // Because Safari doesn't allow persistent cookies in an Iframe, we need to register them every time.
         mixpanel.register(extractUTMParams(playerParams));
 
+        // Is the user an invitee, meaning, acquired through viral channels?
+        if (playerParams['utm_source'] == "wall_post" ||
+            playerParams['fb_action_types'] == 'og.likes' ||
+            typeof playerParams['request_ids'] !== 'undefined') 
+        {
+            mixpanel.register({ 'invitee': true });
+        }
+        else 
+        {
+            mixpanel.register({ 'invitee': false });
+        }
+
         // Initial load event
         mixpanel.track("Default.aspx loaded");
 
@@ -139,44 +151,7 @@
                 {
                     theSWF.onRefreshFacebookMeResponse(null);
                 }
-            });
-
-            // Now is a good time to account for the Virality. The only problem is that there are events that have been sent to 
-            // mixpanel ("Default.aspx loaded" and "SWF Loaded") without the 'invitee' property set. This seems only a cosmetic 
-            // problem and not very important. The solution would be to move the FB initialization here in JS, before loading the
-            // SWF and just after the mixpanel initialization, but that seems a refactorization too big to tackle right now.
-            if (playerParams['utm_source'] == "wall_post" ||
-                playerParams['fb_action_types'] == 'og.likes' ||
-                typeof playerParams['request_ids'] !== 'undefined') 
-            {
-                // The user is an invitee, meaning, acquired through viral channels
-                mixpanel.register({ 'invitee': true });
-
-                // If the viral channel is a request, we need to call FB to get the viral_srcid (this is why we need all this
-                // virality code here after the FB initialization and we can't have it right after mixpanel initialization)
-                if (typeof playerParams['request_ids'] !== 'undefined')
-                {
-                    // There could be multiple request_ids, but we assume that all come from the same src player. When a source player
-                    // sends multiple requests to a target player, facebook collapses all of them in the same link (displayed in the
-                    // notifications list)
-                    FB.api("/" + playerParams['request_ids'].split(',')[0], function (response) {
-                        // http://blog.mixpanel.com/2012/11/13/getting-serious-about-measuring-virality/
-                        // We impersonate the person who invited us to close the viral funnel.
-                        mixpanel.track('Invitee loaded', { 'distinct_id': response.from.id });
-                    });
-               }
-               else {
-                    // If our viral click is a Like button, the viral_srcid comes in the fb_ref parameter (configured with ref="GetUserFacebookID()" in the <fb:like/> tag)
-                    if (playerParams['fb_action_types'] == 'og.likes')  // This way of knowing if it came from a Like post seems a bit weak. Good luck!
-                        mixpanel.track('Invitee loaded', { 'distinct_id': playerParams['fb_ref'] });
-                    else
-                        // For everything else we need to include a "viral_srcid=GetUserFacebookID()" in the link URL
-                        mixpanel.track('Invitee loaded', { 'distinct_id': playerParams['viral_srcid'] });
-               }
-            }  
-            else {
-                mixpanel.register({ 'invitee': false });
-            }
+            });            
         }
 
         function setupPromotionBars(third_party_id) {

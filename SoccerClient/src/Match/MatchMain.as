@@ -126,7 +126,7 @@ package Match
 				_Game = new Match.Game();
 
 				Game.InitFromServer((-1), InitOfflineData.GetDescTeam("Atlético"), InitOfflineData.GetDescTeam("Sporting"),
-										  Enums.Team1, MatchConfig.PartTime * 2, MatchConfig.TurnTime, MatchConfig.ClientVersion);
+										  Enums.Team1, MatchConfig.PartTime * 2, MatchConfig.TurnTime, true, MatchConfig.ClientVersion);
 			}
 		}
 		

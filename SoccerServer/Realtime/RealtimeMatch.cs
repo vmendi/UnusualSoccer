@@ -65,7 +65,8 @@ namespace Realtime
         private float ServerTime = 0;		                    // Tiempo en segundos que lleva el servidor del partido funcionando
         private float RemainingSecs = 0;		                // Tiempo en segundos que queda de la "mitad" actual del partido
         private int Part = 1;                                   // Mitad de juego en la que nos encontramos
-                
+        private bool IsFriendly = false;                        // Amistoso / competicion
+
         private int ValidityGoal = Invalid;                     // Almacena la valided del gol reportado (0 = valido)
 
         private ClientState TheClientState = null;              // Debugeo de estado del cliente
@@ -165,6 +166,7 @@ namespace Realtime
             MatchLength = matchCreator.MatchDuration;
             TurnLength = matchCreator.TurnDuration;
             RemainingSecs = MatchLength / 2;
+            IsFriendly = matchCreator.IsFriendly;
 
             LogEx("FirstPlayer: " + Players[Player1].Name + " - " + Players[Player1].FacebookID + " - " + Players[Player1].ActorID +
                   " SecondPlayer: " + Players[Player2].Name + " - " + Players[Player2].FacebookID + " - " + Players[Player2].ActorID);
@@ -175,8 +177,8 @@ namespace Realtime
             NetLobby.AddRoom(this);
 
             // Mensaje para el RealtimeModel, iniciara el MainMatch al recibir este mensaje
-            Players[Player1].NetPlug.Invoke("PushedStartMatch", Players[Player1].ActorID, Players[Player2].ActorID, matchCreator.IsFriendly);
-            Players[Player2].NetPlug.Invoke("PushedStartMatch", Players[Player1].ActorID, Players[Player2].ActorID, matchCreator.IsFriendly);
+            Players[Player1].NetPlug.Invoke("PushedStartMatch", Players[Player1].ActorID, Players[Player2].ActorID);
+            Players[Player2].NetPlug.Invoke("PushedStartMatch", Players[Player1].ActorID, Players[Player2].ActorID);
         }
 
         // Uno de los jugadores ha indicado que necesita los datos del partido. Cuando ambos lo han indicado, estamos listos para empezar
@@ -199,9 +201,9 @@ namespace Realtime
                 LogEx("Todos los jugadores estan listos para empezar el partido");
 
                 // Envía la configuración del partido al jugador a ambos jugadores
-                Players[Player1].NetPlug.Invoke("InitFromServer", MatchID, PlayersData[Player1], PlayersData[Player2], Player1, MatchLength, TurnLength, MinClientVersion);
-                Players[Player2].NetPlug.Invoke("InitFromServer", MatchID, PlayersData[Player1], PlayersData[Player2], Player2, MatchLength, TurnLength, MinClientVersion);
-            }            
+                Players[Player1].NetPlug.Invoke("InitFromServer", MatchID, PlayersData[Player1], PlayersData[Player2], Player1, MatchLength, TurnLength, IsFriendly, MinClientVersion);
+                Players[Player2].NetPlug.Invoke("InitFromServer", MatchID, PlayersData[Player1], PlayersData[Player2], Player2, MatchLength, TurnLength, IsFriendly, MinClientVersion);
+            }
         }
         #endregion
 

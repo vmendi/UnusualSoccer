@@ -26,12 +26,14 @@ package
 		// Events (for Mixpanel)
 		static public const SWF_LOADED: String = "SWF Loaded";
 		static public const LOGIN_SCREEN : String = "Login Screen";
-		static public const TEAM_SELECTED : String = "Team Selected"; // Al seleccionar el primer equipo y entrar al juego por primera vez
+		static public const TEAM_SELECTED : String = "Team Selected"; 					// Al seleccionar el primer equipo y entrar al juego por primera vez
+		static public const INVITEE_CREATED_TEAM : String = "Invitee created team";		// Evento de cierre del funnel de viralidad. Se impersona al invitador.
 		static public const PLAY_MATCH : String = "Play Match";
 		static public const UPGRADE_PLAYER : String = "Upgrade Player"; 
 		static public const LOOK_FOR_MATCH : String = "Look For Match"; 
 		static public const DO_TRAINING : String = "Do Training";
 		static public const CANT_CONNECT_REALTIME : String = "Cant Connect Realtime";
+		static public const LIKED : String = "Liked";
 		
 		static public const ADD_GAME_TIME : String = "Add Game Time";
 		static public const CANCELED_GAME_TIME : String = "Canceled Game Time";
