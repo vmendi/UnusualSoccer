@@ -44,7 +44,10 @@
 		private function OnLookingForMatchChanged(looking : Boolean) : void
 		{
 			if (looking)
+			{
 				GameMetrics.ReportEvent(GameMetrics.LOOK_FOR_MATCH, null);
+				GameMetrics.Increment(GameMetrics.PEOPLE_NUM_LOOKS_FOR_MATCH, 1);
+			}
 			
 			RefreshState();
 		}

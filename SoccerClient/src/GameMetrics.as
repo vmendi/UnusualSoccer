@@ -71,6 +71,14 @@ package
 		static public const FRIEND_SELECTOR_REQUEST : String = "FriendSelector Request";
 		static public const FRIEND_SELECTOR_INVITE_SENT : String = "FriendSelector Invite Sent";
 		
+		static public const PEOPLE_LIKED : String = "Liked";
+		static public const PEOPLE_TEAM : String = "Team";
+		static public const PEOPLE_NUM_LOOKS_FOR_MATCH : String = "Num looks for match";
+		static public const PEOPLE_NUM_INVITES_SENT : String = "Num invites sent";
+		static public const PEOPLE_NUM_MATCHES : String = "Num matches";
+		static public const PEOPLE_NUM_WALL_POSTS : String = "Num wall posts";
+		static public const PEOPLE_NUM_SKILLS : String = "Num skills";
+		static public const PEOPLE_NUM_PURCHASES : String = "Num purchases"; 
 	
 		
 		static public function ReportEvent(event:String, properties:Object) : void
@@ -84,6 +92,31 @@ package
 				
 				if (mEventQueue.length == 1)
 					setTimeout(DelayedExternalInterface, 1000);
+			}
+		}
+		
+		static public function Increment(propertyName:String, val:int) : void
+		{
+			if (!AppConfig.IsMahouLigaChapas)
+			{
+				ExternalInterface.call("mixpanel.people.increment", propertyName, val);
+			}
+		}
+		
+		static public function Set(propertyName:String, val:Object) : void
+		{
+			if (!AppConfig.IsMahouLigaChapas)
+			{
+				ExternalInterface.call("mixpanel.people.set", propertyName, val);
+			}
+		}
+		
+		static public function TrackMoney(money:Number) : void
+		{
+			if (!AppConfig.IsMahouLigaChapas)
+			{
+				// money is Facebook Credits, 1 FB credit = $0.01
+				ExternalInterface.call("mixpanel.people.track_charge", money/100);
 			}
 		}
 		

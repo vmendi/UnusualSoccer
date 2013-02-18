@@ -109,6 +109,7 @@
 			private function OnTeamCreatedResponse():void
 			{
 				GameMetrics.ReportEvent(GameMetrics.TEAM_SELECTED, {predefinedTeamID: MyPredefinedTeamList.selectedItem});
+				GameMetrics.Set(GameMetrics.PEOPLE_TEAM, MyPredefinedTeamList.selectedItem);
 				
 				(HierarchyUtils.FindParentOfType(this, getQualifiedClassName(MainView)) as MainView).currentState = "Competition";
 			}

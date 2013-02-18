@@ -133,9 +133,9 @@ namespace HttpService
 			ret.TrueSkill = 0;
             ret.Mean = TrueSkillHelper.INITIAL_MEAN;
             ret.StandardDeviation = TrueSkillHelper.INITIAL_SD;
-			ret.SkillPoints = 200;
+			ret.SkillPoints = GlobalConfig.INITIAL_SKILL_POINTS;
 			ret.Energy = 100;
-			ret.Fitness = 50;
+            ret.Fitness = GlobalConfig.INITIAL_FITNESS;
             ret.LastFitnessUpdate = now;
 			
 			return ret;

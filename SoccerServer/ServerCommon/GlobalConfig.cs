@@ -13,7 +13,10 @@ namespace ServerCommon
         public const int DEFAULT_NUM_MACHES = 5;                        // Inicial al entrar en el juego
         public const int DAILY_NUM_MATCHES = 3;                         // Se resetea todas las noches a las 0:00
 
-        public const int HEAL_INJURY_COST = 100;                         // Coste de deslesionar, en Unusual Points (SkillPoints)
+        public const int HEAL_INJURY_COST = 100;                        // Coste de deslesionar, en Unusual Points (SkillPoints)
+
+        public const int INITIAL_SKILL_POINTS = 100;                    // Skill points con los que se empieza el juego
+        public const int INITIAL_FITNESS = 50;                          // Como de entrenados empezados
 
         static public ServerConfig ServerSettings { get { return mServerSettings; } }
         static public IFacebookApplication FacebookSettings { get { return mFBSettings; } }

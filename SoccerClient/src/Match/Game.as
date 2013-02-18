@@ -83,7 +83,8 @@ package Match
 		{
 			GameMetrics.ReportPageView(GameMetrics.VIEW_MATCH);
 			GameMetrics.ReportEvent(GameMetrics.PLAY_MATCH, {matchTime: matchTimeSecs, turnTime: turnTimeSecs, isFriendly:isFriendlyParam});
-
+			GameMetrics.Increment(GameMetrics.PEOPLE_NUM_MATCHES, 1);
+			
 			if (MatchConfig.ClientVersion < minClientVersion)
 			{
 				ErrorMessages.IncorrectMatchVersion();

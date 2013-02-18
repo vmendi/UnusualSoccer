@@ -106,6 +106,7 @@
 			currentState = "Waiting";
 			
 			GameMetrics.ReportEvent(GameMetrics.FRIEND_SELECTOR_REQUEST, {numSelectedFriends:mSelectedFriends.length});
+			GameMetrics.Increment(GameMetrics.PEOPLE_NUM_INVITES_SENT, mSelectedFriends.length);
 									
 			var user_ids : Array = [];
 			

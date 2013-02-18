@@ -93,7 +93,8 @@
 
 		protected function MyDoTrainButton_clickHandler(event:MouseEvent):void
 		{			
-			GameMetrics.ReportEvent(GameMetrics.GET_SKILL, {'skill':mSpecialTrainingDef.Name});			
+			GameMetrics.ReportEvent(GameMetrics.GET_SKILL, {'skill':mSpecialTrainingDef.Name});
+			GameMetrics.Increment(GameMetrics.PEOPLE_NUM_SKILLS, 1);
 			
 			mSpecialTrainingModel.TrainSpecial(data as SpecialTraining);
 		}

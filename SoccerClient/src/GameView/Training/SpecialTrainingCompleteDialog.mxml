@@ -45,9 +45,14 @@
 			function onPublishCallback(published : Boolean) : void
 			{
 				if (published)
+				{
 					GameMetrics.ReportEvent(GameMetrics.SKILL_PUBLISH_SUCCESS, null);
+					GameMetrics.Increment(GameMetrics.PEOPLE_NUM_WALL_POSTS, 1);
+				}
 				else
+				{
 					GameMetrics.ReportEvent(GameMetrics.SKILL_PUBLISH_CANCELED_AFTERFB, null);
+				}
 				
 				// Close using the normal flow
 				ClickHandler(null);

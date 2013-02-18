@@ -64,6 +64,8 @@
 			{
 				if (published)
 				{
+					GameMetrics.Increment(GameMetrics.PEOPLE_NUM_WALL_POSTS, 1);
+					
 					// Aqui nos llaman tanto en el caso del boton con rewards (X2...) como en el de publicar a secas
 					if (MatchResultUtils.GotRewards(mMatchResult, mTeamModel))
 					{

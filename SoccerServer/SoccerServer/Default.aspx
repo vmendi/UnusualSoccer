@@ -43,16 +43,21 @@
     </script>
 
     <!-- start Mixpanel -->
-    <script type="text/javascript">(function (c, a) {
-        window.mixpanel = a; var b, d, h, e; b = c.createElement("script"); b.type = "text/javascript"; b.async = !0; b.src = ("https:" === c.location.protocol ? "https:" : "http:") + '//cdn.mxpnl.com/libs/mixpanel-2.1.min.js'; d = c.getElementsByTagName("script")[0]; d.parentNode.insertBefore(b, d); a._i = []; a.init = function (b, c, f) {
-        function d(a, b) { var c = b.split("."); 2 == c.length && (a = a[c[0]], b = c[1]); a[b] = function () { a.push([b].concat(Array.prototype.slice.call(arguments, 0))) } } var g = a; "undefined" !== typeof f ?
-        g = a[f] = [] : f = "mixpanel"; g.people = g.people || []; h = "disable track track_pageview track_links track_forms register register_once unregister identify name_tag set_config people.identify people.set people.increment".split(" "); for (e = 0; e < h.length; e++) d(g, h[e]); a._i.push([b, c, f])
-        }; a.__SV = 1.1
-        })(document, window.mixpanel || []);
-
+    <script type="text/javascript">
+        (function(c,a){window.mixpanel=a;var b,d,h,e;b=c.createElement("script");
+        b.type="text/javascript";b.async=!0;b.src=("https:"===c.location.protocol?"https:":"http:")+
+        '//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';d=c.getElementsByTagName("script")[0];
+        d.parentNode.insertBefore(b,d);a._i=[];a.init=function(b,c,f){function d(a,b){
+        var c=b.split(".");2==c.length&&(a=a[c[0]],b=c[1]);a[b]=function(){a.push([b].concat(
+        Array.prototype.slice.call(arguments,0)))}}var g=a;"undefined"!==typeof f?g=a[f]=[]:
+        f="mixpanel";g.people=g.people||[];h=['disable','track','track_pageview','track_links',
+        'track_forms','register','register_once','unregister','identify','alias','name_tag',
+        'set_config','people.set','people.increment','people.track_charge','people.append'];
+        for(e=0;e<h.length;e++)d(g,h[e]);a._i.push([b,c,f])};a.__SV=1.2;})(document,window.mixpanel||[]);
+        
         mixpanel.init("61e2b133bbe6f10c2d90c2a88c127e89");
         mixpanel.identify("<%= GetUserFacebookID() %>");
-
+        
         // The player params is the query string inserted into the DB only the first time the player is created
         var playerParams = processQueryString('<%= GetPlayerParams() %>');
         
@@ -135,13 +140,17 @@
         // This method will be called from AS3 after the FB SDK is initialized (with FB.init). We avoid calling Facebook.api("/me") 
         // multiple times. We call only once from JS and pass the information back to AS3 using onFacebookMeRefreshed
         function refreshFacebookMe() {
-            FB.api('/me?fields=third_party_id,name,currency,friends', function(response) {
+            FB.api('/me?fields=third_party_id,name,currency,friends,gender,age_range', function(response) {
                 
                 var theSWF = document.getElementById('<%= SWF_SETTINGS["application"] %>');
 
                 if (response && !response.error)
                 {                                                    
                     mixpanel.name_tag(response.name + " (" + response.id + ")");
+
+                    mixpanel.people.set("name", response.name);
+                    mixpanel.people.set("Gender", response.gender);
+                    mixpanel.people.set("Age range", response.age_range.min + ((typeof response.age_range.max !== "undefined")? "-" + response.age_range.max : "+"));
 
                     // setupPromotionBars();
 
