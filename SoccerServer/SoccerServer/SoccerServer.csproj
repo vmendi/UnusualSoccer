@@ -171,8 +171,11 @@
     <Content Include="Imgs\MensajeVictoria.jpg" />
     <Content Include="Imgs\MensajeVictoria_en_US.jpg" />
     <Content Include="Imgs\NavBg.png" />
+    <Content Include="Imgs\NavBgBottom.png" />
     <Content Include="Imgs\NavIconBase_en_US.png" />
     <Content Include="Imgs\NavIconForo.png" />
+    <Content Include="Imgs\NavIconForo_en_US.png" />
+    <Content Include="Imgs\NavIconForo_es_LA.png" />
     <Content Include="Imgs\NavIconInfo.png" />
     <Content Include="Imgs\NavIconInfo_en_US.png" />
     <Content Include="Imgs\NavIconInfo_es_LA.png" />

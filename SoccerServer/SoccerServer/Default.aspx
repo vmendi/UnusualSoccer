@@ -237,29 +237,12 @@
     <iframe id="AppatyzeIFrame" src="" frameborder="0" width="100%" height="0" scrolling="no" marginwidth="0" marginheight="0"></iframe>
 
     <!-- Banner y botón Like mecanismo XFBML -->
-    <asp:Panel runat="server" id="MyLikePanel" style="width:760px; height:38px; margin-bottom:10px; position:relative;">
+    <asp:Panel runat="server" id="MyLikePanel" style="width:760px; height:38px; margin-bottom:0px; position:relative;">
         <img src="<%= GetRsc("Imgs/BannerMeGustaBg_${locale}.png") %>" alt="" width="760" height="38" style="display:block;border:0;position:absolute;" />
 	    <div style="float:left; padding-left:32px; padding-top:10px; width:150px;">
             <fb:like href="http://apps.facebook.com/unusualsoccer/" ref="<%= GetUserFacebookID() %>" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
 	    </div>
     </asp:Panel>
-
-    <!-- Navegación -->		
-    <div align="center" style="width:760px; height:33px; background:url(<%= GetRsc("Imgs/NavBg.png") %>);" >
-        <table border="0" cellpadding="0" cellspacing="0">
-            <tr>
-                <td><a href="#" onclick="sendRequestViaMultiFriendSelector(); return false;">
-                    <img alt="" src="<%= GetRsc("Imgs/NavIconInvita_${locale}.png") %>" hspace="20" border="0" /></a>
-                </td>
-                <td><a href="//www.facebook.com/UnusualSoccer" target="_parent">
-                    <img alt="" src="<%= GetRsc("Imgs/NavIconMuro_${locale}.png") %>" hspace="20" border="0" /></a>
-                </td>
-                <td><a href="//www.facebook.com/UnusualSoccer?sk=info" target="_parent">
-                    <img alt="" src="<%= GetRsc("Imgs/NavIconInfo_${locale}.png") %>" hspace="20" border="0" /></a>
-                </td>
-            </tr>
-        </table>
-    </div>
 
     <div id="flashContent">
         <p>
@@ -274,6 +257,23 @@
     </div>
 
     <noscript><p>Either scripts and active content are not permitted to run or Adobe Flash Player version 10.0.0 or greater is not installed.</p></noscript>
+
+        <!-- Navegación -->		
+    <div align="center" style="width:760px; height:33px; background:url(<%= GetRsc("Imgs/NavBgBottom.png") %>);" >
+        <table border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td><a href="#" onclick="sendRequestViaMultiFriendSelector(); return false;">
+                    <img alt="" src="<%= GetRsc("Imgs/NavIconInvita_${locale}.png") %>" hspace="20" border="0" /></a>
+                </td>
+                <td><a href="//www.facebook.com/UnusualSoccer" target="_parent">
+                    <img alt="" src="<%= GetRsc("Imgs/NavIconMuro_${locale}.png") %>" hspace="20" border="0" /></a>
+                </td>
+                <td><a href="//www.facebook.com/UnusualSoccer/app_202980683107053" target="_parent">
+                    <img alt="" src="<%= GetRsc("Imgs/NavIconForo_${locale}.png") %>" hspace="20" border="0" /></a>
+                </td>
+            </tr>
+        </table>
+    </div>
 
 </asp:Panel>
 
