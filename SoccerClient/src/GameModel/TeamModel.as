@@ -5,6 +5,7 @@ package GameModel
 	import HttpService.TransferModel.vo.SpecialTraining;
 	import HttpService.TransferModel.vo.Team;
 	import HttpService.TransferModel.vo.TeamDetails;
+	import HttpService.enum.VALID_NAME;
 	
 	import com.facebook.graph.Facebook;
 	
@@ -80,7 +81,11 @@ package GameModel
 			if (e.result)
 				CloseViralityFunnel(success);
 			else
+			{
+				// When the CreateMethod returns false it means the name is duplicated. We need to refresh the LoginModel
+				mMainModel.TheLoginModel.IsValidTeamNameLastResult = VALID_NAME.DUPLICATED;
 				failed();
+			}
 		}
 		
 		// http://blog.mixpanel.com/2012/11/13/getting-serious-about-measuring-virality/

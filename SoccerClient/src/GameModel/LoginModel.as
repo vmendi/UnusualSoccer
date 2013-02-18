@@ -21,23 +21,25 @@ package GameModel
 			mMainModel = mainModel;
 		}
 				
-		public function IsValidTeamName(name : String, onRefreshed : Function) : void
+		public function IsValidTeamName(name : String) : void
 		{
-			mMainService.IsNameValid(name, new mx.rpc.Responder(Delegate.create(OnIsNameValidResponse, onRefreshed), ErrorMessages.Fault));
+			mMainService.IsNameValid(name, new mx.rpc.Responder(OnIsNameValidResponse, ErrorMessages.Fault));
 		}
 		
-		private function OnIsNameValidResponse(e:ResultEvent, onRefreshed:Function):void
+		private function OnIsNameValidResponse(e:ResultEvent):void
 		{
 			mIsValidTeamNameLastResult = e.result as String;
-			onRefreshed(e.result);
+
 			dispatchEvent(new Event("IsValidTeamNameLastResultChanged"));
 		}
+		
 			
 		[Bindable(event="IsValidTeamNameLastResultChanged")]
 		public function get IsValidTeamNameLastResult() : String { return mIsValidTeamNameLastResult; }
+		public function set IsValidTeamNameLastResult(val:String) : void { mIsValidTeamNameLastResult = val; }	// Set from TeamModel after CreateTeam
 		
 		private var mIsValidTeamNameLastResult : String = VALID_NAME.EMPTY;
-				
+
 		private var mMainModel : MainGameModel;
 		private var mMainService : MainService;
 		private var mMainServiceModel : MainServiceModel;

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
-		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
-		 creationComplete="CreationCompleteHandler(event)"
-		 addedToStage="AddedToStageHandler(event)"
-		 >
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="100%" height="100%" addedToStage="AddedToStageHandler(event)"
+		 creationComplete="CreationCompleteHandler(event)">
 	
 	<fx:Script>
 		<![CDATA[
@@ -13,6 +12,7 @@
 			
 			import HttpService.enum.VALID_NAME;
 			
+			import mx.binding.utils.BindingUtils;
 			import mx.events.FlexEvent;
 			
 			import spark.events.IndexChangeEvent;
@@ -23,19 +23,25 @@
 				mMainGameModel = SoccerClient.GetMainGameModel();
 				mLoginModel = mMainGameModel.TheLoginModel; 
 				
+				mAgeValidity = !AppConfig.IsMahouLigaChapas;
+				
 				MyPredefinedTeamList.addEventListener(IndexChangeEvent.CHANGE, OnMyPredefinedTeamListSelectionChanged);
-				RefreshValidity(mLoginModel.IsValidTeamNameLastResult);
+				BindingUtils.bindSetter(OnIsValidTeamNameLastResult, mLoginModel, ["IsValidTeamNameLastResult"]);
+			}
+			
+			protected function AddedToStageHandler(event:Event):void
+			{
+				GameMetrics.ReportEvent(GameMetrics.LOGIN_SCREEN, null);
+				GameMetrics.ReportPageView(GameMetrics.VIEW_LOGIN);
 			}
 			
 			protected function OnMyPredefinedTeamListSelectionChanged(e:IndexChangeEvent):void
 			{
-				RefreshValidity(mLoginModel.IsValidTeamNameLastResult);
+				OnIsValidTeamNameLastResult(mLoginModel.IsValidTeamNameLastResult);
 			}
 			
-			private function RefreshValidity(validity : String = null) : void
-			{
-				mWaitingForNameValidity = false;
-				
+			private function OnIsValidTeamNameLastResult(validity : String) : void
+			{				
 				if (MyPredefinedTeamList.selectedIndex != -1)
 				{
 					if (validity == VALID_NAME.VALID)
@@ -63,72 +69,41 @@
 			
 			private function SetNameValidity(valid : Boolean, text : String) : void
 			{
+				MyValidityLabel.text = text;
+				mNameValidity = valid;
+				
 				if (valid)
 					MyValidityLabel.setStyle("color", "#0DBF00");
 				else
 					MyValidityLabel.setStyle("color", "#E26261");
-				
-				MyValidityLabel.text = text;
-				mNameValidity = valid;
-				
-				SetValidity();
 			}
-			
-			private function SetValidity() : void
-			{
-				if (AppConfig.IsMahouLigaChapas)
-				{
-					if  (mNameValidity && mAgeValidity)
-					{
-						MyButtonNext.enabled = true;
-					}
-					else
-					{
-						MyButtonNext.enabled = false;
-					}
-				}
-				else if (mNameValidity)
-				{
-					MyButtonNext.enabled = true;
-				}
-				else
-				{
-					MyButtonNext.enabled = false;
-				}
-			}
-			
+						
 			protected function MyRadioButtonYes_changeHandler(event:Event):void
 			{
 				mAgeValidity = true;
-				SetValidity();
 			}
 			
 			protected function MyRadioButtonNo_changeHandler(event:Event):void
 			{
 				mAgeValidity = false;
-				SetValidity();
-			} 
+			}
 			
 			protected function MyTeamNameInput_changeHandler(event:TextOperationEvent):void
-			{
-				mWaitingForNameValidity = true;
-				
-				mLoginModel.IsValidTeamName(MyTeamNameInput.text, RefreshValidity);
+			{				
+				mLoginModel.IsValidTeamName(MyTeamNameInput.text);
 			}
 			
 			protected function MyButtonNext_clickHandler(event:MouseEvent):void
 			{
-				if (!mWaitingForNameValidity)
-				{
-					mMainGameModel.TheTeamModel.CreateTeam(MyTeamNameInput.text, 
-														   MyPredefinedTeamList.selectedItem, 
-													   	   OnTeamCreatedResponse, OnTeamCreationFailed);
-				}
+				mWaitingForTeamCreation = true;
+				mMainGameModel.TheTeamModel.CreateTeam(MyTeamNameInput.text, 
+													   MyPredefinedTeamList.selectedItem, 
+												   	   OnTeamCreatedResponse, OnTeamCreationFailed);
 			}
 			
 			private function OnTeamCreationFailed() : void
 			{
-				RefreshValidity(VALID_NAME.DUPLICATED);
+				mWaitingForTeamCreation = false;
 			}
 			
 			private function OnTeamCreatedResponse():void
@@ -141,20 +116,13 @@
 			[Bindable] private var mMainGameModel : MainGameModel;
 			[Bindable] private var mLoginModel : LoginModel;
 			
-			private var mWaitingForNameValidity : Boolean = false;
-			private var mNameValidity : Boolean = false;
-			private var mAgeValidity : Boolean = false;
-			
-			protected function AddedToStageHandler(event:Event):void
-			{
-				GameMetrics.ReportEvent(GameMetrics.LOGIN_SCREEN, null);
-				GameMetrics.ReportPageView(GameMetrics.VIEW_LOGIN);
-			}
-			
+			[Bindable] private var mNameValidity : Boolean = false;
+			[Bindable] private var mAgeValidity : Boolean = false;
+			[Bindable] private var mWaitingForTeamCreation : Boolean = false;
 		]]>
 	</fx:Script>
 	
-	<fx:Style source="styles.css" />
+	<fx:Style source="styles.css"/>
 	
 	<fx:Style>
 		@namespace s "library://ns.adobe.com/flex/spark";
@@ -168,79 +136,92 @@
 	</fx:Style>
 	
 	<fx:Declarations>
-		<s:DropShadowFilter id="MyTextDropShadowFilter" angle="270" distance="1" blurX="1" blurY="1" color="0x444444" />
+		<s:DropShadowFilter id="MyTextDropShadowFilter" angle="270" blurX="1" blurY="1"
+							color="0x444444" distance="1"/>
 	</fx:Declarations>	
 	
-	<s:BitmapImage source="{resourceManager.getClass('main','LoginBg')}" fillMode="clip"/>
+	<s:BitmapImage fillMode="clip" source="{resourceManager.getClass('main','LoginBg')}"/>
 	
-	<s:SWFLoader x="0" y="0" source="{resourceManager.getString('main','LoginLogoSource')}" />
+	<s:SWFLoader x="0" y="0" source="{resourceManager.getString('main','LoginLogoSource')}"/>
 	
-	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" x="352" y="40" width="365" title="{resourceManager.getString('main','Login01SelectTeam')}">
+	<s:Panel x="352" y="40" width="365" skinClass="GameView.Skins.DefaultPanelSkin"
+			 title="{resourceManager.getString('main','Login01SelectTeam')}">
 		<s:layout>
-			<s:VerticalLayout gap="0" />
+			<s:VerticalLayout gap="0"/>
 		</s:layout>
-		<s:List width="365" height="280" id="MyPredefinedTeamList" 
-				top="0" left="0"
+		<s:List id="MyPredefinedTeamList" left="0" top="0" width="365" height="280"
 				dataProvider="{mMainGameModel.ThePredefinedTeamsModel.PredefinedTeamNameIDs}"
 				itemRenderer="GameView.PredefinedTeamItem"
-				skinClass="GameView.Skins.DefaultListSkin" tabEnabled="false" tabFocusEnabled="false">
+				skinClass="GameView.Skins.DefaultListSkin" tabEnabled="false"
+				tabFocusEnabled="false">
 		</s:List>
 		
 		<s:Group>
 			<s:layout>
-				<s:VerticalLayout gap="6" horizontalAlign="center" />
+				<s:VerticalLayout gap="6" horizontalAlign="center"/>
 			</s:layout>
 			<s:Group>
 				<s:Rect id="tbFill" x="0" y="0" width="100%" height="27">
 					<s:fill>
 						<s:LinearGradient rotation="90">
-							<s:GradientEntry color="#fe0001" ratio="0" alpha="1"/>
-							<s:GradientEntry color="#8c1304" ratio="1.0" alpha="1"/>
+							<s:GradientEntry alpha="1" color="#fe0001" ratio="0"/>
+							<s:GradientEntry alpha="1" color="#8c1304" ratio="1.0"/>
 						</s:LinearGradient>
 					</s:fill>
 				</s:Rect>
-				<s:Label id="myStep2Label" maxDisplayedLines="1"
-						 x="10" y="0" width="350" height="27"
-						 verticalAlign="middle" textAlign="start" styleName="headerBox" filters="{MyTextDropShadowFilter}"
-						 text="{resourceManager.getString('main','Login02EnterName')}"></s:Label>
+				<s:Label id="myStep2Label" x="10" y="0" width="350" height="27"
+						 filters="{MyTextDropShadowFilter}" maxDisplayedLines="1"
+						 styleName="headerBox"
+						 text="{resourceManager.getString('main','Login02EnterName')}"
+						 textAlign="start" verticalAlign="middle"></s:Label>
 			</s:Group>
-			<s:Label id="myStep2Txt" x="10" y="35" width="350"
-					 verticalAlign="middle" textAlign="center" styleName="whiteBoldBig"
-					 text="{resourceManager.getString('main','Login02EnterNameTxt')}"></s:Label>
-			<s:TextInput x="82" y="97" change="MyTeamNameInput_changeHandler(event)" id="MyTeamNameInput" width="200" styleName="blackBoldMediumHN" maxChars="30"/>
-			<s:Label x="32" y="126" width="300" color="#0DBF00" height="40" id="MyValidityLabel" styleName="whiteBoldBig" textAlign="center"/>
+			<s:Label id="myStep2Txt" x="10" y="35" width="350" styleName="whiteBoldBig"
+					 text="{resourceManager.getString('main','Login02EnterNameTxt')}"
+					 textAlign="center" verticalAlign="middle"></s:Label>
+			<s:TextInput id="MyTeamNameInput" x="82" y="97" width="200"
+						 change="MyTeamNameInput_changeHandler(event)" maxChars="30"
+						 styleName="blackBoldMediumHN"/>
+			<s:Label id="MyValidityLabel" x="32" y="126" width="300" height="40" color="#0DBF00"
+					 styleName="whiteBoldBig" textAlign="center"/>
 		</s:Group>
 		
-		<s:Group x="0" visible="{AppConfig.IsMahouLigaChapas}" includeInLayout="{AppConfig.IsMahouLigaChapas}">
+		<s:Group visible="{AppConfig.IsMahouLigaChapas}" x="0"
+				 includeInLayout="{AppConfig.IsMahouLigaChapas}">
 			<s:Rect id="tbFill2" x="0" y="0" width="100%" height="27">
 				<s:fill>
 					<s:LinearGradient rotation="90">
-						<s:GradientEntry color="#fe0001" ratio="0" alpha="1"/>
-						<s:GradientEntry color="#8c1304" ratio="1.0" alpha="1"/>
+						<s:GradientEntry alpha="1" color="#fe0001" ratio="0"/>
+						<s:GradientEntry alpha="1" color="#8c1304" ratio="1.0"/>
 					</s:LinearGradient>
 				</s:fill>
 			</s:Rect>
-			<s:Label id="myStep3Label" maxDisplayedLines="1"
-					 x="10" y="0" width="350" height="27"
-					 verticalAlign="middle" textAlign="start" styleName="headerBox" filters="{MyTextDropShadowFilter}"
-					 text="3. ACEPTA LAS CONDICIONES LEGALES"></s:Label>
+			<s:Label id="myStep3Label" x="10" y="0" width="350" height="27"
+					 filters="{MyTextDropShadowFilter}" maxDisplayedLines="1" styleName="headerBox"
+					 text="3. ACEPTA LAS CONDICIONES LEGALES" textAlign="start"
+					 verticalAlign="middle"></s:Label>
 			
-			<s:Label id="myStep3Txt" x="10" y="32" width="350"
-					 verticalAlign="middle" textAlign="center" styleName="whiteBoldBig"
-					 text="Para jugar a este juego debes ser mayor de edad."></s:Label>
+			<s:Label id="myStep3Txt" x="10" y="32" width="350" styleName="whiteBoldBig"
+					 text="Para jugar a este juego debes ser mayor de edad." textAlign="center"
+					 verticalAlign="middle"></s:Label>
 			
-			<s:Label id="myStep4Txt" x="100" y="56"
-					 verticalAlign="middle" textAlign="center" styleName="whiteBoldBig"
-					 text="¿Lo eres?"></s:Label>
+			<s:Label id="myStep4Txt" x="100" y="56" styleName="whiteBoldBig" text="¿Lo eres?"
+					 textAlign="center" verticalAlign="middle"></s:Label>
 			
-			<s:RadioButton x="170" y="52" id="myRadioButtonYes" change="MyRadioButtonYes_changeHandler(event)" label="Sí" groupName="SoyMayorEdad" styleName="whiteBoldBig"/>
-			<s:RadioButton x="210" y="52" id="myRadioButtonNo" change="MyRadioButtonNo_changeHandler(event)" label="No" groupName="SoyMayorEdad" styleName="whiteBoldBig"/>
-			
+			<s:RadioButton id="myRadioButtonYes" x="170" y="52" label="Sí"
+						   change="MyRadioButtonYes_changeHandler(event)" groupName="SoyMayorEdad"
+						   styleName="whiteBoldBig"/>
+			<s:RadioButton id="myRadioButtonNo" x="210" y="52" label="No"
+						   change="MyRadioButtonNo_changeHandler(event)" groupName="SoyMayorEdad"
+						   styleName="whiteBoldBig"/>
 		</s:Group>
 		
 		<s:Group>
-			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='LoginBottomBg')" fillMode="clip" />
-			<s:Button id="MyButtonNext" enabled="false" label="{resourceManager.getString('main','Continue')}" click="MyButtonNext_clickHandler(event)" x="98" top="4" width="160" height="24" skinClass="GameView.Skins.ButtonGreySkin"/>
+			<s:BitmapImage fillMode="clip"
+						   source="@Embed(source='/Assets/General.swf', symbol='LoginBottomBg')"/>
+			<s:Button id="MyButtonNext" x="98" top="4" width="160" height="24"
+					  label="{resourceManager.getString('main','Continue')}"
+					  click="MyButtonNext_clickHandler(event)" enabled="{mAgeValidity &amp;&amp; mNameValidity}"
+					  skinClass="GameView.Skins.ButtonGreySkin"/>
 		</s:Group>
 		
 	</s:Panel>
