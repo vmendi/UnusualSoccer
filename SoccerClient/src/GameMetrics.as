@@ -116,7 +116,7 @@ package
 			if (!AppConfig.IsMahouLigaChapas)
 			{
 				// money is Facebook Credits, 1 FB credit = $0.01
-				ExternalInterface.call("mixpanel.people.track_charge", money/100);
+				ExternalInterface.call("mixpanel.people.track_charge", money/10);
 			}
 		}
 		
