@@ -28,7 +28,27 @@
 			dialog.mOpponentName = MatchResultUtils.GetOpponentResult(matchResult, dialog.mTeamModel).Name;
 			
 			GameMetrics.ReportPageView(GameMetrics.VIEW_MATCHEND_DIALOG);
-			GameMetrics.ReportEvent(GameMetrics.MATCHEND_DIALOG, null);		
+			GameMetrics.ReportEvent(GameMetrics.MATCHEND_DIALOG, { Result: FormatResult(dialog.mMatchResult, true),
+																   WasAbandoned: dialog.mMatchResult.WasAbandoned,
+																   WasSameIP: dialog.mMatchResult.WasSameIP,
+																   WasJust: dialog.mMatchResult.WasJust,
+																   WasTooManyTimes: dialog.mMatchResult.WasTooManyTimes
+																   });
+		}
+		
+		static private function FormatResult(matchResult : Object, sort : Boolean) : String
+		{
+			if (!sort)
+			{
+				return matchResult.ResultPlayer1.Goals + "-" + matchResult.ResultPlayer2.Goals;
+			}
+			else
+			{
+				if (matchResult.ResultPlayer1.Goals >= matchResult.ResultPlayer2.Goals)
+					return matchResult.ResultPlayer1.Goals + "-" + matchResult.ResultPlayer2.Goals;
+				else
+					return matchResult.ResultPlayer2.Goals + "-" + matchResult.ResultPlayer1.Goals;
+			}
 		}
 
 		protected function AceptarClickHandler(event:MouseEvent) : void
@@ -54,9 +74,7 @@
 			
 			// Hacemos los reemplazos, la mismas palabras (CONTRARIO, RESULTADO) para todos los idiomas
 			msgToPublish.daDescription = (msgToPublish.daDescription as String).replace("CONTRARIO", mOpponentName);
-			msgToPublish.daDescription = (msgToPublish.daDescription as String).replace("RESULTADO", mMatchResult.ResultPlayer1.Goals + 
-																									 "-" + 
-																									 mMatchResult.ResultPlayer2.Goals);
+			msgToPublish.daDescription = (msgToPublish.daDescription as String).replace("RESULTADO", FormatResult(mMatchResult, false));
 			// Esto por dentro vera si ya tenemos los permisos o intentara adquirirlos...
 			PublishMessages.TryPermissionsAndPublish(msgToPublish, onPublishCallback);
 			
