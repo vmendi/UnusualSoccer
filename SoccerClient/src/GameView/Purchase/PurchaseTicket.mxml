@@ -159,19 +159,19 @@
 		
 	</s:Group>
 	
-	<s:SWFLoader x="527" y="285" id="MyRibbon" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestValue')" />
+	<s:SWFLoader x="527" y="285" id="MyRibbon" source="@Embed(source='/Assets/General.swf', symbol='RibbonBestValue')" includeIn="ChoosingItem" />
 	
 	<s:Group includeIn="Success" horizontalCenter="0" verticalCenter="0">
-		<s:Label id="MySuccessLabel" styleName="whiteBoldBig" text="TODO: Successful purchase"/>
+		<s:Label id="MySuccessLabel" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTxtSuccess')}"/>
 	</s:Group>
 	
 	<s:Group includeIn="Failure, Canceled" horizontalCenter="0" verticalCenter="-10">
-		<s:Label id="MyFailureLabel" maxDisplayedLines="3" styleName="whiteBoldBig" width="300" textAlign="center"
+		<s:Label id="MyFailureLabel" styleName="whiteBoldVeryBig" width="400" textAlign="center"
 				 text.Failure="{resourceManager.getString('main','PurchaseTxtFailure')}"
 				 text.Canceled="{resourceManager.getString('main','PurchaseTxtCanceled')}" />
 	</s:Group>
 	
-	<s:Label id="myTxtTerms" horizontalCenter="0" bottom="55" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTxtTerms')}" includeIn="ChoosingItem"/>
+	<s:Label id="myTxtTerms" horizontalCenter="0" bottom="55" styleName="whiteBoldVeryBig" text="{resourceManager.getString('main','PurchaseTxtTerms')}" includeIn="ChoosingItem"/>
 	
 	<s:Button id="MyCloseButton" label.ChoosingItem="{resourceManager.getString('main','Cancel')}" label="{resourceManager.getString('main','Close')}" click="CloseClickHandler(event)" minWidth="80"  horizontalCenter="0" bottom="20"
 			  skinClass="GameView.Skins.ButtonDarkGreySkin" />

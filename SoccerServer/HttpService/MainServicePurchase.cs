@@ -170,8 +170,8 @@ namespace HttpService
                         description = "Trainer for 3 months",
                         price = 90,
                         title = "Trainer for 3 months",
-                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer_BestValue.png",
-                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer_BestValue.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer.png",
                         data = ""
                     },
                 new TransferModel.ItemForSale()
@@ -180,8 +180,8 @@ namespace HttpService
                         description = "Trainer forever",
                         price = 130,
                         title = "Trainer forever",
-                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer_BestBuy.png",
-                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer_BestBuy.png",
+                        product_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer_BestValue.png",
+                        image_url = "http://canvas.unusualsoccer.com/Imgs/Purchases/PurchaseTrainer_BestValue.png",
                         data = ""
                     }
             };
