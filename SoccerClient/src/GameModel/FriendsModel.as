@@ -14,12 +14,15 @@ package GameModel
 			mMainService = mainService;
 			
 			BindingUtils.bindSetter(OnSoccerPlayersChanged, mMainModel.TheTeamModel, [ "TheTeam", "SoccerPlayers" ]);
-						
-			var friends:Array = SoccerClient.GetFacebookFacade().FacebookMe.friends.data as Array;
 			
-			for each(var friend:Object in friends)
+			if (SoccerClient.GetFacebookFacade().FacebookMe.friends != null)
 			{
-				mFriends.addItem(new Friend(friend.name, friend.id));
+				var friends:Array = SoccerClient.GetFacebookFacade().FacebookMe.friends.data as Array;
+				
+				for each(var friend:Object in friends)
+				{
+					mFriends.addItem(new Friend(friend.name, friend.id));
+				}
 			}
 		}
 		
