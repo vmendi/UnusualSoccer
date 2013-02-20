@@ -38,12 +38,12 @@
 	
 	<s:Image source="@Embed(source='/Assets/General.swf', symbol='StatusPanelBackground')"/>
 	
-	<GameView:BadgeTeam x="10" y="22" TeamNameID="{mTeamModel.TheTeam.PredefinedTeamNameID}" BigMode="true" />
+	<GameView:BadgeTeam x="6" y="22" TeamNameID="{mTeamModel.TheTeam.PredefinedTeamNameID}" BigMode="true" />
 	
-	<s:Label x="62" y="25" text="{mTeamModel.TheTeam.Name}" styleName="whiteBoldBig" id="MyTeamNameLabel" filters="{txtGlowFilter}"/>
-	<s:Label x="62" y="44" text="{PredefinedTeamsModel.Localize(mTeamModel.TheTeam.PredefinedTeamNameID)}" styleName="whiteBoldVeryBig" id="MyPredefinedTeamLabel" filters="{txtGlowFilter}"/> 
+	<s:Label x="58" y="24" text="{PredefinedTeamsModel.Localize(mTeamModel.TheTeam.PredefinedTeamNameID)}" styleName="whiteBoldBig" id="MyPredefinedTeamLabel" alpha="0.7" filters="{txtGlowFilter}"/> 
+	<s:Label x="58" y="44" maxDisplayedLines="1" maxWidth="220" text="{mTeamModel.TheTeam.Name}" styleName="whiteBoldVeryBig" id="MyTeamNameLabel" filters="{txtGlowFilter}"/>
 	
-	<GameView:BadgeCategory width="64" height="43" left="209" top="24" TrueSkill="{mTeamModel.TheTeam.TrueSkill}" />
+	<GameView:BadgeCategory width="64" height="43" left="204" top="5" TrueSkill="{mTeamModel.TheTeam.TrueSkill}" />
 	
 	<s:Label x="294" y="19" text="{resourceManager.getString('main','GeneralTraining')}" width="90" styleName="whiteBoldMedium" textAlign="left"/>
 	<s:Label x="378" y="19" text="{mTeamModel.TheTeam.Fitness}%" width="46" id="MyTrainingLabel" styleName="whiteBoldMedium" textAlign="right"/>	
