@@ -3,90 +3,59 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using ServerCommon;
+using NLog;
+using System.Collections.Specialized;
 
 namespace SoccerServer.OpenGraph
 {
     public class OpenGraph : IHttpHandler
     {
-        // 0 = namespace
-        // 1 = app_id
-        // 2 = object    (skill)
-        // 3 = canvasUrl (http://canvas.unusualsoccer.com/)
-        // 4 = post id of the object (SpecialSkill1)
-        // 5 = title
-        // 6 = description
-        // 7 = Img path (Imgs/Reporter.png)
+        private static readonly Logger Log = LogManager.GetLogger(typeof(OpenGraph).FullName);
+
         static string htmlSrc = @"
-            <head prefix=""og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# unusualsoccer: http://ogp.me/ns/fb/{0}#"">
+            <head prefix=""og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# {0}: http://ogp.me/ns/fb/{0}#"">
             <meta property=""fb:app_id""         content=""{1}"" />
             <meta property=""og:type""           content=""{0}:{2}"" /> 
-            <meta property=""og:url""            content=""{3}/OpenGraph/OpenGraph.html?id={4}"" /> 
-            <meta property=""og:title""          content=""{5}"" /> 
-            <meta property=""og:description""    content=""{6}"" /> 
-            <meta property=""og:image""          content=""{3}{7}"" /> 
+            <meta property=""og:title""          content=""{3}"" />
+            <meta property=""og:description""    content=""{4}"" /> 
+            <meta property=""og:image""          content=""{5}"" /> 
             ";
-
-        class PostParams
-        {
-            public string OpenGraphType;         // El tipo de Object creado con la tool online de Open Graph
-            public string Title;
-            public string Description;
-            public string ImageUrl;
-
-            public PostParams(string type, string title, string desc, string img)
-            {
-                OpenGraphType = type; Title = title; Description = desc; ImageUrl = img;
-            }
-        }
-
-        static Dictionary<string, PostParams> AllPosts = new Dictionary<string, PostParams>()
-            { {"SpecialSkill1", new PostParams("skill", "Super Power", "I just got a new skill: SUPER POWER!", "Imgs/MensajeHabilidadSuperpotencia_en_US.jpg")},
-              {"SpecialSkill2", new PostParams("skill", "Super Control", "", "")},
-              {"SpecialSkill3", new PostParams("skill", "Catenaccio", "", "")},
-              {"SpecialSkill4", new PostParams("skill", "Long Shot", "", "")},
-              {"SpecialSkill5", new PostParams("skill", "Extra Time", "", "")},
-              {"SpecialSkill6", new PostParams("skill", "One More Shot", "", "")},
-              {"SpecialSkill7", new PostParams("skill", "Easy Control", "", "")},
-              {"SpecialSkill8", new PostParams("skill", "Reveal Areas", "", "")},
-              {"SpecialSkill9", new PostParams("skill", "God's hand", "", "")},
-              {"SpecialSkill12", new PostParams("skill", "Safe Goal", "", "")},
-              {"SpecialSkill13", new PostParams("skill", "Master Dribbling", "", "")},
-
-              {"WinMatch", new PostParams("match", "Match", "Victory!", "Imgs/MensajeVictoria_en_US.jpg")}
-            };
 
         public void ProcessRequest(HttpContext context)
         {
-            context.Response.ContentType = "text/html";
+            Log.Debug("Incoming ProcessRequest " + context.Request.UserAgent);
+            Log.Debug("------------------------");
 
-            string id = context.Request.QueryString["id"];
-
-            if (id != null)
+            if (context.Request.UserAgent.Contains("facebookexternalhit"))
             {
-                var thePostParams = AllPosts[id];
+                context.Response.ContentType = "text/html";
 
-                if (thePostParams != null)
-                {
-                    string result = FormatOutput(id, thePostParams);
-                    context.Response.Write(result);
-                }
-                else
-                {
-                    // TODO: Unknown id, log error
-                }
+                string data = context.Request.QueryString["data"];
+
+                if (data != null)
+                    context.Response.Write(FormatOutput(DecodeClientData(data)));
+            }
+            else
+            {
+                context.Response.Redirect(GlobalConfig.FacebookSettings.CanvasPage);
             }
         }
 
-        private string FormatOutput(string postID, PostParams thePostParams)
+        static private NameValueCollection DecodeClientData(string clientData)
+        {
+            byte[] encData = System.Convert.FromBase64String(clientData);
+            var final = System.Text.UTF8Encoding.UTF8.GetString(encData);
+            return HttpUtility.ParseQueryString(final);
+        }
+
+        private string FormatOutput(NameValueCollection clientData)
         {
             return String.Format(htmlSrc, GetNamespace(),
                                           GlobalConfig.FacebookSettings.AppId,
-                                          thePostParams.OpenGraphType,
-                                          GlobalConfig.FacebookSettings.CanvasUrl,
-                                          postID,
-                                          thePostParams.Title,
-                                          thePostParams.Description,
-                                          thePostParams.ImageUrl);
+                                          clientData["openGraphObjectType"],
+                                          clientData["title"],
+                                          clientData["description"],
+                                          clientData["image"]);
         }
 
         // Siempre se puede obtener el nombre del namespace a partir del de la aplicacion, parece que es lo mismo que FB hace
@@ -95,7 +64,7 @@ namespace SoccerServer.OpenGraph
             string canvasPage = GlobalConfig.FacebookSettings.CanvasPage;
 
             // El formato siempre es: http://apps.facebook.com/unusualsoccerlocal/
-            return canvasPage.Substring(canvasPage.LastIndexOf("/", canvasPage.Length-2)+1).TrimEnd('/');
+            return canvasPage.Substring(canvasPage.LastIndexOf("/", canvasPage.Length-2)+1).TrimEnd('/').ToLower();
         }
 
         public bool IsReusable
