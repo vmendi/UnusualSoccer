@@ -1,5 +1,7 @@
 package
 {
+	import GameView.ImportantMessageDialog;
+	
 	import com.facebook.graph.Facebook;
 	
 	import flash.net.URLRequestMethod;
@@ -35,6 +37,7 @@ package
 		}
 		
 		// Mensajes que se publican en el wall al adquirir una habilidad especial
+		/*
 		static public function BuildSpecialTrainingPublishMessage(spDefID : int) : Object
 		{
 			var ret : Object = new Object();
@@ -49,6 +52,7 @@ package
 			
 			return ret;
 		}
+		*/
 		
 		// directPublish: Intento de publicacion directa sin pasar por el ui de Facebook, usando el Graph API. Para ello, es neceario
 		//				  tener el permiso stream_publish ya concecido. Si no lo tuvieramos, la llamada fallara silenciosamente.
@@ -56,7 +60,7 @@ package
 		// La dejamos privada pq se ha convertido en un servicio interno para TryPermissionsAndPublish.
 		//
 		static private function Publish(publishMessage : Object, directPublish : Boolean) : void
-		{				
+		{		
 			var data : Object = {
 									link:AppConfig.CANVAS_PAGE + publishMessage.daLinkParams,
 									picture: AppConfig.CANVAS_URL + publishMessage.daPicture,
@@ -87,24 +91,62 @@ package
 				}
 			}
 		}
+				
+		static private function PublishOpenGraph(publishOpenGraphID : String) : void
+		{
+			// TODO: namespace AppConfig.CANVAS_PAGE
+			Facebook.api('/me/unusualsoccer:get', OnPublishResponse, { skill: 'http://apps.facebook.com/unusualsoccer/OpenGraph/OpenGraph.ashx?id='+publishOpenGraphID }, URLRequestMethod.POST);
+			
+			function OnPublishResponse(response : Object, fail : Object) : void
+			{
+				if (response == null)
+				{
+					var msg : String = fail.error.type + "-" + fail.error.message;
+				
+					ImportantMessageDialog.Show(msg, "Publish Open Graph Error");
+					ErrorMessages.LogToServer("Publish Open Graph Error " + msg);
+				}
+			}
+		}
 		
-		// Intento de obtener permisos y publicar. Como lo hacemos al menos en dos sitios (MatchEndDialog y SpecialTrainingCompleteDialog), 
-		// lo estandiramos aqui
-		static public function TryPermissionsAndPublish(publishMessage : Object, callback : Function) : void
+		static public function TryPermissionsAndPublishOpenGraph(publishOpenGraphID : String, callback : Function) : void
 		{
 			// Vamos a ver si ya tenemos los permisos o intentamos adquirirlos...
-			SoccerClient.GetFacebookFacade().EnsurePublishStreamPermission(onPermissions);
+			SoccerClient.GetFacebookFacade().EnsurePublishActionsPermission(onPermissions);
 			
 			function onPermissions(gotPermissions : Boolean) : void
 			{
 				if (gotPermissions)
 				{
 					// A publicar directamente
-					PublishMessages.Publish(publishMessage, true);
+					PublishMessages.PublishOpenGraph(publishOpenGraphID);
 				}
 				
 				callback(gotPermissions);
 			}
-		}		
+		}
+		
+		// Intento de obtener permisos y publicar. Como lo hacemos al menos en dos sitios (MatchEndDialog y SpecialTrainingCompleteDialog), 
+		// lo estandiramos aqui
+		/*
+		static public function TryPermissionsAndPublish(publishMessage : Object, callback : Function) : void
+		{
+			// Vamos a ver si ya tenemos los permisos o intentamos adquirirlos...
+			//SoccerClient.GetFacebookFacade().EnsurePublishStreamPermission(onPermissions);
+			SoccerClient.GetFacebookFacade().EnsurePublishActionsPermission(onPermissions);
+			
+			function onPermissions(gotPermissions : Boolean) : void
+			{
+				if (gotPermissions)
+				{
+					// A publicar directamente
+					//PublishMessages.Publish(publishMessage, true);
+					PublishMessages.PublishOpenGraph(publishMessage);
+				}
+				
+				callback(gotPermissions);
+			}
+		}
+		*/
 	}
 }

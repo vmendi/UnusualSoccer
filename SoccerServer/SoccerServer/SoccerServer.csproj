@@ -201,6 +201,7 @@
     <Content Include="Imgs\Purchases\TicketGold.png" />
     <Content Include="Imgs\Purchases\TicketPlatinum.png" />
     <Content Include="Imgs\Purchases\TicketSilver.png" />
+    <Content Include="Imgs\Reporter.png" />
     <Content Include="Imgs\TrainingItem_en_US.swf" />
     <Content Include="Imgs\TrainingItem_es_ES.swf" />
     <Content Include="logs\dummy.txt" />
@@ -243,6 +244,9 @@
     </Compile>
     <Compile Include="Cancelled.aspx.designer.cs">
       <DependentUpon>Cancelled.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OpenGraph\OpenGraph.ashx.cs">
+      <DependentUpon>OpenGraph.ashx</DependentUpon>
     </Compile>
     <Compile Include="ServerStats\FBUtils.cs" />
     <Compile Include="Deauthorize.aspx.cs">
@@ -337,6 +341,7 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="OpenGraph\OpenGraph.ashx" />
     <None Include="packages.config" />
     <Content Include="Payment.ashx" />
     <Content Include="Weborb.config" />
