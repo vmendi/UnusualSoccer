@@ -1,16 +1,11 @@
 package
 {
-	import GameView.ImportantMessageDialog;
-	
 	import com.facebook.graph.Facebook;
 	
-	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
-	import flash.net.navigateToURL;
 	
 	import mx.resources.ResourceManager;
 	import mx.utils.Base64Encoder;
-	import mx.utils.URLUtil;
 
 	public final class PublishMessages
 	{
@@ -48,14 +43,16 @@ package
 			return ret;
 		}
 		
-		
-		// Desde el cliente enviamos al servidor todos los datos a traves de una querystring codificada
+		// Desde el cliente enviamos al servidor todos los datos a traves de una querystring codificada. El servidor es responsable de 
+		// generar una pagina html con los meta tags con los valores que aqui le mandamos.
 		static private function ComposePublishData(publishMessage : Object) : String
 		{
 			var queryString : String = "title=" + encodeURIComponent(publishMessage.daTitle) + 
 									   "&description=" + encodeURIComponent(publishMessage.daDescription) +
 									   "&image=" + encodeURIComponent(AppConfig.CANVAS_URL + publishMessage.daImage) +
-									   "&openGraphObjectType=" + encodeURIComponent(publishMessage.daOpenGraphObjectType);
+									   "&openGraphObjectType=" + encodeURIComponent(publishMessage.daOpenGraphObjectType) +
+									   "&ns=" + encodeURIComponent(GetNamespace());
+
 			var base64Encoder : Base64Encoder = new Base64Encoder();
 			base64Encoder.encodeUTFBytes(queryString);
 			return encodeURIComponent(base64Encoder.drain());
@@ -65,14 +62,13 @@ package
 		{
 			// '/me/unusualsoccer:get'
 			var method : String = "/me/" + GetNamespace() + ":" + publishMessage.daOpenGraphAction;
-			
 			var params : Object = new Object();
 			
 			// { skill: 'URL que define la skill' }
 			params[publishMessage.daOpenGraphObjectType] = AppConfig.CANVAS_URL + '/OpenGraph/OpenGraph.ashx?data=' + ComposePublishData(publishMessage);
 			
 			// Whether it's published in the user wall explicitly
-			params["fb:explicitly_shared"] = publishMessage.daExplicitlyShared;
+			params.explicitly_shared = publishMessage.daExplicitlyShared;
 			
 			Facebook.api(method, OnPublishResponse, params, URLRequestMethod.POST);
 			
