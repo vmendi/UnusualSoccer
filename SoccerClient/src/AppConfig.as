@@ -35,7 +35,7 @@ package
 			else
 				serverName = "http://" + serverName;
 			
-			return serverName;			
+			return serverName;
 		}
 		
 		static public function Init(parameters : Object) : void

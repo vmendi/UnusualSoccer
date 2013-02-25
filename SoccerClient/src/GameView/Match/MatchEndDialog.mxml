@@ -76,7 +76,7 @@
 			msgToPublish.daDescription = (msgToPublish.daDescription as String).replace("CONTRARIO", mOpponentName);
 			msgToPublish.daDescription = (msgToPublish.daDescription as String).replace("RESULTADO", FormatResult(mMatchResult, false));
 			// Esto por dentro vera si ya tenemos los permisos o intentara adquirirlos...
-			PublishMessages.TryPermissionsAndPublish(msgToPublish, onPublishCallback);
+			PublishMessages.TryPermissionsAndPublishOpenGraph(msgToPublish, onPublishCallback);
 			
 			function onPublishCallback(published : Boolean) : void
 			{
