@@ -158,7 +158,7 @@
 						  Percent="{100*data.EnergyCurrent/data.SpecialTrainingDefinition.EnergyTotal}" 
 						  includeIn="Incomplete" />-->
 		
-	<s:Button id="MyDoTrainButton" label="ADQUIRIR HABILIDAD" click="MyDoTrainButton_clickHandler(event)" visible="false"
+	<s:Button id="MyDoTrainButton" label="{resourceManager.getString('main','TrainingSpecialButtonGet')}" click="MyDoTrainButton_clickHandler(event)" visible="false"
 			  includeIn="Incomplete" x="554" y="21" width="160" height="24" skinClass="GameView.Skins.ButtonGreySkin"/>
 	
 	<s:Label id="MyLikeText" x="554" y="20" width="160" visible="false"

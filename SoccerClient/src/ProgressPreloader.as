@@ -58,11 +58,11 @@ package
 				
 				if (AppConfig.IsMahouLigaChapas)
 				{
-					mPreloaderMovieclip.gotoAndStop(1);
+					mPreloaderMovieclip.gotoAndStop("es");
 				}
 				else
 				{
-					mPreloaderMovieclip.gotoAndStop(2);
+					mPreloaderMovieclip.gotoAndStop("en");
 				}
 								
 				mPreloaderMovieclip.x = 0;
