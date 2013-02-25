@@ -31,15 +31,12 @@ package GameModel
 				teamIDs.addItem("Málaga");
 				teamIDs.addItem("Mallorca");
 				teamIDs.addItem("Osasuna");
-			//	teamIDs.addItem("Racing");
 				teamIDs.addItem("Rayo");
 				teamIDs.addItem("R. Madrid");
 				teamIDs.addItem("R. Sociedad");
 				teamIDs.addItem("Sevilla");
-			//	teamIDs.addItem("Sporting");
 				teamIDs.addItem("Valencia");
 				teamIDs.addItem("Valladolid");
-			//	teamIDs.addItem("Villarreal");
 				teamIDs.addItem("Zaragoza");
 			}
 			else

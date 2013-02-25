@@ -59,7 +59,7 @@ package Match
 		public function get OwnerTeam() : Team	  { return _OwnerTeam; }
 		public function get Name() : String		  { return _Name; }
 		public function get Id() : int			  { return _CapId; }
-		
+		 
 		public function get IsInjured() : Boolean { return _IsInjured; }
 		
 		public function get Power() : int		  {	return Math.floor((OwnerTeam.Fitness / 100.0) * OriginalPower); }
@@ -102,7 +102,7 @@ package Match
 			// Reasignamos la escala de la chapa, ya que la física la escala para que encaje con el radio físico asignado
 			_Visual.scaleX = 1.0;
 			_Visual.scaleY = 1.0;
-			
+			 
 			_CapId = id;
 			_Name = descCap.Name;
 			_Dorsal = descCap.DorsalNumber;
