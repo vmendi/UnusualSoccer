@@ -74,9 +74,25 @@ package
 			
 			function OnPublishResponse(response : Object, fail : Object) : void
 			{
-				if (response == null)
-					ErrorMessages.LogToServer("Publish Open Graph Error: " + fail.error.type + " - " + fail.error.message + " - " + 
-											  AppConfig.CANVAS_URL + '/OpenGraph/OpenGraph.ashx?data=' + ComposePublishData(publishMessage));
+				try {
+					if (response == null)
+					{
+						if (fail != null && fail.error != null)
+						{
+							ErrorMessages.LogToServer("Publish Open Graph Error: " + fail.error.type + " - " + fail.error.message + " - " + 
+													  AppConfig.CANVAS_URL + '/OpenGraph/OpenGraph.ashx?data=' + ComposePublishData(publishMessage));
+						}
+						else
+						{
+							ErrorMessages.LogToServer("Publish Open Graph Error: " + fail + " - " + 
+													  AppConfig.CANVAS_URL + '/OpenGraph/OpenGraph.ashx?data=' + ComposePublishData(publishMessage));
+						}
+					}
+				}
+				catch(e:Error) {
+					// Ocurre... es como que IOErrorEvent.error no es null, pero luego sí
+					ErrorMessages.LogToServer("WTF 13177 " + fail);
+				}
 			}
 		}
 		
