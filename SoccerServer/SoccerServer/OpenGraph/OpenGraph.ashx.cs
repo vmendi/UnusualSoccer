@@ -29,21 +29,27 @@ namespace SoccerServer.OpenGraph
         public void ProcessRequest(HttpContext context)
         {
             Log.Debug("Incoming ProcessRequest " + context.Request.UserAgent);
+
+            string data = context.Request.QueryString["data"];
             
             if (context.Request.UserAgent.Contains("facebookexternalhit"))
             {
                 context.Response.ContentType = "text/html";
 
-                string data = context.Request.QueryString["data"];
-
                 if (data != null)
-                {
                     context.Response.Write(FormatOutput(DecodeClientData(data)));
-                }
             }
             else
             {
-                context.Response.Redirect(GlobalConfig.FacebookSettings.CanvasPage);
+                var queryString = "";
+
+                if (data != null)
+                {
+                    var clientData = DecodeClientData(data);
+                    queryString = "?utm_source=wall_post&utm_medium=link&utm_campaign=" + clientData["id"] + "&viral_srcid=" + clientData["viral_srcid"];
+                }
+
+                context.Response.Redirect(GlobalConfig.FacebookSettings.CanvasPage + queryString);
             }
         }
 

@@ -14,15 +14,14 @@ package
 		{
 			var ret : Object = new Object();
 			
+			ret.daId = "MatchEnd";
 			ret.daOpenGraphAction = "win";
 			ret.daOpenGraphObjectType = "match";
 			ret.daExplicitlyShared = true;
 			ret.daTitle = ResourceManager.getInstance().getString("main", "PublishVictoryTit");
 			ret.daDescription = ResourceManager.getInstance().getString("main", "PublishVictoryDesc");
 			ret.daImage = ResourceManager.getInstance().getString("main", "PublishVictoryImg");
-			
-			ret.daLinkParams = "?utm_source=wall_post&utm_medium=link&utm_campaign=MatchEnd&viral_srcid=" + SoccerClient.GetFacebookFacade().FacebookID;
-			
+
 			return ret;
 		}
 		
@@ -31,15 +30,14 @@ package
 		{
 			var ret : Object = new Object();
 			
+			ret.daId = "SpecialTraining" + spDefID;
 			ret.daOpenGraphAction = "get";
 			ret.daOpenGraphObjectType = "skill";
 			ret.daExplicitlyShared = false;
 			ret.daTitle = ResourceManager.getInstance().getString("training", "SpecialTrainingPublishTit" + spDefID);
 			ret.daDescription = ResourceManager.getInstance().getString("training", "SpecialTrainingPublishDesc" + spDefID);
 			ret.daImage = ResourceManager.getInstance().getString("training", "SpecialTrainingPublishImg" + spDefID);
-			
-			ret.daLinkParams = "?utm_source=wall_post&utm_medium=link&utm_campaign=SpecialTraining" + spDefID + "&viral_srcid=" + SoccerClient.GetFacebookFacade().FacebookID;
-			
+						
 			return ret;
 		}
 		
@@ -51,7 +49,9 @@ package
 									   "&description=" + encodeURIComponent(publishMessage.daDescription) +
 									   "&image=" + encodeURIComponent(AppConfig.CANVAS_URL + publishMessage.daImage) +
 									   "&openGraphObjectType=" + encodeURIComponent(publishMessage.daOpenGraphObjectType) +
-									   "&ns=" + encodeURIComponent(GetNamespace());
+									   "&ns=" + encodeURIComponent(GetNamespace()) + 
+									   "&id=" + encodeURIComponent(publishMessage.daId) +
+									   "&viral_srcid=" + SoccerClient.GetFacebookFacade().FacebookID;
 
 			var base64Encoder : Base64Encoder = new Base64Encoder();
 			base64Encoder.encodeUTFBytes(queryString);
