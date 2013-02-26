@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="760" height="80"
+		 creationComplete="CreationCompleteHandler(event)" xmlns:GameView="GameView.*">
+	
+	<fx:Style source="styles.css" />
+
+	<fx:Script><![CDATA[
+		import GameModel.MainGameModel;
+		import GameModel.PredefinedTeamsModel;
+		import GameModel.TeamModel;
+		
+		import GameView.Purchase.PurchaseBase;
+		
+		import flash.utils.getDefinitionByName;
+		
+		import mx.events.FlexEvent;
+
+		protected function CreationCompleteHandler(event:FlexEvent):void
+		{
+			mMainGameModel = SoccerClient.GetMainGameModel();
+			mTeamModel = mMainGameModel.TheTeamModel;
+		}
+		
+		/*protected function MyAddSkillPoints_clickHandler(event:MouseEvent):void
+		{
+			PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseSkillPoints") as Class);
+		}*/
+		
+		[Bindable] private var mMainGameModel : MainGameModel;
+		[Bindable] private var mTeamModel : TeamModel;
+	]]></fx:Script>
+	
+	<fx:Declarations>
+		<s:GlowFilter id="txtGlowFilter" blurX="10" blurY="10" color="0x000000" alpha="0.6"/>
+	</fx:Declarations>
+	
+	<mx:Image source="@Embed(source='/Assets/General.swf', symbol='StatusPanelBackground')"/>
+	
+	<GameView:BadgeTeam x="10" y="22" TeamNameID="{mTeamModel.TheTeam.PredefinedTeamNameID}" BigMode="true" />
+	
+	<s:Label x="62" y="25" text="{mTeamModel.TheTeam.Name}" styleName="whiteBoldBig" id="MyTeamNameLabel" filters="{txtGlowFilter}"/>
+	<s:Label x="62" y="44" text="{PredefinedTeamsModel.Localize(mTeamModel.TheTeam.PredefinedTeamNameID)}" styleName="whiteBoldVeryBig" id="MyPredefinedTeamLabel" filters="{txtGlowFilter}"/> 
+	
+	<GameView:BadgeCategory width="64" height="43" left="209" top="24" TrueSkill="{mTeamModel.TheTeam.TrueSkill}" />
+	
+	<s:Label x="294" y="19" text="{resourceManager.getString('main','GeneralTraining')}" width="90" styleName="whiteBoldMedium" textAlign="left"/>
+	<s:Label x="378" y="19" text="{mTeamModel.TheTeam.Fitness}%" width="46" id="MyTrainingLabel" styleName="whiteBoldMedium" textAlign="right"/>	
+
+	<s:Label x="310" y="41" text="{resourceManager.getString('main','GeneralXP')}" width="90" styleName="whiteBoldMedium" textAlign="left"/>
+	<s:Label x="394" y="41" text="{mTeamModel.TheTeam.XP}" width="46" id="MyXPLabel" styleName="whiteBoldMedium" textAlign="right"/>
+	
+	<s:Label x="326" y="63" text="{resourceManager.getString('main','GeneralSkill')}" width="90" styleName="whiteBoldMedium" textAlign="left"/>
+	<s:Label x="410" y="63" text="{mTeamModel.TheTeam.TrueSkill}" width="46" id="MyTrueSkillLabel" styleName="whiteBoldMedium" textAlign="right"/>
+	
+	<s:Group right="0" y="0" visible="{resourceManager.getBoolean('main','TicketsPanelVisible')}"> 
+		<s:Group right="180" y="23" width="100">
+			<s:layout>
+				<s:VerticalLayout horizontalAlign="center" gap="0" />
+			</s:layout>
+			<s:Label width="100%" text="{resourceManager.getString('main','GeneralUnusualPoints')}" styleName="whiteBoldBig" textAlign="center" filters="{txtGlowFilter}"/>
+			<s:Group>
+				<s:layout>
+					<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
+				</s:layout>
+				<mx:Image source="@Embed(source='/Assets/General.swf', symbol='IconUnusualPoints')" />
+				<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MySkillPointsLabel" styleName="whiteBoldHuge" textAlign="left" filters="{txtGlowFilter}"/>
+				<!--<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="{resourceManager.getString('main','PurchaseUnusualPointsAdd')}" skinClass="GameView.Skins.ButtonDarkGreySkin" />-->
+			</s:Group>
+		</s:Group>
+		<GameView:TicketsPanel right="0" y="6" />
+	</s:Group>
+	
+	<s:Group right="10" y="0" visible="{!resourceManager.getBoolean('main','TicketsPanelVisible')}">
+		<s:Group width="134" y="23" right="145">
+			<s:layout>
+				<s:VerticalLayout horizontalAlign="center" gap="0" />
+			</s:layout>
+			<s:Label width="100%" text="{resourceManager.getString('main','GeneralUnusualPoints')}" styleName="whiteBoldBig" textAlign="center" filters="{txtGlowFilter}"/>
+			<s:Group>
+				<s:layout>
+					<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
+				</s:layout>
+				<mx:Image source="@Embed(source='/Assets/General.swf', symbol='IconMahouPoints')" />
+				<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MyMahouPointsLabel" styleName="whiteBoldHuge" textAlign="left" filters="{txtGlowFilter}"/>
+			</s:Group>
+		</s:Group>
+		<mx:Image source="@Embed(source='/Assets/General.swf', symbol='LogoMahouLFP')" y="6" right="0" />
+	</s:Group>
+		
+</s:Group>
+

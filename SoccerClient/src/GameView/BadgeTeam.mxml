@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 creationComplete="CreationCompleteHandler(event)"
+		 currentState="Normal" xmlns:mx="library://ns.adobe.com/flex/mx">
+	
+	<s:states>
+		<s:State name="Normal"></s:State>
+		<s:State name="Big"></s:State>
+	</s:states>
+	
+	<fx:Script><![CDATA[
+		import mx.events.FlexEvent;
+				
+		[Bindable]
+		public function get TeamNameID() : String { return mTeamNameID; }
+		public function set TeamNameID(v : String) : void
+		{ 
+			mTeamNameID = v;			
+			Refresh();
+		}
+		
+		protected function CreationCompleteHandler(event:FlexEvent):void
+		{
+			Refresh();
+		}
+		
+		private function Refresh() : void
+		{
+			if (mTeamNameID == null || mTeamNameID == "")
+			{
+				if (MyRootGroup != null)
+					MyRootGroup.visible = false;
+			}
+			else
+			{
+				if (MyRootGroup != null)
+					MyRootGroup.visible = true;
+				
+				if (MyNormalBitmap != null)
+					(MyNormalBitmap.content as MovieClip).gotoAndStop(mTeamNameID);
+				
+				if (MyBigBitmap != null)
+					(MyBigBitmap.content as MovieClip).gotoAndStop(mTeamNameID);
+			}
+		}
+		
+		[Bindable]
+		public function get BigMode() : Boolean { return mBigMode; }
+		public function set BigMode(v:Boolean) : void 
+		{ 
+			mBigMode = v;
+			
+			if (!mBigMode)
+				currentState = "Normal";
+			else
+				currentState = "Big";
+			
+			Refresh();
+		}
+		
+		private var mBigMode : Boolean;
+		private var mTeamNameID : String;			
+		
+	]]></fx:Script>
+	
+	<s:Group includeIn="Normal, Big" id="MyRootGroup">
+		<mx:Image id="MyNormalBitmap" includeIn="Normal" source="{resourceManager.getClass('main','Badges')}"/>
+		<mx:Image id="MyBigBitmap" includeIn="Big" source="{resourceManager.getClass('main','BadgesBig')}"/>
+	</s:Group>
+</s:Group>

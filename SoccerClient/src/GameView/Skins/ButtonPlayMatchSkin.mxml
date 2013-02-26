@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" 
+			 xmlns:fb="http://ns.adobe.com/flashbuilder/2009" minWidth="21" minHeight="21" alpha.disabled="0.5" xmlns:mx="library://ns.adobe.com/flex/mx">
+	
+	<!-- host component -->
+	<fx:Metadata>
+		<![CDATA[ 
+		[HostComponent("spark.components.Button")]
+		]]>
+	</fx:Metadata>
+	
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+	
+	<s:Ellipse id="bitmapimage2" x="5" y="5" width="92" height="92">
+		<s:fill>
+			<s:SolidColor color="#FFFFFF"/>
+		</s:fill>
+		<s:filters>
+			<s:GlowFilter id="glowfilter2" alpha="1.0" blurX="6.0" blurY="6.0" color="#FFFFFF"
+						  inner="false" knockout="false" quality="2" strength="1"
+						  blurX.over="20" blurY.over="20"/>
+		</s:filters>
+	</s:Ellipse>
+	
+	<mx:SWFLoader id="botonbase" smoothBitmapContent="true" source="{resourceManager.getClass('main','ButtonPlayMatchBg')}" />
+	<!--<s:BitmapImage id="bitmapimage2" x="0" y="0" smooth="true"
+				   source="@Embed(source='/Assets/General.swf', symbol='ButtonPlayMatch_Bg')">-->
+	
+	<s:BitmapImage id="bitmapimage1" x="25" y="25" smooth="true"
+				   source="@Embed(source='/Assets/General.swf', symbol='ButtonPlayMatch_Ball')">
+		<s:filters>
+			<s:GlowFilter id="glowfilter1" alpha="1.0" blurX="30" blurY="30" color="#FFFFFF"
+						  inner="false" knockout="false" quality="2" strength="2"
+						  alpha.up="0"/>
+		</s:filters>
+	</s:BitmapImage>
+	<s:transitions>
+		<s:Transition fromState="up" toState="over">
+			<s:Parallel>
+				<s:Parallel target="{bitmapimage2}">
+					<s:Parallel duration="250" target="{glowfilter2}">
+						<s:AnimateColor/>
+						<s:Animate>
+							<s:SimpleMotionPath property="alpha"/>
+							<s:SimpleMotionPath property="blurX"/>
+							<s:SimpleMotionPath property="blurY"/>
+							<s:SimpleMotionPath property="strength"/>
+						</s:Animate>
+					</s:Parallel>
+				</s:Parallel>
+				<s:Parallel target="{bitmapimage1}">
+					<s:Parallel duration="250" target="{glowfilter1}">
+						<s:AnimateColor/>
+						<s:Animate>
+							<s:SimpleMotionPath property="alpha"/>
+							<s:SimpleMotionPath property="blurX"/>
+							<s:SimpleMotionPath property="blurY"/>
+							<s:SimpleMotionPath property="strength"/>
+						</s:Animate>
+					</s:Parallel>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="over" toState="up">
+			<s:Parallel>
+				<s:Parallel target="{bitmapimage2}">
+					<s:Parallel duration="250" target="{glowfilter2}">
+						<s:AnimateColor/>
+						<s:Animate>
+							<s:SimpleMotionPath property="alpha"/>
+							<s:SimpleMotionPath property="blurX"/>
+							<s:SimpleMotionPath property="blurY"/>
+							<s:SimpleMotionPath property="strength"/>
+						</s:Animate>
+					</s:Parallel>
+				</s:Parallel>
+				<s:Parallel target="{bitmapimage1}">
+					<s:Parallel duration="250" target="{glowfilter1}">
+						<s:AnimateColor/>
+						<s:Animate>
+							<s:SimpleMotionPath property="alpha"/>
+							<s:SimpleMotionPath property="blurX"/>
+							<s:SimpleMotionPath property="blurY"/>
+							<s:SimpleMotionPath property="strength"/>
+						</s:Animate>
+					</s:Parallel>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+	</s:transitions>
+	
+</s:SparkSkin>

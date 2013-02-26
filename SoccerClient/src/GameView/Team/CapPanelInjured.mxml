@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 visible="{TheSoccerPlayer.IsInjured}">
+	
+	<fx:Style source="../styles.css" />
+	
+	<fx:Script><![CDATA[
+		import HttpService.TransferModel.vo.SoccerPlayer;
+		
+		import utils.TimeUtils;
+		
+		[Bindable]
+		public function get TheSoccerPlayer() : SoccerPlayer { return mSoccerPlayer; }
+		public function set TheSoccerPlayer(v:SoccerPlayer) : void { mSoccerPlayer = v;	}
+		private var mSoccerPlayer : SoccerPlayer;
+		
+	]]></fx:Script>
+		
+	<mx:Image x="0" y="0" source="@Embed(source='/Assets/General.swf', symbol='CapDetailInjuredBg')" />
+	<s:Group x="0" y="0" width="187">
+		<s:layout>
+			<s:VerticalLayout gap="6" horizontalAlign="center" />
+		</s:layout>
+		<s:Group height="53">
+			<s:layout>
+				<s:HorizontalLayout verticalAlign="middle" gap="10" />
+			</s:layout>
+			<mx:Image source="@Embed(source='/Assets/General.swf', symbol='CapDetailInjuredIcon')" />
+			<s:Label text="{resourceManager.getString('main','CapDetailPlayerInjured')}" styleName="whiteBoldBig" />
+		</s:Group>
+		<s:Label text="{resourceManager.getString('main','CapDetailTimeToRecover')} :" styleName="whiteBoldMedium" />
+		<s:Label id="MyTimeLabel" text="{TimeUtils.ConvertSecondsToStringVerbose(TheSoccerPlayer.RemainingInjurySeconds)}" styleName="whiteBoldBig" />
+	</s:Group>
+		
+</s:Group>

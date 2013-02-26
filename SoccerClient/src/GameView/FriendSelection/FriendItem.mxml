@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				autoDrawBackground="false" xmlns:GameView="GameView.*" 
+				clipAndEnableScrolling="true">
+	
+	<fx:Declarations>
+		<s:DropShadowFilter id="shadowHovered" distance="6" angle="124" blurX="6" blurY="6"/>
+		<s:DropShadowFilter id="shadowNormal" distance="1" angle="124" blurX="6" blurY="6"/>
+	</fx:Declarations>
+	
+	<s:states> 
+		<s:State name="normal"/> 
+		<s:State name="hovered"/> 
+	</s:states>
+	
+	<s:layout><s:VerticalLayout horizontalAlign="center" /></s:layout>
+	
+	<s:Group filters.normal="{[shadowNormal]}" filters.hovered="{[shadowHovered]}">
+		<s:BitmapImage x="0" y="0" source="{resourceManager.getClass('main','CapFriendSelection')}" />
+		<!--<GameView:FacebookPicture FacebookID="{data.FacebookID}" maskType="alpha" scaleX="0.88" scaleY="0.88" top="10" left="8">
+			<GameView:mask>
+				<s:Group>
+					<s:Ellipse width="50" height="50">
+						<s:fill>
+							<s:SolidColor color="#000000" alpha="1" />
+						</s:fill>
+					</s:Ellipse>
+				</s:Group>
+			</GameView:mask>
+		</GameView:FacebookPicture> -->
+		<!-- Santi: La foto la tenemos dentro del objeto data: data.avatar --> 
+		<GameView:TuentiPicture Avatar="{data.Avatar}" maskType="alpha" scaleX="0.88" scaleY="0.88" top="10" left="8">
+			<GameView:mask>
+				<s:Group>
+					<s:Ellipse width="50" height="50">
+						<s:fill>
+							<s:SolidColor color="#000000" alpha="1" />
+						</s:fill>
+					</s:Ellipse>
+				</s:Group>
+			</GameView:mask>
+		</GameView:TuentiPicture>
+	</s:Group>
+	
+	<s:Label text="{data.Name}" maxDisplayedLines="2" width="90" height="30" textAlign="center" styleName="blackBoldMediumHN"/>
+	
+</s:ItemRenderer>

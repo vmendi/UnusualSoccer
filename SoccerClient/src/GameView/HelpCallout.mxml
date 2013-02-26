@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 creationComplete="CreationCompleteHandler(event)" xmlns:GameView="GameView.*"
+		 width="21" height="21">
+	
+	<fx:Style source="styles.css" />
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			protected function CreationCompleteHandler(event:FlexEvent):void
+			{
+				addEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+				addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
+			}
+			
+			private function OnMouseOver(e:Event) : void
+			{
+				MyPopUpAnchor.displayPopUp = true;
+			}
+			
+			private function OnMouseOut(e:Event) : void
+			{
+				MyPopUpAnchor.displayPopUp = false;	
+			}
+			
+			[Bindable]
+			public function get HelpText() : String { return mHelpText; }
+			public function set HelpText(v:String) : void { mHelpText = v; }
+			private var mHelpText : String = "";
+			
+		]]>
+	</fx:Script>
+	
+	<s:Rect id="base" left="0" right="0" top="0" bottom="0" radiusX="4" radiusY="4">
+		<s:stroke>
+			<s:SolidColorStroke joints="round" caps="none" color="#242424" miterLimit="4" weight="1"/>
+		</s:stroke>
+		<s:fill>
+			<s:LinearGradient rotation="90">
+				<s:GradientEntry color="#7D7D7D" alpha="1.0" ratio="0"/>
+				<s:GradientEntry ratio="0.49" color="#444444" alpha="1.0"/>
+				<s:GradientEntry ratio="0.50" color="#313131" alpha="1.0"/>
+				<s:GradientEntry color="#323232" alpha="1.0" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter angle="90" distance="1" blurX="0" blurY="0" color="0x636363" alpha="0.75" />
+		</s:filters>
+	</s:Rect>
+	
+	<s:Label id="labelDisplay"
+			 textAlign="center"
+			 verticalAlign="middle"
+			 verticalCenter="-1"
+			 maxDisplayedLines="1"
+			 left="7" right="7" top="0" bottom="0"
+			 styleName="whiteBoldBig"
+			 text="?">
+	</s:Label>
+	
+	<s:PopUpAnchor id="MyPopUpAnchor" popUpPosition="below" top="24">
+		<s:Group>
+			<s:Rect id="base2" left="0" right="0" top="0" bottom="0" radiusX="6" radiusY="6">
+				<s:stroke>
+					<s:SolidColorStroke joints="round" caps="none" color="#FFFFFF" miterLimit="4" weight="3"/>
+				</s:stroke>
+				<s:fill>
+					<s:SolidColor color="#FEFFCA" />
+					<!--
+					<s:LinearGradient rotation="90">
+						<s:GradientEntry color="#7D7D7D" alpha="1.0" ratio="0"/>
+						<s:GradientEntry ratio="0.49" color="#444444" alpha="1.0"/>
+						<s:GradientEntry ratio="0.50" color="#313131" alpha="1.0"/>
+						<s:GradientEntry color="#323232" alpha="1.0" ratio="1"/>
+					</s:LinearGradient>
+					-->
+				</s:fill>
+				<s:filters>
+					<s:DropShadowFilter angle="90" distance="0" blurX="16" blurY="16" color="0x000000" alpha="0.75" />
+				</s:filters>
+			</s:Rect>
+			
+			<s:Label text="{HelpText}" left="10" right="10" top="10" bottom="10" width="200" styleName="blackBoldBig" />
+		</s:Group>
+	</s:PopUpAnchor>
+	
+	<s:filters>
+		<s:DropShadowFilter angle="270" distance="1" blurX="0" blurY="0" color="0x000000" alpha="0.50" />
+	</s:filters>
+			
+</s:Group>

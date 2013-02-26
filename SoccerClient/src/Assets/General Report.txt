@@ -1,0 +1,288 @@
+﻿General.swf Informe de película
+--------------------------------
+
+Metadatos
+---------
+Bytes         Valor
+----------    -----
+      1197    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"> <rdf:Description rdf:about="" xmlns:xmp="http://ns.adobe.com/xap/1.0/"> <xmp:CreatorTool>Adobe Flash Professional CS5</xmp:CreatorTool> <xmp:CreateDate>2010-08-16T16:19:08+02:00</xmp:CreateDate> <xmp:MetadataDate>2012-06-04T17:00:32+02:00</xmp:MetadataDate> <xmp:ModifyDate>2012-06-04T17:00:32+02:00</xmp:ModifyDate> </rdf:Description> <rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/"> <dc:format>application/x-shockwave-flash</dc:format> </rdf:Description> <rdf:Description rdf:about="" xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/" xmlns:stRef="http://ns.adobe.com/xap/1.0/sType/ResourceRef#"> <xmpMM:DerivedFrom rdf:parseType="Resource"> <stRef:instanceID>xmp.iid:9D4260E855AEE111967BCF29468E8087</stRef:instanceID> <stRef:documentID>xmp.did:60DBEDFDC54DE11191CBB0805146AF67</stRef:documentID> <stRef:originalDocumentID>xmp.did:CBF6305441A9DF11AC98EB021C09FA31</stRef:originalDocumentID> </xmpMM:DerivedFrom> <xmpMM:DocumentID>xmp.did:A04260E855AEE111967BCF29468E8087</xmpMM:DocumentID> <xmpMM:InstanceID>xmp.iid:A04260E855AEE111967BCF29468E8087</xmpMM:InstanceID> <xmpMM:OriginalDocumentID>xmp.did:CBF6305441A9DF11AC98EB021C09FA31</xmpMM:OriginalDocumentID> </rdf:Description> </rdf:RDF> 
+
+Fotograma #    Bytes de fotograma    Bytes totales    Escena
+-----------    ------------------    -------------    ------
+          1                731824           731824    Scene 1 (Fotograma de exportación para clases de AS 3.0)
+
+Escena     Bytes de forma    Bytes de texto    Bytes de ActionScript
+-------    --------------    --------------    ---------------------
+Scene 1                 0                 0                    11435
+
+Símbolo                          Bytes de forma    Bytes de texto    Bytes de ActionScript
+-----------------------------    --------------    --------------    ---------------------
+BackGeneral                                  39                 0                        0
+Badges                                        0                 0                        0
+Badges_en_US                                 35                 0                        0
+BadgesBig                                     0                 0                        0
+BadgesBig_en_US                               0                 0                        0
+ButtonPlayMatch_Bg                            0                 0                        0
+ButtonPlayMatch_Bg_Anim                       0                 0                        0
+ButtonPlayMatch_Bg_en_US                      0                 0                        0
+ButtonPlayMatch_Bg_Anim_en_US                 0                 0                        0
+CapBase                                       0                 0                        0
+CapBase_en_US                                 0                 0                        0
+CapDetail                                     0                 0                        0
+CapDetail_en_US                               0                 0                        0
+CapFriendSelection                            0                 0                        0
+CapFriendSelection_en_US                      0                 0                        0
+Categories                                    0                 0                        0
+IconUnusualPoints                             0                 0                        0
+LoginBg                                       0                 0                        0
+SpeciallSkills                              466                 0                        0
+IconoPotencia                               375                 0                        0
+IconoShield                                  62                 0                        0
+<Compound Path>                             121                 0                        0
+IconoTiroExtra                              102                 0                        0
+IconoVolverPorteria                         206                 0                        0
+SkillButtonBase                              68                 0                        0
+SkillButtonFondo                              0                 0                        0
+IconoDiana                                    0                 0                        0
+IconoReloj                                    0                 0                        0
+IconoAreas                                  273                 0                        0
+IconoOjo                                      0                 0                        0
+IconoManoDios                               341                 0                        0
+IconoAreasMenos                             274                 0                        0
+SpecialSkills_en_US                         989                 0                        0
+IconoPotencia_en_US                         305                 0                        0
+IconoVolverPorteria_en_US                   105                 0                        0
+IconoAreas_en_US                            151                 0                        0
+IconoAreasMenos_en_US                       153                 0                        0
+TeamPoints_en_US                              0                83                        0
+ButtonPlayMatch_Txt                           0                 0                        0
+ButtonPlayMatch_Txt_en_US                     0                 0                        0
+CapBg                                         0                 0                        0
+CapDetailStarsBase                          771                 0                        0
+IconoAtaque                                   0                 0                        0
+StarsMask                                     0                 0                        0
+CapDetailsStars                               0                 0                        0
+LoadingAnim                                1264                 0                        0
+LookingForMarchAnim                           0                 0                        0
+
+
+Formas interpoladas: 65 bytes
+
+Nombre de fuente            Bytes         Caracteres
+------------------------    ----------    ----------
+HelveticaNeueLT-BoldCond          1676     PUYaehilnostuv 
+
+Bytes de ActionScript    Ubicación
+---------------------    ---------
+                11435    Scene 1:Fotograma 1
+
+Mapa de bits                            Comprimido    Original      Compresión
+------------------------------------    ----------    ----------    ----------
+x2_icon.png                                   4388         26320    Calidad JPEG=80
+WarningIcon                                   1444          6536    Calidad JPEG=80
+UnusualPointsCabecera.png                     5435         49920    Calidad JPEG=80
+TrainingRegularBg                             1183        163300    Sin pérdida
+TicketSilver.png                              4178         45552    Calidad JPEG=80
+TicketGold.png                                4798         45552    Calidad JPEG=80
+TicketBronze.png                              4414         45552    Calidad JPEG=80
+TicketBg.png                                  1473         51336    Sin pérdida
+TeamPoints.png                                7389         36024    Sin pérdida
+TeamField_en_US.png                          23135        474720    Calidad JPEG=80
+TeamField.png                                14721        474720    Calidad JPEG=70
+StatusPanelBackgroundBottom-1.png             2296        155040    Calidad JPEG=80
+StatusPanelBackground.png                    43430        243200    Sin pérdida
+StatsTitTip                                    115          1904    Sin pérdida
+SpecialSkillsWonTip                            841          2116    Sin pérdida
+SpecialSkillsWon.png                          1616         31948    Sin pérdida
+SpecialSkillsNotAvailableTip                   891          2208    Sin pérdida
+SpecialSkillsNotAvailable.png                 1478         31948    Sin pérdida
+SpecialSkillsBg.png                            474        201280    Sin pérdida
+ScrollBarUpButton_On                           391          1260    Sin pérdida
+ScrollBarUpButton_Off                          224          1260    Sin pérdida
+ScrollBarRightButton_On                        403          1260    Sin pérdida
+ScrollBarRightButton_Off                       245          1260    Sin pérdida
+ScrollBarLeftButton_On                         383          1260    Sin pérdida
+ScrollBarLeftButton_Off                        232          1260    Sin pérdida
+ScrollBarDnButton_On.png                       336          1260    Sin pérdida
+ScrollBarDnButton_Off.png                      214          1260    Sin pérdida
+RankingPagesNavBgFull.png                      857         94720    Sin pérdida
+RankingPagesNavBg.png                          785         46720    Sin pérdida
+PopupTicketCabecera.png                       5917         50800    Calidad JPEG=80
+PlayerDetailInjuredBg                         1101         39856    Sin pérdida
+PlayerDetailBg                                1465         60160    Sin pérdida
+Paquete_UP_5.png                              4878         36888    Calidad JPEG=80
+Paquete_UP_4.png                              4718         36888    Calidad JPEG=80
+Paquete_UP_3.png                              4670         36888    Calidad JPEG=80
+Paquete_UP_2.png                              4624         36888    Calidad JPEG=80
+Paquete_UP_1.png                              4556         36888    Calidad JPEG=80
+MainMenuButtonSelected.png                    6638         21156    Sin pérdida
+MainMenuButtonRankingOn                        713          5824    Sin pérdida
+MainMenuButtonRankingOff                       670          5824    Sin pérdida
+MainMenuButtonHabilidadesOn                    215          5824    Sin pérdida
+MainMenuButtonHabilidadesOff                   220          5824    Sin pérdida
+MainMenuButtonEquipoOn                         554          5824    Sin pérdida
+MainMenuButtonEquipoOff                        533          5824    Sin pérdida
+MainMenuButtonEntrenamientoOn                  385          5824    Sin pérdida
+MainMenuButtonEntrenamientoOff                 390          5824    Sin pérdida
+MainMenuButtonCompeticionOn                   1716          5824    Sin pérdida
+MainMenuButtonCompeticionOff                  1610          5824    Sin pérdida
+MainMenuButtonAmistosoOn                       711          5824    Sin pérdida
+MainMenuButtonAmistosoOff                      680          5824    Sin pérdida
+MainMenuButton.png                             221         21156    Sin pérdida
+LogoMahouLFP.png                              5464         40040    Sin pérdida
+LoginBottomBg                                  142         46720    Sin pérdida
+IconPrev                                       209           720    Sin pérdida
+IconNext                                       208           720    Sin pérdida
+IconMahouPoints.png                           1333          3364    Sin pérdida
+IconLastOne.png                                393          1020    Sin pérdida
+IconFirstOne                                   414          1020    Sin pérdida
+FriendSelectorHeader.png                      7904         77520    Calidad JPEG=80
+FondoStatsHeader.png                           315        131400    Sin pérdida
+FacebookCreditsIcon                           1403          5328    Calidad JPEG=80
+CompeticionDivisionUp.png                      858          5000    Sin pérdida
+CompeticionCabeceraLineaDivision.png           372          1256    Sin pérdida
+CompeticionCabeceraLinea.png                   367           960    Sin pérdida
+CompeticionCabeceraFondo.png                 61086        310800    Sin pérdida
+CapName                                        483          5320    Sin pérdida
+CapInjured                                    1480          4464    Sin pérdida
+CapDetailInjuredIcon                          1455          3364    Sin pérdida
+CapDetailInjuredBg                            1099         39644    Sin pérdida
+CapBaseAddFriend_en_US.png                    2073          8836    Calidad JPEG=80
+CapBaseAddFriend.png                          1710          8836    Calidad JPEG=80
+ButtonPlayMatch_Ball.png                      1776         10816    Calidad JPEG=80
+BackSubstitutes.png                           4885        186300    Calidad JPEG=80
+BackPopup.png                                17634       2310400    Calidad JPEG=80
+BackModuleTile.png                              47           192    Sin pérdida
+LookingForMatch_Fondo.png                     1812         10608    Calidad JPEG=80
+UnusualPointsIcon.png                         3415          6400    Sin pérdida
+TeamPointsNumber.png                          1043          4712    Sin pérdida
+GameBackground_en_US.png                     93226       1976000    Calidad JPEG=80
+CatJunior.png                                 1237         11008    Sin pérdida
+CatAmateur.png                                1183         11008    Sin pérdida
+CatPro.png                                    1476         11008    Sin pérdida
+CatMaster.png                                 2210         11008    Sin pérdida
+Cat5Estrellas.png                              848         11008    Sin pérdida
+CapDetailBg_en_US.png                         3033         15624    Calidad JPEG=80
+CapDetailBg.png                               2116         15624    Calidad JPEG=80
+PlayerDetailCapShadow.png                     2827         15624    Sin pérdida
+Argentina.png                                 3175         10000    Sin pérdida
+Australia.png                                 3079         10000    Sin pérdida
+Austria.png                                   2784         10000    Sin pérdida
+Belgium.png                                   2628         10000    Sin pérdida
+Brazil.png                                    3649         10000    Sin pérdida
+Canada.png                                    2681         10000    Sin pérdida
+Chile.png                                     3180         10000    Sin pérdida
+China.png                                     2730         10000    Sin pérdida
+CzechRep.png                                  3171         10000    Sin pérdida
+England.png                                   2678         10000    Sin pérdida
+France.png                                    3113         10000    Sin pérdida
+Germany.png                                   1862         10000    Sin pérdida
+Hungary.png                                   2672         10000    Sin pérdida
+Ireland.png                                   3067         10000    Sin pérdida
+Israel.png                                    2652         10000    Sin pérdida
+Italy.png                                     3210         10000    Sin pérdida
+Japan.png                                     3043         10000    Sin pérdida
+Mexico.png                                    3124         10000    Sin pérdida
+Netherlands.png                               2970         10000    Sin pérdida
+NorwayAW.png                                  3054         10000    Sin pérdida
+Poland.png                                    2779         10000    Sin pérdida
+Portugal.png                                  2887         10000    Sin pérdida
+Russia.png                                    2702         10000    Sin pérdida
+Scotland.png                                  3410         10000    Sin pérdida
+Serbia.png                                    3217         10000    Sin pérdida
+Slovakia.png                                  3082         10000    Sin pérdida
+SouthKorea.png                                3282         10000    Sin pérdida
+Spain.png                                     2866         10000    Sin pérdida
+Sweden.png                                    3115         10000    Sin pérdida
+Uruguay.png                                   3177         10000    Sin pérdida
+USA.png                                       2943         10000    Sin pérdida
+CapDetailBgB.png                              2114         15624    Calidad JPEG=80
+EquipCapDetail01.png                          2733          9600    Sin pérdida
+EquipCapDetail02.png                          2823          9600    Sin pérdida
+EquipCapDetail03.png                          2976          9600    Sin pérdida
+EquipCapDetail04.png                          3554          9600    Sin pérdida
+EquipCapDetail05.png                          3134          9600    Sin pérdida
+EquipCapDetail06.png                          3068          9600    Sin pérdida
+EquipCapDetail07.png                          3017          9600    Sin pérdida
+EquipCapDetail08.png                          2824          9600    Sin pérdida
+EquipCapDetail09.png                          3458          9600    Sin pérdida
+EquipCapDetail10.png                          2968          9600    Sin pérdida
+EquipCapDetail11.png                          2706          9600    Sin pérdida
+EquipCapDetail12.png                          2707          9600    Sin pérdida
+EquipCapDetail13.png                          3082          9600    Sin pérdida
+EquipCapDetail14.png                          2208          9600    Sin pérdida
+EquipCapDetail15.png                          2766          9600    Sin pérdida
+EquipCapDetail16.png                          2221          9600    Sin pérdida
+EquipCapDetail17.png                          2948          9600    Sin pérdida
+EquipCapDetail18.png                          2173          9600    Sin pérdida
+EquipCapDetail19.png                          2252          9600    Sin pérdida
+EquipCapDetail20.png                          2719          9600    Sin pérdida
+EquipCapDetailBetis.png                       1789         10000    Calidad JPEG=80
+EquipCapDetailGranada.png                     1910         10000    Calidad JPEG=80
+EquipCapDetailRayo.png                        2297         10000    Sin pérdida
+PlayerFormationCapShadow.png                  1046          8836    Sin pérdida
+PlayerFormationCapBase.png                    1518          8836    Calidad JPEG=80
+ButtonPlayMatch_Bg.png                        4330         42436    Calidad JPEG=80
+ButtonPlayMatch_Txt_en_US.png                 2298         30976    Sin pérdida
+ButtonPlayMatch_Txt.png                       2729         30976    Sin pérdida
+BadgeBigBg_en_US.png                          2207          8464    Sin pérdida
+BigBadgesArgentina.png                        1382          4096    Sin pérdida
+BigBadgesAustralia.png                        1727          4096    Sin pérdida
+BigBadgesAustria.png                          1118          4096    Sin pérdida
+BigBadgesBelgium.png                           982          4096    Sin pérdida
+BigBadgesBrazil.png                           1927          4096    Sin pérdida
+BigBadgesCanada.png                           1069          4096    Sin pérdida
+BigBadgesChile.png                            2045          4096    Sin pérdida
+BigBadgesChina.png                            1459          4096    Sin pérdida
+BigBadgesCzechRep.png                         1893          4096    Sin pérdida
+BigBadgesEngland.png                          1260          4096    Sin pérdida
+BigBadgesFrance.png                           1194          4096    Sin pérdida
+BigBadgesGermany.png                          1016          4096    Sin pérdida
+BigBadgesHungary.png                          1428          4096    Sin pérdida
+BigBadgesIreland.png                          1159          4096    Sin pérdida
+BigBadgesIsrael.png                           1079          4096    Sin pérdida
+BigBadgesItalia.png                           1164          4096    Sin pérdida
+BigBadgesJapan.png                            1052          4096    Sin pérdida
+BigBadgesMexico.png                           1340          4096    Sin pérdida
+BigBadgesNetherland.png                       1465          4096    Sin pérdida
+BigBadgesNorway.png                           1652          4096    Sin pérdida
+BigBadgesPolonia.png                          1640          4096    Sin pérdida
+BigBadgesPortugal.png                         1455          4096    Sin pérdida
+BigBadgesRussia.png                           1286          4096    Sin pérdida
+BigBadgesScotland.png                         1235          4096    Sin pérdida
+BigBadgesSerbia.png                           2130          4096    Sin pérdida
+BigBadgesSlovakia.png                         2066          4096    Sin pérdida
+BigBadgesSouthKorea.png                       1492          4096    Sin pérdida
+BigBadgesSpain.png                            1682          4096    Sin pérdida
+BigBadgesSweden.png                           1138          4096    Sin pérdida
+BigBadgesUruguay.png                          1859          4096    Sin pérdida
+BigBadgesUSA.png                              2456          4096    Sin pérdida
+BadgeBigBg.png                                 574          8464    Calidad JPEG=80
+BigBadgesAlmeria.png                          2216          4032    Sin pérdida
+BigBadgesABilbao.png                          2042          3828    Sin pérdida
+BigBadgesAMadrid.png                          1607          4292    Sin pérdida
+BigBadgesBarcelona.png                        2430          4356    Sin pérdida
+BigBadgesDepor.png                            1925          3672    Sin pérdida
+BigBadgesEspanyol.png                         2119          3952    Sin pérdida
+BigBadgesGetafe.png                           2908          4736    Sin pérdida
+BigBadgesHercules.png                         2768          4864    Sin pérdida
+BigBadgeslevante.png                          1991          3672    Sin pérdida
+BigBadgesMalaga.png                           2317          3584    Sin pérdida
+BigBadgesMallorca.png                         2533          4408    Sin pérdida
+BigBadgesOsasuna.png                          1676          3648    Sin pérdida
+BigBadgesRacing.png                           2315          3888    Sin pérdida
+BigBadgesRealMad.png                          2325          3744    Sin pérdida
+BigBadgesRealSoc.png                          2129          4256    Sin pérdida
+BigBadgesSevilla.png                          1951          3808    Sin pérdida
+BigBadgesSporting.png                         1577          3496    Sin pérdida
+BigBadgesValencia.png                         1830          3952    Sin pérdida
+BigBadgesVillarreal.png                       2640          4176    Sin pérdida
+BigBadgesZaragoza.png                         2123          3744    Sin pérdida
+BigBadgesBetis.png                            1391          6192    Calidad JPEG=80
+BigBadgesGranada.png                          1461          3096    Sin pérdida
+BigBadgesRayo.png                             1440          5460    Calidad JPEG=80
+GameBackgroundTicker.png                      4571        148960    Sin pérdida
+
+
+
+

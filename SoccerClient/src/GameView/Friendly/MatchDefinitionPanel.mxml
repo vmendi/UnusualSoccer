@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Panel xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*" xmlns:Friendly="GameView.Friendly.*"
+		 skinClass="GameView.Skins.DefaultPanelSkin"
+		 currentState="Empty"
+		 preinitialize="PreinitializeHandler(event)">
+	
+	<s:states>
+		<s:State name="Empty" />
+		<s:State name="LaunchChallengePossible" />
+		<s:State name="ChallengeSource" />
+		<s:State name="ChallengeTarget" />		
+	</s:states>
+	
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+
+		.alignToRight .subComponent {
+			text-align:right;
+			right:0;
+		}				
+	</fx:Style>
+	
+	<fx:Script><![CDATA[
+		import GameModel.MainGameModel;
+		import GameModel.RealtimeModel;
+		import GameModel.RealtimePlayer;
+		import GameModel.RoomModel;
+		
+		import GameView.Skins.ButtonGreySkin;
+		
+		import mx.binding.utils.BindingUtils;
+		import mx.events.FlexEvent;
+
+		// Solo se llama 1 vez
+		protected function PreinitializeHandler(event:FlexEvent):void
+		{
+			mMainGameModel = SoccerClient.GetMainGameModel();
+			mRealtimeModel = mMainGameModel.TheRealtimeModel;
+			
+			BindingUtils.bindSetter(OnRoomModelChanged, mMainGameModel.TheRealtimeModel, [ "TheRoomModel" ]);
+			
+			BindingUtils.bindSetter(OnSelectedChanged, mMainGameModel.TheRealtimeModel, [ "TheRoomModel", "Selected" ] );
+			BindingUtils.bindSetter(OnIsSelectedChallengeTargetChanged, mMainGameModel.TheRealtimeModel, [ "TheRoomModel", "Selected", "IsChallengeTarget"]);
+			BindingUtils.bindSetter(OnIsSelectedChallengeSourceChanged, mMainGameModel.TheRealtimeModel, [ "TheRoomModel", "Selected", "IsChallengeSource"]);
+		}
+		
+		protected function OnRoomModelChanged(theRoomModel : RoomModel) : void
+		{
+			mRoomModel = theRoomModel;
+		}
+
+		private function OnIsSelectedChallengeTargetChanged(isSelectedChallengeTarget: Boolean) : void
+		{
+			if (isSelectedChallengeTarget)
+				currentState = "ChallengeTarget";
+		}
+		
+		private function OnIsSelectedChallengeSourceChanged(isSelectedChallengeSource: Boolean) : void
+		{
+			if (isSelectedChallengeSource)
+				currentState = "ChallengeSource";
+		}
+		
+		private function OnSelectedChanged(selected : RealtimePlayer) : void
+		{
+			if (mRoomModel == null)
+				return;
+			
+			var selected : RealtimePlayer = mRoomModel.Selected;
+			
+			if (selected == null)
+				currentState = "Empty";
+			else if (selected.IsChallengeSource)
+				currentState = "ChallengeSource";
+			else if (selected.IsChallengeTarget)
+				currentState = "ChallengeTarget";
+			else 
+				currentState = "LaunchChallengePossible";		// No es ni source ni target, podríamos lanzarle un reto		
+		}
+		
+		protected function LaunchChallenge_clickHandler(event:MouseEvent):void
+		{
+			mRoomModel.Challenge(mRoomModel.Selected, MyChallengeMsgInput.text, 
+								 MyMatchLengthSelector.SelectedItem as int, MyTurnLengthSelector.SelectedItem as int);
+		}
+		
+		protected function MyAcceptChallenge_clickHandler(event:MouseEvent):void
+		{
+			mRoomModel.AcceptSelectedChallengeMatch(null);	
+		}
+		
+		[Bindable] private var mMainGameModel : MainGameModel;
+		[Bindable] private var mRoomModel : RoomModel;
+		[Bindable] private var mRealtimeModel : RealtimeModel;
+	]]></fx:Script>
+
+	<s:Group x="118" y="47">
+		<s:layout>
+			<s:VerticalLayout gap="4" />
+		</s:layout>
+		<s:Label width="70" textAlign="center" text="{resourceManager.getString('main','MatchDefinitionPower')}" styleName="whiteBoldMedium"/>
+		<s:Label width="70" textAlign="center" text="{resourceManager.getString('main','MatchDefinitionControl')}" styleName="whiteBoldMedium"/>
+		<s:Label width="70" textAlign="center" text="{resourceManager.getString('main','MatchDefinitionDefense')}" styleName="whiteBoldMedium"/>
+	</s:Group>
+	
+	<Friendly:TeamDetailsPanel top="5" left="12"  TheRealtimePlayer="{mRealtimeModel.LocalRealtimePlayer}"/>
+	<Friendly:TeamDetailsPanel top="5" right="12" TheRealtimePlayer="{mRoomModel.Selected}" currentState="alignToRight" styleName="alignToRight"/>
+			
+	<s:Label width="110" x="185" y="54" text="{resourceManager.getString('main','FriendlyDefinitionSelect')}" includeIn="Empty" styleName="whiteBoldMedium" textAlign="center" />
+		
+	<s:Group left="25" right="25" top="310" includeIn="LaunchChallengePossible">
+		<s:Group>
+			<s:layout><s:VerticalLayout horizontalAlign="center" /></s:layout>
+			<s:Label text="{resourceManager.getString('main','FriendlyDefinitionDuration')} {resourceManager.getString('main','FriendlyDefinitionMin')}" styleName="whiteBoldMedium" />
+			<GameView:OptionsSelector id="MyMatchLengthSelector" width="110" DataOptions="{MainGameModel.POSSIBLE_MATCH_LENGTH_MINUTES}" />	
+		</s:Group>
+		<s:Group right="0">
+			<s:layout><s:VerticalLayout horizontalAlign="center" /></s:layout>
+			<s:Label text="{resourceManager.getString('main','FriendlyDefinitionTurn')} {resourceManager.getString('main','FriendlyDefinitionSec')}" styleName="whiteBoldMedium" />
+			<GameView:OptionsSelector id="MyTurnLengthSelector" width="110" DataOptions="{MainGameModel.POSSIBLE_TURN_LENGTH_SECONDS}" />	
+		</s:Group>
+		
+		<GameView:PromptingTextInput left="0" right="0" top="60" skinClass="GameView.Skins.PromptingTextInputSkin"
+									 id="MyChallengeMsgInput" text="" maxChars="50" prompt="{resourceManager.getString('main','FriendlyDefinitionMessage')}" />
+		
+		<s:Button horizontalCenter="0" top="95"
+				  skinClass="GameView.Skins.ButtonGreySkin" label="{resourceManager.getString('main','FriendlyDefinitionChallenge')}" click="LaunchChallenge_clickHandler(event)" />
+	</s:Group>
+	
+	<s:Group left="20" right="20" top="310" includeIn="ChallengeSource">
+		<s:Group>
+			<s:layout><s:VerticalLayout horizontalAlign="center" /></s:layout>
+			<s:Label width="265" text="¡{mRoomModel.Selected.Name} {resourceManager.getString('main','FriendlyDefinitionReceivedTxt')}" styleName="whiteBoldBig" textAlign="center" />
+			<s:Label width="265" maxDisplayedLines="2" text="{mRoomModel.SelectedChallenge.Message}" styleName="whiteArial" textAlign="center" />
+		</s:Group>
+		
+		<s:Label left="0" top="65" text="{resourceManager.getString('main','FriendlyDefinitionDuration')}: {mRoomModel.SelectedChallenge.MatchLengthSeconds/60}" styleName="whiteBoldBig" textAlign="left" />
+		<s:Label right="0" top="65" text="{resourceManager.getString('main','FriendlyDefinitionTurn')}: {mRoomModel.SelectedChallenge.TurnLengthSeconds}" styleName="whiteBoldBig" />
+		
+		<s:Button left="65" right="65" top="95"
+				  skinClass="GameView.Skins.ButtonGreySkin" label="{resourceManager.getString('main','FriendlyDefinitionAccept')}" click="MyAcceptChallenge_clickHandler(event)" textAlignLast="right" />
+	</s:Group>	
+	
+	<s:Group left="25" right="25" top="340" includeIn="ChallengeTarget">
+		<s:Label left="0" right="0" text="{resourceManager.getString('main','FriendlyDefinitionExtended')}" styleName="whiteBoldVeryBig" textAlign="center" />
+	</s:Group>
+
+</s:Panel>

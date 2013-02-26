@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 width="570" height="530"
+		 creationComplete="CreationCompleteHandler(event)"
+		 currentState="Selecting" xmlns:GameView="GameView.*">
+	
+	<fx:Style source="../styles.css"/>
+	
+	<s:states>
+		<s:State name="Waiting" />
+		<s:State name="Selecting" />
+	</s:states>
+	
+	<fx:Script><![CDATA[
+		import GameModel.Friend;
+		import GameModel.FriendsModel;
+		import GameModel.MainGameModel;
+		
+		import GameView.ImportantMessageDialog;
+		
+		//import com.facebook.graph.Facebook;
+		
+		import mx.collections.ArrayCollection;
+		import mx.core.FlexGlobals;
+		import mx.core.IFlexModule;
+		import mx.core.ScrollPolicy;
+		import mx.events.FlexEvent;
+		import mx.managers.PopUpManager;
+		
+		import spark.events.IndexChangeEvent;
+		import spark.events.TextOperationEvent;
+		
+		public static function Show() : void
+		{
+			var dlg : FriendSelector = new FriendSelector();
+			var parent : Sprite = FlexGlobals.topLevelApplication as Sprite;
+
+			dlg.moduleFactory = IFlexModule(parent).moduleFactory;
+			
+			PopUpManager.addPopUp(dlg, parent, true, null);
+			PopUpManager.centerPopUp(dlg);
+		}
+		
+		protected function CloseClickHandler(event:MouseEvent):void
+		{
+			PopUpManager.removePopUp(this);
+		}
+		
+		protected function SendClickHandler(event:MouseEvent):void
+		{
+			SendRequests();	
+		}
+		
+		protected function CreationCompleteHandler(event:FlexEvent):void
+		{
+			mMainModel = SoccerClient.GetMainGameModel();
+			mFriendsModel = mMainModel.TheFriendsModel;
+			
+			mSelectableFriends = CalcSelectableFriends();
+		}
+		
+		private function CalcSelectableFriends() : ArrayCollection
+		{
+			var ret : ArrayCollection = new ArrayCollection();
+			var allFriends : ArrayCollection = mFriendsModel.Friends;
+			var soccerPlayerFriends : ArrayCollection = mFriendsModel.SoccerPlayerFriends;
+				
+			for each(var friend : Friend in allFriends)
+			{
+				var bFound : Boolean = false;
+				
+				// Si no esta ya entre los futbolistas, es seleccionable
+				for each(var soccerPlayerFriend : Friend in soccerPlayerFriends)
+				{
+					if (soccerPlayerFriend.FacebookID == friend.FacebookID)
+					{
+						bFound = true;
+						break;
+					}
+				}
+				
+				if (!bFound)
+					ret.addItem(friend);
+			}
+			
+			return ret;
+		}
+		
+		protected function MySearchInputChange(event:TextOperationEvent):void
+		{
+			(MyFriendsList.dataProvider as ArrayCollection).filterFunction = FilterFunction;
+			(MyFriendsList.dataProvider as ArrayCollection).refresh();
+		}
+		
+		private function FilterFunction(obj : Object) : Boolean
+		{
+			return (obj as Friend).Name.toLowerCase().indexOf(MySearchInput.text.toLowerCase()) != -1;
+		}
+		
+		private function SendRequests() : void
+		{
+			currentState = "Waiting";
+			
+			var user_ids : Array = [];
+			
+			if (mSelectedFriends.length > 0)
+			{
+				for each(var friend : Friend in mSelectedFriends)
+					user_ids.push(friend.FacebookID.toString());
+				
+				var data : Object =	{ 
+									message: resourceManager.getString('main','FriendSelectorRequestTxt'),
+									to: user_ids
+									};
+	
+				//TODO Lo comentado a continuación debe de ser algo referente a invitar amigos
+				//Facebook.ui("apprequests", data, OnSendRequestsCallback);
+			}
+			else
+			{
+				// Como si cancelaran...
+				OnSendRequestsCallback(null);
+			}
+		}
+		
+		private function OnSendRequestsCallback(response:Object) : Boolean
+		{	
+			PopUpManager.removePopUp(this);
+			
+			if (response != null)
+			{
+				// Los mandamos a crear al servidor
+				mMainModel.TheTeamModel.CreateRequests(response.request, response.to);
+				
+				// Mensaje de exito
+				ImportantMessageDialog.Show(resourceManager.getString('main','FriendSelectorReqSuccessTxt'), 
+											resourceManager.getString('main','FriendSelectorReqSuccessTit'), "center");
+			}
+			
+			return true;
+		}
+				
+		private function OnMyFriendListChangeHandler(e:IndexChangeEvent):void
+		{			
+			mSelectedFriends.addItem(mSelectableFriends[e.newIndex])
+			mSelectableFriends.removeItemAt(e.newIndex);
+		}
+		
+		protected function OnMySelectedListChangeHandler(e:IndexChangeEvent):void
+		{
+			mSelectableFriends.addItem(mSelectedFriends[e.newIndex])
+			mSelectedFriends.removeItemAt(e.newIndex);
+		}
+				
+		[Bindable] private var mMainModel : MainGameModel;
+		[Bindable] private var mFriendsModel : FriendsModel;
+		
+		// Presentation model
+		[Bindable] private var mSelectableFriends : ArrayCollection;
+		[Bindable] private var mSelectedFriends : ArrayCollection = new ArrayCollection();
+		
+	]]></fx:Script>
+	
+	
+	<s:Group includeIn="Waiting" width="250" height="150" horizontalCenter="0" verticalCenter="0">
+		<GameView:PopupBackground width="100%" height="100%" />
+		<s:Label horizontalCenter="0" verticalCenter="0" text="{resourceManager.getString('main','FriendSelectorSendingRequest')}" styleName="whiteBoldBig"/>
+	</s:Group>
+	
+	<s:Group includeIn="Selecting" width="570" height="530">
+		
+		<GameView:PopupBackground width="570" height="530" />
+		
+		<s:BitmapImage x="2" y="2" source="@Embed(source='/Assets/General.swf', symbol='FriendSelectorHeader')" fillMode="clip" />
+		
+		<s:Group x="2" y="20">
+			<s:layout>
+				<s:VerticalLayout />
+			</s:layout>
+			<s:Label width="570" text="{resourceManager.getString('main','FriendSelectorTitle')}" styleName="whiteBoldHuge" textAlign="center"/>
+			<s:Label width="570" text="{resourceManager.getString('main','FriendSelectorTxt')}" styleName="whiteBoldMedium" textAlign="center"/>
+		</s:Group>
+		
+		<s:Label top="95" right="280" width="200" text="{resourceManager.getString('main','FriendSelectorSearchByName')}" styleName="whiteBoldMedium" textAlign="right"/>
+		<s:TextInput id="MySearchInput" width="250" right="20" top="93"
+					 maxChars="50" change="MySearchInputChange(event)"/>
+		
+		<s:Rect left="20" right="20" top="121" height="197" radiusX="4">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#CCCCCC" joints="miter" miterLimit="4"
+									weight="2"/>
+			</s:stroke>
+			<s:fill>
+				<s:SolidColor color="#DDD9D9"/>
+			</s:fill>
+			<s:filters>
+				<s:DropShadowFilter alpha="0.5" angle="90" blurX="40" blurY="40" color="#000000"
+									distance="0" hideObject="false" inner="true" knockout="false"
+									quality="2" strength="1.1"/>
+			</s:filters>
+		</s:Rect>
+		
+		<s:List id="MyFriendsList" dataProvider="{mSelectableFriends}" left="20" right="20" top="121" height="199"
+				itemRenderer="GameView.FriendSelection.FriendItem" useVirtualLayout="true" 
+				change="OnMyFriendListChangeHandler(event)"
+				skinClass="GameView.Skins.DefaultListSkin"
+				creationComplete="MyFriendsList.scroller.setStyle('verticalScrollPolicy', mx.core.ScrollPolicy.ON);"
+				>
+			<s:layout><s:TileLayout verticalGap="10" horizontalGap="10" columnWidth="90" rowHeight="100" /></s:layout>
+		</s:List>
+		
+		<s:Rect left="20" right="20" bottom="50" height="120" radiusX="4">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#CCCCCC" joints="miter" miterLimit="4"
+									weight="2"/>
+			</s:stroke>
+			<s:fill>
+				<s:SolidColor color="#DDD9D9"/>
+			</s:fill>
+			<s:filters>
+				<s:DropShadowFilter alpha="0.5" angle="90" blurX="40" blurY="40" color="#000000"
+									distance="0" hideObject="false" inner="true" knockout="false"
+									quality="2" strength="1.1"/>
+			</s:filters>
+		</s:Rect>
+
+		<s:Label x="2" bottom="175" width="570" text="{resourceManager.getString('main','FriendSelectorSubtitle')}" styleName="whiteBoldBig" textAlign="center"/>
+		
+		<s:List id="MySelectedList" dataProvider="{mSelectedFriends}" left="20" right="20" bottom="50" height="120"
+				itemRenderer="GameView.FriendSelection.FriendItem" useVirtualLayout="true"
+				change="OnMySelectedListChangeHandler(event)"
+				skinClass="GameView.Skins.DefaultListSkin"
+				creationComplete="MySelectedList.scroller.setStyle('horizontalScrollPolicy', mx.core.ScrollPolicy.AUTO);"
+				>
+			<s:layout><s:HorizontalLayout gap="10" columnWidth="90" /></s:layout>
+		</s:List>	
+				
+		
+		<s:Group bottom="15" horizontalCenter="0">
+			<s:layout><s:HorizontalLayout gap="20" /></s:layout>
+			<s:Button label="{resourceManager.getString('main','SendRequest')}" click="SendClickHandler(event)" horizontalCenter="50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			<s:Button label="{resourceManager.getString('main','Close')}" click="CloseClickHandler(event)" horizontalCenter="-50" bottom="10" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+		</s:Group>		
+		
+	</s:Group>
+	
+</s:Group>

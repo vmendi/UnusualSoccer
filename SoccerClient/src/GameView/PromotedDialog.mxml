@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:Team="GameView.Team.*" xmlns:GameView="GameView.*"
+		 xmlns:Competition="GameView.Competition.*">
+	
+	<fx:Style source="styles.css"/>
+	
+	<fx:Script>
+		<![CDATA[
+			import GameModel.TeamModel;
+			
+			import GameView.AnimatableDialog;
+			
+			import flash.utils.getDefinitionByName;
+			
+			import mx.collections.ArrayCollection;
+			import mx.resources.ResourceManager;
+			
+			public static function Show() : void
+			{
+				var dialog : PromotedDialog = AnimatableDialog.Show(getDefinitionByName("GameView::PromotedDialog") as Class) as PromotedDialog;
+				
+				dialog.MyDivisionBadge.Division = SoccerClient.GetMainGameModel().TheCompetitionModel.TheGroup.DivisionName;
+				dialog.MyDivisionName.text = ResourceManager.getInstance().getString('main','DivisionName'+SoccerClient.GetMainGameModel().TheCompetitionModel.TheGroup.DivisionName); 
+			}
+			
+			protected function CloseClickHandler(event:MouseEvent):void
+			{
+				AnimatableDialog.Dismiss(this, null);
+			}
+		]]>
+	</fx:Script>
+	
+	<GameView:PopupBackground left="-15" top="-15" right="-15" bottom="-15" />
+	
+	<s:Group>
+		<s:layout>
+			<s:VerticalLayout gap="15" horizontalAlign="center" />
+		</s:layout>
+		<s:Group top="15" horizontalCenter="0">
+			<s:layout>
+				<s:HorizontalLayout gap="10" verticalAlign="middle" />
+			</s:layout>
+			<Competition:DivisionBadge id="MyDivisionBadge" />
+			<s:Group>
+				<s:layout>
+					<s:VerticalLayout gap="4" horizontalAlign="center" />
+				</s:layout>
+				<s:Label text="{resourceManager.getString('main','PromoteDialogTit')}"
+						 styleName="whiteBoldHuge" textAlign="center">
+					<s:filters>
+						<s:GlowFilter id="glowNormal" strength="1" alpha="0.7" blurX="10" blurY="10" color="#FFFFFF"/>
+					</s:filters>
+				</s:Label>
+				<s:Label text="{resourceManager.getString('main','PromoteDialogTxt')}" styleName="whiteBoldBig" />
+				<s:Label id="MyDivisionName" text=""
+						 styleName="yellowBoldVeryBig" />	
+			</s:Group>
+		</s:Group>
+		<s:Button label="CERRAR" horizontalCenter="0" bottom="15" click="CloseClickHandler(event)" minWidth="80" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+	</s:Group>
+	
+</s:Group>
+

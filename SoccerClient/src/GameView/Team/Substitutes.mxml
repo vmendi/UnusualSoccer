@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:List xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 creationComplete="CreationCompleteHandler(event)"
+		 skinClass="GameView.Team.SubstitutesSkin"
+		 useVirtualLayout="false" dataProvider="{mSubstitutes}" itemRendererFunction="FieldCapCreator">
+		
+	<fx:Script><![CDATA[
+		import GameModel.MainGameModel;
+		
+		import HttpService.TransferModel.vo.SoccerPlayer;
+		
+		import mx.binding.utils.BindingUtils;
+		import mx.collections.ArrayCollection;
+		import mx.events.FlexEvent;
+		import mx.events.IndexChangedEvent;
+		
+		protected function CreationCompleteHandler(event:FlexEvent):void
+		{
+			mMainGameModel = SoccerClient.GetMainGameModel();
+						
+			BindingUtils.bindSetter(OnSubstitutesChanged, mMainGameModel.TheTeamModel, "SubstituteSoccerPlayers");
+			BindingUtils.bindSetter(OnSelectionChanged, mMainGameModel.TheTeamModel, "SelectedSoccerPlayer");
+			addEventListener(IndexChangedEvent.CHANGE, OnMySelectionChanged);
+		}
+		
+		private function OnSubstitutesChanged(val : ArrayCollection) : void
+		{
+			mSubstitutes.removeAll();
+			
+			if (val != null)
+			{
+				mSubstitutes.addAll(val);
+				
+				// Al menos siempre 1
+				mSubstitutes.addItemAt(new Object(), 0);
+				
+				// Creamos un objeto dummy por cada chapa FieldCapAddFriend que queramos insertar
+				while (mSubstitutes.length < 3)
+				{
+					mSubstitutes.addItemAt(new Object(), 0);
+				}
+			}
+		}
+		
+		private function FieldCapCreator(item:Object):IFactory
+		{
+			if (item is SoccerPlayer)
+				return new ClassFactory(FieldCap);
+			else 
+				return new ClassFactory(FieldCapAddFriend);	
+		}
+		
+		private function OnMySelectionChanged(e:Event): void
+		{
+			if (selectedItem is SoccerPlayer)
+				mMainGameModel.TheTeamModel.SelectedSoccerPlayer = selectedItem;			
+		}
+		
+		private function OnSelectionChanged(selected : SoccerPlayer) : void
+		{
+			if (dataProvider != null)
+			{
+				if (dataProvider.toArray().indexOf(selected) != -1)
+					selectedItem = selected;
+				else
+					selectedItem = null;
+			}
+		}
+
+		[Bindable] private var mSubstitutes : ArrayCollection = new ArrayCollection();	// Con las FieldCapAddFriends incluidas (dummy objects)
+		[Bindable] private var mMainGameModel : MainGameModel;
+		
+	]]></fx:Script>
+</s:List>

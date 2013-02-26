@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Purchase:PurchaseBase xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 			   xmlns:s="library://ns.adobe.com/flex/spark"
+		 			   xmlns:mx="library://ns.adobe.com/flex/mx"
+		 			   xmlns:Purchase="GameView.Purchase.*"
+		 			   width="600" height="455" xmlns:GameView="GameView.*">
+	
+	<fx:Style source="../styles.css"/>
+	
+	<fx:Declarations>
+		<s:DropShadowFilter id="shadowNormal" distance="6" angle="90" blurX="6" blurY="6"/>
+	</fx:Declarations>	
+	
+	<Purchase:states>
+		<s:State name="ChoosingItem"/>
+		<s:State name="Success"/>
+		<s:State name="Failure"/>
+		<s:State name="Canceled"/>
+	</Purchase:states>
+	
+	<fx:Script><![CDATA[		
+		
+		protected function MySelectItemButton_clickHandler(event:MouseEvent):void
+		{			
+			// El ID del button es directamente lo que espera el servidor que le mandemos
+			ProcessPurchase((event.currentTarget as Button).id);
+		}
+		
+	]]></fx:Script>
+	
+	<GameView:PopupBackground width="100%" height="100%" />
+	
+	<s:BitmapImage left="2" top="2" source="@Embed(source='/Assets/General.swf', symbol='UnusualPointsCabecera')" fillMode="clip" />
+	<s:Label id="myTit" horizontalCenter="0" top="15" text="{resourceManager.getString('main','PurchaseTitPoints')}" styleName="whiteBoldHuge" /> 
+	
+	<s:Group horizontalCenter="0" top="105">	
+	
+		<s:Group horizontalCenter="0" verticalCenter="0" includeIn="ChoosingItem">
+			<s:layout>
+				<s:HorizontalLayout gap="10" />
+			</s:layout>
+			<s:Rect width="106" height="230" alpha="1" radiusX="8" filters="{[shadowNormal]}">
+				<s:stroke>
+					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
+				</s:stroke>
+				<s:fill>
+					<s:SolidColor alpha="0.6" color="#242424"/>
+				</s:fill>
+			</s:Rect>
+			<s:Rect width="106" height="230" alpha="1" radiusX="8" filters="{[shadowNormal]}">
+				<s:stroke>
+					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
+				</s:stroke>
+				<s:fill>
+					<s:SolidColor alpha="0.6" color="#242424"/>
+				</s:fill>
+			</s:Rect>
+			<s:Rect width="106" height="230" alpha="1" radiusX="8" filters="{[shadowNormal]}">
+				<s:stroke>
+					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
+				</s:stroke>
+				<s:fill>
+					<s:SolidColor alpha="0.6" color="#242424"/>
+				</s:fill>
+			</s:Rect>
+			<s:Rect width="106" height="230" alpha="1" radiusX="8" filters="{[shadowNormal]}">
+				<s:stroke>
+					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
+				</s:stroke>
+				<s:fill>
+					<s:SolidColor alpha="0.6" color="#242424"/>
+				</s:fill>
+			</s:Rect>
+			<s:Rect width="106" height="230" alpha="1" radiusX="8" filters="{[shadowNormal]}">
+				<s:stroke>
+					<s:SolidColorStroke caps="none" color="#5e5e5e" joints="miter" miterLimit="4" weight="2"/>
+				</s:stroke>
+				<s:fill>
+					<s:SolidColor alpha="0.6" color="#242424"/>
+				</s:fill>
+			</s:Rect>
+		</s:Group>
+		
+		<s:Group id="MyChooseItemGroup" includeIn="ChoosingItem" horizontalCenter="0" verticalCenter="0">
+			<s:layout><s:HorizontalLayout gap="12" horizontalAlign="center" verticalAlign="top"/></s:layout>
+			
+			<s:Group width="106">
+				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" /></s:layout>
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_5')" fillMode="clip" />
+				<s:Group horizontalCenter="0">
+					<s:layout>
+						<s:VerticalLayout gap="0" horizontalAlign="center" />
+					</s:layout>
+					<s:Label id="SkillPoints500Label" styleName="yellowBoldVeryBig" text="XXX"></s:Label>
+					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
+				</s:Group>
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout gap="4" verticalAlign="middle" />
+					</s:layout>
+					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
+					<s:Label id="Packet5" width="46" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
+				</s:Group>
+				<s:Button id="SkillPoints100" label="{resourceManager.getString('main','Select')}"
+						  click="MySelectItemButton_clickHandler(event)"
+						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>
+			
+			<s:Group width="106">
+				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_4')" fillMode="clip" />
+				<s:Group horizontalCenter="0">
+					<s:layout>
+						<s:VerticalLayout gap="0" horizontalAlign="center" />
+					</s:layout>
+					<s:Label id="SkillPoints400Label" styleName="yellowBoldVeryBig" text="XXX"></s:Label>
+					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
+				</s:Group>
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout gap="4" verticalAlign="middle" />
+					</s:layout>
+					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
+					<s:Label id="Packet4" width="46" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
+				</s:Group>
+				<s:Button id="SkillPoints300" label="{resourceManager.getString('main','Select')}"
+						  click="MySelectItemButton_clickHandler(event)"
+						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>
+			
+			<s:Group width="106">
+				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_3')" fillMode="clip" />
+				<s:Group horizontalCenter="0">
+					<s:layout>
+						<s:VerticalLayout gap="0" horizontalAlign="center" />
+					</s:layout>
+					<s:Label id="SkillPoints300Label" styleName="yellowBoldVeryBig" text="XXX"></s:Label>
+					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
+				</s:Group>		
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout gap="4" verticalAlign="middle" />
+					</s:layout>
+					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
+					<s:Label id="Packet3" width="46" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
+				</s:Group>				
+				<s:Button id="SkillPoints500" label="{resourceManager.getString('main','Select')}"
+						  click="MySelectItemButton_clickHandler(event)"
+						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>
+			
+			<s:Group width="106">
+				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_2')" fillMode="clip" />
+				<s:Group horizontalCenter="0">
+					<s:layout>
+						<s:VerticalLayout gap="0" horizontalAlign="center" />
+					</s:layout>
+					<s:Label id="SkillPoints200Label" styleName="yellowBoldVeryBig" text="XXX"></s:Label>
+					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
+				</s:Group>			
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout gap="4" verticalAlign="middle" />
+					</s:layout>
+					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
+					<s:Label id="Packet2" width="46" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
+				</s:Group>
+				<s:Button id="SkillPoints700" label="{resourceManager.getString('main','Select')}"
+						  click="MySelectItemButton_clickHandler(event)"
+						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>
+			
+			<s:Group width="106">
+				<s:layout><s:VerticalLayout gap="5" horizontalAlign="center" verticalAlign="middle"/></s:layout>
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='Paquete_UP_1')" fillMode="clip" />
+				<s:Group horizontalCenter="0">
+					<s:layout>
+						<s:VerticalLayout gap="0" horizontalAlign="center" />
+					</s:layout>
+					<s:Label id="SkillPoints100Label" styleName="yellowBoldVeryBig" text="XXX"></s:Label>
+					<s:Label styleName="yellowBoldBig" text="{resourceManager.getString('main','GeneralUnusualPoints')}"></s:Label>
+				</s:Group>			
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout gap="4" verticalAlign="middle" />
+					</s:layout>
+					<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='FacebookCreditsIcon')" fillMode="clip" />
+					<s:Label id="Packet1" width="46" styleName="whiteBoldMedium" text="{resourceManager.getString('main','PurchaseTicket1Price')}"></s:Label>	
+				</s:Group>
+				<s:Button id="SkillPoints1000" label="{resourceManager.getString('main','Select')}"
+						  click="MySelectItemButton_clickHandler(event)"
+						  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			</s:Group>				
+		</s:Group>
+		
+	</s:Group>
+		
+	<s:Group includeIn="Success" horizontalCenter="0" verticalCenter="0">
+		<s:Label id="MySuccessLabel" styleName="whiteBoldBig" text="TODO: Successful purchase"/>
+	</s:Group>
+	
+	<s:Group includeIn="Failure, Canceled" horizontalCenter="0" verticalCenter="-10">
+		<s:Label id="MyFailureLabel" maxDisplayedLines="3" styleName="whiteBoldBig" width="300" textAlign="center"
+				 text.Failure="{resourceManager.getString('main','PurchaseTxtFailure')}"
+				 text.Canceled="{resourceManager.getString('main','PurchaseTxtCanceled')}"
+				 />
+	</s:Group>
+
+	<s:Label id="myTxtTerms" horizontalCenter="0" bottom="65" styleName="whiteBoldBig" text="{resourceManager.getString('main','PurchaseTxtTerms')}" includeIn="ChoosingItem"/>
+	
+	<s:Button id="MyCloseButton" label.ChoosingItem="{resourceManager.getString('main','Cancel')}" label="Close" click="CloseClickHandler(event)" minWidth="80" horizontalCenter="0" bottom="20" 
+			  skinClass="GameView.Skins.ButtonDarkGreySkin" />
+	
+</Purchase:PurchaseBase>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 width="50" height="50">
+	
+	<fx:Script><![CDATA[
+		import spark.primitives.BitmapImage;
+		
+		[Bindable]
+		public function set Avatar(id : String) : void
+		{
+			// Nos estan reusando con useVirtualLayout == true?
+			if (mAvatar != null)
+				ResetPreviousLoad();
+			
+			mAvatar = id;
+			
+			LoadPicture();
+		}		
+		public function get Avatar() : String
+		{
+			return mAvatar;
+		}
+		
+		// square, small, large
+		/*[Bindable]
+		public function get Size() : String { return mSize; }
+		public function set Size(v:String) : void { mSize = v; }
+		*/
+		
+		private function LoadPicture() : void
+		{
+			removeAllElements();
+			
+			// Contamos con que FacebookID == -1 en caso de que una chapa no tenga amigo asignado
+			if (mAvatar.indexOf("-") != -1)
+				return;
+			
+			if (mLoadersCache.hasOwnProperty(mAvatar))
+			{
+				var image : BitmapImage = new BitmapImage();
+				image.source = mLoadersCache[mAvatar];
+				image.smooth = true;
+				
+				addElement(image);
+			}
+			else
+			{
+				InnerLoad();
+			}
+		}
+		
+		private function InnerLoad() : void
+		{	
+			mLoader = new Loader();
+			mLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, OnLoadComplete);
+			mLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, OnError);
+			mLoader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, OnError);
+			
+			// http://yourpalmark.com/2011/12/28/updated-solution-as3-security-error-2122-with-300-redirects/
+			mLoader.load(new URLRequest(mAvatar),
+				new LoaderContext(true, ApplicationDomain.currentDomain, SecurityDomain.currentDomain));
+		}
+		
+		private function OnError(e:Event):void
+		{
+			// Poco podemos hacer... No merece la pena mandarlo al servidor, fallara mucho y no sabremos distinguir por qué
+		}
+		
+		private function OnLoadComplete(e:Event):void
+		{
+			var loaderInfo : LoaderInfo = e.target as LoaderInfo;
+			
+			if (loaderInfo.bytesLoaded != 0 && loaderInfo.bytesLoaded == loaderInfo.bytesTotal &&
+				mLoader != null && mLoader.contentLoaderInfo == loaderInfo)
+			{
+				mLoadersCache[mAvatar] = mLoader;
+				
+				var image : BitmapImage = new BitmapImage();					
+				image.source = mLoader.content;
+				image.smooth = true;
+				
+				addElement(image);
+			}
+		}
+		
+		// Por el useVirtualLayout de las listas, nos reusaran... tenemos un loader en curso que hay que cerrar
+		private function ResetPreviousLoad() : void
+		{
+			if (mLoader != null)
+			{
+				mLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, OnLoadComplete);
+				mLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, OnError);
+				mLoader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, OnError);
+				
+				try {
+					mLoader.close();
+				}
+				catch (e:Error)	{}	// URLStream not closed
+				
+				mLoader = null;
+			}		
+		}
+		
+		private var mLoader : Loader;
+		
+		private var mAvatar : String = null;
+		//private var mSize : String = "square";		
+		
+		// Esta es la unica clase (FacebookPicture) que usamos para cargar imagenes de facebook, asi que este es el unico Cache del sistema
+		static private var mLoadersCache : Object = new Object();
+	]]></fx:Script>
+	
+</s:Group>

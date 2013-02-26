@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	<fx:Script><![CDATA[
+		import GameModel.MainGameModel;
+		import GameModel.RealtimePlayer;
+		import GameModel.RoomModel;
+		
+		import Match.MatchMain;
+		
+		import NetEngine.InvokeResponse;
+		import NetEngine.NetPlug;
+		
+		import HttpService.MainService;
+		import HttpService.TransferModel.vo.RankingPage;
+		
+		import com.greensock.TweenLite;
+		import com.greensock.TweenMax;
+		import com.greensock.TweenNano;
+		
+		import mx.binding.utils.BindingUtils;
+		import mx.collections.ArrayCollection;
+		import mx.controls.Alert;
+		import mx.rpc.Responder;
+		import mx.rpc.events.ResultEvent;
+		
+		import utils.Delegate;
+		import utils.RandUtils;
+		import utils.UIComponentWrapper;
+		
+
+		public function ExecuteTest(testName : String) : void
+		{ 
+			mMainGameModel = SoccerClient.GetMainGameModel();
+			
+			AppendLine("Starting test: " + testName);
+			
+			this[testName]();
+		}
+
+		private function Test01() : void
+		{
+			var rand : int = RandUtils.RandIntBetween(1000, 1000000);
+			
+			InitTest();
+						
+			function InitTest() : void
+			{				
+				AppendLine("Intento de creación de equipo " + rand);
+				SoccerClient.GetFacebookFacade().Init(OnTestFacebookInit, rand.toString());
+			}
+			
+			function OnTestFacebookInit() : void
+			{
+				mMainGameModel.TheTeamModel.HasTeam(OnHasTeamResponse);
+			}
+						
+			function OnHasTeamResponse(hasTeam : Boolean) : void
+			{
+				if (hasTeam)
+					AppendLine("El equipo ya existia");
+				else
+					mMainGameModel.TheTeamModel.CreateTeam("TestTeam" + rand, 
+														   mMainGameModel.ThePredefinedTeamsModel.PredefinedTeamNameIDs[RandUtils.RandIntBetween(1, 20)], 
+														   OnCreateTeamSuccess, OnFailed);
+			}
+			
+			function OnCreateTeamSuccess() : void
+			{
+				AppendLine("Equipo creado con exito");
+			}
+						
+			function OnFailed() : void
+			{
+				AppendLine("Fallo");
+			}
+		}
+		
+		private function Test12() : void
+		{
+			var currentTeam : int = -1;
+			
+			InitTest();
+			
+			function InitTest() : void
+			{
+				mMainGameModel.TheRealtimeModel.Disconnect();
+				mMainGameModel = new MainGameModel();
+				currentTeam++;
+				SetLine(1, "Intento de creación de equipo " + currentTeam);
+				SoccerClient.GetFacebookFacade().Init(OnTestFacebookInit, currentTeam.toString());
+			}
+			
+			function OnTestFacebookInit() : void
+			{
+				mMainGameModel.TheTeamModel.HasTeam(OnHasTeamResponse);
+			}
+			
+			function OnHasTeamResponse(hasTeam : Boolean) : void
+			{
+				if (hasTeam)
+				{
+					SetLine(2, "Equipo ya existia " + currentTeam);
+					InitTest();
+				}
+				else
+					mMainGameModel.TheTeamModel.CreateTeam("TestTeam" + currentTeam, 
+														   mMainGameModel.ThePredefinedTeamsModel.PredefinedTeamNameIDs[RandUtils.RandIntBetween(1, 20)], 
+														   OnCreateTeamSuccess, OnFailed);
+			}
+			
+			function OnCreateTeamSuccess() : void
+			{
+				SetLine(2, "Equipo creado con exito " + currentTeam);
+				InitTest();
+			}
+			
+			function OnFailed() : void
+			{
+				SetLine(3, "Fallo");
+			}
+		}
+		
+		private function Test02() : void
+		{
+			SoccerClient.GetFacebookFacade().Init(startTest);
+			
+			function startTest() : void
+			{
+				// El ranking model necesita conocer el nombre de nuestro equipo!
+				mMainGameModel.TheTeamModel.RefreshTeam(OnTeamRefreshed);
+			}
+			
+			function OnTeamRefreshed() : void
+			{
+				BindingUtils.bindSetter(OnRankingRefreshed, mMainGameModel.TheRankingModel, [ "TheRankingPage" ]);
+			}
+			
+			var counter : int = 0;
+			function OnRankingRefreshed(val : Object) : void
+			{
+				counter++;
+				
+				mMainGameModel.TheRankingModel.RefreshFirstPage();
+				SetLine(1, "Refresco ranking " + counter.toString());
+			}
+		}
+		
+		private function Test21() : void
+		{
+			SoccerClient.GetFacebookFacade().Init(startTest);
+			
+			var counter : int = 0;
+			startTest();
+			
+			function startTest() : void
+			{
+				counter++;
+				mMainGameModel.TheTeamModel.RefreshTeam(OnTeamRefreshed);
+			}
+			
+			function OnTeamRefreshed() : void
+			{
+				SetLine(1, "RefreshTeam " + counter.toString());
+				startTest();
+			}
+		}
+		
+		private function Test22() : void
+		{
+			SoccerClient.GetFacebookFacade().Init(startTest);
+			
+			// Cuando nos venga el RefreshTeam no queremos que se produzca una conexion del RealtimeModel
+			mMainGameModel.TheInactivityModel.SupressActivity();
+						
+			var counter : int = 0;
+			startTest();
+			
+			function startTest() : void
+			{
+				counter++;
+				mMainGameModel.TheTeamModel.RefreshTeam(OnTeamRefreshed);
+			}
+			
+			function OnTeamRefreshed() : void
+			{
+				mMainGameModel.TheCompetitionModel.RefreshGroup(onGroupRefreshed);
+			}
+			
+			function onGroupRefreshed() : void
+			{
+				SetLine(1, "onGroupRefreshed " + counter.toString());
+				startTest();
+			}
+		}
+		
+		private function Test03() : void
+		{
+			var passCounter:int=0;
+			var pageCounter : int = 0;
+			var mainService : MainService = new MainService();
+			
+			SoccerClient.GetFacebookFacade().Init(startTest);
+		
+			function startTest() : void
+			{
+				if(passCounter < 1000)
+				{
+					SetLine(1, "Pass " + passCounter);
+					passCounter++;
+			
+					pageCounter=0;
+					mainService.RefreshRankingPage(0, new mx.rpc.Responder(onRefreshRankingPageCompleted, ErrorMessages.Fault));
+				}
+			}
+			
+			function onRefreshRankingPageCompleted(e:ResultEvent) : void
+			{
+				var rankingPage : RankingPage = e.result as RankingPage;
+				
+				if (pageCounter < rankingPage.TotalPageCount)
+				{
+					SetLine(2, "RankingPage " + pageCounter + " complete");
+					mainService.RefreshRankingPage(pageCounter+1, new mx.rpc.Responder(onRefreshRankingPageCompleted, ErrorMessages.Fault));
+					pageCounter++;
+				}
+				else
+					startTest();
+			}
+		}
+				
+		private function Test04() : void
+		{			
+			SoccerClient.GetFacebookFacade().Init(startTest);
+			
+			var tempGameModel : MainGameModel = null;
+			var counter : int = 0;
+			function startTest() : void
+			{
+				if (tempGameModel != null)
+					tempGameModel.TheRealtimeModel.Disconnect();
+				
+				if (counter++ < 1000)
+				{
+					SetLine(1, "Connection " + counter);
+					tempGameModel = new MainGameModel();
+					tempGameModel.TheRealtimeModel.Connect(startTest);
+				}
+			}
+		}
+		
+		private function Test05() : void
+		{
+			var tempGameModel : MainGameModel = null;
+			var counter : int = 0;
+			
+			SoccerClient.GetFacebookFacade().Init(startTest);
+			
+			function startTest() : void
+			{
+				SetLine(1, "Connection " + counter);
+				
+				if (tempGameModel == null)
+				{
+					tempGameModel = new MainGameModel();
+					tempGameModel.TheRealtimeModel.InitialConnection(delayedCall);
+				}
+			}
+
+			function delayedCall() : void
+			{
+				TweenLite.delayedCall(RandUtils.RandNumberBetween(0.2, 0.5), onLoginSuccess);				
+				//onLoginSuccess();
+			}
+			
+			function onLoginSuccess() : void
+			{
+				tempGameModel.TheRealtimeModel.Disconnect();
+				tempGameModel = null;
+				
+				counter++;
+				startTest();
+			}
+		}
+
+		private function Test06() : void
+		{
+			var loader : Loader;
+			var numMatches : int = 0;
+			
+			SoccerClient.GetFacebookFacade().Init(startTest);
+			
+			function startTest() : void
+			{
+				mMainGameModel.TheRealtimeModel.MatchStarted.add(onMatchStarted);
+				mMainGameModel.TheRealtimeModel.MatchEnded.add(onMatchEnded);
+				
+				mMainGameModel.TheRealtimeModel.InitialConnection(onTime);
+			}
+
+			function Loopa() : void
+			{
+				TweenMax.killAll();
+				TweenMax.delayedCall(1, onTime);
+			}
+			
+			function onMatchStarted() : void
+			{
+				SetLine(2, "Jugando partido " + numMatches);
+				TweenMax.killDelayedCallsTo(onTime);
+				addElementAt(new UIComponentWrapper(mMainGameModel.TheRealtimeModel.TheMatch), 0);
+				
+				// Simulamos que han pulsado el viejo boton de abandonar
+				TweenMax.delayedCall(RandUtils.RandIntBetween(3, 5), abandonMatch);
+			}
+			
+			function abandonMatch() : void
+			{
+				mMainGameModel.TheRealtimeModel.TheMatch.Game.TheInterface.OnAbandonarClick(null);
+			}
+			
+			function onMatchEnded(matchResult : Object) : void
+			{	
+				SetLine(2, "Partido finalizado " + numMatches);
+				removeElementAt(0);
+				numMatches++;
+				Loopa();
+			}
+			
+			function onTime() : void
+			{	
+				var currentRoom : RoomModel = mMainGameModel.TheRealtimeModel.TheRoomModel;
+				var playersInRoom : ArrayCollection = currentRoom.PlayersInRoom;
+							
+				for each(var playerInRoom : RealtimePlayer in playersInRoom)
+				{
+					currentRoom.Challenge(playerInRoom, "Testing 123", 10, 10);
+				}
+				
+				var challenges : ArrayCollection = currentRoom.ReceivedChallenges;
+
+				SetLine(1, "Num received challenges " + challenges.length);
+				
+				if (challenges.length >= ((playersInRoom.length + 1)/2))
+				{
+					currentRoom.SelectedChallenge = challenges[RandUtils.RandIntBetween(0, challenges.length-1)];
+					currentRoom.AcceptSelectedChallengeMatch(onMatchAccepted);
+				}
+				else
+				{
+					Loopa();
+				}
+			}
+			
+			function onMatchAccepted(bSuccess : Boolean) : void
+			{
+				if (!bSuccess)
+					Loopa();
+			}
+		}
+		
+		private function Test07() : void
+		{
+			SoccerClient.GetFacebookFacade().Init(startTest);
+			
+			function startTest() : void
+			{
+				mMainGameModel.TheRealtimeModel.InitialConnection(onLoginSuccess);
+			}
+			
+			var c:int=0;
+			
+			function onLoginSuccess() : void
+			{
+				SetLine(1, c.toString());
+				c++;
+
+				mMainGameModel.TheRealtimeModel.Disconnect();
+				TweenNano.delayedCall(0.05, startTest);
+			}
+		}
+		
+		private function Test08() : void
+		{			
+			var sockets : Array = new Array();
+			var numResponsesReceived : int = 0;
+			var numClosedFromServer : int = 0;
+			var client : Object = this;
+			
+			startTest();
+						
+			function startTest() : void
+			{	
+				SetLine(1, "StartTest");
+				
+				for(var c:int = 0; c < 1024; c++)
+				{
+					var newSocket : NetPlug = new NetPlug();
+					sockets.push(newSocket);
+					newSocket.AddClient(client);
+					newSocket.SocketConnectedSignal.add(Delegate.create(onSocketConnected, c));
+					newSocket.SocketClosedSignal.add(Delegate.create(onSocketClosed, c));
+					newSocket.SocketErrorSignal.add(onSocketError);
+					newSocket.Connect("127.0.0.1:2020");
+				}
+				SetLine(1, "StartTest OK");
+			}
+			
+			function onSocketConnected(socketIdx : int) : void
+			{
+				SetLine(2, socketIdx + ": onSocketConnected");
+								
+				TweenLite.delayedCall(RandUtils.RandNumberBetween(10, 20), Delegate.create(delayedCall, socketIdx));
+			}
+			
+			function delayedCall(socketIdx : int) : void
+			{
+				if (sockets[socketIdx] == null)
+					return;
+								
+				try
+				{
+					sockets[socketIdx].Invoke("TestMethod03", new InvokeResponse(client, OnTestMethod03Succeded));
+					
+					for (var c:int = 0; c < 16; c++)
+					{						
+						sockets[socketIdx].Invoke("TestMethod02", null, 666.666);
+						sockets[socketIdx].Invoke("TestMethod01", new InvokeResponse(client, Delegate.create(onTestMethod01Succeded, socketIdx, c)), 
+												  "TestMethod01Input");
+					}
+				}
+				catch(e : Error) 
+				{
+					SetLine(6, "Invoke throwed exception");
+				}
+				
+				SetLine(3, "Socket: " + socketIdx + " delayedCall ");
+				
+				TweenLite.delayedCall(RandUtils.RandNumberBetween(3, 5), Delegate.create(delayedCall, socketIdx));
+			}
+			
+			function OnTestMethod03Succeded(ret : String) : void
+			{
+				if (ret.length != 666)
+					SetLine(6, "Failed TestMethod03");
+			}
+			
+			function onTestMethod01Succeded(ret : String, socketIdx : int, callIdx : int) : void
+			{
+				SetLine(4, "Socket: " + socketIdx +  ", onTestMethod01Succeded: " + callIdx);
+				
+				if (ret != "TestMethod01Return")
+				{
+					Alert.show("Failed", "FAILED");
+				}
+				else
+				{
+					numResponsesReceived++;
+					
+					if (numResponsesReceived == 1024*512)
+					{
+						SetLine(5, "Disconnecting");
+						
+						for (var c:int=0; c < sockets.length; c++)
+						{
+							if (sockets[c] != null)
+							{
+								sockets[c].Disconnect();
+								sockets[c] = null;
+							}
+						}
+						
+						Alert.show("NumResponseReceived: " + numResponsesReceived + 
+								   " Closed from server: " + numClosedFromServer, "ALL CLOSED - TEST END");
+					}
+				}
+			}
+			
+			function onSocketClosed(idx : int) : void
+			{	
+				numClosedFromServer++;
+				
+				if (numClosedFromServer == sockets.length)
+				{
+					Alert.show("ALL CLOSED FROM SERVER", "ALL CLOSED - TEST END");
+				}
+				
+				sockets[idx] = null;
+			}
+			
+			function onSocketError(reason : String) : void
+			{
+				Alert.show(reason, "ERROR");
+			}
+		}
+		
+		// We open lots of sockets and hope that the server closes them for inactivity
+		// DEPRECATED: The NetPlug keeps-alive by default
+		private function Test09() : void
+		{
+			var sockets : Array = new Array();
+			var totalClosed : int = 0;
+			var totalCreated : int = 0;
+			
+			startTest();
+			
+			function startTest() : void
+			{	
+				SetLine(1, "StartTest");
+				
+				delayedCall();
+			}
+			
+			function delayedCall() : void
+			{
+				for (var c:int=0; c < 10; c++)
+				{
+					var newSocket : NetPlug = new NetPlug();
+					sockets.push(newSocket);
+					totalCreated++;
+					newSocket.SocketConnectedSignal.add(Delegate.create(onSocketConnected, totalCreated));
+					newSocket.SocketClosedSignal.add(Delegate.create(onSocketClosed, sockets.length-1));
+					newSocket.SocketErrorSignal.add(onSocketError);
+					newSocket.Connect("127.0.0.1:2020");
+				}
+
+				//TweenLite.delayedCall(1, delayedCall);
+				
+				SetLine(2, "Created: " + totalCreated);
+			}
+			
+			function onSocketConnected(fromTotal : int) : void
+			{
+				SetLine(3, "Conected: " + fromTotal);
+			}
+				
+			function onSocketClosed(socketIdx : int) : void
+			{
+				sockets.splice(socketIdx, 1);
+				totalClosed++;
+				SetLine(4, "Total closed " + totalClosed);	
+			}
+			
+			function onSocketError(reason : String) : void
+			{
+				SetLine(5, "Socket error: " + reason);
+			}				
+		}
+		
+		// For testing the new test SendAsync with arbitrary sized messages
+		private function Test10() : void
+		{
+			var newSocket : NetPlug = new NetPlug();
+			var numInvokations : int = 0;
+			var client : Object = this;
+			
+			startTest();
+			
+			function startTest() : void
+			{
+				newSocket.SocketConnectedSignal.add(onSocketConnected);
+				newSocket.SocketClosedSignal.add(onSocketClosed);
+				newSocket.SocketErrorSignal.add(onSocketError);
+				newSocket.AddClient(client);
+				newSocket.Connect("127.0.0.1:2020");
+			}
+			
+			function onSocketConnected() : void
+			{
+				SetLine(1, "Conected");
+				
+				newSocket.Invoke("TestMethod04", new InvokeResponse(client, onID));
+			}
+			
+			function onID(id : String) : void
+			{
+				SetLine(1, "Connected " + id);
+				loopa();
+			}
+			
+			function loopa() : void
+			{
+				numInvokations++;
+				newSocket.Invoke("TestMethod03", new InvokeResponse(client, onResult));
+			}
+			
+			function onResult(ret : String) : void
+			{
+				SetLine(2, numInvokations.toString() + " - Length: " + ret.length);
+				TweenLite.delayedCall(0.5, loopa);
+			}
+			
+			function onSocketClosed() : void
+			{
+				SetLine(3, "Closed");	
+			}
+			
+			function onSocketError(reason : String) : void
+			{
+				SetLine(4, "Socket error: " + reason);
+			}	
+		}
+		
+		// El test del partido offline!
+		private function Test11() : void
+		{
+			var match : MatchMain = new MatchMain();
+			this.addElement(match);
+			
+			// Queremos ver los margenes
+			this.y = 40;
+			this.graphics.beginFill(0xFF0000);
+			this.graphics.drawRect(0, 0, 1000, 1000);
+			this.graphics.endFill();
+			
+			match.InitOffline();
+		}
+						
+		private function SetLine(indexOfLine : int, msg : String) : void
+		{
+			mLines[indexOfLine] = msg;
+			RegenerateLines();
+		}
+		
+		private function AppendLine(msg : String) : void
+		{
+			mLines.push(msg);
+			RegenerateLines();
+		}
+		
+		private function RegenerateLines() : void
+		{
+			MyDebugTest.text = "";
+			
+			var indexOfPrevious : int = 0;
+			for each(var line : String in mLines)
+			{
+				var indexOfCurrent : int = mLines.indexOf(line);
+				
+				var totalBlankLines : int = indexOfCurrent - indexOfPrevious;				
+				while(totalBlankLines-- > 0)
+					MyDebugTest.text += "\r\n";
+				
+				MyDebugTest.text += line;
+				
+				indexOfPrevious = indexOfCurrent;
+			}
+		}
+		
+		private var mLines : Array = new Array();
+		
+		private var mFacebookFacade : FacebookFacade;
+		private var mMainGameModel : MainGameModel;
+				
+	]]></fx:Script>
+	
+	
+	<s:Label id="MyDebugTest" left="0" right="0" top="0" bottom="0"/>
+	
+</s:Group>
+

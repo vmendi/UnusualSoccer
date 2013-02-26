@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:GameView="GameView.*"
+		 creationComplete="CreationCompleteHandler(event)" >
+	
+	<fx:Style source="../styles.css" />
+	
+	<fx:Script><![CDATA[
+		import GameModel.SoccerPlayerDerived;
+		
+		import HttpService.TransferModel.vo.SoccerPlayer;
+		
+		import mx.binding.utils.BindingUtils;
+		import mx.events.FlexEvent;
+		
+		[Bindable]
+		public function get TheSoccerPlayer() : SoccerPlayer { return mSoccerPlayer; }
+		public function set TheSoccerPlayer(v:SoccerPlayer) : void 
+		{ 
+			mSoccerPlayer = v;
+			TheSoccerPlayerDerived = new SoccerPlayerDerived(mSoccerPlayer);
+		}
+				
+		protected function CreationCompleteHandler(event:FlexEvent):void
+		{			
+			BindingUtils.bindSetter(OnQualityRefreshed, this, [ "TheSoccerPlayerDerived", "Quality"]);
+		}
+		
+		private function OnQualityRefreshed(v:Number) : void
+		{
+			// [Fran] Si la chapa tiene amigo asignado, no mostramos la equipación
+			(MyCapMC.content as MovieClip).gotoAndStop(SoccerClient.GetMainGameModel().TheTeamModel.TheTeam.PredefinedTeamNameID);
+			/*
+			if (TheSoccerPlayer != null && TheSoccerPlayer.FacebookID < 0)
+				(MyCapMC.content as MovieClip).gotoAndStop(SoccerClient.GetMainGameModel().TheTeamModel.TheTeam.PredefinedTeamNameID);
+			else
+				(MyCapMC.content as MovieClip).gotoAndStop("empty");
+			*/
+			
+			var qual : int = TheSoccerPlayerDerived.Quality;
+			var mc : MovieClip = MyCapStars.content["mcStars"] as MovieClip; 
+			mc.gotoAndStop(qual+1);
+		}
+	
+		private var mSoccerPlayer : SoccerPlayer;
+		
+		[Bindable] 
+		public function  get TheSoccerPlayerDerived() : SoccerPlayerDerived { return mSoccerPlayerDerived; }
+		public function set TheSoccerPlayerDerived(v:SoccerPlayerDerived) : void { mSoccerPlayerDerived = v; }
+		private var mSoccerPlayerDerived : SoccerPlayerDerived;
+
+	]]></fx:Script>
+	
+	<fx:Declarations>
+		<s:GlowFilter id="DorsalNumberStrokeFilter" blurX="2" blurY="2" strength="10" quality="3" color="0x000000" />
+	</fx:Declarations>	
+
+	<s:Graphic>
+		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='PlayerDetailBg')" fillMode="clip" />
+	</s:Graphic>
+	
+	<s:Group left="10" top="10" width="59" height="59">
+		<mx:Image top="29" left="29" id="MyCapMC" source="{resourceManager.getClass('main','CapDetail')}" />
+		<s:Label text="{TheSoccerPlayer.DorsalNumber.toString()}" horizontalCenter="0" top="18" styleName="whiteBoldBig" textAlign="center" filters="{DorsalNumberStrokeFilter}"/>
+	</s:Group>
+		
+	<!--TODO (Santi): Cambio a TuentiPicture-->
+	<!--
+	<GameView:FacebookPicture FacebookID="{TheSoccerPlayer.FacebookID}" maskType="alpha" scaleX="0.96" scaleY="0.96" top="14" left="15">
+		<GameView:mask>
+			<s:Group>
+				<s:Ellipse width="50" height="50">
+					<s:fill><s:SolidColor color="#000000" alpha="1" /></s:fill>
+				</s:Ellipse>
+			</s:Group>
+		</GameView:mask>
+	</GameView:FacebookPicture>
+	-->
+	<GameView:TuentiPicture Avatar="{TheSoccerPlayer.Avatar}" maskType="alpha" scaleX="0.96" scaleY="0.96" top="14" left="15">
+		<GameView:mask>
+			<s:Group>
+				<s:Ellipse width="50" height="50">
+					<s:fill><s:SolidColor color="#000000" alpha="1" /></s:fill>
+				</s:Ellipse>
+			</s:Group>
+		</GameView:mask>
+	</GameView:TuentiPicture>
+	
+	<s:Label text="{TheSoccerPlayer.Name}" left="75" top="21" styleName="whiteBoldMedium" />
+		
+	<mx:Image left="74" top="42" id="MyCapStars" source="@Embed(source='/Assets/General.swf', symbol='CapDetailsStars')"/>
+	
+	<s:Label text="{TheSoccerPlayerDerived.Quality}" left="164" top="42" styleName="whiteBoldMedium" />
+		
+</s:Group>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:Competition="GameView.Competition.*"
+		 xmlns:Team="GameView.Team.*" xmlns:Match="GameView.Match.*" xmlns:GameView="GameView.*"
+		 width="100%" height="100%"
+		 addedToStage="AddedToStageHandler(event)"
+		 creationComplete="CreationCompleteHandler(event)"
+		 >
+	
+	<fx:Declarations>
+		<s:DropShadowFilter id="shadowNormal" distance="2" angle="90" blurX="1" blurY="1"/>
+		<s:GlowFilter id="glowNormal" strength="1" alpha="0.7" blurX="10" blurY="10" color="#FFFFFF"/>
+	</fx:Declarations>	
+	
+	<fx:Style source="../styles.css" />
+		
+	<fx:Script><![CDATA[
+		import GameModel.CompetitionModel;
+		import GameModel.MainGameModel;
+		
+		import GameView.PromotedDialog;
+		import GameView.Skins.DefaultPanelSkin;
+		
+		import mx.binding.utils.BindingUtils;
+		import mx.events.FlexEvent;
+		
+		import utils.TimeUtils;
+		
+		// Queremos refrescar la competicion cada vez que se recarga la pestaña
+		protected function AddedToStageHandler(event:Event):void
+		{
+			GameMetrics.ReportPageView(GameMetrics.VIEW_COMPETITION);
+			
+			// Se produce el AddedToStage antes q el CreationComplete (solo la primera vez, luego no se produce mas el CreationComplete, claro)
+			if (mCompetitionModel != null)
+				mCompetitionModel.RefreshGroup(OnGroupRefreshed);
+		}
+		
+		protected function CreationCompleteHandler(event:FlexEvent):void
+		{
+			mGameModel = SoccerClient.GetMainGameModel();
+			mCompetitionModel = mGameModel.TheCompetitionModel;
+			
+			BindingUtils.bindSetter(OnPromotedChanged, mCompetitionModel, ["TheGroup", "Promoted"] );
+			
+			mCompetitionModel.RefreshGroup(OnGroupRefreshed);
+		}
+		
+		private function OnPromotedChanged(bPromoted : Boolean) : void
+		{
+			if (bPromoted)
+			{
+				// Podemos mostrar directamente el mensaje porque el Changed no nos llegara 2 veces a true (al producirse el Refresh dentro del modelo,
+				// el server lo mandara a false la segunda vez, es decir, el server recuerda lo que nos mando la ultima vez)
+				PromotedDialog.Show();
+			}
+		}
+		
+		private function OnGroupRefreshed() : void
+		{
+			if (MyCompetitionList != null)
+			{
+				MyCompetitionList.selectedItem = mCompetitionModel.GetLocalGroupEntry();
+				MyCompetitionList.callLater(EnsureSelectedIsVisible);
+			}
+		}
+		
+		private function EnsureSelectedIsVisible() : void
+		{
+			var idx : int = MyCompetitionList.dataProvider.getItemIndex(mCompetitionModel.GetLocalGroupEntry());
+			
+			if (idx + 4 < MyCompetitionList.dataProvider.length)
+				idx += 4;
+			else
+				idx = MyCompetitionList.dataProvider.length-1;
+			
+			try {			
+				MyCompetitionList.ensureIndexIsVisible(idx);
+			} catch(e:Error) {}
+		}
+		
+		[Bindable]
+		private var mCompetitionModel : CompetitionModel;
+		private var mGameModel : MainGameModel;
+		
+	]]></fx:Script>
+	
+	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" height="470" left="10" width="740" title="{resourceManager.getString('main','CompetitionPanelTitle')}">
+		<s:controlBarContent>
+			<GameView:HelpCallout HelpText="{resourceManager.getString('main','CompetitionHelpCallout')}"/>
+		</s:controlBarContent>
+		
+		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraFondo')" fillMode="clip" />
+		
+		<Competition:DivisionBadge x="0" y="0" Division="{mCompetitionModel.TheGroup.DivisionName}" />
+		
+		<s:Group x="116" top="22">
+			<s:layout>
+				<s:VerticalLayout horizontalAlign="left" gap="4" />
+			</s:layout>
+			<s:Label x="111" y="12" text="{resourceManager.getString('main','DivisionName'+mCompetitionModel.TheGroup.DivisionName)}" styleName="whiteBoldHuge" filters="{[glowNormal]}" />
+			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraLineaDivision')" fillMode="clip" />
+			<s:Label width="72" x="112" y="63" text="GRUPO: {mCompetitionModel.TheGroup.GroupName}" styleName="whiteBoldBig" textAlign="left" />
+		</s:Group>
+		
+		<s:Group right="0" top="29">
+			<s:layout>
+				<s:HorizontalLayout gap="0" />
+			</s:layout>
+			<s:Group>
+				<s:layout>
+					<s:VerticalLayout horizontalAlign="center" gap="4" />
+				</s:layout>
+				<s:Label width="142" text="{resourceManager.getString('main','CompetitionSeasonEnd')}" styleName="whiteBoldMedium" textAlign="center" color="#c3c3c3" filters="{[shadowNormal]}" />
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraLinea')" fillMode="clip" />
+				<s:Label width="142" text="{TimeUtils.ConvertSecondsToStringVerbose(mCompetitionModel.RemainingSeasonSeconds)}" 
+						 styleName="whiteBoldVeryBig" textAlign="center" filters="{[glowNormal]}" />	
+			</s:Group>
+			<s:Group>
+				<s:layout>
+					<s:VerticalLayout horizontalAlign="center" gap="4" />
+				</s:layout>
+				<s:Label width="120" text="{resourceManager.getString('main','CompetitionPromotionThreshold')}" styleName="whiteBoldMedium" textAlign="center" color="#c3c3c3" filters="{[shadowNormal]}" />
+				<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='CompeticionCabeceraLinea')" fillMode="clip" />
+				<s:Label width="120" text="{mCompetitionModel.TheGroup.MinimumPoints} Ptos" styleName="whiteBoldVeryBig" textAlign="center" filters="{[glowNormal]}" />	
+			</s:Group>
+		</s:Group>
+		
+		<s:List id="MyCompetitionList" left="0" right="0" top="105" height="336"
+				dataProvider="{mCompetitionModel.TheGroup.GroupEntries}" skinClass="GameView.Competition.CompetitionListSkin"		
+				itemRenderer="GameView.Competition.CompetitionGroupItem" useVirtualLayout="true" />
+		
+		<Competition:LookingForMatchPanel x="0" y="0" />
+				
+	</s:Panel>
+	
+</s:Group>

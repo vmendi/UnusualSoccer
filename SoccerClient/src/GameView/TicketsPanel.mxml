@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 creationComplete="CreationCompleteHandler(event)" 
+		 width="170" height="65">
+	
+	<fx:Style source="styles.css"/>
+	
+	<s:states>
+		<s:State name="NotPurchased"/>
+		<s:State name="Purchased"/>
+	</s:states>
+	
+	<fx:Script>
+		<![CDATA[
+			import GameModel.MainGameModel;
+			import GameModel.TeamModel;
+			import GameModel.TicketModel;
+			
+			import GameView.Purchase.PurchaseBase;
+			
+			import mx.binding.utils.BindingUtils;
+			import mx.events.FlexEvent;
+			
+			protected function CreationCompleteHandler(event:FlexEvent):void
+			{
+				mMainGameModel = SoccerClient.GetMainGameModel();
+				mTeamModel = mMainGameModel.TheTeamModel;
+				mTicketModel = mMainGameModel.TheTicketModel;
+				
+				BindingUtils.bindSetter(OnHasTicketChanged, mTicketModel, ["HasTicket"]);
+				BindingUtils.bindSetter(OnTicketRemainingMatchesChanged, mTeamModel, ["TheTeam", "Ticket", "RemainingMatches"]);
+			}
+			
+			private function OnTicketRemainingMatchesChanged(newVal : int) : void
+			{
+				if (newVal == 0)
+				{
+					MyZeroRemaining.visible = true;
+					MyRemainingMatches.visible = false;
+					MyRemainingMatchesTitle.visible = false;
+				}
+				else
+				{
+					MyZeroRemaining.visible = false;
+					MyRemainingMatches.visible = true;
+					MyRemainingMatchesTitle.visible = true;
+				}
+			}
+			
+			private function OnHasTicketChanged(hasTicket : Boolean) : void
+			{
+				if (hasTicket)
+					currentState = "Purchased";
+				else
+					currentState = "NotPurchased";
+			}
+			
+			/*protected function MyBuyTicketsButton_clickHandler(event:MouseEvent):void
+			{
+				PurchaseBase.ShowPurchase(getDefinitionByName("GameView.Purchase.PurchaseTicket") as Class);
+			}*/
+			
+			[Bindable] private var mMainGameModel : MainGameModel;
+			[Bindable] private var mTeamModel : TeamModel;
+			[Bindable] private var mTicketModel : TicketModel;
+		]]>
+	</fx:Script>
+
+	<mx:Image source="@Embed(source='/Assets/General.swf', symbol='TicketBg')" alpha.NotPurchased="1" alpha.Purchased="1" />
+	
+	<s:Group height="40" x="0" horizontalCenter="0" includeIn="NotPurchased">
+		<s:layout>
+			<s:HorizontalLayout gap="4" verticalAlign="middle" />
+		</s:layout>
+		<s:Label id="MyRemainingMatches"  text="{mTeamModel.TheTeam.Ticket.RemainingMatches}" styleName="blackBoldHuge" />
+		<s:RichText id="MyRemainingMatchesTitle" styleName="blackBoldBig" whiteSpaceCollapse="preserve" textAlign="center" kerning="auto" lineHeight="104%">
+			<s:content><s:p><s:span>MATCHES</s:span></s:p><s:p><s:span>TODAY</s:span></s:p></s:content>
+		</s:RichText>
+	</s:Group>
+
+	<s:Label id="MyZeroRemaining" text="You don't have available matches for today." styleName="blackBoldMediumHN"  includeIn="NotPurchased"
+			 width="124" x="32" y="7"
+			 textAlign="center" />
+	
+	<s:Group includeIn="Purchased" left="0" right="0">
+		<s:Label text="{mTeamModel.TheTeam.Ticket.TicketExpiryDate.toDateString()}" styleName="whiteBoldBig" y="5" left="0" right="0" textAlign="center" />
+		<s:Label text="{mTeamModel.TheTeam.Ticket.TicketExpiryDate.toLocaleTimeString()}" styleName="whiteBoldBig" y="20" left="0" right="0" textAlign="center" />
+	</s:Group>
+	
+	<!--<s:Button id="MyBuyTicketsButton"
+			  label.NotPurchased="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
+			  label.Purchased="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
+			  click="MyBuyTicketsButton_clickHandler(event)"
+			  skinClass="GameView.Skins.ButtonDarkGreySkin"
+			  width="110" height="18" x="40" y="41"/>-->
+
+</s:Group>
