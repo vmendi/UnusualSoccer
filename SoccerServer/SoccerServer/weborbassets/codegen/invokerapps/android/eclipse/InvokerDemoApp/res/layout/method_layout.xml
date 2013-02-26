@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+        >
+    <TextView android:id="@+id/method_signature"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:textAppearance="@android:style/TextAppearance.Small"
+              android:padding="5dp"
+              android:clickable="false"
+              android:layout_alignParentTop="true"
+            />
+
+    <LinearLayout android:orientation="horizontal"
+                  android:id="@+id/button_layout"
+                  android:layout_height="wrap_content"
+                  android:layout_width="match_parent"
+                  android:gravity="bottom"
+                  android:layout_alignParentBottom="true"
+            >
+        <Button android:id="@+id/invokeButton"
+                android:text="@string/invoke_button"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                />
+        <Button android:id="@+id/cancelButton"
+                android:text="@string/cancel_button"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                />
+    </LinearLayout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/method_signature"
+                android:layout_above="@id/button_layout"
+            >
+        <TableLayout android:id="@+id/argument_view_layout"
+                     android:orientation="horizontal"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:shrinkColumns="*"
+                     android:stretchColumns="2"
+                     android:clickable="false"
+                     android:layout_weight="1"
+                >
+            <TableRow android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:paddingTop="2dip"
+                      android:paddingBottom="2dip"
+                      android:paddingLeft="+5dp"
+                      android:clickable="false"
+                    >
+                <TextView android:id="@+id/argument_title"
+                          android:text="@string/argument_title"
+                          android:textColor="@color/title_color"
+                          android:singleLine="true"
+                          android:layout_width="fill_parent"
+                          android:layout_height="wrap_content"
+                          android:paddingRight="15dp"
+                          android:textAppearance="@android:style/TextAppearance.Medium"
+                        />
+                <TextView android:id="@+id/type_title"
+                          android:text="@string/type_title"
+                          android:textColor="@color/title_color"
+                          android:singleLine="true"
+                          android:layout_width="fill_parent"
+                          android:layout_height="wrap_content"
+                          android:paddingRight="15dp"
+                          android:textAppearance="@android:style/TextAppearance.Medium"
+                        />
+                <TextView android:id="@+id/value_title"
+                          android:text="@string/value_title"
+                          android:textColor="@color/title_color"
+                          android:singleLine="true"
+                          android:layout_width="fill_parent"
+                          android:layout_height="wrap_content"
+                          android:textAppearance="@android:style/TextAppearance.Medium"
+                        />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+
+</RelativeLayout>

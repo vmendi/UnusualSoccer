@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvokerDemoApp.Web", "InvokerDemoApp.Web.csproj", "{7285BAB0-D0B5-4CE2-BF1A-3312EBCE32CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7285BAB0-D0B5-4CE2-BF1A-3312EBCE32CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7285BAB0-D0B5-4CE2-BF1A-3312EBCE32CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7285BAB0-D0B5-4CE2-BF1A-3312EBCE32CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7285BAB0-D0B5-4CE2-BF1A-3312EBCE32CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = InvokerDemoApp.Web.csproj
+	EndGlobalSection
+EndGlobal

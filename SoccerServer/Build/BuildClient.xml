@@ -1,0 +1,6 @@
+<?xml version="1.0"?> 
+<project default="TheTarget"> 
+    <target name="TheTarget"> 
+        <fb.exportReleaseBuild project="SoccerClient" /> 
+    </target> 
+</project>

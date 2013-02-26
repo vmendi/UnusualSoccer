@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" minWidth="734" minHeight="356" initialize="onInitialize()">
+	
+	<mx:Script>
+		<![CDATA[
+			
+			[Bindable]
+			private var controller:VideoRecordingController;
+			
+			private function onInitialize():void
+			{
+				controller = new VideoRecordingController(this);
+			}
+
+		]]>
+	</mx:Script>
+	
+	<mx:Button id="btnConnection" x="10" y="10" width="150"
+		label="{controller.model.connected ? 'Disconnect' : 'Connect'}" 
+		click="{controller.onConnect()}" />
+	
+	<mx:HBox x="0" y="42" horizontalGap="10" verticalAlign="bottom" enabled="{controller.model.connected}">
+		
+		<mx:VBox verticalGap="10" paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10">
+			<mx:VBox borderStyle="solid" cornerRadius="4" 
+				paddingRight="10" paddingLeft="10" paddingBottom="10" paddingTop="10">
+				<mx:VideoDisplay id="videoDisplay" width="320" height="240" />
+			</mx:VBox>
+			<mx:Button id="btnRecord" width="150" 
+				enabled="{controller.model.connected &amp;&amp; !controller.model.playing}"
+				label="{controller.model.recording ? 'Stop' : 'Start'} Record" 
+				click="{controller.onRecord()}" />
+		</mx:VBox>
+		
+		<mx:VBox verticalGap="10" paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10">
+			<mx:VBox borderStyle="solid" cornerRadius="4" 
+				paddingRight="10" paddingLeft="10" paddingBottom="10" paddingTop="10">
+				<mx:Canvas width="320" height="240" backgroundColor="0x000000">
+					<mx:UIComponent id="playbackContainer" width="320" height="240" />
+				</mx:Canvas>
+			</mx:VBox>
+			<mx:Button id="btnPlayVideo" width="150"
+				enabled="{controller.model.connected &amp;&amp; !controller.model.recording}"
+				label="{controller.model.playing ? 'Stop' : 'Play'} Video" 
+				click="{controller.onPlayVideo()}" />
+		</mx:VBox>
+		
+	</mx:HBox>
+	
+</mx:Canvas>

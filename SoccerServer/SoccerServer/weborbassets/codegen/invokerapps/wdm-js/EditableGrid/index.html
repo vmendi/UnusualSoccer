@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html>
+<head>
+	<title>Test Drive - EditableGrid</title>
+	<style>
+	</style>
+	
+	<!-- EditableGrid required css and javascript files -->
+	<link rel="stylesheet" type="text/css" media="screen" href="css/editablegrid-1.0.11.css" />
+	<script src="js/editablegrid-1.0.11.js" type="text/javascript"></script>
+	
+	<!-- Files required for data management -->
+	<script src="WebORB.js" type="text/javascript" language="javascript"></script>
+	<script src="wdm.js" type="text/javascript" language="javascript"></script>
+	<script src="wdm-model.js" type="text/javascript" language="javascript"></script>
+	
+	<!-- Custom css and js files -->
+	<link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
+	<script src="js/testdrive.js" type="text/javascript"></script>
+
+</head>
+
+<body onload="init()">
+<table border=0>
+<tr><td style="padding-right:10px">
+
+<div style="width:200px">
+	<div class="padded header cornerTop">Tables</div>
+	<div id="tableList" class="cornerBottom cb"></div>
+</div>
+
+</td><td valign="top">
+<div style="width:800px; height:400px">
+	<button class="borderTwin marged ptr" onclick="addRecord();">Create New Record</button>
+	<button class="borderTwin marged ptr" onclick="showCode();">Show Sample Code</button>
+	<span class="cb" style="margin-left:50px">Page size: </span>
+	<select id="lstPageSize" class="cb" onchange="adapter.selectTable(adapter.selectedTable, this.value)">
+		<option value="5">5</option>
+		<option value="10">10</option>
+		<option value="20">20</option>
+		<option value="40">40</option>
+	</select>
+	<div id="divCode">
+		<div class="padded header cornerTop">Code for basic data operations</div>
+		<div class="divBlockBody cornerBottom">
+			<div id="divCodeContent">
+				<pre style="font-family: courier new, monospace">
+// CREATE RECORD
+
+var async = new Async( 
+	function() { alert( "New record created." ) }, 
+	function( err ) { alert( "Error: " + err.description ); } 
+	);
+
+var %tableVar% = new %Table%();
+%setFields%%tableVar%.create( async );
+
+
+
+// READ RECORDS
+
+// syncronously
+var activeCollection = ActiveRecords.%Table%.findBy( "%pk%", %pkValue% );
+var activeCollection2 = ActiveRecords.%Table%.findAll();
+
+// asyncronously
+var async = new Async( 
+	function( queryResult ) { alert( "Received " + queryResult.Result.length + " rows."); }, 
+	function( err ) { alert( "Error: " + err.description ); }
+	);
+
+ActiveRecords.%Table%.findBy( "%pk%", %pkValue%, async );
+ActiveRecords.%Table%.findAll( async );
+
+
+
+// UPDATE RECORD
+
+var %tableVar% = new %Table%( %pkValue% );
+%tableVar%.%field% = %fieldValue%;
+%tableVar%.save( async );
+
+
+
+// DELETE RECORD 
+
+var %tableVar% = new %Table%( %pkValue% );
+var cascading = true;
+%tableVar%.remove( cascading, async );	
+				</pre>
+			</div>
+			<br>
+			<button class="borderTwin marged ptr" onclick="switchToGrid()"> Close </button>
+		</div>
+	</div>
+	
+	<div id="divNewRecord">
+		<div class="padded header cornerTop" id="divNewRecordCaption"></div>
+		<div id="divNewRecordContent" class="divBlockBody cornerBottom"></div>
+	</div>
+
+	<div id="divGridBlock">
+		<div id="divGridCaption" class="padded header cornerTop" style="height: 19px"></div>	
+		<div id="divGrid">
+		</div>
+		<div id="divPager" class="borderTwin cornerBottom padded"></div>
+	</div>
+</div>
+</td></tr></table>
+
+</body>
+</html>

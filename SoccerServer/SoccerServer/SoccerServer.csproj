@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E8FF811B-43D3-4512-B7A8-6DCD32005D79}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SoccerServer</RootNamespace>
+    <AssemblyName>SoccerServer</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PackageAsSingleFile>false</PackageAsSingleFile>
+    <DesktopBuildPackageLocation>../Build/Package</DesktopBuildPackageLocation>
+    <ExcludeGeneratedDebugSymbol>false</ExcludeGeneratedDebugSymbol>
+    <DeployIisAppPath>SoccerServerV2</DeployIisAppPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DesktopBuildPackageLocation>../Build/Package</DesktopBuildPackageLocation>
+    <PublishDatabaseSettings>
+      <Objects>
+        <ObjectGroup Name="SoccerV1ConnectionString-Deployment" Order="1" Enabled="True">
+          <Destination Path="" />
+          <Object Type="dbFullSql" Enabled="True">
+            <PreSource Path="Data Source=localhost%3bInitial Catalog=SoccerV1%3bIntegrated Security=True" ScriptSchema="True" ScriptData="True" CopyAllFullTextCatalogs="False" />
+            <Source Path="obj\Release\AutoScripts\SoccerV1ConnectionString-Deployment_SchemaAndData.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
+      </Objects>
+    </PublishDatabaseSettings>
+    <PackageAsSingleFile>false</PackageAsSingleFile>
+    <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
+    <ExcludeApp_Data>false</ExcludeApp_Data>
+    <PublishDatabases>false</PublishDatabases>
+    <IncludeIisSettings>false</IncludeIisSettings>
+    <DeployIisAppPath>SoccerServerV2</DeployIisAppPath>
+    <IncludeAppPool>false</IncludeAppPool>
+    <DeployIisAppPhysicalPath>c:\inetpub\wwwsoccerserverv2</DeployIisAppPhysicalPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Mono.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data, Version=6.3.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="SgmlReaderDll">
+      <HintPath>..\..\..\..\Users\Yo\Desktop\tuenti-net-tuenti-net\TuentiLibrary\bin\Debug\SgmlReaderDll.dll</HintPath>
+    </Reference>
+    <Reference Include="Spring.Core, Version=1.3.0.20349, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\Backup.sql" />
+    <Content Include="App_Data\DeleteAll.sql" />
+    <Content Include="App_Data\UpdateTeam.sql" />
+    <Content Include="Cancelled.aspx" />
+    <Content Include="channel.html" />
+    <Content Include="console\AC_OETags.js" />
+    <Content Include="console\configtrouble.htm" />
+    <Content Include="console\console.swf" />
+    <Content Include="console\examplesinstructions.htm" />
+    <Content Include="console\gettingstarted.htm" />
+    <Content Include="console\history.htm" />
+    <Content Include="console\history.js" />
+    <Content Include="console\history.swf" />
+    <Content Include="console\images\consolebar.jpg" />
+    <Content Include="console\images\examplesoverview.jpg" />
+    <Content Include="console\images\folder_closed.png" />
+    <Content Include="console\images\orboverview.jpg" />
+    <Content Include="console\images\runningwoee.jpg" />
+    <Content Include="console\images\services.png" />
+    <Content Include="console\images\testdrive.png" />
+    <Content Include="console\introduction.htm" />
+    <Content Include="console\playerProductInstall.swf" />
+    <Content Include="console\troubleshooting.htm" />
+    <Content Include="console\woeeoverview.htm" />
+    <Content Include="console\woeestandalone.htm" />
+    <Content Include="console\yesflex-yesdotnet.htm" />
+    <Content Include="crossdomain.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Deauthorize.aspx" />
+    <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="Imgs\BannerMeGustaBg.png" />
+    <Content Include="Imgs\BannerMeGustaBg_en_US.png" />
+    <Content Include="Imgs\BannerMeGustaBg_es_LA.png" />
+    <Content Include="Imgs\CanceledBg.jpg" />
+    <Content Include="Imgs\CanceledIconBasicInfo.gif" />
+    <Content Include="Imgs\CanceledIconWall.gif" />
+    <Content Include="Imgs\CanceledLogo.png" />
+    <Content Include="Imgs\CanceledLogoUnusual.png" />
+    <Content Include="Imgs\CanceledPlayButton.png" />
+    <Content Include="Imgs\DivisionBadge_en_US.swf" />
+    <Content Include="Imgs\DivisionBadge_es_ES.swf" />
+    <Content Include="Imgs\FacebookLandingPage.jpg" />
+    <Content Include="Imgs\FacebookLandingPage_en_US.jpg" />
+    <Content Include="Imgs\FacebookLandingPage_es_LA.jpg" />
+    <Content Include="Imgs\HeaderLinks.gif" />
+    <Content Include="Imgs\LoginLogo_en_US.swf" />
+    <Content Include="Imgs\LoginLogo_es_ES.swf" />
+    <Content Include="Imgs\Logo100x100.png" />
+    <Content Include="Imgs\Logo100x100_en_US.png" />
+    <Content Include="Imgs\Logo75x75.png" />
+    <Content Include="Imgs\Logo75x75_en_US.png" />
+    <Content Include="Imgs\MainHeader.jpg" />
+    <Content Include="Imgs\MainHeader_en_US.jpg" />
+    <Content Include="Imgs\Match_en_US.swf" />
+    <Content Include="Imgs\Match_es_ES.swf" />
+    <Content Include="Imgs\Match_es_LA.swf" />
+    <Content Include="Imgs\MensajeHabilidad5Estrellas.jpg" />
+    <Content Include="Imgs\MensajeHabilidad5Estrellas_en_US.jpg" />
+    <Content Include="Imgs\MensajeHabilidadCatenaccio.jpg" />
+    <Content Include="Imgs\MensajeHabilidadCatenaccio_en_US.jpg" />
+    <Content Include="Imgs\MensajeHabilidadConseguida.jpg" />
+    <Content Include="Imgs\MensajeHabilidadFuriaRoja.jpg" />
+    <Content Include="Imgs\MensajeHabilidadFuriaRoja_en_US.jpg" />
+    <Content Include="Imgs\MensajeHabilidadManoDeDios.jpg" />
+    <Content Include="Imgs\MensajeHabilidadManoDeDios_en_US.jpg" />
+    <Content Include="Imgs\MensajeHabilidadMasterDribbling.jpg" />
+    <Content Include="Imgs\MensajeHabilidadMasterDribbling_en_US.jpg" />
+    <Content Include="Imgs\MensajeHabilidadPorteriaSegura.jpg" />
+    <Content Include="Imgs\MensajeHabilidadPorteriaSegura_en_US.jpg" />
+    <Content Include="Imgs\MensajeHabilidadSuperPotencia.jpg" />
+    <Content Include="Imgs\MensajeHabilidadSuperPotencia_en_US.jpg" />
+    <Content Include="Imgs\MensajeHabilidadTiempoExtra.jpg" />
+    <Content Include="Imgs\MensajeHabilidadTiempoExtra_en_US.jpg" />
+    <Content Include="Imgs\MensajeHabilidadTiroAGol.jpg" />
+    <Content Include="Imgs\MensajeHabilidadTiroAGol_en_US.jpg" />
+    <Content Include="Imgs\MensajeHabilidadTiroExtra.jpg" />
+    <Content Include="Imgs\MensajeHabilidadTiroExtra_en_US.jpg" />
+    <Content Include="Imgs\MensajeHabilidadVerAreas.jpg" />
+    <Content Include="Imgs\MensajeHabilidadVerAreas_en_US.jpg" />
+    <Content Include="Imgs\MensajeVictoria.jpg" />
+    <Content Include="Imgs\MensajeVictoria_en_US.jpg" />
+    <Content Include="Imgs\NavBg.png" />
+    <Content Include="Imgs\NavIconBase_en_US.png" />
+    <Content Include="Imgs\NavIconForo.png" />
+    <Content Include="Imgs\NavIconInfo.png" />
+    <Content Include="Imgs\NavIconInfo_en_US.png" />
+    <Content Include="Imgs\NavIconInfo_es_LA.png" />
+    <Content Include="Imgs\NavIconInvita.png" />
+    <Content Include="Imgs\NavIconInvita_en_US.png" />
+    <Content Include="Imgs\NavIconInvita_es_LA.png" />
+    <Content Include="Imgs\NavIconMuro.png" />
+    <Content Include="Imgs\NavIconMuro_en_US.png" />
+    <Content Include="Imgs\NavIconMuro_es_LA.png" />
+    <Content Include="Imgs\NavIcons.png" />
+    <Content Include="Imgs\NavIconVisita.png" />
+    <Content Include="Imgs\PopupAppOffline.jpg" />
+    <Content Include="Imgs\TrainingItem_en_US.swf" />
+    <Content Include="Imgs\TrainingItem_es_ES.swf" />
+    <Content Include="logs\dummy.txt" />
+    <Content Include="News.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="ServerStats.aspx" />
+    <Content Include="ServerStatsGlobalMatches.aspx" />
+    <Content Include="ServerStatsMatchesControl.ascx" />
+    <Content Include="ServerStatsProfile.aspx" />
+    <Content Include="ServerStatsPurchases.aspx" />
+    <Content Include="ServerStatsRanking.aspx" />
+    <Content Include="SoccerClient\SoccerClient.swf" />
+    <Content Include="TestCreateSession.aspx" />
+    <Content Include="ServerStatsTrueSkill.aspx" />
+    <Content Include="WEB-INF\flex\data-management-config.xml" />
+    <Content Include="WEB-INF\flex\dynamic-remoting-config.xml" />
+    <Content Include="WEB-INF\flex\messaging-config.xml" />
+    <Content Include="WEB-INF\flex\remoting-config.xml" />
+    <Content Include="WEB-INF\flex\services-config.xml" />
+    <Content Include="WEB-INF\flex\weborb-services-config.xml" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="weborbconsole.html" />
+    <Content Include="_App_Offline.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cancelled.aspx.cs">
+      <DependentUpon>Cancelled.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Cancelled.aspx.designer.cs">
+      <DependentUpon>Cancelled.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FBUtils.cs" />
+    <Compile Include="Deauthorize.aspx.cs">
+      <DependentUpon>Deauthorize.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Deauthorize.aspx.designer.cs">
+      <DependentUpon>Deauthorize.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="JSON.cs" />
+    <Compile Include="Ping.ashx.cs">
+      <DependentUpon>Ping.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerStats.aspx.cs">
+      <DependentUpon>ServerStats.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerStats.aspx.designer.cs">
+      <DependentUpon>ServerStats.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerStatsGlobalMatches.aspx.cs">
+      <DependentUpon>ServerStatsGlobalMatches.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerStatsGlobalMatches.aspx.designer.cs">
+      <DependentUpon>ServerStatsGlobalMatches.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerStatsMatchesControl.ascx.cs">
+      <DependentUpon>ServerStatsMatchesControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerStatsMatchesControl.ascx.designer.cs">
+      <DependentUpon>ServerStatsMatchesControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerStatsProfile.aspx.cs">
+      <DependentUpon>ServerStatsProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerStatsProfile.aspx.designer.cs">
+      <DependentUpon>ServerStatsProfile.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerStatsPurchases.aspx.cs">
+      <DependentUpon>ServerStatsPurchases.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerStatsPurchases.aspx.designer.cs">
+      <DependentUpon>ServerStatsPurchases.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerStatsRanking.aspx.cs">
+      <DependentUpon>ServerStatsRanking.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerStatsRanking.aspx.designer.cs">
+      <DependentUpon>ServerStatsRanking.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TestCreateSession.aspx.cs">
+      <DependentUpon>TestCreateSession.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestCreateSession.aspx.designer.cs">
+      <DependentUpon>TestCreateSession.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ServerStatsTrueSkill.aspx.cs">
+      <DependentUpon>ServerStatsTrueSkill.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ServerStatsTrueSkill.aspx.designer.cs">
+      <DependentUpon>ServerStatsTrueSkill.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TuentiData.cs" />
+    <Compile Include="TUENTIUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="NLog.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <Content Include="SoccerClient\framework_4.1.0.21490.swz" />
+    <Content Include="SoccerClient\osmf_flex.4.0.0.13495.swz" />
+    <Content Include="SoccerClient\rpc_4.1.0.16076.swz" />
+    <Content Include="SoccerClient\sparkskins_4.1.0.16076.swz" />
+    <Content Include="SoccerClient\spark_4.1.0.16076.swz" />
+    <Content Include="SoccerClient\textLayout_1.1.0.604.swz" />
+    <Content Include="Weborb.config" />
+    <Content Include="Ping.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HttpService\HttpService.csproj">
+      <Project>{111103BF-5CD3-432E-BF91-3E7E86F3FA89}</Project>
+      <Name>HttpService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetEngine\NetEngine.csproj">
+      <Project>{144F0F81-76BB-4C9F-A56E-DC4B6517F726}</Project>
+      <Name>NetEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Realtime\Realtime.csproj">
+      <Project>{EC84C8C2-3FD7-4A7D-8438-D0D84E1E1CD2}</Project>
+      <Name>Realtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerCommon\ServerCommon.csproj">
+      <Project>{F1DC52CB-B4FD-4BFD-ACA7-268F47D864EE}</Project>
+      <Name>ServerCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Skills\Skills.csproj">
+      <Project>{15AD1345-984C-48ED-AF9A-2EAB44E5AA2B}</Project>
+      <Name>Skills</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>3252</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
