@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<namespaces>
-  <runtime path="F:/UnusualGit/UnusualSoccer/SoccerServer/SoccerServer/" weborbRootURL="http://localhost/" />
-  <namespace name="HttpService" fullname="HttpService">
-    <service name="PrecompiledQueries" fullname="HttpService.PrecompiledQueries" namespace="HttpService" url="http://localhost/console/weborb.aspx">
-      <method name="PrecompileAll" type="void" nativetype="Void" containsvalues="0" />
-    </service>
-  </namespace>
-</namespaces>

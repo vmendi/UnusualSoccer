@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="weborbclient.jar">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/weborbclient.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
