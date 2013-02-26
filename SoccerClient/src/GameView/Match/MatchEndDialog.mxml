@@ -75,6 +75,7 @@
 			// Hacemos los reemplazos, la mismas palabras (CONTRARIO, RESULTADO) para todos los idiomas
 			msgToPublish.daDescription = (msgToPublish.daDescription as String).replace("CONTRARIO", mOpponentName);
 			msgToPublish.daDescription = (msgToPublish.daDescription as String).replace("RESULTADO", FormatResult(mMatchResult, false));
+			
 			// Esto por dentro vera si ya tenemos los permisos o intentara adquirirlos...
 			PublishMessages.TryPermissionsAndPublishOpenGraph(msgToPublish, onPublishCallback);
 			
