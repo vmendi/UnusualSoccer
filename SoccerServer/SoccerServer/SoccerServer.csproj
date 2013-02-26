@@ -159,9 +159,9 @@
     <Content Include="Imgs\MensajeHabilidadVerAreas.jpg" />
     <Content Include="Imgs\MensajeHabilidad_en_US.jpg" />
     <Content Include="Imgs\MensajeHabilidad_es_LA.jpg" />
-    <Content Include="Imgs\MensajeVictoria.jpg" />
-    <Content Include="Imgs\MensajeVictoria_en_US.jpg" />
-    <Content Include="Imgs\MensajeVictoria_es_LA.jpg" />
+    <Content Include="Imgs\MessageVictory.jpg" />
+    <Content Include="Imgs\MessageVictory_en_US.jpg" />
+    <Content Include="Imgs\MessageVictory_es_LA.jpg" />
     <Content Include="Imgs\NavBg.png" />
     <Content Include="Imgs\NavBgBottom.png" />
     <Content Include="Imgs\NavIconBase_en_US.png" />
