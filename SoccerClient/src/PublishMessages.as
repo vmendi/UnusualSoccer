@@ -68,7 +68,8 @@ package
 			params[publishMessage.daOpenGraphObjectType] = AppConfig.CANVAS_URL + '/OpenGraph/OpenGraph.ashx?data=' + ComposePublishData(publishMessage);
 			
 			// Whether it's published in the user wall explicitly
-			params['fb:explicitly_shared'] = publishMessage.daExplicitlyShared;
+			if (publishMessage.daExplicitlyShared)
+				params['fb:explicitly_shared'] = true;
 			
 			Facebook.api(method, OnPublishResponse, params, URLRequestMethod.POST);
 			

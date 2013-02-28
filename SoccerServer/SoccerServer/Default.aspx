@@ -171,7 +171,7 @@
             else {
                 (function () {
                     window.applifierAsyncInit = function () {
-                        Applifier.init({ applicationId: 2276, thirdPartyId: third_party_id });
+                        Applifier.init({ applicationId: 2562, thirdPartyId: third_party_id });
                         var bar = new Applifier.Bar({ barType: "bar", barContainer: "#ApplifierBar", autoBar: true });
                     };
                     var a = document.createElement('script'); a.type = 'text/javascript'; a.async = true;
@@ -240,7 +240,7 @@
     <asp:Panel runat="server" id="MyLikePanel" style="width:760px; height:38px; margin-bottom:0px; position:relative;">
         <img src="<%= GetRsc("Imgs/BannerMeGustaBg_${locale}.png") %>" alt="" width="760" height="38" style="display:block;border:0;position:absolute;" />
 	    <div style="float:left; padding-left:32px; padding-top:10px; width:150px;">
-            <fb:like href="http://apps.facebook.com/unusualsoccer/" ref="<%= GetUserFacebookID() %>" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
+            <fb:like href="http://www.facebook.com/unusualsoccer/" ref="<%= GetUserFacebookID() %>" send="false" layout="button_count" width="100" show_faces="false" action="like" font=""></fb:like>
 	    </div>
     </asp:Panel>
 
