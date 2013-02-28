@@ -20,10 +20,10 @@
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 	
-    <!-- Google Analytics, unusualwonder@gmail.com -->
+    <!-- Google Analytics, vmendi@unusualstudios.com -->
     <script type="text/javascript">
         var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-37167226-1']);
+        _gaq.push(['_setAccount', 'UA-38893981-1']);
         _gaq.push(['_trackPageview']);
 
         (function () {
