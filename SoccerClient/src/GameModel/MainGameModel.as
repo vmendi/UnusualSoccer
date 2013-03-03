@@ -11,7 +11,7 @@ package GameModel
 
 	public class MainGameModel extends EventDispatcher
 	{	
-		static public const POSSIBLE_MATCH_LENGTH_MINUTES : ArrayCollection = new ArrayCollection([ 10, 15, 5 ]);
+		static public const POSSIBLE_MATCH_LENGTH_MINUTES : ArrayCollection = new ArrayCollection([ 5, 10, 15 ]);
 		static public const POSSIBLE_TURN_LENGTH_SECONDS : ArrayCollection = new ArrayCollection([ 10, 15, 5 ]);
 		
 		static public const HEAL_INJURY_COST : int = 100;
