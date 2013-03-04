@@ -51,8 +51,12 @@ namespace SoccerServer
              * OLD: Cogiendo el parametro de la query string y parseando. Asumimos que es mejor coger el del Context y que el SDK decida.
              *      var fbSignedRequest = FacebookSignedRequest.Parse(Global.Instance.FacebookSettings as IFacebookApplication, 
              *                                                        HttpContext.Current.Request["signed_request"]);
+             *                                                        
+             * 3/4/2013: Hemos detectado que a veces no hay país (o quizá no hay user) y entonces salta una excepción
+             
+               var country = GetCountryFromSignedRequest(FacebookWebContext.Current.SignedRequest);
+             * 
              */
-            var country = GetCountryFromSignedRequest(FacebookWebContext.Current.SignedRequest);
 
             if (Request.QueryString.AllKeys.Contains("FakeSessionKey"))
             {
@@ -107,7 +111,7 @@ namespace SoccerServer
         private void InjectContentPanel(Boolean showLikePanel)
         {
             MyDefaultPanel.Visible = true;
-            //MyLikePanel.Visible = showLikePanel;
+            MyLikePanel.Visible = showLikePanel;
         }
 
         public string GetFlashVars()
