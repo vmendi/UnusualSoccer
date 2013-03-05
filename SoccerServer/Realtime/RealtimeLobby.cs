@@ -301,8 +301,11 @@ namespace Realtime
             // No lo damos por valido si hay demasiada diferencia de nivel (el equivalente en los amistosos a que no sea puntuable: WasJust).
             // No miramos el GetTooManyTimes, al no elegir la gente con quien juega siempre puntuaremos independientemente de cuantas veces hayan jugado ya.
             // Al acabar el partido en RealtimeMatchResult no hara falta pues comprobar nada, ya lo hemos todo aqui.
+            // Sistema desconectado temporalmente mientras hacemos "la rampa" de adquisicion de usuarios
+            /*
             if (bestSoFar > TrueSkillHelper.CUTOFF * TrueSkillHelper.MULTIPLIER)
                 closest = null;
+            */
 
             return closest;
         }

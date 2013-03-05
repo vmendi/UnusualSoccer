@@ -244,6 +244,9 @@
     <Compile Include="OpenGraph\OpenGraph.ashx.cs">
       <DependentUpon>OpenGraph.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Rewards.ashx.cs">
+      <DependentUpon>Rewards.ashx</DependentUpon>
+    </Compile>
     <Compile Include="ServerStats\FBUtils.cs" />
     <Compile Include="Deauthorize.aspx.cs">
       <DependentUpon>Deauthorize.aspx</DependentUpon>
@@ -346,6 +349,7 @@
     <Content Include="SoccerClient\rpc_4.5.1.21328.swz" />
     <Content Include="SoccerClient\spark_4.5.1.21489.swz" />
     <Content Include="SoccerClient\textLayout_2.0.0.232.swz" />
+    <Content Include="Rewards.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

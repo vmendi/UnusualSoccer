@@ -212,8 +212,10 @@ namespace SoccerServer
 
         static private void AwardTicketTime(TeamPurchase theTeamPurchase, int ticketKind, TimeSpan time)
         {
-            // A la expiracion del ticket, estara bien
-            theTeamPurchase.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
+            // A la expiracion del ticket, le damos el maximo de partidos. 
+            // Miramos por supuesto que no tuviera mas aun que el default (los consiguio por Rewards por ejemplo)
+            if (theTeamPurchase.RemainingMatches < GlobalConfig.DEFAULT_NUM_MACHES)
+                theTeamPurchase.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
 
             // Siempre marca la fecha del ultimo ticket comprado
             theTeamPurchase.TicketPurchaseDate = DateTime.Now;
@@ -291,7 +293,7 @@ namespace SoccerServer
 
             if (thePurchase == null || thePurchase.FacebookBuyerID != fb_id || thePurchase.Price != credsspent || thePurchase.ItemID != item_id)
             {
-                CriticalLog("Inconsistent comparision with our BDD");
+                CriticalLog("Inconsistent compare with our BDD");
 
                 if (thePurchase != null)
                 {

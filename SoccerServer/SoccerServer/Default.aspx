@@ -156,12 +156,15 @@
 		    swfobject.createCSS("#flashContent", "display:block;text-align:left;");
         };
 
+        // Santiago: hago global la variable theSWF, para no duplicarla para los callbacks de SponsorPay
+        var theSWF;
+
         // This method will be called from AS3 after the FB SDK is initialized (with FB.init). We avoid calling Facebook.api("/me") 
         // multiple times. We call only once from JS and pass the information back to AS3 using onFacebookMeRefreshed
         function refreshFacebookMe() {
             FB.api('/me?fields=third_party_id,name,currency,friends,gender,age_range', function(response) {
                 
-                var theSWF = document.getElementById('<%= SWF_SETTINGS["application"] %>');
+                theSWF = document.getElementById('<%= SWF_SETTINGS["application"] %>');
 
                 if (response && !response.error)
                 {                                                    
@@ -225,6 +228,62 @@
             return displayPrice;
         }
     </script>
+
+    <!-- SponsorPay start-->
+    <script src="//iframe.sponsorpay.com/javascripts/widget/v2/widgets.js" charset="utf-8"></script>
+    <script type="text/javascript">        
+        var _sp_video;
+        function setupSponsorPay(_year, _gender) {
+            _sp_video = new SPONSORPAY.Video.Iframe({
+                appid: <%= GetSponsorPay_AppKey() %>,   // the appid you get from the publisher dashboard
+                uid: <%= GetUserFacebookID() %>,        // anything you want that is unique and constant per user
+                height: 1000,
+                width: 1000,
+                year: _year,                            // Parámetro opcional para meter la edad del jugador
+                gender: _gender,                        // Parámetro opcional para meter el sexo del jugador
+                display_format: 'bare_player',          // default, will show only the video. Use 'player_and_reward' to show a line describing the reward on top of the video box.
+                pub0: 'AddMatch1',                      // Parametro opcional ( pub0, pub1,...pub9). (Aún sin probar)
+                callback_on_start: function (offer) {   // This function will be called if we have offer available for the user
+                    theSWF.ReadOffer(offer);            // Llamo al flash para enviar la oferta
+                                                        // The "offer" object in params contains two icon urls: offer.icon_small y offer.icon_medium;
+                },
+                callback_no_offers: function () {       // This function will be called if we have no offer
+                    theSWF.ReadOffer(null);
+                },
+                callback_on_close: function () {
+                    theSWF.SponsorPayClose();           // This function will be called if our lightbox is closed
+                },
+                callback_on_conversion: function () {
+                    theSWF.SponsorPayRewardEarned();    // This function will be called after user clicked the green button after watching.
+                }
+            });            
+            _sp_video.backgroundLoad();
+        }
+
+        function PlayVideo(){
+            _sp_video.showVideo();
+        }
+
+        // test function
+        function traceAlert(value){
+            alert(value);
+        }
+    </script>
+    <!-- SponsorPay end-->
+
+    <!-- Trialpay start -->
+    <script type="text/javascript" src="https://s-assets.tp-cdn.com/static3/js/api/payment_overlay.js"></script>
+    
+    <script type="text/javascript">
+        function onOfferAvailable_callback(obj) {
+            alert('Hay ofertas men!\n Corre a pillarlas : ' + obj.toString());
+        }
+
+        function onOfferUnavailable_callback() {
+            alert('No hay ofertas disponibles!\n Pero siempre te queda la opción de pillar unusual points');
+        }
+    </script>
+    <!-- Trialpay end -->
 
 </head>
 	

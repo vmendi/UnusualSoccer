@@ -18,11 +18,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>bin-debug</name>
-			<type>2</type>
-			<locationURI>$%7BDOCUMENTS%7D/SoccerServer/SoccerServer/SoccerClient</locationURI>
-		</link>
-		<link>
 			<name>bin-release</name>
 			<type>2</type>
 			<locationURI>$%7BDOCUMENTS%7D/SoccerServer/SoccerServer/SoccerClient</locationURI>
