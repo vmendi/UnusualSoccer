@@ -156,12 +156,14 @@
 		    swfobject.createCSS("#flashContent", "display:block;text-align:left;");
         };
 
+        //Santiago: hago global lavariable theSWF, para no duplicarla para los callbacks de SponsorPay
+        var theSWF;
         // This method will be called from AS3 after the FB SDK is initialized (with FB.init). We avoid calling Facebook.api("/me") 
         // multiple times. We call only once from JS and pass the information back to AS3 using onFacebookMeRefreshed
         function refreshFacebookMe() {
             FB.api('/me?fields=third_party_id,name,currency,friends,gender,age_range', function(response) {
                 
-                var theSWF = document.getElementById('<%= SWF_SETTINGS["application"] %>');
+                theSWF = document.getElementById('<%= SWF_SETTINGS["application"] %>');
 
                 if (response && !response.error)
                 {                                                    
@@ -226,56 +228,32 @@
         }
     </script>
 
-     <!-- start SponsorPay Setup-->
-     <script type="text/javascript">
-        function traceAlert(value){
-            alert('value');
-        }
-     </script>
+    <!-- SponsorPay start-->
     <script src="//iframe.sponsorpay.com/javascripts/widget/v2/widgets.js" charset="utf-8"></script>
-    <script type="text/javascript">
-        
+    <script type="text/javascript">        
         var _sp_video;
-
-        function setupSponsorPay(year, gender) {
+        function setupSponsorPay(_year, _gender) {
             _sp_video = new SPONSORPAY.Video.Iframe({
                 appid: <%= GetSponsorPay_AppKey() %>,   // the appid you get from the publisher dashboard
                 uid: <%= GetUserFacebookID() %>,        // anything you want that is unique and constant per user
                 height: 1000,
                 width: 1000,
-                /*year: 1980,                           // Parámetro opcional para meter la edad del jugador
-                gender: 'f',*/
+                year: _year,                            // Parámetro opcional para meter la edad del jugador
+                gender: _gender,                        // Parámetro opcional para meter el sexo del jugador
                 display_format: 'bare_player',          // default, will show only the video. Use 'player_and_reward' to show a line describing the reward on top of the video box.
-                callback_on_start: function (offer) {
-                    //This function will be called if we have offer available for the user
-                    //You can do what you want, for example show a button
-                    //that will show the video offer to the user, lke:
-                    //showClickableIcon();
-                    //PanelSponsorPay.visible = true;
-                     HayOfertas();
-                     alert(' >>>>  [ <%= GetUserFacebookID() %>] Yeah! We have availables Videos');
-                    //-llamo a flash() para ejecutar este callback. En el swf hago un "ExternalInterface.addCallback(...)"
-                    
-                    //The "offer" object in params contains two icon urls
-                    //These icons will be sometimes branded for the next video!
-                    //for example:
-                    //showClickableIconFromCustomUrl(offer.icon_small);
+                pub0: 'AddMatch1',                      // Parametro opcional ( pub0, pub1,...pub9). (Aún sin probar)
+                callback_on_start: function (offer) {   // This function will be called if we have offer available for the user
+                    theSWF.ReadOffer(offer);            // Llamo al flash para enviar la oferta
+                                                        // The "offer" object in params contains two icon urls: offer.icon_small y offer.icon_medium;
                 },
-                callback_no_offers: function () {
-                    //This function will be called if we have no offer
-                    //You can do what you want, for example hide the video offer button:
-                    //hideClickableIcon(); 
-                        //PanelSponsorPay.visible = false;
-                    //NoHayOfertas();
-                    alert('>>>> [ <%= GetUserFacebookID() %>] No offers now');
+                callback_no_offers: function () {       // This function will be called if we have no offer
+                    theSWF.ReadOffer(null);
                 },
                 callback_on_close: function () {
-                    //This function will be called if our lightbox is closed
+                    theSWF.SponsorPayClose();           // This function will be called if our lightbox is closed
                 },
                 callback_on_conversion: function () {
-                    //This function will be called after user clicked the green button after watching
-                    //You can perform any action you want and reward the user, for example:
-                    //rewardTheUser(); 
+                    theSWF.SponsorPayRewardEarned();    // This function will be called after user clicked the green button after watching.
                 }
             });            
             _sp_video.backgroundLoad();
@@ -284,12 +262,16 @@
         function PlayVideo(){
             _sp_video.showVideo();
         }
+        //test function
+        function traceAlert(value){
+            alert(value);
+        }
     </script>
-    <!-- end SponsorPay Setup-->
+    <!-- SponsorPay end-->
 
     <!-- Trialpay start -->
-        <script type="text/javascript" src="https://s-assets.tp-cdn.com/static3/js/api/payment_overlay.js"></script>
-    <!-- Trialpay cllbacks -->
+    <script type="text/javascript" src="https://s-assets.tp-cdn.com/static3/js/api/payment_overlay.js"></script>
+    
     <script type="text/javascript">
         function onOfferAvailable_callback(obj) {
             alert('Hay ofertas men!\n Corre a pillarlas : ' + obj.toString());
@@ -299,7 +281,7 @@
             alert('No hay ofertas disponibles!\n Pero siempre te queda la opción de pillar unusual points');
         }
     </script>
-
+    <!-- Trialpay end -->
 
 </head>
 	
