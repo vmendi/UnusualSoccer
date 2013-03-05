@@ -46,6 +46,11 @@
 			BindingUtils.bindSetter(OnPromotedChanged, mCompetitionModel, ["TheGroup", "Promoted"] );
 			
 			mCompetitionModel.RefreshGroup(OnGroupRefreshed);
+			
+			//Initialize SponsorPay API
+			LoadSponsorPayAPI();
+			//Initialize Trial Pay API
+			LoadTrialPayAPI();
 		}
 		
 		private function OnPromotedChanged(bPromoted : Boolean) : void
@@ -86,6 +91,84 @@
 		private var mGameModel : MainGameModel;
 		
 	]]></fx:Script>
+	
+	
+	<!-- SponsorPay Begin -->
+	<fx:Script>
+		<![CDATA[
+			/**
+			 * Iniciamos la API de Sponsor Pay y nos subscribimos a los callbacks del JS 
+			 * 
+			 */
+			private function LoadSponsorPayAPI():void{
+				ExternalInterface.addCallback("ReadOffer", SponsorPayReadOffer_Handle);
+				ExternalInterface.addCallback("SponsrPayClose", SponsrPayClose_Handle);
+				ExternalInterface.addCallback("SponsorPayRewardEarned", SponsorPayRewardEarned_Handle);
+				ExternalInterface.call('setupSponsorPay',1980,'m');
+			}
+			
+			/**
+			 * Se ejecuta cuando se produce el callback que SponsorPay envía al iniciar su API
+			 * 
+			 * @param offer Elobjeto con los iconos personalizados de la oferta
+			 */
+			private function SponsorPayReadOffer_Handle(offer:Object):void 
+			{			
+				if(offer != null){
+					imgOffer.visible=true;
+					if(offer.icon_small != "")
+						imgOffer.source == offer.icon_small;
+				}
+				else{
+					imgOffer.visible=false;
+				}
+			}
+			
+			/**
+			 * Se ejecuta cuando se produce el callback que SponsorPay envía al cerrar el iFrame
+			 * 
+			 */
+			private function SponsrPayClose_Handle():void{		
+				ExternalInterface.call('traceAlert', 'Se ha detectado el cierre del iFrame');
+			}
+			
+			/**
+			 * Se ejecuta cuando se produce el callback que SponsorPay envía cuando seproduce la recompensa 
+			 * 
+			 */
+			private function SponsorPayRewardEarned_Handle():void{		
+				ExternalInterface.call('traceAlert', 'Se ha detectado que el jugador ha recibido su recompensa');
+			}
+			
+			/**
+			 * Handler del Click de la imagen de la oferta de SponsorPay 
+			 * 
+			 */
+			protected function Offer_clickHandler(event:MouseEvent):void
+			{
+				ExternalInterface.call('PlayVideo');
+				
+			}
+		]]>
+	</fx:Script>
+	<!-- SponsorPay End -->
+	
+	<!-- TrialPay Begin -->
+	<fx:Script>
+		<![CDATA[
+			private function LoadTrialPayAPI():void {  
+				var context:LoaderContext = new LoaderContext();
+				
+				context.securityDomain = SecurityDomain.currentDomain;
+				context.applicationDomain = new ApplicationDomain();
+				
+				trialPayContainer.loaderContext = context;                 
+				trialPayContainer.source = "https://s-assets.tp-cdn.com/static3/swf/dealspot.swf?app_id=" + AppConfig.APP_ID + "&mode=fbpayments&onOfferUnavailable=onOfferUnavailable_callback&onOfferAvailable=onOfferAvailable_callback&sid=" + SoccerClient.GetFacebookFacade().FacebookID;
+			}
+		]]>
+	</fx:Script>
+	<!-- TrialPay End -->
+	
 	
 	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" height="470" left="10" width="740" title="{resourceManager.getString('main','CompetitionPanelTitle')}">
 		<s:controlBarContent>
@@ -136,4 +219,10 @@
 				
 	</s:Panel>
 	
+	<!-- Sponsor Pay Offer Image -->
+	<s:Image id="imgOffer" top="100" width="100" height="100" buttonMode="true"	 click="{Offer_clickHandler(event)}" horizontalCenter="-100" scaleMode="letterbox"
+			 smooth="true" smoothingQuality="default" visible="false" source="@Embed(source='/Assets/VideoOffer.png')" verticalAlign="middle"/>
+	
+	<!-- Trial Pay Offer Image -->
+	<mx:SWFLoader id="trialPayContainer" horizontalCenter="-100"  width="100" height="100" creationComplete="{LoadTrialPayAPI()}"  trustContent="true"/>
 </s:Group>
