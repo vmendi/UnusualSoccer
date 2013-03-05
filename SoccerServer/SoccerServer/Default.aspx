@@ -156,8 +156,9 @@
 		    swfobject.createCSS("#flashContent", "display:block;text-align:left;");
         };
 
-        //Santiago: hago global lavariable theSWF, para no duplicarla para los callbacks de SponsorPay
+        // Santiago: hago global la variable theSWF, para no duplicarla para los callbacks de SponsorPay
         var theSWF;
+
         // This method will be called from AS3 after the FB SDK is initialized (with FB.init). We avoid calling Facebook.api("/me") 
         // multiple times. We call only once from JS and pass the information back to AS3 using onFacebookMeRefreshed
         function refreshFacebookMe() {
@@ -262,7 +263,8 @@
         function PlayVideo(){
             _sp_video.showVideo();
         }
-        //test function
+
+        // test function
         function traceAlert(value){
             alert(value);
         }
