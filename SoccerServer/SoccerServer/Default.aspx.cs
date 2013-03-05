@@ -18,7 +18,7 @@ namespace SoccerServer
         readonly public NameValueCollection SWF_SETTINGS = System.Configuration.ConfigurationManager.GetSection("swfSettings") as NameValueCollection;
         private Player mPlayer;
         private const int SPONSORPAY_APP_KEY_DEBUG = 11472;
-        private const int SPONSORPAY_APP_KEY_DEV = 11634; 
+        private const int SPONSORPAY_APP_KEY_DEV = 11634;
         private const int SPONSORPAY_APP_KEY_RELEASE = 11371;
 
         protected void Page_Load(object sender, EventArgs e)
