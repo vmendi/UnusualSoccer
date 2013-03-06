@@ -110,7 +110,7 @@ namespace SoccerServer
 
                 using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
                 {
-                    theContext.ExecuteCommand("UPDATE [SoccerV2].[dbo].[TeamPurchases] SET [RemainingMatches] = {0}", GlobalConfig.DAILY_NUM_MATCHES);
+                    theContext.ExecuteCommand("UPDATE [SoccerV2].[dbo].[TeamPurchases] SET [RemainingMatches] = {0} WHERE [RemainingMatches] < {0}", GlobalConfig.DAILY_NUM_MATCHES);
                 }
 
                 mLast24hProcessedDateTime = now;
