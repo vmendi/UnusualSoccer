@@ -92,22 +92,18 @@ package
 			if (mPreloaderMovieclip == null)
 				show();
 			
-			/*
 			if (mPreloaderMovieclip != null)
 			{
-				mPreloaderMovieclip.gotoAndStop(100*completed/total);
+				mPreloaderMovieclip.mcLoadingBar.gotoAndStop(Math.round(100*completed/total) + 1);
 			}
-			*/
 		}
 		
 		override protected function setInitProgress(completed:Number, total:Number):void
 		{
-			/*
 			if (mPreloaderMovieclip)
 			{
-				setDownloadProgress(100, 100);
+				setDownloadProgress(0, 100);
 			}
-			*/
 		}
 		
 		override protected function initProgressHandler(event:Event):void

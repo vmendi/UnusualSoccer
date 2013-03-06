@@ -133,6 +133,10 @@
         /* This method will be called after the FB SDK is loaded asynchronously */
         window.fbAsyncInit = function () {
             
+            if (!swfobject.hasFlashPlayerVersion('<%= SWF_SETTINGS["version_string"] %>')) {
+                mixpanel.track('Flash Player not present');
+            }
+            
             var flashVars = <%= GetFlashVars() %>
 
             var params = {};
@@ -263,11 +267,6 @@
         function PlayVideo(){
             _sp_video.showVideo();
         }
-
-        // test function
-        function traceAlert(value){
-            alert(value);
-        }
     </script>
     <!-- SponsorPay end-->
 
@@ -280,7 +279,7 @@
         }
 
         function onOfferUnavailable_callback() {
-            alert('No hay ofertas disponibles!\n Pero siempre te queda la opción de pillar unusual points');
+            alert('No hay ofertas disponibles!\n Pero siempre te queda la opción de pillar Unusual Points');
         }
     </script>
     <!-- Trialpay end -->
@@ -330,13 +329,13 @@
 	    <script type="text/javascript">
 	        var pageHost = ((document.location.protocol == "https:") ? "https://" : "http://");
 	        document.write("<a href='http://www.adobe.com/go/getflashplayer'><img src='"
-						    + pageHost + "www.adobe.com/images/shared/download_buttons/get_flash_player.gif' alt='Get Adobe Flash player' /></a>"); 
+						    + pageHost + "www.adobe.com/images/shared/download_buttons/get_flash_player.gif' alt='Get Adobe Flash player' /></a>");
 	    </script> 
     </div>
 
     <noscript><p>Either scripts and active content are not permitted to run or Adobe Flash Player version 10.0.0 or greater is not installed.</p></noscript>
 
-        <!-- Navegación -->		
+    <!-- Navegación -->
     <div align="center" style="width:760px; height:33px; background:url(<%= GetRsc("Imgs/NavBgBottom.png") %>);" >
         <table border="0" cellpadding="0" cellspacing="0">
             <tr>

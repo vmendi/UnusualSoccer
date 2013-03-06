@@ -163,6 +163,8 @@
 				loadingIcon.gotoAndStop(1);
 			else
 				loadingIcon.gotoAndStop(2);
+			
+			loadingIcon.mcLoadingBar.gotoAndStop(101);
 										
 			loadingIcon.x = 0;
 			loadingIcon.y = 0;
