@@ -53,6 +53,6 @@
 	<s:Label text="{Title}" styleName="whiteBoldVeryBig" x="28" y="26" width="300" textAlign="center" />
 	<s:Label text="{Text}" styleName="whiteBoldMedium" x="28" y="64" width="300" textAlign="{TextAlign}" />
 	
-	<s:Button label="CERRAR" click="ClickHandler(event)" minWidth="80" x="138" y="170" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+	<s:Button label="{resourceManager.getString('main','Close')}" click="ClickHandler(event)" minWidth="80" x="138" y="170" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 	
 </s:Group>

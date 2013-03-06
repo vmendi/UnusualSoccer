@@ -167,6 +167,9 @@
 		<Training:Training id="TrainingView" includeIn="Training" top="30" itemCreationPolicy="immediate"/>
 		<Training:TrainingSpecial id="TrainingSpecialView" includeIn="TrainingSpecial" top="30" itemCreationPolicy="immediate"/>
 		<GameView:Ranking id="RankingView" includeIn="Ranking" top="30" itemCreationPolicy="immediate" />
+		<GameView:BannerPannel x="0" y="0" />
 	</s:Group>
+	
+	
 	
 </s:Group>
