@@ -5,6 +5,7 @@ using System.Web;
 using ServerCommon;
 using NLog;
 using System.Net;
+using ServerCommon.BDDModel;
 
 namespace SoccerServer
 {
@@ -19,13 +20,17 @@ namespace SoccerServer
             context.Response.ContentType = "text/plain";
             context.Response.StatusCode = (int)HttpStatusCode.OK;
 
-            var userFacebookID = context.Request.QueryString["id"];
-            var rewardID = context.Request.QueryString["pub0"];
+            var userFacebookID = context.Request.QueryString["uid"];
+            var awardedItemID = context.Request.QueryString["pub0"];
+            var transID = context.Request.QueryString["_trans_id_"];
+
+            if (transID == null)
+                transID = "Unknown";
 
             try
             {
-                if (userFacebookID != null && rewardID != null)
-                    GiveReward(long.Parse(userFacebookID), rewardID);
+                if (userFacebookID != null && awardedItemID != null)
+                    GiveReward(long.Parse(userFacebookID), awardedItemID, transID);
                 else
                     throw new Exception("We need the userFacebookID and the rewardID");
             }
@@ -35,7 +40,7 @@ namespace SoccerServer
             }
         }
 
-        private void GiveReward(long userFacebookID, string rewardID)
+        private void GiveReward(long userFacebookID, string awardedItemID, string transID)
         {
             using (var bddContext = new SoccerDataModelDataContext())
             {
@@ -46,12 +51,21 @@ namespace SoccerServer
                 if (theTeam == null)
                     throw new Exception("Unknown team with userFacebookID " + userFacebookID);
 
-                if (rewardID == "AddMatch1")
+                if (awardedItemID == "AddMatch1")
                 {
                     theTeam.TeamPurchase.RemainingMatches = theTeam.TeamPurchase.RemainingMatches + 1;
+
+                    var theAwardedReward = new Reward();
+
+                    theAwardedReward.TeamID = theTeam.TeamID;
+                    theAwardedReward.AwardedItemID = awardedItemID;
+                    theAwardedReward.Provider = "SponsorPay";
+                    theAwardedReward.ProviderTransID = transID;
+
+                    bddContext.Rewards.InsertOnSubmit(theAwardedReward);
                 }
                 else
-                    throw new Exception("Unknown rewardID " + rewardID);
+                    throw new Exception("Unknown rewardID " + awardedItemID);
 
                 bddContext.SubmitChanges();
             }

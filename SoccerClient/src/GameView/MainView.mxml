@@ -160,6 +160,7 @@
 		<s:BitmapImage source="{resourceManager.getClass('main','BackGeneral')}" fillMode="clip"/>
 		
 		<GameView:NewsMarquee x="15" y="8" left="0" right="0" />
+		<GameView:BannerPannel x="0" y="0" />
 		
 		<Competition:Competition id="CompetitionView" includeIn="Competition" top="30" itemCreationPolicy="immediate"/>
 		<Team:Team id="TeamView" includeIn="Team" top="30" itemCreationPolicy="immediate"/>
@@ -167,7 +168,6 @@
 		<Training:Training id="TrainingView" includeIn="Training" top="30" itemCreationPolicy="immediate"/>
 		<Training:TrainingSpecial id="TrainingSpecialView" includeIn="TrainingSpecial" top="30" itemCreationPolicy="immediate"/>
 		<GameView:Ranking id="RankingView" includeIn="Ranking" top="30" itemCreationPolicy="immediate" />
-		<GameView:BannerPannel x="0" y="0" />
 	</s:Group>
 	
 	

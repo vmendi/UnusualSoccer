@@ -53,6 +53,12 @@ package GameModel
 			}
 		}
 		
+		// El rewards model nos llama aquí cada vez que se ve un video
+		internal function AddOneMatch() : void
+		{
+			mTeamModel.TheTeam.TeamPurchase.RemainingMatches++;
+		}
+		
 		public function GetPriceInCreditsForItem(itemID : String) : int
 		{
 			var theItem : ItemForSale = GetItemByID(itemID);

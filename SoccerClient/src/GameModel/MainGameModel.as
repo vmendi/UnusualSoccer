@@ -32,6 +32,7 @@ package GameModel
 			mCompetitionModel = new CompetitionModel(mMainService, this);
 			mFriendsModel = new FriendsModel(mMainService, this);
 			mInactivityModel = new InactivityModel(mMainService, this);
+			mRewardsModel = new RewardsModel(mMainService, this);
 			
 			// Los submodelos se bindean a sus hermanos sin orden definido, necesitamos generar un evento de cambio
 			dispatchEvent(new Event("dummy"));
@@ -126,6 +127,9 @@ package GameModel
 		[Bindable(event="dummy")]
 		public function get TheInactivityModel() : InactivityModel { return mInactivityModel; }
 		
+		[Bindable(event="dummy")]
+		public function get TheRewardsModel() : RewardsModel { return mRewardsModel; }
+		
 		
 		private var mMainService : MainService;
 		
@@ -141,6 +145,7 @@ package GameModel
 		private var mCompetitionModel : CompetitionModel;
 		private var mFriendsModel : FriendsModel;
 		private var mInactivityModel : InactivityModel;
+		private var mRewardsModel : RewardsModel;
 		
 		private var mRefreshTimer : Timer = null;
 	}

@@ -67,6 +67,9 @@ namespace ServerCommon
     partial void InsertRequest(ServerCommon.BDDModel.Request instance);
     partial void UpdateRequest(ServerCommon.BDDModel.Request instance);
     partial void DeleteRequest(ServerCommon.BDDModel.Request instance);
+    partial void InsertReward(ServerCommon.BDDModel.Reward instance);
+    partial void UpdateReward(ServerCommon.BDDModel.Reward instance);
+    partial void DeleteReward(ServerCommon.BDDModel.Reward instance);
     partial void InsertSession(ServerCommon.BDDModel.Session instance);
     partial void UpdateSession(ServerCommon.BDDModel.Session instance);
     partial void DeleteSession(ServerCommon.BDDModel.Session instance);
@@ -215,6 +218,14 @@ namespace ServerCommon
 			get
 			{
 				return this.GetTable<ServerCommon.BDDModel.Request>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ServerCommon.BDDModel.Reward> Rewards
+		{
+			get
+			{
+				return this.GetTable<ServerCommon.BDDModel.Reward>();
 			}
 		}
 		
@@ -2607,7 +2618,7 @@ namespace ServerCommon.BDDModel
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Params", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Params", DbType="NVarChar(1024) NOT NULL", CanBeNull=false)]
 		public string Params
 		{
 			get
@@ -3283,6 +3294,205 @@ namespace ServerCommon.BDDModel
 					else
 					{
 						this._SourceTeamID = default(int);
+					}
+					this.SendPropertyChanged("Team");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Rewards")]
+	public partial class Reward : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _RewardID;
+		
+		private string _AwardedItemID;
+		
+		private int _TeamID;
+		
+		private string _Provider;
+		
+		private string _ProviderTransID;
+		
+		private EntityRef<Team> _Team;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnRewardIDChanging(int value);
+    partial void OnRewardIDChanged();
+    partial void OnAwardedItemIDChanging(string value);
+    partial void OnAwardedItemIDChanged();
+    partial void OnTeamIDChanging(int value);
+    partial void OnTeamIDChanged();
+    partial void OnProviderChanging(string value);
+    partial void OnProviderChanged();
+    partial void OnProviderTransIDChanging(string value);
+    partial void OnProviderTransIDChanged();
+    #endregion
+		
+		public Reward()
+		{
+			this._Team = default(EntityRef<Team>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RewardID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int RewardID
+		{
+			get
+			{
+				return this._RewardID;
+			}
+			set
+			{
+				if ((this._RewardID != value))
+				{
+					this.OnRewardIDChanging(value);
+					this.SendPropertyChanging();
+					this._RewardID = value;
+					this.SendPropertyChanged("RewardID");
+					this.OnRewardIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AwardedItemID", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string AwardedItemID
+		{
+			get
+			{
+				return this._AwardedItemID;
+			}
+			set
+			{
+				if ((this._AwardedItemID != value))
+				{
+					this.OnAwardedItemIDChanging(value);
+					this.SendPropertyChanging();
+					this._AwardedItemID = value;
+					this.SendPropertyChanged("AwardedItemID");
+					this.OnAwardedItemIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TeamID", DbType="Int NOT NULL")]
+		public int TeamID
+		{
+			get
+			{
+				return this._TeamID;
+			}
+			set
+			{
+				if ((this._TeamID != value))
+				{
+					if (this._Team.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTeamIDChanging(value);
+					this.SendPropertyChanging();
+					this._TeamID = value;
+					this.SendPropertyChanged("TeamID");
+					this.OnTeamIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Provider", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string Provider
+		{
+			get
+			{
+				return this._Provider;
+			}
+			set
+			{
+				if ((this._Provider != value))
+				{
+					this.OnProviderChanging(value);
+					this.SendPropertyChanging();
+					this._Provider = value;
+					this.SendPropertyChanged("Provider");
+					this.OnProviderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProviderTransID", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string ProviderTransID
+		{
+			get
+			{
+				return this._ProviderTransID;
+			}
+			set
+			{
+				if ((this._ProviderTransID != value))
+				{
+					this.OnProviderTransIDChanging(value);
+					this.SendPropertyChanging();
+					this._ProviderTransID = value;
+					this.SendPropertyChanged("ProviderTransID");
+					this.OnProviderTransIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Reward", Storage="_Team", ThisKey="TeamID", OtherKey="TeamID", IsForeignKey=true)]
+		public Team Team
+		{
+			get
+			{
+				return this._Team.Entity;
+			}
+			set
+			{
+				Team previousValue = this._Team.Entity;
+				if (((previousValue != value) 
+							|| (this._Team.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Team.Entity = null;
+						previousValue.Rewards.Remove(this);
+					}
+					this._Team.Entity = value;
+					if ((value != null))
+					{
+						value.Rewards.Add(this);
+						this._TeamID = value.TeamID;
+					}
+					else
+					{
+						this._TeamID = default(int);
 					}
 					this.SendPropertyChanged("Team");
 				}
@@ -4493,6 +4703,8 @@ namespace ServerCommon.BDDModel
 		
 		private EntitySet<Request> _Requests;
 		
+		private EntitySet<Reward> _Rewards;
+		
 		private EntitySet<SoccerPlayer> _SoccerPlayers;
 		
 		private EntitySet<SpecialTraining> _SpecialTrainings;
@@ -4543,6 +4755,7 @@ namespace ServerCommon.BDDModel
 			this._MatchParticipations = new EntitySet<MatchParticipation>(new Action<MatchParticipation>(this.attach_MatchParticipations), new Action<MatchParticipation>(this.detach_MatchParticipations));
 			this._PendingTraining = default(EntityRef<PendingTraining>);
 			this._Requests = new EntitySet<Request>(new Action<Request>(this.attach_Requests), new Action<Request>(this.detach_Requests));
+			this._Rewards = new EntitySet<Reward>(new Action<Reward>(this.attach_Rewards), new Action<Reward>(this.detach_Rewards));
 			this._SoccerPlayers = new EntitySet<SoccerPlayer>(new Action<SoccerPlayer>(this.attach_SoccerPlayers), new Action<SoccerPlayer>(this.detach_SoccerPlayers));
 			this._SpecialTrainings = new EntitySet<SpecialTraining>(new Action<SpecialTraining>(this.attach_SpecialTrainings), new Action<SpecialTraining>(this.detach_SpecialTrainings));
 			this._TeamPurchase = default(EntityRef<TeamPurchase>);
@@ -4888,6 +5101,19 @@ namespace ServerCommon.BDDModel
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Reward", Storage="_Rewards", ThisKey="TeamID", OtherKey="TeamID")]
+		public EntitySet<Reward> Rewards
+		{
+			get
+			{
+				return this._Rewards;
+			}
+			set
+			{
+				this._Rewards.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_SoccerPlayer", Storage="_SoccerPlayers", ThisKey="TeamID", OtherKey="TeamID")]
 		public EntitySet<SoccerPlayer> SoccerPlayers
 		{
@@ -5091,6 +5317,18 @@ namespace ServerCommon.BDDModel
 		}
 		
 		private void detach_Requests(Request entity)
+		{
+			this.SendPropertyChanging();
+			entity.Team = null;
+		}
+		
+		private void attach_Rewards(Reward entity)
+		{
+			this.SendPropertyChanging();
+			entity.Team = this;
+		}
+		
+		private void detach_Rewards(Reward entity)
 		{
 			this.SendPropertyChanging();
 			entity.Team = null;

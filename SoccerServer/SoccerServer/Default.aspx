@@ -158,17 +158,14 @@
 
 		    /* JavaScript enabled so display the flashContent div in case it is not replaced with a swf object. */
 		    swfobject.createCSS("#flashContent", "display:block;text-align:left;");
-        };
-
-        // Santiago: hago global la variable theSWF, para no duplicarla para los callbacks de SponsorPay
-        var theSWF;
+        };       
 
         // This method will be called from AS3 after the FB SDK is initialized (with FB.init). We avoid calling Facebook.api("/me") 
         // multiple times. We call only once from JS and pass the information back to AS3 using onFacebookMeRefreshed
         function refreshFacebookMe() {
             FB.api('/me?fields=third_party_id,name,currency,friends,gender,age_range', function(response) {
                 
-                theSWF = document.getElementById('<%= SWF_SETTINGS["application"] %>');
+                var theSWF = document.getElementById('<%= SWF_SETTINGS["application"] %>');
 
                 if (response && !response.error)
                 {                                                    
@@ -238,6 +235,8 @@
     <script type="text/javascript">        
         var _sp_video;
         function setupSponsorPay(_year, _gender) {
+            var theSWF = document.getElementById('<%= SWF_SETTINGS["application"] %>');
+
             _sp_video = new SPONSORPAY.Video.Iframe({
                 appid: <%= GetSponsorPay_AppKey() %>,   // the appid you get from the publisher dashboard
                 uid: <%= GetUserFacebookID() %>,        // anything you want that is unique and constant per user
@@ -247,6 +246,7 @@
                 gender: _gender,                        // Parámetro opcional para meter el sexo del jugador
                 display_format: 'bare_player',          // default, will show only the video. Use 'player_and_reward' to show a line describing the reward on top of the video box.
                 pub0: 'AddMatch1',                      // Parametro opcional ( pub0, pub1,...pub9). (Aún sin probar)
+
                 callback_on_start: function (offer) {   // This function will be called if we have offer available for the user
                     theSWF.ReadOffer(offer);            // Llamo al flash para enviar la oferta
                                                         // The "offer" object in params contains two icon urls: offer.icon_small y offer.icon_medium;
@@ -259,6 +259,9 @@
                 },
                 callback_on_conversion: function () {
                     theSWF.SponsorPayRewardEarned();    // This function will be called after user clicked the green button after watching.
+
+                    // Volvemos a refrescar si hay oferta disponible o no
+                    _sp_video.backgroundLoad();
                 }
             });            
             _sp_video.backgroundLoad();

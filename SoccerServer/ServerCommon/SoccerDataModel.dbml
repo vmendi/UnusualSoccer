@@ -109,7 +109,7 @@
       <Column Name="Surname" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="CreationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="Liked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="Params" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Params" Type="System.String" DbType="NVarChar(1024) NOT NULL" CanBeNull="false" />
       <Association Name="Player_Session" Member="Sessions" ThisKey="PlayerID" OtherKey="PlayerID" Type="Session" />
       <Association Name="Player_Team" Member="Team" ThisKey="PlayerID" OtherKey="TeamID" Type="Team" Cardinality="One" />
     </Type>
@@ -143,6 +143,16 @@
       <Column Name="SourceTeamID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="TargetFacebookID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
       <Association Name="Team_Request" Member="Team" ThisKey="SourceTeamID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Rewards" Member="Rewards">
+    <Type Name="Reward">
+      <Column Name="RewardID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AwardedItemID" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="TeamID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Provider" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="ProviderTransID" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Team_Reward" Member="Team" ThisKey="TeamID" OtherKey="TeamID" Type="Team" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Sessions" Member="Sessions">
@@ -220,6 +230,7 @@
       <Association Name="Team_MatchParticipation" Member="MatchParticipations" ThisKey="TeamID" OtherKey="TeamID" Type="MatchParticipation" />
       <Association Name="Team_PendingTraining" Member="PendingTraining" ThisKey="TeamID" OtherKey="TeamID" Type="PendingTraining" Cardinality="One" />
       <Association Name="Team_Request" Member="Requests" ThisKey="TeamID" OtherKey="SourceTeamID" Type="Request" />
+      <Association Name="Team_Reward" Member="Rewards" ThisKey="TeamID" OtherKey="TeamID" Type="Reward" />
       <Association Name="Team_SoccerPlayer" Member="SoccerPlayers" ThisKey="TeamID" OtherKey="TeamID" Type="SoccerPlayer" />
       <Association Name="Team_SpecialTraining" Member="SpecialTrainings" ThisKey="TeamID" OtherKey="TeamID" Type="SpecialTraining" />
       <Association Name="Team_TeamPurchase" Member="TeamPurchase" ThisKey="TeamID" OtherKey="TeamPurchaseID" Type="TeamPurchase" Cardinality="One" />
