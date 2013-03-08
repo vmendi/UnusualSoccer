@@ -5,6 +5,7 @@ using NetEngine;
 using NLog;
 using Realtime;
 using ServerCommon;
+using SoccerServer.ServerStats;
 
 
 namespace SoccerServer
@@ -68,12 +69,15 @@ namespace SoccerServer
 
             try
             {
+                RunSecondsProcess();
+                RunTenSecondsProcess();
+                RunThirtySecondsProcess();
                 RunHourlyProcess();
                 Run24hProcess();
 
                 // Llamamos al tick de los partidos en curso
                 if (mNetEngine.IsRunning)
-                    mNetEngine.NetServer.OnSecondsTick(elapsed, mTotalSeconds);
+                    mNetEngine.NetServer.OnSecondsTick(elapsed, mTotalSeconds);               
             }
             catch (Exception excp)
             {
@@ -82,6 +86,43 @@ namespace SoccerServer
             finally
             {
                 mSecondsTimer.Start();
+            }
+        }
+
+        private void RunSecondsProcess()
+        {
+            try
+            {
+                SendToDashboard.SendRealtimeDataToDashboards();
+            }
+            catch (Exception ex)
+            {
+                Log.ErrorException("Error while sending data to the Dashboards: ", ex);
+            }
+        }
+
+        private void RunTenSecondsProcess()
+        {
+            if (mTotalSeconds - mLast10SecondsProcessed >= 10)
+            {
+                mLast10SecondsProcessed = mTotalSeconds;
+            }
+        }
+
+        private void RunThirtySecondsProcess()
+        {
+            if (mTotalSeconds - mLast30SecondsProcessed >= 30)
+            {
+                try
+                {
+                    SendToDashboard.SendTotalStatsGecko();
+                }
+                catch (Exception ex)
+                {
+                    Log.ErrorException("Error while sending data to the Dashboards: ", ex);
+                }
+
+                mLast30SecondsProcessed = mTotalSeconds;
             }
         }
 
@@ -128,5 +169,7 @@ namespace SoccerServer
 
         private DateTime mLast24hProcessedDateTime = DateTime.Now;
         private DateTime mLastHourlyProcessedDateTime = DateTime.Now;
+        private float mLast10SecondsProcessed = 0;
+        private float mLast30SecondsProcessed = 0;
     }
 }

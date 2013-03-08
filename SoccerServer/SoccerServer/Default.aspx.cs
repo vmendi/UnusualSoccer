@@ -283,8 +283,8 @@ namespace SoccerServer
         public int GetSponsorPay_AppKey()
         {
             //return SPONSORPAY_APP_KEY_DEBUG;
-            return SPONSORPAY_APP_KEY_DEV;
-            //return SPONSORPAY_APP_KEY_RELEASE;
+            //return SPONSORPAY_APP_KEY_DEV;
+            return SPONSORPAY_APP_KEY_RELEASE;
         }
     }
 }
