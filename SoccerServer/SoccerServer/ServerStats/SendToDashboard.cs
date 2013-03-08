@@ -23,40 +23,7 @@ namespace SoccerServer.ServerStats
             if (netEngineMain == null || !netEngineMain.IsRunning)
                 return;
 
-            //SendRoomRealtimeStatsGecko(netEngineMain);
-
             SendRealtimeConnectionsStatsLeftronic(netEngineMain);
-        }
-
-
-        public static void SendTotalStatsGecko()
-        {
-            dynamic theDynamic = CreateDynamicGecko();
-            dynamic theData = new ExpandoObject();
-            theData.item = new List<dynamic>();
-
-            dynamic theText = new ExpandoObject();
-
-            using (SoccerDataModelDataContext dc = new SoccerDataModelDataContext())
-            {
-                theText.text  = "Total players: " + GetTotalPlayers(dc) + "<br/>" + "<br/>";
-
-                theText.text += "Total played matches: " + GetTotalPlayedMatches(dc) + "<br/>";
-                theText.text += "Abandoned matches: " + GetAbandonedMatchesCount(dc) + "<br/>";
-                theText.text += "Too-many-times matches: " + GetTooManyTimes(dc) + "<br/>";
-                theText.text += "Same IP matches: " + GetSameIPMatchesCount(dc) + "<br/>";
-                theText.text += "Unjust matches: " + GetUnjustMatchesCount(dc) + "<br/>";
-                theText.text += "Non-ended matches: " + GetNonEndedMatchesCount(dc) + "<br/>" + "<br/>";
-
-                theText.text += "Matches today: " + GetMatchesForToday(dc);
-            }
-
-            theText.type = "0";
-
-            theData.item.Add(theText);
-            theDynamic.data = theData;
-
-            PostTo("https://push.geckoboard.com/v1/send/27127-a08c3705-0352-4d52-af99-de86741d2d89", JsonConvert.SerializeObject(theDynamic));
         }
 
         private static void SendRealtimeConnectionsStatsLeftronic(NetEngineMain netEngineMain)
@@ -109,7 +76,7 @@ namespace SoccerServer.ServerStats
             dynamic theDynamic = CreateDynamicLeftronic();
 
             dynamic totalsTable = new ExpandoObject();
-            totalsTable.streamName = "Connections Table";
+            totalsTable.streamName = "Totals Table";
             totalsTable.point = new ExpandoObject();
             totalsTable.point.table = new List<List<string>>();
 
@@ -134,35 +101,6 @@ namespace SoccerServer.ServerStats
         {
             dynamic theDynamic = new ExpandoObject();
             theDynamic.accessKey = "8foeggMZyYxa9YGVU7vIRroPEyUEID3h";
-            return theDynamic;
-        }
-
-        private static void SendRoomRealtimeStatsGecko(NetEngineMain netEngineMain)
-        {
-            RealtimeLobby theMainRealtime = netEngineMain.NetServer.NetLobby as RealtimeLobby;
-
-            dynamic theDynamic = CreateDynamicGecko();
-            dynamic theData = new ExpandoObject();
-            theData.item = new List<dynamic>();
-
-            dynamic theText = new ExpandoObject();
-            theText.text  = "Currently in play matches: " + theMainRealtime.GetNumMatches().ToString() + "<br/>";
-            theText.text += "People in rooms: " + theMainRealtime.GetNumTotalPeopleInRooms().ToString() + "<br/>";
-            theText.text += "People looking for match: " + theMainRealtime.GetNumPeopleLookingForMatch().ToString() + "<br/>" + "<br/>";
-            theText.text += "Up since: " + netEngineMain.NetServer.LastStartTime.ToString() + "<br/>";
-            theText.text += "Current msg: " + theMainRealtime.GetBroadcastMsg(null);
-            theText.type  = "0";
-
-            theData.item.Add(theText);
-            theDynamic.data = theData;
-
-            PostTo("https://push.geckoboard.com/v1/send/27127-24d2d9a5-50ab-4371-bb69-68cd0ccc2f99", JsonConvert.SerializeObject(theDynamic));
-        }
-
-        private static dynamic CreateDynamicGecko()
-        {
-            dynamic theDynamic = new ExpandoObject();
-            theDynamic.api_key = "0f787cec3bfe66905eaac9160f7f8f7e";
             return theDynamic;
         }
 

@@ -115,7 +115,7 @@ namespace SoccerServer
             {
                 try
                 {
-                    SendToDashboard.SendTotalStatsGecko();
+                    SendToDashboard.SendTotalsLeftronics();
                 }
                 catch (Exception ex)
                 {
