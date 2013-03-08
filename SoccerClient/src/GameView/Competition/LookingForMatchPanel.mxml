@@ -128,18 +128,28 @@
 				  click="MyFindMatchButton_clickHandler(event)"/>
 	</s:Group>	
 	
-	<s:Group horizontalCenter="0" top="2" includeIn="OutOfCredit">
-		<s:layout><s:VerticalLayout horizontalAlign="center" gap="8" /></s:layout>
-		<s:Group>
-			<s:layout><s:VerticalLayout horizontalAlign="center" gap="0" /></s:layout>
-			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='WarningIcon')" fillMode="clip" />
-			<s:Label width="170" text="{resourceManager.getString('main','NotAvailableTime')}" styleName="whiteBoldMedium" textAlign="center" />
+	<s:Group  top="-5" horizontalCenter="0" includeIn="OutOfCredit">
+		<GameView:PopupBackground width="200" height="114" horizontalCenter="0" verticalCenter="0"/>
+		<s:Group horizontalCenter="0" verticalCenter="0">
+			<s:layout><s:VerticalLayout horizontalAlign="center" gap="8" /></s:layout>
+			<s:Group>
+				<s:layout><s:VerticalLayout horizontalAlign="center" gap="0" /></s:layout>
+				<!--<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='WarningIcon')" fillMode="clip" />-->
+				<s:RichText width="180" styleName="whiteBoldBig" whiteSpaceCollapse="preserve" textAlign="center" kerning="auto" >
+					<s:content><s:p><s:span>{resourceManager.getString('main','NotAvailableMatches')}</s:span></s:p><s:p><s:span>{resourceManager.getString('main','ComeBack')}</s:span></s:p></s:content>
+				</s:RichText>
+			</s:Group>
+			<s:Button id="MyBuyTicketsButton"
+					  label="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
+					  skinClass="GameView.Skins.ButtonDarkGreySkin"
+					  click="MyBuyTicketsButton_clickHandler(event)"
+					  width="110" height="18" x="40" y="41"/>
 		</s:Group>
-		<s:Button id="MyBuyTicketsButton"
-				  label="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
-				  skinClass="GameView.Skins.ButtonDarkGreySkin"
-				  click="MyBuyTicketsButton_clickHandler(event)"
-				  width="110" height="18" x="40" y="41"/>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.5" angle="90" blurX="20" blurY="20" color="#000000"
+								distance="0" hideObject="false"
+								quality="2" strength="2"/>
+		</s:filters>
 	</s:Group>
 	
 </s:Group>
