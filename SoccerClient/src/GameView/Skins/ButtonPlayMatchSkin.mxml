@@ -28,10 +28,7 @@
 	</s:Ellipse>
 	
 	<mx:SWFLoader id="botonbase" smoothBitmapContent="true" source="{resourceManager.getClass('main','ButtonPlayMatchBg')}" />
-	<!--<s:BitmapImage id="bitmapimage2" x="0" y="0" smooth="true"
-				   source="@Embed(source='/Assets/General.swf', symbol='ButtonPlayMatch_Bg')">-->
-	
-	<s:BitmapImage id="bitmapimage1" x="25" y="25" smooth="true"
+	<s:BitmapImage id="bitmapimage1" x="24" y="24" smooth="true"
 				   source="@Embed(source='/Assets/General.swf', symbol='ButtonPlayMatch_Ball')">
 		<s:filters>
 			<s:GlowFilter id="glowfilter1" alpha="1.0" blurX="30" blurY="30" color="#FFFFFF"
@@ -39,6 +36,10 @@
 						  alpha.up="0"/>
 		</s:filters>
 	</s:BitmapImage>
+	<s:Label width="50" text="{resourceManager.getString('main','ClickToPlay')}" styleName="whiteBoldMedium" horizontalCenter="0" verticalCenter="0" textAlign="center" />
+	<s:filters>
+		<s:DropShadowFilter angle="270" distance="1" blurX="0" blurY="0" color="0x000000" alpha="0.50" />
+	</s:filters>
 	<s:transitions>
 		<s:Transition fromState="up" toState="over">
 			<s:Parallel>

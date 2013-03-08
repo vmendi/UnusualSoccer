@@ -57,6 +57,13 @@
 	color:#FFFFFF;
 }
 
+.whiteBoldGiant {
+	font-family:MyFontHelveticaNeueLTBold;
+	font-size:36pt;
+	font-weight:bold;
+	color:#FFFFFF;
+}
+
 .whiteBoldBigArial {
 	font-family:Arial;
 	font-size:14pt;

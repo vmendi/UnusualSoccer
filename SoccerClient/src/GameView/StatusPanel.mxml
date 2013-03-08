@@ -46,34 +46,37 @@
 	<GameView:BadgeCategory width="64" height="43" left="217" top="24" TrueSkill="{mTeamModel.TheTeam.TrueSkill}" />
 	
 	<s:Label x="294" y="19" text="{resourceManager.getString('main','GeneralTraining')}" width="90" styleName="whiteBoldMedium" textAlign="left"/>
-	<s:Label x="378" y="19" text="{mTeamModel.TheTeam.Fitness}%" width="46" id="MyTrainingLabel" styleName="whiteBoldMedium" textAlign="right"/>	
+	<s:Label x="348" y="19" text="{mTeamModel.TheTeam.Fitness}%" width="46" id="MyTrainingLabel" styleName="whiteBoldMedium" textAlign="right"/>	
 
 	<s:Label x="310" y="41" text="{resourceManager.getString('main','GeneralXP')}" width="90" styleName="whiteBoldMedium" textAlign="left"/>
-	<s:Label x="394" y="41" text="{mTeamModel.TheTeam.XP}" width="46" id="MyXPLabel" styleName="whiteBoldMedium" textAlign="right"/>
+	<s:Label x="364" y="41" text="{mTeamModel.TheTeam.XP}" width="46" id="MyXPLabel" styleName="whiteBoldMedium" textAlign="right"/>
 	
 	<s:Label x="326" y="63" text="{resourceManager.getString('main','GeneralSkill')}" width="90" styleName="whiteBoldMedium" textAlign="left"/>
-	<s:Label x="410" y="63" text="{mTeamModel.TheTeam.TrueSkill}" width="46" id="MyTrueSkillLabel" styleName="whiteBoldMedium" textAlign="right"/>
+	<s:Label x="380" y="63" text="{mTeamModel.TheTeam.TrueSkill}" width="46" id="MyTrueSkillLabel" styleName="whiteBoldMedium" textAlign="right"/>
 	
-	<s:Group right="0" y="0" visible="{resourceManager.getBoolean('main','TicketsPanelVisible')}"> 
-		<s:Group right="180" y="23" width="100">
+	<s:Group width="156" left="427" top="18" visible="{resourceManager.getBoolean('main','TicketsPanelVisible')}">
+		<s:layout>
+			<s:VerticalLayout horizontalAlign="center" gap="0" />
+		</s:layout>
+		<s:Group>
 			<s:layout>
-				<s:VerticalLayout horizontalAlign="center" gap="0" />
+				<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
 			</s:layout>
+			<s:Image source="@Embed(source='/Assets/General.swf', symbol='IconUnusualPoints')" />
 			<s:Label width="100%" text="{resourceManager.getString('main','GeneralUnusualPoints')}" styleName="whiteBoldBig" textAlign="center" filters="{txtGlowFilter}"/>
-			<s:Group>
-				<s:layout>
-					<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
-				</s:layout>
-				<s:Image source="@Embed(source='/Assets/General.swf', symbol='IconUnusualPoints')" />
-				<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MySkillPointsLabel" styleName="whiteBoldHuge" textAlign="left" filters="{txtGlowFilter}"/>
-				<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="{resourceManager.getString('main','PurchaseUnusualPointsAdd')}" skinClass="GameView.Skins.ButtonDarkGreySkin" />
-			</s:Group>
 		</s:Group>
-		<GameView:TicketsPanel right="0" y="6" />
+		<s:Group>
+			<s:layout>
+				<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
+			</s:layout>
+			<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MySkillPointsLabel" styleName="whiteBoldHuge" textAlign="left" filters="{txtGlowFilter}"/>
+			<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="AÑADIR" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+		</s:Group>
 	</s:Group>
+	<GameView:TicketsPanel right="0" top="0" />
 	
 	<s:Group right="10" y="0" visible="{!resourceManager.getBoolean('main','TicketsPanelVisible')}">
-		<s:Group width="134" y="23" right="145">
+		<s:Group width="134" y="23" right="165">
 			<s:layout>
 				<s:VerticalLayout horizontalAlign="center" gap="0" />
 			</s:layout>

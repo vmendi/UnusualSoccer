@@ -133,7 +133,7 @@
 		<s:Group>
 			<s:layout><s:VerticalLayout horizontalAlign="center" gap="0" /></s:layout>
 			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='WarningIcon')" fillMode="clip" />
-			<s:Label width="170" text="{resourceManager.getString('main','TicketNoAvailableTime')}" styleName="whiteBoldMedium" textAlign="center" />
+			<s:Label width="170" text="{resourceManager.getString('main','NotAvailableTime')}" styleName="whiteBoldMedium" textAlign="center" />
 		</s:Group>
 		<s:Button id="MyBuyTicketsButton"
 				  label="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
