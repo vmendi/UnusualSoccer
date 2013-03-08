@@ -49,5 +49,11 @@ namespace ServerCommon
         {
             get { return (string)this["cdn"]; }
         }
+
+        [ConfigurationProperty("dashboards", IsRequired = false, DefaultValue = "false")]
+        public bool Dashboards
+        {
+            get { return (bool)this["dashboards"]; }
+        }
     }
 }

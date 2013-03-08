@@ -18,6 +18,9 @@ namespace SoccerServer.ServerStats
 
         static public void SendRealtimeDataToDashboards()
         {
+            if (!GlobalConfig.ServerSettings.Dashboards)
+                return;
+
             NetEngineMain netEngineMain = GlobalSoccerServer.Instance.TheNetEngine;
 
             if (netEngineMain == null || !netEngineMain.IsRunning)
@@ -73,6 +76,9 @@ namespace SoccerServer.ServerStats
 
         static public void SendTotalsLeftronics()
         {
+            if (!GlobalConfig.ServerSettings.Dashboards)
+                return;
+
             dynamic theDynamic = CreateDynamicLeftronic();
 
             dynamic totalsTable = new ExpandoObject();
