@@ -50,7 +50,7 @@ namespace SoccerServer.ServerStats
             connectionsTable.point = new ExpandoObject();
             connectionsTable.point.table = new List<List<string>>();
 
-            connectionsTable.point.table.Add(new List<string>() { "Key", "Realtime Value" });
+            connectionsTable.point.table.Add(new List<string>() { "Key", "Value" });
             connectionsTable.point.table.Add(new List<string>() { "Connections", netEngineMain.NetServer.NumCurrentSockets.ToString() });
             connectionsTable.point.table.Add(new List<string>() { "Max Connections", netEngineMain.NetServer.NumMaxConcurrentSockets.ToString() });
             connectionsTable.point.table.Add(new List<string>() { "Total Connections", netEngineMain.NetServer.NumCumulativePlugs.ToString() });
@@ -82,13 +82,13 @@ namespace SoccerServer.ServerStats
 
             using (SoccerDataModelDataContext dc = new SoccerDataModelDataContext())
             {
-                totalsTable.point.table.Add(new List<string>() { "Key", "Realtime Value" });
+                totalsTable.point.table.Add(new List<string>() { "Key", "Value" });
                 totalsTable.point.table.Add(new List<string>() { "Total Players", GetTotalPlayers(dc).ToString() });
                 totalsTable.point.table.Add(new List<string>() { "Total played matches", GetTotalPlayedMatches(dc).ToString() });
                 totalsTable.point.table.Add(new List<string>() { "Too-many-times matches", GetTooManyTimes(dc).ToString() });
                 totalsTable.point.table.Add(new List<string>() { "Same IP matches", GetSameIPMatchesCount(dc).ToString() });
                 totalsTable.point.table.Add(new List<string>() { "Unjust matches", GetUnjustMatchesCount(dc).ToString() });
-                totalsTable.point.table.Add(new List<string>() { "Non-ended matches", GetNonEndedMatchesCount(dc).ToString() });
+                totalsTable.point.table.Add(new List<string>() { "Abandoned matches", GetAbandonedMatchesCount(dc).ToString() });
                 totalsTable.point.table.Add(new List<string>() { "Matches today", GetMatchesForToday(dc).ToString() });
             }
 
