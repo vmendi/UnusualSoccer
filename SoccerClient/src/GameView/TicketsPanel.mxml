@@ -108,7 +108,11 @@
 				<s:RichText id="MyRemainingMatchesTitle" styleName="blackBoldBig" whiteSpaceCollapse="preserve" textAlign="center" kerning="auto" >
 					<s:content><s:p><s:span>{resourceManager.getString('main','Matches')}</s:span></s:p><s:p><s:span>{resourceManager.getString('main','Today')}</s:span></s:p></s:content>
 				</s:RichText>
+				<s:filters>
+					<s:DropShadowFilter angle="90" distance="0" blurX="8" blurY="8" color="0x000000" alpha="0.50" />
+				</s:filters>
 			</s:Group>
+			
 			
 			<!--<s:Label id="MyZeroRemaining" text="{resourceManager.getString('main','NotAvailableMatches')}" styleName="whiteBoldMedium"  includeIn="NotPurchased"
 			width="160" top="6" horizontalCenter="0"
