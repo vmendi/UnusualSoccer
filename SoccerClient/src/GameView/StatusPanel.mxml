@@ -70,7 +70,7 @@
 				<s:HorizontalLayout verticalAlign="middle" horizontalAlign="center" gap="5" />
 			</s:layout>
 			<s:Label text="{mTeamModel.TheTeam.SkillPoints}" id="MySkillPointsLabel" styleName="whiteBoldHuge" textAlign="left" filters="{txtGlowFilter}"/>
-			<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="AÑADIR" skinClass="GameView.Skins.ButtonDarkGreySkin" />
+			<s:Button id="MyAddSkillPoints" click="MyAddSkillPoints_clickHandler(event)" label="{resourceManager.getString('main','PurchaseUnusualPointsAdd')}" skinClass="GameView.Skins.ButtonDarkGreySkin" />
 		</s:Group>
 	</s:Group>
 	<GameView:TicketsPanel right="0" top="0" />
