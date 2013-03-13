@@ -69,7 +69,7 @@
 	</s:Rect>
 
 	<s:Group width="750" height="570" x="0" y="80" includeIn="Init">
-		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='TutorialField')" fillMode="clip" />
+		<s:SWFLoader id="MyTutorialField" source="@Embed(source='/Assets/General.swf', symbol='TutorialField')" />
 		<s:Group width="370" horizontalCenter="0" verticalCenter="0">
 			<GameView:PopupBackground left="-20" right="-20" top="-20" bottom="-20" />
 			<s:Group horizontalCenter="0" verticalCenter="0">
@@ -82,8 +82,8 @@
 					<s:layout>
 						<s:HorizontalLayout gap="10" verticalAlign="middle" />
 					</s:layout>
-					<s:Button label="{resourceManager.getString('main','TutorialSkip')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonDarkGreySkin" click="Skip_clickHandler(event)" />
-					<s:Button label="{resourceManager.getString('main','TutorialNext')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonGreySkin" click="Start_clickHandler(event)" />
+					<s:Button id="InitSkip" label="{resourceManager.getString('main','TutorialSkip')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonDarkGreySkin" click="Skip_clickHandler(event)" />
+					<s:Button id="InitStart" label="{resourceManager.getString('main','TutorialNext')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonGreySkin" click="Start_clickHandler(event)" />
 				</s:Group>
 			</s:Group>
 		</s:Group>
@@ -195,7 +195,7 @@
 	</s:Group>
 	
 	<s:Group width="750" height="650" x="0" y="0" includeIn="End">
-		<s:SWFLoader source="@Embed(source='/Assets/General.swf', symbol='TutorialCortinaPlay')" />
+		<s:SWFLoader id="MyTutorialEnd" source="@Embed(source='/Assets/General.swf', symbol='TutorialCortinaPlay')" />
 		<s:Group width="370" horizontalCenter="0" top="395">
 			<GameView:PopupBackground left="-20" right="-20" top="-20" bottom="-20" />
 			<s:Group horizontalCenter="0" verticalCenter="0">
