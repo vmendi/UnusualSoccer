@@ -114,6 +114,12 @@
         <field name="Fitness" type="int" fulltype="int" nativetype="int" />
         <field name="SpecialSkillsIDs" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;int&gt;" />
       </datatype>
+      <datatype name="TeamPurchaseInitialInfo" fullname="HttpService.TransferModel.TeamPurchaseInitialInfo" typeNamespace="HttpService.TransferModel">
+        <field name="ItemsForSale" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.ItemForSale&gt;" />
+        <field name="NewMatchesRemainingSeconds" type="int" fulltype="int" nativetype="int" />
+        <field name="DefaultNumMatches" type="int" fulltype="int" nativetype="int" />
+        <field name="DailyNumMatches" type="int" fulltype="int" nativetype="int" />
+      </datatype>
     </namespace>
     <enum name="VALID_NAME" fullname="HttpService.VALID_NAME" typeNamespace="HttpService">
       <field name="VALID" type="String" fulltype="String" nativetype="String" />
@@ -148,7 +154,6 @@
       <method name="GetItemForSale" type="ItemForSale" nativetype="HttpService.TransferModel.ItemForSale" containsvalues="0">
         <arg name="orderInfoFromClient_itemID" type="String" nativetype="String" />
       </method>
-      <method name="GetItemsForSale" type="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.ItemForSale&gt;" containsvalues="0" />
       <method name="HasTeam" type="Boolean" nativetype="bool" containsvalues="0" />
       <method name="HealInjury" type="Boolean" nativetype="bool" containsvalues="0">
         <arg name="soccerPlayerID" type="int" nativetype="int" />
@@ -175,6 +180,7 @@
       <method name="RefreshTeamDetails" type="TeamDetails" nativetype="HttpService.TransferModel.TeamDetails" containsvalues="0">
         <arg name="facebookID" type="Number" nativetype="long" />
       </method>
+      <method name="RefreshTeamPurchaseInitialInfo" type="TeamPurchaseInitialInfo" nativetype="HttpService.TransferModel.TeamPurchaseInitialInfo" containsvalues="0" />
       <method name="RefreshTrainingDefinitions" type="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.TrainingDefinition&gt;" containsvalues="0" />
       <method name="SwapFormationPosition" type="void" nativetype="Void" containsvalues="0">
         <arg name="firstSoccerPlayerID" type="int" nativetype="int" />

@@ -24,6 +24,7 @@ package HttpService
 	import HttpService.TransferModel.vo.SoccerPlayer;
 	import HttpService.TransferModel.vo.SpecialTraining;
 	import HttpService.TransferModel.vo.TeamDetails;
+	import HttpService.TransferModel.vo.TeamPurchaseInitialInfo;
 	
 	public class DataTypeInitializer
 	{
@@ -43,6 +44,7 @@ package HttpService
 			new HttpService.TransferModel.vo.SoccerPlayer();	
 			new HttpService.TransferModel.vo.SpecialTraining();	
 			new HttpService.TransferModel.vo.TeamDetails();	
+			new HttpService.TransferModel.vo.TeamPurchaseInitialInfo();	
 		}
 	}  
 }  

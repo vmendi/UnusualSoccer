@@ -20,6 +20,7 @@
 	<fx:Script><![CDATA[
 		import GameModel.MainGameModel;
 		import GameModel.RoomModel;
+		import GameModel.TeamPurchaseModel;
 		
 		import GameView.Purchase.PurchaseBase;
 		import GameView.Skins.DefaultPanelSkin;
@@ -38,6 +39,7 @@
 		protected function CreationCompleteHandler(event:FlexEvent):void
 		{			
 			mMainGameModel = SoccerClient.GetMainGameModel();
+			mTeamPurchaseModel = mMainGameModel.TheTeamPurchaseModel;
 			
 			// La room puede ser null en distintas transciones
 			BindingUtils.bindSetter(OnRoomModelChanged, mMainGameModel.TheRealtimeModel, [ "TheRoomModel" ]);
@@ -90,6 +92,7 @@
 		
 		[Bindable] private var mMainGameModel : MainGameModel;
 		[Bindable] private var mRoomModel : RoomModel;
+		[Bindable] private var mTeamPurchaseModel : TeamPurchaseModel;
 		
 	]]></fx:Script>
 	
@@ -105,8 +108,11 @@
 			<s:Group verticalCenter="0" horizontalCenter="0">
 				<s:layout><s:VerticalLayout horizontalAlign="center" gap="10" /></s:layout>
 				<!--<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='WarningIcon')" fillMode="clip" />-->
-				<s:RichText width="180" styleName="whiteBoldBig" whiteSpaceCollapse="preserve" textAlign="center" kerning="auto" >
-					<s:content><s:p><s:span>{resourceManager.getString('main','NotAvailableMatches')}</s:span></s:p><s:p><s:span>{resourceManager.getString('main','ComeBack')}</s:span></s:p></s:content>
+				<s:RichText width="180" styleName="whiteBoldBig" whiteSpaceCollapse="collapse" textAlign="center" kerning="auto" >
+					<s:content>
+						<s:p><s:span>{resourceManager.getString('main','NotAvailableMatches')}</s:span></s:p>
+						<s:p><s:span>{mTeamPurchaseModel.NewMatchesRemainingSecondsString}</s:span></s:p>
+					</s:content>
 				</s:RichText>
 				<s:Button id="MyBuyTicketsButton" width="110" height="18" x="40" y="41" skinClass="GameView.Skins.ButtonDarkGreySkin"
 						  label="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"						  

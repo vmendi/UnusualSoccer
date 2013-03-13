@@ -34,6 +34,7 @@ package
 		static public const DO_TRAINING : String = "Do Training";
 		static public const CANT_CONNECT_REALTIME : String = "Cant Connect Realtime";
 		static public const LIKED : String = "Liked";
+		static public const ZERO_MATCHES_REMAINING : String = "Zero Matches Remaining";
 		
 		static public const ADD_GAME_TIME : String = "Add Game Time";
 		static public const CANCELED_GAME_TIME : String = "Canceled Game Time";
@@ -78,8 +79,8 @@ package
 		static public const PEOPLE_NUM_MATCHES : String = "Num matches";
 		static public const PEOPLE_NUM_WALL_POSTS : String = "Num wall posts";
 		static public const PEOPLE_NUM_SKILLS : String = "Num skills";
-		static public const PEOPLE_NUM_PURCHASES : String = "Num purchases"; 
-	
+		static public const PEOPLE_NUM_PURCHASES : String = "Num purchases";
+		
 		
 		static public function ReportEvent(event:String, properties:Object) : void
 		{

@@ -242,6 +242,14 @@ namespace HttpService.TransferModel
         public string data { get; set; }
     }
 
+    public class TeamPurchaseInitialInfo
+    {
+        public List<TransferModel.ItemForSale> ItemsForSale;
+        public int NewMatchesRemainingSeconds;
+        public int DefaultNumMatches;
+        public int DailyNumMatches;
+    }
+
 	public class CopyHelper
 	{
 		static public void Copy(Object source, Object target)
