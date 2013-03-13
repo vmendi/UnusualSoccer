@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:GameView="GameView.*"
+		 width="760" height="650"
+		 currentState="Init"
+		 >
+	
+	<fx:Script>
+		<![CDATA[
+			protected function Start_clickHandler(event:MouseEvent):void
+			{
+				currentState="Step1";
+			}
+			
+			protected function Skip_clickHandler(event:MouseEvent):void
+			{
+				currentState="End";
+			}
+			
+			protected function Step1Next_clickHandler(event:MouseEvent):void
+			{
+				currentState="Step2";
+			}
+
+			protected function Step2Next_clickHandler(event:MouseEvent):void
+			{
+				currentState="Step3";
+			}
+			
+			protected function Step3Next_clickHandler(event:MouseEvent):void
+			{
+				currentState="Step4";
+			}
+			
+			protected function Step4Next_clickHandler(event:MouseEvent):void
+			{
+				currentState="Step5";
+			}
+			
+			protected function Step5Next_clickHandler(event:MouseEvent):void
+			{
+				currentState="End";
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+	<s:states>
+		<s:State name="Init"></s:State>
+		<s:State name="Step1"></s:State>
+		<s:State name="Step2"></s:State>
+		<s:State name="Step3"></s:State>
+		<s:State name="Step4"></s:State>
+		<s:State name="Step5"></s:State>
+		<s:State name="End"></s:State>
+	</s:states>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:Rect left="0" right="0" top="0" bottom="0" alpha="0.7" excludeFrom="End">
+		<s:fill>
+			<s:SolidColor alpha="1" color="#000000"/>
+		</s:fill>
+	</s:Rect>
+
+	<s:Group width="750" height="570" x="0" y="80" includeIn="Init">
+		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='TutorialField')" fillMode="clip" />
+		<s:Group width="370" horizontalCenter="0" verticalCenter="0">
+			<GameView:PopupBackground left="-20" right="-20" top="-20" bottom="-20" />
+			<s:Group horizontalCenter="0" verticalCenter="0">
+				<s:layout>
+					<s:VerticalLayout gap="10" horizontalAlign="center" />
+				</s:layout>
+				<s:Label text="{resourceManager.getString('main','TutorialInitTit')}" maxWidth="350" styleName="whiteBoldHuge" textAlign="center" horizontalCenter="0" />
+				<s:Label text="{resourceManager.getString('main','TutorialInitTxt')}" maxWidth="350" styleName="whiteBoldVeryBig" textAlign="center" horizontalCenter="0" />
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout gap="10" verticalAlign="middle" />
+					</s:layout>
+					<s:Button label="{resourceManager.getString('main','TutorialSkip')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonDarkGreySkin" click="Skip_clickHandler(event)" />
+					<s:Button label="{resourceManager.getString('main','TutorialNext')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonGreySkin" click="Start_clickHandler(event)" />
+				</s:Group>
+			</s:Group>
+		</s:Group>
+	</s:Group>
+	
+	<s:Group width="750" height="570" x="0" y="80" includeIn="Step1">
+		<s:SWFLoader id="MyTutorialStep1" source="@Embed(source='/Assets/General.swf', symbol='TutorialStep1')" />
+		<s:Group width="370" horizontalCenter="0" top="30">
+			<GameView:PopupBackground left="-20" right="-20" top="-20" bottom="-20" />
+			<s:Group horizontalCenter="0" verticalCenter="0">
+				<s:layout>
+					<s:VerticalLayout gap="10" horizontalAlign="center" />
+				</s:layout>
+				<s:Label text="{resourceManager.getString('main','TutorialStep1Tit')}" maxWidth="350" styleName="whiteBoldVeryBig" textAlign="center" horizontalCenter="0" />
+				<s:Label text="{resourceManager.getString('main','TutorialStep1Txt')}" maxWidth="350" styleName="whiteBoldBig" textAlign="center" horizontalCenter="0" />
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout gap="10" verticalAlign="middle" />
+					</s:layout>
+					<s:Button id="Step1Skip" label="{resourceManager.getString('main','TutorialSkip')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonDarkGreySkin" click="Skip_clickHandler(event)" />
+					<s:Button id="Step1Next" label="{resourceManager.getString('main','TutorialNext')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonGreySkin" click="Step1Next_clickHandler(event)" />
+				</s:Group>
+			</s:Group>
+		</s:Group>
+	</s:Group>
+	
+	<s:Group width="750" height="570" x="0" y="80" includeIn="Step2">
+		<s:SWFLoader id="MyTutorialStep2" source="@Embed(source='/Assets/General.swf', symbol='TutorialStep2')" />
+		<s:Group width="370" horizontalCenter="0" top="30">
+			<GameView:PopupBackground left="-20" right="-20" top="-20" bottom="-20" />
+			<s:Group horizontalCenter="0" verticalCenter="0">
+				<s:layout>
+					<s:VerticalLayout gap="10" horizontalAlign="center" />
+				</s:layout>
+				<s:Label text="{resourceManager.getString('main','TutorialStep2Tit')}" maxWidth="350" styleName="whiteBoldVeryBig" textAlign="center" horizontalCenter="0" />
+				<s:Label text="{resourceManager.getString('main','TutorialStep2Txt')}" maxWidth="350" styleName="whiteBoldBig" textAlign="center" horizontalCenter="0" />
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout gap="10" verticalAlign="middle" />
+					</s:layout>
+					<s:Button label="{resourceManager.getString('main','TutorialSkip')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonDarkGreySkin" click="Skip_clickHandler(event)" />
+					<s:Button label="{resourceManager.getString('main','TutorialNext')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonGreySkin" click="Step2Next_clickHandler(event)" />
+				</s:Group>
+			</s:Group>
+		</s:Group>
+	</s:Group>
+
+	<s:Group width="750" height="570" x="0" y="80" includeIn="Step3">
+		<s:SWFLoader id="MyTutorialStep3" source="@Embed(source='/Assets/General.swf', symbol='TutorialStep3')" />
+		<s:Group width="370" horizontalCenter="0" top="30">
+			<GameView:PopupBackground left="-20" right="-20" top="-20" bottom="-20" />
+			<s:Group horizontalCenter="0" verticalCenter="0">
+				<s:layout>
+					<s:VerticalLayout gap="10" horizontalAlign="center" />
+				</s:layout>
+				<s:Label text="{resourceManager.getString('main','TutorialStep3Tit')}" maxWidth="350" styleName="whiteBoldVeryBig" textAlign="center" horizontalCenter="0" />
+				<s:Label text="{resourceManager.getString('main','TutorialStep3Txt')}" maxWidth="350" styleName="whiteBoldBig" textAlign="center" horizontalCenter="0" />
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout gap="10" verticalAlign="middle" />
+					</s:layout>
+					<s:Button label="{resourceManager.getString('main','TutorialSkip')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonDarkGreySkin" click="Skip_clickHandler(event)" />
+					<s:Button label="{resourceManager.getString('main','TutorialNext')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonGreySkin" click="Step3Next_clickHandler(event)" />
+				</s:Group>
+			</s:Group>
+		</s:Group>
+	</s:Group>
+	
+	<s:Group width="750" height="570" x="0" y="80" includeIn="Step4">
+		<s:SWFLoader id="MyTutorialStep4" source="@Embed(source='/Assets/General.swf', symbol='TutorialStep4')" />
+		<s:Group width="300" horizontalCenter="-175" bottom="175">
+			<GameView:PopupBackground left="-20" right="-20" top="-20" bottom="-20" />
+			<s:Group horizontalCenter="0" verticalCenter="0">
+				<s:layout>
+					<s:VerticalLayout gap="10" horizontalAlign="center" />
+				</s:layout>
+				<s:Label text="{resourceManager.getString('main','TutorialStep4Tit')}" maxWidth="300" styleName="whiteBoldVeryBig" textAlign="center" horizontalCenter="0" />
+				<s:Label text="{resourceManager.getString('main','TutorialStep4Txt')}" maxWidth="300" styleName="whiteBoldBig" textAlign="center" horizontalCenter="0" />
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout gap="10" verticalAlign="middle" />
+					</s:layout>
+					<s:Button label="{resourceManager.getString('main','TutorialSkip')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonDarkGreySkin" click="Skip_clickHandler(event)" />
+					<s:Button label="{resourceManager.getString('main','TutorialNext')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonGreySkin" click="Step4Next_clickHandler(event)" />
+				</s:Group>
+			</s:Group>
+		</s:Group>
+	</s:Group>
+	
+	<s:Group width="750" height="570" x="0" y="80" includeIn="Step5">
+		<s:SWFLoader id="MyTutorialStep5" source="@Embed(source='/Assets/General.swf', symbol='TutorialStep5')" />
+		<s:Group width="370" horizontalCenter="0" top="120">
+			<GameView:PopupBackground left="-20" right="-20" top="-20" bottom="-20" />
+			<s:Group horizontalCenter="0" verticalCenter="0">
+				<s:layout>
+					<s:VerticalLayout gap="10" horizontalAlign="center" />
+				</s:layout>
+				<s:Label text="{resourceManager.getString('main','TutorialStep5Tit')}" maxWidth="350" styleName="whiteBoldVeryBig" textAlign="center" horizontalCenter="0" />
+				<s:Label text="{resourceManager.getString('main','TutorialStep5Txt')}" maxWidth="350" styleName="whiteBoldBig" textAlign="center" horizontalCenter="0" />
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout gap="10" verticalAlign="middle" />
+					</s:layout>
+					<s:Button label="{resourceManager.getString('main','TutorialSkip')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonDarkGreySkin" click="Skip_clickHandler(event)" />
+					<s:Button label="{resourceManager.getString('main','TutorialNext')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonGreySkin" click="Step5Next_clickHandler(event)" />
+				</s:Group>
+			</s:Group>
+		</s:Group>
+	</s:Group>
+	
+	<s:Group width="750" height="650" x="0" y="0" includeIn="End">
+		<s:SWFLoader source="@Embed(source='/Assets/General.swf', symbol='TutorialCortinaPlay')" />
+		<s:Group width="370" horizontalCenter="0" top="395">
+			<GameView:PopupBackground left="-20" right="-20" top="-20" bottom="-20" />
+			<s:Group horizontalCenter="0" verticalCenter="0">
+				<s:layout>
+					<s:VerticalLayout gap="10" horizontalAlign="center" />
+				</s:layout>
+				<s:Label text="{resourceManager.getString('main','TutorialEndTit')}" maxWidth="350" styleName="whiteBoldHuge" textAlign="center" horizontalCenter="0" />
+				<s:Label text="{resourceManager.getString('main','TutorialEndTxt')}" maxWidth="350" styleName="whiteBoldVeryBig" textAlign="center" horizontalCenter="0" />
+			</s:Group>
+		</s:Group>
+	</s:Group>
+	
+</s:Group>
