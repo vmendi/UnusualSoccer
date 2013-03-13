@@ -44,6 +44,14 @@
 			return skillPoints >=  MainGameModel.HEAL_INJURY_COST;
 		}
 		
+		private function GetHealNowTitle(skillPoints : int) : String
+		{
+			if (CanHeal(skillPoints))
+				return resourceManager.getString('main','HealInjuryNowTitle').replace("{REPLACEME}", MainGameModel.HEAL_INJURY_COST);
+			else
+				return resourceManager.getString('main','HealingNotAvailable').replace("{REPLACEME}", MainGameModel.HEAL_INJURY_COST);
+		}
+		
 		
 		[Bindable] private var mTeamModel : TeamModel;
 		
@@ -70,10 +78,10 @@
 				</s:stroke>
 			</s:Line>
 		</s:Graphic>
-		<s:Label id="MyHealNow" width="170" text="{resourceManager.getString('main','HealInjuryNowTitle')}" styleName="yellowBoldBig" textAlign="center" />
+		<s:Label id="MyHealNow" width="170" text="{GetHealNowTitle(mTeamModel.TheTeam.SkillPoints)}" styleName="yellowBoldBig" textAlign="center" />
 		<s:Button id="MyHealInjuryButton" label="{resourceManager.getString('main','HealInjuryButton')}" skinClass="GameView.Skins.ButtonGreySkin"
 				  width="150" click="MyHealInjuryButton_clickHandler(event)" visible="{CanHeal(mTeamModel.TheTeam.SkillPoints)}"/>
-		
+				
 	</s:Group>
 	
 </s:Group>

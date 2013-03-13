@@ -272,7 +272,7 @@ namespace Realtime
 
                 if (opponent != null)
                 {
-                    StartMatch(candidate, opponent, MATCH_DURATION_SECONDS[0], TURN_DURATION_SECONDS[1], false);
+                    StartMatch(candidate, opponent, MATCH_DURATION_SECONDS[1], TURN_DURATION_SECONDS[1], false);
                 }
                 else
                 {

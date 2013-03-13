@@ -297,8 +297,8 @@ package GameModel
 			// Esto ocurre cuando se produce un Shutdown debido a un OnCleaningShutdown.
 			if (e.Data != null)
 			{
-				// Refresco de por ejemplo del TeamPurchase
-				mMainModel.TheTeamModel.RefreshTeam(null);
+				// Refresco del equipo a través del TeamPurchase, para que pueda calcular si era el ultimo partido disponible
+				mMainModel.TheTeamPurchaseModel.RefreshTeamAfterMatch();
 				
 				// De vuelta a nuestra habitación, el servidor nos deja en el limbo, como si acabáramos de conectar
 				LogInToDefaultRoom(null);

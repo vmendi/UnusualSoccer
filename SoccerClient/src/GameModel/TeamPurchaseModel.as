@@ -2,31 +2,52 @@ package GameModel
 {
 	import HttpService.MainService;
 	import HttpService.TransferModel.vo.ItemForSale;
+	import HttpService.TransferModel.vo.TeamPurchaseInitialInfo;
 	
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.external.ExternalInterface;
 	
-	import mx.collections.ArrayCollection;
+	import mx.binding.utils.BindingUtils;
+	import mx.resources.ResourceManager;
 	import mx.rpc.Responder;
 	import mx.rpc.events.ResultEvent;
+	
+	import utils.TimeUtils;
 
-	public final class TeamPurchaseModel
+	public final class TeamPurchaseModel extends EventDispatcher
 	{
 		public function TeamPurchaseModel(mainService : MainService, mainModel : MainGameModel)
 		{
 			mMainService = mainService;
 			mMainGameModel = mainModel;
 			mTeamModel = mMainGameModel.TheTeamModel;
-
+			
 			mLocalCurrencyInfo = SoccerClient.GetFacebookFacade().FacebookMe.currency;
 		}
 		
+		// Queremos que nos llamen aqui despues un partido (El RealtimeModel.OnMatchEnded) para poder saber cuándo 
+		// agotamos los partidos y mandar el evento a las metricas
+		internal function RefreshTeamAfterMatch() : void
+		{
+			var previousRemainingMatches : int = mTeamModel.TheTeam.TeamPurchase.RemainingMatches;
+			
+			mMainGameModel.TheTeamModel.RefreshTeam(onTeamRefreshed);
+			
+			function onTeamRefreshed() : void
+			{
+				if (previousRemainingMatches > 0 && mTeamModel.TheTeam.TeamPurchase.RemainingMatches == 0)
+					GameMetrics.ReportEvent(GameMetrics.ZERO_MATCHES_REMAINING, null);
+			}
+		}
+				
 		public function InitialRefresh(callback : Function) : void
 		{
-			mMainService.GetItemsForSale(new mx.rpc.Responder(OnGetItemsForSaleResponse, ErrorMessages.Fault));
+			mMainService.RefreshTeamPurchaseInitialInfo(new mx.rpc.Responder(OnRefreshTeamPurchaseInitialInfoResponse, ErrorMessages.Fault));
 			
-			function OnGetItemsForSaleResponse(e:ResultEvent) : void
+			function OnRefreshTeamPurchaseInitialInfoResponse(e:ResultEvent) : void
 			{
-				mItemsForSale = e.result as ArrayCollection;
+				mInitialInfo = e.result as TeamPurchaseInitialInfo;
 				
 				callback();
 			}
@@ -86,7 +107,7 @@ package GameModel
 		
 		private function GetItemByID(itemID : String) : ItemForSale
 		{
-			for each(var item : ItemForSale in mItemsForSale)
+			for each(var item : ItemForSale in mInitialInfo.ItemsForSale)
 			{
 				if (item.item_id == itemID)
 					return item;				// Artists can take license with established rules...
@@ -97,7 +118,25 @@ package GameModel
 		
 		internal function OnTimerSeconds() : void
 		{
-			UpdatePurchases();
+			UpdateNewMatchesRemainingSeconds();
+			UpdatePurchases();			
+		}
+		
+		private function UpdateNewMatchesRemainingSeconds() : void
+		{			
+			if (mInitialInfo.NewMatchesRemainingSeconds - 1 <= 0)
+			{
+				if (mTeamModel.TheTeam.TeamPurchase.RemainingMatches < mInitialInfo.DailyNumMatches)
+					mTeamModel.TheTeam.TeamPurchase.RemainingMatches = mInitialInfo.DailyNumMatches;
+				
+				NewMatchesRemainingSeconds = 24 * 3599;
+			}
+			else
+			{
+				NewMatchesRemainingSeconds--;
+			}
+			
+			dispatchEvent(new Event("NewMatchesRemainingSecondsStringChanged"));	
 		}
 		
 		// Tiene credito o bien porque le queda tiempo de ticket o bien porque le quedan partidos restantes
@@ -116,7 +155,18 @@ package GameModel
 		private function set HasTrainer(val : Boolean) : void { mHasTrainer = val; }
 		private var mHasTrainer : Boolean = false;
 		
-		private var mItemsForSale : ArrayCollection;
+		[Bindable]
+		public function  get NewMatchesRemainingSeconds() : int { return mInitialInfo.NewMatchesRemainingSeconds; }
+		private function set NewMatchesRemainingSeconds(val : int) : void { mInitialInfo.NewMatchesRemainingSeconds = val; }
+		
+		[Bindable(event="NewMatchesRemainingSecondsStringChanged")]
+		public function get NewMatchesRemainingSecondsString() : String 
+		{ 
+			return ResourceManager.getInstance().getString('main','ComeBack').replace("{REPLACEME}", utils.TimeUtils.ConvertSecondsToStringVerbose(NewMatchesRemainingSeconds)); 
+		}
+		
+
+		private var mInitialInfo : TeamPurchaseInitialInfo;
 		
 		// http://developers.facebook.com/docs/payments/user_currency/
 		private var mLocalCurrencyInfo : Object;

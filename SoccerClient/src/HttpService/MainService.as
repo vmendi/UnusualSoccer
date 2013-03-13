@@ -64,8 +64,6 @@
         
         remoteObject.GetItemForSale.addEventListener("result",GetItemForSaleHandler);
         
-        remoteObject.GetItemsForSale.addEventListener("result",GetItemsForSaleHandler);
-        
         remoteObject.HasTeam.addEventListener("result",HasTeamHandler);
         
         remoteObject.HealInjury.addEventListener("result",HealInjuryHandler);
@@ -89,6 +87,8 @@
         remoteObject.RefreshTeam.addEventListener("result",RefreshTeamHandler);
         
         remoteObject.RefreshTeamDetails.addEventListener("result",RefreshTeamDetailsHandler);
+        
+        remoteObject.RefreshTeamPurchaseInitialInfo.addEventListener("result",RefreshTeamPurchaseInitialInfoHandler);
         
         remoteObject.RefreshTrainingDefinitions.addEventListener("result",RefreshTrainingDefinitionsHandler);
         
@@ -169,15 +169,6 @@
       public function GetItemForSale(orderInfoFromClient_itemID:String, responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.GetItemForSale(orderInfoFromClient_itemID);
-        
-        if( responder != null )
-            asyncToken.addResponder( responder );
-
-      }
-    
-      public function GetItemsForSale( responder:IResponder = null ):void
-      {
-        var asyncToken:AsyncToken = remoteObject.GetItemsForSale();
         
         if( responder != null )
             asyncToken.addResponder( responder );
@@ -292,6 +283,15 @@
 
       }
     
+      public function RefreshTeamPurchaseInitialInfo( responder:IResponder = null ):void
+      {
+        var asyncToken:AsyncToken = remoteObject.RefreshTeamPurchaseInitialInfo();
+        
+        if( responder != null )
+            asyncToken.addResponder( responder );
+
+      }
+    
       public function RefreshTrainingDefinitions( responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.RefreshTrainingDefinitions();
@@ -373,14 +373,6 @@
         
           var returnValue:ItemForSale = event.result as ItemForSale;
           model.GetItemForSaleResult = returnValue;
-        
-      }
-         
-      public virtual function GetItemsForSaleHandler(event:ResultEvent):void
-      {
-        
-          var returnValue:ArrayCollection = event.result as ArrayCollection;
-          model.GetItemsForSaleResult = returnValue;
         
       }
          
@@ -474,6 +466,14 @@
         
           var returnValue:TeamDetails = event.result as TeamDetails;
           model.RefreshTeamDetailsResult = returnValue;
+        
+      }
+         
+      public virtual function RefreshTeamPurchaseInitialInfoHandler(event:ResultEvent):void
+      {
+        
+          var returnValue:TeamPurchaseInitialInfo = event.result as TeamPurchaseInitialInfo;
+          model.RefreshTeamPurchaseInitialInfoResult = returnValue;
         
       }
          

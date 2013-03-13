@@ -11,10 +11,10 @@ package GameModel
 
 	public class MainGameModel extends EventDispatcher
 	{	
-		static public const POSSIBLE_MATCH_LENGTH_MINUTES : ArrayCollection = new ArrayCollection([ 5, 10, 15 ]);
+		static public const POSSIBLE_MATCH_LENGTH_MINUTES : ArrayCollection = new ArrayCollection([ 10, 5, 15 ]);
 		static public const POSSIBLE_TURN_LENGTH_SECONDS : ArrayCollection = new ArrayCollection([ 10, 15, 5 ]);
 		
-		static public const HEAL_INJURY_COST : int = 100;
+		static public const HEAL_INJURY_COST : int = 200;
 		
 		public function MainGameModel()
 		{
@@ -36,12 +36,8 @@ package GameModel
 			
 			// Los submodelos se bindean a sus hermanos sin orden definido, necesitamos generar un evento de cambio
 			dispatchEvent(new Event("dummy"));
-			
-			// Timer de refresco global
-			mRefreshTimer = new Timer(1000);
-			mRefreshTimer.addEventListener(TimerEvent.TIMER, OnRefreshTimer);
-			mRefreshTimer.start();
 		}
+		
 		
 		private function OnRefreshTimer(e:TimerEvent) : void
 		{
@@ -83,11 +79,21 @@ package GameModel
 			function initialRefreshStage01Completed() : void
 			{
 				mTrainingModel.InitialRefresh(initialRefreshStage02Completed);
-							
-				function initialRefreshStage02Completed() : void
-				{
-					mSpecialTrainingModel.InitialRefresh(callback);	
-				}
+			}
+			
+			function initialRefreshStage02Completed() : void
+			{
+				mSpecialTrainingModel.InitialRefresh(startTimer);	
+			}
+			
+			// Timer de refresco global. Queremos inicializarlo explicitamente despues del InitialRefresh
+			function startTimer() : void
+			{
+				mRefreshTimer = new Timer(1000);
+				mRefreshTimer.addEventListener(TimerEvent.TIMER, OnRefreshTimer);
+				mRefreshTimer.start();
+				
+				callback();
 			}
 		}
 
