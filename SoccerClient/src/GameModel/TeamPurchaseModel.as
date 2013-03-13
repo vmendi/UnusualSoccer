@@ -40,7 +40,7 @@ package GameModel
 					GameMetrics.ReportEvent(GameMetrics.ZERO_MATCHES_REMAINING, null);
 			}
 		}
-				
+
 		public function InitialRefresh(callback : Function) : void
 		{
 			mMainService.RefreshTeamPurchaseInitialInfo(new mx.rpc.Responder(OnRefreshTeamPurchaseInitialInfoResponse, ErrorMessages.Fault));
