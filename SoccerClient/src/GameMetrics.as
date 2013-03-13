@@ -62,7 +62,6 @@ package
 		
 		// Match end dialog and afterwards flow
 		static public const MATCHEND_DIALOG : String = "MatchEnd Dialog";
-		static public const MATCHEND_CLOSED : String = "MatchEnd Closed";	
 		static public const MATCHEND_PUBLISH : String = "MatchEnd Publish";
 		static public const MATCHEND_PUBLISH_SUCCESS : String = "MatchEnd Publish Success";
 		static public const MATCHEND_PUBLISH_SUCCESS_X2 : String = "MatchEnd Publish Success X2";

@@ -53,8 +53,6 @@
 
 		protected function AceptarClickHandler(event:MouseEvent) : void
 		{
-			GameMetrics.ReportEvent(GameMetrics.MATCHEND_CLOSED, null);
-			
 			if ((MatchResultUtils.GetMyResult(mMatchResult, mTeamModel).InjuredSoccerPlayers as ArrayCollection).length != 0)
 				AnimatableDialog.Dismiss(this, ShowInjuredDialog);
 			else
