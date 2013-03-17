@@ -124,6 +124,14 @@
 			currentState = "Ranking";
 		}
 		
+		public function StartFirstGameAfterLogin() : void
+		{
+			currentState = "Competition";
+			
+			// Nosotros lo creamos y el mismo se encargara de destruirse
+			addElement(new TutorialPanel());
+		}
+		
 		private var mMainGameModel : MainGameModel;
 
 	]]></fx:Script>
@@ -139,7 +147,7 @@
 		<GameView:StatusPanel height="80" includeIn="InGame, OnRealtimeMatch"/>
 		
 		<Match:RealtimeMatch width="760" includeIn="OnRealtimeMatch" />
-		
+				
 		<s:Group width="760" height="51" includeIn="InGame">
 			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='StatusPanelBackgroundBottom')" fillMode="clip" />
 			
@@ -174,6 +182,4 @@
 	
 	</s:Group>
 		
-	<GameView:TutorialPanel x="0" y="0"/>
-	
 </s:Group>

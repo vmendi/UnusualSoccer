@@ -86,7 +86,7 @@
 					}
 					else
 					{
-						GameMetrics.ReportEvent(GameMetrics.PURCHASE_FAILURE, {item: orderInfo});
+						GameMetrics.ReportEvent(GameMetrics.PURCHASE_FAILURE, {item: orderInfo, errorCode: ret["error_code"] });
 						currentState = "Failure";
 					}
 				}

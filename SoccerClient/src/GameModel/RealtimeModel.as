@@ -307,7 +307,7 @@ package GameModel
 				MatchEnded.dispatch(e.Data);
 			}
 		}
-				
+
 		public function PushedMatchUnsync() : void
 		{
 			//Alert.show("Unsync state!", "BETA");
