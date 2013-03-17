@@ -43,10 +43,10 @@ namespace SoccerServer.Admin
 
         private void FillDisputedOrdersGridView()
         {
-            var accessToken = FBUtils.GetApplicationAccessToken();
+            var accessToken = AdminUtils.GetApplicationAccessToken();
             string graphApiReq = String.Format("https://graph.facebook.com/{0}/payments?status=disputed&{1}", GlobalConfig.FacebookSettings.AppId, accessToken);
 
-            var response = FBUtils.GetHttpResponse(graphApiReq, null);
+            var response = AdminUtils.PostTo(graphApiReq, null);
 
             JavaScriptSerializer jss = new JavaScriptSerializer();
             Dictionary<string, object> responseDict = jss.Deserialize<Dictionary<string, object>>(response);
@@ -205,14 +205,14 @@ namespace SoccerServer.Admin
             var refundCall = String.Format("https://graph.facebook.com/{0}?status={3}&message={1}&{2}",
                                             thePurchase.FacebookOrderID,
                                             MyMessageTextBox.Text,
-                                            FBUtils.GetApplicationAccessToken(), newStatus);
+                                            AdminUtils.GetApplicationAccessToken(), newStatus);
 
             string resp = "";
 
             try
             {
                 // Va por POST
-                resp = FBUtils.GetHttpResponse(refundCall, new byte[0]);
+                resp = AdminUtils.PostTo(refundCall, "");
             }
             catch (Exception ex)
             {

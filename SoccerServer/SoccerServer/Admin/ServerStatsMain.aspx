@@ -11,7 +11,7 @@
             border-width:1px;
             padding-left:5px; 
             padding-right:5px;
-            width:390px
+            width:390px;
         }
     </style>
 </head>
@@ -70,9 +70,7 @@
         <asp:Button runat="server" Text="Reset Season" OnClick="ResetSeasons_Click" />        
         <asp:Button runat="server" Text="New Season" OnClick="NewSeason_Click" /><br />
         <asp:Button runat="server" Text="ResetAllTickets" OnClick="ResetAllTickets_Click" /><br /><br />
-        <asp:Button runat="server" Text="Set Restrictions to ES" OnClick="SetRestrictionsES_Click" /><br />
-        <asp:Button runat="server" Text="Set Restrictions to NONE" OnClick="SetRestrictionsNone_Click" /><br /><br />
-        
+       
         <div class="borderedBox">
             <asp:Literal runat="server" id="MyLogConsole"/>
         </div>

@@ -14,13 +14,11 @@ namespace SoccerServer.Admin
 {
     public class SendToDashboard
     {
-        private static readonly Logger Log = LogManager.GetLogger(typeof(SendToDashboard).FullName);
-
         static public void SendRealtimeDataToDashboards()
         {
             if (!GlobalConfig.ServerSettings.Dashboards)
                 return;
-
+         
             NetEngineMain netEngineMain = GlobalSoccerServer.Instance.TheNetEngine;
 
             if (netEngineMain == null || !netEngineMain.IsRunning)
@@ -71,7 +69,7 @@ namespace SoccerServer.Admin
             theDynamic.streams = new List<dynamic>() { streamConnections01, streamConnections02,
                                                        combinedConnectionsHTML, connectionsTable, upSinceLabel };
             
-            PostTo("https://www.leftronic.com/customSend/", JsonConvert.SerializeObject(theDynamic));
+            AdminUtils.PostTo("https://www.leftronic.com/customSend/", JsonConvert.SerializeObject(theDynamic));
         }
 
         static public void SendTotalsLeftronics()
@@ -100,7 +98,7 @@ namespace SoccerServer.Admin
 
             theDynamic.streams = new List<dynamic>() { totalsTable };
             
-            PostTo("https://www.leftronic.com/customSend/", JsonConvert.SerializeObject(theDynamic));
+            AdminUtils.PostTo("https://www.leftronic.com/customSend/", JsonConvert.SerializeObject(theDynamic));
         }
 
         private static dynamic CreateDynamicLeftronic()
@@ -108,42 +106,6 @@ namespace SoccerServer.Admin
             dynamic theDynamic = new ExpandoObject();
             theDynamic.accessKey = "8foeggMZyYxa9YGVU7vIRroPEyUEID3h";
             return theDynamic;
-        }
-
-        private static void PostTo(string uri, string json)
-        {
-            HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(uri);
-            webRequest.Method = "POST";
-            webRequest.ContentType = "text/plain";
-            webRequest.ContentLength = json.Length;
-
-            using (var writer = new StreamWriter(webRequest.GetRequestStream()))
-            {
-                writer.Write(json);
-            }
-
-            try
-            {
-                HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
-                StreamReader responseStream = new StreamReader(webResponse.GetResponseStream());
-
-                responseStream.ReadToEnd();
-
-                responseStream.Close();
-                webResponse.Close();
-            }
-            catch (WebException ex)
-            {
-                if (ex.Status == WebExceptionStatus.ProtocolError)
-                {
-                    HttpWebResponse err = ex.Response as HttpWebResponse;
-                    if (err != null)
-                    {
-                        string htmlResponse = new StreamReader(err.GetResponseStream()).ReadToEnd();
-                        Log.Error(string.Format("{0} {1}", err.StatusDescription, htmlResponse));
-                    }
-                }
-            }
         }
 
         static private int GetTotalPlayers(SoccerDataModelDataContext dc)

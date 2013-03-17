@@ -83,6 +83,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Extensions" />
@@ -90,6 +91,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\Notifications.aspx" />
     <Content Include="App_Data\Backup.sql" />
     <Content Include="App_Data\DeleteAll.sql" />
     <Content Include="App_Data\NextDeployUpdate.sql" />
@@ -237,6 +239,13 @@
     <Content Include="_App_Offline.htm" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\Notifications.aspx.cs">
+      <DependentUpon>Notifications.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Notifications.aspx.designer.cs">
+      <DependentUpon>Notifications.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Cancelled.aspx.cs">
       <DependentUpon>Cancelled.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -250,7 +259,7 @@
     <Compile Include="Rewards.ashx.cs">
       <DependentUpon>Rewards.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\FBUtils.cs" />
+    <Compile Include="Admin\AdminUtils.cs" />
     <Compile Include="Deauthorize.aspx.cs">
       <DependentUpon>Deauthorize.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
