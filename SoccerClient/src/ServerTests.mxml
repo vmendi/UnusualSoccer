@@ -6,6 +6,7 @@
 		<s:VerticalLayout/>
 	</s:layout>
 	<fx:Script><![CDATA[
+		import GameModel.InactivityModel;
 		import GameModel.MainGameModel;
 		import GameModel.RealtimePlayer;
 		import GameModel.RoomModel;
@@ -175,7 +176,7 @@
 			SoccerClient.GetFacebookFacade().Init(startTest);
 			
 			// Cuando nos venga el RefreshTeam no queremos que se produzca una conexion del RealtimeModel
-			mMainGameModel.TheInactivityModel.SupressActivity();
+			mMainGameModel.TheInactivityModel.OperationMode = InactivityModel.FORCED_INACTIVITY_MODE; 
 						
 			var counter : int = 0;
 				

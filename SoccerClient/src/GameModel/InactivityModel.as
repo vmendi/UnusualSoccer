@@ -1,7 +1,5 @@
 package GameModel
 {
-	import GameView.Team.Team;
-	
 	import HttpService.MainService;
 	import HttpService.TransferModel.vo.Team;
 	
@@ -14,7 +12,7 @@ package GameModel
 	public final class InactivityModel
 	{
 		private const INACTIVITY_TIME : Number = 3 * 60 * 1000;
-		
+				
 		[Bindable]
 		public function  get IsActive() : Boolean { return mIsActive; }
 		private function set IsActive(v:Boolean) : void { mIsActive = v; }
@@ -38,12 +36,38 @@ package GameModel
 		}
 		
 		// Para los tests, nos fuerza a estar siempre inactivos
-		public function SupressActivity() : void
+		static public const FORCED_INACTIVITY_MODE : String = "ForcedInactivityMode";
+		
+		// Durante el tutorial nos fuerzan a estar siempre activos
+		static public const FORCED_ACTIVITY_MODE : String = "ForcedActivityMode";
+		
+		// // Desconecta el modo de actividad/inactividad forzada
+		static public const NORMAL_MODE : String = "NormalMode";
+		
+		public function set OperationMode(mode : String) : void
 		{
-			StopAndDestroyTimer();
-			IsActive = false;
-			mForcedInactivity = true;
+			if (mode == FORCED_INACTIVITY_MODE)
+			{
+				mMode = FORCED_INACTIVITY_MODE;
+				StopAndDestroyTimer();
+				IsActive = false;					
+			}
+			else
+			if (mode == FORCED_ACTIVITY_MODE)
+			{
+				mMode = FORCED_ACTIVITY_MODE;
+				StopAndDestroyTimer();
+				IsActive = true;								
+			}
+			else
+			{
+				mMode = NORMAL_MODE;
+				ReevaluateTimerCreation();
+				IsActive = true;
+			}
 		}
+		private function get OperationMode() : String { return ""; }
+		
 		
 		public function OnCleaningShutdown() : void
 		{
@@ -62,13 +86,13 @@ package GameModel
 		
 		private function ReevaluateTimerCreation() : void
 		{
-			if (mForcedInactivity)
+			if (mMode != NORMAL_MODE)
 				return;
 			
 			if (mTeamModel.TheTeam != null && !mRealtimeModel.LookingForMatch && mRealtimeModel.TheMatch == null)
 				EnsureCreateAndStartTimer();
 			else
-				StopAndDestroyTimer();	
+				StopAndDestroyTimer();
 		}
 		
 		private function OnMatchStarted() : void
@@ -134,6 +158,6 @@ package GameModel
 		private var mRealtimeModel : RealtimeModel;
 		private var mTeamModel : TeamModel;
 		
-		private var mForcedInactivity : Boolean = false
+		private var mMode : String = NORMAL_MODE;
 	}
 }

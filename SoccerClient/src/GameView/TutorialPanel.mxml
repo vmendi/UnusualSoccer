@@ -8,8 +8,8 @@
 		 addedToStage="TutorialPanel_addedToStageHandler(event)"
 		 >
 	
-	<fx:Script>
-		<![CDATA[
+	<fx:Script><![CDATA[
+		import GameModel.InactivityModel;
 		import GameModel.MainGameModel;
 		import GameModel.RealtimeModel;
 		
@@ -22,24 +22,28 @@
 		protected function TutorialPanel_addedToStageHandler(event:Event):void
 		{
 			mMainGameModel = SoccerClient.GetMainGameModel();
-			mRealtimeModel = mMainGameModel.TheRealtimeModel;
 			
-			var theChangeWatcher : ChangeWatcher = BindingUtils.bindSetter(OnLookingForMatchChanged, mRealtimeModel, "LookingForMatch");
-			
-			function OnLookingForMatchChanged(looking : Boolean) : void
-			{
-				if (theChangeWatcher != null)	// Evita la primera llamada antes de devolver el theChangeWatcher
-				{
-					theChangeWatcher.unwatch();
-					
-					RemoveElementFromParent();
-				}
-			}
+			// Durante todo el tutorial nos aseguramos de que no entramos en inactividad
+			mMainGameModel.TheInactivityModel.OperationMode = InactivityModel.FORCED_ACTIVITY_MODE; 
+						
+			mLFMChangeWatcher = BindingUtils.bindSetter(OnLookingForMatchChanged, mMainGameModel, [ "TheRealtimeModel", "LookingForMatch" ] );
 		}
 		
-		private function RemoveElementFromParent() : void
+		private function OnLookingForMatchChanged(looking : Boolean) : void
 		{
+			if (looking)
+				CloseTutorial();
+		}
+		
+		// Siempre hay que salir del tutorial por aqui!
+		private function CloseTutorial() : void
+		{
+			if (mLFMChangeWatcher != null)
+				mLFMChangeWatcher.unwatch();
+			
 			(parent as Group).removeElement(this);
+			
+			mMainGameModel.TheInactivityModel.OperationMode = InactivityModel.NORMAL_MODE;
 		}
 
 		protected function Start_clickHandler(event:MouseEvent):void
@@ -54,7 +58,7 @@
 			
 		protected function NotNow_clickHandler(event:MouseEvent):void
 		{
-				
+			CloseTutorial();				
 		}
 			
 		protected function Step1Next_clickHandler(event:MouseEvent):void
@@ -82,8 +86,9 @@
 			currentState="End";
 		}
 
-		[Bindable] private var mMainGameModel : MainGameModel;
-		[Bindable] private var mRealtimeModel : RealtimeModel;
+		[Bindable]
+		private var mMainGameModel : MainGameModel;
+		private var mLFMChangeWatcher : ChangeWatcher = null;
 		
 	]]></fx:Script>
 	
@@ -98,9 +103,6 @@
 		<s:State name="End"></s:State>
 	</s:states>
 	
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
 	
 	<!-- FONDOS -->
 	
@@ -111,6 +113,7 @@
 	</s:Rect>
 	<s:SWFLoader id="EndCortina" source="@Embed(source='/Assets/General.swf', symbol='TutorialCortinaPlay')" includeIn="End" />
 	<s:SWFLoader top="80" id="MyTutorialField" source="@Embed(source='/Assets/General.swf', symbol='TutorialField')" excludeFrom="Init, End" />
+	
 	
 	<!-- INIT -->
 	
