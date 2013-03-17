@@ -13,7 +13,7 @@ package GameModel
 
 	public final class InactivityModel
 	{
-		private const INACTIVITY_TIME : Number = 20 * 60 * 1000;
+		private const INACTIVITY_TIME : Number = 3 * 60 * 1000;
 		
 		[Bindable]
 		public function  get IsActive() : Boolean { return mIsActive; }

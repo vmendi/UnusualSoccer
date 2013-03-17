@@ -111,7 +111,7 @@
 				GameMetrics.ReportEvent(GameMetrics.TEAM_SELECTED, {predefinedTeamID: MyPredefinedTeamList.selectedItem});
 				GameMetrics.Set(GameMetrics.PEOPLE_TEAM, MyPredefinedTeamList.selectedItem);
 				
-				(HierarchyUtils.FindParentOfType(this, getQualifiedClassName(MainView)) as MainView).currentState = "Competition";
+				(HierarchyUtils.FindParentOfType(this, getQualifiedClassName(MainView)) as MainView).StartFirstGameAfterLogin();
 			}
 			
 			[Bindable] private var mMainGameModel : MainGameModel;

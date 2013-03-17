@@ -26,10 +26,10 @@ namespace SoccerServer
                     var signedRequest = context.Request.Params["signed_request"];
                     var sig = Facebook.FacebookSignedRequest.Parse(GlobalConfig.FacebookSettings, signedRequest);
 
-                    Log.Info("Purchase request from user: " + sig.UserId);
-
                     string method = context.Request.Form["method"];
 
+                    Log.Info("Purchase request from user: " + sig.UserId + " - method: " + method);
+                    
                     if (method == "payments_get_items")
                     {
                         ProcessGetItems(context);
@@ -242,7 +242,7 @@ namespace SoccerServer
         { 
             Log.Fatal(">-----------------------------------------------------------------------");
             Log.Fatal("----------------- Big blunder in the purchase system  ------------------");
-            Log.Fatal("------------------------ Inmediate review!!!  --------------------------");
+            Log.Fatal("------------------------ Immediate review!!!  --------------------------");
             Log.Fatal("------------------------------------------------------------------------");
             Log.Fatal(message);
             Log.Fatal("------------------------------------------------------------------------");

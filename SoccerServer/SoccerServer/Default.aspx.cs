@@ -17,6 +17,7 @@ namespace SoccerServer
     {
         readonly public NameValueCollection SWF_SETTINGS = System.Configuration.ConfigurationManager.GetSection("swfSettings") as NameValueCollection;
         private Player mPlayer;
+        private bool   mIsPlayerJustCreated = false;
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -81,7 +82,7 @@ namespace SoccerServer
 
             using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
             {
-                mPlayer = EnsurePlayerIsCreated(theContext, sessionKey, Request.QueryString, null);
+                mIsPlayerJustCreated = EnsurePlayerIsCreated(theContext, sessionKey, Request.QueryString, ref mPlayer, null);
                 EnsureSessionIsCreated(theContext, mPlayer, sessionKey.ToString());
                 theContext.SubmitChanges();
             }
@@ -96,7 +97,7 @@ namespace SoccerServer
                 var fb = new FacebookWebClient();
                 
                 // Usamos un delegate para que solo se haga la llamada sincrona en caso necesario
-				mPlayer = EnsurePlayerIsCreated(theContext, FacebookWebContext.Current.UserId, Request.QueryString, () => fb.Get("me"));
+                mIsPlayerJustCreated = EnsurePlayerIsCreated(theContext, FacebookWebContext.Current.UserId, Request.QueryString, ref mPlayer, () => fb.Get("me"));
                 EnsureSessionIsCreated(theContext, mPlayer, FacebookWebContext.Current.AccessToken);
 				theContext.SubmitChanges();
 
@@ -131,7 +132,7 @@ namespace SoccerServer
 
             flashVars += "SessionKey: '" + FacebookWebContext.Current.AccessToken + "' ,";
             flashVars += "Locale: '" + GetLocale() + "' ,";
-
+            
             flashVars += "PlayerParams: '" + HttpUtility.UrlEncode(GetPlayerParams()) + "'";
 
             flashVars += " } ";
@@ -142,6 +143,11 @@ namespace SoccerServer
         public string GetPlayerParams()
         {
             return mPlayer.Params;
+        }
+
+        public bool IsPlayerJustCreated()
+        {
+            return mIsPlayerJustCreated;
         }
 
         public string GetRsc(string rscStandardPath)
@@ -231,13 +237,16 @@ namespace SoccerServer
 
         public delegate dynamic GetFBUserDelegate();
 
-        static public Player EnsurePlayerIsCreated(SoccerDataModelDataContext theContext, long facebookUserID, NameValueCollection queryString,
-                                                   GetFBUserDelegate theFBUserInfo)
+        static public bool EnsurePlayerIsCreated(SoccerDataModelDataContext theContext, long facebookUserID, NameValueCollection queryString, ref Player player, GetFBUserDelegate theFBUserInfo)
 		{
-			var player = (from dbPlayer in theContext.Players
-						  where dbPlayer.FacebookID == facebookUserID
-						  select dbPlayer).FirstOrDefault();
+			player = (from dbPlayer in theContext.Players
+			          where dbPlayer.FacebookID == facebookUserID
+					  select dbPlayer).FirstOrDefault();
 
+            // Retornamos true si acabamos de crear el player
+            bool bRet = player == null; 
+
+            // Si no existia, vamos a crearlo
 			if (player == null)
 			{
                 // We save the querystring in the DB as "Params".
@@ -273,7 +282,7 @@ namespace SoccerServer
 				theContext.Players.InsertOnSubmit(player);
 			}
 
-			return player;
+			return bRet;
 		}
 
         private const int SPONSORPAY_APP_KEY_DEBUG = 11472;

@@ -5,47 +5,81 @@
 		 xmlns:GameView="GameView.*"
 		 width="760" height="650"
 		 currentState="Init"
+		 addedToStage="TutorialPanel_addedToStageHandler(event)"
 		 >
 	
-	<fx:Script>
-		<![CDATA[
-			protected function Start_clickHandler(event:MouseEvent):void
-			{
-				currentState="Step1";
-			}
+	<fx:Script><![CDATA[
+		import GameModel.MainGameModel;
+		import GameModel.RealtimeModel;
+		
+		import GameView.Match.RealtimeMatch;
+		
+		import mx.binding.utils.BindingUtils;
+		import mx.binding.utils.ChangeWatcher;
+		import mx.events.FlexEvent;
+		
+		protected function TutorialPanel_addedToStageHandler(event:Event):void
+		{
+			mMainGameModel = SoccerClient.GetMainGameModel();
+			mRealtimeModel = mMainGameModel.TheRealtimeModel;
 			
-			protected function Skip_clickHandler(event:MouseEvent):void
-			{
-				currentState="End";
-			}
+			var theChangeWatcher : ChangeWatcher = BindingUtils.bindSetter(OnLookingForMatchChanged, mRealtimeModel, "LookingForMatch");
 			
-			protected function Step1Next_clickHandler(event:MouseEvent):void
+			function OnLookingForMatchChanged(looking : Boolean) : void
 			{
-				currentState="Step2";
+				if (theChangeWatcher != null)	// Evita la primera llamada antes de devolver el theChangeWatcher
+				{
+					theChangeWatcher.unwatch();
+					
+					RemoveElementFromParent();
+				}
 			}
+		}
+		
+		private function RemoveElementFromParent() : void
+		{
+			(parent as Group).removeElement(this);
+		}
 
-			protected function Step2Next_clickHandler(event:MouseEvent):void
-			{
-				currentState="Step3";
-			}
-			
-			protected function Step3Next_clickHandler(event:MouseEvent):void
-			{
-				currentState="Step4";
-			}
-			
-			protected function Step4Next_clickHandler(event:MouseEvent):void
-			{
-				currentState="Step5";
-			}
-			
-			protected function Step5Next_clickHandler(event:MouseEvent):void
-			{
-				currentState="End";
-			}
-			
-		]]>
-	</fx:Script>
+		protected function Start_clickHandler(event:MouseEvent):void
+		{
+			currentState="Step1";
+		}
+		
+		protected function Skip_clickHandler(event:MouseEvent):void
+		{
+			currentState="End";
+		}
+		
+		protected function Step1Next_clickHandler(event:MouseEvent):void
+		{
+			currentState="Step2";
+		}
+
+		protected function Step2Next_clickHandler(event:MouseEvent):void
+		{
+			currentState="Step3";
+		}
+		
+		protected function Step3Next_clickHandler(event:MouseEvent):void
+		{
+			currentState="Step4";
+		}
+		
+		protected function Step4Next_clickHandler(event:MouseEvent):void
+		{
+			currentState="Step5";
+		}
+		
+		protected function Step5Next_clickHandler(event:MouseEvent):void
+		{
+			currentState="End";
+		}
+
+		[Bindable] private var mMainGameModel : MainGameModel;
+		[Bindable] private var mRealtimeModel : RealtimeModel;
+		
+	]]></fx:Script>
 	
 	
 	<s:states>

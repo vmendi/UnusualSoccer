@@ -96,7 +96,7 @@
         }
 
         // Initial load event
-        mixpanel.track("Default.aspx loaded");
+        mixpanel.track("Default.aspx loaded", { firstTime: <%= IsPlayerJustCreated().ToString().ToLower() %> });
 
         function processQueryString(theQueryString) {
             var ret = {};
@@ -211,7 +211,7 @@
                 EUR: '€', //... cover whichever currencies are relevant to your app
             }
             var currencyString = currmap[currency.user_currency]
-                || currency.user_currency, // in case the map doesn't cover it
+                || (currency.user_currency + ' '), // in case the map doesn't cover it
             rate = currency.currency_exchange_inverse,
             offset = currency.currency_offset;
 
