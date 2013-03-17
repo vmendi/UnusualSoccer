@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SoccerServer.ServerStats {
+namespace SoccerServer.Admin {
     
     
     public partial class ServerStatsRanking {

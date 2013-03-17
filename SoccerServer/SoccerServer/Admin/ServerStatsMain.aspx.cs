@@ -6,7 +6,7 @@ using Realtime;
 using ServerCommon;
 using ServerCommon.BDDModel;
 
-namespace SoccerServer.ServerStats
+namespace SoccerServer.Admin
 {
 	public partial class ServerStatsMain : System.Web.UI.Page
 	{

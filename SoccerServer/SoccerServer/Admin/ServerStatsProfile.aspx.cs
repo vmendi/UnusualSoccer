@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 using HttpService;
 using ServerCommon;
 
-namespace SoccerServer.ServerStats
+namespace SoccerServer.Admin
 {
     public partial class ServerStatsProfile : System.Web.UI.Page
     {

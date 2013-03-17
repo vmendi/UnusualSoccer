@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SoccerServer.ServerStats {
+namespace SoccerServer.Admin {
     
     
     public partial class ServerStatsGlobalMatches {
@@ -28,7 +28,7 @@ namespace SoccerServer.ServerStats {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::SoccerServer.ServerStats.ServerStatsMatchesControl MyGlobalMatches;
+        protected global::SoccerServer.Admin.ServerStatsMatchesControl MyGlobalMatches;
         
         /// <summary>
         /// Label1 control.

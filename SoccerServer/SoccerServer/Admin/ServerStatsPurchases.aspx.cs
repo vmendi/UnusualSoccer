@@ -7,7 +7,7 @@ using HttpService;
 using ServerCommon.BDDModel;
 using ServerCommon;
 
-namespace SoccerServer.ServerStats
+namespace SoccerServer.Admin
 {
     public partial class ServerStatsPurchases : System.Web.UI.Page
     {

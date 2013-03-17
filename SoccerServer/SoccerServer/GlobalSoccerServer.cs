@@ -5,7 +5,7 @@ using NetEngine;
 using NLog;
 using Realtime;
 using ServerCommon;
-using SoccerServer.ServerStats;
+using SoccerServer.Admin;
 
 
 namespace SoccerServer

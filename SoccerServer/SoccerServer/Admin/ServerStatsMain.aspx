@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ServerStatsMain.aspx.cs" Inherits="SoccerServer.ServerStats.ServerStatsMain" MaintainScrollPositionOnPostback="true" %> 
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ServerStatsMain.aspx.cs" Inherits="SoccerServer.Admin.ServerStatsMain" MaintainScrollPositionOnPostback="true" %> 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 

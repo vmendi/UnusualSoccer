@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using ServerCommon;
 
-namespace SoccerServer.ServerStats
+namespace SoccerServer.Admin
 {
     public class FBUtils
     {

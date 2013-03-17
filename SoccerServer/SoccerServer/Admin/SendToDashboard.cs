@@ -10,7 +10,7 @@ using ServerCommon;
 using System;
 using System.Linq;
 
-namespace SoccerServer.ServerStats
+namespace SoccerServer.Admin
 {
     public class SendToDashboard
     {
