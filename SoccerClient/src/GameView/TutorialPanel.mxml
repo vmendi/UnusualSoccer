@@ -51,7 +51,12 @@
 		{
 			currentState="End";
 		}
-		
+			
+		protected function NotNow_clickHandler(event:MouseEvent):void
+		{
+				
+		}
+			
 		protected function Step1Next_clickHandler(event:MouseEvent):void
 		{
 			currentState="Step2";
@@ -97,7 +102,7 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
-<!-- FONDOS -->
+	<!-- FONDOS -->
 	
 	<s:Rect left="0" right="0" top="0" bottom="0" alpha="0.7" excludeFrom="End">
 		<s:fill>
@@ -107,7 +112,7 @@
 	<s:SWFLoader id="EndCortina" source="@Embed(source='/Assets/General.swf', symbol='TutorialCortinaPlay')" includeIn="End" />
 	<s:SWFLoader top="80" id="MyTutorialField" source="@Embed(source='/Assets/General.swf', symbol='TutorialField')" excludeFrom="Init, End" />
 	
-<!-- INIT -->
+	<!-- INIT -->
 	
 	<s:Group id="InitTxt" width="580" horizontalCenter="0" y="228" includeIn="Init">
 		<GameView:PopupBackground left="-10" right="-10" top="30" bottom="-10" />
@@ -124,8 +129,8 @@
 			</s:Group>
 		</s:Group>
 	</s:Group>
-
-<!-- STEP 1 -->
+	
+	<!-- STEP 1 -->
 	
 	<s:SWFLoader id="Step1Anim" y="80" source="@Embed(source='/Assets/General.swf', symbol='TutorialStep1')" includeIn="Step1" />
 	<s:Group id="Step1Txt" width="580" horizontalCenter="0" y="95" includeIn="Step1">
@@ -147,7 +152,7 @@
 		</s:filters>
 	</s:Group>
 	
-<!-- STEP 2 -->
+	<!-- STEP 2 -->
 	
 	<s:SWFLoader id="Step2Anim" y="80" source="@Embed(source='/Assets/General.swf', symbol='TutorialStep2')" includeIn="Step2" />
 	<s:Group id="Step2Txt" width="580" horizontalCenter="0" y="412" includeIn="Step2">
@@ -169,7 +174,7 @@
 		</s:filters>
 	</s:Group>
 	
-<!-- STEP 3 -->
+	<!-- STEP 3 -->
 	
 	<s:SWFLoader id="Step3Anim" y="80" source="@Embed(source='/Assets/General.swf', symbol='TutorialStep3')" includeIn="Step3" />
 	<s:Group id="Step3Txt" width="580" horizontalCenter="0" y="80" includeIn="Step3">
@@ -191,7 +196,7 @@
 		</s:filters>
 	</s:Group>
 	
-<!-- STEP 4 -->
+	<!-- STEP 4 -->
 	
 	<s:SWFLoader id="Step4Anim" y="80" source="@Embed(source='/Assets/General.swf', symbol='TutorialStep4')" includeIn="Step4" />
 	<s:Group id="Step4Txt" width="460" left="20" y="320" includeIn="Step4">
@@ -213,7 +218,7 @@
 		</s:filters>
 	</s:Group>
 	
-<!-- STEP 5 -->
+	<!-- STEP 5 -->
 	
 	<s:SWFLoader id="Step5Anim" y="80" source="@Embed(source='/Assets/General.swf', symbol='TutorialStep5')" includeIn="Step5" />
 	<s:Group id="Step5Txt" width="480" right="65" y="150" includeIn="Step5">
@@ -235,7 +240,7 @@
 		</s:filters>
 	</s:Group>
 	
-<!-- END -->
+	<!-- END -->
 	
 	<s:Group id="EndTxt" width="580" horizontalCenter="0" y="345" includeIn="End">
 		<GameView:PopupBackground left="-10" right="-10" top="30" bottom="-10" />
