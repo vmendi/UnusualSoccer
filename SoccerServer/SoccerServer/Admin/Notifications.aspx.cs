@@ -56,8 +56,22 @@ namespace SoccerServer.Admin
             var access_token = AdminUtils.GetApplicationAccessToken(currentEnv.AppId, currentEnv.AppSecret);
 
             var facebookIDs = GetTargetList()[MyTargetList.SelectedIndex].GetFacebookIDs();
+            int lower = 0, upper = facebookIDs.Count;
 
-            for (int c = 0; c < facebookIDs.Count; ++c)
+            if (MyLowerRangeTextBox.Text != "" && int.Parse(MyLowerRangeTextBox.Text) >= 0 &&
+                MyUpperRangeTextBox.Text != "" && int.Parse(MyUpperRangeTextBox.Text) >= 0)
+            {
+                lower = int.Parse(MyLowerRangeTextBox.Text);
+                upper = int.Parse(MyUpperRangeTextBox.Text);
+            }
+
+            if (upper < lower || upper > facebookIDs.Count)
+            {
+                MyLogConsole.Text = "Invalid lower or upper range";
+                return;
+            } 
+
+            for (int c = lower; c < upper; ++c)
             {
                 var locale = GetLocaleFor(facebookIDs[c]);
                 var notif = locale.ToLower().Contains("es_") ? MyTemplateMessageSpanishTextBox.Text : MyTemplateMessageEnglishTextBox.Text;
@@ -72,14 +86,12 @@ namespace SoccerServer.Admin
 
                 // El segundo parametro fuerza el POST
                 var response = AdminUtils.PostTo(post, "");
-
-                // Logeamos
-                Log.Debug(c.ToString() + ".- Notification sent to " + facebookIDs[c].ToString());
                 
-                if (c % 20 == 0)
-                {
-                    MyLogConsole.Text += c.ToString() + " -" + response + "<br/>";
-                }
+                // Logeamos
+                if (response.Contains("success"))
+                    Log.Debug(c.ToString() + ".- Notification sent to " + facebookIDs[c].ToString());
+                else
+                    Log.Debug(c.ToString() + ".- Failed " + facebookIDs[c].ToString());
             }
         }
 
@@ -316,7 +328,7 @@ namespace SoccerServer.Admin
 
         private List<long> GetTestUsers()
         {
-            return new List<long> { 1050910634, 100000959596966 };
+            return new List<long> { 1050910634, 100000959596966, 611084838 };
         }
     }
 }

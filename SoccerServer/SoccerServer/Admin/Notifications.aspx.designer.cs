@@ -76,6 +76,24 @@ namespace SoccerServer.Admin {
         protected global::System.Web.UI.WebControls.TextBox MyInsightsRefTextBox;
         
         /// <summary>
+        /// MyLowerRangeTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox MyLowerRangeTextBox;
+        
+        /// <summary>
+        /// MyUpperRangeTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox MyUpperRangeTextBox;
+        
+        /// <summary>
         /// MySendNotificationsButtton control.
         /// </summary>
         /// <remarks>
