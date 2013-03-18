@@ -20,6 +20,10 @@
     <br/><br/><br/>
 
     <form id="NotificationsForm" runat="server" class="borderedBox">
+        <asp:DropDownList id="MyEnvironmentDropDown"
+                        AutoPostBack="True" OnSelectedIndexChanged="Environment_Selection_Change"
+                        runat="server"/>
+        <br />
         <asp:DropDownList id="MyTargetList"
                         AutoPostBack="True"
                         OnSelectedIndexChanged="TargetList_Selection_Change"
@@ -28,9 +32,13 @@
         <asp:label ID="MyTotalSelected" runat="server"></asp:label>
         <br />
         <br />
-        <asp:label runat="server">Templated message:</asp:label>
+        <asp:label runat="server">Templated message English:</asp:label>
         <br/>
-        <asp:TextBox ID="MyTemplateMessageTextBox" runat="server" Width="300" Height="60" TextMode="multiline" MaxLength="180"/>
+        <asp:TextBox ID="MyTemplateMessageEnglishTextBox" runat="server" Width="300" Height="60" TextMode="multiline" MaxLength="180"/>
+        <br/>
+        <asp:label runat="server">Templated message Spanish:</asp:label>
+        <br/>
+        <asp:TextBox ID="MyTemplateMessageSpanishTextBox" runat="server" Width="300" Height="60" TextMode="multiline" MaxLength="180"/>
         <br/>
         <asp:label runat="server">Facebook Insights label:</asp:label>
         <br/>

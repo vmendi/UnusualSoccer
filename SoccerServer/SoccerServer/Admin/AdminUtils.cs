@@ -61,5 +61,12 @@ namespace SoccerServer.Admin
                                             GlobalConfig.FacebookSettings.AppId, GlobalConfig.FacebookSettings.AppSecret);
             return PostTo(graphApiReq, null);  // Lo retorna directamente como "access_token=xxx", sin JSON
         }
+
+        public static string GetApplicationAccessToken(string appId, string appSecret)
+        {
+            var graphApiReq = String.Format("https://graph.facebook.com/oauth/access_token?client_id={0}&client_secret={1}&grant_type=client_credentials",
+                                            appId, appSecret);
+            return PostTo(graphApiReq, null);  // Lo retorna directamente como "access_token=xxx", sin JSON
+        }
     }
 }

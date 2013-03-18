@@ -22,6 +22,15 @@ namespace SoccerServer.Admin {
         protected global::System.Web.UI.HtmlControls.HtmlForm NotificationsForm;
         
         /// <summary>
+        /// MyEnvironmentDropDown control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList MyEnvironmentDropDown;
+        
+        /// <summary>
         /// MyTargetList control.
         /// </summary>
         /// <remarks>
@@ -40,13 +49,22 @@ namespace SoccerServer.Admin {
         protected global::System.Web.UI.WebControls.Label MyTotalSelected;
         
         /// <summary>
-        /// MyTemplateMessageTextBox control.
+        /// MyTemplateMessageEnglishTextBox control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MyTemplateMessageTextBox;
+        protected global::System.Web.UI.WebControls.TextBox MyTemplateMessageEnglishTextBox;
+        
+        /// <summary>
+        /// MyTemplateMessageSpanishTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox MyTemplateMessageSpanishTextBox;
         
         /// <summary>
         /// MyInsightsRefTextBox control.
