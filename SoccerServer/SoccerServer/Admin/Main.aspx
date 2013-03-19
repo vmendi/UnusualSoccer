@@ -19,21 +19,9 @@
             <asp:HyperLink runat="server" Text="Hall of Fame" NavigateUrl="Ranking.aspx" /><br /><br />
             <asp:HyperLink runat="server" Text="Notifications" NavigateUrl="Notifications.aspx" /><br /><br />
             <asp:HyperLink runat="server" Text="Realtime" NavigateUrl="Realtime.aspx" /><br /><br />
-        
-            
+            <asp:HyperLink runat="server" Text="Operations" NavigateUrl="Operations.aspx" /><br /><br />
+            <asp:HyperLink runat="server" Text="Cheaters" NavigateUrl="Cheaters.aspx" /><br /><br />
        </div>
-
-        <div class="borderedBox">
-            <asp:Literal runat="server" id="MyLogConsole"/>
-        </div>
-
-        <asp:Button ID="Button6" runat="server" Text="Erase Orphan Matches" OnClick="EraseOrphanMatches_Click" /><br />
-        <asp:Button ID="Button3" runat="server" Text="Reset Season" OnClick="ResetSeasons_Click" />
-        <asp:Button ID="Button4" runat="server" Text="New Season" OnClick="NewSeason_Click" /><br />
-        <asp:Button ID="Button5" runat="server" Text="ResetAllTickets" OnClick="ResetAllTickets_Click" /><br /><br />
-
-        <asp:Button ID="Button1" runat="server" Text="Mistical Refresh" OnClick="MisticalRefresh_Click" /><br />
-        <asp:Button ID="Button2" runat="server" Text="Mistical Refresh 2" OnClick="MisticalRefresh2_Click" /><br />
 	</form>
 
 </body>

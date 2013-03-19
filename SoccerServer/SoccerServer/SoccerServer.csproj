@@ -92,8 +92,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\AdminStyles.css" />
+    <Content Include="Admin\Cheaters.aspx" />
     <Content Include="Admin\EnvironmentSelector.ascx" />
     <Content Include="Admin\Notifications.aspx" />
+    <Content Include="Admin\Operations.aspx" />
     <Content Include="Admin\Realtime.aspx" />
     <Content Include="App_Data\Backup.sql" />
     <Content Include="App_Data\DeleteAll.sql" />
@@ -241,6 +243,13 @@
     <Content Include="_App_Offline.htm" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\Cheaters.aspx.cs">
+      <DependentUpon>Cheaters.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Cheaters.aspx.designer.cs">
+      <DependentUpon>Cheaters.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\EnvironmentSelector.ascx.cs">
       <DependentUpon>EnvironmentSelector.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -254,6 +263,13 @@
     </Compile>
     <Compile Include="Admin\Notifications.aspx.designer.cs">
       <DependentUpon>Notifications.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Operations.aspx.cs">
+      <DependentUpon>Operations.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Operations.aspx.designer.cs">
+      <DependentUpon>Operations.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\Realtime.aspx.cs">
       <DependentUpon>Realtime.aspx</DependentUpon>

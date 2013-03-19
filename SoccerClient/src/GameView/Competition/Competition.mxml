@@ -20,6 +20,8 @@
 		import GameModel.CompetitionModel;
 		import GameModel.MainGameModel;
 		
+		import GameView.HierarchyUtils;
+		import GameView.MainView;
 		import GameView.PromotedDialog;
 		
 		import mx.binding.utils.BindingUtils;

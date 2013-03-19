@@ -22,7 +22,8 @@ package
 		static public const VIEW_MATCHEND_DIALOG : String = "View_MatchEnd_Dialog";
 		static public const VIEW_FRIEND_SELECTOR : String = "View_Friend_Selector";
 		static public const VIEW_MATCH : String = "View_Match";
-				
+		static public const VIEW_TUTORIAL_START : String = "View_Tutorial_Start";
+						
 		// Events (for Mixpanel)
 		static public const SWF_LOADED: String = "SWF Loaded";
 		static public const LOGIN_SCREEN : String = "Login Screen";
@@ -35,6 +36,16 @@ package
 		static public const CANT_CONNECT_REALTIME : String = "Cant Connect Realtime";
 		static public const LIKED : String = "Liked";
 		static public const ZERO_MATCHES_REMAINING : String = "Zero Matches Remaining";
+		
+		static public const TUTORIAL_START: String = "Tutorial Start";
+		static public const TUTORIAL_STEP1: String = "Tutorial Step1";
+		static public const TUTORIAL_STEP2: String = "Tutorial Step2";
+		static public const TUTORIAL_STEP3: String = "Tutorial Step3";
+		static public const TUTORIAL_STEP4: String = "Tutorial Step4";
+		static public const TUTORIAL_STEP5: String = "Tutorial Step5";
+		static public const TUTORIAL_END: String = "Tutorial End";
+		static public const TUTORIAL_CLOSED: String = "Tutorial Closed";
+		static public const TUTORIAL_SKIPPED: String = "Tutorial Skipped";
 		
 		static public const ADD_GAME_TIME : String = "Add Game Time";
 		static public const CANCELED_GAME_TIME : String = "Canceled Game Time";

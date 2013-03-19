@@ -27,6 +27,9 @@
 			mMainGameModel.TheInactivityModel.OperationMode = InactivityModel.FORCED_ACTIVITY_MODE; 
 						
 			mLFMChangeWatcher = BindingUtils.bindSetter(OnLookingForMatchChanged, mMainGameModel, [ "TheRealtimeModel", "LookingForMatch" ] );
+			
+			GameMetrics.ReportPageView(GameMetrics.VIEW_TUTORIAL_START);
+			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_START, null);
 		}
 		
 		private function OnLookingForMatchChanged(looking : Boolean) : void
@@ -38,6 +41,8 @@
 		// Siempre hay que salir del tutorial por aqui!
 		private function CloseTutorial() : void
 		{
+			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_CLOSED, { lookingForMatch: mMainGameModel.TheRealtimeModel.LookingForMatch });
+			
 			if (mLFMChangeWatcher != null)
 				mLFMChangeWatcher.unwatch();
 			
@@ -48,41 +53,49 @@
 
 		protected function Start_clickHandler(event:MouseEvent):void
 		{
+			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_STEP1, null);
 			currentState="Step1";
 		}
 		
 		protected function Skip_clickHandler(event:MouseEvent):void
 		{
+			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_SKIPPED, { step: currentState });
+			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_END, null);
 			currentState="End";
 		}
 			
 		protected function NotNow_clickHandler(event:MouseEvent):void
 		{
-			CloseTutorial();				
+			CloseTutorial();	
 		}
 			
 		protected function Step1Next_clickHandler(event:MouseEvent):void
 		{
+			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_STEP2, null);
 			currentState="Step2";
 		}
 
 		protected function Step2Next_clickHandler(event:MouseEvent):void
 		{
+			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_STEP3, null);
 			currentState="Step3";
 		}
 		
 		protected function Step3Next_clickHandler(event:MouseEvent):void
 		{
+			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_STEP4, null);
 			currentState="Step4";
 		}
 		
 		protected function Step4Next_clickHandler(event:MouseEvent):void
 		{
+			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_STEP5, null);
 			currentState="Step5";
 		}
 		
 		protected function Step5Next_clickHandler(event:MouseEvent):void
 		{
+			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_END, null);
 			currentState="End";
 		}
 
