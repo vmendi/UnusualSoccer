@@ -212,15 +212,14 @@
     <Content Include="News.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Admin\ServerStatsMain.aspx" />
-    <Content Include="Admin\ServerStatsGlobalMatches.aspx" />
-    <Content Include="Admin\ServerStatsMatchesControl.ascx" />
-    <Content Include="Admin\ServerStatsProfile.aspx" />
-    <Content Include="Admin\ServerStatsPurchases.aspx" />
-    <Content Include="Admin\ServerStatsRanking.aspx" />
+    <Content Include="Admin\Main.aspx" />
+    <Content Include="Admin\GlobalMatches.aspx" />
+    <Content Include="Admin\MatchesControl.ascx" />
+    <Content Include="Admin\Profile.aspx" />
+    <Content Include="Admin\Purchases.aspx" />
+    <Content Include="Admin\Ranking.aspx" />
     <Content Include="SoccerClient\SoccerClient.swf" />
     <Content Include="TestCreateSession.aspx" />
-    <Content Include="Admin\ServerStatsTrueSkill.aspx" />
     <Content Include="WEB-INF\flex\data-management-config.xml" />
     <Content Include="WEB-INF\flex\dynamic-remoting-config.xml" />
     <Content Include="WEB-INF\flex\messaging-config.xml" />
@@ -305,47 +304,47 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Admin\SendToDashboard.cs" />
-    <Compile Include="Admin\ServerStatsMain.aspx.cs">
-      <DependentUpon>ServerStatsMain.aspx</DependentUpon>
+    <Compile Include="Admin\Main.aspx.cs">
+      <DependentUpon>Main.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ServerStatsMain.aspx.designer.cs">
-      <DependentUpon>ServerStatsMain.aspx</DependentUpon>
+    <Compile Include="Admin\Main.aspx.designer.cs">
+      <DependentUpon>Main.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ServerStatsGlobalMatches.aspx.cs">
-      <DependentUpon>ServerStatsGlobalMatches.aspx</DependentUpon>
+    <Compile Include="Admin\GlobalMatches.aspx.cs">
+      <DependentUpon>GlobalMatches.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ServerStatsGlobalMatches.aspx.designer.cs">
-      <DependentUpon>ServerStatsGlobalMatches.aspx</DependentUpon>
+    <Compile Include="Admin\GlobalMatches.aspx.designer.cs">
+      <DependentUpon>GlobalMatches.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ServerStatsMatchesControl.ascx.cs">
-      <DependentUpon>ServerStatsMatchesControl.ascx</DependentUpon>
+    <Compile Include="Admin\MatchesControl.ascx.cs">
+      <DependentUpon>MatchesControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ServerStatsMatchesControl.ascx.designer.cs">
-      <DependentUpon>ServerStatsMatchesControl.ascx</DependentUpon>
+    <Compile Include="Admin\MatchesControl.ascx.designer.cs">
+      <DependentUpon>MatchesControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ServerStatsProfile.aspx.cs">
-      <DependentUpon>ServerStatsProfile.aspx</DependentUpon>
+    <Compile Include="Admin\Profile.aspx.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ServerStatsProfile.aspx.designer.cs">
-      <DependentUpon>ServerStatsProfile.aspx</DependentUpon>
+    <Compile Include="Admin\Profile.aspx.designer.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ServerStatsPurchases.aspx.cs">
-      <DependentUpon>ServerStatsPurchases.aspx</DependentUpon>
+    <Compile Include="Admin\Purchases.aspx.cs">
+      <DependentUpon>Purchases.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ServerStatsPurchases.aspx.designer.cs">
-      <DependentUpon>ServerStatsPurchases.aspx</DependentUpon>
+    <Compile Include="Admin\Purchases.aspx.designer.cs">
+      <DependentUpon>Purchases.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\ServerStatsRanking.aspx.cs">
-      <DependentUpon>ServerStatsRanking.aspx</DependentUpon>
+    <Compile Include="Admin\Ranking.aspx.cs">
+      <DependentUpon>Ranking.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Admin\ServerStatsRanking.aspx.designer.cs">
-      <DependentUpon>ServerStatsRanking.aspx</DependentUpon>
+    <Compile Include="Admin\Ranking.aspx.designer.cs">
+      <DependentUpon>Ranking.aspx</DependentUpon>
     </Compile>
     <Compile Include="GlobalSoccerServer.cs" />
     <Compile Include="TestCreateSession.aspx.cs">
@@ -354,13 +353,6 @@
     </Compile>
     <Compile Include="TestCreateSession.aspx.designer.cs">
       <DependentUpon>TestCreateSession.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\ServerStatsTrueSkill.aspx.cs">
-      <DependentUpon>ServerStatsTrueSkill.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\ServerStatsTrueSkill.aspx.designer.cs">
-      <DependentUpon>ServerStatsTrueSkill.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

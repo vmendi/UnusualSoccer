@@ -9,7 +9,7 @@ using ServerCommon;
 
 namespace SoccerServer.Admin
 {
-    public partial class ServerStatsGlobalMatches : System.Web.UI.Page
+    public partial class GlobalMatches : System.Web.UI.Page
     {
         SoccerDataModelDataContext mDC = EnvironmentSelector.GlobalDC;
         

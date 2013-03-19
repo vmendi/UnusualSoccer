@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ServerStatsMatchesControl.ascx.cs" Inherits="SoccerServer.Admin.ServerStatsMatchesControl" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="MatchesControl.ascx.cs" Inherits="SoccerServer.Admin.MatchesControl" %>
 
 <asp:GridView ID="MyMatchGridView" runat="server" AutoGenerateColumns="false" AllowPaging="true" 
     PageSize="10" CellPadding="4" ForeColor="#333333" GridLines="Vertical" Width="1200" OnPageIndexChanging="GridView_PageIndexChanging" >

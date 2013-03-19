@@ -60,6 +60,6 @@
     </form>
 
     <br /><br /><br />
-    <asp:HyperLink ID="HyperLink1" runat="server" Text="Back to home" NavigateUrl="ServerStatsMain.aspx" />
+    <asp:HyperLink ID="HyperLink1" runat="server" Text="Back to home" NavigateUrl="Main.aspx" />
 </body>
 </html>

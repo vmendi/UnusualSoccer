@@ -10,16 +10,16 @@
 namespace SoccerServer.Admin {
     
     
-    public partial class ServerStatsMain {
+    public partial class GlobalMatches {
         
         /// <summary>
-        /// ServerStatsForm control.
+        /// form1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm ServerStatsForm;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
         /// MyEnvironmentSelector control.
@@ -31,39 +31,30 @@ namespace SoccerServer.Admin {
         protected global::SoccerServer.Admin.EnvironmentSelector MyEnvironmentSelector;
         
         /// <summary>
-        /// MyConsoleLabel control.
+        /// MyGlobalMatches control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal MyConsoleLabel;
+        protected global::SoccerServer.Admin.MatchesControl MyGlobalMatches;
         
         /// <summary>
-        /// MyLogConsole control.
+        /// Label1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal MyLogConsole;
+        protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
-        /// Button1 control.
+        /// MyNumMatchesStats control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
-        
-        /// <summary>
-        /// Button2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button2;
+        protected global::System.Web.UI.WebControls.GridView MyNumMatchesStats;
     }
 }

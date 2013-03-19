@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace SoccerServer.Admin
 {
-    public partial class ServerStatsMatchesControl : System.Web.UI.UserControl
+    public partial class MatchesControl : System.Web.UI.UserControl
     {
         public object DataSource
         {
@@ -50,9 +50,9 @@ namespace SoccerServer.Admin
         public string GetProfileLinkOfMatch(ServerCommon.BDDModel.Match theMatch, int thePlayerIdx)
         {
             if (theMatch.MatchParticipations[thePlayerIdx].Team != null)
-                return "ServerStatsProfile.aspx?TeamID=" + theMatch.MatchParticipations[thePlayerIdx].Team.TeamID;
+                return "Profile.aspx?TeamID=" + theMatch.MatchParticipations[thePlayerIdx].Team.TeamID;
             else
-                return "ServerStatsProfile.aspx";
+                return "Profile.aspx";
         }
 
         public string GetGoalsOfMatch(ServerCommon.BDDModel.Match theMatch, int thePlayerIdx)

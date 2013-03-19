@@ -8,7 +8,7 @@ using ServerCommon.BDDModel;
 
 namespace SoccerServer.Admin
 {
-	public partial class ServerStatsMain : System.Web.UI.Page
+	public partial class Main : System.Web.UI.Page
 	{
 		SoccerDataModelDataContext mDC = EnvironmentSelector.GlobalDC;
      

@@ -10,7 +10,7 @@
 namespace SoccerServer.Admin {
     
     
-    public partial class ServerStatsRanking {
+    public partial class Ranking {
         
         /// <summary>
         /// form1 control.

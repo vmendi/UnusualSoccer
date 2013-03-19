@@ -11,7 +11,7 @@ using ServerCommon;
 
 namespace SoccerServer.Admin
 {
-    public partial class ServerStatsRanking : System.Web.UI.Page
+    public partial class Ranking : System.Web.UI.Page
     {
         SoccerDataModelDataContext mDC = EnvironmentSelector.GlobalDC;
 
@@ -63,7 +63,7 @@ namespace SoccerServer.Admin
         public void MyRankingTable_OnRowCommand(Object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "ViewProfile")
-                Response.Redirect("ServerStatsProfile.aspx?TeamID=" + e.CommandArgument as string);
+                Response.Redirect("Profile.aspx?TeamID=" + e.CommandArgument as string);
         }
     }
 }
