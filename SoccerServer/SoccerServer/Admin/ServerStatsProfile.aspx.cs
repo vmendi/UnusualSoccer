@@ -17,11 +17,27 @@ namespace SoccerServer.Admin
 
         protected override void OnLoad(EventArgs e)
         {
-            mDC = new SoccerDataModelDataContext();
+            mDC = ServerStatsMain.CreateDataContext(MyEnvironmentSelector);
             base.OnLoad(e);
         }
 
+        protected override void OnUnload(EventArgs e)
+        {
+            base.OnUnload(e);
+            mDC.Dispose();
+        }
+        
+        protected void Environment_Change(object sender, EventArgs e)
+        {
+            RefreshAll();
+        }
+
         protected void Page_Load(object sender, EventArgs e)
+        {
+            RefreshAll();
+        }
+
+        protected void RefreshAll()
         {
             if (Request.QueryString["TeamID"] != null)
             {
@@ -38,19 +54,23 @@ namespace SoccerServer.Admin
             else
                 throw new Exception("Tienes que pasar un TeamID o un FacebookID");
 
-            mPlayer = (from p in mDC.Players where p.Team.TeamID == mTeamID select p).First();
+            mPlayer = (from p in mDC.Players where p.Team.TeamID == mTeamID select p).FirstOrDefault();
 
-            FillProfile();
-            FillTeamStats();
-            FillPurchases();
+            if (mPlayer != null)
+            {
+                FillProfile();
+                FillTeamStats();
+                FillPurchases();
+            }
+            else
+            {
+                MyTeamInfo.Text = "Unknown TeamID";
+                MyTeamStats.Text = "Unknown TeamID";
+                MyPurchasesInfo.Text = "Unknown TeamID";
+            }
         }
 
-        protected override void OnUnload(EventArgs e)
-        {
-            base.OnUnload(e);
-            mDC.Dispose();
-        }
-
+   
         public void FillProfile()
         {
             LinqDataSource matchesForProfileLinQ = new LinqDataSource();

@@ -15,7 +15,7 @@ namespace SoccerServer.Admin
 
         protected override void OnLoad(EventArgs e)
         {
-            mDC = new SoccerDataModelDataContext();
+            mDC = ServerStatsMain.CreateDataContext(MyEnvironmentSelector);
             base.OnLoad(e);
         }
 
@@ -25,19 +25,26 @@ namespace SoccerServer.Admin
             mDC.Dispose();
         }
 
+        protected void Environment_Change(object sender, EventArgs e)
+        {
+            RefreshAll();
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                MyPurchasesInfo.Text = "Total purchases: " + GetTotalPurchases().ToString() + "<br/>" +
-                                        "Purchases in settled status: " + GetTotalSettled().ToString() + "<br/>" +
-                                        "Purchases in disputed status: " + GetTotalDisputed().ToString() + "<br/>" +
-                                        "Purchases in refunded status: " + GetTotalRefunded().ToString() + "<br/>";
-                MyTicketsInfo.Text = "Total sold tickets: " + GetNumSoldTickets().ToString() + "<br/>" +
-                                        "Non expired tickets: " + GetNumNonExpiredTickets().ToString() + "<br/>" +
-                                        "Expired tickets: " + GetNumExpiredTickets().ToString() + "<br/>";
-            }
+            RefreshAll();
+        }
 
+        protected void RefreshAll()
+        {
+            MyPurchasesInfo.Text = "Total purchases: " + GetTotalPurchases().ToString() + "<br/>" +
+                                   "Purchases in settled status: " + GetTotalSettled().ToString() + "<br/>" +
+                                   "Purchases in disputed status: " + GetTotalDisputed().ToString() + "<br/>" +
+                                   "Purchases in refunded status: " + GetTotalRefunded().ToString() + "<br/>";
+            MyTicketsInfo.Text = "Total sold tickets: " + GetNumSoldTickets().ToString() + "<br/>" +
+                                 "Non expired tickets: " + GetNumNonExpiredTickets().ToString() + "<br/>" +
+                                 "Expired tickets: " + GetNumExpiredTickets().ToString() + "<br/>";
+            
             FillDisputedOrdersGridView();
         }
 

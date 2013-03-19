@@ -91,7 +91,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Admin\AdminStyles.css" />
+    <Content Include="Admin\EnvironmentSelector.ascx" />
     <Content Include="Admin\Notifications.aspx" />
+    <Content Include="Admin\Realtime.aspx" />
     <Content Include="App_Data\Backup.sql" />
     <Content Include="App_Data\DeleteAll.sql" />
     <Content Include="App_Data\NextDeployUpdate.sql" />
@@ -239,12 +242,26 @@
     <Content Include="_App_Offline.htm" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\EnvironmentSelector.ascx.cs">
+      <DependentUpon>EnvironmentSelector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\EnvironmentSelector.ascx.designer.cs">
+      <DependentUpon>EnvironmentSelector.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\Notifications.aspx.cs">
       <DependentUpon>Notifications.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Admin\Notifications.aspx.designer.cs">
       <DependentUpon>Notifications.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Realtime.aspx.cs">
+      <DependentUpon>Realtime.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Realtime.aspx.designer.cs">
+      <DependentUpon>Realtime.aspx</DependentUpon>
     </Compile>
     <Compile Include="Cancelled.aspx.cs">
       <DependentUpon>Cancelled.aspx</DependentUpon>

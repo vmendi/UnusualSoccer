@@ -1,21 +1,19 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ServerStatsPurchases.aspx.cs" Inherits="SoccerServer.Admin.ServerStatsPurchases" %>
+<%@ Register TagPrefix="local" TagName="EnvironmentSelector" Src="EnvironmentSelector.ascx" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head runat="server">
     <title>Unusual Soccer - Purchases</title>
-    <style type="text/css">
-        .borderedBox {
-            border-style:solid;
-            border-width:1px;
-            padding:15px 15px 15px 15px;
-        }
-    </style>
+    <link href="AdminStyles.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
     <form id="MainPurchasesForm" runat="server">
+
+    <local:EnvironmentSelector runat="server" id="MyEnvironmentSelector" OnEnvironmentChanged="Environment_Change" /><br/><br/>
+
     <div>
         <asp:Label runat="server" id="MyPurchasesInfo"></asp:Label><br />
         <asp:Label runat="server" id="MyTicketsInfo"></asp:Label><br />    
@@ -59,6 +57,9 @@
     </asp:Panel>
 
     </form>
+
+    <br /><br /><br />
+    <asp:HyperLink ID="HyperLink1" runat="server" Text="Back to home" NavigateUrl="ServerStatsMain.aspx" />
 
 </body>
 </html>

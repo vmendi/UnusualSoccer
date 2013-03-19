@@ -12,10 +12,20 @@ namespace SoccerServer.Admin
 	{
 		SoccerDataModelDataContext mDC;
 
+        static public SoccerDataModelDataContext CreateDataContext(EnvironmentSelector selector)
+        {
+            var connString = selector.CurrentEnvironment.ConnectionString;
+
+            if (connString != null)
+                return new SoccerDataModelDataContext(connString);
+            else
+                return new SoccerDataModelDataContext();
+        }
+
         protected override void OnLoad(EventArgs e)
         {
-            mDC = new SoccerDataModelDataContext();
-            base.OnLoad(e);            
+            mDC = CreateDataContext(MyEnvironmentSelector);
+            base.OnLoad(e);
         }
 
         protected override void OnUnload(EventArgs e)
@@ -24,48 +34,31 @@ namespace SoccerServer.Admin
             mDC.Dispose();
         }
 
+        protected void Environment_Change(object sender, EventArgs e)
+        {
+            RefreshAll();
+        }
+
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			if (!IsPostBack)
 			{
-				UpdateRealtimeData();
-
-                MyConsoleLabel.Text += "Total players: " + GetTotalPlayers() + "<br/>";
-                MyConsoleLabel.Text += "Num likes: " + GetNumLikes() + "<br/>";
-                MyConsoleLabel.Text += "Total played matches: " + GetTotalPlayedMatches() + "<br/>";
-                MyConsoleLabel.Text += "Matches today: " + GetMatchesForToday() + "<br/>";
-                MyConsoleLabel.Text += "Total too many times matches: " + GetTooManyTimes() + "<br/>";
-                MyConsoleLabel.Text += "Total non-ended matches: " + GetNonEndedMatchesCount() + "<br/>";
-                MyConsoleLabel.Text += "Abandoned matches: " + GetAbandonedMatchesCount() + "<br/>";
-                MyConsoleLabel.Text += "Same IP matches: " + GetSameIPMatchesCount() + "<br/>";
-                MyConsoleLabel.Text += "Unjust matches: " + GetUnjustMatchesCount() + "<br/>";
+                RefreshAll();
 			}
 		}
 
-        private void UpdateRealtimeData()
+        protected void RefreshAll()
         {
-            NetEngineMain netEngineMain = GlobalSoccerServer.Instance.TheNetEngine;
-
-            if (netEngineMain != null && netEngineMain.IsRunning)
-            {
-                RealtimeLobby theMainRealtime = netEngineMain.NetServer.NetLobby as RealtimeLobby;
-                MyRealtimeConsole.Text = "Currently in play matches: " + theMainRealtime.GetNumMatches().ToString() + "<br/>";
-                MyRealtimeConsole.Text += "People in rooms: " + theMainRealtime.GetNumTotalPeopleInRooms().ToString() + "<br/>";
-                MyRealtimeConsole.Text += "People looking for match: " + theMainRealtime.GetNumPeopleLookingForMatch().ToString() + "<br/>";
-                MyRealtimeConsole.Text += "Current connections: " + netEngineMain.NetServer.NumCurrentSockets.ToString() + "<br/>";
-                MyRealtimeConsole.Text += "Cumulative connections: " + netEngineMain.NetServer.NumCumulativePlugs.ToString() + "<br/>";
-                MyRealtimeConsole.Text += "Max Concurrent connections: " + netEngineMain.NetServer.NumMaxConcurrentSockets.ToString() + "<br/>";
-                MyRunButton.Text = "Stop";
-                MyCurrentBroadcastMsgLabel.Text = "Current msg: " + theMainRealtime.GetBroadcastMsg(null);
-
-                MyUpSinceLabel.Text = "Up since: " + netEngineMain.NetServer.LastStartTime.ToString();
-            }
-            else
-            {
-                MyRealtimeConsole.Text = "Not running";
-                MyRunButton.Text = "Run";
-                MyCurrentBroadcastMsgLabel.Text = "Not running";
-            }
+            MyConsoleLabel.Text = "";
+            MyConsoleLabel.Text += "Total players: " + GetTotalPlayers() + "<br/>";
+            MyConsoleLabel.Text += "Num likes: " + GetNumLikes() + "<br/>";
+            MyConsoleLabel.Text += "Total played matches: " + GetTotalPlayedMatches() + "<br/>";
+            MyConsoleLabel.Text += "Matches today: " + GetMatchesForToday() + "<br/>";
+            MyConsoleLabel.Text += "Total too many times matches: " + GetTooManyTimes() + "<br/>";
+            MyConsoleLabel.Text += "Total non-ended matches: " + GetNonEndedMatchesCount() + "<br/>";
+            MyConsoleLabel.Text += "Abandoned matches: " + GetAbandonedMatchesCount() + "<br/>";
+            MyConsoleLabel.Text += "Same IP matches: " + GetSameIPMatchesCount() + "<br/>";
+            MyConsoleLabel.Text += "Unjust matches: " + GetUnjustMatchesCount() + "<br/>";
         }
 
         private int GetTotalPlayers()
@@ -129,36 +122,6 @@ namespace SoccerServer.Admin
 					where m.WasSameIP.Value
 					select m).Count();
 		}
-
-		protected void MyTimer_Tick(object sender, EventArgs e)
-		{
-            UpdateRealtimeData();
-		}
-
-        protected void Run_Click(object sender, EventArgs e)
-        {
-            NetEngineMain netEngineMain = GlobalSoccerServer.Instance.TheNetEngine;
-
-            if (!netEngineMain.IsRunning)
-                netEngineMain.Start();
-            else
-                netEngineMain.Stop();
-            
-            UpdateRealtimeData();
-        }
-
-        protected void MyBroadcastMsgButtton_Click(object sender, EventArgs e)
-        {
-            NetEngineMain netEngineMain = GlobalSoccerServer.Instance.TheNetEngine;
-
-            if (netEngineMain.IsRunning)
-            {
-                RealtimeLobby theMainRealtime = netEngineMain.NetServer.NetLobby as RealtimeLobby;
-                theMainRealtime.SetBroadcastMsg(MyBroadcastMsgTextBox.Text);
-
-                UpdateRealtimeData();
-            }
-        }
 
         protected void RefreshTrueskill_Click(object sender, EventArgs e)
         {

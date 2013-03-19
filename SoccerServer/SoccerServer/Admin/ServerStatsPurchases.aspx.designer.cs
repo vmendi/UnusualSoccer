@@ -22,6 +22,15 @@ namespace SoccerServer.Admin {
         protected global::System.Web.UI.HtmlControls.HtmlForm MainPurchasesForm;
         
         /// <summary>
+        /// MyEnvironmentSelector control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::SoccerServer.Admin.EnvironmentSelector MyEnvironmentSelector;
+        
+        /// <summary>
         /// MyPurchasesInfo control.
         /// </summary>
         /// <remarks>
@@ -92,5 +101,14 @@ namespace SoccerServer.Admin {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button MySettleButton;
+        
+        /// <summary>
+        /// HyperLink1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink HyperLink1;
     }
 }

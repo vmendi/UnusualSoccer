@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
@@ -16,18 +17,32 @@ namespace SoccerServer.Admin
 
         protected override void OnLoad(EventArgs e)
         {
-            mDC = new SoccerDataModelDataContext();
+            mDC = ServerStatsMain.CreateDataContext(MyEnvironmentSelector);
             base.OnLoad(e);
-        }
-
-        protected void Page_Load(object sender, EventArgs e)
-        {
         }
 
         protected override void OnUnload(EventArgs e)
         {
             base.OnUnload(e);
             mDC.Dispose();
+        }
+
+        protected void Environment_Change(object sender, EventArgs e)
+        {
+            RefreshAll();
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            RefreshAll();
+        }
+
+        protected void RefreshAll()
+        {
+            MyRankingTable.DataSource = (from team in mDC.Teams
+                                         orderby team.TrueSkill descending, team.TeamID ascending
+                                         select team);
+            MyRankingTable.DataBind();
         }
 
         public string GetFacebookUserName(Team team)

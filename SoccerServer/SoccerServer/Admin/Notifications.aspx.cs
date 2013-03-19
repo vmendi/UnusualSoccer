@@ -9,6 +9,7 @@ using NLog;
 using Newtonsoft.Json;
 using System.Dynamic;
 using Newtonsoft.Json.Linq;
+using System.Threading;
 
 namespace SoccerServer.Admin
 {
@@ -21,38 +22,23 @@ namespace SoccerServer.Admin
             if (!IsPostBack)
             {
                 FillTargetListDropDown();
-                FillEnvironmentDropdown();
             }
-        }
-
-        private class Environment
-        {
-            public string Description { get; set; }
-            public string ConnectionString;
-            public string AppId;
-            public string AppSecret;
-        }
-
-        protected void FillEnvironmentDropdown()
-        {
-            MyEnvironmentDropDown.DataSource = GetEnvironments();
-            MyEnvironmentDropDown.DataValueField = "Description";
-            MyEnvironmentDropDown.DataBind();
-        }
-
-        private List<Environment> GetEnvironments()
-        {
-            return new List<Environment>
-            {
-                new Environment() { Description = "Localhost develop", ConnectionString = null, AppId = "100203833418013", AppSecret = "bec70c821551670c027317de43a5ceae" },
-                new Environment() { Description = "Unusual Soccer REAL", ConnectionString = "Data Source=sql01.unusualsoccer.com;Initial Catalog=SoccerV2;User ID=sa;Password=Rinoplastia123&.", 
-                                    AppId = "220969501322423", AppSecret = "faac007605f5f32476638c496185a780" },
-            };
         }
 
         protected void OnSendNotificationsClicked(object sender, EventArgs e)
         {
-            var currentEnv = GetCurrentEnvironment();
+            new Thread(SendNotifications).Start();
+        }
+
+        protected void SendNotifications()
+        {
+            if ((string)Application["SendNotifications"] == "true")
+                return;
+
+            Application["SendNotifications"] = "true";
+            Application["LogMessage"] = "";
+
+            var currentEnv = MyEnvironmentSelector.CurrentEnvironment;
             var access_token = AdminUtils.GetApplicationAccessToken(currentEnv.AppId, currentEnv.AppSecret);
 
             var facebookIDs = GetTargetList()[MyTargetList.SelectedIndex].GetFacebookIDs();
@@ -67,14 +53,14 @@ namespace SoccerServer.Admin
 
             if (upper < lower || upper > facebookIDs.Count)
             {
-                MyLogConsole.Text = "Invalid lower or upper range";
+                Application["LogMessage"] = "Invalid lower or upper range";
                 return;
             } 
 
             for (int c = lower; c < upper; ++c)
             {
                 var locale = GetLocaleFor(facebookIDs[c]);
-                var notif = locale.ToLower().Contains("es_") ? MyTemplateMessageSpanishTextBox.Text : MyTemplateMessageEnglishTextBox.Text;
+                var notif = ((locale != null) && (locale.ToLower().Contains("es_")))? MyTemplateMessageSpanishTextBox.Text : MyTemplateMessageEnglishTextBox.Text;
 
                 // Atencion: Al mandar a FB, no pongas access_token=..., pega directamente el access_token... si no, falla
                 var post = String.Format("https://graph.facebook.com/{0}/notifications?href={1}&template={2}&ref={3}&{4}",
@@ -86,18 +72,30 @@ namespace SoccerServer.Admin
 
                 // El segundo parametro fuerza el POST
                 var response = AdminUtils.PostTo(post, "");
-                
+
                 // Logeamos
+                var msgLog = "";
                 if (response.Contains("success"))
-                    Log.Debug(c.ToString() + ".- Notification sent to " + facebookIDs[c].ToString());
+                    msgLog = c.ToString() + ".- Notification sent to " + facebookIDs[c].ToString();
                 else
-                    Log.Debug(c.ToString() + ".- Failed " + facebookIDs[c].ToString());
+                    msgLog = c.ToString() + ".- Failed " + facebookIDs[c].ToString();
+
+                Log.Debug(msgLog);
+                Application["LogMessage"] = msgLog + "<br/>";                
             }
+
+            Application["LogMessage"] = "Send Notifications done";
+            Application["SendNotifications"] = "false"; 
+        }
+        
+        protected void MyTimer_Tick(object sender, EventArgs e)
+        {
+            MyLogConsole.Text = Application["LogMessage"] as string;
         }
 
         private List<long> GetFriendList(long userID)
         {
-            var currentEnv = GetCurrentEnvironment();
+            var currentEnv = MyEnvironmentSelector.CurrentEnvironment;
             var access_token = AdminUtils.GetApplicationAccessToken(currentEnv.AppId, currentEnv.AppSecret);
 
             var post = String.Format("https://graph.facebook.com/{0}/friends/?{1}", // "https://graph.facebook.com/{0}?fields=friends&{1}"
@@ -119,7 +117,7 @@ namespace SoccerServer.Admin
 
         private string GetLocaleFor(long userID)
         {
-            var currentEnv = GetCurrentEnvironment();
+            var currentEnv = MyEnvironmentSelector.CurrentEnvironment;
             var access_token = AdminUtils.GetApplicationAccessToken(currentEnv.AppId, currentEnv.AppSecret);
 
             var post = String.Format("https://graph.facebook.com/{0}/",
@@ -178,7 +176,7 @@ namespace SoccerServer.Admin
             MyTotalSelected.Text = GetTargetList()[MyTargetList.SelectedIndex].GetFacebookIDs().Count + " selected players";
         }
 
-        protected void Environment_Selection_Change(object sender, EventArgs e)
+        protected void Environment_Change(object sender, EventArgs e)
         {
             TargetList_Selection_Change(null, null);
         }
@@ -191,26 +189,11 @@ namespace SoccerServer.Admin
             public string Description { get; set; }
         }
 
-        private Environment GetCurrentEnvironment()
-        {
-            return GetEnvironments()[MyEnvironmentDropDown.SelectedIndex];
-        }
-
-        private SoccerDataModelDataContext CreateDataContext()
-        {
-            var connString = GetCurrentEnvironment().ConnectionString;
-
-            if (connString != null)
-                return new SoccerDataModelDataContext(connString);
-            else
-                return new SoccerDataModelDataContext();
-        }
-
         private List<long> GetAllFacebookIDs()
         {
             List<long> ret = new List<long>();
 
-            using (SoccerDataModelDataContext dc = CreateDataContext())
+            using (SoccerDataModelDataContext dc = ServerStatsMain.CreateDataContext(MyEnvironmentSelector))
             {
                 ret = (from p in dc.Players
                        select p.FacebookID).ToList();
@@ -223,7 +206,7 @@ namespace SoccerServer.Admin
         {
             List<long> ret = new List<long>();
 
-            using (SoccerDataModelDataContext dc = CreateDataContext())
+            using (SoccerDataModelDataContext dc = ServerStatsMain.CreateDataContext(MyEnvironmentSelector))
             {
                 var now = DateTime.Now;
 
@@ -240,9 +223,9 @@ namespace SoccerServer.Admin
         private List<long> GetNotLoggedInSinceWithFriends(int days)
         {
             List<long> notLogged = GetNotLoggedInSince(days);
-            List<long> everybody = null; 
+            List<long> everybody = null;
 
-            using (SoccerDataModelDataContext dc = CreateDataContext())
+            using (SoccerDataModelDataContext dc = ServerStatsMain.CreateDataContext(MyEnvironmentSelector))
             {
                 everybody = (from p in dc.Players select p.FacebookID).ToList();
             }
@@ -265,7 +248,7 @@ namespace SoccerServer.Admin
         {
             List<long> ret = new List<long>();
 
-            using (SoccerDataModelDataContext dc = CreateDataContext())
+            using (SoccerDataModelDataContext dc = ServerStatsMain.CreateDataContext(MyEnvironmentSelector))
             {
                 ret = (from p in dc.Players
                        where p.Team.MatchParticipations.Count == 0 && p.Team != null
@@ -279,7 +262,7 @@ namespace SoccerServer.Admin
         {
             List<long> ret = new List<long>();
 
-            using (SoccerDataModelDataContext dc = CreateDataContext())
+            using (SoccerDataModelDataContext dc = ServerStatsMain.CreateDataContext(MyEnvironmentSelector))
             {
                 ret = (from p in dc.Players
                        where p.Team == null
@@ -293,7 +276,7 @@ namespace SoccerServer.Admin
         {
             List<long> ret = new List<long>();
 
-            using (SoccerDataModelDataContext dc = CreateDataContext())
+            using (SoccerDataModelDataContext dc = ServerStatsMain.CreateDataContext(MyEnvironmentSelector))
             {
                 var now = DateTime.Now;
 
@@ -311,7 +294,7 @@ namespace SoccerServer.Admin
         {
             List<long> ret = new List<long>();
 
-            using (SoccerDataModelDataContext dc = CreateDataContext())
+            using (SoccerDataModelDataContext dc = ServerStatsMain.CreateDataContext(MyEnvironmentSelector))
             {
                 var now = DateTime.Now;
 

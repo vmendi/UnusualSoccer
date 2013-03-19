@@ -15,14 +15,8 @@ namespace SoccerServer.Admin
 
         protected override void OnLoad(EventArgs e)
         {
-            mDC = new SoccerDataModelDataContext();
+            mDC = ServerStatsMain.CreateDataContext(MyEnvironmentSelector);
             base.OnLoad(e);
-        }
-
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            FillGlobalMatches();
-            FillMatchesCount();
         }
 
         protected override void OnUnload(EventArgs e)
@@ -30,10 +24,30 @@ namespace SoccerServer.Admin
             base.OnUnload(e);
             mDC.Dispose();
         }
+        
+        protected void Environment_Change(object sender, EventArgs e)
+        {
+            mDC = ServerStatsMain.CreateDataContext(MyEnvironmentSelector);
+            RefreshAll();
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+                RefreshAll();
+        }
+
+        protected void RefreshAll()
+        {
+            FillGlobalMatches();
+            FillMatchesCount();
+        }
 
         public void FillGlobalMatches()
         {
-            MyGlobalMatches.DataSource = MyMatchesLinQDataSource;
+            MyGlobalMatches.DataSource = from m in mDC.Matches
+                                         orderby m.MatchID descending
+                                         select m;
             MyGlobalMatches.DataBind();
         }
 

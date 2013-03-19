@@ -10,16 +10,16 @@
 namespace SoccerServer.Admin {
     
     
-    public partial class Notifications {
+    public partial class Realtime {
         
         /// <summary>
-        /// NotificationsForm control.
+        /// ServerStatsForm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm NotificationsForm;
+        protected global::System.Web.UI.HtmlControls.HtmlForm ServerStatsForm;
         
         /// <summary>
         /// MyScriptManager control.
@@ -40,87 +40,6 @@ namespace SoccerServer.Admin {
         protected global::System.Web.UI.Timer MyUpdateTimer;
         
         /// <summary>
-        /// MyEnvironmentSelector control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::SoccerServer.Admin.EnvironmentSelector MyEnvironmentSelector;
-        
-        /// <summary>
-        /// MyTargetList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList MyTargetList;
-        
-        /// <summary>
-        /// MyTotalSelected control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MyTotalSelected;
-        
-        /// <summary>
-        /// MyTemplateMessageEnglishTextBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MyTemplateMessageEnglishTextBox;
-        
-        /// <summary>
-        /// MyTemplateMessageSpanishTextBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MyTemplateMessageSpanishTextBox;
-        
-        /// <summary>
-        /// MyInsightsRefTextBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MyInsightsRefTextBox;
-        
-        /// <summary>
-        /// MyLowerRangeTextBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MyLowerRangeTextBox;
-        
-        /// <summary>
-        /// MyUpperRangeTextBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox MyUpperRangeTextBox;
-        
-        /// <summary>
-        /// MySendNotificationsButtton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button MySendNotificationsButtton;
-        
-        /// <summary>
         /// MyUpdatePanel control.
         /// </summary>
         /// <remarks>
@@ -130,13 +49,67 @@ namespace SoccerServer.Admin {
         protected global::System.Web.UI.UpdatePanel MyUpdatePanel;
         
         /// <summary>
-        /// MyLogConsole control.
+        /// Panel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal MyLogConsole;
+        protected global::System.Web.UI.WebControls.Panel Panel1;
+        
+        /// <summary>
+        /// MyRealtimeConsole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal MyRealtimeConsole;
+        
+        /// <summary>
+        /// MyUpSinceLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label MyUpSinceLabel;
+        
+        /// <summary>
+        /// MyRunButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button MyRunButton;
+        
+        /// <summary>
+        /// MyBroadcastMsgTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox MyBroadcastMsgTextBox;
+        
+        /// <summary>
+        /// MyBroadcastMsgButtton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button MyBroadcastMsgButtton;
+        
+        /// <summary>
+        /// MyCurrentBroadcastMsgLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label MyCurrentBroadcastMsgLabel;
         
         /// <summary>
         /// HyperLink1 control.

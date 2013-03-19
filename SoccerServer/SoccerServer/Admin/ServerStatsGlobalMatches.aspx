@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ServerStatsGlobalMatches.aspx.cs" Inherits="SoccerServer.Admin.ServerStatsGlobalMatches" %>
 <%@ Register TagPrefix="local" TagName="MatchesControl" Src="ServerStatsMatchesControl.ascx" %>
+<%@ Register TagPrefix="local" TagName="EnvironmentSelector" Src="EnvironmentSelector.ascx" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -9,6 +10,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <local:EnvironmentSelector runat="server" id="MyEnvironmentSelector" OnEnvironmentChanged="Environment_Change" /><br/><br/>
 
         <asp:Label runat="server" Text="Todos los partidos:" />
         <local:MatchesControl runat="server" id="MyGlobalMatches" />
@@ -37,15 +39,7 @@
             </Columns>
         </asp:GridView>
 
-        <asp:LinqDataSource ID="MyMatchesLinQDataSource"  
-			                ContextTypeName="ServerCommon.SoccerDataModelDataContext" TableName="Matches" 
-			                runat="server" OrderBy="MatchID desc">
-		</asp:LinqDataSource>
-
-        <br />
-        <br />
-        <br />
-
+        <br /><br /><br />
         <asp:HyperLink runat="server" Text="Back to home" NavigateUrl="ServerStatsMain.aspx" />
 
     </form>
