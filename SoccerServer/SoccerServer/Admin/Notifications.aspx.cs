@@ -191,44 +191,25 @@ namespace SoccerServer.Admin
 
         private List<long> GetAllFacebookIDs()
         {
-            List<long> ret = new List<long>();
-
-            using (SoccerDataModelDataContext dc = ServerStatsMain.CreateDataContext(MyEnvironmentSelector))
-            {
-                ret = (from p in dc.Players
-                       select p.FacebookID).ToList();
-            }
-
-            return ret;
+            return (from p in EnvironmentSelector.GlobalDC.Players
+                    select p.FacebookID).ToList();
         }
 
         private List<long> GetNotLoggedInSince(int days)
-        {
-            List<long> ret = new List<long>();
+        {            
+            var now = DateTime.Now;
 
-            using (SoccerDataModelDataContext dc = ServerStatsMain.CreateDataContext(MyEnvironmentSelector))
-            {
-                var now = DateTime.Now;
-
-                var query =  (from s in dc.Sessions
-                              where (now - s.CreationDate).TotalDays >= days
-                              select s.Player.FacebookID).Distinct();
-
-                ret = query.ToList();
-            }
-
-            return ret;
+            var query =  (from s in EnvironmentSelector.GlobalDC.Sessions
+                          where (now - s.CreationDate).TotalDays >= days
+                          select s.Player.FacebookID).Distinct();
+            
+            return query.ToList();
         }
 
         private List<long> GetNotLoggedInSinceWithFriends(int days)
         {
             List<long> notLogged = GetNotLoggedInSince(days);
-            List<long> everybody = null;
-
-            using (SoccerDataModelDataContext dc = ServerStatsMain.CreateDataContext(MyEnvironmentSelector))
-            {
-                everybody = (from p in dc.Players select p.FacebookID).ToList();
-            }
+            List<long> everybody = (from p in EnvironmentSelector.GlobalDC.Players select p.FacebookID).ToList();;
 
             var ret = new List<long>();
 
@@ -245,68 +226,39 @@ namespace SoccerServer.Admin
         }
 
         private List<long> GetCreatedTeamNoMatchsPlayed()
-        {
-            List<long> ret = new List<long>();
-
-            using (SoccerDataModelDataContext dc = ServerStatsMain.CreateDataContext(MyEnvironmentSelector))
-            {
-                ret = (from p in dc.Players
-                       where p.Team.MatchParticipations.Count == 0 && p.Team != null
-                       select p.FacebookID).ToList();
-            }
-
-            return ret;
+        {            
+            return (from p in EnvironmentSelector.GlobalDC.Players
+                    where p.Team.MatchParticipations.Count == 0 && p.Team != null
+                    select p.FacebookID).ToList();
         }
 
         private List<long> GetNoTeamCreated()
         {
-            List<long> ret = new List<long>();
-
-            using (SoccerDataModelDataContext dc = ServerStatsMain.CreateDataContext(MyEnvironmentSelector))
-            {
-                ret = (from p in dc.Players
-                       where p.Team == null
-                       select p.FacebookID).ToList();
-            }
-
-            return ret;
+            return (from p in EnvironmentSelector.GlobalDC.Players
+                    where p.Team == null
+                    select p.FacebookID).ToList();
         }
 
         private List<long> GetNewSince(int days)
         {
-            List<long> ret = new List<long>();
+            var now = DateTime.Now;
+            var query = (from p in EnvironmentSelector.GlobalDC.Players
+                         where (now - p.CreationDate).TotalDays <= days
+                         select p.FacebookID).Distinct();
 
-            using (SoccerDataModelDataContext dc = ServerStatsMain.CreateDataContext(MyEnvironmentSelector))
-            {
-                var now = DateTime.Now;
-
-                var query =  (from p in dc.Players
-                              where (now - p.CreationDate).TotalDays <= days
-                              select p.FacebookID).Distinct();
-
-                ret = query.ToList();
-            }
-
-            return ret;
+            return query.ToList();
         }
 
         private List<long> GetPlayedNumMatchesSince(int numMatches, int days)
         {
-            List<long> ret = new List<long>();
+            var now = DateTime.Now;
 
-            using (SoccerDataModelDataContext dc = ServerStatsMain.CreateDataContext(MyEnvironmentSelector))
-            {
-                var now = DateTime.Now;
-
-                ret = (from p in dc.Players
-                       let matches = from m in p.Team.MatchParticipations
-                                     where (now - m.Match.DateStarted).TotalDays <= days
-                                     select m.Match
-                       where matches.Count() >= numMatches
-                       select p.FacebookID).ToList();
-            }
-
-            return ret;
+            return (from p in EnvironmentSelector.GlobalDC.Players
+                    let matches = from m in p.Team.MatchParticipations
+                                  where (now - m.Match.DateStarted).TotalDays <= days
+                                  select m.Match
+                    where matches.Count() >= numMatches
+                    select p.FacebookID).ToList();
         }
 
         private List<long> GetTestUsers()

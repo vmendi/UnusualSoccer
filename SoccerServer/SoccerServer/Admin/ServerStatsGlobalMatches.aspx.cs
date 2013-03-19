@@ -11,23 +11,10 @@ namespace SoccerServer.Admin
 {
     public partial class ServerStatsGlobalMatches : System.Web.UI.Page
     {
-        SoccerDataModelDataContext mDC;
-
-        protected override void OnLoad(EventArgs e)
-        {
-            mDC = ServerStatsMain.CreateDataContext(MyEnvironmentSelector);
-            base.OnLoad(e);
-        }
-
-        protected override void OnUnload(EventArgs e)
-        {
-            base.OnUnload(e);
-            mDC.Dispose();
-        }
+        SoccerDataModelDataContext mDC = EnvironmentSelector.GlobalDC;
         
         protected void Environment_Change(object sender, EventArgs e)
         {
-            mDC = ServerStatsMain.CreateDataContext(MyEnvironmentSelector);
             RefreshAll();
         }
 
@@ -45,10 +32,9 @@ namespace SoccerServer.Admin
 
         public void FillGlobalMatches()
         {
-            MyGlobalMatches.DataSource = from m in mDC.Matches
-                                         orderby m.MatchID descending
-                                         select m;
-            MyGlobalMatches.DataBind();
+            MyGlobalMatches.DataSource = (from m in mDC.Matches
+                                          orderby m.MatchID descending
+                                          select m).Take(1000).ToList();
         }
 
         public void FillMatchesCount()
@@ -87,7 +73,7 @@ namespace SoccerServer.Admin
         protected void GridView_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             MyNumMatchesStats.PageIndex = e.NewPageIndex;
-            MyNumMatchesStats.DataBind();
+            RefreshAll();
         }
     }
 }

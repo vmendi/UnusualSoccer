@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
+using ServerCommon;
 
 namespace SoccerServer.Admin
 {
@@ -19,7 +20,8 @@ namespace SoccerServer.Admin
         {
             return new List<Environment>
             {
-                new Environment() { Description = "Localhost DEVELOP", ConnectionString = null, AppId = "100203833418013", AppSecret = "bec70c821551670c027317de43a5ceae" },
+                new Environment() { Description = "Localhost DEVELOP", ConnectionString = "Data Source=localhost;Initial Catalog=SoccerV2;Integrated Security=True", 
+                                    AppId = "100203833418013", AppSecret = "bec70c821551670c027317de43a5ceae" },
                 new Environment() { Description = "US Amazon REAL", ConnectionString = "Data Source=sql01.unusualsoccer.com;Initial Catalog=SoccerV2;User ID=sa;Password=Rinoplastia123&.", 
                                     AppId = "220969501322423", AppSecret = "faac007605f5f32476638c496185a780" },
             };
@@ -28,7 +30,9 @@ namespace SoccerServer.Admin
 
     public partial class EnvironmentSelector : System.Web.UI.UserControl
     {
-        public event EventHandler<EventArgs> EnvironmentChanged; 
+        static public SoccerDataModelDataContext GlobalDC = new SoccerDataModelDataContext();
+
+        public event EventHandler<EventArgs> EnvironmentChanged;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -52,6 +56,9 @@ namespace SoccerServer.Admin
         {
             Application["CurrentEnvironmentIdx"] = MyEnvironmentDropDown.SelectedIndex;
 
+            GlobalDC.Connection.Close();
+            GlobalDC.Connection.ConnectionString = CurrentEnvironment.ConnectionString;
+            
             if (EnvironmentChanged != null)
                 EnvironmentChanged(this, new EventArgs());
         }

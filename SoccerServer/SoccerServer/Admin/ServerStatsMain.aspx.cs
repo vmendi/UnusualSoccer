@@ -10,30 +10,8 @@ namespace SoccerServer.Admin
 {
 	public partial class ServerStatsMain : System.Web.UI.Page
 	{
-		SoccerDataModelDataContext mDC;
-
-        static public SoccerDataModelDataContext CreateDataContext(EnvironmentSelector selector)
-        {
-            var connString = selector.CurrentEnvironment.ConnectionString;
-
-            if (connString != null)
-                return new SoccerDataModelDataContext(connString);
-            else
-                return new SoccerDataModelDataContext();
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            mDC = CreateDataContext(MyEnvironmentSelector);
-            base.OnLoad(e);
-        }
-
-        protected override void OnUnload(EventArgs e)
-        {
-            base.OnUnload(e);
-            mDC.Dispose();
-        }
-
+		SoccerDataModelDataContext mDC = EnvironmentSelector.GlobalDC;
+     
         protected void Environment_Change(object sender, EventArgs e)
         {
             RefreshAll();
@@ -42,9 +20,7 @@ namespace SoccerServer.Admin
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			if (!IsPostBack)
-			{
                 RefreshAll();
-			}
 		}
 
         protected void RefreshAll()

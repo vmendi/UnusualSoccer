@@ -11,21 +11,10 @@ namespace SoccerServer.Admin
 {
     public partial class ServerStatsProfile : System.Web.UI.Page
     {
-        private SoccerDataModelDataContext mDC;
+        private SoccerDataModelDataContext mDC = EnvironmentSelector.GlobalDC;
         private int mTeamID;
         private ServerCommon.BDDModel.Player mPlayer;
 
-        protected override void OnLoad(EventArgs e)
-        {
-            mDC = ServerStatsMain.CreateDataContext(MyEnvironmentSelector);
-            base.OnLoad(e);
-        }
-
-        protected override void OnUnload(EventArgs e)
-        {
-            base.OnUnload(e);
-            mDC.Dispose();
-        }
         
         protected void Environment_Change(object sender, EventArgs e)
         {
@@ -34,7 +23,8 @@ namespace SoccerServer.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            RefreshAll();
+            if (!IsPostBack)
+                RefreshAll();
         }
 
         protected void RefreshAll()
@@ -78,7 +68,12 @@ namespace SoccerServer.Admin
             matchesForProfileLinQ.TableName = "Matches";
             matchesForProfileLinQ.OrderBy = "MatchID desc";
             matchesForProfileLinQ.Where = "MatchParticipations.Any(TeamID == " + mTeamID + ")";
+            matchesForProfileLinQ.ContextCreating += (object sender, LinqDataSourceContextEventArgs e) =>
+            {
+                e.ObjectInstance = EnvironmentSelector.GlobalDC;
+            };
             MyProfileMatches.DataSource = matchesForProfileLinQ;
+
 
             MyTeamInfo.Text  = "Player name: " + mPlayer.Name + " " + mPlayer.Surname + "<br/>";
             MyTeamInfo.Text += "Team Name: " + mPlayer.Team.Name + "<br/>";
