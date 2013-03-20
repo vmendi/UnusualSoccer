@@ -58,6 +58,7 @@ namespace SoccerServer.Admin
 
             GlobalDC.Connection.Close();
             GlobalDC.Connection.ConnectionString = CurrentEnvironment.ConnectionString;
+            GlobalDC.Connection.Open();
             
             if (EnvironmentChanged != null)
                 EnvironmentChanged(this, new EventArgs());
