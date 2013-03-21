@@ -11,12 +11,7 @@ namespace SoccerServer.Admin
 {
     public partial class Cheaters : System.Web.UI.Page
     {
-        SoccerDataModelDataContext mDC = EnvironmentSelector.GlobalDC;
-
-        protected void Environment_Change(object sender, EventArgs e)
-        {
-            RefreshAll();
-        }
+        private SoccerDataModelDataContext mDC = null;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,7 +21,10 @@ namespace SoccerServer.Admin
 
         private void RefreshAll()
         {
-            MyLogConsole.Text = "Num cheaters " + ((IEnumerable<object>)GetCheaters()).Count();
+            using (mDC = EnvironmentSelector.CreateCurrentContext())
+            {
+                MyLogConsole.Text = "Num cheaters " + ((IEnumerable<object>)GetCheaters()).Count();
+            }
         }
 
         private object GetCheaters()

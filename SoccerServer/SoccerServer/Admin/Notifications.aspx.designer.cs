@@ -40,15 +40,6 @@ namespace SoccerServer.Admin {
         protected global::System.Web.UI.Timer MyUpdateTimer;
         
         /// <summary>
-        /// MyEnvironmentSelector control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::SoccerServer.Admin.EnvironmentSelector MyEnvironmentSelector;
-        
-        /// <summary>
         /// MyTargetList control.
         /// </summary>
         /// <remarks>

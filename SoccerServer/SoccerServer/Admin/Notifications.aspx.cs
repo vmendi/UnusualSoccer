@@ -16,12 +16,36 @@ namespace SoccerServer.Admin
     public partial class Notifications : System.Web.UI.Page
     {
         private static readonly Logger Log = LogManager.GetLogger(typeof(Notifications).FullName);
+        private SoccerDataModelDataContext mDC = null;
+
+        static private string mSendingNotifications = "false";
+        static private string mLogMessage = "";
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
+                RefreshAll();
+        }
+
+        protected void RefreshAll()
+        {
+            FillTargetListDropDown();
+        }
+
+        private void FillTargetListDropDown()
+        {
+            MyTargetList.DataSource = GetTargetList();
+            MyTargetList.DataValueField = "Description";
+            MyTargetList.DataBind();
+
+            TargetList_Selection_Change(null, null);
+        }
+
+        protected void TargetList_Selection_Change(object sender, EventArgs e)
+        {
+            using (mDC = EnvironmentSelector.CreateCurrentContext())
             {
-                FillTargetListDropDown();
+                MyTotalSelected.Text = GetTargetList()[MyTargetList.SelectedIndex].GetFacebookIDs().Count + " selected players";
             }
         }
 
@@ -32,13 +56,29 @@ namespace SoccerServer.Admin
 
         protected void SendNotifications()
         {
-            if ((string)Application["SendNotifications"] == "true")
-                return;
+            lock (mSendingNotifications)
+            {
+                if (mSendingNotifications == "true")
+                    return;
 
-            Application["SendNotifications"] = "true";
-            Application["LogMessage"] = "";
+                mSendingNotifications = "true";
+            }
 
-            var currentEnv = MyEnvironmentSelector.CurrentEnvironment;
+            LogMessage("SendNotifications start");
+
+            using (mDC = EnvironmentSelector.CreateCurrentContext())
+            {
+                SendNotificationsInner();
+            }
+            
+            LogMessage("Send Notifications done");
+            
+            mSendingNotifications = "false"; 
+        }
+
+        private void SendNotificationsInner()
+        {
+            var currentEnv = EnvironmentSelector.CurrentEnvironment;
             var access_token = AdminUtils.GetApplicationAccessToken(currentEnv.AppId, currentEnv.AppSecret);
 
             var facebookIDs = GetTargetList()[MyTargetList.SelectedIndex].GetFacebookIDs();
@@ -53,14 +93,14 @@ namespace SoccerServer.Admin
 
             if (upper < lower || upper > facebookIDs.Count)
             {
-                Application["LogMessage"] = "Invalid lower or upper range";
+                LogMessage("Invalid lower or upper range");
                 return;
-            } 
+            }
 
             for (int c = lower; c < upper; ++c)
             {
                 var locale = GetLocaleFor(facebookIDs[c]);
-                var notif = ((locale != null) && (locale.ToLower().Contains("es_")))? MyTemplateMessageSpanishTextBox.Text : MyTemplateMessageEnglishTextBox.Text;
+                var notif = ((locale != null) && (locale.ToLower().Contains("es_"))) ? MyTemplateMessageSpanishTextBox.Text : MyTemplateMessageEnglishTextBox.Text;
 
                 // Atencion: Al mandar a FB, no pongas access_token=..., pega directamente el access_token... si no, falla
                 var post = String.Format("https://graph.facebook.com/{0}/notifications?href={1}&template={2}&ref={3}&{4}",
@@ -80,22 +120,33 @@ namespace SoccerServer.Admin
                 else
                     msgLog = c.ToString() + ".- Failed " + facebookIDs[c].ToString();
 
-                Log.Debug(msgLog);
-                Application["LogMessage"] = msgLog + "<br/>";                
+                LogMessage(msgLog + "<br/>");
             }
 
-            Application["LogMessage"] = "Send Notifications done";
-            Application["SendNotifications"] = "false"; 
+            return;
+        }
+
+        private void LogMessage(string msg)
+        {
+            Log.Debug(msg);
+
+            lock (mLogMessage)
+            {
+                mLogMessage = msg;
+            }
         }
         
         protected void MyTimer_Tick(object sender, EventArgs e)
         {
-            MyLogConsole.Text = Application["LogMessage"] as string;
+            lock (mLogMessage)
+            {
+                MyLogConsole.Text = mLogMessage;
+            }
         }
 
         private List<long> GetFriendList(long userID)
         {
-            var currentEnv = MyEnvironmentSelector.CurrentEnvironment;
+            var currentEnv = EnvironmentSelector.CurrentEnvironment;
             var access_token = AdminUtils.GetApplicationAccessToken(currentEnv.AppId, currentEnv.AppSecret);
 
             var post = String.Format("https://graph.facebook.com/{0}/friends/?{1}", // "https://graph.facebook.com/{0}?fields=friends&{1}"
@@ -117,7 +168,7 @@ namespace SoccerServer.Admin
 
         private string GetLocaleFor(long userID)
         {
-            var currentEnv = MyEnvironmentSelector.CurrentEnvironment;
+            var currentEnv = EnvironmentSelector.CurrentEnvironment;
             var access_token = AdminUtils.GetApplicationAccessToken(currentEnv.AppId, currentEnv.AppSecret);
 
             var post = String.Format("https://graph.facebook.com/{0}/",
@@ -162,25 +213,6 @@ namespace SoccerServer.Admin
             };
         }
 
-        private void FillTargetListDropDown()
-        {
-            MyTargetList.DataSource = GetTargetList();
-            MyTargetList.DataValueField = "Description";
-            MyTargetList.DataBind();
-
-            TargetList_Selection_Change(null, null);
-        }
-
-        protected void TargetList_Selection_Change(object sender, EventArgs e)
-        {
-            MyTotalSelected.Text = GetTargetList()[MyTargetList.SelectedIndex].GetFacebookIDs().Count + " selected players";
-        }
-
-        protected void Environment_Change(object sender, EventArgs e)
-        {
-            TargetList_Selection_Change(null, null);
-        }
-
         private class GetFacebookIDsWithDescription
         {
             public delegate List<long> GetFacebookIDsDelegate();
@@ -191,7 +223,7 @@ namespace SoccerServer.Admin
 
         private List<long> GetAllFacebookIDs()
         {
-            return (from p in EnvironmentSelector.GlobalDC.Players
+            return (from p in mDC.Players
                     select p.FacebookID).ToList();
         }
 
@@ -199,7 +231,7 @@ namespace SoccerServer.Admin
         {            
             var now = DateTime.Now;
 
-            var query =  (from s in EnvironmentSelector.GlobalDC.Sessions
+            var query =  (from s in mDC.Sessions
                           where (now - s.CreationDate).TotalDays >= days
                           select s.Player.FacebookID).Distinct();
             
@@ -209,7 +241,7 @@ namespace SoccerServer.Admin
         private List<long> GetNotLoggedInSinceWithFriends(int days)
         {
             List<long> notLogged = GetNotLoggedInSince(days);
-            List<long> everybody = (from p in EnvironmentSelector.GlobalDC.Players select p.FacebookID).ToList();;
+            List<long> everybody = (from p in mDC.Players select p.FacebookID).ToList();;
 
             var ret = new List<long>();
 
@@ -227,14 +259,14 @@ namespace SoccerServer.Admin
 
         private List<long> GetCreatedTeamNoMatchsPlayed()
         {            
-            return (from p in EnvironmentSelector.GlobalDC.Players
+            return (from p in mDC.Players
                     where p.Team.MatchParticipations.Count == 0 && p.Team != null
                     select p.FacebookID).ToList();
         }
 
         private List<long> GetNoTeamCreated()
         {
-            return (from p in EnvironmentSelector.GlobalDC.Players
+            return (from p in mDC.Players
                     where p.Team == null
                     select p.FacebookID).ToList();
         }
@@ -242,7 +274,7 @@ namespace SoccerServer.Admin
         private List<long> GetNewSince(int days)
         {
             var now = DateTime.Now;
-            var query = (from p in EnvironmentSelector.GlobalDC.Players
+            var query = (from p in mDC.Players
                          where (now - p.CreationDate).TotalDays <= days
                          select p.FacebookID).Distinct();
 
@@ -253,7 +285,7 @@ namespace SoccerServer.Admin
         {
             var now = DateTime.Now;
 
-            return (from p in EnvironmentSelector.GlobalDC.Players
+            return (from p in mDC.Players
                     let matches = from m in p.Team.MatchParticipations
                                   where (now - m.Match.DateStarted).TotalDays <= days
                                   select m.Match

@@ -30,8 +30,6 @@ namespace SoccerServer.Admin
 
     public partial class EnvironmentSelector : System.Web.UI.UserControl
     {
-        static public SoccerDataModelDataContext GlobalDC = new SoccerDataModelDataContext();
-
         public event EventHandler<EventArgs> EnvironmentChanged;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -41,36 +39,35 @@ namespace SoccerServer.Admin
         }
 
         protected void FillEnvironmentDropdown()
-        {
-            if (Application["CurrentEnvironmentIdx"] == null)
-                Application["CurrentEnvironmentIdx"] = 0;
-            
+        {            
             MyEnvironmentDropDown.DataSource = Environment.GetEnvironments();
             MyEnvironmentDropDown.DataValueField = "Description";
             MyEnvironmentDropDown.DataBind();
 
-            MyEnvironmentDropDown.SelectedIndex = (int)Application["CurrentEnvironmentIdx"];
+            MyEnvironmentDropDown.SelectedIndex = mCurrentEnvironmentIdx;
         }
 
         protected void Environment_Selection_Change(object sender, EventArgs e)
         {
-            Application["CurrentEnvironmentIdx"] = MyEnvironmentDropDown.SelectedIndex;
-
-            GlobalDC.Connection.Close();
-            GlobalDC.Connection.ConnectionString = CurrentEnvironment.ConnectionString;
-            GlobalDC.Connection.Open();
+            mCurrentEnvironmentIdx = MyEnvironmentDropDown.SelectedIndex;
             
             if (EnvironmentChanged != null)
                 EnvironmentChanged(this, new EventArgs());
         }
 
-        public Environment CurrentEnvironment
+        static public SoccerDataModelDataContext CreateCurrentContext()
+        {
+            return new SoccerDataModelDataContext(CurrentEnvironment.ConnectionString);
+        }
+
+        static public Environment CurrentEnvironment
         {
             get
             {
-                return Application["CurrentEnvironmentIdx"] == null ? Environment.GetEnvironments()[0] : 
-                                                                      Environment.GetEnvironments()[(int)Application["CurrentEnvironmentIdx"]];
+                return Environment.GetEnvironments()[mCurrentEnvironmentIdx];
             }
         }
+
+        static private int mCurrentEnvironmentIdx = 0;
     }
 }

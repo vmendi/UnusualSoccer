@@ -14,7 +14,8 @@
         <div class="borderedBox">        
             <asp:Literal runat="server" id="MyConsoleLabel"/>
             <br/><br/>
-            <asp:HyperLink runat="server" Text="Matches" NavigateUrl="GlobalMatches.aspx" /><br /><br />
+            <asp:HyperLink runat="server" Text="Global Matches" NavigateUrl="GlobalMatches.aspx" /><br /><br />
+            <asp:HyperLink runat="server" Text="Daily Matches" NavigateUrl="DailyMatches.aspx" /><br /><br />
             <asp:HyperLink runat="server" Text="Purchases" NavigateUrl="Purchases.aspx" /><br /><br />
             <asp:HyperLink runat="server" Text="Hall of Fame" NavigateUrl="Ranking.aspx" /><br /><br />
             <asp:HyperLink runat="server" Text="Notifications" NavigateUrl="Notifications.aspx" /><br /><br />

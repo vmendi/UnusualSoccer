@@ -1,5 +1,4 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Notifications.aspx.cs" Inherits="SoccerServer.Admin.Notifications" %>
-<%@ Register TagPrefix="local" TagName="EnvironmentSelector" Src="EnvironmentSelector.ascx" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -12,8 +11,6 @@
     <form id="NotificationsForm" runat="server">
         <asp:ScriptManager ID="MyScriptManager" runat="server" EnablePartialRendering="true"></asp:ScriptManager>
         <asp:Timer ID="MyUpdateTimer" runat="server" Interval="1000" OnTick="MyTimer_Tick"></asp:Timer>
-
-        <local:EnvironmentSelector runat="server" id="MyEnvironmentSelector" OnEnvironmentChanged="Environment_Change" /><br/><br/>
 
         <div class="borderedBox">
             <a href="http://developers.facebook.com/docs/concepts/notifications/" target="_blank">Facebook notifications reference</a>
@@ -50,7 +47,7 @@
 
              <asp:UpdatePanel ID="MyUpdatePanel" runat="server" updatemode="Conditional">
                 <Triggers>
-                    <asp:AsyncPostBackTrigger controlid="MyUpdateTimer" eventname="Tick" />
+                    <asp:AsyncPostBackTrigger controlid="MyUpdateTimer" eventname="Tick" /> 
                 </Triggers>
                 <ContentTemplate>
                     <asp:Literal runat="server" id="MyLogConsole"/>

@@ -13,12 +13,7 @@ namespace SoccerServer.Admin
 {
     public partial class Ranking : System.Web.UI.Page
     {
-        SoccerDataModelDataContext mDC = EnvironmentSelector.GlobalDC;
-
-        protected void Environment_Change(object sender, EventArgs e)
-        {
-            RefreshAll();
-        }
+        private SoccerDataModelDataContext mDC = null;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -28,10 +23,19 @@ namespace SoccerServer.Admin
 
         protected void RefreshAll()
         {
-            MyRankingTable.DataSource = (from team in mDC.Teams
-                                         orderby team.TrueSkill descending, team.TeamID ascending
-                                         select team).Take(50);
-            MyRankingTable.DataBind();
+            using (mDC = EnvironmentSelector.CreateCurrentContext())
+            {
+                MyRankingTable.DataSource = (from team in mDC.Teams
+                                             orderby team.TrueSkill descending, team.TeamID ascending
+                                             select team).Take(1000);
+                MyRankingTable.DataBind();
+            }
+        }
+
+        protected void GridView_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            MyRankingTable.PageIndex = e.NewPageIndex;
+            RefreshAll();
         }
 
         public string GetFacebookUserName(Team team)

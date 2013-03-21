@@ -1,5 +1,4 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Ranking.aspx.cs" Inherits="SoccerServer.Admin.Ranking" %>
-<%@ Register TagPrefix="local" TagName="EnvironmentSelector" Src="EnvironmentSelector.ascx" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -9,10 +8,9 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <local:EnvironmentSelector runat="server" id="MyEnvironmentSelector" OnEnvironmentChanged="Environment_Change" /><br/><br/>
-
-        <asp:GridView ID="MyRankingTable" runat="server" AutoGenerateColumns="false" AllowPaging="false" PageSize="10" CellPadding="4" ForeColor="#333333" GridLines="Vertical"
-			OnRowCommand="MyRankingTable_OnRowCommand" Width="1024" >
+        
+        <asp:GridView ID="MyRankingTable" runat="server" AutoGenerateColumns="false" AllowPaging="true" PageSize="10" CellPadding="4" ForeColor="#333333" GridLines="Vertical"
+			OnRowCommand="MyRankingTable_OnRowCommand" Width="1024" OnPageIndexChanging="GridView_PageIndexChanging" >
 			<AlternatingRowStyle BackColor="White" ForeColor="#284775" />
 			<EditRowStyle BackColor="#999999" />
 			<FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />

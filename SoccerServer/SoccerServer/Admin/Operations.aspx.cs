@@ -12,15 +12,30 @@ namespace SoccerServer.Admin
 {
     public partial class Operations : System.Web.UI.Page
     {
-        SoccerDataModelDataContext mDC = EnvironmentSelector.GlobalDC;
+        private SoccerDataModelDataContext mDC = null;
 
-        protected void Environment_Change(object sender, EventArgs e)
+        // A OnLoad se le llama antes que a cualquiera de los eventos de los controles.
+        // Nos conviene mas este patron que el crear un mDC cada vez q se llama a un control pq es incomodo
+        protected override void OnLoad(EventArgs e)
         {
-            RefreshAll();
+            mDC = EnvironmentSelector.CreateCurrentContext();
+            base.OnLoad(e);
+        }
+
+        protected override void OnUnload(EventArgs e)
+        {
+            base.OnUnload(e);
+            mDC.Dispose();
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (EnvironmentSelector.CurrentEnvironment.Description.Contains("REAL"))
+            {
+                Response.End();
+                return;
+            }
+
             if (!IsPostBack)
                 RefreshAll();
         }
@@ -31,9 +46,6 @@ namespace SoccerServer.Admin
 
         protected void RefreshTrueskill_Click(object sender, EventArgs e)
         {
-            if (MyEnvironmentSelector.CurrentEnvironment.Description.Contains("REAL"))
-                return;
-
             foreach (Team theTeam in mDC.Teams)
             {
                 var rating = new Moserware.Skills.Rating(theTeam.Mean, theTeam.StandardDeviation);
@@ -45,25 +57,16 @@ namespace SoccerServer.Admin
 
         protected void ResetSeasons_Click(object sender, EventArgs e)
         {
-            if (MyEnvironmentSelector.CurrentEnvironment.Description.Contains("REAL"))
-                return;
-
             SeasonUtils.ResetSeasons(false);
         }
 
         protected void NewSeason_Click(object sender, EventArgs e)
         {
-            if (MyEnvironmentSelector.CurrentEnvironment.Description.Contains("REAL"))
-                return;
-
             SeasonUtils.CheckSeasonEnd(true);
         }
 
         protected void ResetAllTickets_Click(object sender, EventArgs e)
         {
-            if (MyEnvironmentSelector.CurrentEnvironment.Description.Contains("REAL"))
-                return;
-
             foreach (var teamPurchase in mDC.TeamPurchases)
             {
                 teamPurchase.TicketPurchaseDate = DateTime.Now;
@@ -75,9 +78,6 @@ namespace SoccerServer.Admin
 
         protected void EraseOrphanMatches_Click(object sender, EventArgs e)
         {
-            if (MyEnvironmentSelector.CurrentEnvironment.Description.Contains("REAL"))
-                return;
-
             var orphanMatches = (from s in mDC.Matches
                                  where s.MatchParticipations.Count != 2
                                  select s);
@@ -92,9 +92,6 @@ namespace SoccerServer.Admin
 
         protected void MisticalRefresh_Click(object sender, EventArgs e)
         {
-            if (MyEnvironmentSelector.CurrentEnvironment.Description.Contains("REAL"))
-                return;
-
             var now = DateTime.Now;
             foreach (SoccerPlayer sp in mDC.SoccerPlayers)
             {
@@ -106,9 +103,6 @@ namespace SoccerServer.Admin
 
         protected void MisticalRefresh2_Click(object sender, EventArgs e)
         {
-            if (MyEnvironmentSelector.CurrentEnvironment.Description.Contains("REAL"))
-                return;
-
             // 8/31/2012: Untested yet -> Bring the DB to the localhost and test it first!
             foreach (Team theTeam in mDC.Teams)
             {

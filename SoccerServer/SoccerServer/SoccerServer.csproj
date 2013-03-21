@@ -93,9 +93,11 @@
   <ItemGroup>
     <Content Include="Admin\AdminStyles.css" />
     <Content Include="Admin\Cheaters.aspx" />
+    <Content Include="Admin\DailyMatches.aspx" />
     <Content Include="Admin\EnvironmentSelector.ascx" />
     <Content Include="Admin\Notifications.aspx" />
     <Content Include="Admin\Operations.aspx" />
+    <Content Include="Admin\Profile.aspx" />
     <Content Include="Admin\Realtime.aspx" />
     <Content Include="App_Data\Backup.sql" />
     <Content Include="App_Data\DeleteAll.sql" />
@@ -217,7 +219,6 @@
     <Content Include="Admin\Main.aspx" />
     <Content Include="Admin\GlobalMatches.aspx" />
     <Content Include="Admin\MatchesControl.ascx" />
-    <Content Include="Admin\Profile.aspx" />
     <Content Include="Admin\Purchases.aspx" />
     <Content Include="Admin\Ranking.aspx" />
     <Content Include="SoccerClient\SoccerClient.swf" />
@@ -250,6 +251,13 @@
     <Compile Include="Admin\Cheaters.aspx.designer.cs">
       <DependentUpon>Cheaters.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\DailyMatches.aspx.cs">
+      <DependentUpon>DailyMatches.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\DailyMatches.aspx.designer.cs">
+      <DependentUpon>DailyMatches.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Admin\EnvironmentSelector.ascx.cs">
       <DependentUpon>EnvironmentSelector.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -270,6 +278,13 @@
     </Compile>
     <Compile Include="Admin\Operations.aspx.designer.cs">
       <DependentUpon>Operations.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\Profile.aspx.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\Profile.aspx.designer.cs">
+      <DependentUpon>Profile.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\Realtime.aspx.cs">
       <DependentUpon>Realtime.aspx</DependentUpon>
@@ -340,13 +355,6 @@
     </Compile>
     <Compile Include="Admin\MatchesControl.ascx.designer.cs">
       <DependentUpon>MatchesControl.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Admin\Profile.aspx.cs">
-      <DependentUpon>Profile.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Admin\Profile.aspx.designer.cs">
-      <DependentUpon>Profile.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\Purchases.aspx.cs">
       <DependentUpon>Purchases.aspx</DependentUpon>

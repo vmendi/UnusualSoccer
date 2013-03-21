@@ -11,7 +11,7 @@ namespace SoccerServer.Admin
 {
 	public partial class Main : System.Web.UI.Page
 	{
-		SoccerDataModelDataContext mDC = EnvironmentSelector.GlobalDC;
+        private SoccerDataModelDataContext mDC = null;
      
         protected void Environment_Change(object sender, EventArgs e)
         {
@@ -26,16 +26,19 @@ namespace SoccerServer.Admin
 
         protected void RefreshAll()
         {
-            MyConsoleLabel.Text = "";
-            MyConsoleLabel.Text += "Total players: " + GetTotalPlayers() + "<br/>";
-            MyConsoleLabel.Text += "Num likes: " + GetNumLikes() + "<br/>";
-            MyConsoleLabel.Text += "Total played matches: " + GetTotalPlayedMatches() + "<br/>";
-            MyConsoleLabel.Text += "Matches today: " + GetMatchesForToday() + "<br/>";
-            MyConsoleLabel.Text += "Total too many times matches: " + GetTooManyTimes() + "<br/>";
-            MyConsoleLabel.Text += "Total non-ended matches: " + GetNonEndedMatchesCount() + "<br/>";
-            MyConsoleLabel.Text += "Abandoned matches: " + GetAbandonedMatchesCount() + "<br/>";
-            MyConsoleLabel.Text += "Same IP matches: " + GetSameIPMatchesCount() + "<br/>";
-            MyConsoleLabel.Text += "Unjust matches: " + GetUnjustMatchesCount() + "<br/>";
+            using (mDC = EnvironmentSelector.CreateCurrentContext())
+            {
+                MyConsoleLabel.Text = "";
+                MyConsoleLabel.Text += "Total players: " + GetTotalPlayers() + "<br/>";
+                MyConsoleLabel.Text += "Num likes: " + GetNumLikes() + "<br/>";
+                MyConsoleLabel.Text += "Total played matches: " + GetTotalPlayedMatches() + "<br/>";
+                MyConsoleLabel.Text += "Matches today: " + GetMatchesForToday() + "<br/>";
+                MyConsoleLabel.Text += "Total too many times matches: " + GetTooManyTimes() + "<br/>";
+                MyConsoleLabel.Text += "Total non-ended matches: " + GetNonEndedMatchesCount() + "<br/>";
+                MyConsoleLabel.Text += "Abandoned matches: " + GetAbandonedMatchesCount() + "<br/>";
+                MyConsoleLabel.Text += "Same IP matches: " + GetSameIPMatchesCount() + "<br/>";
+                MyConsoleLabel.Text += "Unjust matches: " + GetUnjustMatchesCount() + "<br/>";
+            }
         }
 
         private int GetTotalPlayers()

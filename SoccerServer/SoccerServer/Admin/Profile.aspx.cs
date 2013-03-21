@@ -11,23 +11,33 @@ namespace SoccerServer.Admin
 {
     public partial class Profile : System.Web.UI.Page
     {
-        private SoccerDataModelDataContext mDC = EnvironmentSelector.GlobalDC;
+        private SoccerDataModelDataContext mDC = null;
         private int mTeamID;
         private ServerCommon.BDDModel.Player mPlayer;
 
-        
-        protected void Environment_Change(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
-            RefreshAll();
+            mDC = EnvironmentSelector.CreateCurrentContext();
+            base.OnLoad(e);
         }
 
+        protected override void OnUnload(EventArgs e)
+        {
+            base.OnUnload(e);
+            mDC.Dispose();
+        }
+  
         protected void Page_Load(object sender, EventArgs e)
         {
+            LoadParameters();
+
             if (!IsPostBack)
                 RefreshAll();
+            else
+                FillMatches();  // Para que refresque en el PageIndexChange del control hijo
         }
 
-        protected void RefreshAll()
+        private void LoadParameters()
         {
             if (Request.QueryString["TeamID"] != null)
             {
@@ -45,36 +55,29 @@ namespace SoccerServer.Admin
                 throw new Exception("Tienes que pasar un TeamID o un FacebookID");
 
             mPlayer = (from p in mDC.Players where p.Team.TeamID == mTeamID select p).FirstOrDefault();
+        }
 
+        protected void RefreshAll()
+        {
             if (mPlayer != null)
             {
                 FillProfile();
                 FillTeamStats();
                 FillPurchases();
+                FillMatches();
             }
             else
             {
                 MyTeamInfo.Text = "Unknown TeamID";
                 MyTeamStats.Text = "Unknown TeamID";
                 MyPurchasesInfo.Text = "Unknown TeamID";
+                MyProfileMatches.DataBind();
             }
         }
 
    
-        public void FillProfile()
-        {
-            LinqDataSource matchesForProfileLinQ = new LinqDataSource();
-            matchesForProfileLinQ.ContextTypeName = "ServerCommon.SoccerDataModelDataContext";
-            matchesForProfileLinQ.TableName = "Matches";
-            matchesForProfileLinQ.OrderBy = "MatchID desc";
-            matchesForProfileLinQ.Where = "MatchParticipations.Any(TeamID == " + mTeamID + ")";
-            matchesForProfileLinQ.ContextCreating += (object sender, LinqDataSourceContextEventArgs e) =>
-            {
-                e.ObjectInstance = EnvironmentSelector.GlobalDC;
-            };
-            MyProfileMatches.DataSource = matchesForProfileLinQ;
-
-
+        private void FillProfile()
+        {            
             MyTeamInfo.Text  = "Player name: " + mPlayer.Name + " " + mPlayer.Surname + "<br/>";
             MyTeamInfo.Text += "Team Name: " + mPlayer.Team.Name + "<br/>";
             MyTeamInfo.Text += "Date created: " + mPlayer.CreationDate.ToString() + "<br/>";
@@ -88,6 +91,14 @@ namespace SoccerServer.Admin
             MyTeamInfo.Text += "SpecialTrainings: " + (from s in mPlayer.Team.SpecialTrainings.Where(s => s.IsCompleted)    // :)
                                                        select s.SpecialTrainingDefinition.Name).Aggregate("", (agg, curr) => agg += curr + "/").TrimEnd('/'); // :D
             
+        }
+
+        private void FillMatches()
+        {
+            MyProfileMatches.DataSource = (from m in mDC.MatchParticipations
+                                           where m.TeamID == mTeamID
+                                           orderby m.Match.MatchID descending
+                                           select m.Match).Take(1000);
         }
 
         private void FillTeamStats()
