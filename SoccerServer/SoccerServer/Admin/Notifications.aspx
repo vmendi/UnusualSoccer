@@ -35,6 +35,10 @@
             <br/>
             <asp:TextBox ID="MyInsightsRefTextBox" runat="server" Width="300" MaxLength="30" Text="DefaultBatch"/>
             <br/>
+            <asp:label runat="server">hRef tracking code</asp:label>
+            <br/>
+            <asp:TextBox ID="MyhRef" runat="server" Width="300" MaxLength="20" Text=""/>
+            <br/>
             <br/>
             <asp:label runat="server">Range Start:&nbsp</asp:label><asp:TextBox ID="MyLowerRangeTextBox" runat="server" Width="40" MaxLength="30" Text=""/>
             &nbsp&nbsp&nbsp

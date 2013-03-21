@@ -54,9 +54,20 @@
 		private function OnHasTeamResponse(hasTeam : Boolean):void
 		{
 			if (hasTeam)
+			{
 				currentState = "Competition";
+				
+				// Veamos si tenemos alguna señal que nos lleguea traves de la querystring: Tutorial forzado por ejemplo
+				if (AppConfig.TUTORIAL == "true")
+				{
+					// Nosotros lo creamos y el mismo se encargara de destruirse
+					addElement(new TutorialPanel());
+				}
+			}
 			else
+			{
 				currentState = "Login";
+			}
 		}
 		
 		private function OnMatchStarted() : void
@@ -124,6 +135,7 @@
 			currentState = "Ranking";
 		}
 		
+		// La pantalla de login nos llama aqui en cuanto esta el equipo creado
 		public function StartFirstGameAfterLogin() : void
 		{
 			currentState = "Competition";

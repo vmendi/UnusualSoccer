@@ -23,6 +23,8 @@ package
 		static public var PLAYER_PARAMS : Object = null;			// The player parameters as supplied in the original querystring and stored in the server.
 																	// Only meant for CloseViralityFunnel.
 		
+		static public var TUTORIAL : String = null;
+		
 		// Una pregunta que nos hacemos en varios sitios, por tenerla centralizada
 		static public function get IsMahouLigaChapas() : Boolean { return VERSION_ID=='MahouLigaChapas'; }
 		
@@ -80,6 +82,9 @@ package
 			// Los players params desde el server 
 			if (parameters.hasOwnProperty("PlayerParams"))
 				PLAYER_PARAMS = ProcessQueryString(parameters["PlayerParams"]);
+			
+			if (parameters.hasOwnProperty("Tutorial"))
+				TUTORIAL = parameters["Tutorial"];
 		}
 		
 		static private function ProcessQueryString(theQueryString : String) : Object

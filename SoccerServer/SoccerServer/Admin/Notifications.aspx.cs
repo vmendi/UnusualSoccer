@@ -68,10 +68,16 @@ namespace SoccerServer.Admin
 
             using (mDC = EnvironmentSelector.CreateCurrentContext())
             {
-                SendNotificationsInner();
-            }
-            
-            LogMessage("Send Notifications done");
+                try
+                {
+                    SendNotificationsInner();
+                    LogMessage("Send Notifications done");
+                }
+                catch (Exception e)
+                {
+                    LogMessage("Exception: " + e.Message);
+                }
+            }            
             
             mSendingNotifications = "false"; 
         }
@@ -92,20 +98,20 @@ namespace SoccerServer.Admin
             }
 
             if (upper < lower || upper > facebookIDs.Count)
-            {
-                LogMessage("Invalid lower or upper range");
-                return;
-            }
-
+                throw new Exception("Invalid lower or upper range");
+            
             for (int c = lower; c < upper; ++c)
             {
                 var locale = GetLocaleFor(facebookIDs[c]);
                 var notif = ((locale != null) && (locale.ToLower().Contains("es_"))) ? MyTemplateMessageSpanishTextBox.Text : MyTemplateMessageEnglishTextBox.Text;
 
+                if (MyhRef.Text.Length != 0 && !MyhRef.Text.StartsWith("?"))
+                    throw new Exception("hRef debe empezar por el simbolo de interrogacion");
+
                 // Atencion: Al mandar a FB, no pongas access_token=..., pega directamente el access_token... si no, falla
                 var post = String.Format("https://graph.facebook.com/{0}/notifications?href={1}&template={2}&ref={3}&{4}",
                                          facebookIDs[c].ToString(),
-                                         "",
+                                         MyhRef.Text,
                                          HttpUtility.UrlEncode(notif),
                                          HttpUtility.UrlEncode(MyInsightsRefTextBox.Text),
                                          access_token);
