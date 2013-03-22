@@ -20,7 +20,7 @@ package Match
 						Power: 50,
 						Control: 100,
 						Defense: 100,
-						FacebookID: 611084838,
+						FacebookID: -1, //611084838,
 						IsInjured:c == 5
 				};						
 				descTeam.SoccerPlayers.push(descCap);

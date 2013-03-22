@@ -170,10 +170,10 @@ package Match
 		
 		public function IsCircleInsideSmallArea(pos:Point, radius:Number, side:int) : Boolean
 		{
-			if( side == Enums.Left_Side )
+			if (side == Enums.Left_Side)
 				return MathUtils.CircleInRect(pos, radius, new Point(SmallAreaLeftX, SmallAreaLeftY ), new Point(SmallSizeAreaX, SmallSizeAreaY));
 			
-			return MathUtils.CircleInRect(pos, radius, new Point(SmallAreaRightX, SmallAreaRightY ), new Point(SmallSizeAreaX, SmallSizeAreaY));
+			return MathUtils.CircleInRect(pos, radius, new Point(SmallAreaRightX, SmallAreaRightY), new Point(SmallSizeAreaX, SmallSizeAreaY));
 		}
 		
 		public function IsCircleInsideBigArea(pos:Point, radius:Number, side:int) : Boolean
@@ -196,6 +196,12 @@ package Match
 		public function IsCapCenterInsideSmallArea(cap:Cap) : Boolean
 		{
 			return IsCircleInsideSmallArea(cap.GetPos(), 0, cap.OwnerTeam.Side);  	
+		}
+		
+		// Idem con el area grande
+		public function IsCapCenterInsideBigArea(cap:Cap) : Boolean
+		{
+			return IsCircleInsideBigArea(cap.GetPos(), 0, cap.OwnerTeam.Side);  	
 		}
 		
 		// Valida una posición (con un radio determinado) en el campo.

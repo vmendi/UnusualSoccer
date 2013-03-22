@@ -635,8 +635,8 @@ package Match
 			var team:Team = TheTeams[idPlayer];
 			var enemy:Team = team.AgainstTeam();
 
-			// Si el portero del enemigo está dentro del area, cambiamos el turno al enemigo...
-			if (TheField.IsCapCenterInsideSmallArea(enemy.GoalKeeper))
+			// Si el portero del enemigo está dentro del area GRANDE, cambiamos el turno al enemigo...
+			if (TheField.IsCapCenterInsideBigArea(enemy.GoalKeeper))
 				SetTurn(enemy.IdxTeam, Enums.TurnTiroAPuerta);		// ... y una vez que se termine su turno se llamará a OnGoalKeeperSet
 			else
 				OnGoalKeeperSet(enemy.IdxTeam);						// El portero no está en el area, saltamos directamente a portero colocado	

@@ -62,18 +62,21 @@
 			// Para que las estructuras creadas por weborb existan
 			var dataTypeInit : DataTypeInitializer = new DataTypeInitializer();
 
-			if (AppConfig.TEST != null)
+			if (AppConfig.TEST == null)
 			{
+				mFacebookFacade = new FacebookFacade();
+				mFacebookFacade.Init(OnFacebookInitSuccess);
+			}
+			else
+			{
+				// En modo TEST, fuera la loading screen
+				removeElement(mLoadingScreen);
+				
 				mFacebookFacade = new FacebookFacade();
 				mMainGameModel = new MainGameModel();
 				
 				MyServerTests.visible = true;
 				MyServerTests.ExecuteTest(AppConfig.TEST);
-			}
-			else
-			{
-				mFacebookFacade = new FacebookFacade();
-				mFacebookFacade.Init(OnFacebookInitSuccess);
 			}
 		}
 		

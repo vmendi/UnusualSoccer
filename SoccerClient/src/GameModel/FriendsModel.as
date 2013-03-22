@@ -15,7 +15,7 @@ package GameModel
 			
 			BindingUtils.bindSetter(OnSoccerPlayersChanged, mMainModel.TheTeamModel, [ "TheTeam", "SoccerPlayers" ]);
 			
-			if (SoccerClient.GetFacebookFacade().FacebookMe.friends != null)
+			if (SoccerClient.GetFacebookFacade().FacebookMe != null && SoccerClient.GetFacebookFacade().FacebookMe.friends != null)
 			{
 				var friends:Array = SoccerClient.GetFacebookFacade().FacebookMe.friends.data as Array;
 				

@@ -23,7 +23,9 @@ package GameModel
 			mMainGameModel = mainModel;
 			mTeamModel = mMainGameModel.TheTeamModel;
 			
-			mLocalCurrencyInfo = SoccerClient.GetFacebookFacade().FacebookMe.currency;
+			// Durante los tests no tenemos garantizado el facebook me
+			if (SoccerClient.GetFacebookFacade().FacebookMe!= null)
+				mLocalCurrencyInfo = SoccerClient.GetFacebookFacade().FacebookMe.currency;
 		}
 		
 		// Queremos que nos llamen aqui despues un partido (El RealtimeModel.OnMatchEnded) para poder saber cuándo 

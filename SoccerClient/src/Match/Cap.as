@@ -128,8 +128,8 @@ package Match
 			_Influence.alpha = 0.0;
 						
 			// Solo mostramos la foto de los amigos del equipo local (privacidad...)
-			if (team.IsLocalUser)
-				LoadFacebookPicture(descCap.FacebookID);
+			// if (team.IsLocalUser) Ahora si ahora no (3/23/2013)
+			LoadFacebookPicture(descCap.FacebookID);
 			
 			// Auto-añadimos al manager de entidades
 			MatchMain.Ref.Game.TheEntityManager.AddTagged(this, "Team"+(team.IdxTeam +1).toString() + "_" + _CapId.toString());
