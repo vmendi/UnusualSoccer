@@ -78,7 +78,7 @@ package GameModel
 				teamIDs.addItem("RUSSIA");
 				teamIDs.addItem("SCOTLAND");
 				teamIDs.addItem("SERBIA");
-				teamIDs.addItem("SLOVAKIA");
+				// teamIDs.addItem("SLOVAKIA");		// Lo quitamos para que sean 30, para q cuadre en un 6x5 grid
 				teamIDs.addItem("SOUTHKOREA");
 				teamIDs.addItem("SPAIN");
 				teamIDs.addItem("SWEDEN");
@@ -120,7 +120,7 @@ package GameModel
 				"ru": "RUSSIA",
 				"xx": "SCOTLAND",			// No tiene iso code
 				"rs": "SERBIA",
-				"sk": "SLOVAKIA",
+				// "sk": "SLOVAKIA",
 				"kr": "SOUTHKOREA",
 				"es": "SPAIN",
 				"se": "SWEDEN",
