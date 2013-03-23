@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:GameView="GameView.*"
+		 width="760" height="650"
+		 currentState="Init"
+		 creationComplete="CreationCompleteHandler(event)"
+		 >
+	
+	<fx:Script><![CDATA[
+		import GameModel.InactivityModel;
+		import GameModel.TeamNameModel;
+		import GameModel.MainGameModel;
+		import GameModel.RealtimeModel;
+		
+		import GameView.Match.RealtimeMatch;
+		
+		import mx.binding.utils.BindingUtils;
+		import mx.binding.utils.ChangeWatcher;
+		import mx.events.FlexEvent;
+		
+		protected function CreationCompleteHandler(event:FlexEvent):void
+		{
+			BindingUtils.bindSetter(OnIsValidTeamNameLastResult, mTeamModel, ["IsValidTeamNameLastResult"]);
+		}
+		
+		private function OnIsValidTeamNameLastResult(validity : String) : void
+		{				
+			if (MyPredefinedTeamList.selectedIndex != -1)
+			{
+				if (validity == VALID_NAME.VALID)
+					SetNameValidity(true, resourceManager.getString('main','LoginNameAvailable'));	
+				else if (validity == VALID_NAME.EMPTY)
+					SetNameValidity(false, resourceManager.getString('main','LoginEnterName'));	
+				else if (validity == VALID_NAME.DUPLICATED)
+					SetNameValidity(false, resourceManager.getString('main','LoginNotAvailable'));	
+				else if (validity == VALID_NAME.INAPPROPIATE)
+					SetNameValidity(false, resourceManager.getString('main','LoginInappropriateName'));
+				else if (validity == VALID_NAME.TOO_SHORT)
+					SetNameValidity(false, resourceManager.getString('main','LoginNameTooShort'));
+				else if (validity == VALID_NAME.WHITE_SPACE_TRIM)
+					SetNameValidity(false, resourceManager.getString('main','LoginNameBlank'));
+				else if (validity == VALID_NAME.TOO_MANY_WHITESPACES)
+					SetNameValidity(false, resourceManager.getString('main','LoginNameBlankSpaces'));
+				else
+					SetNameValidity(false, resourceManager.getString('main','LoginInvalidName'));
+			}
+			else
+			{
+				SetNameValidity(false, resourceManager.getString('main','LoginSelectNation'));
+			}
+		}
+		
+		private function SetNameValidity(valid : Boolean, text : String) : void
+		{
+			MyValidityLabel.text = text;
+			mNameValidity = valid;
+			
+			if (valid)
+				MyValidityLabel.setStyle("color", "#0DBF00");
+			else
+				MyValidityLabel.setStyle("color", "#E26261");
+		}
+		
+		protected function MyTeamNameInput_changeHandler(event:TextOperationEvent):void
+		{				
+			mLoginModel.IsValidTeamName(MyTeamNameInput.text);
+		}
+		
+		[Bindable] private var mMainGameModel : MainGameModel;
+		[Bindable] private var mTeamModel : TeamNameModel;
+		
+		
+		
+	]]></fx:Script>
+	
+	
+	<!-- FONDOS -->
+	
+	<s:Rect left="0" right="0" top="0" bottom="0" alpha="0.7" excludeFrom="End">
+		<s:fill>
+			<s:SolidColor alpha="1" color="#000000"/>
+		</s:fill>
+	</s:Rect>
+	<s:SWFLoader id="EndCortina" source="@Embed(source='/Assets/General.swf', symbol='TutorialCortinaPlay')" includeIn="End" />
+	<s:SWFLoader top="80" id="MyTutorialField" source="@Embed(source='/Assets/General.swf', symbol='TutorialField')" excludeFrom="Init, End" />
+	
+	</s:Group>

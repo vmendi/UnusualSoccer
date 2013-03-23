@@ -50,7 +50,10 @@ namespace HttpService
 
             using (CreateDataForRequest())
             {
-                if (IsNameValidInner(name) != VALID_NAME.VALID)
+                var validity = IsNameValidInner(name);
+
+                // Admitimos tb guests
+                if (validity != VALID_NAME.VALID && validity != VALID_NAME.GUEST)
                     return false;
 
                 Team theNewTeam = null;

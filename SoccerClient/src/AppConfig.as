@@ -24,6 +24,7 @@ package
 																	// Only meant for CloseViralityFunnel.
 		
 		static public var TUTORIAL : String = null;
+		static public var COUNTRY: String = null;
 		
 		// Una pregunta que nos hacemos en varios sitios, por tenerla centralizada
 		static public function get IsMahouLigaChapas() : Boolean { return VERSION_ID=='MahouLigaChapas'; }
@@ -85,6 +86,9 @@ package
 			
 			if (parameters.hasOwnProperty("Tutorial"))
 				TUTORIAL = parameters["Tutorial"];
+			
+			if (parameters.hasOwnProperty("Country"))
+				COUNTRY = parameters["Country"];
 		}
 		
 		static private function ProcessQueryString(theQueryString : String) : Object

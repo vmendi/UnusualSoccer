@@ -43,12 +43,13 @@ namespace HttpService
 		public enum VALID_NAME
 		{
 			VALID,
-			DUPLICATED,
+            DUPLICATED,
 			INAPPROPIATE,
 			TOO_SHORT,
 			WHITE_SPACE_TRIM,
 			TOO_MANY_WHITESPACES,
-			EMPTY
+			EMPTY,
+            GUEST
 		}
 
 		public bool HasTeam()
@@ -80,6 +81,9 @@ namespace HttpService
         {
             VALID_NAME ret = VALID_NAME.VALID;
 
+            if (name == "Guest")
+                ret = VALID_NAME.GUEST;
+            else
             if (name == "")
                 ret = VALID_NAME.EMPTY;
             else

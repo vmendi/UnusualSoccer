@@ -17,6 +17,8 @@ namespace SoccerServer
     {
         readonly public NameValueCollection SWF_SETTINGS = System.Configuration.ConfigurationManager.GetSection("swfSettings") as NameValueCollection;
         private Player mPlayer;
+        private string mLocale = null;
+        private string mCountry = null;
         private bool   mIsPlayerJustCreated = false;
         
         protected void Page_Load(object sender, EventArgs e)
@@ -42,20 +44,7 @@ namespace SoccerServer
             {
                 Server.Transfer("~/DefaultMahou.aspx");
             }
-
-            // Incluso sin estar autorizados, siempre tenemos un signed_request en el que esta contenido el country (geolocalizado) y el locale
-            // TODO: Usarlo para redireccionar si es Mahou y no es España            
-            /*
-             * OLD: Cogiendo el parametro de la query string y parseando. Asumimos que es mejor coger el del Context y que el SDK decida.
-             *      var fbSignedRequest = FacebookSignedRequest.Parse(Global.Instance.FacebookSettings as IFacebookApplication, 
-             *                                                        HttpContext.Current.Request["signed_request"]);
-             *                                                        
-             * 3/4/2013: Hemos detectado que a veces no hay país (o quizá no hay user) y entonces salta una excepción
              
-               var country = GetCountryFromSignedRequest(FacebookWebContext.Current.SignedRequest);
-             * 
-             */
-
             if (Request.QueryString.AllKeys.Contains("FakeSessionKey"))
             {
                 ShowFakeSessionKeyContent();
@@ -132,6 +121,7 @@ namespace SoccerServer
 
             flashVars += "SessionKey: '" + FacebookWebContext.Current.AccessToken + "' ,";
             flashVars += "Locale: '" + GetLocale() + "' ,";
+            flashVars += "Country: '" + GetCountry() + "' ,";
             
             flashVars += "PlayerParams: '" + HttpUtility.UrlEncode(GetPlayerParams()) + "'";
 
@@ -155,10 +145,32 @@ namespace SoccerServer
             return GlobalConfig.ServerSettings.CDN + rscStandardPath.Replace("${locale}", GetLocale());
         }
 
-        private string GetCountryFromSignedRequest(FacebookSignedRequest fbSignedRequest)
+        // Incluso sin estar autorizados, siempre tenemos un signed_request en el que esta contenido el country (geolocalizado) y el locale
+        // TODO: Usarlo para redireccionar si es Mahou y no es España                             
+        private string GetCountry()
         {
-            return ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["country"] as string;
+            if (mCountry == null)
+                mCountry = GetCountryFromSignedRequest(FacebookWebContext.Current.SignedRequest);
+
+            return mCountry;
         }
+
+        static private string GetCountryFromSignedRequest(FacebookSignedRequest fbSignedRequest)
+        {
+            string country = "Unknown";
+            try
+            {
+                country = ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["country"] as string;
+            }
+            catch (Exception)
+            {
+                // No hay pais, lo dejamos a Unknown, el cliente sabe que ese resultado existe y por lo tanto 
+                // seleccionara por ejemplo un pais al azar
+            }
+                        
+            return country;
+        }
+
         
         private string GetLocale()
         {
@@ -167,29 +179,11 @@ namespace SoccerServer
             
             return mLocale;
         }
-        private string mLocale = null;
-
-        public string GetFBSDK()
-        {
-            return "//connect.facebook.net/" + GetLocale() + "/all.js#xfbml=1&appId=" + GetAppID();
-        }
-
-        public string GetAppID()
-        {
-            return GlobalConfig.FacebookSettings.AppId;
-        }
-
-        public long GetUserFacebookID()
-        {
-            // The Current.UserId is only available after the auth.Authorize() call, so, be careful
-            // where you call GetUserFacebookID() (just saying, I haven't proved anything...)
-            return FacebookWebContext.Current.UserId;
-        }
 
         //
         // NOTE: En el servidor, como no tenemos cadenas de fallback, tenemos que tener todo en todos los idiomas soportados!
         //
-        private string GetLocaleFromSignedRequest(FacebookSignedRequest fbSignedRequest)
+        static private string GetLocaleFromSignedRequest(FacebookSignedRequest fbSignedRequest)
         {
             var locale = ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["locale"] as string;
 
@@ -214,6 +208,24 @@ namespace SoccerServer
             }
 
             return locale;
+        }
+
+        
+        public string GetFBSDK()
+        {
+            return "//connect.facebook.net/" + GetLocale() + "/all.js#xfbml=1&appId=" + GetAppID();
+        }
+
+        public string GetAppID()
+        {
+            return GlobalConfig.FacebookSettings.AppId;
+        }
+
+        public long GetUserFacebookID()
+        {
+            // The Current.UserId is only available after the auth.Authorize() call, so, be careful
+            // where you call GetUserFacebookID() (just saying, I haven't proved anything...)
+            return FacebookWebContext.Current.UserId;
         }
 
 		static public Session EnsureSessionIsCreated(SoccerDataModelDataContext theContext, Player thePlayer, string sessionKey)

@@ -9,7 +9,6 @@
 		<![CDATA[
 			import GameModel.LoginModel;
 			import GameModel.MainGameModel;
-			import GameModel.PredefinedTeamsModel;
 			
 			import HttpService.enum.VALID_NAME;
 			
@@ -23,19 +22,13 @@
 			{
 				mMainGameModel = SoccerClient.GetMainGameModel();
 				mLoginModel = mMainGameModel.TheLoginModel; 
-				mPredefinedTeamsModel = mMainGameModel.ThePredefinedTeamsModel;
 				
 				mAgeValidity = !AppConfig.IsMahouLigaChapas;
 				
 				MyPredefinedTeamList.addEventListener(IndexChangeEvent.CHANGE, OnMyPredefinedTeamListSelectionChanged);
-				
-				// Get the country from the server, pre-select the country in our list
-				var countryID : String = mPredefinedTeamsModel.TranslateCountryISOCodeToCountryID(AppConfig.COUNTRY);
-				MyPredefinedTeamList.selectedIndex = mPredefinedTeamsModel.PredefinedTeamNameIDs.getItemIndex(countryID);
-
 				BindingUtils.bindSetter(OnIsValidTeamNameLastResult, mLoginModel, ["IsValidTeamNameLastResult"]);
 			}
-
+			
 			protected function AddedToStageHandler(event:Event):void
 			{
 				GameMetrics.ReportEvent(GameMetrics.LOGIN_SCREEN, null);
@@ -52,9 +45,7 @@
 				if (MyPredefinedTeamList.selectedIndex != -1)
 				{
 					if (validity == VALID_NAME.VALID)
-						SetNameValidity(true, resourceManager.getString('main','LoginNameAvailable'));
-					else if (validity == VALID_NAME.GUEST)
-						SetNameValidity(true, resourceManager.getString('main','LoginNameIsGuest'));
+						SetNameValidity(true, resourceManager.getString('main','LoginNameAvailable'));	
 					else if (validity == VALID_NAME.EMPTY)
 						SetNameValidity(false, resourceManager.getString('main','LoginEnterName'));	
 					else if (validity == VALID_NAME.DUPLICATED)
@@ -105,8 +96,7 @@
 			protected function MyButtonNext_clickHandler(event:MouseEvent):void
 			{
 				mWaitingForTeamCreation = true;
-				
-				mMainGameModel.TheTeamModel.CreateTeam(MyTeamNameInput.text != ""? MyTeamNameInput.text :  "Guest", 
+				mMainGameModel.TheTeamModel.CreateTeam(MyTeamNameInput.text, 
 													   MyPredefinedTeamList.selectedItem, 
 												   	   OnTeamCreatedResponse, OnTeamCreationFailed);
 			}
@@ -126,7 +116,6 @@
 			
 			[Bindable] private var mMainGameModel : MainGameModel;
 			[Bindable] private var mLoginModel : LoginModel;
-			[Bindable] private var mPredefinedTeamsModel : PredefinedTeamsModel;
 			
 			[Bindable] private var mNameValidity : Boolean = false;
 			[Bindable] private var mAgeValidity : Boolean = false;
@@ -156,17 +145,16 @@
 	
 	<s:SWFLoader x="0" y="0" source="{resourceManager.getString('main','LoginLogoSource')}"/>
 	
-	<s:Panel x="10" y="40" width="700" skinClass="GameView.Skins.DefaultPanelSkin"
+	<s:Panel x="352" y="40" width="365" skinClass="GameView.Skins.DefaultPanelSkin"
 			 title="{resourceManager.getString('main','Login01SelectTeam')}">
 		<s:layout>
 			<s:VerticalLayout gap="0"/>
 		</s:layout>
-		<s:List id="MyPredefinedTeamList" left="0" top="0" width="700" height="320" tabEnabled="false" tabFocusEnabled="false"
-				dataProvider="{mPredefinedTeamsModel.PredefinedTeamNameIDs}"
-				itemRenderer="GameView.PredefinedTeamItem" skinClass="GameView.Skins.DefaultListSkin">
-			<s:layout>
-				<s:TileLayout />
-			</s:layout>
+		<s:List id="MyPredefinedTeamList" left="0" top="0" width="365" height="280"
+				dataProvider="{mMainGameModel.ThePredefinedTeamsModel.PredefinedTeamNameIDs}"
+				itemRenderer="GameView.PredefinedTeamItem"
+				skinClass="GameView.Skins.DefaultListSkin" tabEnabled="false"
+				tabFocusEnabled="false">
 		</s:List>
 		
 		<s:Group>
@@ -188,15 +176,12 @@
 						 text="{resourceManager.getString('main','Login02EnterName')}"
 						 textAlign="start" verticalAlign="middle"></s:Label>
 			</s:Group>
-			
 			<s:Label id="myStep2Txt" x="10" y="35" width="350" styleName="whiteBoldBig"
 					 text="{resourceManager.getString('main','Login02EnterNameTxt')}"
 					 textAlign="center" verticalAlign="middle"></s:Label>
-			
 			<s:TextInput id="MyTeamNameInput" x="82" y="97" width="200"
 						 change="MyTeamNameInput_changeHandler(event)" maxChars="30"
-						 styleName="blackBoldMediumHN" prompt="Guest"/>
-			
+						 styleName="blackBoldMediumHN"/>
 			<s:Label id="MyValidityLabel" x="32" y="126" width="300" height="40" color="#0DBF00"
 					 styleName="whiteBoldBig" textAlign="center"/>
 		</s:Group>

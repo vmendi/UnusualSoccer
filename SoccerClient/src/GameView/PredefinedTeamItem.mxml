@@ -4,7 +4,7 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				xmlns:Match="GameView.Match.*"
 				xmlns:GameView="GameView.*"
-				autoDrawBackground="false" width="100%" height="44">
+				autoDrawBackground="false" width="100" height="44">
 		
 	<fx:Style source="styles.css" />
 	<fx:Script>
@@ -20,7 +20,7 @@
 	</s:states>
 	
 	<s:Graphic includeIn="hovered">
-		<s:Rect x="0" y="0" width="410" height="43">
+		<s:Rect x="0" y="0" width="100" height="43">
 			<s:fill>
 				<s:SolidColor color="#999999" alpha="0.3" />
 			</s:fill>
@@ -28,18 +28,18 @@
 	</s:Graphic>
 	
 	<s:Graphic includeIn="selected">
-		<s:Rect x="0" y="0" width="410" height="43">
+		<s:Rect x="0" y="0" width="100" height="43">
 			<s:fill>
 				<s:SolidColor color="#ffffff" alpha="0.3" />
 			</s:fill>
 		</s:Rect>
 	</s:Graphic>
 	
-	<GameView:BadgeTeam TeamNameID="{data}" />
-	<s:Label text="{PredefinedTeamsModel.Localize(data.toString())}" styleName="whiteBoldVeryBig" x="50" y="9"/>	
+	<GameView:BadgeTeam TeamNameID="{data}" BigMode="true" />
+	<s:Label text="{PredefinedTeamsModel.Localize(data.toString())}" styleName="whiteBoldBig" x="50" y="9"/>	
 	
 	<s:Graphic>
-		<s:Line xFrom="0" xTo="410" yFrom="43" yTo="43">
+		<s:Line xFrom="0" xTo="100" yFrom="43" yTo="43">
 			<s:stroke>
 				<s:SolidColorStroke color="0x000000" weight="1"/>
 			</s:stroke>

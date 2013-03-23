@@ -89,6 +89,51 @@ package GameModel
 			PredefinedTeamNameIDs = teamIDs;
 		}
 		
+		// http://en.wikipedia.org/wiki/ISO_3166-1
+		public function TranslateCountryISOCodeToCountryID(isoCode : String) : String
+		{
+			var ret : String = "ENGLAND";
+			
+			var map : Object = {
+				"ar": "ARGENTINA",
+				"au": "AUSTRALIA",
+				"at": "AUSTRIA",
+				"be": "BELGIUM",
+				"br": "BRAZIL",
+				"ca": "CANADA",
+				"cl": "CHILE",
+				"cn": "CHINA",
+				"cz": "CZECHREP",
+				"gb": "ENGLAND",
+				"fr": "FRANCE",
+				"de": "GERMANY",
+				"hu": "HUNGARY",
+				"ie": "IRELAND",
+				"il": "ISRAEL",
+				"it": "ITALY",
+				"jp": "JAPAN",
+				"mx": "MEXICO",
+				"nl": "NETHERLANDS",
+				"no": "NORWAY",
+				"pl": "POLAND",
+				"pt": "PORTUGAL",
+				"ru": "RUSSIA",
+				"xx": "SCOTLAND",			// No tiene iso code
+				"rs": "SERBIA",
+				"sk": "SLOVAKIA",
+				"kr": "SOUTHKOREA",
+				"es": "SPAIN",
+				"se": "SWEDEN",
+				"uy": "URUGUAY",
+				"us": "USA"
+			};
+			
+			if (map.hasOwnProperty(isoCode))
+				ret = map[isoCode];
+
+			return ret;
+		}
+		
 		static public function Localize(predefinedTeamNameID : String) : String
 		{
 			// En la version Mahou los IDs son directamente los nombres que mostramos a los jugadores, van sin localizar
@@ -101,7 +146,7 @@ package GameModel
 		// Estos seran los que ofertamos en la pantalla de Login, pero en ningun sitio forzamos a que los que nos vienen de la DB sea alguno de estos.
 		[Bindable]
 		public function get PredefinedTeamNameIDs() : ArrayCollection { return mPredefinedTeamNameIDs; }
-		public function set PredefinedTeamNameIDs(v:ArrayCollection) : void { mPredefinedTeamNameIDs = v; }	// En Flex 4.1 no se puede poner privado todavia
+		private function set PredefinedTeamNameIDs(v:ArrayCollection) : void { mPredefinedTeamNameIDs = v; }
 		private var mPredefinedTeamNameIDs : ArrayCollection;		
 
 		private var mMainModel : MainGameModel;
