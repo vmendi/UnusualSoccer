@@ -78,7 +78,7 @@ package GameModel
 				teamIDs.addItem("RUSSIA");
 				teamIDs.addItem("SCOTLAND");
 				teamIDs.addItem("SERBIA");
-				// teamIDs.addItem("SLOVAKIA");		// Lo quitamos para que sean 30, para q cuadre en un 6x5 grid
+				// teamIDs.addItem("SLOVAKIA");		// 3/23/2013 Lo quitamos para que sean 30, para q cuadre en un 6x5 grid
 				teamIDs.addItem("SOUTHKOREA");
 				teamIDs.addItem("SPAIN");
 				teamIDs.addItem("SWEDEN");
