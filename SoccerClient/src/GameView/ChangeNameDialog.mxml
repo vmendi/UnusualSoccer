@@ -3,7 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:GameView="GameView.*"
-		 width="400" height="300"
+		 width="640" height="100%"
 		 creationComplete="CreationCompleteHandler(event)"
 		 >
 	
@@ -97,43 +97,26 @@
 							color="0x444444" distance="1"/>
 	</fx:Declarations>
 		
-	<GameView:PopupBackground width="100%" height="100%" />
+	<GameView:PopupBackground left="-10" right="-10" top="-10" bottom="-10" />
+	<s:BitmapImage left="-10" bottom="-8" source="@Embed(source='/Assets/General.swf', symbol='TutorialHost')" fillMode="clip" />
 	
-	<s:Group>
+	<s:Group right="10">
 		<s:layout>
 			<s:VerticalLayout gap="6" horizontalAlign="center"/>
 		</s:layout>
-		<s:Group>
-			<s:Rect id="tbFill" x="0" y="0" width="100%" height="27">
-				<s:fill>
-					<s:LinearGradient rotation="90">
-						<s:GradientEntry alpha="1" color="#fe0001" ratio="0"/>
-						<s:GradientEntry alpha="1" color="#8c1304" ratio="1.0"/>
-					</s:LinearGradient>
-				</s:fill>
-			</s:Rect>
-			<s:Label id="myStep2Label" x="10" y="0" width="350" height="27"
-					 filters="{MyTextDropShadowFilter}" maxDisplayedLines="1"
-					 styleName="headerBox"
-					 text="{resourceManager.getString('main','Login02EnterName')}"
-					 textAlign="start" verticalAlign="middle"></s:Label>
-		</s:Group>
-		
-		<s:Label id="myStep2Txt" x="10" y="35" width="350" styleName="whiteBoldBig"
+		<s:Label id="myStep2Label" x="10" y="0" width="470" height="27"
+				 filters="{MyTextDropShadowFilter}" maxDisplayedLines="1"
+				 styleName="yellowBoldVeryBig"
+				 text="{resourceManager.getString('main','Login02EnterName')}"
+				 textAlign="center" verticalAlign="middle"></s:Label>
+		<s:Label id="myStep2Txt" x="10" y="35" width="470" styleName="whiteBoldBig"
 				 text="{resourceManager.getString('main','Login02EnterNameTxt')}"
 				 textAlign="center" verticalAlign="middle"></s:Label>
-		
 		<s:TextInput id="MyTeamNameInput" x="82" y="97" width="200"
 					 change="MyTeamNameInput_changeHandler(event)" maxChars="30"
 					 styleName="blackBoldMediumHN" prompt="{LoginModel.GUEST_NAME}"/>
-		
-		<s:Label id="MyValidityLabel" x="32" y="126" width="300" height="40" color="#0DBF00"
+		<s:Label id="MyValidityLabel" x="32" y="126" width="470" height="40" color="#0DBF00"
 				 styleName="whiteBoldBig" textAlign="center"/>
-	</s:Group>
-	
-	<s:Group>
-		<s:BitmapImage fillMode="clip"
-					   source="@Embed(source='/Assets/General.swf', symbol='LoginBottomBg')"/>
 		<s:Button id="MyButtonNext" x="98" top="4" width="160" height="24"
 				  label="{resourceManager.getString('main','Continue')}"
 				  click="MyButtonNext_clickHandler(event)" enabled="{mNameValidity}"
