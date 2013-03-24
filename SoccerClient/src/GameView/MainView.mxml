@@ -46,7 +46,7 @@
 			mMainGameModel.TheSpecialTrainingModel.SpecialTrainingCompleted.add(OnSpecialTrainingComplete);
 			
 			// PRUEBAS
-			ChangeNameDialog.Show();
+			//ChangeNameDialog.Show();
 		}
 		
 		private function OnSpecialTrainingComplete(specialTrainingDefinition : SpecialTrainingDefinition) : void
