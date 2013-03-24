@@ -158,7 +158,7 @@
 			<s:VerticalLayout gap="0"/>
 		</s:layout>
 			
-		<GameView:Login id="MyLogin" includeIn="Competition" />
+		<GameView:Login id="MyLogin" includeIn="Login" />
 	
 		<GameView:StatusPanel height="80" includeIn="InGame, OnRealtimeMatch"/>
 		
