@@ -69,7 +69,7 @@
 			CloseTutorial();
 			
 			// Si salimos por el "Not now" hay que pedir el nombre del equipo inmeditamente... para que se incluya en las competiciones
-			if (mMainGameModel.TheTeamModel.IsGuest())
+			if (mMainGameModel.TheLoginModel.IsGuest)
 				ChangeNameDialog.Show();
 		}
 			

@@ -50,7 +50,10 @@
 			}
 			
 			private function OnIsValidTeamNameLastResult(validity : String) : void
-			{				
+			{	
+				// If we were waiting for team creating, now we are not
+				mWaitingForTeamCreation = false;
+				
 				if (MyPredefinedTeamList.selectedIndex != -1)
 				{
 					if (validity == VALID_NAME.VALID)
@@ -108,23 +111,20 @@
 			{
 				mWaitingForTeamCreation = true;
 				
-				mMainGameModel.TheTeamModel.CreateTeam(MyTeamNameInput.text != ""? MyTeamNameInput.text : LoginModel.GUEST_NAME, 
-													   MyPredefinedTeamList.selectedItem, 
-												   	   OnTeamCreatedResponse, OnTeamCreationFailed);
+				mLoginModel.CreateTeam(MyTeamNameInput.text != ""? MyTeamNameInput.text : mLoginModel.GuestPrompt, 
+									   MyPredefinedTeamList.selectedItem, 
+								   	   OnTeamCreatedSuccess);
 			}
 			
 			protected function MyButtonNextStep1_clickHandler(event:MouseEvent):void
 			{
 				currentState="Step2";
 			}
-			
-			private function OnTeamCreationFailed() : void
+						
+			private function OnTeamCreatedSuccess():void
 			{
 				mWaitingForTeamCreation = false;
-			}
-			
-			private function OnTeamCreatedResponse():void
-			{
+				
 				GameMetrics.ReportEvent(GameMetrics.TEAM_SELECTED, {predefinedTeamID: MyPredefinedTeamList.selectedItem});
 				GameMetrics.Set(GameMetrics.PEOPLE_TEAM, MyPredefinedTeamList.selectedItem);
 				
@@ -218,7 +218,7 @@
 				
 				<s:TextInput id="MyTeamNameInput" x="82" y="97" width="200"
 							 change="MyTeamNameInput_changeHandler(event)" maxChars="30"
-							 styleName="blackBoldMediumHN" prompt="{LoginModel.GUEST_NAME}"/>
+							 styleName="blackBoldMediumHN" prompt="{mLoginModel.GuestPrompt}"/>
 				
 				<s:Label id="MyValidityLabel" x="32" y="126" width="470" height="40" color="#0DBF00"
 						 styleName="whiteBoldBig" textAlign="center"/>

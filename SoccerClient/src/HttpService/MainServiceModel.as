@@ -20,6 +20,7 @@
       [Bindable]
       public class MainServiceModel
       {     
+        public var ChangeNameResult:String;     
         public var CreateTeamResult:Boolean;     
         public var GetExtraRewardForMatchResult:Boolean;     
         public var GetItemForSaleResult:ItemForSale;     

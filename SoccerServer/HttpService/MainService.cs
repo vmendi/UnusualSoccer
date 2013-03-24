@@ -68,6 +68,22 @@ namespace HttpService
 
             return bRet;
 		}
+
+        public VALID_NAME ChangeName(string newName)
+        {
+            var ret = VALID_NAME.VALID;
+
+            using (CreateDataForRequest())
+            {
+                if ((ret = IsNameValidInner(newName)) == VALID_NAME.VALID)
+                {
+                    mPlayer.Team.Name = newName;
+                    mContext.SubmitChanges();
+                }
+            }
+
+            return ret;
+        }
                 
 		public VALID_NAME IsNameValid(string name)
 		{

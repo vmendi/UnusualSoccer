@@ -2,6 +2,16 @@
 <namespaces>
   <runtime path="C:/UnusualGit/UnusualSoccer/SoccerServer/SoccerServer/" weborbRootURL="ENTER WEBORB URL HERE" />
   <namespace name="HttpService" fullname="HttpService">
+    <enum name="VALID_NAME" fullname="HttpService.VALID_NAME" typeNamespace="HttpService">
+      <field name="VALID" type="String" fulltype="String" nativetype="String" />
+      <field name="DUPLICATED" type="String" fulltype="String" nativetype="String" />
+      <field name="INAPPROPIATE" type="String" fulltype="String" nativetype="String" />
+      <field name="TOO_SHORT" type="String" fulltype="String" nativetype="String" />
+      <field name="WHITE_SPACE_TRIM" type="String" fulltype="String" nativetype="String" />
+      <field name="TOO_MANY_WHITESPACES" type="String" fulltype="String" nativetype="String" />
+      <field name="EMPTY" type="String" fulltype="String" nativetype="String" />
+      <field name="GUEST" type="String" fulltype="String" nativetype="String" />
+    </enum>
     <namespace name="TransferModel" fullname="HttpService.TransferModel">
       <datatype name="ItemForSale" fullname="HttpService.TransferModel.ItemForSale" typeNamespace="HttpService.TransferModel">
         <field name="item_id" type="String" fulltype="String" nativetype="String" />
@@ -121,16 +131,6 @@
         <field name="DailyNumMatches" type="int" fulltype="int" nativetype="int" />
       </datatype>
     </namespace>
-    <enum name="VALID_NAME" fullname="HttpService.VALID_NAME" typeNamespace="HttpService">
-      <field name="VALID" type="String" fulltype="String" nativetype="String" />
-      <field name="DUPLICATED" type="String" fulltype="String" nativetype="String" />
-      <field name="INAPPROPIATE" type="String" fulltype="String" nativetype="String" />
-      <field name="TOO_SHORT" type="String" fulltype="String" nativetype="String" />
-      <field name="WHITE_SPACE_TRIM" type="String" fulltype="String" nativetype="String" />
-      <field name="TOO_MANY_WHITESPACES" type="String" fulltype="String" nativetype="String" />
-      <field name="EMPTY" type="String" fulltype="String" nativetype="String" />
-      <field name="GUEST" type="String" fulltype="String" nativetype="String" />
-    </enum>
     <service name="MainService" fullname="HttpService.MainService" namespace="HttpService" url="http://ENTER WEBORB URL HERE/weborb.aspx">
       <method name="AssignSkillPoints" type="void" nativetype="Void" containsvalues="0">
         <arg name="soccerPlayerID" type="int" nativetype="int" />
@@ -140,6 +140,9 @@
       </method>
       <method name="ChangeFormation" type="void" nativetype="Void" containsvalues="0">
         <arg name="newFormationName" type="String" nativetype="String" />
+      </method>
+      <method name="ChangeName" type="String" nativetype="HttpService.VALID_NAME" containsvalues="0">
+        <arg name="newName" type="String" nativetype="String" />
       </method>
       <method name="CreateRequests" type="void" nativetype="Void" containsvalues="0">
         <arg name="requestID" type="String" nativetype="String" />

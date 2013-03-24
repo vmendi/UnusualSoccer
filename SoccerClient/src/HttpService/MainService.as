@@ -56,6 +56,8 @@
         
         remoteObject.ChangeFormation.addEventListener("result",ChangeFormationHandler);
         
+        remoteObject.ChangeName.addEventListener("result",ChangeNameHandler);
+        
         remoteObject.CreateRequests.addEventListener("result",CreateRequestsHandler);
         
         remoteObject.CreateTeam.addEventListener("result",CreateTeamHandler);
@@ -133,6 +135,15 @@
       public function ChangeFormation(newFormationName:String, responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.ChangeFormation(newFormationName);
+        
+        if( responder != null )
+            asyncToken.addResponder( responder );
+
+      }
+    
+      public function ChangeName(newName:String, responder:IResponder = null ):void
+      {
+        var asyncToken:AsyncToken = remoteObject.ChangeName(newName);
         
         if( responder != null )
             asyncToken.addResponder( responder );
@@ -344,6 +355,14 @@
          
       public virtual function ChangeFormationHandler(event:ResultEvent):void
       {
+        
+      }
+         
+      public virtual function ChangeNameHandler(event:ResultEvent):void
+      {
+        
+          var returnValue:String = event.result as String;
+          model.ChangeNameResult = returnValue;
         
       }
          

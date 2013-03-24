@@ -71,28 +71,14 @@ package GameModel
 			mMainService.RefreshTeam(new Responder(Delegate.create(OnRefreshTeamResponse, callback), ErrorMessages.Fault));
 		}
 		
-		public function CreateTeam(name : String, predefinedTeamNameID : String, success : Function, failed : Function) : void
-		{
-			mMainService.CreateTeam(name, predefinedTeamNameID,
-									new Responder(Delegate.create(OnTeamCreatedResponse, success, failed), ErrorMessages.Fault));	
-		}
-		private function OnTeamCreatedResponse(e:ResultEvent, success:Function, failed:Function) : void
-		{
-			if (e.result)
-				CloseViralityFunnel(success);
-			else
-			{
-				// When the CreateMethod returns false it means the name is duplicated. We need to refresh the LoginModel
-				mMainModel.TheLoginModel.IsValidTeamNameLastResult = VALID_NAME.DUPLICATED;
-				failed();
-			}
-		}
-		
 		// http://blog.mixpanel.com/2012/11/13/getting-serious-about-measuring-virality/
 		// Global concept: We impersonate the person who invited us to close the viral funnel. We send only one event (on team
 		// 				   creation) because we are asking facebook for the request.from.id and deleting the requests afterwards,
 		//				   which means we don't have that information available for any other time
-		private function CloseViralityFunnel(callback : Function) : void
+		//
+		// It's internal because we need to call it from the LoginModel after TeamCreation
+		//
+		internal function CloseViralityFunnel(callback : Function) : void
 		{
 			var playerParams : Object = AppConfig.PLAYER_PARAMS;
 			
@@ -342,10 +328,6 @@ package GameModel
 			}
 		}
 		
-		public function IsGuest() : Boolean
-		{
-			return TheTeam.Name == LoginModel.GUEST_NAME;
-		}
 
 		// En realidad esta instancia de TeamDetails es una comodidad para mostrar el SelfTeam de forma simetrica a los demas
 		[Bindable]

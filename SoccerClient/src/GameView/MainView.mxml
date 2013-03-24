@@ -60,7 +60,7 @@
 			{
 				currentState = "Competition";
 				
-				// Veamos si tenemos alguna señal que nos lleguea traves de la querystring: Tutorial forzado por ejemplo
+				// Veamos si tenemos alguna señal que nos llegue a traves de la querystring: Tutorial forzado por ejemplo
 				if (AppConfig.TUTORIAL == "true")
 				{
 					// Nosotros lo creamos y el mismo se encargara de destruirse

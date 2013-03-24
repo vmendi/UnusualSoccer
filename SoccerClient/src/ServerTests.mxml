@@ -66,19 +66,14 @@
 				if (hasTeam)
 					AppendLine("El equipo ya existia");
 				else
-					mMainGameModel.TheTeamModel.CreateTeam("TestTeam" + rand, 
-														   mMainGameModel.ThePredefinedTeamsModel.PredefinedTeamNameIDs[RandUtils.RandIntBetween(1, 20)], 
-														   OnCreateTeamSuccess, OnFailed);
+					mMainGameModel.TheLoginModel.CreateTeam("TestTeam" + rand, 
+										   					mMainGameModel.ThePredefinedTeamsModel.PredefinedTeamNameIDs[RandUtils.RandIntBetween(1, 20)], 
+										   					OnCreateTeamSuccess);
 			}
 			
 			function OnCreateTeamSuccess() : void
 			{
 				AppendLine("Equipo creado con exito");
-			}
-						
-			function OnFailed() : void
-			{
-				AppendLine("Fallo");
 			}
 		}
 		
@@ -110,20 +105,15 @@
 					InitTest();
 				}
 				else
-					mMainGameModel.TheTeamModel.CreateTeam("TestTeam" + currentTeam, 
-														   mMainGameModel.ThePredefinedTeamsModel.PredefinedTeamNameIDs[RandUtils.RandIntBetween(1, 20)], 
-														   OnCreateTeamSuccess, OnFailed);
+					mMainGameModel.TheLoginModel.CreateTeam("TestTeam" + currentTeam, 
+														    mMainGameModel.ThePredefinedTeamsModel.PredefinedTeamNameIDs[RandUtils.RandIntBetween(1, 20)], 
+														    OnCreateTeamSuccess);
 			}
 			
 			function OnCreateTeamSuccess() : void
 			{
 				SetLine(2, "Equipo creado con exito " + currentTeam);
 				InitTest();
-			}
-			
-			function OnFailed() : void
-			{
-				SetLine(3, "Fallo");
 			}
 		}
 		

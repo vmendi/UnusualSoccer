@@ -24,6 +24,8 @@
 		import GameView.MainView;
 		import GameView.PromotedDialog;
 		
+		import HttpService.TransferModel.vo.CompetitionGroup;
+		
 		import mx.binding.utils.BindingUtils;
 		import mx.events.FlexEvent;
 		
@@ -35,9 +37,9 @@
 		{
 			GameMetrics.ReportPageView(GameMetrics.VIEW_COMPETITION);
 			
-			// Se produce el AddedToStage antes q el CreationComplete (solo la primera vez, luego no se produce mas el CreationComplete, claro)
+			// Se produce el AddedToStage antes q el CreationComplete (solo la primera vez, luego solo se produce el AddedToStageHandler, claro)
 			if (mCompetitionModel != null)
-				mCompetitionModel.RefreshGroup(OnGroupRefreshed);
+				mCompetitionModel.RefreshGroup(null);
 		}
 		
 		protected function CreationCompleteHandler(event:FlexEvent):void
@@ -45,11 +47,10 @@
 			mGameModel = SoccerClient.GetMainGameModel();
 			mCompetitionModel = mGameModel.TheCompetitionModel;
 			
-			BindingUtils.bindSetter(OnPromotedChanged, mCompetitionModel, ["TheGroup", "Promoted"] );
-			
-			mCompetitionModel.RefreshGroup(OnGroupRefreshed);
+			BindingUtils.bindSetter(OnTheGroupChanged, mCompetitionModel, ["TheGroup"]);
+			BindingUtils.bindSetter(OnPromotedChanged, mCompetitionModel, ["TheGroup", "Promoted"]);
 		}
-		
+				
 		private function OnPromotedChanged(bPromoted : Boolean) : void
 		{
 			if (bPromoted)
@@ -60,9 +61,9 @@
 			}
 		}
 		
-		private function OnGroupRefreshed() : void
+		private function OnTheGroupChanged(theGroup : CompetitionGroup) : void
 		{
-			if (MyCompetitionList != null)
+			if (MyCompetitionList != null && theGroup != null)
 			{
 				MyCompetitionList.selectedItem = mCompetitionModel.GetLocalGroupEntry();
 				MyCompetitionList.callLater(EnsureSelectedIsVisible);

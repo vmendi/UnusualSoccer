@@ -248,7 +248,7 @@ package GameModel
 		
 		[Bindable(event="LookingForMatchChanged")]
 		public function get LookingForMatch() : Boolean { return mLookingForMatch; }
-		public function set LookingForMatch(v:Boolean) : void { throw new Error("Use switch"); }
+		private function set LookingForMatch(v:Boolean) : void { throw new Error("Use switch"); }
 		
 		// La vista necesitara añadirlo a la stage
 		public function get TheMatch() : MatchMain { return mMatch; }

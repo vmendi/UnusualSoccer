@@ -4,6 +4,7 @@ package GameModel
 	import HttpService.TransferModel.vo.CompetitionGroup;
 	import HttpService.TransferModel.vo.CompetitionGroupEntry;
 	
+	import mx.binding.utils.BindingUtils;
 	import mx.collections.Sort;
 	import mx.collections.SortField;
 	import mx.rpc.Responder;
@@ -17,6 +18,8 @@ package GameModel
 		{
 			mMainService = mainService;
 			mMainModel = mainModel;
+			
+			BindingUtils.bindSetter(OnIsGuestChanged, mMainModel, ["TheLoginModel", "IsGuest"]);
 		}
 	
 		internal function OnTimerSeconds() : void
@@ -33,45 +36,64 @@ package GameModel
 			}
 		}
 		
-		public function RefreshGroup(callback : Function) : void
+		// Auto-refrescamos la primera vez que nos dicen que no somos guests. Entramos en el juego con IsGuest==true, asi que la
+		// primera vez que se haga un set a false (cuando se selecciona un nombre), sera la primera vez que refrescamos la competicion.
+		//
+		// Si finalmente dejamos Login.mxml para que no acepte guests, la primera vez q se refresque el equipo siempre veremos que no somos
+		// guests y por lo tanto tb se hara un RefreshGroup
+		//
+		private function OnIsGuestChanged(isGuest : Boolean) : void
 		{
-			// Refrescamos primero la fecha de fin de temporada
-			mMainService.RefreshSeasonEndDateRemainingSeconds(new Responder(Delegate.create(OnSeasonEndDateRemainingSecondsRefreshed, callback), ErrorMessages.Fault));
+			if (!isGuest)
+				RefreshGroup(null);
 		}
 		
-		private function OnSeasonEndDateRemainingSecondsRefreshed(e:ResultEvent, callback : Function):void
+		public function RefreshGroup(success : Function) : void
+		{
+			// Si es invitado, nos negamos a refrescar. Competition.mxml querria refrescar cada vez que entramos en ella, pero no nos dejamos
+			if (!mMainModel.TheLoginModel.IsGuest)
+			{
+				// Refrescamos primero la fecha de fin de temporada
+				mMainService.RefreshSeasonEndDateRemainingSeconds(new Responder(Delegate.create(OnSeasonEndDateRemainingSecondsRefreshed, success), ErrorMessages.Fault));
+			}
+		}
+		
+		private function OnSeasonEndDateRemainingSecondsRefreshed(e:ResultEvent, success : Function):void
 		{
 			mRemainingSeconds = e.result as int;
 			
 			// Refrescamos ahora el grupo
 			mMainService.RefreshGroupForTeam(parseInt(SoccerClient.GetFacebookFacade().FacebookID), 
-											 new Responder(Delegate.create(OnGroupForTeamRefreshed, callback), ErrorMessages.Fault));
+											 new Responder(Delegate.create(OnGroupForTeamRefreshed, success), ErrorMessages.Fault));
 		}
 
-		private function OnGroupForTeamRefreshed(e:ResultEvent, callback : Function):void
+		private function OnGroupForTeamRefreshed(e:ResultEvent, success : Function):void
 		{
-			TheGroup = e.result as CompetitionGroup;
+			var theGroup : CompetitionGroup = e.result as CompetitionGroup;
 			
-			if (TheGroup != null)
+			if (theGroup != null)
 			{
 				var sorter : Sort = new Sort();
 				sorter.fields =  [new SortField("Points", true, true, true)];
 				
-				TheGroup.GroupEntries.sort = sorter;
-				TheGroup.GroupEntries.refresh();
+				theGroup.GroupEntries.sort = sorter;
+				theGroup.GroupEntries.refresh();
 			}
 			
-			if (callback != null)
-				callback();
+			TheGroup = theGroup;
+			
+			if (success != null)
+				success();
 		}
 
 		public function GetLocalGroupEntry() : CompetitionGroupEntry
-		{			
+		{	
 			for each (var entry : CompetitionGroupEntry in mGroup.GroupEntries)
 			{
 				if (entry.FacebookID.toString() == SoccerClient.GetFacebookFacade().FacebookID)
 					return entry;
 			}
+			
 			return null;
 		}
 
