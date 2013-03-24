@@ -44,9 +44,6 @@
 			
 			// El mensaje de entrenamiento especial completado se captura globalmente porque el Like puede ocurrir en cualquier momento
 			mMainGameModel.TheSpecialTrainingModel.SpecialTrainingCompleted.add(OnSpecialTrainingComplete);
-			
-			// PRUEBAS
-			//ChangeNameDialog.Show();
 		}
 		
 		private function OnSpecialTrainingComplete(specialTrainingDefinition : SpecialTrainingDefinition) : void

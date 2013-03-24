@@ -39,7 +39,7 @@
 			
 			BindingUtils.bindSetter(OnIsValidTeamNameLastResult, mLoginModel, ["IsValidTeamNameLastResult"]);
 		}
-		
+
 		private function OnIsValidTeamNameLastResult(validity : String) : void
 		{
 			mWaitingForNameChange = false;			
@@ -99,8 +99,7 @@
 		
 		[Bindable] private var mNameValidity : Boolean = false;
 		[Bindable] private var mWaitingForNameChange : Boolean = false;
-		
-		
+	
 	]]></fx:Script>
 	
 	<fx:Declarations>

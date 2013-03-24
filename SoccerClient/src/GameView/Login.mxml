@@ -5,7 +5,8 @@
 		 width="100%" height="100%"
 		 currentState="Step1"
 		 addedToStage="AddedToStageHandler(event)"
-		 creationComplete="CreationCompleteHandler(event)" xmlns:GameView="GameView.*">
+		 creationComplete="CreationCompleteHandler(event)" xmlns:GameView="GameView.*"
+		 >
 	
 	<fx:Script>
 		<![CDATA[
@@ -42,6 +43,14 @@
 			{
 				GameMetrics.ReportEvent(GameMetrics.LOGIN_SCREEN, null);
 				GameMetrics.ReportPageView(GameMetrics.VIEW_LOGIN);
+			}
+			
+			protected function Step2_EnterStateHandler(event:FlexEvent):void
+			{
+				callLater(function() : void 
+				{
+					focusManager.setFocus(MyTeamNameInput);
+				});
 			}
 			
 			protected function OnMyPredefinedTeamListSelectionChanged(e:IndexChangeEvent):void
@@ -118,6 +127,8 @@
 			
 			protected function MyButtonNextStep1_clickHandler(event:MouseEvent):void
 			{
+				GameMetrics.ReportEvent(GameMetrics.NATION_SELECTED, {predefinedTeamID: MyPredefinedTeamList.selectedItem});
+				
 				currentState="Step2";
 			}
 						
@@ -161,7 +172,7 @@
 	
 	<s:states>
 		<s:State name="Step1"></s:State>
-		<s:State name="Step2"></s:State>
+		<s:State name="Step2" enterState="Step2_EnterStateHandler(event)"></s:State>
 	</s:states>
 	
 	<s:BitmapImage fillMode="clip" source="{resourceManager.getClass('main','LoginBg')}"/>
