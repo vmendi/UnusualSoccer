@@ -81,7 +81,7 @@ namespace HttpService
         {
             VALID_NAME ret = VALID_NAME.VALID;
 
-            if (name == "Guest")
+            if (name == GlobalConfig.GUEST_NAME)
                 ret = VALID_NAME.GUEST;
             else
             if (name == "")

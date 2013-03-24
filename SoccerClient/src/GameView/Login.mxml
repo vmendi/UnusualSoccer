@@ -106,7 +106,7 @@
 			{
 				mWaitingForTeamCreation = true;
 				
-				mMainGameModel.TheTeamModel.CreateTeam(MyTeamNameInput.text != ""? MyTeamNameInput.text :  "Guest", 
+				mMainGameModel.TheTeamModel.CreateTeam(MyTeamNameInput.text != ""? MyTeamNameInput.text : LoginModel.GUEST_NAME, 
 													   MyPredefinedTeamList.selectedItem, 
 												   	   OnTeamCreatedResponse, OnTeamCreationFailed);
 			}
@@ -195,7 +195,7 @@
 			
 			<s:TextInput id="MyTeamNameInput" x="82" y="97" width="200"
 						 change="MyTeamNameInput_changeHandler(event)" maxChars="30"
-						 styleName="blackBoldMediumHN" prompt="Guest"/>
+						 styleName="blackBoldMediumHN" prompt="{LoginModel.GUEST_NAME}"/>
 			
 			<s:Label id="MyValidityLabel" x="32" y="126" width="300" height="40" color="#0DBF00"
 					 styleName="whiteBoldBig" textAlign="center"/>

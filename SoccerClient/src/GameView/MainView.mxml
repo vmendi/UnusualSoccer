@@ -61,7 +61,7 @@
 				if (AppConfig.TUTORIAL == "true")
 				{
 					// Nosotros lo creamos y el mismo se encargara de destruirse
-					addElement(new TutorialPanel());
+					addElement(new Tutorial());
 				}
 			}
 			else
@@ -140,8 +140,9 @@
 		{
 			currentState = "Competition";
 			
-			// Nosotros lo creamos y el mismo se encargara de destruirse
-			addElement(new TutorialPanel());
+			// Nosotros lo creamos y el mismo se encargara de destruirse. Esta asi sin ser un Dialog (PopupManager) porque
+			// hace falta que al final se pueda clickar "A traves"
+			addElement(new Tutorial());
 		}
 		
 		private var mMainGameModel : MainGameModel;

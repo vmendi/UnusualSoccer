@@ -17,6 +17,7 @@ namespace ServerCommon
 
         public const int INITIAL_SKILL_POINTS = 100;                    // Skill points con los que se empieza el juego
         public const int INITIAL_FITNESS = 50;                          // Como de entrenados empezados
+        public const string GUEST_NAME = "Guest";                       // No localization, universal
 
         static public ServerConfig ServerSettings { get { return mServerSettings; } }
         static public IFacebookApplication FacebookSettings { get { return mFBSettings; } }

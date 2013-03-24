@@ -14,6 +14,8 @@ package GameModel
 
 	public class LoginModel extends EventDispatcher
 	{
+		static public const GUEST_NAME : String = "Guest";		// Universal, no translation, has to be in synch with the Server GlobalConfig.GUEST_NAME
+		
 		public function LoginModel(mainService : MainService, mainModel : MainGameModel)
 		{
 			mMainService = mainService;
@@ -38,7 +40,7 @@ package GameModel
 		public function get IsValidTeamNameLastResult() : String { return mIsValidTeamNameLastResult; }
 		public function set IsValidTeamNameLastResult(val:String) : void { mIsValidTeamNameLastResult = val; }	// Set from TeamModel after CreateTeam
 
-		private var mLastName : String = "Guest";
+		private var mLastName : String = GUEST_NAME;
 		private var mIsValidTeamNameLastResult : String = VALID_NAME.GUEST;
 
 		private var mMainModel : MainGameModel;

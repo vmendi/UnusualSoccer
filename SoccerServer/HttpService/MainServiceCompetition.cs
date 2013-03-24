@@ -32,6 +32,11 @@ namespace HttpService
                     // Equipo correspondiente al FacebookID
                     Team theTeam = PrecompiledQueries.RefreshGroupForTeam.GetTeam.Invoke(mContext, facebookID);
 
+                    // Si el equipo es un guest, no le admitimos en la competicion... pero esto nunca deberia pasar pq el cliente no deberia pedir
+                    // el RefreshGroupForTeam sin tener el nombre definitivo
+                    if (theTeam.Name == GlobalConfig.GUEST_NAME)
+                        throw new Exception("WTF 31893");
+
                     // Nuestra propia copia de GetCurrentSeason para poder precompilar (var currentSeason = GetCurrentSeason(mContext))
                     var currentSeason = PrecompiledQueries.RefreshGroupForTeam.GetCurrentSeason.Invoke(mContext);
 

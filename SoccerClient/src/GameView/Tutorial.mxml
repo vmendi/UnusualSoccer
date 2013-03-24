@@ -5,7 +5,7 @@
 		 xmlns:GameView="GameView.*"
 		 width="760" height="650"
 		 currentState="Init"
-		 addedToStage="TutorialPanel_addedToStageHandler(event)"
+		 addedToStage="Tutorial_addedToStageHandler(event)"
 		 >
 	
 	<fx:Script><![CDATA[
@@ -19,7 +19,7 @@
 		import mx.binding.utils.ChangeWatcher;
 		import mx.events.FlexEvent;
 		
-		protected function TutorialPanel_addedToStageHandler(event:Event):void
+		protected function Tutorial_addedToStageHandler(event:Event):void
 		{
 			mMainGameModel = SoccerClient.GetMainGameModel();
 			
@@ -65,8 +65,12 @@
 		}
 			
 		protected function NotNow_clickHandler(event:MouseEvent):void
-		{
-			CloseTutorial();	
+		{			
+			CloseTutorial();
+			
+			// Si salimos por el "Not now" hay que pedir el nombre del equipo inmeditamente... para que se incluya en las competiciones
+			if (mMainGameModel.TheTeamModel.IsGuest())
+				ChangeNameDialog.Show();
 		}
 			
 		protected function Step1Next_clickHandler(event:MouseEvent):void

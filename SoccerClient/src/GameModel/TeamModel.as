@@ -90,7 +90,7 @@ package GameModel
 		
 		// http://blog.mixpanel.com/2012/11/13/getting-serious-about-measuring-virality/
 		// Global concept: We impersonate the person who invited us to close the viral funnel. We send only one event (on team
-		// 				   creation) because we are asking facebook for the request.from.id and after that we are deleting the requests,
+		// 				   creation) because we are asking facebook for the request.from.id and deleting the requests afterwards,
 		//				   which means we don't have that information available for any other time
 		private function CloseViralityFunnel(callback : Function) : void
 		{
@@ -340,6 +340,11 @@ package GameModel
 				if (callback != null)
 					callback(false);
 			}
+		}
+		
+		public function IsGuest() : Boolean
+		{
+			return TheTeam.Name == LoginModel.GUEST_NAME;
 		}
 
 		// En realidad esta instancia de TeamDetails es una comodidad para mostrar el SelfTeam de forma simetrica a los demas
