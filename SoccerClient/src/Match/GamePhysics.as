@@ -223,20 +223,20 @@ package Match
 						fault.SaquePuerta = true;
 						
 						// Evaluamos la gravedad de la falta. Para el portero la evaluación de tarjetas es más sensible!
-						if( vel < MatchConfig.VelFaultT1 )		// Falta normal, en el caso de al portero muy "leve"
-							trace( "Resultado: falta normal" )
-						else if( vel < MatchConfig.VelFaultT2 )
+						if(vel < MatchConfig.VelFaultT1)		// Falta normal, en el caso de al portero muy "leve"
+							trace("Resultado: falta normal")
+						else if(vel < MatchConfig.VelFaultT2)
 							fault.AddYellowCard();				// Sacamos tarjeta amarilla (y roja si acumula 2)
 						else
 							fault.RedCard = true;				// Roja directa
 					}
 					else
 					{
-						if (vel < MatchConfig.VelFaultT1)			// La falta más leve en el caso general no es falta 
+						if (vel < MatchConfig.VelFaultT1)		// La falta más leve en el caso general no es falta 
 							fault = null;
-						else if( vel < MatchConfig.VelFaultT2 )	// falta normal. es el valor por defecto
-							trace ( "Resultado: falta normal" )
-						else if( vel < MatchConfig.VelFaultT3 )	// Sacamos tarjeta amarilla (y roja si acumula 2)
+						else if(vel < MatchConfig.VelFaultT2)	// falta normal. es el valor por defecto
+							trace ( "Resultado: falta normal")
+						else if(vel < MatchConfig.VelFaultT3)	// Sacamos tarjeta amarilla (y roja si acumula 2)
 							fault.AddYellowCard();
 						else									 
 							fault.RedCard = true;				// Roja directa	(maxima fuerza)	

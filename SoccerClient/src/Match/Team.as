@@ -129,12 +129,13 @@ package Match
 		{
 			var currentFormation : Array = GetFormation(_FormationName);
 			
-			// Si hay algún obstaculo en esa posicion, no podemos resetear al portero, ignoramos la orden
+			// La posicion deseada es la de por defecto del portero, la de formacion
 			var desiredPos : Point = ConvertFormationPosToFieldPos(currentFormation[0], Side);
 			
 			// Pequeño efecto visual, sólo porque estamos en el caso del portero
 			GoalKeeper.FadeClone(1);
 			
+			// Si hay algún obstaculo en esa posicion, no podemos resetear al portero, ignoramos la orden
 			if (MatchMain.Ref.Game.TheField.ValidatePosCap(desiredPos, true, GoalKeeper))
 				SetFormationPosForCap(GoalKeeper, currentFormation[0], Side);
 			
@@ -154,6 +155,11 @@ package Match
 			var goalkeeperPos : Point = GoalKeeper.GetPos();
 			goalkeeperPos.y = 114 + Field.OffsetY;
 			GoalKeeper.SetPos(goalkeeperPos);
+		}
+		
+		public function EjectPlayersInsideSmallZone() : void
+		{
+			
 		}
 		
 		private function SetFormationPos(formationName:String, side:int) : void
