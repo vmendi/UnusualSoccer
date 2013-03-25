@@ -10,7 +10,6 @@
       <field name="WHITE_SPACE_TRIM" type="String" fulltype="String" nativetype="String" />
       <field name="TOO_MANY_WHITESPACES" type="String" fulltype="String" nativetype="String" />
       <field name="EMPTY" type="String" fulltype="String" nativetype="String" />
-      <field name="GUEST" type="String" fulltype="String" nativetype="String" />
     </enum>
     <namespace name="TransferModel" fullname="HttpService.TransferModel">
       <datatype name="ItemForSale" fullname="HttpService.TransferModel.ItemForSale" typeNamespace="HttpService.TransferModel">

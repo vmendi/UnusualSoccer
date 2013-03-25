@@ -52,8 +52,7 @@ namespace HttpService
             {
                 var validity = IsNameValidInner(name);
 
-                // Admitimos tb guests
-                if (validity != VALID_NAME.VALID && validity != VALID_NAME.GUEST)
+                if (validity != VALID_NAME.VALID)
                     return false;
 
                 Team theNewTeam = null;

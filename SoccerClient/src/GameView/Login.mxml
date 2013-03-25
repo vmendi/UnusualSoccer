@@ -47,10 +47,12 @@
 			
 			protected function Step2_EnterStateHandler(event:FlexEvent):void
 			{
+				/*
 				callLater(function() : void 
 				{
 					focusManager.setFocus(MyTeamNameInput);
 				});
+				*/
 			}
 			
 			protected function OnMyPredefinedTeamListSelectionChanged(e:IndexChangeEvent):void
@@ -66,11 +68,9 @@
 				if (MyPredefinedTeamList.selectedIndex != -1)
 				{
 					if (validity == VALID_NAME.VALID)
-						SetNameValidity(true, resourceManager.getString('main','LoginNameAvailable'));
-					else if (validity == VALID_NAME.GUEST)
-						SetNameValidity(true, resourceManager.getString('main','LoginNameIsGuest'));
+						SetNameValidity(true, resourceManager.getString('main','LoginNameAvailable')); 
 					else if (validity == VALID_NAME.EMPTY)
-						SetNameValidity(false, resourceManager.getString('main','LoginEnterName'));	
+						SetNameValidity(true, resourceManager.getString('main','LoginEnterName'));		// Empty es valido, cogemos el mLoginModel.DefaultName
 					else if (validity == VALID_NAME.DUPLICATED)
 						SetNameValidity(false, resourceManager.getString('main','LoginNotAvailable'));	
 					else if (validity == VALID_NAME.INAPPROPIATE)
@@ -112,7 +112,7 @@
 			}
 			
 			protected function MyTeamNameInput_changeHandler(event:TextOperationEvent):void
-			{				
+			{
 				mLoginModel.IsValidTeamName(MyTeamNameInput.text);
 			}
 			
@@ -120,7 +120,7 @@
 			{
 				mWaitingForTeamCreation = true;
 				
-				mLoginModel.CreateTeam(MyTeamNameInput.text != ""? MyTeamNameInput.text : mLoginModel.GuestPrompt, 
+				mLoginModel.CreateTeam(MyTeamNameInput.text != ""? MyTeamNameInput.text : mLoginModel.DefaultName, 
 									   MyPredefinedTeamList.selectedItem, 
 								   	   OnTeamCreatedSuccess);
 			}
@@ -163,6 +163,11 @@
 			font-weight:bold;
 			color:#FFFFFF;
 		}
+		
+		.teamNameInputStyle:normalWithPrompt {
+			color: #222222;
+			fontStyle: italic;
+		}
 	</fx:Style>
 	
 	<fx:Declarations>
@@ -181,8 +186,9 @@
 			 horizontalCenter="0" y="60" width="720" 
 			 visible.Step1="true"
 			 visible.Step2="false">
+		
 		<GameView:PopupBackground left="-10" right="-10" top="-16" bottom="-16" />
-		<!--<GameView:PopupBackground left="-10" right="-10" top="-10" bottom="-10" />-->
+		
 		<s:Group>
 			<s:layout>
 				<s:VerticalLayout gap="10" horizontalAlign="center"/>
@@ -218,21 +224,24 @@
 				<s:layout>
 					<s:VerticalLayout gap="6" horizontalAlign="center"/>
 				</s:layout>
+				
 				<s:Label id="myStep2Label" x="10" y="0" width="470" height="27"
 						 filters="{MyTextDropShadowFilter}" maxDisplayedLines="1"
 						 styleName="yellowBoldHuge"
 						 text="{resourceManager.getString('main','Login02EnterName')}"
 						 textAlign="center" verticalAlign="middle"></s:Label>
+				
 				<s:Label id="myStep2Txt" x="10" y="35" width="470" styleName="whiteBoldBig"
 						 text="{resourceManager.getString('main','Login02EnterNameTxt')}"
 						 textAlign="center" verticalAlign="middle"></s:Label>
 				
 				<s:TextInput id="MyTeamNameInput" x="82" y="97" width="200"
 							 change="MyTeamNameInput_changeHandler(event)" maxChars="30"
-							 styleName="blackBoldMediumHN" prompt="{mLoginModel.GuestPrompt}"/>
+							 prompt="{mLoginModel.DefaultName}" styleName="teamNameInputStyle"/>
 				
 				<s:Label id="MyValidityLabel" x="32" y="126" width="470" height="40" color="#0DBF00"
 						 styleName="whiteBoldBig" textAlign="center"/>
+
 				<s:Button id="MyButtonNext" horizontalCenter="0" bottom="10" width="160" height="24"
 						  label="{resourceManager.getString('main','Continue')}"
 						  click="MyButtonNext_clickHandler(event)" enabled="{mAgeValidity &amp;&amp; mNameValidity}"

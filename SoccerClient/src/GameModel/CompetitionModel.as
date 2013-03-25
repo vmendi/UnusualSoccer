@@ -19,7 +19,7 @@ package GameModel
 			mMainService = mainService;
 			mMainModel = mainModel;
 			
-			BindingUtils.bindSetter(OnIsGuestChanged, mMainModel, ["TheLoginModel", "IsGuest"]);
+			BindingUtils.bindSetter(OnTeamNameChanged, mMainModel, ["TheTeamModel", "TheTeam", "Name"]);
 		}
 	
 		internal function OnTimerSeconds() : void
@@ -36,26 +36,18 @@ package GameModel
 			}
 		}
 		
-		// Auto-refrescamos la primera vez que nos dicen que no somos guests. Entramos en el juego con IsGuest==true, asi que la
-		// primera vez que se haga un set a false (cuando se selecciona un nombre), sera la primera vez que refrescamos la competicion.
-		//
-		// Si finalmente dejamos Login.mxml para que no acepte guests, la primera vez q se refresque el equipo siempre veremos que no somos
-		// guests y por lo tanto tb se hara un RefreshGroup
-		//
-		private function OnIsGuestChanged(isGuest : Boolean) : void
+		// La primera vez que tengamos un nombre sera la primera vez que refrescamos la competicion.
+		private function OnTeamNameChanged(name : String) : void
 		{
-			if (!isGuest)
+			if (name != null && name != "")
 				RefreshGroup(null);
 		}
 		
+		// Nos refrescan desde la pantalla de competition cada vez que entramos en ella
 		public function RefreshGroup(success : Function) : void
 		{
-			// Si es invitado, nos negamos a refrescar. Competition.mxml querria refrescar cada vez que entramos en ella, pero no nos dejamos
-			if (!mMainModel.TheLoginModel.IsGuest)
-			{
-				// Refrescamos primero la fecha de fin de temporada
-				mMainService.RefreshSeasonEndDateRemainingSeconds(new Responder(Delegate.create(OnSeasonEndDateRemainingSecondsRefreshed, success), ErrorMessages.Fault));
-			}
+			// Refrescamos primero la fecha de fin de temporada
+			mMainService.RefreshSeasonEndDateRemainingSeconds(new Responder(Delegate.create(OnSeasonEndDateRemainingSecondsRefreshed, success), ErrorMessages.Fault));
 		}
 		
 		private function OnSeasonEndDateRemainingSecondsRefreshed(e:ResultEvent, success : Function):void

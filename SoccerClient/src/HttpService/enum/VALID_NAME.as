@@ -24,6 +24,5 @@ package HttpService.enum
 		public static var WHITE_SPACE_TRIM:String="WHITE_SPACE_TRIM";
 		public static var TOO_MANY_WHITESPACES:String="TOO_MANY_WHITESPACES";
 		public static var EMPTY:String="EMPTY";
-		public static var GUEST:String="GUEST";
 	}
 }

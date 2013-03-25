@@ -67,10 +67,6 @@
 		protected function NotNow_clickHandler(event:MouseEvent):void
 		{			
 			CloseTutorial();
-			
-			// Si salimos por el "Not now" hay que pedir el nombre del equipo inmeditamente... para que se incluya en las competiciones
-			if (mMainGameModel.TheLoginModel.IsGuest)
-				ChangeNameDialog.Show();
 		}
 			
 		protected function Step1Next_clickHandler(event:MouseEvent):void

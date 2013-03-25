@@ -48,8 +48,7 @@ namespace HttpService
 			TOO_SHORT,
 			WHITE_SPACE_TRIM,
 			TOO_MANY_WHITESPACES,
-			EMPTY,
-            GUEST
+			EMPTY
 		}
 
 		public bool HasTeam()
@@ -97,9 +96,6 @@ namespace HttpService
         {
             VALID_NAME ret = VALID_NAME.VALID;
 
-            if (name == GlobalConfig.GUEST_NAME)
-                ret = VALID_NAME.GUEST;
-            else
             if (name == "")
                 ret = VALID_NAME.EMPTY;
             else
