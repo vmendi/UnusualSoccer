@@ -52,18 +52,16 @@ package GameModel
 		}
 		private function OnTeamCreatedResponse(e:ResultEvent, success:Function) : void
 		{
-			if (e.result)
-				mMainModel.TheTeamModel.CloseViralityFunnel(success);
-			else
-				// When the CreateMethod returns false it means the name is duplicated
-				IsValidTeamNameLastResult = VALID_NAME.DUPLICATED;
+			IsValidTeamNameLastResult = e.result as String;
+			
+			if (IsValidTeamNameLastResult == VALID_NAME.VALID)
+				mMainModel.TheTeamModel.CloseViralityFunnel(success);				
 		}
-		
 		
 		[Bindable]
 		public function get DefaultName() : String
 		{
-			return SoccerClient.GetFacebookFacade().FacebookMe.name + " " + "FC"; //ResourceManager.getInstance().getString("main", "LoginNamePrompt");
+			return SoccerClient.GetFacebookFacade().FacebookMe.name + " FC";
 		}
 		private function set DefaultName(v:String) : void { throw new Error("You can't do that"); }
 

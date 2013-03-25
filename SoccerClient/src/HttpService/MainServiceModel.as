@@ -21,7 +21,7 @@
       public class MainServiceModel
       {     
         public var ChangeNameResult:String;     
-        public var CreateTeamResult:Boolean;     
+        public var CreateTeamResult:String;     
         public var GetExtraRewardForMatchResult:Boolean;     
         public var GetItemForSaleResult:ItemForSale;     
         public var HasTeamResult:Boolean;     

@@ -43,7 +43,7 @@ namespace HttpService
             return ret;
 		}
                
-		public bool CreateTeam(string name, string predefinedTeamNameID)
+		public VALID_NAME CreateTeam(string name, string predefinedTeamNameID)
 		{
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -53,7 +53,7 @@ namespace HttpService
                 var validity = IsNameValidInner(name);
 
                 if (validity != VALID_NAME.VALID)
-                    return false;
+                    return validity;
 
                 Team theNewTeam = null;
 
@@ -82,7 +82,8 @@ namespace HttpService
 
                 LogPerf.Info("CreateTeam: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
 
-                return theNewTeam != null;
+                // Si no conseguimos crearlo pq salte alguna excepcion... como si estuviera duplicado
+                return theNewTeam != null? VALID_NAME.VALID : VALID_NAME.DUPLICATED;
             }
 		}
 
