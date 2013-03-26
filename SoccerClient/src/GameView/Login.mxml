@@ -46,14 +46,6 @@
 				GameMetrics.ReportPageView(GameMetrics.VIEW_LOGIN);
 			}
 			
-			protected function SelectCountry_EnterStateHandler(event:FlexEvent):void
-			{
-				callLater(function() : void 
-				{
-					focusManager.setFocus(MyTeamNameInput);
-				});
-			}
-			
 			private function OnIsValidTeamNameLastResult(validity : String) : void
 			{	
 				// If we were waiting for team creating, now we are not
@@ -137,8 +129,7 @@
 			{
 				currentState="CreateTeam";
 			}
-			
-			
+						
 			protected function MyButtonChange_clickHandler(event:MouseEvent):void
 			{
 				currentState="SelectCountry";
@@ -194,7 +185,7 @@
 	<s:states>
 		<s:State name="In"></s:State>
 		<s:State name="CreateTeam"></s:State>
-		<s:State name="SelectCountry" enterState="SelectCountry_EnterStateHandler(event)"></s:State>
+		<s:State name="SelectCountry"></s:State>
 		<s:State name="Out"></s:State>
 	</s:states>
 	
