@@ -131,7 +131,7 @@ package Match
 			GoalKeeper.FadeClone(1);
 			
 			// Si hay algún obstaculo en esa posicion, no podemos resetear al portero, ignoramos la orden
-			if (MatchMain.Ref.Game.TheField.IsPosFreeInsideField(desiredPos, true, GoalKeeper))
+			if (MatchMain.Ref.Game.TheField.IsPointFreeInsideField(desiredPos, true, GoalKeeper))
 				SetFormationPosForCap(GoalKeeper, currentFormation[0], Side);
 			
 			// Olvidamos las posiciones de teletransporte
@@ -157,10 +157,10 @@ package Match
 		{
 			for each (var theCap : Cap in CapsList)
 			{
-				if (MatchMain.Ref.Game.TheField.IsCapCenterInsideSmallArea(theCap) && 
-					theCap != GoalKeeper)
+				if (MatchMain.Ref.Game.TheField.IsTouchingSmallArea(theCap) && theCap != GoalKeeper && theCap.YellowCards < 2)
 				{
-					EjectCapInsideSmallArea(theCap);
+					theCap.FadeClone(1);
+					EjectCapInsideSmallArea(theCap);					
 				}
 			}
 		}
@@ -168,19 +168,38 @@ package Match
 		private function EjectCapInsideSmallArea(theCap : Cap) : void
 		{			
 			var field : Field  = MatchMain.Ref.Game.TheField;			
-			var availablePos : Array = field.CheckConditionOnGridPoints(isFreeOutsideBigArea, 5);
+			var available : Array = field.CheckConditionOnGridPoints(isFreeAroundPenaltyPoint, 15);
 			
-			if (availablePos.length == 0)
-				throw new Error("WTF 99931");
+			if (available.length == 0)
+				return;
+
+			available.sort(distanceSorter);
+			theCap.SetPos(available[0]);
 			
-			availablePos.sort(distanceSorter);
-			
-			theCap.SetPos(availablePos[0]);
-			
-			// Estan en la pequeña pero Los ejectamos fuera del area grande!
+			// Heuristica: Por delante del punto de delante pero dentro del area grande, a mas de una determinada distancia del punto
+			//             de penalty
+			function isFreeAroundPenaltyPoint(point : Point) : Boolean
+			{
+				var isFartherThanPenaltyPoint : Boolean = (Side == Enums.Left_Side)? point.x > Field.PenaltyLeft.x : point.x < Field.PenaltyRight.x;
+				return field.IsPointInsideBigArea(point, Side) &&
+					   isFartherThanPenaltyPoint &&
+					   (Point.distance(point, (Side == Enums.Left_Side)? Field.PenaltyLeft : Field.PenaltyRight) > 60) &&
+					   field.IsPointFreeInsideField(point, true, theCap);				
+			}
+		
+			// Fuera del area grande, pero solo en el frontal
 			function isFreeOutsideBigArea(point : Point) : Boolean
 			{
-				return !field.IsPointInsideBigArea(point, Side) && field.IsPosFreeInsideField(point, true, theCap);
+				return !field.IsPointInsideBigArea(point, Side) &&
+					   (point.y > Field.BigAreaLeft.top && point.y < Field.BigAreaLeft.bottom) &&
+				   	    field.IsPointFreeInsideField(point, true, theCap);
+			}
+			
+			// En la zona entre las dos areas
+			function isFreeBetweenTwoAreas(point : Point) : Boolean
+			{
+				return field.IsPointBetweenTwoAreas(point, Side) && 
+					   field.IsPointFreeInsideField(point, true, theCap);
 			}
 			
 			function distanceSorter(pointA : Point, pointB : Point) : int
@@ -234,7 +253,7 @@ package Match
 			var pos : Point = new Point(formationPos.x + Field.OffsetX, formationPos.y + Field.OffsetY);
 			
 			// Reflejamos la posicion horizontalmente sobre el centro del campo si estamos en el lado derecho
-			if( side == Enums.Right_Side )
+			if (side == Enums.Right_Side)
 				pos.x = Field.CenterX - pos.x + Field.CenterX;
 			
 			return pos;

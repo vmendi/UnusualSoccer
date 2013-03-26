@@ -28,9 +28,12 @@ package Match
 		static public const SmallAreaRight : Rectangle = new Rectangle(614 + OffsetX, 106 + OffsetY, 54, 188);
 		
 		// Coordenadas de las areas GRANDES del campo en coordenadas absolutas desde el corner superior izquierdo del movieclip
-		static public const BigAreaLeft  : Rectangle = new Rectangle(0 + OffsetX,   48 + OffsetY, 120, 304);
-		static public const BigAreaRight : Rectangle = new Rectangle(548 + OffsetX, 48 + OffsetY, 120, 304);
-				
+		static public const BigAreaLeft  : Rectangle = new Rectangle(0 + OffsetX,   48 + OffsetY, 138, 304);
+		static public const BigAreaRight : Rectangle = new Rectangle(530 + OffsetX, 48 + OffsetY, 138, 304);
+		
+		static public const PenaltyLeft : Point  = new Point(94 + OffsetX, 200 + OffsetY);
+		static public const PenaltyRight : Point = new Point(574 + OffsetX, 200 + OffsetY);
+
 		// Coordenadas de las porterias
 		private var X_GOAL_LEFT:Number = 0;
 		private var X_GOAL_RIGHT:Number = 714;
@@ -211,13 +214,42 @@ package Match
 			return MathUtils.CircleInRect(pos, radius, new Point(OffsetX, OffsetY), new Point(SizeX, SizeY));
 		}
 		
+		// Esta el punto en la zona entre el area pequeña y el área grande
+		public function IsPointBetweenTwoAreas(pos:Point, side:int) : Boolean
+		{			
+			return (side == Enums.Left_Side? pos.x < Field.BigAreaLeft.right : pos.x > Field.BigAreaRight.left) && 
+				    pos.y > Field.BigAreaLeft.top && pos.y < Field.BigAreaLeft.bottom &&
+				   (pos.y < Field.SmallAreaLeft.top || pos.y > Field.SmallAreaLeft.bottom);
+		}
+		
+		// Tocando frontalmente, por arriba y abajo contenida
+		public function IsTouchingSmallArea(cap : Cap): Boolean
+		{
+			var thePos : Point = cap.GetPos();
+			var bRet : Boolean = false;
+			
+			if (cap.OwnerTeam.Side == Enums.Left_Side)
+			{
+				if (thePos.x - Cap.Radius < Field.SmallAreaLeft.right &&
+					(thePos.y > Field.SmallAreaLeft.top && thePos.y < Field.SmallAreaLeft.bottom))
+					bRet = true;
+			}
+			else
+			{
+				if (thePos.x + Cap.Radius > Field.SmallAreaRight.left &&
+					(thePos.y > Field.SmallAreaLeft.top && thePos.y < Field.SmallAreaLeft.bottom))
+					bRet = true;
+			}
+			return bRet;
+		}
+		
 		//
 		// Una posicion para ser libre debe:
 		//		- Estar contenida dentro de la zona de juego del campo 
 		// 		- No colisionar con ninguna chapa
 		//		- No colisionar con el balón
 		//
-		public function IsPosFreeInsideField(pos:Point, checkAgainstBall:Boolean, ignoreCap:Cap = null) : Boolean
+		public function IsPointFreeInsideField(pos:Point, checkAgainstBall:Boolean, ignoreCap:Cap = null) : Boolean
 		{
 			// Nos aseguramos de que esta dentro del campo
 			var bValid:Boolean = IsCircleInsideField(pos, Cap.Radius);
@@ -267,7 +299,7 @@ package Match
 				
 				// Validamos la posición de la chapa, teniendonos en cuenta a nosotros mismos
 				// Validamos contra bandas y otras chapas, ...
-				if (IsPosFreeInsideField(endPos, checkAgainstBall, cap))
+				if (IsPointFreeInsideField(endPos, checkAgainstBall, cap))
 				{
 					// Movemos la chapa a la posición y terminamos
 					cap.SetPos(endPos);

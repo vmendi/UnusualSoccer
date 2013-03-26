@@ -118,7 +118,7 @@ package Match
 			//TheAudioManager.PlayMusic("SoundAmbience", 0.3);
 						
 			// TODO: Deberiamos utilizar una semilla envíada desde el servidor!!!
-			_Random = new Random(123);			
+			_Random = new Random(123);
 			_Timer = new Match.Time();
 			
 			// - Determinamos los grupos de equipación a los que pertenece cada equipo.
