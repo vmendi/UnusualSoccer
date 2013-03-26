@@ -17,15 +17,5 @@ package Match
 			if( Attacker.YellowCards >= 2 )
 				RedCard = true;
 		}
-		
-		public function ForgiveCardsIfGoalKeeper() : void
-		{			
-			if (Attacker == Attacker.OwnerTeam.GoalKeeper) 
-			{
-				Attacker.YellowCards = 0;
-				YellowCard = false;
-				RedCard = false;
-			}
-		}
 	}
 }

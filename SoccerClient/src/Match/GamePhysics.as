@@ -205,46 +205,24 @@ package Match
 				vecDiff.normalize(1.0);
 				var vel:Number = vVel.x * vecDiff.x + vVel.y * vecDiff.y;
 				
-				// Si excedemos la velocidad de 'falta' determinamos el tipo de falta
-				// Se considera falta sólo si el jugador ATACANTE no ha tocado previamente la pelota
-				if (vel >= MatchConfig.VelPossibleFault && !HasTouchedBall(attacker))
-				{				
-					trace( "DETECTADA POSIBLE FALTA ENTRE 2 JUGADORES " + vel.toString());
-					
-					// Creamos el objeto que describe la 'falta'
+				// Si excedemos la velocidad de 'falta' determinamos el tipo de falta.
+				// Se considera falta sólo si el jugador ATACANTE no ha tocado previamente la pelota.
+				// Al portero no se le hacen faltas.
+				if (vel >= MatchConfig.VelFaultT1 && !HasTouchedBall(attacker) && defender != defender.OwnerTeam.GoalKeeper)
+				{
 					fault = new Fault();
 					fault.Attacker = attacker;
 					fault.Defender = defender;
 					
-					// Comprobamos si la falta ha sido al portero dentro de su area pequeña
-					if (defender == defender.OwnerTeam.GoalKeeper && MatchMain.Ref.Game.TheField.IsCircleInsideSmallArea(defender.GetPos(), 0, defender.OwnerTeam.Side))
+					// Si el que hace la falta es el portero, le perdonamos las tarjetas. No queremos que nos lo expulsen
+					if (attacker != attacker.OwnerTeam.GoalKeeper)
 					{
-						// Caso especial: Todo el mundo vuelve a su posición de alineación y se produce un saque de puerta.
-						fault.SaquePuerta = true;
-						
-						// Evaluamos la gravedad de la falta. Para el portero la evaluación de tarjetas es más sensible!
-						if(vel < MatchConfig.VelFaultT1)		// Falta normal, en el caso de al portero muy "leve"
-							trace("Resultado: falta normal")
-						else if(vel < MatchConfig.VelFaultT2)
+						if (vel >= MatchConfig.VelFaultT2 && vel < MatchConfig.VelFaultT3) 
 							fault.AddYellowCard();				// Sacamos tarjeta amarilla (y roja si acumula 2)
 						else
-							fault.RedCard = true;				// Roja directa
+						if (vel >= MatchConfig.VelFaultT3)
+							fault.RedCard = true;				// Roja directa	(maxima fuerza)
 					}
-					else
-					{
-						if (vel < MatchConfig.VelFaultT1)		// La falta más leve en el caso general no es falta 
-							fault = null;
-						else if(vel < MatchConfig.VelFaultT2)	// falta normal. es el valor por defecto
-							trace ( "Resultado: falta normal")
-						else if(vel < MatchConfig.VelFaultT3)	// Sacamos tarjeta amarilla (y roja si acumula 2)
-							fault.AddYellowCard();
-						else									 
-							fault.RedCard = true;				// Roja directa	(maxima fuerza)	
-					}
-					
-					// Si el que hace la falta es el portero, le perdonamos las tarjetas. No queremos que nos lo expulsen
-					if (fault != null)
-						fault.ForgiveCardsIfGoalKeeper();
 				}
 			} 
 			
