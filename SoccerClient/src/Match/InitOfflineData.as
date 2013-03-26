@@ -2,12 +2,12 @@ package Match
 {
 	public class InitOfflineData
 	{			
-		static public function GetDescTeam(predefinedTeamNameID : String) : Object
+		static public function GetDescTeam(predefinedTeamNameID : String, awesome : Boolean) : Object
 		{
 			var descTeam:Object = { 
 				PredefinedTeamNameID: predefinedTeamNameID,
 				Name: "Team " + predefinedTeamNameID,
-				Fitness:50,
+				Fitness:100,
 				Formation:"2-2-3",
 				SoccerPlayers: []
 			}
@@ -17,9 +17,9 @@ package Match
 				var descCap:Object = { 
 						DorsalNumber: c+1,
 						Name: "Cap " + predefinedTeamNameID + " " + c,
-						Power: 50,
-						Control: 100,
-						Defense: 100,
+						Power: awesome? 100 : 0,
+						Control: awesome? 100 : 0,
+						Defense: awesome? 100 : 0,
 						FacebookID: -1, //611084838,
 						IsInjured: false //c == 5
 				};						

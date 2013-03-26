@@ -125,7 +125,7 @@ package Match
 			{
 				_Game = new Match.Game();
 
-				Game.InitFromServer((-1), InitOfflineData.GetDescTeam("ARGENTINA"), InitOfflineData.GetDescTeam("USA"),
+				Game.InitFromServer((-1), InitOfflineData.GetDescTeam("ARGENTINA", false), InitOfflineData.GetDescTeam("USA", true),
 										  Enums.Team1, MatchConfig.PartTime * 2, MatchConfig.TurnTime, true, MatchConfig.ClientVersion);
 			}
 		}

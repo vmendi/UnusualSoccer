@@ -214,6 +214,8 @@ namespace SoccerServer.Admin
                                                       Description = "Han jugado al menos 5 partidos" },
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetPlayedNumMatchesSince(20, 3650),
                                                       Description = "Han jugado al menos 20 partidos" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetSoccerPlayersWithAveragePowerGreater(90),
+                                                      Description = "Media del power de los futbolistas > 90" },
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetAllFacebookIDs(),
                                                       Description = "Todos los jugadores" },
             };
@@ -296,6 +298,13 @@ namespace SoccerServer.Admin
                                   where (now - m.Match.DateStarted).TotalDays <= days
                                   select m.Match
                     where matches.Count() >= numMatches
+                    select p.FacebookID).ToList();
+        }
+
+        private List<long> GetSoccerPlayersWithAveragePowerGreater(float average)
+        {
+            return (from p in mDC.Players
+                    where p.Team.SoccerPlayers.Average(sp => sp.Power) > average
                     select p.FacebookID).ToList();
         }
 

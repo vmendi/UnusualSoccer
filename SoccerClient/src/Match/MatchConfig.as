@@ -53,7 +53,7 @@ package Match
 																[Enums.MasterDribbling, 1.5]
 															  ];		
 		
-		public static const PowerMultiplier:Number = 2.0;			// Multiplicador de potencia cuando tienes la habilidad especial "superpotencia"
+		public static const PowerMultiplier:Number = 1.7;			// Multiplicador de potencia cuando tienes la habilidad especial "superpotencia"
 		
 		public static const FuriaRojaMultiplier:Number = 2.0;		// Multiplicador Control
 		public static const CatenaccioMultiplier:Number = 2.0;		// Multiplicador Defensa
