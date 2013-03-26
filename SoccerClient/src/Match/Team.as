@@ -2,14 +2,9 @@ package Match
 {
 	import com.greensock.*;
 	
-	import flash.display.DisplayObject;
 	import flash.geom.Point;
-	import flash.utils.getDefinitionByName;
-	import flash.utils.getQualifiedClassName;
 	
 	import mx.resources.ResourceManager;
-	
-	import utils.Delegate;
 
 	public class Team
 	{				
@@ -129,13 +124,14 @@ package Match
 		{
 			var currentFormation : Array = GetFormation(_FormationName);
 			
-			// Si hay algún obstaculo en esa posicion, no podemos resetear al portero, ignoramos la orden
+			// La posicion deseada es la de por defecto del portero, la de formacion
 			var desiredPos : Point = ConvertFormationPosToFieldPos(currentFormation[0], Side);
 			
 			// Pequeño efecto visual, sólo porque estamos en el caso del portero
 			GoalKeeper.FadeClone(1);
 			
-			if (MatchMain.Ref.Game.TheField.ValidatePosCap(desiredPos, true, GoalKeeper))
+			// Si hay algún obstaculo en esa posicion, no podemos resetear al portero, ignoramos la orden
+			if (MatchMain.Ref.Game.TheField.IsPointFreeInsideField(desiredPos, true, GoalKeeper))
 				SetFormationPosForCap(GoalKeeper, currentFormation[0], Side);
 			
 			// Olvidamos las posiciones de teletransporte
@@ -156,11 +152,74 @@ package Match
 			GoalKeeper.SetPos(goalkeeperPos);
 		}
 		
+		// Se asegura de que todos los futbolistas esten fuera del area pequeña
+		public function EjectPlayersInsideSmallArea() : void
+		{
+			for each (var theCap : Cap in CapsList)
+			{
+				if (MatchMain.Ref.Game.TheField.IsTouchingSmallArea(theCap) && theCap != GoalKeeper && theCap.YellowCards < 2)
+				{
+					theCap.FadeClone(1);
+					EjectCapInsideSmallArea(theCap);					
+				}
+			}
+		}
+		
+		private function EjectCapInsideSmallArea(theCap : Cap) : void
+		{			
+			var field : Field  = MatchMain.Ref.Game.TheField;			
+			var available : Array = field.CheckConditionOnGridPoints(isFreeAroundPenaltyPoint, 15);
+			
+			if (available.length == 0)
+				return;
+
+			available.sort(distanceSorter);
+			theCap.SetPos(available[0]);
+			
+			// Heuristica: Por delante del punto de delante pero dentro del area grande, a mas de una determinada distancia del punto
+			//             de penalty
+			function isFreeAroundPenaltyPoint(point : Point) : Boolean
+			{
+				var isFartherThanPenaltyPoint : Boolean = (Side == Enums.Left_Side)? point.x > Field.PenaltyLeft.x : point.x < Field.PenaltyRight.x;
+				return field.IsPointInsideBigArea(point, Side) &&
+					   isFartherThanPenaltyPoint &&
+					   (Point.distance(point, (Side == Enums.Left_Side)? Field.PenaltyLeft : Field.PenaltyRight) > 60) &&
+					   field.IsPointFreeInsideField(point, true, theCap);				
+			}
+		
+			// Fuera del area grande, pero solo en el frontal
+			function isFreeOutsideBigArea(point : Point) : Boolean
+			{
+				return !field.IsPointInsideBigArea(point, Side) &&
+					   (point.y > Field.BigAreaLeft.top && point.y < Field.BigAreaLeft.bottom) &&
+				   	    field.IsPointFreeInsideField(point, true, theCap);
+			}
+			
+			// En la zona entre las dos areas
+			function isFreeBetweenTwoAreas(point : Point) : Boolean
+			{
+				return field.IsPointBetweenTwoAreas(point, Side) && 
+					   field.IsPointFreeInsideField(point, true, theCap);
+			}
+			
+			function distanceSorter(pointA : Point, pointB : Point) : int
+			{
+				var capPos : Point = theCap.GetPos();
+				var distA : Number = Point.distance(pointA, capPos);
+				var distB : Number = Point.distance(pointB, capPos);
+				
+				if (distA == distB)
+					return 0;
+
+				return distA < distB? -1 : 1;
+			}
+		}
+		
 		private function SetFormationPos(formationName:String, side:int) : void
 		{
 			var currentFormation : Array = GetFormation(formationName);
 							
-			for ( var i:int = 0; i < CapsList.length; i++ )
+			for (var i:int = 0; i < CapsList.length; i++)
 			{
 				// Si la chapa no está expulsada la colocamos en posición de alineación
 				if (CapsList[i].YellowCards != 2)
@@ -194,7 +253,7 @@ package Match
 			var pos : Point = new Point(formationPos.x + Field.OffsetX, formationPos.y + Field.OffsetY);
 			
 			// Reflejamos la posicion horizontalmente sobre el centro del campo si estamos en el lado derecho
-			if( side == Enums.Right_Side )
+			if (side == Enums.Right_Side)
 				pos.x = Field.CenterX - pos.x + Field.CenterX;
 			
 			return pos;

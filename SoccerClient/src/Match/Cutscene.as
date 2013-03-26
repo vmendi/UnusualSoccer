@@ -63,9 +63,9 @@ package Match
 		static public function ShowAreaPortero(side : int, callback:Function) : void
 		{
 			if (side == Enums.Left_Side)
-				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaLeftX, Field.SmallAreaLeftY, callback);
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaLeft.x, Field.SmallAreaLeft.y, callback);
 			else
-				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaRightX, Field.SmallAreaRightY, callback);
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaRight.x, Field.SmallAreaRight.y, callback);
 			
 			// Y ademas, un cartelito sin esperas
 			PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeControlPortero"));

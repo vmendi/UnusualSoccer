@@ -52,6 +52,7 @@ package Match
 		private var _IsInjured : Boolean = false;
 		private var _TeletransportPos : Point;
 		private var _ParallelShoot : ShootInfo;
+		private var _FacebookPictureLoader : Loader;
 				
 		public var YellowCards:int = 0; 						// Número de tarjetas amarillas (2 => roja => expulsión)
 		
@@ -305,11 +306,11 @@ package Match
 		{	
 			if (facebookID != -1)
 			{
-				mFacebookPictureLoader = new Loader();
-				mFacebookPictureLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, OnLoadComplete);
-				mFacebookPictureLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, OnError);
-				mFacebookPictureLoader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, OnError);
-				mFacebookPictureLoader.load(new URLRequest("//graph.facebook.com/"+facebookID+"/picture/?type=square"),
+				_FacebookPictureLoader = new Loader();
+				_FacebookPictureLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, OnLoadComplete);
+				_FacebookPictureLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, OnError);
+				_FacebookPictureLoader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, OnError);
+				_FacebookPictureLoader.load(new URLRequest("//graph.facebook.com/"+facebookID+"/picture/?type=square"),
 											new LoaderContext(true, ApplicationDomain.currentDomain, SecurityDomain.currentDomain));
 			}
 			
@@ -337,7 +338,7 @@ package Match
 
 					theBitmap.mask = maskSPR;
 						
-					mFacebookPictureLoader = null;
+					_FacebookPictureLoader = null;
 				}
 			}
 			
@@ -346,7 +347,7 @@ package Match
 				// Poco podemos hacer... No merece la pena mandarlo al servidor, fallara mucho y no sabremos distinguir por qué
 			}
 		}
-		private var mFacebookPictureLoader : Loader;
+		
 		
 		public function FadeClone(timeInSeconds : Number) : void
 		{

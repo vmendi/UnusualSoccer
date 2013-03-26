@@ -20,7 +20,7 @@ package utils
 		//
 		// Comprueba si un círculo(pos, radio) está contenido "completamente" dentro de un rectángulo
 		//
-		static public function CircleInRect( pos:Point, radius:Number, topLeft:Point, size:Point ) : Boolean
+		static public function CircleInRect(pos:Point, radius:Number, topLeft:Point, size:Point) : Boolean
 		{
 			if (pos.x < (topLeft.x+radius) || pos.y < (topLeft.y+radius))
 				return( false );

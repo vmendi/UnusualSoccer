@@ -118,7 +118,7 @@ package Match
 			//TheAudioManager.PlayMusic("SoundAmbience", 0.3);
 						
 			// TODO: Deberiamos utilizar una semilla envíada desde el servidor!!!
-			_Random = new Random(123);			
+			_Random = new Random(123);
 			_Timer = new Match.Time();
 			
 			// - Determinamos los grupos de equipación a los que pertenece cada equipo.
@@ -433,7 +433,7 @@ package Match
 			// Al acabar el tiro movemos el portero a su posición de formación en caso de la ultima accion fuera un saque de puerta
 			if (Enums.IsSaquePuerta(ReasonTurnChanged))
 				CurTeam.ResetToFormationOnlyGoalKeeper();
-						
+			
 			var paseToCap : Cap = CheckPaseAlPie();
 			var detectedFault : Fault = TheGamePhysics.TheFault;
 									
@@ -645,7 +645,7 @@ package Match
 		public function OnClientPosCap(idPlayer:int, capId:int, posX:Number, posY:Number) : void
 		{
 			VerifyStateWhenReceivingCommand(GameState.WaitingCommandPosCap, idPlayer, "OnClientPosCap");
-						
+
 			if (capId != 0 || ReasonTurnChanged != Enums.TurnTiroAPuerta)
 				throw new Error(IDString + "This is madness!");
 			
@@ -665,7 +665,7 @@ package Match
 			if (idPlayerExecutingCommand != CurTeam.IdxTeam)
 				throw new Error(IDString + "No puede llegar " + fromServerCall + " del jugador no actual" );
 			
-			// Sólo podemos estar... 			
+			// Sólo podemos estar...
 			if (CurTeam.IsLocalUser)
 			{
 				// ...esperando el comando si somos el que lo manda  
@@ -796,7 +796,7 @@ package Match
 			ReasonTurnChanged = Enums.TurnByTurn;
 			
 			// Al consumir un SubTurno las skills dejan de tener efecto
-			TheTeams[Enums.Team1].DesactiveSkills();			
+			TheTeams[Enums.Team1].DesactiveSkills();
 			TheTeams[Enums.Team2].DesactiveSkills();
 
 			// Comprobamos si hemos consumido todos los disparos. Si es así, pasamos el turno al oponente.
@@ -858,6 +858,10 @@ package Match
 						
 			// Guardamos la razón por la que hemos cambiado de turno
 			ReasonTurnChanged = reason;
+			
+			// Vemos los futbolistas que han acabado dentro del area pequeña en el turno anterior, los sacamos fuera
+			TheTeams[Enums.Team1].EjectPlayersInsideSmallArea();
+			TheTeams[Enums.Team2].EjectPlayersInsideSmallArea();
 			
 			// Y ahora si, cambio de turno...
 			_IdxCurTeam = idTeam;
@@ -931,8 +935,8 @@ package Match
 			var enemy : Cap = null;
 			
 			var capList:Array = enemyTeam.InsideCircle(TheBall.GetPos(), Cap.Radius + BallEntity.Radius + enemyTeam.RadiusSteal );
-			if( capList.length >= 1 )
-				enemy = TheBall.NearestEntity( capList ) as Cap;
+			if(capList.length >= 1)
+				enemy = TheBall.NearestEntity(capList) as Cap;
 			
 			return enemy;
 		}		
