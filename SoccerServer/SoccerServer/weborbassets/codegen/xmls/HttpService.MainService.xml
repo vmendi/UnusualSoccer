@@ -147,7 +147,7 @@
         <arg name="requestID" type="String" nativetype="String" />
         <arg name="targets" type="ArrayCollection" nativetype="List&lt;String&gt;" />
       </method>
-      <method name="CreateTeam" type="Boolean" nativetype="bool" containsvalues="0">
+      <method name="CreateTeam" type="String" nativetype="HttpService.VALID_NAME" containsvalues="0">
         <arg name="name" type="String" nativetype="String" />
         <arg name="predefinedTeamNameID" type="String" nativetype="String" />
       </method>

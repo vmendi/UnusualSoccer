@@ -374,7 +374,7 @@
       public virtual function CreateTeamHandler(event:ResultEvent):void
       {
         
-          var returnValue:Boolean = event.result as Boolean;
+          var returnValue:String = event.result as String;
           model.CreateTeamResult = returnValue;
         
       }
