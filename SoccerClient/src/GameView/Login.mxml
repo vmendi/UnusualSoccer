@@ -3,7 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 width="100%" height="100%"
-		 currentState="Step1"
+		 currentState="In"
 		 addedToStage="AddedToStageHandler(event)"
 		 creationComplete="CreationCompleteHandler(event)" xmlns:GameView="GameView.*"
 		 >
@@ -37,6 +37,9 @@
 				MyPredefinedTeamList.selectedIndex = mPredefinedTeamsModel.PredefinedTeamNameIDs.getItemIndex(countryID);
 
 				BindingUtils.bindSetter(OnIsValidTeamNameLastResult, mLoginModel, ["IsValidTeamNameLastResult"]);
+				
+				// To run the first transition
+				currentState="CreateTeam";
 			}
 
 			protected function AddedToStageHandler(event:Event):void
@@ -45,7 +48,7 @@
 				GameMetrics.ReportPageView(GameMetrics.VIEW_LOGIN);
 			}
 			
-			protected function Step2_EnterStateHandler(event:FlexEvent):void
+			protected function SelectCountry_EnterStateHandler(event:FlexEvent):void
 			{
 				/*
 				callLater(function() : void 
@@ -53,6 +56,11 @@
 					focusManager.setFocus(MyTeamNameInput);
 				});
 				*/
+			}
+			
+			protected function CreateTeam_EnterStateHandler(event:FlexEvent):void
+			{
+				MyPredefinedTeamItem.data = mPredefinedTeamsModel.TranslateCountryISOCodeToCountryID(AppConfig.COUNTRY);
 			}
 			
 			protected function OnMyPredefinedTeamListSelectionChanged(e:IndexChangeEvent):void
@@ -116,20 +124,39 @@
 				mLoginModel.IsValidTeamName(MyTeamNameInput.text);
 			}
 			
-			protected function MyButtonNext_clickHandler(event:MouseEvent):void
+			protected function MyButtonCreateTeam_clickHandler(event:MouseEvent):void
 			{
+				/*
 				mWaitingForTeamCreation = true;
 				
 				mLoginModel.CreateTeam(MyTeamNameInput.text != ""? MyTeamNameInput.text : mLoginModel.DefaultName, 
 									   MyPredefinedTeamList.selectedItem, 
 								   	   OnTeamCreatedSuccess);
+				*/
+				currentState="Out";
 			}
 			
-			protected function MyButtonNextStep1_clickHandler(event:MouseEvent):void
+			protected function Out_enterStateHandler(event:FlexEvent):void
+			{
+				/*
+				mWaitingForTeamCreation = true;
+				
+				mLoginModel.CreateTeam(MyTeamNameInput.text != ""? MyTeamNameInput.text : mLoginModel.DefaultName, 
+					MyPredefinedTeamList.selectedItem, 
+					OnTeamCreatedSuccess);
+				*/
+			}
+			
+			protected function MyButtonSelectCountry_clickHandler(event:MouseEvent):void
 			{
 				GameMetrics.ReportEvent(GameMetrics.NATION_SELECTED, {predefinedTeamID: MyPredefinedTeamList.selectedItem});
 				
-				currentState="Step2";
+				currentState="CreateTeam";
+			}
+			
+			protected function MyButtonChange_clickHandler(event:MouseEvent):void
+			{
+				currentState="SelectCountry";
 			}
 						
 			private function OnTeamCreatedSuccess():void
@@ -149,6 +176,7 @@
 			[Bindable] private var mNameValidity : Boolean = false;
 			[Bindable] private var mAgeValidity : Boolean = false;
 			[Bindable] private var mWaitingForTeamCreation : Boolean = false;
+			
 		]]>
 	</fx:Script>
 	
@@ -163,10 +191,11 @@
 			font-weight:bold;
 			color:#FFFFFF;
 		}
-		
+
 		.teamNameInputStyle:normalWithPrompt {
 			color: #222222;
 			fontStyle: italic;
+			fontSize: 15pt;
 		}
 	</fx:Style>
 	
@@ -176,75 +205,92 @@
 	</fx:Declarations>	
 	
 	<s:states>
-		<s:State name="Step1"></s:State>
-		<s:State name="Step2" enterState="Step2_EnterStateHandler(event)"></s:State>
+		<s:State name="In"></s:State>
+		<s:State name="CreateTeam" enterState="CreateTeam_EnterStateHandler(event)"></s:State>
+		<s:State name="SelectCountry" enterState="SelectCountry_EnterStateHandler(event)"></s:State>
+		<s:State name="Out" enterState="Out_enterStateHandler(event)"></s:State>
 	</s:states>
 	
 	<s:BitmapImage fillMode="clip" source="{resourceManager.getClass('main','LoginBg')}"/>
 	
-	<s:Group id="MyStep1"
-			 horizontalCenter="0" y="60" width="720" 
-			 visible.Step1="true"
-			 visible.Step2="false">
-		
-		<GameView:PopupBackground left="-10" right="-10" top="-16" bottom="-16" />
-		
-		<s:Group>
-			<s:layout>
-				<s:VerticalLayout gap="10" horizontalAlign="center"/>
-			</s:layout>
-			<s:Label id="myStep1Label" x="10" y="0" width="720" height="27"
-					 filters="{MyTextDropShadowFilter}" maxDisplayedLines="1"
-					 styleName="yellowBoldHuge"
-					 text="{resourceManager.getString('main','Login01SelectTeam')}"
-					 textAlign="center" verticalAlign="middle"></s:Label>
-			<s:List id="MyPredefinedTeamList" left="0" width="720" height="380" tabEnabled="false" tabFocusEnabled="false"
-					dataProvider="{mPredefinedTeamsModel.PredefinedTeamNameIDs}"
-					itemRenderer="GameView.PredefinedTeamItem" skinClass="GameView.Skins.DefaultListSkin"
-					verticalScrollPolicy="off">
-				<s:layout>
-					<s:TileLayout />
-				</s:layout>
-			</s:List>
-			<s:Button id="MyButtonNextStep1" bottom="10" horizontalCenter="0" width="160" height="24"
-					  label="{resourceManager.getString('main','Continue')}"
-					  click="MyButtonNextStep1_clickHandler(event)"
-					  skinClass="GameView.Skins.ButtonGreySkin" />
-		</s:Group>
-	</s:Group>
+	<s:Graphic id="MyBlackRect"
+		visible.In="false"
+		visible.CreateTeam="true"
+		visible.SelectCountry="true"
+		visible.Out="false">
+		<s:Rect x="0" y="0" width="760" height="650" alpha="0.6">
+			<s:fill>
+				<s:SolidColor color="#000000" />
+			</s:fill>
+		</s:Rect>
+	</s:Graphic>
 	
-	<s:Group id="MyStep2"
-			 horizontalCenter="0" y="160" width="660"
-			 visible.Step1="false"
-			 visible.Step2="true">
-		<GameView:PopupBackground left="-10" right="-10" top="-10" bottom="-10" />
-		<s:BitmapImage left="-10" bottom="-8" source="@Embed(source='/Assets/General.swf', symbol='TutorialHost')" fillMode="clip" />
-
-			<s:Group right="20" top="10">
+	<s:Group id="MyCreateTeam"
+			 x="80" y="206" width="600"
+			 visible.In="false"
+			 visible.CreateTeam="true"
+			 visible.SelectCountry="false"
+			 visible.Out="false">
+		<GameView:PopupBackground left="-10" right="-10" top="-20" bottom="-20" />
+		<s:BitmapImage left="-10" bottom="-18" source="@Embed(source='/Assets/General.swf', symbol='TutorialHost')" fillMode="clip" />
+			<s:Group right="20" top="0">
 				<s:layout>
-					<s:VerticalLayout gap="6" horizontalAlign="center"/>
+					<s:VerticalLayout gap="15" horizontalAlign="center"/>
 				</s:layout>
-				
-				<s:Label id="myStep2Label" x="10" y="0" width="470" height="27"
+				<!-- text="{resourceManager.getString('main','Login02EnterName')}" -->
+				<s:Label id="myStep2Label" x="10" y="0" width="420" height="27"
 						 filters="{MyTextDropShadowFilter}" maxDisplayedLines="1"
 						 styleName="yellowBoldHuge"
-						 text="{resourceManager.getString('main','Login02EnterName')}"
+						 text="{resourceManager.getString('main','LoginCreateTeam')}"
 						 textAlign="center" verticalAlign="middle"></s:Label>
-				
-				<s:Label id="myStep2Txt" x="10" y="35" width="470" styleName="whiteBoldBig"
+				<!--<s:Label id="myStep2Txt" x="10" y="35" width="470" styleName="whiteBoldBig"
 						 text="{resourceManager.getString('main','Login02EnterNameTxt')}"
-						 textAlign="center" verticalAlign="middle"></s:Label>
-				
-				<s:TextInput id="MyTeamNameInput" x="82" y="97" width="200"
-							 change="MyTeamNameInput_changeHandler(event)" maxChars="30"
-							 prompt="{mLoginModel.DefaultName}" styleName="teamNameInputStyle"/>
-				
-				<s:Label id="MyValidityLabel" x="32" y="126" width="470" height="40" color="#0DBF00"
+						 textAlign="center" verticalAlign="middle"></s:Label>-->
+				<s:Group>
+					<s:layout>
+						<s:VerticalLayout gap="10" horizontalAlign="left" />
+					</s:layout>
+					<s:Group>
+						<s:layout>
+							<s:HorizontalLayout gap="10" verticalAlign="middle" />
+						</s:layout>
+						<s:Label width="150" verticalAlign="middle"
+								 maxDisplayedLines="1"
+								 styleName="whiteBoldVeryBig"
+								 text="{resourceManager.getString('main','Login01SelectTeam')}:" />
+						<s:Group>
+							<s:layout>
+								<s:HorizontalLayout gap="4" verticalAlign="middle" />
+							</s:layout>
+							<GameView:PredefinedTeamItem 
+									  id="MyPredefinedTeamItem"
+									  click="MyButtonChange_clickHandler(event)" />
+							<s:Button id="MyButtonChange" horizontalCenter="0" bottom="10" height="24"
+									  label="{resourceManager.getString('main','LoginChange')}"
+									  skinClass="GameView.Skins.ButtonGreySkin"
+									  click="MyButtonChange_clickHandler(event)"/>
+						</s:Group>
+					</s:Group>
+					<s:Group>
+						<s:layout>
+							<s:HorizontalLayout gap="10" verticalAlign="middle" />
+						</s:layout>
+						<s:Label width="150"
+								 maxDisplayedLines="1"
+								 styleName="whiteBoldVeryBig"
+								 text="{resourceManager.getString('main','Login02EnterName')}:" />
+						<s:TextInput id="MyTeamNameInput" x="82" y="97" width="200" height="20"
+									 change="MyTeamNameInput_changeHandler(event)" maxChars="30"
+									 prompt="{mLoginModel.DefaultName}" styleName="teamNameInputStyle"/>
+					</s:Group>
+				</s:Group>
+				<s:Label id="MyValidityLabel" x="32" y="126" width="420" maxDisplayedLines="1" color="#FFFFFF"
+						 text="{resourceManager.getString('main','Login02EnterNameTxt')}"
 						 styleName="whiteBoldBig" textAlign="center"/>
 
 				<s:Button id="MyButtonNext" horizontalCenter="0" bottom="10" width="160" height="24"
-						  label="{resourceManager.getString('main','Continue')}"
-						  click="MyButtonNext_clickHandler(event)" enabled="{mAgeValidity &amp;&amp; mNameValidity}"
+						  label="{resourceManager.getString('main','LoginCreateTeamButton')}"
+						  click="MyButtonCreateTeam_clickHandler(event)" enabled="{mAgeValidity &amp;&amp; mNameValidity}"
 						  skinClass="GameView.Skins.ButtonGreySkin"/>
 			</s:Group>
 			
@@ -280,11 +326,58 @@
 
 	</s:Group>
 	
+	<s:Group id="MySelectCountry"
+			 x="20" y="60" width="720"
+			 visible.In="false"
+			 visible.CreateTeam="false"
+			 visible.SelectCountry="true"
+			 visible.Out="false">
+		<GameView:PopupBackground left="-10" right="-10" top="-16" bottom="-16" />
+		<s:Group>
+			<s:layout>
+				<s:VerticalLayout gap="10" horizontalAlign="center"/>
+			</s:layout>
+			<s:Label id="myStep1Label" x="10" y="0" width="720" height="27"
+					 filters="{MyTextDropShadowFilter}" maxDisplayedLines="1"
+					 styleName="yellowBoldHuge"
+					 text="{resourceManager.getString('main','Login01SelectTeam')}"
+					 textAlign="center" verticalAlign="middle"></s:Label>
+			<s:List id="MyPredefinedTeamList" left="0" width="720" height="380" tabEnabled="false" tabFocusEnabled="false"
+					dataProvider="{mPredefinedTeamsModel.PredefinedTeamNameIDs}"
+					itemRenderer="GameView.PredefinedTeamItem" skinClass="GameView.Skins.DefaultListSkin"
+					verticalScrollPolicy="off">
+				<s:layout>
+					<s:TileLayout />
+				</s:layout>
+			</s:List>
+			<s:Button id="MyButtonSelectCountry" bottom="10" horizontalCenter="0" width="160" height="24"
+					  label="{resourceManager.getString('main','Select')}"
+					  click="MyButtonSelectCountry_clickHandler(event)"
+					  skinClass="GameView.Skins.ButtonGreySkin" />
+		</s:Group>
+	</s:Group>
+
+	
 	<s:transitions>
-		<s:Transition fromState="Step1" interruptionBehavior="stop" toState="Step2">
+		<s:Transition fromState="In" interruptionBehavior="stop" toState="CreateTeam">
 			<s:Parallel>
-				<s:Fade duration="250" target="{MyStep1}"/>
-				<s:Fade duration="250" startDelay="250" target="{MyStep2}"/>
+				<s:Fade duration="250" target="{MyBlackRect}"/>
+				<s:Parallel target="{MyCreateTeam}">
+					<s:Fade duration="500" />
+					<s:SetAction property="y" value="270"/>
+					<s:Animate duration="250" >
+						<s:easer>
+							<s:Linear easeInFraction="0" easeOutFraction="1"/>
+						</s:easer>
+						<s:SimpleMotionPath property="x"/>
+						<s:SimpleMotionPath property="y"/>
+					</s:Animate>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="CreateTeam" interruptionBehavior="stop" toState="Out">
+			<s:Parallel>
+				<s:Fade duration="1000" target="{MyBlackRect}"/>
 			</s:Parallel>
 		</s:Transition>
 	</s:transitions>

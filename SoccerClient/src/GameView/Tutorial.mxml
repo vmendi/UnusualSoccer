@@ -125,7 +125,7 @@
 		</s:fill>
 	</s:Rect>
 	<s:SWFLoader id="EndCortina" source="@Embed(source='/Assets/General.swf', symbol='TutorialCortinaPlay')" includeIn="End" />
-	<s:SWFLoader top="80" id="MyTutorialField" source="@Embed(source='/Assets/General.swf', symbol='TutorialField')" excludeFrom="Init, End" />
+	<s:SWFLoader top="80" id="MyTutorialField" source="@Embed(source='/Assets/General.swf', symbol='TutorialField')" excludeFrom="End" />
 	
 	
 	<!-- INIT -->
