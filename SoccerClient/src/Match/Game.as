@@ -434,6 +434,10 @@ package Match
 			if (Enums.IsSaquePuerta(ReasonTurnChanged))
 				CurTeam.ResetToFormationOnlyGoalKeeper();
 			
+			// Advertencia de que el goalkeeper esta fuera del area
+			if (!TheField.IsCapCenterInsideBigArea(CurTeam.GoalKeeper))
+				Cutscene.ShowMsgGoalkeeperOutside();
+			
 			var paseToCap : Cap = CheckPaseAlPie();
 			var detectedFault : Fault = TheGamePhysics.TheFault;
 									

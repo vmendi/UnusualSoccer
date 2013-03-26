@@ -150,6 +150,12 @@ package Match
 			}
 		}
 		
+		static public function ShowMsgGoalkeeperOutside() : void
+		{
+			// Lo delayamos 2 segundos para q no pise con los que vienen inmediatamente al inicio de cada turno (ShowQuedanTurnos, etc)
+			TweenMax.delayedCall(2, PopupIngameMsg.Show, [ResourceManager.getInstance().getString("matchmsgs", "MensajeGoalkeeperOutside")]); 
+		}
+		
 		
 		static private function LaunchCutScene(cutScene:Class, x:Number, y:Number, callback:Function=null, parent:DisplayObjectContainer=null) : MovieClip
 		{
