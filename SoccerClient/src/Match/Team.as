@@ -2,14 +2,9 @@ package Match
 {
 	import com.greensock.*;
 	
-	import flash.display.DisplayObject;
 	import flash.geom.Point;
-	import flash.utils.getDefinitionByName;
-	import flash.utils.getQualifiedClassName;
 	
 	import mx.resources.ResourceManager;
-	
-	import utils.Delegate;
 
 	public class Team
 	{				
@@ -136,7 +131,7 @@ package Match
 			GoalKeeper.FadeClone(1);
 			
 			// Si hay algún obstaculo en esa posicion, no podemos resetear al portero, ignoramos la orden
-			if (MatchMain.Ref.Game.TheField.ValidatePosCap(desiredPos, true, GoalKeeper))
+			if (MatchMain.Ref.Game.TheField.IsPosFreeInsideField(desiredPos, true, GoalKeeper))
 				SetFormationPosForCap(GoalKeeper, currentFormation[0], Side);
 			
 			// Olvidamos las posiciones de teletransporte
@@ -157,16 +152,55 @@ package Match
 			GoalKeeper.SetPos(goalkeeperPos);
 		}
 		
-		public function EjectPlayersInsideSmallZone() : void
+		// Se asegura de que todos los futbolistas esten fuera del area pequeña
+		public function EjectPlayersInsideSmallArea() : void
 		{
+			for each (var theCap : Cap in CapsList)
+			{
+				if (MatchMain.Ref.Game.TheField.IsCapCenterInsideSmallArea(theCap) && 
+					theCap != GoalKeeper)
+				{
+					EjectCapInsideSmallArea(theCap);
+				}
+			}
+		}
+		
+		private function EjectCapInsideSmallArea(theCap : Cap) : void
+		{			
+			var field : Field  = MatchMain.Ref.Game.TheField;			
+			var availablePos : Array = field.CheckConditionOnGridPoints(isFreeOutsideBigArea, 5);
 			
+			if (availablePos.length == 0)
+				throw new Error("WTF 99931");
+			
+			availablePos.sort(distanceSorter);
+			
+			theCap.SetPos(availablePos[0]);
+			
+			// Estan en la pequeña pero Los ejectamos fuera del area grande!
+			function isFreeOutsideBigArea(point : Point) : Boolean
+			{
+				return !field.IsPointInsideBigArea(point, Side) && field.IsPosFreeInsideField(point, true, theCap);
+			}
+			
+			function distanceSorter(pointA : Point, pointB : Point) : int
+			{
+				var capPos : Point = theCap.GetPos();
+				var distA : Number = Point.distance(pointA, capPos);
+				var distB : Number = Point.distance(pointB, capPos);
+				
+				if (distA == distB)
+					return 0;
+
+				return distA < distB? -1 : 1;
+			}
 		}
 		
 		private function SetFormationPos(formationName:String, side:int) : void
 		{
 			var currentFormation : Array = GetFormation(formationName);
 							
-			for ( var i:int = 0; i < CapsList.length; i++ )
+			for (var i:int = 0; i < CapsList.length; i++)
 			{
 				// Si la chapa no está expulsada la colocamos en posición de alineación
 				if (CapsList[i].YellowCards != 2)

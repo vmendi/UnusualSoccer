@@ -434,10 +434,6 @@ package Match
 			if (Enums.IsSaquePuerta(ReasonTurnChanged))
 				CurTeam.ResetToFormationOnlyGoalKeeper();
 			
-			// Vemos los futbolistas que han acabado dentro del area pequeña, los sacamos fuera
-			TheTeams[Enums.Team1].EjectPlayersInsideSmallZone();
-			TheTeams[Enums.Team2].EjectPlayersInsideSmallZone();
-						
 			var paseToCap : Cap = CheckPaseAlPie();
 			var detectedFault : Fault = TheGamePhysics.TheFault;
 									
@@ -862,6 +858,10 @@ package Match
 						
 			// Guardamos la razón por la que hemos cambiado de turno
 			ReasonTurnChanged = reason;
+			
+			// Vemos los futbolistas que han acabado dentro del area pequeña en el turno anterior, los sacamos fuera
+			TheTeams[Enums.Team1].EjectPlayersInsideSmallArea();
+			TheTeams[Enums.Team2].EjectPlayersInsideSmallArea();
 			
 			// Y ahora si, cambio de turno...
 			_IdxCurTeam = idTeam;

@@ -37,7 +37,7 @@ package Match
 		//
 		public override function IsValid( ) : Boolean
 		{
-			return MatchMain.Ref.Game.TheField.ValidatePosCap( EndPos, true, this.Target ) &&
+			return MatchMain.Ref.Game.TheField.IsPosFreeInsideField( EndPos, true, this.Target ) &&
 				   MatchMain.Ref.Game.TheField.IsCircleInsideSmallArea( EndPos, 0, this.Target.OwnerTeam.Side);
 		}
 		

@@ -6,6 +6,7 @@ package Match
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	import mx.resources.ResourceManager;
 	
@@ -22,22 +23,14 @@ package Match
 		static public const OffsetX:Number = 46;
 		static public const OffsetY:Number = 72;
 		
-		// Coordenadas de las areas PEQUEÑAS del campo en coordenadas absolutas desde el corner superior izquierdo del movieclip
-		static public const SmallAreaLeftX:Number = 0 + OffsetX;
-		static public const SmallAreaLeftY:Number = 106 + OffsetY;
-		static public const SmallAreaRightX:Number = 614 + OffsetX;
-		static public const SmallAreaRightY:Number = 106 + OffsetY;
-		static public const SmallSizeAreaX:Number = 54;
-		static public const SmallSizeAreaY:Number = 188;
+		// Coordenadas de las areas PEQUEÑAS del campo en coordenadas absolutas desde el corner superior izquierdo del movieclip		
+		static public const SmallAreaLeft  : Rectangle = new Rectangle(0 + OffsetX,   106 + OffsetY, 54, 188);
+		static public const SmallAreaRight : Rectangle = new Rectangle(614 + OffsetX, 106 + OffsetY, 54, 188);
 		
 		// Coordenadas de las areas GRANDES del campo en coordenadas absolutas desde el corner superior izquierdo del movieclip
-		static public const BigAreaLeftX:Number = 0 + OffsetX;
-		static public const BigAreaLeftY:Number = 48 + OffsetY;
-		static public const BigAreaRightX:Number = 548 + OffsetX;
-		static public const BigAreaRightY:Number = 48 + OffsetY;
-		static public const SizeBigAreaX:Number = 120;
-		static public const SizeBigAreaY:Number = 304;
-		
+		static public const BigAreaLeft  : Rectangle = new Rectangle(0 + OffsetX,   48 + OffsetY, 120, 304);
+		static public const BigAreaRight : Rectangle = new Rectangle(548 + OffsetX, 48 + OffsetY, 120, 304);
+				
 		// Coordenadas de las porterias
 		private var X_GOAL_LEFT:Number = 0;
 		private var X_GOAL_RIGHT:Number = 714;
@@ -107,12 +100,12 @@ package Match
 			var centerGoalRight:Point = GetCenterGoal(Enums.Right_Side);
 			var halfBall:Number = MatchConfig.Screen2Physic(BallEntity.Radius/2);
 			
-			var halfSizeSmallAreaX : Number = MatchConfig.Screen2Physic(SmallSizeAreaX / 2);
+			var halfSizeSmallAreaX : Number = MatchConfig.Screen2Physic(SmallAreaLeft.width / 2);
 
 			var phy:QuickBox2D = MatchMain.Ref.Game.TheGamePhysics.TheBox2D;
 			var fillColor:int = 0xFF0000;
 			var fillAlpha:Number = 0;
-			if( MatchConfig.Debug )
+			if (MatchConfig.Debug)
 				fillAlpha = 0.5;
 			
 			// Utilizar detección de colisiones continua? Aunque son estaticos lo ponemos a true, por si acaso el motor lo tiene en cuenta
@@ -171,25 +164,33 @@ package Match
 		public function IsCircleInsideSmallArea(pos:Point, radius:Number, side:int) : Boolean
 		{
 			if (side == Enums.Left_Side)
-				return MathUtils.CircleInRect(pos, radius, new Point(SmallAreaLeftX, SmallAreaLeftY ), new Point(SmallSizeAreaX, SmallSizeAreaY));
+				return MathUtils.CircleInRect(pos, radius, SmallAreaLeft.topLeft, SmallAreaLeft.size);
 			
-			return MathUtils.CircleInRect(pos, radius, new Point(SmallAreaRightX, SmallAreaRightY), new Point(SmallSizeAreaX, SmallSizeAreaY));
+			return MathUtils.CircleInRect(pos, radius, SmallAreaRight.topLeft, SmallAreaRight.size);
 		}
 		
 		public function IsCircleInsideBigArea(pos:Point, radius:Number, side:int) : Boolean
 		{
 			if (side == Enums.Left_Side)
-				return MathUtils.CircleInRect(pos, radius, new Point(BigAreaLeftX, BigAreaLeftY), new Point(SizeBigAreaX, SizeBigAreaY));			
+				return MathUtils.CircleInRect(pos, radius, BigAreaLeft.topLeft, BigAreaLeft.size);			
 			
-			return MathUtils.CircleInRect(pos, radius, new Point(BigAreaRightX, BigAreaRightY), new Point(SizeBigAreaX, SizeBigAreaY));
+			return MathUtils.CircleInRect(pos, radius, BigAreaRight.topLeft, BigAreaRight.size);
 		}
 		
 		public function IsPointInsideSmallArea(pos:Point, side:int): Boolean
 		{
 			if (side == Enums.Left_Side)
-				return MathUtils.PointInRect(pos, new Point(SmallAreaLeftX, SmallAreaLeftY), new Point(SmallSizeAreaX, SmallSizeAreaY));
+				return MathUtils.PointInRect(pos, SmallAreaLeft.topLeft, SmallAreaLeft.size);
 			
-			return MathUtils.PointInRect(pos, new Point(SmallAreaRightX, SmallAreaRightY), new Point(SmallSizeAreaX, SmallSizeAreaY));
+			return MathUtils.PointInRect(pos, SmallAreaRight.topLeft, SmallAreaRight.size);
+		}
+		
+		public function IsPointInsideBigArea(pos:Point, side:int): Boolean
+		{
+			if (side == Enums.Left_Side)
+				return MathUtils.PointInRect(pos, BigAreaLeft.topLeft, BigAreaLeft.size);
+			
+			return MathUtils.PointInRect(pos, BigAreaRight.topLeft, BigAreaRight.size);
 		}
 		
 		// Comprobamos si el centro de una chapa está dentro del area de su propio equipo
@@ -204,24 +205,22 @@ package Match
 			return IsCircleInsideBigArea(cap.GetPos(), 0, cap.OwnerTeam.Side);  	
 		}
 		
-		// Valida una posición (con un radio determinado) en el campo.
-		// Para ser válida debe estar contenida dentro de la zona de juego del campo,		
-		public function ValidatePos( pos:Point, radius:Number = 0 ) : Boolean
+		// Todo el circulo contenido en los confines del campo?
+		private function IsCircleInsideField(pos:Point, radius:Number = 0) : Boolean
 		{
 			return MathUtils.CircleInRect(pos, radius, new Point(OffsetX, OffsetY), new Point(SizeX, SizeY));
 		}
 		
 		//
-		// Valida una posición de chapa en el campo.
-		// Para ser válida debe:
+		// Una posicion para ser libre debe:
 		//		- Estar contenida dentro de la zona de juego del campo 
 		// 		- No colisionar con ninguna chapa
 		//		- No colisionar con el balón
 		//
-		public function ValidatePosCap(pos:Point, checkAgainstBall:Boolean, ignoreCap:Cap = null) : Boolean
+		public function IsPosFreeInsideField(pos:Point, checkAgainstBall:Boolean, ignoreCap:Cap = null) : Boolean
 		{
-			// Validamos contra el campo
-			var bValid:Boolean = ValidatePos(pos, Cap.Radius);
+			// Nos aseguramos de que esta dentro del campo
+			var bValid:Boolean = IsCircleInsideField(pos, Cap.Radius);
 			
 			if (bValid)
 			{
@@ -268,10 +267,10 @@ package Match
 				
 				// Validamos la posición de la chapa, teniendonos en cuenta a nosotros mismos
 				// Validamos contra bandas y otras chapas, ...
-				if (ValidatePosCap(endPos, checkAgainstBall, cap))
+				if (IsPosFreeInsideField(endPos, checkAgainstBall, cap))
 				{
 					// Movemos la chapa a la posición y terminamos
-					cap.SetPos( endPos );
+					cap.SetPos(endPos);
 					trySuccess = i+1;
 					break;
 				}
@@ -282,6 +281,41 @@ package Match
 			//  '+n'	-> El nº de intento en el que hemos conseguido situar la chapa
 			return trySuccess;
 		}
-		
+	
+		//
+		// Devuelve un array de puntos del campo que cumplen la condicion suministrada.
+		// La condicion debe aceptar un Point y retornar true si acepta el punto
+		//
+		public function CheckConditionOnGridPoints(condition : Function, numStepsY : int) : Array
+		{
+			if (numStepsY <= 0)
+				throw new Error("WTF 529e");
+			
+			var ret : Array = new Array();
+			
+			var ratio : Number = Field.SizeX / Field.SizeY;
+			var step  : Number = Field.SizeY / Number(numStepsY);
+			
+			var currentX : Number = Field.OffsetX + step;		// +1 step so that every point is inside the field
+			
+			while (currentX < Field.OffsetX + Field.SizeX)
+			{
+				var currentY : Number = Field.OffsetY + step;
+				
+				while (currentY < Field.OffsetY + Field.SizeY)
+				{
+					var thePoint : Point = new Point(currentX, currentY);
+					
+					if (condition(thePoint))
+						ret.push(thePoint);
+					
+					currentY += step;
+				}
+				
+				currentX += step;
+			}
+			
+			return ret;
+		}
 	}
 }
