@@ -4,8 +4,9 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:GameView="GameView.*"
 		 width="760" height="650"
-		 currentState="Init"
+		 currentState="In"
 		 addedToStage="Tutorial_addedToStageHandler(event)"
+		 creationComplete="Tutorial_creationCompleteHandler(event)"
 		 >
 	
 	<fx:Script><![CDATA[
@@ -30,6 +31,11 @@
 			
 			GameMetrics.ReportPageView(GameMetrics.VIEW_TUTORIAL_START);
 			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_START, null);
+		}
+		
+		protected function Tutorial_creationCompleteHandler(event:FlexEvent):void
+		{
+			currentState="Init"
 		}
 		
 		private function OnLookingForMatchChanged(looking : Boolean) : void
@@ -107,6 +113,7 @@
 	
 	
 	<s:states>
+		<s:State name="In"></s:State>
 		<s:State name="Init"></s:State>
 		<s:State name="Step1"></s:State>
 		<s:State name="Step2"></s:State>
@@ -119,14 +126,13 @@
 	
 	<!-- FONDOS -->
 	
-	<s:Rect left="0" right="0" top="0" bottom="0" alpha="0.7" excludeFrom="End">
+	<s:SWFLoader id="EndCortina" source="@Embed(source='/Assets/General.swf', symbol='TutorialCortinaPlay')" includeIn="End" />
+	<s:SWFLoader top="80" id="MyTutorialField" source="@Embed(source='/Assets/General.swf', symbol='TutorialField')" excludeFrom="End" />
+	<s:Rect id="MyBlackRect" left="0" right="0" top="0" bottom="0" alpha="1" includeIn="In">
 		<s:fill>
 			<s:SolidColor alpha="1" color="#000000"/>
 		</s:fill>
-	</s:Rect>
-	<s:SWFLoader id="EndCortina" source="@Embed(source='/Assets/General.swf', symbol='TutorialCortinaPlay')" includeIn="End" />
-	<s:SWFLoader top="80" id="MyTutorialField" source="@Embed(source='/Assets/General.swf', symbol='TutorialField')" excludeFrom="Init, End" />
-	
+	</s:Rect>	
 	
 	<!-- INIT -->
 	
@@ -274,6 +280,19 @@
 	</s:Group>
 	
 	<s:transitions>
+		<s:Transition fromState="In" interruptionBehavior="stop" toState="Init">
+			<s:Parallel>
+				<s:Fade duration="250" target="{MyBlackRect}"/>
+				<s:Parallel target="{InitTxt}">
+					<s:Fade duration="250" startDelay="250"/>
+					<s:SetAction property="y" value="238"/>
+					<s:Animate duration="250" startDelay="250">
+						<s:SimpleMotionPath property="x"/>
+						<s:SimpleMotionPath property="y"/>
+					</s:Animate>
+				</s:Parallel>
+			</s:Parallel>
+		</s:Transition>
 		<s:Transition fromState="Init" interruptionBehavior="stop" toState="Step1">
 			<s:Parallel>
 				<s:Fade duration="250" target="{MyTutorialField}"/>
