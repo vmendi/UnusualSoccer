@@ -433,11 +433,7 @@ package Match
 			// Al acabar el tiro movemos el portero a su posición de formación en caso de la ultima accion fuera un saque de puerta
 			if (Enums.IsSaquePuerta(ReasonTurnChanged))
 				CurTeam.ResetToFormationOnlyGoalKeeper();
-			
-			// Advertencia de que el goalkeeper esta fuera del area
-			if (!TheField.IsCapCenterInsideBigArea(CurTeam.GoalKeeper))
-				Cutscene.ShowMsgGoalkeeperOutside();
-			
+						
 			var paseToCap : Cap = CheckPaseAlPie();
 			var detectedFault : Fault = TheGamePhysics.TheFault;
 									
@@ -785,6 +781,10 @@ package Match
 			// Si es el jugador local el activo mostramos los tiros que nos quedan en el interface
 			if (CurTeam.IsLocalUser)
 				Cutscene.ShowQuedanTurnos(_RemainingHits);
+			
+			// Si salimos del subturno con el goalkeeper fuera del area, lo advertimos
+			if (!TheField.IsCapCenterInsideBigArea(CurTeam.GoalKeeper) && CurTeam.IsLocalUser)
+				Cutscene.ShowMsgGoalkeeperOutside(_RemainingHits == 0);
 			
 			//
 			// Se olvida porque por ejemplo se limita la chapa clickable en el saque puerta, si no

@@ -150,10 +150,14 @@ package Match
 			}
 		}
 		
-		static public function ShowMsgGoalkeeperOutside() : void
+		static public function ShowMsgGoalkeeperOutside(immediate : Boolean) : void
 		{
-			// Lo delayamos 2 segundos para q no pise con los que vienen inmediatamente al inicio de cada turno (ShowQuedanTurnos, etc)
-			TweenMax.delayedCall(2, PopupIngameMsg.Show, [ResourceManager.getInstance().getString("matchmsgs", "MensajeGoalkeeperOutside")]); 
+			// Lo delayamos 2 segundos para q no pise con los que vienen inmediatamente al inicio de cada turno (ShowQuedanTurnos)
+			// TODO: Cola de mensajes
+			if (immediate)
+				PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeGoalkeeperOutside"));
+			else
+				TweenMax.delayedCall(2, PopupIngameMsg.Show, [ResourceManager.getInstance().getString("matchmsgs", "MensajeGoalkeeperOutside")]); 
 		}
 		
 		

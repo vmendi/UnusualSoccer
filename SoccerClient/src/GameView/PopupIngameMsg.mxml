@@ -43,9 +43,9 @@
 	
 	<fx:Declarations>
 		<s:Sequence id="MySequence" effectEnd="MySequence_effectEndHandler(event)">
-			<s:Fade target="{this}" alphaFrom="0" alphaTo="1" duration="500"/>	
-			<s:Fade target="{this}" alphaFrom="1" alphaTo="1" duration="1000"/>
-			<s:Fade target="{this}" alphaFrom="1" alphaTo="0" duration="500"/>
+			<s:Fade target="{this}" alphaFrom="0" alphaTo="1" duration="250"/>	
+			<s:Fade target="{this}" alphaFrom="1" alphaTo="1" duration="1500"/>
+			<s:Fade target="{this}" alphaFrom="1" alphaTo="0" duration="250"/>
 		</s:Sequence>			
 	</fx:Declarations>
 	

@@ -47,54 +47,63 @@ package Match
 		}
 		
 		private function OnAddedToStage(e:Event) : void
-		{			
-			removeEventListener(Event.ADDED_TO_STAGE, OnAddedToStage);
-			addEventListener(Event.REMOVED_FROM_STAGE, OnRemovedFromStage);
-			
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, OnStageKeyDown);
-			
-			MovieClipMouseDisabler.DisableMouse(this, true);
-			mcInput.visible = false;
-			
-			ctInput.mouseEnabled = true;
+		{
+			try {
+				removeEventListener(Event.ADDED_TO_STAGE, OnAddedToStage);
+				addEventListener(Event.REMOVED_FROM_STAGE, OnRemovedFromStage);
+				
+				stage.addEventListener(KeyboardEvent.KEY_DOWN, OnStageKeyDown);
+				
+				MovieClipMouseDisabler.DisableMouse(this, true);
+				mcInput.visible = false;
+				
+				ctInput.mouseEnabled = true;
+			}
+			catch (e:Error) { ErrorMessages.LogToServer("Chat.OnAddedToStage"); }
 		}
 
 		private function OnRemovedFromStage(e:Event) : void
 		{	
-			removeEventListener(Event.REMOVED_FROM_STAGE, OnRemovedFromStage);
-			stage.removeEventListener(KeyboardEvent.KEY_DOWN, OnStageKeyDown);
-			
-			for each(var line : Object in mLines)
-				TweenMax.killTweensOf(line.TheTextField);
+			try {
+				removeEventListener(Event.REMOVED_FROM_STAGE, OnRemovedFromStage);
+				stage.removeEventListener(KeyboardEvent.KEY_DOWN, OnStageKeyDown);
 				
-			mLines = null;
+				for each(var line : Object in mLines)
+					TweenMax.killTweensOf(line.TheTextField);
+					
+				mLines = null;
+			}
+			catch (e:Error) { ErrorMessages.LogToServer("Chat.OnRemovedFromStage"); }
 		}
 		
 		private function OnStageKeyDown(e:KeyboardEvent) : void
 		{
-			if (e.charCode == 13)
-			{
-				if (!mcInput.visible)
+			try {
+				if (e.charCode == 13)
 				{
-					mcInput.visible = true;
-					stage.focus = ctInput;
+					if (!mcInput.visible)
+					{
+						mcInput.visible = true;
+						stage.focus = ctInput;
+					}
+					else
+					{
+						PostMessage(ctInput.text);
+						mcInput.visible = false;
+						ctInput.text = "";
+					}
 				}
 				else
+				if (e.charCode == 27)
 				{
-					PostMessage(ctInput.text);
-					mcInput.visible = false;
-					ctInput.text = "";
+					if (mcInput.visible)
+					{
+						mcInput.visible = false;
+						ctInput.text = "";
+					}
 				}
 			}
-			else
-			if (e.charCode == 27)
-			{
-				if (mcInput.visible)
-				{
-					mcInput.visible = false;
-					ctInput.text = "";
-				}
-			}
+			catch (e:Error) { ErrorMessages.LogToServer("Chat.OnStageKeyDown"); }
 		}
 		
 		private function PostMessage(msg : String) : void
@@ -138,21 +147,27 @@ package Match
 		
 		private function OnBeginFadeOut(text : DisplayObject) : void
 		{
-			TweenMax.to(text, TIME_FADEOUT, { alpha: 0, onComplete: OnFadeOutCompleted, onCompleteParams: [text] });
+			try {
+				TweenMax.to(text, TIME_FADEOUT, { alpha: 0, onComplete: OnFadeOutCompleted, onCompleteParams: [text] });
+			}
+			catch (e:Error) { ErrorMessages.LogToServer("Chat.OnBeginFadeOut"); }
 		}
 		
 		private function OnFadeOutCompleted(text : DisplayObject) : void
 		{
-			mcOutput.removeChild(text);
-			
-			for (var c:int=0; c < mLines.length; ++c)
-			{
-				if (mLines[c].TheTextField == text)
+			try {
+				mcOutput.removeChild(text);
+				
+				for (var c:int=0; c < mLines.length; ++c)
 				{
-					mLines.splice(c, 1);
-					break;
+					if (mLines[c].TheTextField == text)
+					{
+						mLines.splice(c, 1);
+						break;
+					}
 				}
 			}
+			catch (e:Error) { ErrorMessages.LogToServer("Chat.OnFadeOutCompleted"); }
 		}
 	}
 }

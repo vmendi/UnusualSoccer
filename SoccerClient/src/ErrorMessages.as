@@ -107,8 +107,8 @@ package
 			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorResourceLoadFailedMsg"),
 							 ResourceManager.getInstance().getString("main", "ErrorResourceLoadFailedTit"), "center");
 			
-			// No nos molestamos en logearlo al servidor. Esto pasa habitualmente cuando paran la carga del juego dandole a "Stop"
-			// en el browser
+			// Esto pasa habitualmente cuando paran la carga del juego dandole a "Stop" en el browser
+			LogToServer("ResourceLoadFailed");
 		}
 		
 		static public function UncaughtErrorHandler(e:Event):void

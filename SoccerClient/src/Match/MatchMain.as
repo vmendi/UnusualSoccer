@@ -17,13 +17,9 @@ package Match
 	
 	public class MatchMain extends UIComponent
 	{
-		static public function get Ref() : MatchMain
-		{
-			return _Instance;
-		}
-		
-		public var Connection : NetPlug = null;
+		static public function get Ref() : MatchMain { return _Instance; }
 		public function get Game() : Match.Game { return _Game; }
+		public var Connection : NetPlug = null;		
 
 		public function MatchMain()
 		{
