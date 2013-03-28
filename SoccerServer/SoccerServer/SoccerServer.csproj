@@ -371,6 +371,9 @@
       <DependentUpon>Ranking.aspx</DependentUpon>
     </Compile>
     <Compile Include="GlobalSoccerServer.cs" />
+    <Compile Include="SaveJPG.ashx.cs">
+      <DependentUpon>SaveJPG.ashx</DependentUpon>
+    </Compile>
     <Compile Include="TestCreateSession.aspx.cs">
       <DependentUpon>TestCreateSession.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -396,6 +399,7 @@
     <Content Include="SoccerClient\spark_4.5.1.21489.swz" />
     <Content Include="SoccerClient\textLayout_2.0.0.232.swz" />
     <Content Include="Rewards.ashx" />
+    <Content Include="SaveJPG.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

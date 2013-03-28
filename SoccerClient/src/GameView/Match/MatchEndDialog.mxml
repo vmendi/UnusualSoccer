@@ -29,6 +29,7 @@
 			
 			GameMetrics.ReportPageView(GameMetrics.VIEW_MATCHEND_DIALOG);
 			GameMetrics.ReportEvent(GameMetrics.MATCHEND_DIALOG, { Result: FormatResult(dialog.mMatchResult, true),
+																   WasWon: dialog.mWinner,
 																   WasAbandoned: dialog.mMatchResult.WasAbandoned,
 																   WasSameIP: dialog.mMatchResult.WasSameIP,
 																   WasJust: dialog.mMatchResult.WasJust,

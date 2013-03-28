@@ -76,7 +76,9 @@
         
         mixpanel.init("61e2b133bbe6f10c2d90c2a88c127e89");
         //mixpanel.init("b0a4009105a8b91cbf78ae17dcbc9737");
+
         mixpanel.identify("<%= GetUserFacebookID() %>");
+        mixpanel.people.set("FacebookID", "<%= GetUserFacebookID() %>");
         
         // The player params is the query string inserted into the DB only the first time the player is created
         var playerParams = processQueryString('<%= GetPlayerParams() %>');

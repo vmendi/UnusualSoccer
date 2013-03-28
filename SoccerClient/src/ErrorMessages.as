@@ -4,15 +4,21 @@ package
 	
 	import GameView.ErrorDialog;
 	
+	import flash.display.Stage;
 	import flash.events.AsyncErrorEvent;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.system.System;
 	
+	import mx.core.FlexGlobals;
+	import mx.managers.SystemManager;
 	import mx.resources.ResourceManager;
 	import mx.rpc.Responder;
 	
 	import org.osflash.signals.Signal;
+	
+	import spark.components.Application;
 
 	public final class ErrorMessages
 	{
@@ -135,9 +141,13 @@ package
 				else
 					message = innerError.toString();
 			}
-						
-			ErrorDialog.Show("UncaughtError: " + message, ResourceManager.getInstance().getString("main", "ErrorPleaseNotifyDeveloperTit"));
+			
+			if ((FlexGlobals.topLevelApplication as Application) != null && (FlexGlobals.topLevelApplication as Application).stage != null)
+				ScreenCapture.SaveCaptureToServer((FlexGlobals.topLevelApplication as Application).stage, AppConfig.CANVAS_URL, 
+												  SoccerClient.GetFacebookFacade().FacebookID);
+			
 			LogToServer("UncaughtError: " + message);
+			ErrorDialog.Show("UncaughtError: " + message, ResourceManager.getInstance().getString("main", "ErrorPleaseNotifyDeveloperTit"));			
 		}
 		
 		static public function AsyncError(e:AsyncErrorEvent) : void
