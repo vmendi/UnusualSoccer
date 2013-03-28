@@ -273,7 +273,7 @@ package GameModel
 			mMatch.addEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage);
 
 			// Nosotros lanzamos la señal y alguien (RealtimeMatch.mxml) se encargara de añadirlo a la stage
-			MatchStarted.dispatch();		
+			MatchStarted.dispatch();
 		}
 		
 		private function OnMatchAddedToStage(e:Event) : void

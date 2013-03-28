@@ -261,7 +261,7 @@ package NetEngine
 					var invokeClient : Object = LookForClientWithMethodName(methodName);
 					
 					if (invokeClient == null)
-						throw new Error("Method not known among our clients");
+						throw new Error("Method not known among our clients, numClients " + mClientList.length);
 					
 					(invokeClient[methodName] as Function).apply(null, params);
 				}
