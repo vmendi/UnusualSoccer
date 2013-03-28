@@ -51,7 +51,10 @@
 			{
 				var trainingName : String = (event.currentTarget as TrainingItem).TheTrainingDefinition.Name;
 				GameMetrics.ReportEvent(GameMetrics.DO_TRAINING, {'training':trainingName});
-				mTrainingModel.Train(trainingName, null);			
+				mTrainingModel.Train(trainingName, null);
+				
+				// Mientras va y vuelve al servidor lo vamos mostrando como si ya estuviera, para evitar doble clicks 
+				SetTrainingOn((event.currentTarget as TrainingItem).TheTrainingDefinition.TrainingDefinitionID);
 			}
 		}
 		
@@ -59,48 +62,59 @@
 		{
 			if (hasTrainer)
 			{
-				for (var c:int=0; c < MyTrainingItemsGroup.numElements; c++)
-				{
-					var trItem : TrainingItem = MyTrainingItemsGroup.getElementAt(c) as TrainingItem;
-					trItem.currentState = "NotAvailable";
-				}
+				DisableAll();	
 			}
-			else
-			{
-				if (mMainGameModel.TheTeamModel.TheTeam != null) 
-					PendingTrainingChanged(mMainGameModel.TheTeamModel.TheTeam.PendingTraining);
+			else if (mMainGameModel.TheTeamModel.TheTeam != null)
+			{				 
+				PendingTrainingChanged(mMainGameModel.TheTeamModel.TheTeam.PendingTraining);
 			}
 		}
 		
 		private function PendingTrainingChanged(currTraining : PendingTraining) : void
 		{
 			if (currTraining != null)
-			{
-				for (var c:int=0; c < MyTrainingItemsGroup.numElements; c++)
-				{
-					var trItem : TrainingItem = MyTrainingItemsGroup.getElementAt(c) as TrainingItem;
-					
-					if (trItem != null)
-					{
-						if (trItem.TheTrainingDefinition.TrainingDefinitionID == currTraining.TrainingDefinition.TrainingDefinitionID)
-							trItem.currentState = "Training";
-						else
-							trItem.currentState = "NotAvailable";
-					}
-				}
-			}
+				SetTrainingOn(currTraining.TrainingDefinition.TrainingDefinitionID);
 			else
-			{
-				for (c=0; c < MyTrainingItemsGroup.numElements; c++)
-				{
-					trItem = MyTrainingItemsGroup.getElementAt(c) as TrainingItem;
-					
-					if (trItem != null)
-						trItem.currentState = "Normal";
-				}	
-			}				
+				EnableAll();
 		}
 		
+		
+		private function DisableAll() : void
+		{
+			for (var c:int=0; c < MyTrainingItemsGroup.numElements; c++)
+			{
+				var trItem : TrainingItem = MyTrainingItemsGroup.getElementAt(c) as TrainingItem;
+				trItem.currentState = "NotAvailable";
+			}
+		}
+		
+		private function EnableAll() : void
+		{
+			for (var c:int=0; c < MyTrainingItemsGroup.numElements; c++)
+			{
+				var trItem : TrainingItem = MyTrainingItemsGroup.getElementAt(c) as TrainingItem;
+				
+				if (trItem != null)
+					trItem.currentState = "Normal";
+			}	
+		}
+		
+		private function SetTrainingOn(trainingDefinitionID : int) : void
+		{
+			for (var c:int=0; c < MyTrainingItemsGroup.numElements; c++)
+			{
+				var trItem : TrainingItem = MyTrainingItemsGroup.getElementAt(c) as TrainingItem;
+				
+				if (trItem != null)
+				{
+					if (trItem.TheTrainingDefinition.TrainingDefinitionID == trainingDefinitionID)
+						trItem.currentState = "Training";
+					else
+						trItem.currentState = "NotAvailable";
+				}
+			}
+		}
+	
 		[Bindable] private var mMainGameModel : MainGameModel;
 		[Bindable] private var mTrainingModel : TrainingModel;
 		[Bindable] private var mTeamPurchaseModel : TeamPurchaseModel;

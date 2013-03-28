@@ -1,0 +1,6 @@
+IP-0AF0065B 21:22:06.821 [ERROR] [8] [HttpService.MainService] CLIENT_ERROR:100001798795161 - NetPlug.ProcessNetInvoke: PushedNewPlayerJoinedTheRoom - Error: Method not known among our clients
+IP-0AF0065B 21:22:17.024 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100001798795161 - NetPlug.ProcessNetInvoke: PushedNewPlayerJoinedTheRoom - Error: Method not known among our clients
+IP-0AF0065B 21:22:25.432 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100001798795161 - NetPlug.ProcessNetInvoke: PushedPlayerLeftTheRoom - Error: Method not known among our clients
+IP-0AF0065B 21:22:25.432 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100001798795161 - NetPlug.ProcessNetInvoke: PushedNewPlayerJoinedTheRoom - Error: Method not known among our clients
+IP-0AF0065B 21:22:27.538 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100001798795161 - NetPlug.ProcessNetInvoke: PushedPlayerLeftTheRoom - RangeError: El índice ‘-1’ especificado está fuera de los límites.
+IP-0AF0065B 21:22:27.523 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100001798795161 - NetPlug.ProcessNetInvoke: PushedPlayerLeftTheRoom - Error: Method not known among our clients

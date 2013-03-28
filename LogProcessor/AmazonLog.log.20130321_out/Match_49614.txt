@@ -1,0 +1,9 @@
+IP-0A21BBBB 21:25:09.980 [INFO] [20] [NetEngine.NetRoom] Actor joined Room:MatchID 49614 ActorID:38935
+IP-0A21BBBB 21:25:09.980 [INFO] [20] [NetEngine.NetLobby] Room Added: MatchID 49614
+IP-0A21BBBB 21:25:09.980 [INFO] [20] [NetEngine.NetRoom] Actor joined Room:MatchID 49614 ActorID:38482
+IP-0A21BBBB 21:35:17.035 [ERROR] [20] [Realtime.RealtimeMatch] MatchID: 49614  STATE 2:  Result: 32 PaseToID: 0 CountTouchedCaps: 1 FramesSimulating: 37 ReasonTurnChanged: 0 T0: [0:(x=691, y=108)][1:(x=436, y=227)][2:(x=508.95, y=181)][3:(x=612, y=401)][4:(x=422, y=188)][5:(x=487, y=408)][6:(x=360, y=144)][7:(x=462, y=363)] T1: [0:(x=80, y=277)][1:(x=148, y=153)][2:(x=148, y=277)][3:(x=148, y=401)][4:(x=-250, y=-100)][5:(x=445, y=264)][6:(x=-400, y=-100)][7:(x=470, y=165)] B:(x=693, y=81) <ServerVars>: CurState=Playing Part=2 RemainingSecs=5.766812 Time=606.7624 Goals0=0 Goals1=1
+IP-0A21BBBB 21:35:17.035 [ERROR] [20] [Realtime.RealtimeMatch] MatchID: 49614  STATE 1:  Result: 32 PaseToID: 0 CountTouchedCaps: 5 FramesSimulating: 70 ReasonTurnChanged: 0 T0: [0:(x=691, y=111)][1:(x=436, y=227)][2:(x=508.95, y=181)][3:(x=612, y=401)][4:(x=422, y=188)][5:(x=487, y=408)][6:(x=360, y=144)][7:(x=462, y=363)] T1: [0:(x=80, y=277)][1:(x=148, y=153)][2:(x=148, y=277)][3:(x=148, y=401)][4:(x=-250, y=-100)][5:(x=445, y=264)][6:(x=-400, y=-100)][7:(x=470, y=165)] B:(x=693, y=87) <ServerVars>: CurState=Playing Part=2 RemainingSecs=5.766812 Time=606.7624 Goals0=0 Goals1=1
+IP-0A21BBBB 21:35:17.035 [ERROR] [20] [Realtime.RealtimeMatch] MatchID: 49614 >>>>>> FATAL ERROR UNSYNC STATE >>>>>> 49614 <ServerVars>: CurState=Playing Part=2 RemainingSecs=5.766812 Time=606.7624 Goals0=0 Goals1=1
+IP-0A21BBBB 21:35:27.035 [INFO] [20] [NetEngine.NetLobby] Room Removed: MatchID 49614
+IP-0A21BBBB 21:35:27.035 [INFO] [20] [NetEngine.NetRoom] Actor left Room:MatchID 49614 ActorID:38935
+IP-0A21BBBB 21:35:27.035 [INFO] [20] [NetEngine.NetRoom] Actor left Room:MatchID 49614 ActorID:38482

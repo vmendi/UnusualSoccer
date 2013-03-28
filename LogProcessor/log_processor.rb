@@ -1,18 +1,19 @@
 #!/usr/bin/env ruby
 
 # Non-match errors
-class General_Client_Error_Extractor
+class General_Error_Extractor
   
   def run all_lines, output_path
 
+    server = []
     players = {}
     discarded = {}
 
     all_lines.each { |line|
       # CLIENT_ERRORs discarding any line that contains MatchID
-      the_line_match = line.match(/CLIENT_ERROR:(\d+)(?!.*MatchID).*/)
+      client_match = line.match(/CLIENT_ERROR:(\d+)(?!.*MatchID).*/)
 
-      if the_line_match != nil
+      if client_match != nil
         # We also want to discard common known errors as RealtimeConnectionFailed
         if line.match(/RealtimeConnectionFailed/)
           if not discarded.has_key? "RealtimeConnectionFailed"
@@ -25,11 +26,18 @@ class General_Client_Error_Extractor
         end
 
         # Store the line associating it with a playerID
-        playerID = the_line_match[1]
+        playerID = client_match[1]
         if players[playerID] == nil
           players[playerID] = []
         end
-        players[playerID].push line
+        players[playerID].push line       
+      end
+
+      # Server errors. Any line with an [ERROR] tag and not CLIENT_ERROR in it
+      server_match = line.match(/\[ERROR\](?!.*CLIENT_ERROR).*/)
+
+      if server_match != nil
+        server.push line
       end
     }
 
@@ -38,7 +46,7 @@ class General_Client_Error_Extractor
       puts "Discarded #{key}: #{discarded[key]} lines"
     }
     
-    # Log everything to a general file, and also create a file per player
+    # Create a file per player and while we are at it, log everything to a general file as well
     File.open(output_path + "GeneralClient.txt", 'w') { |general_io|
 
       puts "Dumping #{players.length} players with some error..."
@@ -50,6 +58,16 @@ class General_Client_Error_Extractor
             general_io.puts line
           }
         }
+      }
+    }
+
+    # Now the non-client errors
+    File.open(output_path + "GeneralServer.txt", 'w') { |general_io|
+
+      puts "Dumping #{server.length} server lines with some error..."
+
+      server.each { |line|
+        general_io.puts line
       }
     }
 
@@ -223,7 +241,7 @@ puts all_lines.length.to_s + ' lines read'
 the_match_processor = Match_Error_Extractor.new
 the_match_processor.run(all_lines, output_path)
 
-the_general_processor = General_Client_Error_Extractor.new
+the_general_processor = General_Error_Extractor.new
 the_general_processor.run(all_lines, output_path)
 
 the_chat_processor = Chat_Extractor.new

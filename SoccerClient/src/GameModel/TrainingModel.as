@@ -92,7 +92,7 @@ package GameModel
 		[Bindable]
 		public function get RemainingSeconds() : int
 		{
-			return mTeamModel.TheTeam.PendingTraining == null? -1 : mTeamModel.TheTeam.PendingTraining.RemainingSeconds; 
+			return mTeamModel.TheTeam.PendingTraining == null? 0 : mTeamModel.TheTeam.PendingTraining.RemainingSeconds; 
 		}
 		private function set RemainingSeconds(v:int) : void
 		{
@@ -105,7 +105,7 @@ package GameModel
 		[Bindable(event="IsRegularTrainingAvailableChanged")]
 		public function get IsRegularTrainingAvailable() : Boolean 
 		{ 
-			return mTeamModel.TheTeam.PendingTraining.RemainingSeconds == -1; 
+			return mTeamModel.TheTeam.PendingTraining.RemainingSeconds <= 0; 
 		}
 		
 		[Bindable(event="TrainingDefinitionsChanged")]
