@@ -2,13 +2,13 @@ package GameModel
 {
 	import GameView.ImportantMessageDialog;
 	
+	import HttpService.MainService;
+	import HttpService.TransferModel.vo.Team;
+	
 	import Match.MatchMain;
 	
 	import NetEngine.InvokeResponse;
 	import NetEngine.NetPlug;
-	
-	import HttpService.MainService;
-	import HttpService.TransferModel.vo.Team;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -67,9 +67,9 @@ package GameModel
 		{
 			// Nos aseguramos de dejar el partido limpio y de cerrar el socket
 			if (mMatch != null)
-				mMatch.Shutdown(null);	// Esto provocara un MatchEnded con result == null
+				mMatch.Shutdown(null);	// Esto provocara un MatchEnded con result == null, lo que pondra mMatch a null
 						
-			Disconnect();
+			Disconnect(true);
 		}
 		
 		private function OnConnectionConditionsChanged(v:Boolean) : void
@@ -78,7 +78,7 @@ package GameModel
 				return;
 			
 			if (!mMainModel.TheTeamPurchaseModel.HasCredit || !mMainModel.TheInactivityModel.IsActive)
-				Disconnect();
+				Disconnect(false);
 			else
 			if (!IsConnected)
 				InitialConnection(null);
@@ -150,13 +150,14 @@ package GameModel
 			// NOTE01: Idem
 		}
 		
-		// Podria ser privada si no fuera por los tests
-		public function Disconnect() : void
+		// Podria ser privada si no fuera por los tests. El bCleaningShutdown lo necesitamos para el log pq hemos comprobado que llegan
+		// Disconnects con el partido no a null... necesitamos saber por que sitio entra
+		public function Disconnect(bCleaningShutdown : Boolean) : void
 		{
 			TheRoomModel = null;
 			
 			if (TheMatch != null)
-				ErrorMessages.LogToServer("Disconnect sin haber cerrado el partido?!");
+				ErrorMessages.LogToServer("Disconnect sin haber cerrado el partido?! " + bCleaningShutdown);
 						
 			if (mServerConnection != null)
 			{

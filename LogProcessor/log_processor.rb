@@ -1,6 +1,63 @@
 #!/usr/bin/env ruby
 
-class Error_Extractor
+# Non-match errors
+class General_Client_Error_Extractor
+  
+  def run all_lines, output_path
+
+    players = {}
+    discarded = {}
+
+    all_lines.each { |line|
+      # CLIENT_ERRORs discarding any line that contains MatchID
+      the_line_match = line.match(/CLIENT_ERROR:(\d+)(?!.*MatchID).*/)
+
+      if the_line_match != nil
+        # We also want to discard common known errors as RealtimeConnectionFailed
+        if line.match(/RealtimeConnectionFailed/)
+          if not discarded.has_key? "RealtimeConnectionFailed"
+            discarded["RealtimeConnectionFailed"] = 1
+          else
+            discarded["RealtimeConnectionFailed"] = discarded["RealtimeConnectionFailed"] + 1
+          end
+
+          next
+        end
+
+        # Store the line associating it with a playerID
+        playerID = the_line_match[1]
+        if players[playerID] == nil
+          players[playerID] = []
+        end
+        players[playerID].push line
+      end
+    }
+
+    # Print how many discarded and their kind we have
+    discarded.keys.each { |key|
+      puts "Discarded #{key}: #{discarded[key]} lines"
+    }
+    
+    # Log everything to a general file, and also create a file per player
+    File.open(output_path + "GeneralClient.txt", 'w') { |general_io|
+
+      puts "Dumping #{players.length} players with some error..."
+
+      players.keys.each { |key|
+        File.open(output_path + "Player_#{key}.txt", 'w') { |player_io|
+          players[key].each { |line|
+            player_io.puts line
+            general_io.puts line
+          }
+        }
+      }
+    }
+
+    end
+
+end
+
+class Match_Error_Extractor
 
   def run all_lines, output_path
 
@@ -40,7 +97,7 @@ class Error_Extractor
 
     # We generate a file for each match with error
     matches.each { |num_match|
-      File.open(output_path + "_" + num_match + '.txt', 'w') { |io|
+      File.open(output_path + "Match_#{num_match}.txt", 'w') { |io|
         get_lines_for_match(all_lines, num_match).each { |line| io.puts line }
       }
     }
@@ -101,7 +158,7 @@ def look_for_recent_log
   newest_file = nil
 
   Dir.foreach('./') { |dirEntry|
-    if !File.directory?(dirEntry) && File.extname(dirEntry) == '.log'
+    if is_log_file dirEntry
       if (newest_time == nil ||
           (File.mtime(dirEntry) <=> newest_time) > 0)
           newest_time = File.mtime(dirEntry)
@@ -113,40 +170,63 @@ def look_for_recent_log
   newest_file
 end
 
+def is_log_file dirEntry
+  !File.directory?(dirEntry) && (File.extname(dirEntry) == '.log' || File.extname(dirEntry).match(/\d+/))
+end
 
-input = ARGV[0]
+def prepare_output_path input_file
 
-if input == nil || !File.exists?(input)
-  input = look_for_recent_log
-  if (input == nil)
-    puts 'File not found'
-    exit
+  output_path = input_file
+
+  unless ARGV[1] == nil
+    output_path = ARGV[1]
+  end
+
+  unless output_path.end_with?('/') || output_path.end_with?('\\')
+    output_path += '_out/'
+  end
+
+  unless File.directory? output_path
+    Dir::mkdir output_path
+  end
+
+  output_path
+end
+
+def get_input_file
+  input_file = ARGV[0]
+
+  if input_file == nil || !File.exists?(input_file)
+    puts 'No file name supplied or file supplied doesnt exist. Looking for the most recent log...'        
+    input_file = look_for_recent_log
   end
 end
 
-output_path = './log_processor_output/'
+######################################
+# Main program
+######################################
 
-unless ARGV[1] == nil
-  output_path = ARGV[1]
+input_file = get_input_file
+
+if (input_file == nil)
+  puts 'File not found... exiting.'
+  exit
 end
 
-unless output_path.end_with?('/') || output_path.end_with?('\\')
-output_path += '/'
-end
+output_path = prepare_output_path input_file
 
-unless File.directory? output_path
-  Dir::mkdir output_path
-end
+puts "Reading file #{input_file}"
 
-puts 'Reading file ' + input
-
-all_lines = IO.readlines input
+all_lines = IO.readlines input_file
 puts all_lines.length.to_s + ' lines read'
 
-the_processor = Error_Extractor.new
-the_processor.run(all_lines, output_path + input)
+the_match_processor = Match_Error_Extractor.new
+the_match_processor.run(all_lines, output_path)
+
+the_general_processor = General_Client_Error_Extractor.new
+the_general_processor.run(all_lines, output_path)
 
 the_chat_processor = Chat_Extractor.new
-the_chat_processor.run(all_lines, output_path + input + '_chat.txt')
+the_chat_processor.run(all_lines, output_path + "Chat.txt")
 
 puts 'done'
