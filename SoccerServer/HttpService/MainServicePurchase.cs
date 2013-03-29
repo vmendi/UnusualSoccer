@@ -22,6 +22,11 @@ namespace HttpService
 
             return ret;
         }
+
+        private int GetSecondsTillNextMatch(int level)
+        {
+
+        }
         
         private int GetNewMatchesRemainingSeconds()
         {
