@@ -79,6 +79,7 @@
       </datatype>
       <datatype name="TeamPurchase" fullname="HttpService.TransferModel.TeamPurchase" typeNamespace="HttpService.TransferModel">
         <field name="RemainingMatches" type="int" fulltype="int" nativetype="int" />
+        <field name="NewMatchRemainingSeconds" type="int" fulltype="int" nativetype="int" />
         <field name="TicketPurchaseDate" type="Date" fulltype="Date" nativetype="DateTime" />
         <field name="TicketExpiryDate" type="Date" fulltype="Date" nativetype="DateTime" />
         <field name="TrainerPurchaseDate" type="Date" fulltype="Date" nativetype="DateTime" />
@@ -108,7 +109,6 @@
         <field name="Sliding" type="int" fulltype="int" nativetype="int" />
         <field name="Power" type="int" fulltype="int" nativetype="int" />
         <field name="IsInjured" type="Boolean" fulltype="Boolean" nativetype="bool" />
-        <field name="LastInjuryDate" type="Date" fulltype="Date" nativetype="DateTime" />
         <field name="RemainingInjurySeconds" type="int" fulltype="int" nativetype="int" />
       </datatype>
       <datatype name="SpecialTraining" fullname="HttpService.TransferModel.SpecialTraining" typeNamespace="HttpService.TransferModel">
@@ -125,9 +125,8 @@
       </datatype>
       <datatype name="TeamPurchaseInitialInfo" fullname="HttpService.TransferModel.TeamPurchaseInitialInfo" typeNamespace="HttpService.TransferModel">
         <field name="ItemsForSale" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.ItemForSale&gt;" />
-        <field name="NewMatchesRemainingSeconds" type="int" fulltype="int" nativetype="int" />
         <field name="DefaultNumMatches" type="int" fulltype="int" nativetype="int" />
-        <field name="DailyNumMatches" type="int" fulltype="int" nativetype="int" />
+        <field name="MaxNumMatches" type="int" fulltype="int" nativetype="int" />
       </datatype>
     </namespace>
     <service name="MainService" fullname="HttpService.MainService" namespace="HttpService" url="http://ENTER WEBORB URL HERE/weborb.aspx">
@@ -156,6 +155,9 @@
       </method>
       <method name="GetItemForSale" type="ItemForSale" nativetype="HttpService.TransferModel.ItemForSale" containsvalues="0">
         <arg name="orderInfoFromClient_itemID" type="String" nativetype="String" />
+      </method>
+      <method name="GetSecondsTillNextMatch" type="int" nativetype="int" containsvalues="0">
+        <arg name="xp" type="int" nativetype="int" />
       </method>
       <method name="HasTeam" type="Boolean" nativetype="bool" containsvalues="0" />
       <method name="HealInjury" type="Boolean" nativetype="bool" containsvalues="0">

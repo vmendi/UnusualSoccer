@@ -54,28 +54,6 @@ package GameModel
 				callback();
 			}
 		}
-		
-		// TeamModel nos llama cada vez que cambia el equipo. Lo queremos hacer asi y no por subscripcion para que este claro
-		// exactamente cuando se refresca. Asi desde fuera se ve estado coherente.
-		internal function UpdatePurchases() : void
-		{
-			if (mTeamModel.TheTeam != null && mTeamModel.TheTeam.TeamPurchase != null)
-			{
-				mTeamModel.TheTeam.TeamPurchase.TicketExpiryDateRemainingSeconds--;
-				mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDateRemainingSeconds--;
-				
-				if (mTeamModel.TheTeam.TeamPurchase.TicketExpiryDateRemainingSeconds < 0)
-					mTeamModel.TheTeam.TeamPurchase.TicketExpiryDateRemainingSeconds = 0;
-				
-				if (mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDateRemainingSeconds < 0)
-					mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDateRemainingSeconds = 0;
-				
-				HasTicket = mTeamModel.TheTeam.TeamPurchase.TicketExpiryDateRemainingSeconds > 0;
-				HasCredit = HasTicket || mTeamModel.TheTeam.TeamPurchase.RemainingMatches > 0;
-				HasTrainer = mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDateRemainingSeconds > 0;
-			}
-		}
-		
 		// El rewards model nos llama aquí cada vez que se ve un video
 		internal function AddOneMatch() : void
 		{
@@ -120,25 +98,52 @@ package GameModel
 		
 		internal function OnTimerSeconds() : void
 		{
-			UpdateNewMatchesRemainingSeconds();
-			UpdatePurchases();			
+			if (mTeamModel.TheTeam != null && mTeamModel.TheTeam.TeamPurchase != null)
+			{
+				UpdateNewMatchRemainingSeconds();
+				UpdatePurchases();
+			}
 		}
 		
-		private function UpdateNewMatchesRemainingSeconds() : void
-		{			
-			if (mInitialInfo.NewMatchesRemainingSeconds - 1 <= 0)
-			{
-				if (mTeamModel.TheTeam.TeamPurchase.RemainingMatches < mInitialInfo.DailyNumMatches)
-					mTeamModel.TheTeam.TeamPurchase.RemainingMatches = mInitialInfo.DailyNumMatches;
-				
-				NewMatchesRemainingSeconds = 24 * 3599;
-			}
-			else
-			{
-				NewMatchesRemainingSeconds--;
-			}
+		// TeamModel nos llama cada vez que cambia el equipo. Lo queremos hacer asi y no por subscripcion para que este claro
+		// exactamente cuando se refresca. Asi desde fuera se ve estado coherente.
+		internal function UpdatePurchases() : void
+		{
+			mTeamModel.TheTeam.TeamPurchase.TicketExpiryDateRemainingSeconds--;
+			mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDateRemainingSeconds--;
 			
-			dispatchEvent(new Event("NewMatchesRemainingSecondsStringChanged"));	
+			if (mTeamModel.TheTeam.TeamPurchase.TicketExpiryDateRemainingSeconds < 0)
+				mTeamModel.TheTeam.TeamPurchase.TicketExpiryDateRemainingSeconds = 0;
+			
+			if (mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDateRemainingSeconds < 0)
+				mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDateRemainingSeconds = 0;
+			
+			HasTicket = mTeamModel.TheTeam.TeamPurchase.TicketExpiryDateRemainingSeconds > 0;
+			HasCredit = HasTicket || mTeamModel.TheTeam.TeamPurchase.RemainingMatches > 0;
+			HasTrainer = mTeamModel.TheTeam.TeamPurchase.TrainerExpiryDateRemainingSeconds > 0;
+		}
+				
+		private function UpdateNewMatchRemainingSeconds() : void
+		{		
+			if (mTeamModel.TheTeam.TeamPurchase.RemainingMatches < mInitialInfo.MaxNumMatches)
+			{
+				if (NewMatchRemainingSeconds - 1 <= 0)
+				{
+					AddOneMatch();
+					
+					if (mTeamModel.TheTeam.TeamPurchase.RemainingMatches < mInitialInfo.MaxNumMatches)
+						NewMatchRemainingSeconds = 120;
+					else
+						// Cuando llegamos al tope de partidos, dejamos el contador de tiempo a 0
+						NewMatchRemainingSeconds = 0;
+				}
+				else
+				{
+					NewMatchRemainingSeconds--;
+				}
+				
+				dispatchEvent(new Event("NewMatchRemainingSecondsStringChanged"));
+			}				
 		}
 		
 		// Tiene credito o bien porque le queda tiempo de ticket o bien porque le quedan partidos restantes
@@ -158,13 +163,17 @@ package GameModel
 		private var mHasTrainer : Boolean = false;
 		
 		[Bindable]
-		public function  get NewMatchesRemainingSeconds() : int { return mInitialInfo.NewMatchesRemainingSeconds; }
-		private function set NewMatchesRemainingSeconds(val : int) : void { mInitialInfo.NewMatchesRemainingSeconds = val; }
+		public  function get NewMatchRemainingSeconds() : int { return mTeamModel.TheTeam.TeamPurchase.NewMatchRemainingSeconds; }
+		private function set NewMatchRemainingSeconds(val : int) : void { mTeamModel.TheTeam.TeamPurchase.NewMatchRemainingSeconds = val; }
 		
-		[Bindable(event="NewMatchesRemainingSecondsStringChanged")]
-		public function get NewMatchesRemainingSecondsString() : String 
+		
+		[Bindable(event="NewMatchRemainingSecondsStringChanged")]
+		public function get NewMatchRemainingSecondsString() : String 
 		{ 
-			return ResourceManager.getInstance().getString('main','ComeBack').replace("{REPLACEME}", utils.TimeUtils.ConvertSecondsToStringVerbose(NewMatchesRemainingSeconds)); 
+			if (NewMatchRemainingSeconds == 0)
+				return "";
+			else
+				return ResourceManager.getInstance().getString('main','ComeBack').replace("{REPLACEME}", utils.TimeUtils.ConvertSecondsToStringVerbose(NewMatchRemainingSeconds)); 
 		}
 		
 

@@ -12,7 +12,33 @@ namespace HttpService
         {
             bool bSubmit = SyncTraining(theContext, theTeam);
             bSubmit     |= SyncInjured(theContext, theTeam);
+            bSubmit     |= SyncRemainingMatches(theContext, theTeam);
             
+            return bSubmit;
+        }
+
+        static private bool SyncRemainingMatches(SoccerDataModelDataContext theContext, Team theTeam)
+        {
+            bool bSubmit = false;
+            DateTime now = DateTime.Now;
+
+            double elapsedSeconds = (now - theTeam.TeamPurchase.LastRemainingMatchesUpdate).TotalSeconds;
+            double cycleSeconds = MainService.GetSecondsTillNextMatch(theTeam.XP);
+            int    numCycles = (int)Math.Floor(elapsedSeconds / cycleSeconds);
+            double remainder = elapsedSeconds - (cycleSeconds * numCycles);
+
+            if (numCycles > 0 && theTeam.TeamPurchase.RemainingMatches < GlobalConfig.MAX_NUM_MATCHES)
+            {
+                bSubmit = true;
+
+                theTeam.TeamPurchase.RemainingMatches += numCycles;
+
+                if (theTeam.TeamPurchase.RemainingMatches > GlobalConfig.MAX_NUM_MATCHES)
+                    theTeam.TeamPurchase.RemainingMatches = GlobalConfig.MAX_NUM_MATCHES;
+
+                theTeam.TeamPurchase.LastRemainingMatchesUpdate = now.AddSeconds(-remainder);
+            }
+
             return bSubmit;
         }
 

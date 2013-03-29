@@ -23,8 +23,7 @@ package HttpService.TransferModel.vo
 		public function TeamPurchaseInitialInfo(){}
 	
 		public var ItemsForSale:ArrayCollection;
-		public var NewMatchesRemainingSeconds:int;
 		public var DefaultNumMatches:int;
-		public var DailyNumMatches:int;
+		public var MaxNumMatches:int;
 	}
 }

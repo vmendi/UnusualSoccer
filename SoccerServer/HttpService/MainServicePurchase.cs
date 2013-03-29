@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ServerCommon;
+using ServerCommon.BDDModel;
 
 namespace HttpService
 {
@@ -16,25 +17,17 @@ namespace HttpService
             var ret = new TransferModel.TeamPurchaseInitialInfo();
             
             ret.ItemsForSale = GetItemsForSaleFromDB();
-            ret.NewMatchesRemainingSeconds = GetNewMatchesRemainingSeconds();
             ret.DefaultNumMatches = GlobalConfig.DEFAULT_NUM_MACHES;
-            ret.DailyNumMatches = GlobalConfig.DAILY_NUM_MATCHES;
-
+            ret.MaxNumMatches = GlobalConfig.MAX_NUM_MATCHES;
+            
             return ret;
         }
-        
-        private int GetNewMatchesRemainingSeconds()
+
+        static public int GetSecondsTillNextMatch(int xp)
         {
-            // Asumimos que en GlobalSoccerServer se regalan los partidos a las 00:00 de la noche
-            var today = DateTime.Now;
-
-            // Sumamos un pequeño segundo, para asegurar
-            var tomorrow = new DateTime(today.Year, today.Month, today.Day, 0, 0, 1, 0, today.Kind).AddDays(1);
-
-            // Segundos restantes a las 00:00 de la noche del servidor, que es cuando damos partidos
-            return TransferModel.Utils.GetConservativeRemainingSeconds(tomorrow);
+            return 120;
         }
-
+      
         private List<TransferModel.ItemForSale> GetItemsForSale()
         {
             return GetItemsForSaleFromDB();

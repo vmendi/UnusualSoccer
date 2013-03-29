@@ -3465,7 +3465,7 @@ namespace ServerCommon.BDDModel
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Reward", Storage="_Team", ThisKey="TeamID", OtherKey="TeamID", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Team_Reward", Storage="_Team", ThisKey="TeamID", OtherKey="TeamID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public Team Team
 		{
 			get
@@ -4458,6 +4458,8 @@ namespace ServerCommon.BDDModel
 		
 		private System.DateTime _TrainerExpiryDate;
 		
+		private System.DateTime _LastRemainingMatchesUpdate;
+		
 		private EntityRef<Team> _Team;
 		
     #region Extensibility Method Definitions
@@ -4476,6 +4478,8 @@ namespace ServerCommon.BDDModel
     partial void OnTrainerPurchaseDateChanged();
     partial void OnTrainerExpiryDateChanging(System.DateTime value);
     partial void OnTrainerExpiryDateChanged();
+    partial void OnLastRemainingMatchesUpdateChanging(System.DateTime value);
+    partial void OnLastRemainingMatchesUpdateChanged();
     #endregion
 		
 		public TeamPurchase()
@@ -4604,6 +4608,26 @@ namespace ServerCommon.BDDModel
 					this._TrainerExpiryDate = value;
 					this.SendPropertyChanged("TrainerExpiryDate");
 					this.OnTrainerExpiryDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastRemainingMatchesUpdate", DbType="DateTime NOT NULL")]
+		public System.DateTime LastRemainingMatchesUpdate
+		{
+			get
+			{
+				return this._LastRemainingMatchesUpdate;
+			}
+			set
+			{
+				if ((this._LastRemainingMatchesUpdate != value))
+				{
+					this.OnLastRemainingMatchesUpdateChanging(value);
+					this.SendPropertyChanging();
+					this._LastRemainingMatchesUpdate = value;
+					this.SendPropertyChanged("LastRemainingMatchesUpdate");
+					this.OnLastRemainingMatchesUpdateChanged();
 				}
 			}
 		}

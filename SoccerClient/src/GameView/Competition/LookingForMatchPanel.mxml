@@ -140,7 +140,7 @@
 				<s:RichText width="180" styleName="whiteBoldBig" whiteSpaceCollapse="collapse" textAlign="center" kerning="auto" >
 					<s:content>
 						<s:p><s:span>{resourceManager.getString('main','NotAvailableMatches')}</s:span></s:p>
-						<s:p><s:span>{mTeamPurchaseModel.NewMatchesRemainingSecondsString}</s:span></s:p>
+						<s:p><s:span>{mTeamPurchaseModel.NewMatchRemainingSecondsString}</s:span></s:p>
 					</s:content>
 				</s:RichText>
 			</s:Group>
