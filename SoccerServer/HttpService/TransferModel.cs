@@ -50,13 +50,15 @@ namespace HttpService.TransferModel
     public class TeamPurchase
     {
         public int      RemainingMatches;
+        public int      NewMatchRemainingSeconds;
+
         public DateTime TicketPurchaseDate;
         public DateTime TicketExpiryDate;
         public DateTime TrainerPurchaseDate;
         public DateTime TrainerExpiryDate;
         public int      TicketExpiryDateRemainingSeconds;
         public int      TrainerExpiryDateRemainingSeconds;
-
+        
         public TeamPurchase(ServerCommon.BDDModel.TeamPurchase from) 
         {
             RemainingMatches = from.RemainingMatches;
@@ -66,6 +68,13 @@ namespace HttpService.TransferModel
             TrainerPurchaseDate = from.TrainerPurchaseDate;
             TrainerExpiryDate = from.TrainerExpiryDate;
             TrainerExpiryDateRemainingSeconds = Utils.GetConservativeRemainingSeconds(TrainerExpiryDate);
+
+            // Tiempo a la siguiente suma de partido. Si estamos al maximo, enviamos 0
+            if (RemainingMatches < GlobalConfig.MAX_NUM_MATCHES)
+            {
+                var secondsTillNextMatch = MainService.GetSecondsTillNextMatch(from.Team.XP);
+                NewMatchRemainingSeconds = Utils.GetConservativeRemainingSeconds(from.LastRemainingMatchesUpdate.AddSeconds(secondsTillNextMatch));
+            }
         }
     }
 
@@ -80,9 +89,8 @@ namespace HttpService.TransferModel
 		public int Sliding;
 		public int Power;
 
-        public bool     IsInjured;
-		public DateTime LastInjuryDate;
-        public int      RemainingInjurySeconds;
+        public bool IsInjured;
+        public int  RemainingInjurySeconds;
 
 		public SoccerPlayer(ServerCommon.BDDModel.SoccerPlayer from) 
         { 
@@ -96,8 +104,7 @@ namespace HttpService.TransferModel
 		    Power = from.Power;
 
             IsInjured = from.IsInjured;
-		    LastInjuryDate = from.LastInjuryDate;
-            RemainingInjurySeconds = Utils.GetConservativeRemainingSeconds(LastInjuryDate.AddDays(GlobalConfig.INJURY_DURATION_DAYS));
+            RemainingInjurySeconds = Utils.GetConservativeRemainingSeconds(from.LastInjuryDate.AddDays(GlobalConfig.INJURY_DURATION_DAYS));
         }
 	}
 
@@ -245,9 +252,8 @@ namespace HttpService.TransferModel
     public class TeamPurchaseInitialInfo
     {
         public List<TransferModel.ItemForSale> ItemsForSale;
-        public int NewMatchesRemainingSeconds;
         public int DefaultNumMatches;
-        public int DailyNumMatches;
+        public int MaxNumMatches;
     }
 
 	public class CopyHelper

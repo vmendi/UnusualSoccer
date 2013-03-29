@@ -3,11 +3,14 @@ using System.Linq;
 using HttpService;
 using ServerCommon.BDDModel;
 using ServerCommon;
+using NLog;
 
 namespace Realtime
 {
     public class RealtimeMatchCreator
     {
+        private static readonly Logger Log = LogManager.GetLogger(typeof(RealtimeMatchCreator).FullName);
+
         public int MatchID { get { return mMatchID; } }
 
         public RealtimePlayer FirstRealtimePlayer  { get { return mFirstRealtimePlayer; } }
@@ -51,11 +54,11 @@ namespace Realtime
                 mFirstRealtimePlayer = firstPlayer;
                 mSecondRealtimePlayer = secondPlayer;
 
-                mFirstPlayer = GetPlayerForRealtimePlayer(theContext, mFirstRealtimePlayer);
-                mSecondPlayer = GetPlayerForRealtimePlayer(theContext, mSecondRealtimePlayer);
+                mFirstPlayer = GetPlayerForRealtimePlayer(mContext, mFirstRealtimePlayer);
+                mSecondPlayer = GetPlayerForRealtimePlayer(mContext, mSecondRealtimePlayer);
 
-                if (TeamUtils.SyncTeam(theContext, mFirstPlayer.Team) | TeamUtils.SyncTeam(theContext, mSecondPlayer.Team))
-                    theContext.SubmitChanges();
+                if (TeamUtils.SyncTeam(mContext, mFirstPlayer.Team) | TeamUtils.SyncTeam(mContext, mSecondPlayer.Team))
+                    mContext.SubmitChanges();
 
                 mMatchID = CreateDatabaseMatchInner(mContext);
 
@@ -68,20 +71,30 @@ namespace Realtime
                 {
                     DiscountTicketsInner(mContext, mFirstPlayer);
                     DiscountTicketsInner(mContext, mSecondPlayer);
+
+                    mContext.SubmitChanges();
                 }
             }
         }
 
         static private void DiscountTicketsInner(SoccerDataModelDataContext theContext, Player thePlayer)
         {
-            if (thePlayer.Team.TeamPurchase.TicketExpiryDate < DateTime.Now)
-            {
-                if (thePlayer.Team.TeamPurchase.RemainingMatches == 0)
-                    throw new Exception("WTF");
+            var now = DateTime.Now;
 
-                thePlayer.Team.TeamPurchase.RemainingMatches--;
+            if (thePlayer.Team.TeamPurchase.TicketExpiryDate < now)
+            {
+                if (thePlayer.Team.TeamPurchase.RemainingMatches != 0)
+                {
+                    if (thePlayer.Team.TeamPurchase.RemainingMatches == GlobalConfig.MAX_NUM_MATCHES)
+                        thePlayer.Team.TeamPurchase.LastRemainingMatchesUpdate = now;
+
+                    thePlayer.Team.TeamPurchase.RemainingMatches--;
+                }
+                else
+                {
+                    Log.Error("WTF 90 - Matches exhausted but it's going to play another one!!!!!");
+                }                    
             }
-            theContext.SubmitChanges();
         }
 
         static public Player GetPlayerForRealtimePlayer(SoccerDataModelDataContext theContext, RealtimePlayer playerRT)

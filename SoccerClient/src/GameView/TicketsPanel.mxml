@@ -104,27 +104,25 @@
 				<s:layout>
 					<s:HorizontalLayout gap="4" verticalAlign="middle" />
 				</s:layout>
-				<s:Label id="MyRemainingMatches"  text="{mTeamModel.TheTeam.TeamPurchase.RemainingMatches}" styleName="blackBoldHuge" />
-				<s:RichText id="MyRemainingMatchesTitle" styleName="blackBoldBig" whiteSpaceCollapse="preserve" textAlign="center" kerning="auto" >
-					<s:content><s:p><s:span>{resourceManager.getString('main','Matches')}</s:span></s:p><s:p><s:span>{resourceManager.getString('main','Today')}</s:span></s:p></s:content>
+				<s:Label id="MyRemainingMatches" text="{mTeamModel.TheTeam.TeamPurchase.RemainingMatches}" styleName="blackBoldHuge" />
+				<s:RichText id="MyRemainingMatchesTitle" styleName="blackBoldBig" whiteSpaceCollapse="collapse" textAlign="center" kerning="auto" >
+					<s:content>
+						<s:p><s:span>{resourceManager.getString('main','Matches')}</s:span></s:p>
+						<s:p><s:span>{mTeamPurchaseModel.NewMatchRemainingSecondsString}</s:span></s:p>
+					</s:content>
 				</s:RichText>
 				<s:filters>
 					<s:DropShadowFilter angle="90" distance="0" blurX="8" blurY="8" color="0x000000" alpha="0.50" />
 				</s:filters>
 			</s:Group>
 			
-			
-			<!--<s:Label id="MyZeroRemaining" text="{resourceManager.getString('main','NotAvailableMatches')}" styleName="whiteBoldMedium"  includeIn="NotPurchased"
-			width="160" top="6" horizontalCenter="0"
-			textAlign="center" />-->
-			
 			<s:RichText id="MyZeroRemaining"  width="160" styleName="blackBoldMediumHN" whiteSpaceCollapse="collapse" textAlign="center" kerning="auto" >
 				<s:content>
 					<s:p><s:span>{resourceManager.getString('main','NotAvailableMatches')}</s:span></s:p>
-					<s:p><s:span>{mTeamPurchaseModel.NewMatchesRemainingSecondsString}</s:span></s:p>
+					<s:p><s:span>{mTeamPurchaseModel.NewMatchRemainingSecondsString}</s:span></s:p>
 				</s:content>
 			</s:RichText>
-			
+				
 			<s:Group includeIn="Purchased" left="0" right="0">
 				<s:Label text="{FilterTicketExpiryDate(mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate)}" styleName="whiteBoldBig" y="5" left="0" right="0" textAlign="center" />
 				<s:Label text="{FilterTicketExpiryTime(mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate)}" styleName="whiteBoldBig" y="20" left="0" right="0" textAlign="center" />

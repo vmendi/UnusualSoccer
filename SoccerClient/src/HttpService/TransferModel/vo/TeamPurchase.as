@@ -23,6 +23,7 @@ package HttpService.TransferModel.vo
 		public function TeamPurchase(){}
 	
 		public var RemainingMatches:int;
+		public var NewMatchRemainingSeconds:int;
 		public var TicketPurchaseDate:Date;
 		public var TicketExpiryDate:Date;
 		public var TrainerPurchaseDate:Date;

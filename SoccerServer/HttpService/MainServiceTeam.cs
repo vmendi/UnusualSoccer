@@ -95,9 +95,11 @@ namespace HttpService
             theTeamPurchase.TeamPurchaseID = team.TeamID;
             theTeamPurchase.TicketPurchaseDate = now;
             theTeamPurchase.TicketExpiryDate = now;
-            theTeamPurchase.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
             theTeamPurchase.TrainerPurchaseDate = now;
             theTeamPurchase.TrainerExpiryDate = now;
+
+            theTeamPurchase.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
+            theTeamPurchase.LastRemainingMatchesUpdate = now;
 
             mContext.TeamPurchases.InsertOnSubmit(theTeamPurchase);
         }

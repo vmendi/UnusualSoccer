@@ -254,11 +254,18 @@ namespace Realtime
             if (!GlobalConfig.ServerSettings.TicketingSystem)
                 return true;
 
+            /*
+             * Aqui antes de comprobar si tenemos ticket o partidos habria q hacer un SyncTeam, de momento vamos
+             * a dejar que si el cliente considera q le quedan partidos, continue
+             * 
             var teamPurchase = (from p in theContext.Players
                                 where p.PlayerID == dbPlayerID
                                 select p.Team.TeamPurchase).First();
 
             return teamPurchase.TicketExpiryDate > DateTime.Now || teamPurchase.RemainingMatches > 0;
+             */
+
+            return true;
         }
 
         private void ProcessMatchMaking()

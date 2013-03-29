@@ -66,6 +66,8 @@
         
         remoteObject.GetItemForSale.addEventListener("result",GetItemForSaleHandler);
         
+        remoteObject.GetSecondsTillNextMatch.addEventListener("result",GetSecondsTillNextMatchHandler);
+        
         remoteObject.HasTeam.addEventListener("result",HasTeamHandler);
         
         remoteObject.HealInjury.addEventListener("result",HealInjuryHandler);
@@ -180,6 +182,15 @@
       public function GetItemForSale(orderInfoFromClient_itemID:String, responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.GetItemForSale(orderInfoFromClient_itemID);
+        
+        if( responder != null )
+            asyncToken.addResponder( responder );
+
+      }
+    
+      public function GetSecondsTillNextMatch(xp:int, responder:IResponder = null ):void
+      {
+        var asyncToken:AsyncToken = remoteObject.GetSecondsTillNextMatch(xp);
         
         if( responder != null )
             asyncToken.addResponder( responder );
@@ -392,6 +403,14 @@
         
           var returnValue:ItemForSale = event.result as ItemForSale;
           model.GetItemForSaleResult = returnValue;
+        
+      }
+         
+      public virtual function GetSecondsTillNextMatchHandler(event:ResultEvent):void
+      {
+        
+          var returnValue:int = event.result as int;
+          model.GetSecondsTillNextMatchResult = returnValue;
         
       }
          

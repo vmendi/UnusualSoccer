@@ -11,6 +11,7 @@ namespace ServerCommon
 
         public const int INJURY_DURATION_DAYS = 1;
         public const int DEFAULT_NUM_MACHES = 5;                        // Inicial al entrar en el juego
+        public const int MAX_NUM_MATCHES = 3;                           // Numero maximo que se puede acumular
         
         public const int HEAL_INJURY_COST = 200;                        // Coste de deslesionar, en Unusual Points (SkillPoints)
 
