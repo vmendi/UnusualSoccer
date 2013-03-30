@@ -93,10 +93,10 @@
 		]]>
 	</fx:Script>
 			
-	<s:Group includeIn="NotPurchased" horizontalCenter="0" top="6" >
-		<s:Label horizontalCenter="0" id="MyRemainingMatches" text="{mTeamModel.TheTeam.TeamPurchase.RemainingMatches} {resourceManager.getString('main','Matches')}" styleName="blackBoldVeryBig" />
-		<s:Label horizontalCenter="0" top="4" id="MyZeroRemaining" text="{resourceManager.getString('main','NotAvailableMatches')}" styleName="blackBoldBig" />
-		<s:Label horizontalCenter="0" top="23" id="MyRemainingMatchesTitle" text="{mTeamPurchaseModel.NewMatchRemainingSecondsString}" styleName="blackBoldBig" />
+	<s:Group includeIn="NotPurchased" horizontalCenter="0" top="3" >
+		<s:Label horizontalCenter="0" top="0" id="MyRemainingMatches" text="{mTeamModel.TheTeam.TeamPurchase.RemainingMatches} {resourceManager.getString('main','Matches')}" styleName="blackBoldVeryBig" />
+		<s:Label horizontalCenter="0" top="2" id="MyZeroRemaining" text="{resourceManager.getString('main','NotAvailableMatches')}" styleName="blackBoldBig" />
+		<s:Label horizontalCenter="0" top="21" width="160" id="MyRemainingMatchesTitle" text="{mTeamPurchaseModel.NewMatchRemainingSecondsString}" styleName="blackBoldMediumHN" textAlign="center" />
 		<s:filters>
 			<s:DropShadowFilter angle="90" distance="0" blurX="8" blurY="8" color="0x000000" alpha="0.50" />
 		</s:filters>
@@ -105,7 +105,7 @@
 	<s:Group includeIn="Purchased" horizontalCenter="0" top="6">
 		<s:Label horizontalCenter="0" text="{resourceManager.getString('main','TicketValidoHasta')}" styleName="blackBoldBig" top="0" textAlign="center" />
 		<s:Label horizontalCenter="0" text="{FilterTicketExpiryDate(mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate)}" styleName="blackBoldMediumHN" top="17" textAlign="center" />
-		<s:Label horizontalCenter="0" text="{FilterTicketExpiryTime(mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate)}" styleName="blackBoldMediumHN" top="31" textAlign="center" />
+		<s:Label horizontalCenter="0" text="{FilterTicketExpiryTime(mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate)}" styleName="blackBoldMediumHN" top="31" textAlign="center"  />
 		<s:filters>
 			<s:DropShadowFilter angle="90" distance="0" blurX="8" blurY="8" color="0x000000" alpha="0.50" />
 		</s:filters>
