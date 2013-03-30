@@ -160,6 +160,7 @@ package GameModel
 		{
 			mPlayerTeam = e.result as Team;
 			
+			UpdateLevel();
 			UpdateFieldPositions();
 			UpdateTeamDetails();
 			mMainModel.TheTeamPurchaseModel.UpdatePurchases();	// Preferimos pushearlo en vez de que él lo lea mediante binding porque asi tenemos garantizado el "cuando"
@@ -173,6 +174,25 @@ package GameModel
 		private function IsSubstitute(player : SoccerPlayer) : Boolean
 		{
 			return player.FieldPosition >= 100;
+		}
+		
+		private function UpdateLevel() : void
+		{
+			var maxLevelXPs : ArrayCollection = mMainModel.TheInitialConfig.LevelMaxXP;
+			
+			for (var levelCounter : int = 1; levelCounter < maxLevelXPs.length; levelCounter++)
+			{
+				if (maxLevelXPs[levelCounter] > mPlayerTeam.XP)
+				{
+					Level = levelCounter;
+					break;
+				}
+			}
+			
+			if (Level < maxLevelXPs.length - 1)
+				LevelPercent = Math.round(100*Number(mPlayerTeam.XP - maxLevelXPs[Level-1]) / Number(maxLevelXPs[Level] - maxLevelXPs[Level-1]));
+			else
+				LevelPercent = 0;	// We have levels 50 :)
 		}
 		
 		private function UpdateFieldPositions() : void
@@ -329,11 +349,23 @@ package GameModel
 		}
 		
 
-		// En realidad esta instancia de TeamDetails es una comodidad para mostrar el SelfTeam de forma simetrica a los demas
+		// En realidad esta instancia de TeamDetails es una comodidad para mostrar el SelfTeam de forma simetrica a los demas.
+		// Los TeamDetails es basicamente lo que se muestra en Friendly.TeamDetailsPanel cuando seleccionamos un equipo oponente
 		[Bindable]
 		public  function get TheTeamDetails() : TeamDetails { return mTheTeamDetails; }
 		private function set TheTeamDetails(v : TeamDetails) : void { mTheTeamDetails = v; }
 		private var mTheTeamDetails : TeamDetails;
+		
+		[Bindable]
+		public  function get Level() : int { return mLevel; }
+		private function set Level(v:int) : void { mLevel = v; }
+		private var mLevel : int = 0;
+		
+		[Bindable]
+		public  function get LevelPercent() : int { return mLevelPercent; }
+		private function set LevelPercent(v:int) : void { mLevelPercent = v; }
+		private var mLevelPercent : int = 0;
+		
 
 		private var mFieldSoccerPlayers : ArrayCollection;
 		private var mSubstituteSoccerPlayers : ArrayCollection;

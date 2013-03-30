@@ -1,6 +1,7 @@
 package GameModel
 {	
 	import HttpService.MainService;
+	import HttpService.TransferModel.vo.InitialConfig;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -8,6 +9,8 @@ package GameModel
 	import flash.utils.Timer;
 	
 	import mx.collections.ArrayCollection;
+	import mx.rpc.Responder;
+	import mx.rpc.events.ResultEvent;
 
 	public class MainGameModel extends EventDispatcher
 	{	
@@ -74,21 +77,17 @@ package GameModel
 
 		public function InitialRefresh(callback : Function) : void
 		{
-			mTeamPurchaseModel.InitialRefresh(initialRefreshStage01Completed);
+			mMainService.RefreshInitialConfig(new Responder(onRefreshInitialConfigResponse, ErrorMessages.Fault));
 			
-			function initialRefreshStage01Completed() : void
+			function onRefreshInitialConfigResponse(e:ResultEvent) : void
 			{
-				mTrainingModel.InitialRefresh(initialRefreshStage02Completed);
-			}
-			
-			function initialRefreshStage02Completed() : void
-			{
-				mSpecialTrainingModel.InitialRefresh(startTimer);	
-			}
-			
-			// Timer de refresco global. Queremos inicializarlo explicitamente despues del InitialRefresh
-			function startTimer() : void
-			{
+				TheInitialConfig = e.result as InitialConfig;
+				
+				TheTrainingModel.InitialRefresh(TheInitialConfig);
+				TheSpecialTrainingModel.InitialRefresh(TheInitialConfig);
+				TheTeamPurchaseModel.InitialRefresh(TheInitialConfig);
+						
+				// Timer de refresco global. Queremos inicializarlo explicitamente despues del InitialRefresh			
 				mRefreshTimer = new Timer(1000);
 				mRefreshTimer.addEventListener(TimerEvent.TIMER, OnRefreshTimer);
 				mRefreshTimer.start();
@@ -96,6 +95,11 @@ package GameModel
 				callback();
 			}
 		}
+		
+		[Bindable]
+		internal function get TheInitialConfig() : InitialConfig { return mInitialConfig; }
+		private  function set TheInitialConfig(v:InitialConfig) : void { mInitialConfig = v; }
+		private var mInitialConfig : InitialConfig;
 
 		[Bindable(event="dummy")]
 		public function get TheTrainingModel() : TrainingModel { return mTrainingModel; }

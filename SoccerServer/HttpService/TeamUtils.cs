@@ -2,6 +2,7 @@
 using System.Linq;
 using ServerCommon;
 using ServerCommon.BDDModel;
+using System.Collections.Generic;
 
 namespace HttpService
 {
@@ -23,7 +24,7 @@ namespace HttpService
             DateTime now = DateTime.Now;
 
             double elapsedSeconds = (now - theTeam.TeamPurchase.LastRemainingMatchesUpdate).TotalSeconds;
-            double cycleSeconds = MainService.GetSecondsTillNextMatch(theTeam.XP);
+            double cycleSeconds = GlobalConfig.SECONDS_TO_NEXT_MATCH;
             int    numCycles = (int)Math.Floor(elapsedSeconds / cycleSeconds);
             double remainder = elapsedSeconds - (cycleSeconds * numCycles);
 
@@ -125,6 +126,34 @@ namespace HttpService
             }
 
             return bSubmit;
+        }
+
+        static public List<int> GetLevelMaxXP()
+        {
+            List<int> maxXPs = new List<int>();
+            float slope = (128.0f-64.0f)/5.0f;
+            float targetExp = 64.0f;
+
+            maxXPs.Add(0);
+            maxXPs.Add(2);
+            maxXPs.Add(8);
+            maxXPs.Add(16);
+
+            for (int currentLevel = 4; currentLevel < GlobalConfig.MAX_LEVEL; currentLevel++)
+            {
+                if ((currentLevel+1) % 5 == 0)
+                {
+                    maxXPs.Add((int)targetExp);
+                    targetExp = targetExp * 2;
+                    slope = (targetExp - maxXPs.Last()) / 5.0f;
+                }
+                else
+                {
+                    maxXPs.Add(maxXPs.Last() + (int)Math.Round(slope));
+                }
+            }
+
+            return maxXPs;
         }
     }
 }

@@ -37,6 +37,29 @@
         <field name="NumMatchesWon" type="int" fulltype="int" nativetype="int" />
         <field name="NumMatchesDraw" type="int" fulltype="int" nativetype="int" />
       </datatype>
+      <datatype name="InitialConfig" fullname="HttpService.TransferModel.InitialConfig" typeNamespace="HttpService.TransferModel">
+        <field name="ItemsForSale" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.ItemForSale&gt;" />
+        <field name="DefaultNumMatches" type="int" fulltype="int" nativetype="int" />
+        <field name="MaxNumMatches" type="int" fulltype="int" nativetype="int" />
+        <field name="TrainingDefinitions" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.TrainingDefinition&gt;" />
+        <field name="SpecialTrainingDefinitions" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.SpecialTrainingDefinition&gt;" />
+        <field name="MaxLevel" type="int" fulltype="int" nativetype="int" />
+        <field name="LevelMaxXP" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;int&gt;" />
+        <field name="SecondsToNextMatch" type="int" fulltype="int" nativetype="int" />
+      </datatype>
+      <datatype name="TrainingDefinition" fullname="HttpService.TransferModel.TrainingDefinition" typeNamespace="HttpService.TransferModel">
+        <field name="TrainingDefinitionID" type="int" fulltype="int" nativetype="int" />
+        <field name="Name" type="String" fulltype="String" nativetype="String" />
+        <field name="FitnessDelta" type="int" fulltype="int" nativetype="int" />
+        <field name="Time" type="int" fulltype="int" nativetype="int" />
+      </datatype>
+      <datatype name="SpecialTrainingDefinition" fullname="HttpService.TransferModel.SpecialTrainingDefinition" typeNamespace="HttpService.TransferModel">
+        <field name="SpecialTrainingDefinitionID" type="int" fulltype="int" nativetype="int" />
+        <field name="Name" type="String" fulltype="String" nativetype="String" />
+        <field name="RequiredXP" type="int" fulltype="int" nativetype="int" />
+        <field name="EnergyStep" type="int" fulltype="int" nativetype="int" />
+        <field name="EnergyTotal" type="int" fulltype="int" nativetype="int" />
+      </datatype>
       <datatype name="TeamMatchStats" fullname="HttpService.TransferModel.TeamMatchStats" typeNamespace="HttpService.TransferModel">
         <field name="NumMatches" type="int" fulltype="int" nativetype="int" />
         <field name="NumWonMatches" type="int" fulltype="int" nativetype="int" />
@@ -55,13 +78,6 @@
         <field name="FacebookID" type="Number" fulltype="Number" nativetype="long" />
         <field name="PredefinedTeamNameID" type="String" fulltype="String" nativetype="String" />
         <field name="TrueSkill" type="int" fulltype="int" nativetype="int" />
-      </datatype>
-      <datatype name="SpecialTrainingDefinition" fullname="HttpService.TransferModel.SpecialTrainingDefinition" typeNamespace="HttpService.TransferModel">
-        <field name="SpecialTrainingDefinitionID" type="int" fulltype="int" nativetype="int" />
-        <field name="Name" type="String" fulltype="String" nativetype="String" />
-        <field name="RequiredXP" type="int" fulltype="int" nativetype="int" />
-        <field name="EnergyStep" type="int" fulltype="int" nativetype="int" />
-        <field name="EnergyTotal" type="int" fulltype="int" nativetype="int" />
       </datatype>
       <datatype name="Team" fullname="HttpService.TransferModel.Team" typeNamespace="HttpService.TransferModel">
         <field name="Name" type="String" fulltype="String" nativetype="String" />
@@ -93,12 +109,6 @@
         <field name="TimeEnd" type="Date" fulltype="Date" nativetype="DateTime" />
         <field name="RemainingSeconds" type="int" fulltype="int" nativetype="int" />
       </datatype>
-      <datatype name="TrainingDefinition" fullname="HttpService.TransferModel.TrainingDefinition" typeNamespace="HttpService.TransferModel">
-        <field name="TrainingDefinitionID" type="int" fulltype="int" nativetype="int" />
-        <field name="Name" type="String" fulltype="String" nativetype="String" />
-        <field name="FitnessDelta" type="int" fulltype="int" nativetype="int" />
-        <field name="Time" type="int" fulltype="int" nativetype="int" />
-      </datatype>
       <datatype name="SoccerPlayer" fullname="HttpService.TransferModel.SoccerPlayer" typeNamespace="HttpService.TransferModel">
         <field name="SoccerPlayerID" type="int" fulltype="int" nativetype="int" />
         <field name="Name" type="String" fulltype="String" nativetype="String" />
@@ -122,11 +132,6 @@
         <field name="AveragePower" type="int" fulltype="int" nativetype="int" />
         <field name="Fitness" type="int" fulltype="int" nativetype="int" />
         <field name="SpecialSkillsIDs" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;int&gt;" />
-      </datatype>
-      <datatype name="TeamPurchaseInitialInfo" fullname="HttpService.TransferModel.TeamPurchaseInitialInfo" typeNamespace="HttpService.TransferModel">
-        <field name="ItemsForSale" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.ItemForSale&gt;" />
-        <field name="DefaultNumMatches" type="int" fulltype="int" nativetype="int" />
-        <field name="MaxNumMatches" type="int" fulltype="int" nativetype="int" />
       </datatype>
     </namespace>
     <service name="MainService" fullname="HttpService.MainService" namespace="HttpService" url="http://ENTER WEBORB URL HERE/weborb.aspx">
@@ -156,9 +161,6 @@
       <method name="GetItemForSale" type="ItemForSale" nativetype="HttpService.TransferModel.ItemForSale" containsvalues="0">
         <arg name="orderInfoFromClient_itemID" type="String" nativetype="String" />
       </method>
-      <method name="GetSecondsTillNextMatch" type="int" nativetype="int" containsvalues="0">
-        <arg name="xp" type="int" nativetype="int" />
-      </method>
       <method name="HasTeam" type="Boolean" nativetype="bool" containsvalues="0" />
       <method name="HealInjury" type="Boolean" nativetype="bool" containsvalues="0">
         <arg name="soccerPlayerID" type="int" nativetype="int" />
@@ -173,6 +175,7 @@
       <method name="RefreshGroupForTeam" type="CompetitionGroup" nativetype="HttpService.TransferModel.CompetitionGroup" containsvalues="0">
         <arg name="facebookID" type="Number" nativetype="long" />
       </method>
+      <method name="RefreshInitialConfig" type="InitialConfig" nativetype="HttpService.TransferModel.InitialConfig" containsvalues="0" />
       <method name="RefreshMatchStatsForTeam" type="TeamMatchStats" nativetype="HttpService.TransferModel.TeamMatchStats" containsvalues="0">
         <arg name="facebookID" type="Number" nativetype="long" />
       </method>
@@ -180,13 +183,10 @@
         <arg name="pageIndex" type="int" nativetype="int" />
       </method>
       <method name="RefreshSeasonEndDateRemainingSeconds" type="int" nativetype="int" containsvalues="0" />
-      <method name="RefreshSpecialTrainingDefinitions" type="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.SpecialTrainingDefinition&gt;" containsvalues="0" />
       <method name="RefreshTeam" type="Team" nativetype="HttpService.TransferModel.Team" containsvalues="0" />
       <method name="RefreshTeamDetails" type="TeamDetails" nativetype="HttpService.TransferModel.TeamDetails" containsvalues="0">
         <arg name="facebookID" type="Number" nativetype="long" />
       </method>
-      <method name="RefreshTeamPurchaseInitialInfo" type="TeamPurchaseInitialInfo" nativetype="HttpService.TransferModel.TeamPurchaseInitialInfo" containsvalues="0" />
-      <method name="RefreshTrainingDefinitions" type="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.TrainingDefinition&gt;" containsvalues="0" />
       <method name="SwapFormationPosition" type="void" nativetype="Void" containsvalues="0">
         <arg name="firstSoccerPlayerID" type="int" nativetype="int" />
         <arg name="secondSoccerPlayerID" type="int" nativetype="int" />

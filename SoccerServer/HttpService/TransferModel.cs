@@ -72,7 +72,7 @@ namespace HttpService.TransferModel
             // Tiempo a la siguiente suma de partido. Si estamos al maximo, enviamos 0
             if (RemainingMatches < GlobalConfig.MAX_NUM_MATCHES)
             {
-                var secondsTillNextMatch = MainService.GetSecondsTillNextMatch(from.Team.XP);
+                var secondsTillNextMatch = GlobalConfig.SECONDS_TO_NEXT_MATCH;
                 NewMatchRemainingSeconds = Utils.GetConservativeRemainingSeconds(from.LastRemainingMatchesUpdate.AddSeconds(secondsTillNextMatch));
             }
         }
@@ -249,11 +249,18 @@ namespace HttpService.TransferModel
         public string data { get; set; }
     }
 
-    public class TeamPurchaseInitialInfo
+    public class InitialConfig
     {
         public List<TransferModel.ItemForSale> ItemsForSale;
         public int DefaultNumMatches;
         public int MaxNumMatches;
+        
+        public List<TransferModel.TrainingDefinition> TrainingDefinitions;
+        public List<TransferModel.SpecialTrainingDefinition> SpecialTrainingDefinitions;
+
+        public int MaxLevel;
+        public List<int> LevelMaxXP;
+        public int SecondsToNextMatch;  // Independiente del XP de momento
     }
 
 	public class CopyHelper

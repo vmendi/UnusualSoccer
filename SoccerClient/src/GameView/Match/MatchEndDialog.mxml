@@ -299,11 +299,6 @@
 			</s:Group>	
 		</s:Group>
 		
-		<!--
-		<s:Label horizontalCenter="0" textAlign="center" styleName="yellowBoldVeryBig" 
-				 text="{resourceManager.getString('main','MatchEndDialogCompPoints')} : {MatchResultUtils.GetCompetitionPoints(mMatchResult, mTeamModel)}"
-				 visible="{MatchResultUtils.IsCompetition(mMatchResult)}" includeInLayout="{MatchResultUtils.IsCompetition(mMatchResult)}"  />
-		-->
 		<s:Group horizontalCenter="0">
 			<!-- FONDO -->
 			<s:Rect top="-4" left="-4" right="-4" bottom="-4" alpha="1">
@@ -341,7 +336,6 @@
 						</s:Group>
 						<s:Group>
 							<s:layout><s:VerticalLayout gap="3" horizontalAlign="right"/></s:layout>
-							<!--<s:Label width="30" styleName="yellowBoldBig" textAlign="right" text="{MatchResultUtils.GetCompetitionPoints(mMatchResult, mTeamModel)}" visible="{MatchResultUtils.IsCompetition(mMatchResult)}" includeInLayout="{MatchResultUtils.IsCompetition(mMatchResult)}" />-->
 							<s:Label width="30" styleName="whiteBoldBig" textAlign="right" id="MyXP0"/>
 							<s:Label width="30" styleName="whiteBoldBig" textAlign="right" id="MySkillPoints0"/>
 							<s:Label width="30" styleName="whiteBoldBig" textAlign="right" id="MyTrueSkill0"/>

@@ -1,6 +1,7 @@
 package GameModel
 {
 	import HttpService.MainService;
+	import HttpService.TransferModel.vo.InitialConfig;
 	import HttpService.TransferModel.vo.SpecialTraining;
 	import HttpService.TransferModel.vo.SpecialTrainingDefinition;
 	
@@ -36,17 +37,9 @@ package GameModel
 			Facebook.addJSEventListener('edge.create', OnLikeButtonPressed);
 		}
 		
-		public function InitialRefresh(callback : Function) : void
+		internal function InitialRefresh(initialConfig : InitialConfig) : void
 		{
-			mMainService.RefreshSpecialTrainingDefinitions(new Responder(Delegate.create(OnRefreshSpecialTrainingDefinitionsResponse, callback), 
-														   ErrorMessages.Fault));
-		}
-		private function OnRefreshSpecialTrainingDefinitionsResponse(e : ResultEvent, callback : Function) : void
-		{
-			mDefinitions = e.result as ArrayCollection;
-			
-			if (callback != null)
-				callback();
+			mDefinitions = initialConfig.SpecialTrainingDefinitions;
 		}
 		
 		private function GetSpecialTrainingByDefinitionID(specialTrainingDefinitionID : int) : SpecialTraining

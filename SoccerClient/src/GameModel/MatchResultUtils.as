@@ -37,8 +37,16 @@ package GameModel
 			return bRet;
 		}
 		
+		static public function WasValid(matchResult : Object) : Boolean
+		{
+			return (!matchResult.WasTooManyTimes && !matchResult.WasSameIP && matchResult.WasJust);
+		}
+		
 		static public function GetCompetitionPoints(matchResult : Object, teamModel : TeamModel) : int
 		{
+			if (!WasValid(matchResult))
+				return 0;
+				
 			if (AmITheWinner(matchResult, teamModel))
 				return 3;
 			else

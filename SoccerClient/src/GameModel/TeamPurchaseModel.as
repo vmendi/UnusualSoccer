@@ -1,6 +1,7 @@
 package GameModel
 {
 	import HttpService.MainService;
+	import HttpService.TransferModel.vo.InitialConfig;
 	import HttpService.TransferModel.vo.ItemForSale;
 	import HttpService.TransferModel.vo.TeamPurchaseInitialInfo;
 	
@@ -9,6 +10,7 @@ package GameModel
 	import flash.external.ExternalInterface;
 	
 	import mx.binding.utils.BindingUtils;
+	import mx.collections.ArrayCollection;
 	import mx.resources.ResourceManager;
 	import mx.rpc.Responder;
 	import mx.rpc.events.ResultEvent;
@@ -43,17 +45,11 @@ package GameModel
 			}
 		}
 
-		public function InitialRefresh(callback : Function) : void
+		internal function InitialRefresh(initialConfig : InitialConfig) : void
 		{
-			mMainService.RefreshTeamPurchaseInitialInfo(new mx.rpc.Responder(OnRefreshTeamPurchaseInitialInfoResponse, ErrorMessages.Fault));
-			
-			function OnRefreshTeamPurchaseInitialInfoResponse(e:ResultEvent) : void
-			{
-				mInitialInfo = e.result as TeamPurchaseInitialInfo;
-				
-				callback();
-			}
+			// Lo cogemos directamente del MainGameModel
 		}
+		
 		// El rewards model nos llama aquí cada vez que se ve un video
 		internal function AddOneMatch() : void
 		{
@@ -87,7 +83,7 @@ package GameModel
 		
 		private function GetItemByID(itemID : String) : ItemForSale
 		{
-			for each(var item : ItemForSale in mInitialInfo.ItemsForSale)
+			for each(var item : ItemForSale in  mMainGameModel.TheInitialConfig.ItemsForSale)
 			{
 				if (item.item_id == itemID)
 					return item;				// Artists can take license with established rules...
@@ -125,14 +121,14 @@ package GameModel
 				
 		private function UpdateNewMatchRemainingSeconds() : void
 		{		
-			if (mTeamModel.TheTeam.TeamPurchase.RemainingMatches < mInitialInfo.MaxNumMatches)
+			if (mTeamModel.TheTeam.TeamPurchase.RemainingMatches < mMainGameModel.TheInitialConfig.MaxNumMatches)
 			{
 				if (NewMatchRemainingSeconds - 1 <= 0)
 				{
 					AddOneMatch();
 					
-					if (mTeamModel.TheTeam.TeamPurchase.RemainingMatches < mInitialInfo.MaxNumMatches)
-						NewMatchRemainingSeconds = 120;
+					if (mTeamModel.TheTeam.TeamPurchase.RemainingMatches <  mMainGameModel.TheInitialConfig.MaxNumMatches)
+						NewMatchRemainingSeconds = mMainGameModel.TheInitialConfig.SecondsToNextMatch;
 					else
 						// Cuando llegamos al tope de partidos, dejamos el contador de tiempo a 0
 						NewMatchRemainingSeconds = 0;
@@ -175,9 +171,6 @@ package GameModel
 			else
 				return ResourceManager.getInstance().getString('main','ComeBack').replace("{REPLACEME}", utils.TimeUtils.ConvertSecondsToStringVerbose(NewMatchRemainingSeconds)); 
 		}
-		
-
-		private var mInitialInfo : TeamPurchaseInitialInfo;
 		
 		// http://developers.facebook.com/docs/payments/user_currency/
 		private var mLocalCurrencyInfo : Object;

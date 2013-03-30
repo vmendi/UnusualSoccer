@@ -95,8 +95,8 @@ namespace Realtime
                                    select p).First();
                 mParticipation2.Goals = ResultPlayer2.Goals;
 
-                // Puntos de Competicion. Solo si estan en la misma IP no cuenta.
-                if (!mBDDMatch.IsFriendly && !WasSameIP)
+                // Puntos de Competicion
+                if (WasCompetition && !WasSameIP && !WasTooManyTimes)
                     ProcessCompetition();
 
                 // Lesionamos a futbolistas
@@ -219,11 +219,11 @@ namespace Realtime
 
             if (ResultPlayer1.Goals == ResultPlayer2.Goals)
             {
-                mBDDPlayer1.Team.XP += 2;
-                mBDDPlayer2.Team.XP += 2;
+                mBDDPlayer1.Team.XP += 3;
+                mBDDPlayer2.Team.XP += 3;
 
-                mBDDPlayer1.Team.SkillPoints += 10;
-                mBDDPlayer2.Team.SkillPoints += 10;
+                mBDDPlayer1.Team.SkillPoints += 5;
+                mBDDPlayer2.Team.SkillPoints += 5;
             }
             else
             {
@@ -235,8 +235,11 @@ namespace Realtime
                     loser = mBDDPlayer1;
                 }
 
+                // Al loser no le damos skillpoints pero si permitimos que siga subiendo poco a poco
+                loser.Team.XP += 1;
+
                 winner.Team.XP += 6;
-                winner.Team.SkillPoints += 30;
+                winner.Team.SkillPoints += 15;
             }
 
             ResultPlayer1.DiffXP = mBDDPlayer1.Team.XP - oldPlayer1XP;
@@ -306,12 +309,12 @@ namespace Realtime
             {
                 WasSameIP = true;
             }
+
+            // Han jugado demasiados partidos juntos?
+            WasTooManyTimes = GetTooManyTimes();
             
             if (!WasCompetition)
             {
-                // Han jugado demasiados partidos juntos?
-                WasTooManyTimes = GetTooManyTimes();
-
                 var ratingPlayer1 = new Moserware.Skills.Rating(mBDDPlayer1.Team.Mean, mBDDPlayer1.Team.StandardDeviation);
                 var ratingPlayer2 = new Moserware.Skills.Rating(mBDDPlayer2.Team.Mean, mBDDPlayer2.Team.StandardDeviation);
 
@@ -320,8 +323,7 @@ namespace Realtime
             }
             else
             {
-                // Los partidos de competicion, nunca son muchos y siempre son justos. El filtro tiene que estar en el MatchMaking.
-                WasTooManyTimes = false;
+                // Los partidos de competicion siempre son justos. El filtro esta en el MatchMaking.
                 WasJust = true;
             }
         }
@@ -348,12 +350,15 @@ namespace Realtime
 
         private bool GetTooManyTimes()
         {
+            return false;
+
             // El partido actual todavia no tiene DateEnded, asi que no esta contado...
             int times = (from m in mContext.MatchParticipations
-                         where m.TeamID == mBDDPlayer1.Team.TeamID && m.Match.MatchParticipations.Any(p => p.TeamID == mBDDPlayer2.Team.TeamID)
+                         where m.TeamID == mBDDPlayer1.Team.TeamID
                          && m.Match.DateEnded.HasValue
                          && m.Match.DateEnded.Value.DayOfYear == DateTime.Now.DayOfYear
-                         && m.Match.DateEnded.Value.Year == DateTime.Now.Year
+                         && m.Match.DateEnded.Value.Year == DateTime.Now.Year 
+                         && m.Match.MatchParticipations.Any(p => p.TeamID == mBDDPlayer2.Team.TeamID)
                          select m).Count();
 
             // ...por eso, si ya se han jugado 3, este sera el 4o y eso es TooManyTimes

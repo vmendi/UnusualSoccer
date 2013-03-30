@@ -5,6 +5,7 @@ using ServerCommon;
 using ServerCommon.BDDModel;
 using NLog;
 using System.Diagnostics;
+using Weborb.Service;
 
 
 namespace HttpService
@@ -172,6 +173,29 @@ namespace HttpService
          
 			return 1;
 		}
+
+        [WebORBCache(CacheScope = CacheScope.Global)]
+        public TransferModel.InitialConfig RefreshInitialConfig()
+        {
+            using (CreateDataForRequest())
+            {
+                var ret = new TransferModel.InitialConfig();
+
+                ret.ItemsForSale = GetItemsForSaleFromDB();
+                ret.DefaultNumMatches = GlobalConfig.DEFAULT_NUM_MACHES;
+                ret.MaxNumMatches = GlobalConfig.MAX_NUM_MATCHES;
+
+                ret.TrainingDefinitions = GetTrainingDefinitions();
+                ret.SpecialTrainingDefinitions = GetSpecialTrainingDefinitions();
+
+                ret.MaxLevel = GlobalConfig.MAX_LEVEL;
+                ret.LevelMaxXP = TeamUtils.GetLevelMaxXP();
+                ret.SecondsToNextMatch = GlobalConfig.SECONDS_TO_NEXT_MATCH;
+
+                return ret;
+            }
+        }
+
 
 		SoccerDataModelDataContext mContext = null;
 		Player mPlayer = null;

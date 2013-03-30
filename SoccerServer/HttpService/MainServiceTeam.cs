@@ -253,18 +253,16 @@ namespace HttpService
                         Log.Error("GetExtraRewardForMatch: Se ha pedido recompensa de un partido que no puede tenerla! " + mPlayer.PlayerID + " " + matchID);
                     }
                     else
-                    // Ganador o empate? En cualquier caso, duplicamos lo que ya hemos dado en RealtimeMatchResult.GiveRewards                    
+                    // Ganador o empate?
                     if (theMatchParticipation.Goals > otherParticipation.Goals)
                     {
-                        mPlayer.Team.XP += 6;
-                        mPlayer.Team.SkillPoints += 30;
+                        mPlayer.Team.SkillPoints += 15;
                         bRet = true;
                     }
                     else
                     if (theMatchParticipation.Goals == otherParticipation.Goals)
                     {
-                        mPlayer.Team.XP += 2;
-                        mPlayer.Team.SkillPoints += 10;
+                        mPlayer.Team.SkillPoints += 5;
                         bRet = true;
                     }
                     else

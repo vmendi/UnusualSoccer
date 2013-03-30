@@ -2,6 +2,7 @@ package GameModel
 {
 	import HttpService.MainService;
 	import HttpService.MainServiceModel;
+	import HttpService.TransferModel.vo.InitialConfig;
 	import HttpService.TransferModel.vo.PendingTraining;
 	import HttpService.TransferModel.vo.TrainingDefinition;
 	
@@ -39,19 +40,9 @@ package GameModel
 				callback();	
 		}	
 		
-		public function InitialRefresh(response : Function) : void
+		public function InitialRefresh(initialConfig : InitialConfig) : void
 		{
-			mMainService.RefreshTrainingDefinitions(new Responder(Delegate.create(OnTrainingDefinitionsResponse, response), ErrorMessages.Fault));
-		}
-
-		private function OnTrainingDefinitionsResponse(e:ResultEvent, callback : Function):void
-		{
-			mTrainingDefinitions = e.result as ArrayCollection;
-			
-			if (callback != null)
-				callback();
-			
-			dispatchEvent(new Event("TrainingDefinitionsChanged"));
+			TrainingDefinitions = initialConfig.TrainingDefinitions;
 		}
 
 		private function OnPendingTrainingChanged(newOne : PendingTraining):void
@@ -108,8 +99,10 @@ package GameModel
 			return mTeamModel.TheTeam.PendingTraining.RemainingSeconds <= 0; 
 		}
 		
-		[Bindable(event="TrainingDefinitionsChanged")]
-		public function get TrainingDefinitions() : ArrayCollection { return mTrainingDefinitions; }
+		[Bindable]
+		public  function get TrainingDefinitions() : ArrayCollection { return mTrainingDefinitions; }
+		private function set TrainingDefinitions(v:ArrayCollection) : void { mTrainingDefinitions = v; }
+		private var mTrainingDefinitions : ArrayCollection;
 		
 		static public function GetName(spDef : TrainingDefinition) : String
 		{
@@ -125,7 +118,5 @@ package GameModel
 		private var mMainServiceModel : MainServiceModel;
 		private var mMainModel : MainGameModel;
 		private var mTeamModel : TeamModel;
-				
-		private var mTrainingDefinitions : ArrayCollection;
 	}
 }

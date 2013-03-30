@@ -9,40 +9,6 @@ namespace HttpService
 {
 	public partial class MainService
 	{
-        [WebORBCache(CacheScope = CacheScope.Global)]
-		public List<TransferModel.TrainingDefinition> RefreshTrainingDefinitions()
-		{
-            using (CreateDataForRequest())
-            {
-                List<TransferModel.TrainingDefinition> ret = new List<TransferModel.TrainingDefinition>();
-
-                foreach (TrainingDefinition tr in mContext.TrainingDefinitions)
-                    ret.Add(new TransferModel.TrainingDefinition(tr));
-
-                return ret;
-            }
-		}
-
-        [WebORBCache(CacheScope = CacheScope.Global)]
-        public List<TransferModel.SpecialTrainingDefinition> RefreshSpecialTrainingDefinitions()
-        {
-            using (CreateDataForRequest())
-            {
-                List<TransferModel.SpecialTrainingDefinition> ret = new List<TransferModel.SpecialTrainingDefinition>();
-
-                foreach (SpecialTrainingDefinition tr in mContext.SpecialTrainingDefinitions)
-                {
-                    // Desactivamos temporalmente estas dos
-                    if (tr.Name == "CATENACCIO" || tr.Name == "VER_AREAS")
-                        continue;
-
-                    ret.Add(new TransferModel.SpecialTrainingDefinition(tr));
-                }
-
-                return ret;
-            }
-        }
-
 		public TransferModel.PendingTraining Train(string trainingName)
 		{
             using (CreateDataForRequest())
@@ -197,5 +163,32 @@ namespace HttpService
 
             return true;
         }
+
+        private List<TransferModel.TrainingDefinition> GetTrainingDefinitions()
+        {
+            List<TransferModel.TrainingDefinition> ret = new List<TransferModel.TrainingDefinition>();
+
+            foreach (TrainingDefinition tr in mContext.TrainingDefinitions)
+                ret.Add(new TransferModel.TrainingDefinition(tr));
+
+            return ret;
+        }
+
+        private List<TransferModel.SpecialTrainingDefinition> GetSpecialTrainingDefinitions()
+        {
+            List<TransferModel.SpecialTrainingDefinition> ret = new List<TransferModel.SpecialTrainingDefinition>();
+
+            foreach (SpecialTrainingDefinition tr in mContext.SpecialTrainingDefinitions)
+            {
+                // Desactivamos temporalmente estas dos
+                if (tr.Name == "CATENACCIO" || tr.Name == "VER_AREAS")
+                    continue;
+
+                ret.Add(new TransferModel.SpecialTrainingDefinition(tr));
+            }
+
+            return ret;
+        }
+
 	}
 }

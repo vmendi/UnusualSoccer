@@ -49,13 +49,13 @@
 			<s:HorizontalLayout gap="4" verticalAlign="middle" />
 		</s:layout>
 		<s:Label text="{resourceManager.getString('main','GeneralLevel')}" styleName="whiteBoldMedium" width="48" textAlign="right" />
-		<s:Label text="00" styleName="whiteBoldVeryBig" width="48" textAlign="left" />
+		<s:Label text="{mTeamModel.Level}" styleName="whiteBoldVeryBig" width="48" textAlign="left" />
 		<s:filters>
 			<s:GlowFilter alpha="0.75" blurX="6" blurY="6" color="#FFFFFF" inner="false"
 						  knockout="false" quality="2" strength="1"/>
 		</s:filters>
 	</s:Group>
-	<GameView:XpBar x="230" y="42" Percent="100" />
+	<GameView:XpBar x="230" y="42" Percent="{mTeamModel.LevelPercent}" />
 	
 	<s:Label x="320" y="20" text="{resourceManager.getString('main','GeneralSkill')}: {mTeamModel.TheTeam.TrueSkill}" width="100" styleName="whiteBoldMedium" textAlign="center"/>
 	<GameView:BadgeCategory width="64" height="43" left="342" top="28" TrueSkill="{mTeamModel.TheTeam.TrueSkill}" />

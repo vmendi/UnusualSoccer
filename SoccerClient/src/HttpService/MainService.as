@@ -66,8 +66,6 @@
         
         remoteObject.GetItemForSale.addEventListener("result",GetItemForSaleHandler);
         
-        remoteObject.GetSecondsTillNextMatch.addEventListener("result",GetSecondsTillNextMatchHandler);
-        
         remoteObject.HasTeam.addEventListener("result",HasTeamHandler);
         
         remoteObject.HealInjury.addEventListener("result",HealInjuryHandler);
@@ -80,21 +78,17 @@
         
         remoteObject.RefreshGroupForTeam.addEventListener("result",RefreshGroupForTeamHandler);
         
+        remoteObject.RefreshInitialConfig.addEventListener("result",RefreshInitialConfigHandler);
+        
         remoteObject.RefreshMatchStatsForTeam.addEventListener("result",RefreshMatchStatsForTeamHandler);
         
         remoteObject.RefreshRankingPage.addEventListener("result",RefreshRankingPageHandler);
         
         remoteObject.RefreshSeasonEndDateRemainingSeconds.addEventListener("result",RefreshSeasonEndDateRemainingSecondsHandler);
         
-        remoteObject.RefreshSpecialTrainingDefinitions.addEventListener("result",RefreshSpecialTrainingDefinitionsHandler);
-        
         remoteObject.RefreshTeam.addEventListener("result",RefreshTeamHandler);
         
         remoteObject.RefreshTeamDetails.addEventListener("result",RefreshTeamDetailsHandler);
-        
-        remoteObject.RefreshTeamPurchaseInitialInfo.addEventListener("result",RefreshTeamPurchaseInitialInfoHandler);
-        
-        remoteObject.RefreshTrainingDefinitions.addEventListener("result",RefreshTrainingDefinitionsHandler);
         
         remoteObject.SwapFormationPosition.addEventListener("result",SwapFormationPositionHandler);
         
@@ -188,15 +182,6 @@
 
       }
     
-      public function GetSecondsTillNextMatch(xp:int, responder:IResponder = null ):void
-      {
-        var asyncToken:AsyncToken = remoteObject.GetSecondsTillNextMatch(xp);
-        
-        if( responder != null )
-            asyncToken.addResponder( responder );
-
-      }
-    
       public function HasTeam( responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.HasTeam();
@@ -251,6 +236,15 @@
 
       }
     
+      public function RefreshInitialConfig( responder:IResponder = null ):void
+      {
+        var asyncToken:AsyncToken = remoteObject.RefreshInitialConfig();
+        
+        if( responder != null )
+            asyncToken.addResponder( responder );
+
+      }
+    
       public function RefreshMatchStatsForTeam(facebookID:Number, responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.RefreshMatchStatsForTeam(facebookID);
@@ -278,15 +272,6 @@
 
       }
     
-      public function RefreshSpecialTrainingDefinitions( responder:IResponder = null ):void
-      {
-        var asyncToken:AsyncToken = remoteObject.RefreshSpecialTrainingDefinitions();
-        
-        if( responder != null )
-            asyncToken.addResponder( responder );
-
-      }
-    
       public function RefreshTeam( responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.RefreshTeam();
@@ -299,24 +284,6 @@
       public function RefreshTeamDetails(facebookID:Number, responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.RefreshTeamDetails(facebookID);
-        
-        if( responder != null )
-            asyncToken.addResponder( responder );
-
-      }
-    
-      public function RefreshTeamPurchaseInitialInfo( responder:IResponder = null ):void
-      {
-        var asyncToken:AsyncToken = remoteObject.RefreshTeamPurchaseInitialInfo();
-        
-        if( responder != null )
-            asyncToken.addResponder( responder );
-
-      }
-    
-      public function RefreshTrainingDefinitions( responder:IResponder = null ):void
-      {
-        var asyncToken:AsyncToken = remoteObject.RefreshTrainingDefinitions();
         
         if( responder != null )
             asyncToken.addResponder( responder );
@@ -406,14 +373,6 @@
         
       }
          
-      public virtual function GetSecondsTillNextMatchHandler(event:ResultEvent):void
-      {
-        
-          var returnValue:int = event.result as int;
-          model.GetSecondsTillNextMatchResult = returnValue;
-        
-      }
-         
       public virtual function HasTeamHandler(event:ResultEvent):void
       {
         
@@ -459,6 +418,14 @@
         
       }
          
+      public virtual function RefreshInitialConfigHandler(event:ResultEvent):void
+      {
+        
+          var returnValue:InitialConfig = event.result as InitialConfig;
+          model.RefreshInitialConfigResult = returnValue;
+        
+      }
+         
       public virtual function RefreshMatchStatsForTeamHandler(event:ResultEvent):void
       {
         
@@ -483,14 +450,6 @@
         
       }
          
-      public virtual function RefreshSpecialTrainingDefinitionsHandler(event:ResultEvent):void
-      {
-        
-          var returnValue:ArrayCollection = event.result as ArrayCollection;
-          model.RefreshSpecialTrainingDefinitionsResult = returnValue;
-        
-      }
-         
       public virtual function RefreshTeamHandler(event:ResultEvent):void
       {
         
@@ -504,22 +463,6 @@
         
           var returnValue:TeamDetails = event.result as TeamDetails;
           model.RefreshTeamDetailsResult = returnValue;
-        
-      }
-         
-      public virtual function RefreshTeamPurchaseInitialInfoHandler(event:ResultEvent):void
-      {
-        
-          var returnValue:TeamPurchaseInitialInfo = event.result as TeamPurchaseInitialInfo;
-          model.RefreshTeamPurchaseInitialInfoResult = returnValue;
-        
-      }
-         
-      public virtual function RefreshTrainingDefinitionsHandler(event:ResultEvent):void
-      {
-        
-          var returnValue:ArrayCollection = event.result as ArrayCollection;
-          model.RefreshTrainingDefinitionsResult = returnValue;
         
       }
          

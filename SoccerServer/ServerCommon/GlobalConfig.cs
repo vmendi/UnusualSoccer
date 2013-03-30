@@ -17,7 +17,10 @@ namespace ServerCommon
 
         public const int INITIAL_SKILL_POINTS = 100;                    // Skill points con los que se empieza el juego
         public const int INITIAL_FITNESS = 50;                          // Como de entrenados empezados
-        
+
+        public const int MAX_LEVEL = 50;
+        public const int SECONDS_TO_NEXT_MATCH = 10;                  // Independiente del XP de momento
+
         static public ServerConfig ServerSettings { get { return mServerSettings; } }
         static public IFacebookApplication FacebookSettings { get { return mFBSettings; } }
 

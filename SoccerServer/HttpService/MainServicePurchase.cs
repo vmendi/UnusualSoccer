@@ -12,22 +12,6 @@ namespace HttpService
     //
     public partial class MainService
     {
-        public TransferModel.TeamPurchaseInitialInfo RefreshTeamPurchaseInitialInfo()
-        {
-            var ret = new TransferModel.TeamPurchaseInitialInfo();
-            
-            ret.ItemsForSale = GetItemsForSaleFromDB();
-            ret.DefaultNumMatches = GlobalConfig.DEFAULT_NUM_MACHES;
-            ret.MaxNumMatches = GlobalConfig.MAX_NUM_MATCHES;
-            
-            return ret;
-        }
-
-        static public int GetSecondsTillNextMatch(int xp)
-        {
-            return 120;
-        }
-      
         private List<TransferModel.ItemForSale> GetItemsForSale()
         {
             return GetItemsForSaleFromDB();
