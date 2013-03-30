@@ -9,13 +9,16 @@
 		[Bindable]
 		public function set FacebookID(id : String) : void
 		{
-			// Nos estan reusando con useVirtualLayout == true?
-			if (mFacebookID != null)
-				ResetPreviousLoad();
-			
-			mFacebookID = id;
-			
-			LoadPicture();
+			try {
+				// Nos estan reusando con useVirtualLayout == true?
+				if (mFacebookID != null)
+					ResetPreviousLoad();
+				
+				mFacebookID = id;
+				
+				LoadPicture();
+			}
+			catch(e:Error) {}
 		}		
 		public function get FacebookID() : String
 		{
@@ -69,19 +72,22 @@
 		
 		private function OnLoadComplete(e:Event):void
 		{
-			var loaderInfo : LoaderInfo = e.target as LoaderInfo;
-			
-			if (loaderInfo.bytesLoaded != 0 && loaderInfo.bytesLoaded == loaderInfo.bytesTotal &&
-				mLoader != null && mLoader.contentLoaderInfo == loaderInfo)
-			{
-				mLoadersCache[mFacebookID+Size] = mLoader;
+			try {
+				var loaderInfo : LoaderInfo = e.target as LoaderInfo;
 				
-				var image : BitmapImage = new BitmapImage();					
-				image.source = mLoader.content;
-				image.smooth = true;
-				
-				addElement(image);
+				if (loaderInfo.bytesLoaded != 0 && loaderInfo.bytesLoaded == loaderInfo.bytesTotal &&
+					mLoader != null && mLoader.contentLoaderInfo == loaderInfo)
+				{
+					mLoadersCache[mFacebookID+Size] = mLoader;
+					
+					var image : BitmapImage = new BitmapImage();					
+					image.source = mLoader.content;
+					image.smooth = true;
+					
+					addElement(image);
+				}
 			}
+			catch(e:Error) {}
 		}
 		
 		// Por el useVirtualLayout de las listas, nos reusaran... tenemos un loader en curso que hay que cerrar

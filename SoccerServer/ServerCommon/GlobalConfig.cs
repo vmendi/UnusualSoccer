@@ -14,12 +14,12 @@ namespace ServerCommon
         public const int MAX_NUM_MATCHES = 3;                           // Numero maximo que se puede acumular
         
         public const int HEAL_INJURY_COST = 200;                        // Coste de deslesionar, en Unusual Points (SkillPoints)
-
+        
         public const int INITIAL_SKILL_POINTS = 100;                    // Skill points con los que se empieza el juego
         public const int INITIAL_FITNESS = 50;                          // Como de entrenados empezados
 
         public const int MAX_LEVEL = 50;
-        public const int SECONDS_TO_NEXT_MATCH = 10;                  // Independiente del XP de momento
+        public const int SECONDS_TO_NEXT_MATCH = 120;                  // Independiente del XP de momento
 
         static public ServerConfig ServerSettings { get { return mServerSettings; } }
         static public IFacebookApplication FacebookSettings { get { return mFBSettings; } }

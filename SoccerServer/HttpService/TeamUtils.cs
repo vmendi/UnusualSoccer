@@ -130,30 +130,34 @@ namespace HttpService
 
         static public List<int> GetLevelMaxXP()
         {
-            List<int> maxXPs = new List<int>();
-            float slope = (128.0f-64.0f)/5.0f;
-            float targetExp = 64.0f;
-
+            List<float> maxXPs = new List<float>();
+            
+            float slope = (32.0f-0.0f)/10.0f;        
+            float targetExp = 32.0f;
             maxXPs.Add(0);
-            maxXPs.Add(2);
-            maxXPs.Add(8);
-            maxXPs.Add(16);
 
-            for (int currentLevel = 4; currentLevel < GlobalConfig.MAX_LEVEL; currentLevel++)
+            for (int currentLevel = 1; currentLevel < GlobalConfig.MAX_LEVEL; currentLevel++)
             {
-                if ((currentLevel+1) % 5 == 0)
+                if (currentLevel < 9)
                 {
-                    maxXPs.Add((int)targetExp);
-                    targetExp = targetExp * 2;
-                    slope = (targetExp - maxXPs.Last()) / 5.0f;
+                    maxXPs.Add(maxXPs.Last() + slope);
                 }
                 else
                 {
-                    maxXPs.Add(maxXPs.Last() + (int)Math.Round(slope));
+                    if ((currentLevel + 1) % 5 == 0)
+                    {
+                        maxXPs.Add(targetExp);
+                        targetExp = targetExp * 2;
+                        slope = (targetExp - maxXPs.Last()) / 5.0f;
+                    }
+                    else
+                    {
+                        maxXPs.Add(maxXPs.Last() + slope);
+                    }
                 }
             }
 
-            return maxXPs;
+            return maxXPs.Select(fl => (int)Math.Round(fl)).ToList();
         }
     }
 }

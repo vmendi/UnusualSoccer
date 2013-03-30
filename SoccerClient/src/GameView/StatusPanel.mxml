@@ -42,7 +42,10 @@
 	
 	<s:Label x="58" y="21" text="{PredefinedTeamsModel.Localize(mTeamModel.TheTeam.PredefinedTeamNameID)}" styleName="whiteBoldBig" id="MyPredefinedTeamLabel" alpha="0.7" filters="{txtGlowFilter}"/> 
 	<s:Label x="58" y="42" maxDisplayedLines="1" maxWidth="150" text="{mTeamModel.TheTeam.Name}" styleName="whiteBoldVeryBig" id="MyTeamNameLabel" filters="{txtGlowFilter}"/>
-	<s:Button right="574" y="19" height="20" label="{resourceManager.getString('main','GeneralEdit')}" skinClass="GameView.Skins.ButtonGreySkin" />
+	
+	<!-- TODO
+	<s:Button right="574" y="19" height="20" label="{resourceManager.getString('main','GeneralEdit')}" skinClass="GameView.Skins.ButtonGreySkin"/>
+	-->
 	
 	<s:Group x="221" y="18">
 		<s:layout>

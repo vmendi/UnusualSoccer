@@ -50,7 +50,7 @@ package GameModel
 				mCompetitionModel.OnTimerSeconds();
 				mTrainingModel.OnTimerSeconds();
 			}
-			catch(e:Event)
+			catch(e:Error)
 			{
 				ErrorMessages.LogToServer("WTF 445");
 			}
@@ -69,7 +69,7 @@ package GameModel
 				// Y el timer de inactividad
 				mInactivityModel.OnCleaningShutdown();
 			}
-			catch(e:Event)
+			catch(e:Error)
 			{
 				ErrorMessages.LogToServer("WTF 446");
 			}
@@ -87,7 +87,7 @@ package GameModel
 				TheSpecialTrainingModel.InitialRefresh(TheInitialConfig);
 				TheTeamPurchaseModel.InitialRefresh(TheInitialConfig);
 						
-				// Timer de refresco global. Queremos inicializarlo explicitamente despues del InitialRefresh			
+				// Timer de refresco global. Queremos inicializarlo explicitamente despues del InitialRefresh
 				mRefreshTimer = new Timer(1000);
 				mRefreshTimer.addEventListener(TimerEvent.TIMER, OnRefreshTimer);
 				mRefreshTimer.start();
