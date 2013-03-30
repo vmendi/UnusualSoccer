@@ -171,7 +171,7 @@ package GameModel
 		public function get NewMatchRemainingSecondsString() : String 
 		{ 
 			if (NewMatchRemainingSeconds == 0)
-				return "";
+				return ResourceManager.getInstance().getString('main','GeneralPlayNow');
 			else
 				return ResourceManager.getInstance().getString('main','ComeBack').replace("{REPLACEME}", utils.TimeUtils.ConvertSecondsToStringVerbose(NewMatchRemainingSeconds)); 
 		}
