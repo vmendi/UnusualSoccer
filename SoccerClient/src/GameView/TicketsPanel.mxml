@@ -40,14 +40,12 @@
 					MyZeroRemaining.visible = true;
 					MyRemainingMatches.visible = false;
 					MyRemainingMatchesTitle.visible = true;
-					MyRemainingMatchesMessage.visible = false;
 				}
 				else
 				{
 					MyZeroRemaining.visible = false;
 					MyRemainingMatches.visible = true;
-					MyRemainingMatchesTitle.visible = false;
-					MyRemainingMatchesMessage.visible = true;
+					MyRemainingMatchesTitle.visible = true;
 				}
 			}
 			
@@ -99,7 +97,6 @@
 		<s:Label horizontalCenter="0" id="MyRemainingMatches" text="{mTeamModel.TheTeam.TeamPurchase.RemainingMatches} {resourceManager.getString('main','Matches')}" styleName="blackBoldVeryBig" />
 		<s:Label horizontalCenter="0" top="4" id="MyZeroRemaining" text="{resourceManager.getString('main','NotAvailableMatches')}" styleName="blackBoldBig" />
 		<s:Label horizontalCenter="0" top="23" id="MyRemainingMatchesTitle" text="{mTeamPurchaseModel.NewMatchRemainingSecondsString}" styleName="blackBoldBig" />
-		<s:Label horizontalCenter="0" top="23" id="MyRemainingMatchesMessage" text="{resourceManager.getString('main','GeneralPlayNow')}" styleName="blackBoldBig" />
 		<s:filters>
 			<s:DropShadowFilter angle="90" distance="0" blurX="8" blurY="8" color="0x000000" alpha="0.50" />
 		</s:filters>

@@ -44,12 +44,12 @@
 	<s:Label x="58" y="42" maxDisplayedLines="1" maxWidth="150" text="{mTeamModel.TheTeam.Name}" styleName="whiteBoldVeryBig" id="MyTeamNameLabel" filters="{txtGlowFilter}"/>
 	<s:Button right="574" y="19" height="20" label="{resourceManager.getString('main','GeneralEdit')}" skinClass="GameView.Skins.ButtonGreySkin" />
 	
-	<s:Group x="226" y="18">
+	<s:Group x="221" y="18">
 		<s:layout>
 			<s:HorizontalLayout gap="4" verticalAlign="middle" />
 		</s:layout>
 		<s:Label text="{resourceManager.getString('main','GeneralLevel')}" styleName="whiteBoldMedium" width="48" textAlign="right" />
-		<s:Label text="7" styleName="whiteBoldVeryBig" width="48" textAlign="left" />
+		<s:Label text="00" styleName="whiteBoldVeryBig" width="48" textAlign="left" />
 		<s:filters>
 			<s:GlowFilter alpha="0.75" blurX="6" blurY="6" color="#FFFFFF" inner="false"
 						  knockout="false" quality="2" strength="1"/>
