@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 minWidth="73" minHeight="19"
+		 >
+
+	<fx:Declarations>
+		<s:Animate id="MyAnimateEffect"
+				   target="{MyXpBar}" repeatCount="1" 
+				   repeatBehavior="loop"
+				   duration="500">
+			<s:motionPaths>
+				<s:SimpleMotionPath property="percentWidth" valueFrom="0" valueTo="100"/>
+			</s:motionPaths>
+		</s:Animate>
+	</fx:Declarations>
+	
+	<fx:Script><![CDATA[
+		import mx.events.FlexEvent;
+		
+		public function get AnimationEnabled() : Boolean { return mAnimationEnabled; }
+		public function set AnimationEnabled(v : Boolean) : void { mAnimationEnabled = v; }
+		
+		[Bindable]
+		public function get Percent() : Number { return mPercent; }
+		public function set Percent(v:Number) : void 
+		{ 
+			MyAnimateEffect.stop();
+			
+			if (!isNaN(MyXpBar.percentWidth) && mAnimationEnabled)
+			{
+				(MyAnimateEffect.motionPaths[0] as SimpleMotionPath).valueFrom = MyXpBar.percentWidth;
+				mPercent = v;			
+				(MyAnimateEffect.motionPaths[0] as SimpleMotionPath).valueTo = mPercent;
+				
+				MyAnimateEffect.play();
+			}
+			else
+			{
+				mPercent = v;
+				MyXpBar.percentWidth = mPercent;
+			}
+			
+			MyXpBar.visible = true;
+		}
+		
+		private var mAnimationEnabled : Boolean = true;
+		private var mPercent : Number = -1;
+		
+	]]></fx:Script>
+			
+	
+
+	<s:Image source="@Embed(source='/Assets/General.swf', symbol='XPMarco')"/>
+	<!-- El 100% es 63 de width -->
+	<s:Rect id="MyXpBar" left="5" top="5" right="5" bottom="5" width="30" height="9" radiusX="4">
+		<s:fill>
+			<s:SolidColor color="#8AF5FF"/>
+		</s:fill>
+		<s:filters>
+			<s:GlowFilter alpha="0.75" blurX="8" blurY="8" color="#00FCFF" inner="false"
+						  knockout="false" quality="2" strength="2"/>
+		</s:filters>
+	</s:Rect>
+	
+</s:Group>

@@ -39,13 +39,15 @@
 				{
 					MyZeroRemaining.visible = true;
 					MyRemainingMatches.visible = false;
-					MyRemainingMatchesTitle.visible = false;
+					MyRemainingMatchesTitle.visible = true;
+					MyRemainingMatchesMessage.visible = false;
 				}
 				else
 				{
 					MyZeroRemaining.visible = false;
 					MyRemainingMatches.visible = true;
-					MyRemainingMatchesTitle.visible = true;
+					MyRemainingMatchesTitle.visible = false;
+					MyRemainingMatchesMessage.visible = true;
 				}
 			}
 			
@@ -92,50 +94,33 @@
 			[Bindable] private var mTeamPurchaseModel : TeamPurchaseModel;
 		]]>
 	</fx:Script>
-	
-	<!--<s:Image source="@Embed(source='/Assets/General.swf', symbol='TicketBg')" alpha.NotPurchased="1" alpha.Purchased="1" />-->
-	
-	<s:Group verticalCenter="0" horizontalCenter="0">
-		<s:layout>
-			<s:VerticalLayout gap="0" horizontalAlign="center" />
-		</s:layout>
-		<s:Group>
-			<s:Group includeIn="NotPurchased" horizontalCenter="0">
-				<s:layout>
-					<s:HorizontalLayout gap="4" verticalAlign="middle" />
-				</s:layout>
-				<s:Label id="MyRemainingMatches" text="{mTeamModel.TheTeam.TeamPurchase.RemainingMatches}" styleName="blackBoldHuge" />
-				<s:RichText id="MyRemainingMatchesTitle" styleName="blackBoldBig" whiteSpaceCollapse="collapse" textAlign="center" kerning="auto" >
-					<s:content>
-						<s:p><s:span>{resourceManager.getString('main','Matches')}</s:span></s:p>
-						<s:p><s:span>{mTeamPurchaseModel.NewMatchRemainingSecondsString}</s:span></s:p>
-					</s:content>
-				</s:RichText>
-				<s:filters>
-					<s:DropShadowFilter angle="90" distance="0" blurX="8" blurY="8" color="0x000000" alpha="0.50" />
-				</s:filters>
-			</s:Group>
 			
-			<s:RichText id="MyZeroRemaining"  width="160" styleName="blackBoldMediumHN" whiteSpaceCollapse="collapse" textAlign="center" kerning="auto" >
-				<s:content>
-					<s:p><s:span>{resourceManager.getString('main','NotAvailableMatches')}</s:span></s:p>
-					<s:p><s:span>{mTeamPurchaseModel.NewMatchRemainingSecondsString}</s:span></s:p>
-				</s:content>
-			</s:RichText>
-				
-			<s:Group includeIn="Purchased" left="0" right="0">
-				<s:Label text="{FilterTicketExpiryDate(mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate)}" styleName="whiteBoldBig" y="5" left="0" right="0" textAlign="center" />
-				<s:Label text="{FilterTicketExpiryTime(mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate)}" styleName="whiteBoldBig" y="20" left="0" right="0" textAlign="center" />
-			</s:Group>
-		</s:Group>
-		<s:Button id="MyBuyTicketsButton"
-				  label.NotPurchased="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
-				  label.Purchased="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
-				  click="MyBuyTicketsButton_clickHandler(event)"
-				  skinClass="GameView.Skins.ButtonDarkGreySkin"
-				  width="110" height="20"
-				  />
+	<s:Group includeIn="NotPurchased" horizontalCenter="0" top="6" >
+		<s:Label horizontalCenter="0" id="MyRemainingMatches" text="{mTeamModel.TheTeam.TeamPurchase.RemainingMatches} {resourceManager.getString('main','Matches')}" styleName="blackBoldVeryBig" />
+		<s:Label horizontalCenter="0" top="4" id="MyZeroRemaining" text="{resourceManager.getString('main','NotAvailableMatches')}" styleName="blackBoldBig" />
+		<s:Label horizontalCenter="0" top="23" id="MyRemainingMatchesTitle" text="{mTeamPurchaseModel.NewMatchRemainingSecondsString}" styleName="blackBoldBig" />
+		<s:Label horizontalCenter="0" top="23" id="MyRemainingMatchesMessage" text="{resourceManager.getString('main','GeneralPlayNow')}" styleName="blackBoldBig" />
+		<s:filters>
+			<s:DropShadowFilter angle="90" distance="0" blurX="8" blurY="8" color="0x000000" alpha="0.50" />
+		</s:filters>
 	</s:Group>
 	
+	<s:Group includeIn="Purchased" horizontalCenter="0" top="6">
+		<s:Label horizontalCenter="0" text="{resourceManager.getString('main','TicketValidoHasta')}" styleName="blackBoldBig" top="0" textAlign="center" />
+		<s:Label horizontalCenter="0" text="{FilterTicketExpiryDate(mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate)}" styleName="blackBoldMediumHN" top="17" textAlign="center" />
+		<s:Label horizontalCenter="0" text="{FilterTicketExpiryTime(mTeamModel.TheTeam.TeamPurchase.TicketExpiryDate)}" styleName="blackBoldMediumHN" top="31" textAlign="center" />
+		<s:filters>
+			<s:DropShadowFilter angle="90" distance="0" blurX="8" blurY="8" color="0x000000" alpha="0.50" />
+		</s:filters>
+	</s:Group>
+		
+	<s:Button id="MyBuyTicketsButton"
+			  label.NotPurchased="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
+			  label.Purchased="{resourceManager.getString('main','CompetitionBuyGameTimeButton')}"
+			  click="MyBuyTicketsButton_clickHandler(event)"
+			  skinClass="GameView.Skins.ButtonDarkGreySkin"
+			  width="110" height="20"
+			  horizontalCenter="0" bottom="6"
+			  />
 	
 </s:Group>
