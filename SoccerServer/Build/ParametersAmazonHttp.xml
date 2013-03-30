@@ -12,6 +12,7 @@
 	<setParameter name="enableRealtime" value="false" />
 	<setParameter name="ticketingSystem" value="true" />
 	<setParameter name="sameIPChecked" value="true" />
+	<setParameter name="tooManyTimesChecked" value="true" />
 	<setParameter name="realtimeServer" value="realtime01.unusualsoccer.com" />
 	<setParameter name="cdn" value="//d3gkkiro3subwc.cloudfront.net/" />
 	

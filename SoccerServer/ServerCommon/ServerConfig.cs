@@ -26,6 +26,12 @@ namespace ServerCommon
             get { return (bool)this["sameIPChecked"]; }
         }
 
+        [ConfigurationProperty("tooManyTimesChecked", IsRequired = true)]
+        public bool TooManyTimesChecked
+        {
+            get { return (bool)this["tooManyTimesChecked"]; }
+        }
+
         [ConfigurationProperty("remoteServer", IsRequired = false, DefaultValue="")]
         public string RemoteServer
         {

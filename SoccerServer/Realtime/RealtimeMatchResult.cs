@@ -350,7 +350,8 @@ namespace Realtime
 
         private bool GetTooManyTimes()
         {
-            return false;
+            if (!GlobalConfig.ServerSettings.TooManyTimesChecked)
+                return false;
 
             // El partido actual todavia no tiene DateEnded, asi que no esta contado...
             int times = (from m in mContext.MatchParticipations

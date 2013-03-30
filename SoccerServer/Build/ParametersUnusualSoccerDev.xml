@@ -12,6 +12,7 @@
 	<setParameter name="enableRealtime" value="true" />
 	<setParameter name="ticketingSystem" value="false" />
 	<setParameter name="sameIPChecked" value="false" />
+	<setParameter name="tooManyTimesChecked" value="false" />
 
 	<setParameter name="networkLog" value="udp4://log.unusualsoccer.com:1001" />
 </parameters>
