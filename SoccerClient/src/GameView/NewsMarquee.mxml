@@ -18,8 +18,12 @@
 				
 		protected function AddedToStageHandler(event:Event):void
 		{
+			/* 
+			* Temporaly disabled to avoid interferences while hunting for bugs
+			
 			if (mLoader == null)
 				TweenNano.delayedCall(1, Start);
+			*/
 		}
 		
 		private function Start() : void
