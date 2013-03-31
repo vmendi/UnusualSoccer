@@ -189,21 +189,16 @@ package GameModel
 		
 		// Public because we need to convert other teams XP to level (In the ranking, for instance)
 		public function ConvertXPToLevel(xp : int) : int
-		{
-			var ret : int = 0;
-			
+		{			
 			var maxLevelXPs : ArrayCollection = mMainModel.TheInitialConfig.LevelMaxXP;
 			
 			for (var levelCounter : int = 1; levelCounter < maxLevelXPs.length; levelCounter++)
 			{
 				if (maxLevelXPs[levelCounter] > xp)
-				{
-					ret = levelCounter;
-					break;
-				}
+					return levelCounter;
 			}
 			
-			return ret;
+			return 0;
 		}
 		
 		private function UpdateFieldPositions() : void
