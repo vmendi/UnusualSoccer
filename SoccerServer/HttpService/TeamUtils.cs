@@ -159,5 +159,18 @@ namespace HttpService
 
             return maxXPs.Select(fl => (int)Math.Round(fl)).ToList();
         }
+
+        static public int ConvertXPToLevel(int xp)
+        {            	
+			List<int> maxLevelXPs = GetLevelMaxXP();
+            
+            for (int levelCounter = 1; levelCounter < maxLevelXPs.Count; levelCounter++)
+            {
+                if (maxLevelXPs[levelCounter] > xp)
+                    return levelCounter;
+            }
+			
+			return 0;
+        }
     }
 }

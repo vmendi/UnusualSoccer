@@ -43,7 +43,6 @@
         <field name="MaxNumMatches" type="int" fulltype="int" nativetype="int" />
         <field name="TrainingDefinitions" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.TrainingDefinition&gt;" />
         <field name="SpecialTrainingDefinitions" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;HttpService.TransferModel.SpecialTrainingDefinition&gt;" />
-        <field name="MaxLevel" type="int" fulltype="int" nativetype="int" />
         <field name="LevelMaxXP" type="ArrayCollection" fulltype="ArrayCollection" nativetype="List&lt;int&gt;" />
         <field name="SecondsToNextMatch" type="int" fulltype="int" nativetype="int" />
       </datatype>
@@ -78,7 +77,7 @@
         <field name="FacebookID" type="Number" fulltype="Number" nativetype="long" />
         <field name="PredefinedTeamNameID" type="String" fulltype="String" nativetype="String" />
         <field name="TrueSkill" type="int" fulltype="int" nativetype="int" />
-        <field name="XP" type="int" fulltype="int" nativetype="int" />
+        <field name="Level" type="int" fulltype="int" nativetype="int" />
       </datatype>
       <datatype name="Team" fullname="HttpService.TransferModel.Team" typeNamespace="HttpService.TransferModel">
         <field name="Name" type="String" fulltype="String" nativetype="String" />
@@ -86,6 +85,7 @@
         <field name="Formation" type="String" fulltype="String" nativetype="String" />
         <field name="TrueSkill" type="int" fulltype="int" nativetype="int" />
         <field name="XP" type="int" fulltype="int" nativetype="int" />
+        <field name="Level" type="int" fulltype="int" nativetype="int" />
         <field name="SkillPoints" type="int" fulltype="int" nativetype="int" />
         <field name="Energy" type="int" fulltype="int" nativetype="int" />
         <field name="Fitness" type="int" fulltype="int" nativetype="int" />

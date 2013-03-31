@@ -188,7 +188,6 @@ namespace HttpService
                 ret.TrainingDefinitions = GetTrainingDefinitions();
                 ret.SpecialTrainingDefinitions = GetSpecialTrainingDefinitions();
 
-                ret.MaxLevel = GlobalConfig.MAX_LEVEL;
                 ret.LevelMaxXP = TeamUtils.GetLevelMaxXP();
                 ret.SecondsToNextMatch = GlobalConfig.SECONDS_TO_NEXT_MATCH;
 

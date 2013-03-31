@@ -27,7 +27,6 @@ package HttpService.TransferModel.vo
 		public var MaxNumMatches:int;
 		public var TrainingDefinitions:ArrayCollection;
 		public var SpecialTrainingDefinitions:ArrayCollection;
-		public var MaxLevel:int;
 		public var LevelMaxXP:ArrayCollection;
 		public var SecondsToNextMatch:int;
 	}

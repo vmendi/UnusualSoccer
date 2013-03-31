@@ -242,6 +242,9 @@ namespace Realtime
                 winner.Team.SkillPoints += 15;
             }
 
+            mBDDPlayer1.Team.Level = TeamUtils.ConvertXPToLevel(mBDDPlayer1.Team.XP);
+            mBDDPlayer2.Team.Level = TeamUtils.ConvertXPToLevel(mBDDPlayer2.Team.XP);
+
             ResultPlayer1.DiffXP = mBDDPlayer1.Team.XP - oldPlayer1XP;
             ResultPlayer2.DiffXP = mBDDPlayer2.Team.XP - oldPlayer2XP;
 

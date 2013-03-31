@@ -34,7 +34,7 @@ package GameModel
 			mSelfRankingTeam.FacebookID = parseFloat(SoccerClient.GetFacebookFacade().FacebookID);
 			mSelfRankingTeam.PredefinedTeamNameID = mMainGameModel.TheTeamModel.TheTeam.PredefinedTeamNameID;
 			mSelfRankingTeam.TrueSkill = mMainGameModel.TheTeamModel.TheTeam.TrueSkill;
-			mSelfRankingTeam.XP = mMainGameModel.TheTeamModel.TheTeam.XP;
+			mSelfRankingTeam.Level = mMainGameModel.TheTeamModel.TheTeam.Level;
 			
 			// Primero mandamos a refrescar toda la primera pagina
 			mMainService.RefreshRankingPage(0, new mx.rpc.Responder(OnRefreshRankingPageResponded, ErrorMessages.Fault));
@@ -51,30 +51,7 @@ package GameModel
 		
 		private function OnRefreshRankingPageResponded(e:ResultEvent) : void
 		{
-			mCurrentRankingPage = e.result as RankingPage;
-			
-			var sorter : Sort = new Sort();
-			sorter.compareFunction = compareFunc;
-			
-			mCurrentRankingPage.Teams.sort = sorter; 
-			mCurrentRankingPage.Teams.refresh();
-			
-			function compareFunc(a:Object, b:Object, fields:Array = null):int
-			{
-				var teamA : RankingTeam = a as RankingTeam;
-				var teamB : RankingTeam = b as RankingTeam;
-				
-				var levelA : int = mMainGameModel.TheTeamModel.ConvertXPToLevel(teamA.XP);
-				var levelB : int = mMainGameModel.TheTeamModel.ConvertXPToLevel(teamB.XP);
-				
-				if (levelA == levelB)
-					return teamA.TrueSkill > teamB.TrueSkill? -1 : (teamA.TrueSkill == teamB.TrueSkill? 0 : 1);
-				else if (levelA < levelB)
-					return 1;
-				else
-					return -1;
-			}			
-			
+			mCurrentRankingPage = e.result as RankingPage;			
 			dispatchEvent(new Event("RankingPageChanged"));
 		}
 						

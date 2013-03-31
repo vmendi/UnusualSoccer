@@ -227,6 +227,7 @@
       <Column Name="Fitness" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="LastFitnessUpdate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="LastDivisionQueriedID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="[Level]" Member="Level" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Team_CompetitionGroupEntry" Member="CompetitionGroupEntries" ThisKey="TeamID" OtherKey="TeamID" Type="CompetitionGroupEntry" />
       <Association Name="Team_MatchParticipation" Member="MatchParticipations" ThisKey="TeamID" OtherKey="TeamID" Type="MatchParticipation" />
       <Association Name="Team_PendingTraining" Member="PendingTraining" ThisKey="TeamID" OtherKey="TeamID" Type="PendingTraining" Cardinality="One" />

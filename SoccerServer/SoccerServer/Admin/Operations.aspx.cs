@@ -6,7 +6,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using ServerCommon;
 using ServerCommon.BDDModel;
+using Microsoft.Samples.EntityDataReader;
 using HttpService;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Diagnostics;
 
 namespace SoccerServer.Admin
 {
@@ -75,6 +80,20 @@ namespace SoccerServer.Admin
             }
             mDC.SubmitChanges();
         }
+
+        protected void RefreshLevelBasedOnXP_Click(object sender, EventArgs e)
+        {
+            string result = "";
+
+            foreach (var team in mDC.Teams)
+            {
+                result += String.Format("UPDATE [SoccerV2].[dbo].[Teams] SET [Level]={0} WHERE [TeamID]={1}\n",
+                                        TeamUtils.ConvertXPToLevel(team.XP), team.TeamID);
+            }
+
+            mDC.ExecuteCommand(result);
+        }
+        
 
         protected void EraseOrphanMatches_Click(object sender, EventArgs e)
         {

@@ -135,6 +135,7 @@ namespace HttpService
 
 			ret.Formation = "3-2-2";
 			ret.XP = 0;
+            ret.Level = 1;
 			ret.TrueSkill = 0;
             ret.Mean = TrueSkillHelper.INITIAL_MEAN;
             ret.StandardDeviation = TrueSkillHelper.INITIAL_SD;

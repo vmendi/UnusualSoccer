@@ -159,7 +159,7 @@ package GameModel
 		{
 			mPlayerTeam = e.result as Team;
 			
-			UpdateLevel();
+			UpdateLevelPercent();
 			UpdateFieldPositions();
 			UpdateTeamDetails();
 			mMainModel.TheTeamPurchaseModel.UpdatePurchases();	// Preferimos pushearlo en vez de que él lo lea mediante binding porque asi tenemos garantizado el "cuando"
@@ -175,31 +175,16 @@ package GameModel
 			return player.FieldPosition >= 100;
 		}
 		
-		private function UpdateLevel() : void
-		{
-			Level = ConvertXPToLevel(mPlayerTeam.XP);
-			
-			var maxLevelXPs : ArrayCollection = mMainModel.TheInitialConfig.LevelMaxXP;
-			
-			if (Level < maxLevelXPs.length - 1)
-				LevelPercent = Math.round(100*Number(mPlayerTeam.XP - maxLevelXPs[Level-1]) / Number(maxLevelXPs[Level] - maxLevelXPs[Level-1]));
-			else
-				LevelPercent = 0;	// We have levels 50 :)
-		}
-		
-		// Public because we need to convert other teams XP to level (In the ranking, for instance)
-		public function ConvertXPToLevel(xp : int) : int
+		private function UpdateLevelPercent() : void
 		{			
 			var maxLevelXPs : ArrayCollection = mMainModel.TheInitialConfig.LevelMaxXP;
 			
-			for (var levelCounter : int = 1; levelCounter < maxLevelXPs.length; levelCounter++)
-			{
-				if (maxLevelXPs[levelCounter] > xp)
-					return levelCounter;
-			}
-			
-			return 0;
+			if (mPlayerTeam.Level < maxLevelXPs.length - 1)
+				LevelPercent = Math.round(100*Number(mPlayerTeam.XP - maxLevelXPs[mPlayerTeam.Level-1]) / Number(maxLevelXPs[mPlayerTeam.Level] - maxLevelXPs[mPlayerTeam.Level-1]));
+			else
+				LevelPercent = 0;	// We have levels 50 :)
 		}
+	
 		
 		private function UpdateFieldPositions() : void
 		{
@@ -359,10 +344,6 @@ package GameModel
 		private function set TheTeamDetails(v : TeamDetails) : void { mTheTeamDetails = v; }
 		private var mTheTeamDetails : TeamDetails;
 		
-		[Bindable]
-		public  function get Level() : int { return mLevel; }
-		private function set Level(v:int) : void { mLevel = v; }
-		private var mLevel : int = 0;
 		
 		[Bindable]
 		public  function get LevelPercent() : int { return mLevelPercent; }

@@ -4719,6 +4719,8 @@ namespace ServerCommon.BDDModel
 		
 		private System.Nullable<int> _LastDivisionQueriedID;
 		
+		private int _Level;
+		
 		private EntitySet<CompetitionGroupEntry> _CompetitionGroupEntries;
 		
 		private EntitySet<MatchParticipation> _MatchParticipations;
@@ -4771,6 +4773,8 @@ namespace ServerCommon.BDDModel
     partial void OnLastFitnessUpdateChanged();
     partial void OnLastDivisionQueriedIDChanging(System.Nullable<int> value);
     partial void OnLastDivisionQueriedIDChanged();
+    partial void OnLevelChanging(int value);
+    partial void OnLevelChanged();
     #endregion
 		
 		public Team()
@@ -5053,6 +5057,26 @@ namespace ServerCommon.BDDModel
 					this._LastDivisionQueriedID = value;
 					this.SendPropertyChanged("LastDivisionQueriedID");
 					this.OnLastDivisionQueriedIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Level]", Storage="_Level", DbType="Int NOT NULL")]
+		public int Level
+		{
+			get
+			{
+				return this._Level;
+			}
+			set
+			{
+				if ((this._Level != value))
+				{
+					this.OnLevelChanging(value);
+					this.SendPropertyChanging();
+					this._Level = value;
+					this.SendPropertyChanged("Level");
+					this.OnLevelChanged();
 				}
 			}
 		}

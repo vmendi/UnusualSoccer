@@ -33,7 +33,7 @@ namespace HttpService
             TransferModel.RankingPage ret = new TransferModel.RankingPage(pageIndex, numPages);
 
             var ranking = (from team in mContext.Teams
-                           orderby team.XP descending
+                           orderby team.Level descending, team.TrueSkill descending, team.TeamID ascending
                            select team).Skip(startPosition).Take(TransferModel.RankingPage.RANKING_TEAMS_PER_PAGE);
 
             foreach (ServerCommon.BDDModel.Team team in ranking)
@@ -43,7 +43,7 @@ namespace HttpService
                 rankingTeam.FacebookID = team.Player.FacebookID;
                 rankingTeam.Name = team.Name;
                 rankingTeam.TrueSkill = team.TrueSkill;
-                rankingTeam.XP = team.XP;
+                rankingTeam.Level = team.Level;
 
                 ret.Teams.Add(rankingTeam);
             }

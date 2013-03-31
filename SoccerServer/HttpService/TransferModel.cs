@@ -14,6 +14,7 @@ namespace HttpService.TransferModel
 		public string Formation;
 		public int TrueSkill;
 		public int XP;
+        public int Level;
 		public int SkillPoints;
 		public int Energy;
 		public int Fitness;
@@ -30,6 +31,7 @@ namespace HttpService.TransferModel
 			Formation = from.Formation;
 			TrueSkill = from.TrueSkill;
 			XP = from.XP;
+            Level = from.Level;
 			SkillPoints = from.SkillPoints;
 			Energy = from.Energy;
 			Fitness = from.Fitness;
@@ -188,7 +190,7 @@ namespace HttpService.TransferModel
 		public long   FacebookID;
 		public string PredefinedTeamNameID;
 		public int    TrueSkill;
-        public int    XP;
+        public int    Level;
 	}
 
 	public class TeamMatchStats
@@ -259,7 +261,6 @@ namespace HttpService.TransferModel
         public List<TransferModel.TrainingDefinition> TrainingDefinitions;
         public List<TransferModel.SpecialTrainingDefinition> SpecialTrainingDefinitions;
 
-        public int MaxLevel;
         public List<int> LevelMaxXP;
         public int SecondsToNextMatch;  // Independiente del XP de momento
     }

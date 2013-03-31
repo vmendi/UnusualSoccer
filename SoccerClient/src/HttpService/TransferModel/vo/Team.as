@@ -27,6 +27,7 @@ import HttpService.TransferModel.vo.TeamPurchase;import HttpService.TransferMode
 		public var Formation:String;
 		public var TrueSkill:int;
 		public var XP:int;
+		public var Level:int;
 		public var SkillPoints:int;
 		public var Energy:int;
 		public var Fitness:int;

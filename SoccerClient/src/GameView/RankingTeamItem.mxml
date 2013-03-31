@@ -57,7 +57,7 @@
 		</s:Group>
 		
 		<s:Label width="34" height="50" styleName="whiteBoldHuge" verticalAlign="middle" textAlign="center"
-				 text="{SoccerClient.GetMainGameModel().TheTeamModel.ConvertXPToLevel(data.XP)}" filters="{txtGlowFilter}"/>
+				 text="{data.Level}" filters="{txtGlowFilter}"/>
 
 	</s:Group>
 
