@@ -26,6 +26,6 @@ package HttpService.TransferModel.vo
 		public var FacebookID:Number;
 		public var PredefinedTeamNameID:String;
 		public var TrueSkill:int;
-		public var Level:int;
+		public var XP:int;
 	}
 }

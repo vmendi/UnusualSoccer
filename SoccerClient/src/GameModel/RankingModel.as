@@ -32,7 +32,7 @@ package GameModel
 			mSelfRankingTeam.FacebookID = parseFloat(SoccerClient.GetFacebookFacade().FacebookID);
 			mSelfRankingTeam.PredefinedTeamNameID = mMainGameModel.TheTeamModel.TheTeam.PredefinedTeamNameID;
 			mSelfRankingTeam.TrueSkill = mMainGameModel.TheTeamModel.TheTeam.TrueSkill;
-			mSelfRankingTeam.Level = mMainGameModel.TheTeamModel.Level;
+			mSelfRankingTeam.XP = mMainGameModel.TheTeamModel.TheTeam.XP;
 			
 			// Primero mandamos a refrescar toda la primera pagina
 			mMainService.RefreshRankingPage(0, new mx.rpc.Responder(OnRefreshRankingPageResponded, ErrorMessages.Fault));

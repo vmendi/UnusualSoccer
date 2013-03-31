@@ -5,7 +5,6 @@ package GameModel
 	import HttpService.TransferModel.vo.SpecialTraining;
 	import HttpService.TransferModel.vo.Team;
 	import HttpService.TransferModel.vo.TeamDetails;
-	import HttpService.enum.VALID_NAME;
 	
 	import com.facebook.graph.Facebook;
 	
@@ -178,16 +177,9 @@ package GameModel
 		
 		private function UpdateLevel() : void
 		{
-			var maxLevelXPs : ArrayCollection = mMainModel.TheInitialConfig.LevelMaxXP;
+			Level = ConvertXPToLevel(mPlayerTeam.XP);
 			
-			for (var levelCounter : int = 1; levelCounter < maxLevelXPs.length; levelCounter++)
-			{
-				if (maxLevelXPs[levelCounter] > mPlayerTeam.XP)
-				{
-					Level = levelCounter;
-					break;
-				}
-			}
+			var maxLevelXPs : ArrayCollection = mMainModel.TheInitialConfig.LevelMaxXP;
 			
 			if (Level < maxLevelXPs.length - 1)
 				LevelPercent = Math.round(100*Number(mPlayerTeam.XP - maxLevelXPs[Level-1]) / Number(maxLevelXPs[Level] - maxLevelXPs[Level-1]));
@@ -195,22 +187,38 @@ package GameModel
 				LevelPercent = 0;	// We have levels 50 :)
 		}
 		
+		// Public because we need to convert other teams XP to level (In the ranking, for instance)
+		public function ConvertXPToLevel(xp : int) : int
+		{
+			var ret : int = 0;
+			
+			var maxLevelXPs : ArrayCollection = mMainModel.TheInitialConfig.LevelMaxXP;
+			
+			for (var levelCounter : int = 1; levelCounter < maxLevelXPs.length; levelCounter++)
+			{
+				if (maxLevelXPs[levelCounter] > xp)
+				{
+					ret = levelCounter;
+					break;
+				}
+			}
+			
+			return ret;
+		}
+		
 		private function UpdateFieldPositions() : void
 		{
 			mFieldSoccerPlayers = new ArrayCollection();
 			mSubstituteSoccerPlayers = new ArrayCollection();
 			
-			if (mPlayerTeam != null)
+			for each(var soccerPlayer : SoccerPlayer in mPlayerTeam.SoccerPlayers)
 			{
-				for each(var soccerPlayer : SoccerPlayer in mPlayerTeam.SoccerPlayers)
-				{
-					if (!IsSubstitute(soccerPlayer))
-						mFieldSoccerPlayers.addItem(soccerPlayer);
-					else
-						mSubstituteSoccerPlayers.addItem(soccerPlayer);
-				}
+				if (!IsSubstitute(soccerPlayer))
+					mFieldSoccerPlayers.addItem(soccerPlayer);
+				else
+					mSubstituteSoccerPlayers.addItem(soccerPlayer);
 			}
-			
+						
 			mFieldSoccerPlayers.sort = new Sort();
 			mFieldSoccerPlayers.sort.fields = [ new SortField("FieldPosition") ];
 			mFieldSoccerPlayers.refresh();

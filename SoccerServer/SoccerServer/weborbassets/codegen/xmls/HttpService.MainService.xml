@@ -78,6 +78,7 @@
         <field name="FacebookID" type="Number" fulltype="Number" nativetype="long" />
         <field name="PredefinedTeamNameID" type="String" fulltype="String" nativetype="String" />
         <field name="TrueSkill" type="int" fulltype="int" nativetype="int" />
+        <field name="XP" type="int" fulltype="int" nativetype="int" />
       </datatype>
       <datatype name="Team" fullname="HttpService.TransferModel.Team" typeNamespace="HttpService.TransferModel">
         <field name="Name" type="String" fulltype="String" nativetype="String" />

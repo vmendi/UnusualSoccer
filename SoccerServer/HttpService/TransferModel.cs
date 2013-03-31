@@ -187,7 +187,8 @@ namespace HttpService.TransferModel
 		public string Name;
 		public long   FacebookID;
 		public string PredefinedTeamNameID;
-		public int TrueSkill;
+		public int    TrueSkill;
+        public int    XP;
 	}
 
 	public class TeamMatchStats
