@@ -9,9 +9,6 @@ using ServerCommon.BDDModel;
 using Microsoft.Samples.EntityDataReader;
 using HttpService;
 using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
-using System.Diagnostics;
 
 namespace SoccerServer.Admin
 {

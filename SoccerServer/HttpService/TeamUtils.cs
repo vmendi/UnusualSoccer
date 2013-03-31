@@ -128,20 +128,24 @@ namespace HttpService
             return bSubmit;
         }
 
-        static public List<int> GetLevelMaxXP()
+        public static List<int> LevelMaxXP 
+        { 
+            get { return mLevelMaxXPsCache.Value; } 
+        }
+        private static Lazy<List<int>> mLevelMaxXPsCache = new Lazy<List<int>>(() => GetLevelMaxXP());
+
+        static private List<int> GetLevelMaxXP()
         {
             List<float> maxXPs = new List<float>();
-            
-            float slope = (32.0f-0.0f)/10.0f;        
+
+            float slope = (32.0f - 0.0f) / 10.0f;
             float targetExp = 32.0f;
             maxXPs.Add(0);
 
             for (int currentLevel = 1; currentLevel < GlobalConfig.MAX_LEVEL; currentLevel++)
             {
-                if (currentLevel < 9)
-                {
+                if (currentLevel < 9)                        
                     maxXPs.Add(maxXPs.Last() + slope);
-                }
                 else
                 {
                     if ((currentLevel + 1) % 5 == 0)
@@ -151,9 +155,7 @@ namespace HttpService
                         slope = (targetExp - maxXPs.Last()) / 5.0f;
                     }
                     else
-                    {
                         maxXPs.Add(maxXPs.Last() + slope);
-                    }
                 }
             }
 
@@ -161,8 +163,8 @@ namespace HttpService
         }
 
         static public int ConvertXPToLevel(int xp)
-        {            	
-			List<int> maxLevelXPs = GetLevelMaxXP();
+        {
+            List<int> maxLevelXPs = LevelMaxXP;
             
             for (int levelCounter = 1; levelCounter < maxLevelXPs.Count; levelCounter++)
             {
