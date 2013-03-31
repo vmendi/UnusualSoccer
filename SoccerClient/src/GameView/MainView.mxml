@@ -156,10 +156,9 @@
 		</s:layout>
 			
 		<GameView:Login id="MyLogin" includeIn="Login" />
-	
-		<GameView:StatusPanel height="80" includeIn="InGame, OnRealtimeMatch"/>
-		
 		<Match:RealtimeMatch width="760" includeIn="OnRealtimeMatch" />
+		
+		<GameView:StatusPanel height="80" includeIn="InGame"/>		
 				
 		<s:Group width="760" height="51" includeIn="InGame">
 			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='StatusPanelBackgroundBottom')" fillMode="clip" />
