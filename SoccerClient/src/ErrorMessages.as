@@ -107,14 +107,14 @@ package
 			LogToServer("RealtimeConnectionFailed " + reason);
 		}
 		
-		static public function ResourceLoadFailed() : void
+		static public function ResourceLoadFailed(reason : String) : void
 		{
 			OnCleaningShutdownSignal.dispatch();
 			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorResourceLoadFailedMsg"),
 							 ResourceManager.getInstance().getString("main", "ErrorResourceLoadFailedTit"), "center");
 			
 			// Esto pasa habitualmente cuando paran la carga del juego dandole a "Stop" en el browser
-			LogToServer("ResourceLoadFailed");
+			LogToServer("ResourceLoadFailed: " + reason);
 		}
 		
 		static public function UncaughtErrorHandler(e:Event):void

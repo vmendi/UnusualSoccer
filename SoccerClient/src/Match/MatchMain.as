@@ -65,7 +65,13 @@ package Match
 					
 			function onError(e:Event) : void
 			{
-				ErrorMessages.ResourceLoadFailed();
+				// Si se produce un error durante la primera vez, como nos pasan null, lo ignoramos... volveremos a intentar cargar mas tarde, ya cuando
+				// sea la carga del partido. Si nos pasan un callback y se produce un error, como no llamamos al callback vamos a logear y a salir limpiamente.
+				//
+				// Hemos comprobado que el ResourceManager nos llama 2 veces en caso de error!!! Logearemos 2 veces y ya esta. No podemos remover el
+				// listener porque entonces dara UncaughtError.
+				if (callback != null)
+					ErrorMessages.ResourceLoadFailed("on LoadMatchResources callback not null");
 			}
 		}
 		
@@ -104,7 +110,7 @@ package Match
 						// que nos han quitado de la stage desde que se llamo al Init, pero sin llamarnos a Shutdown. Hipotesis:
 						// - Algun tipo de navegacion dentro del manager (desde un popup?) que provoca salir de la pantalla RealtimeMatch
 						// - La botonera principal envia su mensaje tarde, cuando ya estamos en el partido. 
-						ErrorMessages.ResourceLoadFailed();
+						ErrorMessages.ResourceLoadFailed("on Init.innerInit - faking ResourceLoadFailed");
 					}
 				}
 				catch(e:Error) { ErrorMessages.LogToServer("En innerInit! " + e.message); }

@@ -47,6 +47,6 @@
 	<GameView:PopupBackground width="356" height="212" />
 
 	<s:Label text="{Title}" styleName="whiteBoldVeryBig" x="28" y="26" width="300" textAlign="center" />
-	<s:Label text="{Text}" styleName="whiteBoldMedium" x="28" y="64" width="300" textAlign="{TextAlign}" />
+	<s:Label text="{Text}" styleName="whiteBoldMedium" x="28" y="84" width="300" textAlign="{TextAlign}" />
 		
 </s:Group>
