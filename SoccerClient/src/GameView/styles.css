@@ -2,6 +2,24 @@
 @namespace s "library://ns.adobe.com/flex/spark";
 @namespace mx "library://ns.adobe.com/flex/mx";
 
+.ledboardVerySmall {
+	font-family:MyLedBoard;
+	font-size:12pt;
+	color:#e7dd4d;
+}
+
+.ledboardTime {
+	font-family:MyLedBoard;
+	font-size:14pt;
+	color:#e7dd4d;
+}
+
+.ledboardScore {
+	font-family:MyLedBoard;
+	font-size:44pt;
+	color:#e7dd4d;
+}
+
 .whiteBoldArial {
 	font-family:Arial;
 	font-size:10pt;

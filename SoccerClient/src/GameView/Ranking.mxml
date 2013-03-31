@@ -67,7 +67,23 @@
 	<fx:Style source="styles.css" />
 
 	<s:Panel skinClass="GameView.Skins.DefaultPanelSkin" top="10" height="470" left="10" width="365" title="{resourceManager.getString('main','RankingPanelPlayerListTitle')}">
-		<s:List id="MyRankingList" left="0" right="0" top="0" height="442"
+		<s:Graphic>
+			<s:Rect x="0" y="0" width="365" height="25" alpha="0.7">
+				<s:fill>
+					<s:SolidColor color="#303030" />
+				</s:fill>
+			</s:Rect>
+			<!--<s:Line xFrom="0" xTo="365" yFrom="24" yTo="24">
+				<s:stroke>
+					<s:SolidColorStroke color="0xFFFFFF" weight="1"/>
+				</s:stroke>
+			</s:Line>-->
+		</s:Graphic>
+		<s:Label x="10" y="4" text="{resourceManager.getString('main','GeneralPlayer')}" styleName="whiteBoldBig" />
+		<s:Label x="234" width="54" y="4" text="{resourceManager.getString('main','GeneralLevel')}" styleName="whiteBoldBig" />
+		<s:Label right="18" y="4" text="{resourceManager.getString('main','GeneralSkill')}" styleName="whiteBoldBig" />
+		
+		<s:List id="MyRankingList" left="0" right="0" top="25" height="427"
 				dataProvider="{mRankingModel.TheRankingPage.Teams}" 
 				itemRenderer="GameView.RankingTeamItem" useVirtualLayout="false"
 				skinClass="GameView.Skins.DefaultListSkin" 

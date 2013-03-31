@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 width="760" height="126" xmlns:GameView="GameView.*">
+	
+	<fx:Declarations>
+		<s:GlowFilter id="txtGlowFilter" blurX="10" blurY="10" color="0xFFFFFF" alpha="0.6"/>
+	</fx:Declarations>
+
+	<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='ScoreBoardBg')" fillMode="clip" />
+	
+	<!-- IZQUIERDO -->
+	
+	<s:Label text="Utbabynia FC" styleName="whiteBoldVeryBig" x="14" y="8" width="170" filters="{txtGlowFilter}" />
+	<GameView:BadgeTeam x="13" y="45" TeamNameID="ENGLAND" BigMode="true" />
+	<s:Graphic left="64" y="43">
+		<s:Rect width="52" height="52" alpha="0.5">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF" />
+			</s:fill>
+		</s:Rect>
+	</s:Graphic>
+	<s:Label text="SKILL: 5632" styleName="whiteBoldBig" x="124" y="40" />
+	<s:Label text="LEVEL: 50" styleName="whiteBoldBig" x="124" y="60" />
+	<GameView:XpBar Percent="50" x="123" y="77" />
+	
+	<!-- DERECHO -->
+	
+	<s:Label text="Utbabynia FC" styleName="whiteBoldVeryBig" right="14" y="8" width="170" filters="{txtGlowFilter}" textAlign="right" />
+	<GameView:BadgeTeam right="13" y="45" TeamNameID="ENGLAND" BigMode="true" />
+	<s:Graphic right="64" y="43">
+		<s:Rect width="52" height="52" alpha="0.5">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF" />
+			</s:fill>
+		</s:Rect>
+	</s:Graphic>
+	<s:Label text="SKILL: 5632" styleName="whiteBoldBig" right="124" y="40" />
+	<s:Label text="LEVEL: 50" styleName="whiteBoldBig" right="124" y="60" />
+	<GameView:XpBar Percent="50" right="123" y="77" />
+	
+	<!-- MARCADOR -->
+	
+	<s:Label left="302" y="12" text="3:56" styleName="ledboardTime" width="78" textAlign="right" />
+	<s:Label left="402" y="12" text="2T" styleName="ledboardTime" width="75" textAlign="left" />
+	<s:Label left="285" y="48" text="00" styleName="ledboardScore" width="80" textAlign="right" />
+	<s:Label right="290" y="48" text="00" styleName="ledboardScore" width="80" textAlign="left" />
+	<s:Group horizontalCenter="0" top="99">
+		<s:layout>
+			<s:HorizontalLayout gap="4" verticalAlign="top" />
+		</s:layout>
+		<s:Label text="{resourceManager.getString('main','GeneralTurn')}" styleName="ledboardVerySmall" />
+		<GameView:TurnBar Percent="50" />
+	</s:Group>
+
+	
+</s:Group>
