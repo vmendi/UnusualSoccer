@@ -80,7 +80,7 @@
 	<s:Graphic>
 		<s:Line xFrom="0" xTo="423" yFrom="50" yTo="50">
 			<s:stroke>
-				<s:SolidColorStroke color="0x686b6e" weight="1"/>
+				<s:SolidColorStroke color="0x000000" weight="1"/>
 			</s:stroke>
 		</s:Line>
 	</s:Graphic>
