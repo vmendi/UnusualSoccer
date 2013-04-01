@@ -94,7 +94,7 @@
 	</fx:Script>
 			
 	<s:Group includeIn="NotPurchased" horizontalCenter="0" top="3" >
-		<s:Label horizontalCenter="0" top="0" id="MyRemainingMatches" text="{mTeamModel.TheTeam.TeamPurchase.RemainingMatches} {resourceManager.getString('main','Matches')}" styleName="blackBoldVeryBig" />
+		<s:Label horizontalCenter="0" top="0" id="MyRemainingMatches" text="{mTeamModel.TheTeam.TeamPurchase.RemainingMatches} {mTeamModel.TheTeam.TeamPurchase.RemainingMatches == 1 ? resourceManager.getString('main','Match') : resourceManager.getString('main','Matches')}" styleName="blackBoldVeryBig" />
 		<s:Label horizontalCenter="0" top="2" id="MyZeroRemaining" text="{resourceManager.getString('main','NotAvailableMatches')}" styleName="blackBoldBig" />
 		<s:Label horizontalCenter="0" top="21" width="160" id="MyRemainingMatchesTitle" text="{mTeamPurchaseModel.NewMatchRemainingSecondsString}" styleName="blackBoldMediumHN" textAlign="center" />
 		<s:filters>
