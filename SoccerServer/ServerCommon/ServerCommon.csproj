@@ -44,16 +44,19 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.XML" />
     <Reference Include="weborb, Version=4.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SoccerServer\bin\weborb.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntityDataReader.cs" />
     <Compile Include="GlobalConfig.cs" />
     <Compile Include="ProfileUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,6 +65,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="SeasonUtils.cs" />
     <Compile Include="ServerConfig.cs" />
     <Compile Include="SoccerDataModel.designer.cs">
       <DependentUpon>SoccerDataModel.dbml</DependentUpon>
@@ -69,6 +73,7 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="SoccerDataModelConfig.cs" />
+    <Compile Include="TeamUtils.cs" />
     <Compile Include="TrueSkillHelper.cs" />
     <Compile Include="WeborbLogRedirector.cs" />
   </ItemGroup>
