@@ -165,7 +165,6 @@ namespace SoccerServer
         }
 
         // Incluso sin estar autorizados, siempre tenemos un signed_request en el que esta contenido el country (geolocalizado) y el locale
-        // TODO: Usarlo para redireccionar si es Mahou y no es España                             
         private string GetCountry()
         {
             if (mCountry == null)
@@ -184,7 +183,7 @@ namespace SoccerServer
             {
                 country = ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["country"] as string;
             }
-            catch (Exception) { }           
+            catch (Exception) { }
 
             return country;
         }

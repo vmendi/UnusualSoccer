@@ -188,6 +188,9 @@
       <method name="RefreshTeamDetails" type="TeamDetails" nativetype="HttpService.TransferModel.TeamDetails" containsvalues="0">
         <arg name="facebookID" type="Number" nativetype="long" />
       </method>
+      <method name="SaveFriends" type="void" nativetype="Void" containsvalues="0">
+        <arg name="friends" type="String" nativetype="String" />
+      </method>
       <method name="SwapFormationPosition" type="void" nativetype="Void" containsvalues="0">
         <arg name="firstSoccerPlayerID" type="int" nativetype="int" />
         <arg name="secondSoccerPlayerID" type="int" nativetype="int" />

@@ -7,6 +7,16 @@ namespace HttpService
 {
     public partial class MainService
     {
+        // Graba los amigos del user en la DB. Preferimos cogerlos desde el cliente porque carga menos al servidor con requests a facebook
+        public void SaveFriends(string friends)
+        {
+            using (CreateDataForRequest())
+            {
+                mPlayer.PlayerFriend.Friends = friends;
+                mContext.SubmitChanges();
+            }
+        }
+
         // Un usuario ha mandado varios requests a sus amigos
         public void CreateRequests(string requestID, List<string> targets)
         {

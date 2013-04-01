@@ -84,9 +84,8 @@ package
 		}
 		
 		// Cuando quieres hacer una llamada al servicio y no escuchar a su Success, si falla hay que llamar a Fault anyway!
-		static public var FaultResponder : Responder = new mx.rpc.Responder(DummyFunc, Fault);
-		static public function DummyFunc(e:Event) : void {}
-				
+		static public var FaultResponder : Responder = new mx.rpc.Responder(function(e:Event) : void {}, Fault);
+						
 
 		static public function RealtimeLoginFailed() : void
 		{

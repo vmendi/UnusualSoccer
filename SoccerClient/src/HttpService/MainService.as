@@ -90,6 +90,8 @@
         
         remoteObject.RefreshTeamDetails.addEventListener("result",RefreshTeamDetailsHandler);
         
+        remoteObject.SaveFriends.addEventListener("result",SaveFriendsHandler);
+        
         remoteObject.SwapFormationPosition.addEventListener("result",SwapFormationPositionHandler);
         
         remoteObject.TargetProcessedRequests.addEventListener("result",TargetProcessedRequestsHandler);
@@ -290,6 +292,15 @@
 
       }
     
+      public function SaveFriends(friends:String, responder:IResponder = null ):void
+      {
+        var asyncToken:AsyncToken = remoteObject.SaveFriends(friends);
+        
+        if( responder != null )
+            asyncToken.addResponder( responder );
+
+      }
+    
       public function SwapFormationPosition(firstSoccerPlayerID:int,secondSoccerPlayerID:int, responder:IResponder = null ):void
       {
         var asyncToken:AsyncToken = remoteObject.SwapFormationPosition(firstSoccerPlayerID,secondSoccerPlayerID);
@@ -463,6 +474,11 @@
         
           var returnValue:TeamDetails = event.result as TeamDetails;
           model.RefreshTeamDetailsResult = returnValue;
+        
+      }
+         
+      public virtual function SaveFriendsHandler(event:ResultEvent):void
+      {
         
       }
          

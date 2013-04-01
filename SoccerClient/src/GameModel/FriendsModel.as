@@ -3,8 +3,12 @@ package GameModel
 	import HttpService.MainService;
 	import HttpService.TransferModel.vo.SoccerPlayer;
 	
+	import com.adobe.serialization.json.JSON;
+	
 	import mx.binding.utils.BindingUtils;
 	import mx.collections.ArrayCollection;
+	import mx.rpc.Responder;
+	import mx.rpc.events.ResultEvent;
 
 	public final class FriendsModel
 	{
@@ -23,6 +27,10 @@ package GameModel
 				{
 					mFriends.addItem(new Friend(friend.name, friend.id));
 				}
+
+				// Los mandamos a grabar al servidor
+				mMainService.SaveFriends(JSON.encode(SoccerClient.GetFacebookFacade().FacebookMe.friends.data),
+										 ErrorMessages.FaultResponder);
 			}
 		}
 		
