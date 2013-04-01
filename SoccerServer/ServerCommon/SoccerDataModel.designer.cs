@@ -96,6 +96,12 @@ namespace ServerCommon
     partial void DeleteTeamStat(ServerCommon.BDDModel.TeamStat instance);
     #endregion
 		
+		public SoccerDataModelDataContext() : 
+				base(global::ServerCommon.Properties.Settings.Default.SoccerV2ConnectionString, mappingSource)
+		{
+			OnCreated();
+		}
+		
 		public SoccerDataModelDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
@@ -165,6 +171,14 @@ namespace ServerCommon
 			get
 			{
 				return this.GetTable<ServerCommon.BDDModel.CompetitionSeason>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ServerCommon.BDDModel.GlobalConfig> GlobalConfigs
+		{
+			get
+			{
+				return this.GetTable<ServerCommon.BDDModel.GlobalConfig>();
 			}
 		}
 		
@@ -1613,6 +1627,51 @@ namespace ServerCommon.BDDModel
 		{
 			this.SendPropertyChanging();
 			entity.CompetitionSeason = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.GlobalConfig")]
+	public partial class GlobalConfig
+	{
+		
+		private string _Key;
+		
+		private string _Value;
+		
+		public GlobalConfig()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Key]", Storage="_Key", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Key
+		{
+			get
+			{
+				return this._Key;
+			}
+			set
+			{
+				if ((this._Key != value))
+				{
+					this._Key = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Value", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Value
+		{
+			get
+			{
+				return this._Value;
+			}
+			set
+			{
+				if ((this._Value != value))
+				{
+					this._Value = value;
+				}
+			}
 		}
 	}
 	

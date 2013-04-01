@@ -102,7 +102,6 @@
     <Content Include="Admin\Realtime.aspx" />
     <Content Include="App_Data\Backup.sql" />
     <Content Include="App_Data\DeleteAll.sql" />
-    <Content Include="App_Data\NextDeployUpdate.sql" />
     <Content Include="Cancelled.aspx" />
     <Content Include="channel.html" />
     <Content Include="console\AC_OETags.js" />

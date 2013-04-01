@@ -62,3 +62,20 @@ ALTER TABLE [dbo].[PlayerFriends] CHECK CONSTRAINT [FK_PlayerFriends_Players]
 GO
 
 
+
+
+
+/****** Object:  Table [dbo].[GlobalConfig]    Script Date: 04/01/2013 19:07:35 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[GlobalConfig](
+	[Key] [nvarchar](50) NOT NULL,
+	[Value] [nvarchar](max) NOT NULL
+) ON [PRIMARY]
+
+GO
+

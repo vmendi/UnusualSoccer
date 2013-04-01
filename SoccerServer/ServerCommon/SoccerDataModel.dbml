@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SoccerV2" EntityNamespace="ServerCommon.BDDModel" Class="SoccerDataModelDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=localhost;Initial Catalog=SoccerV2;Integrated Security=True" SettingsObjectName="ServerCommon.Properties.Settings" SettingsPropertyName="SoccerV2ConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.CompetitionDivisions" Member="CompetitionDivisions">
     <Type Name="CompetitionDivision">
       <Column Name="CompetitionDivisionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -60,6 +61,12 @@
       <Column Name="CreationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="EndDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="CompetitionSeason_CompetitionGroup" Member="CompetitionGroups" ThisKey="CompetitionSeasonID" OtherKey="CompetitionSeasonID" Type="CompetitionGroup" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GlobalConfig" Member="GlobalConfigs">
+    <Type Name="GlobalConfig">
+      <Column Name="[Key]" Member="Key" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.Matches" Member="Matches">
