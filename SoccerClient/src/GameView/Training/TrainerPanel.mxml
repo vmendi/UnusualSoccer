@@ -65,7 +65,7 @@
 		]]>
 	</fx:Script>
 
-	<s:Image source="@Embed(source='/Assets/General.swf', symbol='TrainerPanelCoachBg')" left="10" />
+	<s:Image source="@Embed(source='/Assets/General.swf', symbol='TrainerPanelCoachBg')" right="10" />
 	
 	<s:Group horizontalCenter="0" verticalCenter="0">
 		<s:layout>
@@ -94,6 +94,8 @@
 		</s:Group>
 
 	</s:Group>
+	
+	<s:Label text="{resourceManager.getString('main','GeneralTraining')}: {mTeamModel.TheTeam.Fitness}%" styleName="yellowBoldVeryBig" top="20" left="25" />
 	
 	<!--<s:Button includeIn="NotPurchased"
 			  label="{resourceManager.getString('main','TrainerPanelHireButton')}"

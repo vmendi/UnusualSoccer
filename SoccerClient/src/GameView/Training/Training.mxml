@@ -145,7 +145,7 @@
 		</s:Group>
 		
 		<Training:TrainerPanel id="MyTrainerPanel" y="0" horizontalCenter="0" visible="{resourceManager.getBoolean('main','TicketsPanelVisible')}" />
-				
+		
 	</s:Panel>	
 	
 </s:Group>
