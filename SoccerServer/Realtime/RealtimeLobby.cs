@@ -406,11 +406,13 @@ namespace Realtime
 
         public String Name;								// Nombre del equipo del player
         public String PredefinedTeamNameID;				// El player tiene un equipo real asociado: "Getafe", "USA"
-        public int TrueSkill;							// ...Por si acaso hay que mostrarlo
+        public long FacebookID;
+        public int TrueSkill;
+        public int Level;
         public List<int> SpecialSkillsIDs;				// Habilidades disponibles, como maximo entraran 9, ID entre 1 e infinito
         public String Formation;						// Nombre de la formacion: "331", "322", etc..
         public int Fitness;                             // Se multiplica en el partido
-
+        
         // Todos los futbolistas, ordenados según la posición/formacion. Primero siempre el portero.
         public List<SoccerPlayerData> SoccerPlayers = new List<SoccerPlayerData>();
     }

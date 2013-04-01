@@ -42,7 +42,7 @@ package GameModel
 		}
 		
 		
-		private function OnRefreshTimer(e:TimerEvent) : void
+		private function OnRefreshTimer(event:TimerEvent) : void
 		{
 			try {
 				mTeamModel.OnTimerSeconds();
@@ -52,7 +52,7 @@ package GameModel
 			}
 			catch(e:Error)
 			{
-				ErrorMessages.LogToServer("WTF 445");
+				ErrorMessages.LogToServer("WTF 445 " + e.message);
 			}
 		}
 		
@@ -71,7 +71,7 @@ package GameModel
 			}
 			catch(e:Error)
 			{
-				ErrorMessages.LogToServer("WTF 446");
+				ErrorMessages.LogToServer("WTF 446 - Probable llamada 2 veces " + e.message);
 			}
 		}
 

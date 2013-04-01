@@ -149,7 +149,9 @@ namespace Realtime
 
             data.Name = bddPlayer.Team.Name;
             data.PredefinedTeamNameID = bddPlayer.Team.PredefinedTeamNameID;
+            data.FacebookID = bddPlayer.FacebookID;
             data.TrueSkill = bddPlayer.Team.TrueSkill;
+            data.Level = bddPlayer.Team.Level;
             data.SpecialSkillsIDs = (from s in bddPlayer.Team.SpecialTrainings
                                      where s.IsCompleted
                                      select s.SpecialTrainingDefinitionID).ToList();

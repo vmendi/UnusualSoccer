@@ -61,9 +61,9 @@ package Match
 		// Obtiene el equipo que está en un lado del campo
 		public function TeamInSide(side:int) : Team
 		{
-			if( side == TheTeams[ Enums.Team1 ].Side )
+			if (side == TheTeams[ Enums.Team1 ].Side)
 				return TheTeams[ Enums.Team1 ];
-			if( side == TheTeams[ Enums.Team2 ].Side )
+			if (side == TheTeams[ Enums.Team2 ].Side)
 				return TheTeams[ Enums.Team2 ];
 			
 			return null;

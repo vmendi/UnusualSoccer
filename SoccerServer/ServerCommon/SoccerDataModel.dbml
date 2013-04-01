@@ -101,6 +101,13 @@
       <Association Name="Team_PendingTraining" Member="Team" ThisKey="TeamID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
+  <Table Name="dbo.PlayerFriends" Member="PlayerFriends">
+    <Type Name="PlayerFriend">
+      <Column Name="PlayerFriendsID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Friends" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="Player_PlayerFriend" Member="Player" ThisKey="PlayerFriendsID" OtherKey="PlayerID" Type="Player" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.Players" Member="Players">
     <Type Name="Player">
       <Column Name="PlayerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -110,6 +117,10 @@
       <Column Name="CreationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="Liked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="Params" Type="System.String" DbType="NVarChar(1024) NOT NULL" CanBeNull="false" />
+      <Column Name="Locale" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Country" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="LastSeen" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Player_PlayerFriend" Member="PlayerFriend" ThisKey="PlayerID" OtherKey="PlayerFriendsID" Type="PlayerFriend" Cardinality="One" />
       <Association Name="Player_Session" Member="Sessions" ThisKey="PlayerID" OtherKey="PlayerID" Type="Session" />
       <Association Name="Player_Team" Member="Team" ThisKey="PlayerID" OtherKey="TeamID" Type="Team" Cardinality="One" />
     </Type>

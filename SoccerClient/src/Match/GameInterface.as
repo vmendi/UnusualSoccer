@@ -2,13 +2,23 @@ package Match
 {
 	import com.greensock.*;
 	
+	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
+	import flash.events.SecurityErrorEvent;
 	import flash.geom.ColorTransform;
 	import flash.net.SharedObject;
+	import flash.net.URLRequest;
+	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
+	import flash.system.SecurityDomain;
 	
 	import mx.resources.ResourceManager;
 	
@@ -72,7 +82,30 @@ package Match
 			Gui.TeamHome.text = teams[Enums.Team1].Name;
 			Gui.TeamAway.text = teams[Enums.Team2].Name;
 			
+			Gui.LevelHome.text = ResourceManager.getInstance().getString("main", "GeneralLevel") + " " + teams[Enums.Team1].Level;
+			Gui.LevelAway.text = ResourceManager.getInstance().getString("main", "GeneralLevel") + " " + teams[Enums.Team2].Level;
+			
+			Gui.SkillHome.text = ResourceManager.getInstance().getString("main", "GeneralSkill") + " " + teams[Enums.Team1].TrueSkill;
+			Gui.SkillAway.text = ResourceManager.getInstance().getString("main", "GeneralSkill") + " " + teams[Enums.Team2].TrueSkill;
+			
+			LoadFacebookPicture(Gui.PictureHome, teams[Enums.Team1].FacebookID);
+			LoadFacebookPicture(Gui.PictureAway, teams[Enums.Team2].FacebookID);
+			
 			UpdateMuteButton();
+		}
+		
+		static private function LoadFacebookPicture(parent : DisplayObjectContainer, facebookID : Number) : void
+		{	
+			if (facebookID != -1)
+			{
+				// Pasamos de los posibles errores o completes, no tenemos nada que hacer en ellos
+				var theLoader : Loader = parent.addChild(new Loader()) as Loader;
+				theLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, function(e:Event) : void {});
+				theLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, function(e:Event) : void {});
+				theLoader.contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, function(e:Event) : void {});
+				theLoader.load(new URLRequest("//graph.facebook.com/"+facebookID+"/picture/?type=square"),
+						 	   new LoaderContext(true, ApplicationDomain.currentDomain, SecurityDomain.currentDomain));
+			}
 		}
 		
 		public function Shutdown() : void

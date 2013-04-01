@@ -82,11 +82,9 @@ namespace SoccerServer
         private void ShowFacebookContent()
 		{
 			using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
-			{
-                var fb = new FacebookWebClient();
-                
+			{                
                 // Usamos un delegate para que solo se haga la llamada sincrona en caso necesario
-                mIsPlayerJustCreated = EnsurePlayerIsCreated(theContext, FacebookWebContext.Current.UserId, Request.QueryString, ref mPlayer, () => fb.Get("me"));
+                mIsPlayerJustCreated = EnsurePlayerIsCreated(theContext, FacebookWebContext.Current.UserId, Request.QueryString, ref mPlayer, (player) => FillPlayerWithFB(player));
                 EnsureSessionIsCreated(theContext, mPlayer, FacebookWebContext.Current.AccessToken);
 				theContext.SubmitChanges();
 
@@ -94,6 +92,27 @@ namespace SoccerServer
                 InjectContentPanel(!mPlayer.Liked);
 			}
 		}
+
+        private void FillPlayerWithFB(Player player)
+        {
+            dynamic result = new FacebookWebClient().Get("me/?fields=first_name,last_name,locale,link");
+            
+            player.Name = result.first_name;
+            player.Surname = result.last_name;
+            player.Locale = result.locale;
+            player.Country = GetCountry();
+            player.LastSeen = DateTime.Now;
+        }
+
+        static private void FillPlayerWithDummy(Player player)
+        {
+            // Queremos evitar la llamada al API de fb en los Test de debug
+            player.Name = "PlayerName";
+            player.Surname = "PlayerSurname";
+            player.Locale = "en_US";
+            player.Country = "es";
+            player.LastSeen = DateTime.Now;
+        }
 
         private void InjectContentPanel(Boolean showLikePanel)
         {
@@ -157,17 +176,16 @@ namespace SoccerServer
 
         static private string GetCountryFromSignedRequest(FacebookSignedRequest fbSignedRequest)
         {
+            // Si no hay pais, lo dejamos a Unknown, el cliente sabe que ese resultado existe y por lo tanto
+            // seleccionara por ejemplo un pais al azar
             string country = "Unknown";
+
             try
             {
                 country = ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["country"] as string;
             }
-            catch (Exception)
-            {
-                // No hay pais, lo dejamos a Unknown, el cliente sabe que ese resultado existe y por lo tanto 
-                // seleccionara por ejemplo un pais al azar
-            }
-                        
+            catch (Exception) { }           
+
             return country;
         }
 
@@ -247,9 +265,9 @@ namespace SoccerServer
             return session;
 		}
 
-        public delegate dynamic GetFBUserDelegate();
+        public delegate void FillPlayerWithFBDelegate(Player player);
 
-        static public bool EnsurePlayerIsCreated(SoccerDataModelDataContext theContext, long facebookUserID, NameValueCollection queryString, ref Player player, GetFBUserDelegate theFBUserInfo)
+        static public bool EnsurePlayerIsCreated(SoccerDataModelDataContext theContext, long facebookUserID, NameValueCollection queryString, ref Player player, FillPlayerWithFBDelegate theFBDelegate)
 		{
 			player = (from dbPlayer in theContext.Players
 			          where dbPlayer.FacebookID == facebookUserID
@@ -258,44 +276,38 @@ namespace SoccerServer
             // Retornamos true si acabamos de crear el player
             bool bRet = player == null; 
 
-            // Si no existia, vamos a crearlo
+            // Si no existia, vamos a crearlo. Si existia, aprovechamos para actualizar el LastSeen.
 			if (player == null)
-			{
-                // We save the querystring in the DB as "Params".
-                var theParams = queryString.AllKeys.Aggregate("", (theAccumulated, theCurrentKey) =>
-                                                              theAccumulated + theCurrentKey + "=" + queryString[theCurrentKey] + "&").TrimEnd('&');
-                
-                // NVarchar(300)
-                theParams = theParams.Substring(0, Math.Min(theParams.Length, 300));
-
-				// Tenemos un nuevo jugador (único punto donde se crea)
-				player = new Player();
-
-				player.FacebookID = facebookUserID;
-				player.CreationDate = DateTime.Now;		// En horario del servidor...
-				player.Liked = false;
-                player.Params = theParams;
-
-				if (theFBUserInfo != null)
-				{
-                    // Aqui es cuando realmente se hace la llamada al API (bloqueando el server!)
-                    dynamic result = theFBUserInfo();
-
-                    player.Name = result.first_name;
-                    player.Surname = result.last_name;
-				}
-				else
-				{
-					// Queremos evitar la llamada al API de fb en los Test de debug
-					player.Name = "PlayerName";
-					player.Surname = "PlayerSurname";
-				}
-
-				theContext.Players.InsertOnSubmit(player);
-			}
-
+                player = CreatePlayer(theContext, facebookUserID, queryString, theFBDelegate);
+            else
+                player.LastSeen = DateTime.Now;
+            			
 			return bRet;
 		}
+
+        // Tenemos un nuevo jugador (único punto donde se crea)
+        private static Player CreatePlayer(SoccerDataModelDataContext theContext, long facebookUserID, NameValueCollection queryString, FillPlayerWithFBDelegate theFBDelegate)
+        {
+            // We save the querystring in the DB as "Params".
+            var theParams = queryString.AllKeys.Aggregate("", (theAccumulated, theCurrentKey) =>
+                                                          theAccumulated + theCurrentKey + "=" + queryString[theCurrentKey] + "&").TrimEnd('&');
+            Player player = new Player();
+
+            player.FacebookID = facebookUserID;
+            player.CreationDate = DateTime.Now;		// En horario del servidor...
+            player.Liked = false;
+            player.Params = theParams.Substring(0, Math.Min(theParams.Length, 1024));    // NVarchar(1024)
+
+            if (theFBDelegate != null)
+                theFBDelegate(player);  // Aqui es cuando realmente se hace la llamada al API (bloqueando el server!)
+            else
+                FillPlayerWithDummy(player);
+
+            theContext.Players.InsertOnSubmit(player);
+            theContext.PlayerFriends.InsertOnSubmit(new PlayerFriend { Player = player, Friends = "" });        // 1:1
+
+            return player;
+        }
 
         private const int SPONSORPAY_APP_KEY_DEBUG = 11472;
         private const int SPONSORPAY_APP_KEY_DEV = 11634;

@@ -55,6 +55,9 @@ namespace ServerCommon
     partial void InsertPendingTraining(ServerCommon.BDDModel.PendingTraining instance);
     partial void UpdatePendingTraining(ServerCommon.BDDModel.PendingTraining instance);
     partial void DeletePendingTraining(ServerCommon.BDDModel.PendingTraining instance);
+    partial void InsertPlayerFriend(ServerCommon.BDDModel.PlayerFriend instance);
+    partial void UpdatePlayerFriend(ServerCommon.BDDModel.PlayerFriend instance);
+    partial void DeletePlayerFriend(ServerCommon.BDDModel.PlayerFriend instance);
     partial void InsertPlayer(ServerCommon.BDDModel.Player instance);
     partial void UpdatePlayer(ServerCommon.BDDModel.Player instance);
     partial void DeletePlayer(ServerCommon.BDDModel.Player instance);
@@ -186,6 +189,14 @@ namespace ServerCommon
 			get
 			{
 				return this.GetTable<ServerCommon.BDDModel.PendingTraining>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ServerCommon.BDDModel.PlayerFriend> PlayerFriends
+		{
+			get
+			{
+				return this.GetTable<ServerCommon.BDDModel.PlayerFriend>();
 			}
 		}
 		
@@ -2447,6 +2458,133 @@ namespace ServerCommon.BDDModel
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PlayerFriends")]
+	public partial class PlayerFriend : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PlayerFriendsID;
+		
+		private string _Friends;
+		
+		private EntityRef<Player> _Player;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPlayerFriendsIDChanging(int value);
+    partial void OnPlayerFriendsIDChanged();
+    partial void OnFriendsChanging(string value);
+    partial void OnFriendsChanged();
+    #endregion
+		
+		public PlayerFriend()
+		{
+			this._Player = default(EntityRef<Player>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PlayerFriendsID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PlayerFriendsID
+		{
+			get
+			{
+				return this._PlayerFriendsID;
+			}
+			set
+			{
+				if ((this._PlayerFriendsID != value))
+				{
+					if (this._Player.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPlayerFriendsIDChanging(value);
+					this.SendPropertyChanging();
+					this._PlayerFriendsID = value;
+					this.SendPropertyChanged("PlayerFriendsID");
+					this.OnPlayerFriendsIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Friends", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Friends
+		{
+			get
+			{
+				return this._Friends;
+			}
+			set
+			{
+				if ((this._Friends != value))
+				{
+					this.OnFriendsChanging(value);
+					this.SendPropertyChanging();
+					this._Friends = value;
+					this.SendPropertyChanged("Friends");
+					this.OnFriendsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Player_PlayerFriend", Storage="_Player", ThisKey="PlayerFriendsID", OtherKey="PlayerID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Player Player
+		{
+			get
+			{
+				return this._Player.Entity;
+			}
+			set
+			{
+				Player previousValue = this._Player.Entity;
+				if (((previousValue != value) 
+							|| (this._Player.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Player.Entity = null;
+						previousValue.PlayerFriend = null;
+					}
+					this._Player.Entity = value;
+					if ((value != null))
+					{
+						value.PlayerFriend = this;
+						this._PlayerFriendsID = value.PlayerID;
+					}
+					else
+					{
+						this._PlayerFriendsID = default(int);
+					}
+					this.SendPropertyChanged("Player");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Players")]
 	public partial class Player : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2466,6 +2604,14 @@ namespace ServerCommon.BDDModel
 		private bool _Liked;
 		
 		private string _Params;
+		
+		private string _Locale;
+		
+		private string _Country;
+		
+		private System.DateTime _LastSeen;
+		
+		private EntityRef<PlayerFriend> _PlayerFriend;
 		
 		private EntitySet<Session> _Sessions;
 		
@@ -2489,10 +2635,17 @@ namespace ServerCommon.BDDModel
     partial void OnLikedChanged();
     partial void OnParamsChanging(string value);
     partial void OnParamsChanged();
+    partial void OnLocaleChanging(string value);
+    partial void OnLocaleChanged();
+    partial void OnCountryChanging(string value);
+    partial void OnCountryChanged();
+    partial void OnLastSeenChanging(System.DateTime value);
+    partial void OnLastSeenChanged();
     #endregion
 		
 		public Player()
 		{
+			this._PlayerFriend = default(EntityRef<PlayerFriend>);
 			this._Sessions = new EntitySet<Session>(new Action<Session>(this.attach_Sessions), new Action<Session>(this.detach_Sessions));
 			this._Team = default(EntityRef<Team>);
 			OnCreated();
@@ -2634,6 +2787,95 @@ namespace ServerCommon.BDDModel
 					this._Params = value;
 					this.SendPropertyChanged("Params");
 					this.OnParamsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Locale", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string Locale
+		{
+			get
+			{
+				return this._Locale;
+			}
+			set
+			{
+				if ((this._Locale != value))
+				{
+					this.OnLocaleChanging(value);
+					this.SendPropertyChanging();
+					this._Locale = value;
+					this.SendPropertyChanged("Locale");
+					this.OnLocaleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Country", DbType="NVarChar(30) NOT NULL", CanBeNull=false)]
+		public string Country
+		{
+			get
+			{
+				return this._Country;
+			}
+			set
+			{
+				if ((this._Country != value))
+				{
+					this.OnCountryChanging(value);
+					this.SendPropertyChanging();
+					this._Country = value;
+					this.SendPropertyChanged("Country");
+					this.OnCountryChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastSeen", DbType="DateTime NOT NULL")]
+		public System.DateTime LastSeen
+		{
+			get
+			{
+				return this._LastSeen;
+			}
+			set
+			{
+				if ((this._LastSeen != value))
+				{
+					this.OnLastSeenChanging(value);
+					this.SendPropertyChanging();
+					this._LastSeen = value;
+					this.SendPropertyChanged("LastSeen");
+					this.OnLastSeenChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Player_PlayerFriend", Storage="_PlayerFriend", ThisKey="PlayerID", OtherKey="PlayerFriendsID", IsUnique=true, IsForeignKey=false)]
+		public PlayerFriend PlayerFriend
+		{
+			get
+			{
+				return this._PlayerFriend.Entity;
+			}
+			set
+			{
+				PlayerFriend previousValue = this._PlayerFriend.Entity;
+				if (((previousValue != value) 
+							|| (this._PlayerFriend.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PlayerFriend.Entity = null;
+						previousValue.Player = null;
+					}
+					this._PlayerFriend.Entity = value;
+					if ((value != null))
+					{
+						value.Player = this;
+					}
+					this.SendPropertyChanged("PlayerFriend");
 				}
 			}
 		}

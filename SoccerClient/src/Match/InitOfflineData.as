@@ -7,7 +7,10 @@ package Match
 			var descTeam:Object = { 
 				PredefinedTeamNameID: predefinedTeamNameID,
 				Name: "Team " + predefinedTeamNameID,
+				FacebookID: awesome? 1050910634 : 611084838,
 				Fitness:100,
+				Level:awesome? 50 : 1,
+				TrueSkill:awesome? 15000 : 0,
 				Formation:"2-2-3",
 				SoccerPlayers: []
 			}

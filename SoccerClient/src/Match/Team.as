@@ -15,8 +15,12 @@ package Match
 		
 		public var Ghost:Entity = null;														// Ghost utilizado para decidir donde colocarás el portero		
 		
-		public function get Name() : String { return _Name; }								// El nombre del equipo (puesto por el usuario)
-		public function get PredefinedTeamNameID():String { return _PredefinedTeamNameID; }		
+		public function get Name() : String { return _DescTeam.Name; }						
+		public function get PredefinedTeamNameID():String { return _DescTeam.PredefinedTeamNameID; }
+		public function get FacebookID():String { return _DescTeam.FacebookID; }
+		public function get Fitness() : Number { return _DescTeam.Fitness; }
+		public function get Level() : Number { return _DescTeam.Level; }
+		public function get TrueSkill() : Number { return _DescTeam.TrueSkill; }
 		public function get CapsList() : Array { return _CapsList; }
 		public function get GoalKeeper() : Cap { return _CapsList[0]; }
 		
@@ -25,28 +29,21 @@ package Match
 		
 		public function get Goals() : int {	return _Goals; }
 		public function set Goals(value:int) : void { _Goals = value; }
-
-		// El nivel de entrenamiento, dado desde el manager
-		public function get Fitness() : Number { return _Fitness; }
 		
 		// Array con los IDs de las Skills disponibles, las que vienen desde el manager
 		public function get AvailableSkills() : Array { return _AvailableSkills; }
 		
 		private var _CapsList:Array = new Array();
-		private var _PredefinedTeamNameID:String = null;
-		private var _Name:String = null;
 		private var _Goals:int = 0;
-		private var _Fitness : Number = 0;
 		private var _FormationName:String = "3-3-2";
 		private var _Skills:Object;								// Hash de habilidades. Key:ID / Value:Skill
 		private var _AvailableSkills : Array;					// Las mismas habilidades, puestas en forma de array
+		private var _DescTeam : Object = null;
 		
 		public function Init(descTeam:Object, idxTeam:int, useSecondaryEquipment:Boolean = false) : void
 		{
 			IdxTeam = idxTeam;
-			_Name = descTeam.Name;
-			_PredefinedTeamNameID = descTeam.PredefinedTeamNameID;
-			_Fitness = descTeam.Fitness;
+			_DescTeam = descTeam;
 			_FormationName = descTeam.Formation;			
 
 			// Copiamos la lista de habilidades especiales, teniendo en cuenta que nos puede entrar un Array o un ArrayCollection

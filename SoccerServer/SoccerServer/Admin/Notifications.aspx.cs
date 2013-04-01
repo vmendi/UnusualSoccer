@@ -249,7 +249,7 @@ namespace SoccerServer.Admin
         private List<long> GetNotLoggedInSinceWithFriends(int days)
         {
             List<long> notLogged = GetNotLoggedInSince(days);
-            List<long> everybody = (from p in mDC.Players select p.FacebookID).ToList();;
+            List<long> everybody = (from p in mDC.Players select p.FacebookID).ToList();
 
             var ret = new List<long>();
 

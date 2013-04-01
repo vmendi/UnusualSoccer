@@ -15,6 +15,7 @@
         <asp:Button runat="server" Text="New Season" OnClick="NewSeason_Click" /><br />
         <asp:Button runat="server" Text="ResetAllTickets" OnClick="ResetAllTickets_Click" /><br /><br />
         <asp:Button runat="server" Text="Refresh Level based on XP" OnClick="RefreshLevelBasedOnXP_Click" /><br /><br />
+        <asp:Button runat="server" Text="Refresh LastSeen & PlayerFriends" OnClick="RefreshLastSeenPlayerFriends_Click" /><br /><br />
 
         <asp:Button ID="Button1" runat="server" Text="Mistical Refresh" OnClick="MisticalRefresh_Click" /><br />
         <asp:Button ID="Button2" runat="server" Text="Mistical Refresh 2" OnClick="MisticalRefresh2_Click" /><br />

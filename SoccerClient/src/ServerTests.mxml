@@ -649,7 +649,7 @@
 			this.addElement(match);
 			
 			// Queremos ver los margenes
-			this.y = 40;
+			this.y = -20;
 			this.graphics.beginFill(0xFF0000);
 			this.graphics.drawRect(0, 0, 1000, 1000);
 			this.graphics.endFill();
