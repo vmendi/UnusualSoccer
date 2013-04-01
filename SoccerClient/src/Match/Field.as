@@ -21,7 +21,7 @@ package Match
 		
 		// Origen del campo (tener en cuenta que el gráfico tiene una zona de vallas, por eso no es 0,0)
 		static public const OffsetX:Number = 46;
-		static public const OffsetY:Number = 72;
+		static public const OffsetY:Number = 152;
 		
 		// Coordenadas de las areas PEQUEÑAS del campo en coordenadas absolutas desde el corner superior izquierdo del movieclip		
 		static public const SmallAreaLeft  : Rectangle = new Rectangle(0 + OffsetX,   106 + OffsetY, 54, 188);
@@ -37,7 +37,7 @@ package Match
 		// Coordenadas de las porterias
 		private var X_GOAL_LEFT:Number = 0;
 		private var X_GOAL_RIGHT:Number = 714;
-		private var Y_GOAL:Number = 214;
+		private var Y_GOAL:Number = 294;
 		
 		// Sensores de gol colocados en cada portería para detectar el gol
 		public var GoalLeft : QuickObject = null;

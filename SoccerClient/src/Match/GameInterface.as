@@ -96,7 +96,7 @@ package Match
 				newButton.addEventListener(MouseEvent.CLICK, Delegate.create(OnUseSkillButtonClick, skillID));
 				
 				newButton.x = x;
-				newButton.y = 540;
+				newButton.y = 620;
 				
 				x += BUTTON_WIDTH;
 				
@@ -185,7 +185,7 @@ package Match
 			var Gui:* = MatchMain.Ref.Game.TheField.Visual;
 
 			// Rellenamos los goles
-			Gui.Score.text = teams[Enums.Team1].Goals.toString() + " - " + teams[Enums.Team2].Goals.toString(); 
+			Gui.Score.text = teams[Enums.Team1].Goals.toString() + " : " + teams[Enums.Team2].Goals.toString(); 
 			
 			// Actualizamos la parte de juego en la que estamos "gui.Period"
 			Gui.Period.text = MatchMain.Ref.Game.Part.toString() + "T";
