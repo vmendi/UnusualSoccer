@@ -40,12 +40,21 @@
 					MyZeroRemaining.visible = true;
 					MyRemainingMatches.visible = false;
 					MyRemainingMatchesTitle.visible = true;
+					MyRemainingMatchesTitle.styleName = "blackBoldMediumHN";
 				}
 				else
 				{
+					if (mTeamPurchaseModel.NewMatchRemainingSeconds == 0)
+					{
+						MyRemainingMatchesTitle.styleName = "blackBoldVeryBig";
+					}
+					else
+					{
+						MyRemainingMatchesTitle.styleName = "blackBoldMediumHN";
+					}
 					MyZeroRemaining.visible = false;
 					MyRemainingMatches.visible = true;
-					MyRemainingMatchesTitle.visible = true;
+					MyRemainingMatchesTitle.visible = true;	
 				}
 			}
 			
