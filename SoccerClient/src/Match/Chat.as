@@ -35,7 +35,7 @@ package Match
 			addChild(mcChat);
 						
 			mcChat.x = 52;
-			mcChat.y = 400;
+			mcChat.y = 480;
 			
 			mcOutput = mcChat["mcOutput"];
 			mcInput = mcChat["mcInput"];

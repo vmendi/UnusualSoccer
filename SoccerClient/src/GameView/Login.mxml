@@ -320,7 +320,7 @@
 					 styleName="yellowBoldHuge"
 					 text="{resourceManager.getString('main','Login01SelectTeam')}"
 					 textAlign="center" verticalAlign="middle"></s:Label>
-			<s:List id="MyPredefinedTeamList" left="0" width="720" height="380" tabEnabled="false" tabFocusEnabled="false"
+			<s:List id="MyPredefinedTeamList" left="0" width="720" height="425" tabEnabled="false" tabFocusEnabled="false"
 					dataProvider="{mPredefinedTeamsModel.PredefinedTeamNameIDs}"
 					selectedIndex="{mPredefinedTeamsModel.PredefinedTeamNameIDs.getItemIndex(mCurrentTeamID)}"
 					itemRenderer="GameView.PredefinedTeamItem" skinClass="GameView.Skins.DefaultListSkin"

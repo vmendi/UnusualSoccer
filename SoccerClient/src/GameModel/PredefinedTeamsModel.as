@@ -78,12 +78,17 @@ package GameModel
 				teamIDs.addItem("RUSSIA");
 				teamIDs.addItem("SCOTLAND");
 				teamIDs.addItem("SERBIA");
-				// teamIDs.addItem("SLOVAKIA");		// 3/23/2013 Lo quitamos para que sean 30, para q cuadre en un 6x5 grid
+				teamIDs.addItem("SLOVAKIA");
 				teamIDs.addItem("SOUTHKOREA");
 				teamIDs.addItem("SPAIN");
 				teamIDs.addItem("SWEDEN");
 				teamIDs.addItem("URUGUAY");
 				teamIDs.addItem("USA");
+				teamIDs.addItem("INDONESIA");
+				teamIDs.addItem("ROMANIA");
+				teamIDs.addItem("THAILAND");
+				teamIDs.addItem("TURKEY");
+				
 			}
 			
 			PredefinedTeamNameIDs = teamIDs;
@@ -120,12 +125,16 @@ package GameModel
 				"ru": "RUSSIA",
 				"xx": "SCOTLAND",			// No tiene iso code
 				"rs": "SERBIA",
-				// "sk": "SLOVAKIA",
+				"sk": "SLOVAKIA",
 				"kr": "SOUTHKOREA",
 				"es": "SPAIN",
 				"se": "SWEDEN",
 				"uy": "URUGUAY",
-				"us": "USA"
+				"us": "USA",
+				"id": "INDONESIA",
+				"ro": "ROMANIA",
+				"th": "THAILAND",
+				"tr": "TURKEY"
 			};
 			
 			if (map.hasOwnProperty(isoCode))

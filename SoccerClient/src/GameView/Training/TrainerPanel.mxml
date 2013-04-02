@@ -95,7 +95,17 @@
 
 	</s:Group>
 	
-	<s:Label text="{resourceManager.getString('main','GeneralTraining')}: {mTeamModel.TheTeam.Fitness}%" styleName="yellowBoldVeryBig" top="20" left="25" />
+	<s:Group top="25" left="35">
+		<s:Rect left="-10" right="-10" top="-5" bottom="-5" alpha="1" radiusX="10">
+			<s:fill>
+				<s:SolidColor alpha="0.3" color="#ffffff"/>
+			</s:fill>
+			<s:stroke>
+				<s:SolidColorStroke color="#fecf1a" weight="2"/>
+			</s:stroke>
+		</s:Rect>
+		<s:Label text="{resourceManager.getString('main','GeneralTraining')}: {mTeamModel.TheTeam.Fitness}%" styleName="yellowBoldVeryBig"  />
+	</s:Group>
 	
 	<!--<s:Button includeIn="NotPurchased"
 			  label="{resourceManager.getString('main','TrainerPanelHireButton')}"
