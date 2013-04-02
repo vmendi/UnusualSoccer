@@ -6,6 +6,7 @@ using NLog;
 using Realtime;
 using ServerCommon;
 using SoccerServer.Admin;
+using System.Configuration;
 
 
 namespace SoccerServer
@@ -38,7 +39,7 @@ namespace SoccerServer
             // Queremos que la configuración esté bien definida cuando llega la primera query
             GlobalConfig.Init();
 
-            SeasonUtils.CreateInitialSeasonIfNotExists();
+            SeasonUtils.CreateInitialSeasonIfNotExists(ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString);
             PrecompiledQueries.PrecompileAll();
 
             // Servidor HTTP nebuloso?

@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Data.SqlClient;
 using System.Configuration;
 using ServerCommon.BDDModel;
+using CmdLine;
 
 namespace DBUpdater
 {
@@ -19,10 +20,75 @@ namespace DBUpdater
 
     class Program
     {
-        static string ConnectionStringLocalhost  = "Data Source=localhost;Initial Catalog=SoccerV2;Integrated Security=True";
-        static string ConnectionStringAmazonLive = "Data Source=sql01.unusualsoccer.com;Initial Catalog=SoccerV2;User ID=sa;Password=Rinoplastia123&.";
+        [CommandLineArguments(Program = "DBUpdater", Title = "My little DB Updater", Description = "It helps update my DB")]
+        class Options
+        {
+            [CommandLineParameter(Name = "operation", ParameterIndex = 1, Required = true, Description = "update / delete_all")]
+            public string Operation { get; set; }
 
+            /*
+            [CommandLineParameter(Command = "W", Required = false, Description = "Wait for all instances to be InService", Default = false)]
+            public bool WaitForELB { get; set; }
+             */
+        }
+
+        static string SQL_FILES_PATH = "..\\App_Data\\";
+        static string SQL_FILENAME = "UpdateV{0}.sql";
+        static string IDBUPDATER_NAME = "UpdateV";
+
+        static string ConnectionStringLocalhost  = "Data Source=localhost;Initial Catalog=SoccerV2;Integrated Security=True";
+        
         static void Main(string[] args)
+        {
+            try
+            {
+                var options = CommandLine.Parse<Options>();
+
+                if (options.Operation == "update")
+                    UpdateOperation();
+                else if (options.Operation == "delete_all")
+                    DeleteOperation();
+                else
+                    Console.Out.WriteLine("Unknown operation");
+            }
+            catch (Exception exc) 
+            {
+                Console.Out.Write(exc.Message);
+                Console.Out.WriteLine("");
+                Console.Out.WriteLine("");
+                Console.Out.Write(exc.StackTrace);                
+            }
+        }
+
+        private static void DeleteOperation()
+        {
+            var sqlCode = ReadSQLDeleteAll();
+
+            using (SqlConnection con = new SqlConnection(ConnectionStringLocalhost))
+            {
+                con.Open();
+
+                using (SqlTransaction tran = con.BeginTransaction())
+                {
+                    SqlCommand cmd = new SqlCommand(sqlCode, con, tran);
+                    cmd.ExecuteNonQuery();
+
+                    SeasonUtils.ResetSeasons(con, tran, false);
+
+                    tran.Commit();
+                }
+            }
+        }
+
+        private static string ReadSQLDeleteAll()
+        {
+            using(StreamReader sr = new StreamReader(SQL_FILES_PATH + "DeleteAll.sql"))
+            {
+                return sr.ReadToEnd().Replace("GO", "");
+            }
+        }
+
+        private static void UpdateOperation()
         {
             // Determinar en que version estamos
 
@@ -33,7 +99,6 @@ namespace DBUpdater
             // Correr hasta la maxima!
 
             // NOTE: El SoccerDataContext debera ser uno "compatible" con todas las operaciones que se hagan, el ultimo en general.
-
             using (SqlConnection con = new SqlConnection(ConnectionStringLocalhost))
             {
                 con.Open();
@@ -73,23 +138,17 @@ namespace DBUpdater
             }
         }
 
-        static string SQL_FILES_PATH = "..\\App_Data\\";
-        static string SQL_FILENAME = "UpdateV{0}.sql";
-        static string IDBUPDATER_NAME = "UpdateV";
-
         static string GetSqlCodeForVersion(int version)
         {
-            using (StreamReader sr = new StreamReader(SQL_FILES_PATH + String.Format(SQL_FILENAME, version), System.Text.Encoding.UTF8))
+            using (StreamReader sr = new StreamReader(SQL_FILES_PATH + String.Format(SQL_FILENAME, version)))
             {
-                return sr.ReadToEnd();
+                return sr.ReadToEnd().Replace("GO", "");
             }
         }
 
         static void ExecuteSQLCode(SqlConnection con, SqlTransaction tran, string code)
         {
-            string cleanedUpCode = code.Replace("GO", "");
-
-            SqlCommand theCommand = new SqlCommand(cleanedUpCode, con, tran);
+            SqlCommand theCommand = new SqlCommand(code, con, tran);
             theCommand.ExecuteNonQuery();
         }
 

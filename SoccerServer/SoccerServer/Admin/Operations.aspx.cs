@@ -46,94 +46,7 @@ namespace SoccerServer.Admin
         private void RefreshAll()
         {
         }
-
-        protected void RefreshTrueskill_Click(object sender, EventArgs e)
-        {
-            foreach (Team theTeam in mDC.Teams)
-            {
-                var rating = new Moserware.Skills.Rating(theTeam.Mean, theTeam.StandardDeviation);
-                theTeam.TrueSkill = (int)(TrueSkillHelper.MyConservativeTrueSkill(rating) * TrueSkillHelper.MULTIPLIER);
-            }
-
-            mDC.SubmitChanges();
-        }
-
-        protected void ResetSeasons_Click(object sender, EventArgs e)
-        {
-            SeasonUtils.ResetSeasons(false);
-        }
-
-        protected void NewSeason_Click(object sender, EventArgs e)
-        {
-            SeasonUtils.CheckSeasonEnd(true);
-        }
-
-        protected void ResetAllTickets_Click(object sender, EventArgs e)
-        {
-            foreach (var teamPurchase in mDC.TeamPurchases)
-            {
-                teamPurchase.TicketPurchaseDate = DateTime.Now;
-                teamPurchase.TicketExpiryDate = teamPurchase.TicketPurchaseDate;
-                teamPurchase.RemainingMatches = GlobalConfig.DEFAULT_NUM_MACHES;
-            }
-            mDC.SubmitChanges();
-        }
-
-        protected void RefreshLevelBasedOnXP_Click(object sender, EventArgs e)
-        {
-            string sql = "UPDATE [SoccerV2].[dbo].[Teams] SET [Level]=@daLevel WHERE [TeamID]=@teamID";
-
-            using (SqlConnection con = new SqlConnection(mDC.Connection.ConnectionString))
-            {
-                con.Open();
-
-                foreach (var team in mDC.Teams)
-                {
-                    SqlCommand cmd = new SqlCommand(sql, con);
-
-                    cmd.Parameters.Add(new SqlParameter("@teamID", team.TeamID));
-                    cmd.Parameters.Add(new SqlParameter("@daLevel", TeamUtils.ConvertXPToLevel(team.XP)));
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
-
-        protected void RefreshLastSeenPlayerFriends_Click(object sender, EventArgs e)
-        {
-            var sessions = from p in mDC.Players
-                           let last = (from s in p.Sessions orderby s.CreationDate descending select s).First().CreationDate
-                           select new { PlayerID = p.PlayerID, LastSession = last };
-
-            using (SqlConnection con = new SqlConnection(mDC.Connection.ConnectionString))
-            {
-                con.Open();
-
-                string sql = "UPDATE [SoccerV2].[dbo].[Players] SET [LastSeen]=@dateVal WHERE [PlayerID]=@playerID";
-
-                foreach (var session in sessions)
-                {                    
-                    SqlCommand cmd = new SqlCommand(sql, con);
-
-                    cmd.Parameters.Add(new SqlParameter("@playerID", session.PlayerID));
-                    cmd.Parameters.Add(new SqlParameter("@dateVal", session.LastSession));                    
-                    cmd.ExecuteNonQuery();
-                }
-
-                var playerFriends = (from p in mDC.Players
-                                     select p).ToList().Select(player => new PlayerFriend() { PlayerFriendsID = player.PlayerID, Friends = "" });
-
-                using (SqlTransaction tran = con.BeginTransaction())
-                {
-                    SqlBulkCopy bc = new SqlBulkCopy(con, SqlBulkCopyOptions.Default, tran);
-
-                    bc.DestinationTableName = "PlayerFriends";
-                    bc.WriteToServer(playerFriends.AsDataReader());
-
-                    tran.Commit();
-                }
-            }
-        }
-
+  
         protected void EraseOrphanMatches_Click(object sender, EventArgs e)
         {
             var orphanMatches = (from s in mDC.Matches
@@ -148,7 +61,7 @@ namespace SoccerServer.Admin
             MyLogConsole.Text += "Num orphan matches deleted: " + numOrphan.ToString() + "<br/>";
         }
 
-        protected void MisticalRefresh_Click(object sender, EventArgs e)
+        protected void HealInjuries_Click(object sender, EventArgs e)
         {
             var now = DateTime.Now;
             foreach (SoccerPlayer sp in mDC.SoccerPlayers)
@@ -159,7 +72,7 @@ namespace SoccerServer.Admin
             mDC.SubmitChanges();
         }
 
-        protected void MisticalRefresh2_Click(object sender, EventArgs e)
+        protected void GiveSuperpower_Click(object sender, EventArgs e)
         {
             // 8/31/2012: Untested yet -> Bring the DB to the localhost and test it first!
             foreach (Team theTeam in mDC.Teams)

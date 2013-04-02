@@ -11,14 +11,9 @@
     <form id="form1" runat="server">
         
         <asp:Button runat="server" Text="Erase Orphan Matches" OnClick="EraseOrphanMatches_Click" /><br />
-        <asp:Button runat="server" Text="Reset Season" OnClick="ResetSeasons_Click" />
-        <asp:Button runat="server" Text="New Season" OnClick="NewSeason_Click" /><br />
-        <asp:Button runat="server" Text="ResetAllTickets" OnClick="ResetAllTickets_Click" /><br /><br />
-        <asp:Button runat="server" Text="Refresh Level based on XP" OnClick="RefreshLevelBasedOnXP_Click" /><br /><br />
-        <asp:Button runat="server" Text="Refresh LastSeen & PlayerFriends" OnClick="RefreshLastSeenPlayerFriends_Click" /><br /><br />
-
-        <asp:Button ID="Button1" runat="server" Text="Mistical Refresh" OnClick="MisticalRefresh_Click" /><br />
-        <asp:Button ID="Button2" runat="server" Text="Mistical Refresh 2" OnClick="MisticalRefresh2_Click" /><br />
+                
+        <asp:Button ID="Button1" runat="server" Text="Heal injuries" OnClick="HealInjuries_Click" /><br />
+        <asp:Button ID="Button2" runat="server" Text="Superpower for all" OnClick="GiveSuperpower_Click" /><br />
 
         <div class="borderedBox">
             <asp:Literal runat="server" id="MyLogConsole"/>

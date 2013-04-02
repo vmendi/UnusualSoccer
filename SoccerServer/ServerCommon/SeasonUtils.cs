@@ -15,19 +15,9 @@ namespace ServerCommon
         private static readonly Logger Log = LogManager.GetLogger(typeof(SeasonUtils).FullName);
         private static readonly Logger LogPerf = LogManager.GetLogger(typeof(SeasonUtils).FullName + ".Perf");
 
-        static public void CreateInitialSeasonIfNotExists()
+        static public void CreateInitialSeasonIfNotExists(string connectionString)
         {
-            using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
-            {
-                // Si todavia no tenemos ninguna temporada, es que la DB esta limpia => tenemos que empezar!
-                if (theContext.CompetitionSeasons.Count() == 0)
-                    ResetSeasons(false);
-            }
-        }
-
-        static public void ResetSeasons(bool addCurrentTeams)
-        {
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
 
@@ -36,41 +26,54 @@ namespace ServerCommon
                     SoccerDataModelDataContext theContext = new SoccerDataModelDataContext(con);
                     theContext.Transaction = tran;
 
-                    // Fuera todo lo antiguo
-                    theContext.ExecuteCommand("DELETE FROM CompetitionSeasons");
-
-                    var lowestDivision = GetLowestDivision(theContext);
-                    var currentSeason = CreateNewSeason(theContext, DateTime.Now);
-                    var newGroups = new List<CompetitionGroup>();
-
-                    // Con 1000 nuevos al dia, durando 4 dias la competicion, tendriamos 4000/4 = 1000 por grupo.
-                    for (int c = 0; c < 4; c++)
+                    // Si todavia no tenemos ninguna temporada, es que la DB esta limpia => tenemos que empezar!
+                    if (theContext.CompetitionSeasons.Count() == 0)
                     {
-                        CompetitionGroup newGroup = new CompetitionGroup();
-                        newGroup.CompetitionDivision = lowestDivision;
-                        newGroup.CompetitionSeason = currentSeason;
-                        newGroup.GroupName = (c + 1).ToString();
-                        newGroup.CreationDate = currentSeason.CreationDate;
-
-                        theContext.CompetitionGroups.InsertOnSubmit(newGroup);
-
-                        newGroups.Add(newGroup);
+                        ResetSeasons(con, tran, false);
+                        tran.Commit();
                     }
-                    // Submitear generara los IDs de los nuevos grupos
-                    theContext.SubmitChanges();
+                }
+            }
+        }
 
-                    if (addCurrentTeams)
+        static public void ResetSeasons(SqlConnection con, SqlTransaction tran, bool addCurrentTeams)
+        {
+            using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext(con))
+            {
+                theContext.Transaction = tran;
+
+                // Fuera todo lo antiguo
+                theContext.ExecuteCommand("DELETE FROM CompetitionSeasons");
+
+                var lowestDivision = GetLowestDivision(theContext);
+                var currentSeason = CreateNewSeason(theContext, DateTime.Now);
+                var newGroups = new List<CompetitionGroup>();
+
+                // Con 1000 nuevos al dia, durando 4 dias la competicion, tendriamos 4000/4 = 1000 por grupo.
+                for (int c = 0; c < 4; c++)
+                {
+                    CompetitionGroup newGroup = new CompetitionGroup();
+                    newGroup.CompetitionDivision = lowestDivision;
+                    newGroup.CompetitionSeason = currentSeason;
+                    newGroup.GroupName = (c + 1).ToString();
+                    newGroup.CreationDate = currentSeason.CreationDate;
+
+                    theContext.CompetitionGroups.InsertOnSubmit(newGroup);
+
+                    newGroups.Add(newGroup);
+                }
+                // Submitear generara los IDs de los nuevos grupos
+                theContext.SubmitChanges();
+
+                if (addCurrentTeams)
+                {
+                    var entriesToAdd = theContext.Teams.ToList().Select((val, index) => new CompetitionGroupEntry               // :)
                     {
-                        var entriesToAdd = theContext.Teams.ToList().Select((val, index) => new CompetitionGroupEntry               // :)
-                        {
-                            CompetitionGroupID = newGroups[index % newGroups.Count].CompetitionGroupID,                             // :D
-                            TeamID = val.TeamID
-                        });
+                        CompetitionGroupID = newGroups[index % newGroups.Count].CompetitionGroupID,                             // :D
+                        TeamID = val.TeamID
+                    });
 
-                        InsertBulkCopyCompetitionGroupEntries(entriesToAdd, con, tran);
-                    }
-                    tran.Commit();
-                    theContext.Dispose();
+                    InsertBulkCopyCompetitionGroupEntries(entriesToAdd, con, tran);
                 }
             }
         }
