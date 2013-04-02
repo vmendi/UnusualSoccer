@@ -19,11 +19,9 @@ namespace DBUpdater
 
     class Program
     {
-        /*
-            ConnectionString = "Data Source=localhost;Initial Catalog=SoccerV2;Integrated Security=True", 
-            ConnectionString = "Data Source=sql01.unusualsoccer.com;Initial Catalog=SoccerV2;User ID=sa;Password=Rinoplastia123&."
-         */
-           
+        static string ConnectionStringLocalhost  = "Data Source=localhost;Initial Catalog=SoccerV2;Integrated Security=True";
+        static string ConnectionStringAmazonLive = "Data Source=sql01.unusualsoccer.com;Initial Catalog=SoccerV2;User ID=sa;Password=Rinoplastia123&.";
+
         static void Main(string[] args)
         {
             // Determinar en que version estamos
@@ -36,7 +34,7 @@ namespace DBUpdater
 
             // NOTE: El SoccerDataContext debera ser uno "compatible" con todas las operaciones que se hagan, el ultimo en general.
 
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["SoccerV2ConnectionString"].ConnectionString))
+            using (SqlConnection con = new SqlConnection(ConnectionStringLocalhost))
             {
                 con.Open();
 

@@ -11,15 +11,13 @@
       <Association Name="CompetitionDivision_CompetitionDivision" Member="CompetitionDivision1" ThisKey="ParentCompetitionDivisionID" OtherKey="CompetitionDivisionID" Type="CompetitionDivision" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.TeamStats" Member="TeamStats">
-    <Type Name="TeamStat">
-      <Column Name="TeamStatsID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="NumPlayedMatches" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="NumMatchesWon" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="NumMatchesDraw" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ScoredGoals" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ReceivedGoals" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Team_TeamStat" Member="Team" ThisKey="TeamStatsID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+  <Table Name="dbo.TrainingDefinitions" Member="TrainingDefinitions">
+    <Type Name="TrainingDefinition">
+      <Column Name="TrainingDefinitionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(32) NOT NULL" CanBeNull="false" />
+      <Column Name="FitnessDelta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Time" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="TrainingDefinition_PendingTraining" Member="PendingTrainings" ThisKey="TrainingDefinitionID" OtherKey="TrainingDefinitionID" Type="PendingTraining" />
     </Type>
   </Table>
   <Table Name="dbo.CompetitionGroupEntries" Member="CompetitionGroupEntries">
@@ -95,6 +93,7 @@
       <Column Name="Goals" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="TurnsPlayed" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="GotExtraReward" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="GoalsOpp" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="MatchParticipation_CompetitionMatchParticipation" Member="CompetitionMatchParticipation" ThisKey="MatchParticipationID" OtherKey="MatchParticipationID" Type="CompetitionMatchParticipation" Cardinality="One" />
       <Association Name="Match_MatchParticipation" Member="Match" ThisKey="MatchID" OtherKey="MatchID" Type="Match" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="Team_MatchParticipation" Member="Team" ThisKey="TeamID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="SET NULL" />
@@ -106,8 +105,8 @@
       <Column Name="TrainingDefinitionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="TimeStart" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="TimeEnd" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Team_PendingTraining" Member="Team" ThisKey="TeamID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="TrainingDefinition_PendingTraining" Member="TrainingDefinition" ThisKey="TrainingDefinitionID" OtherKey="TrainingDefinitionID" Type="TrainingDefinition" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Team_PendingTraining" Member="Team" ThisKey="TeamID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.PlayerFriends" Member="PlayerFriends">
@@ -248,7 +247,6 @@
       <Column Name="LastFitnessUpdate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="LastDivisionQueriedID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="[Level]" Member="Level" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Team_TeamStat" Member="TeamStat" ThisKey="TeamID" OtherKey="TeamStatsID" Type="TeamStat" Cardinality="One" />
       <Association Name="Team_CompetitionGroupEntry" Member="CompetitionGroupEntries" ThisKey="TeamID" OtherKey="TeamID" Type="CompetitionGroupEntry" />
       <Association Name="Team_MatchParticipation" Member="MatchParticipations" ThisKey="TeamID" OtherKey="TeamID" Type="MatchParticipation" />
       <Association Name="Team_PendingTraining" Member="PendingTraining" ThisKey="TeamID" OtherKey="TeamID" Type="PendingTraining" Cardinality="One" />
@@ -257,17 +255,20 @@
       <Association Name="Team_SoccerPlayer" Member="SoccerPlayers" ThisKey="TeamID" OtherKey="TeamID" Type="SoccerPlayer" />
       <Association Name="Team_SpecialTraining" Member="SpecialTrainings" ThisKey="TeamID" OtherKey="TeamID" Type="SpecialTraining" />
       <Association Name="Team_TeamPurchase" Member="TeamPurchase" ThisKey="TeamID" OtherKey="TeamPurchaseID" Type="TeamPurchase" Cardinality="One" />
+      <Association Name="Team_TeamStat" Member="TeamStat" ThisKey="TeamID" OtherKey="TeamStatsID" Type="TeamStat" Cardinality="One" />
       <Association Name="CompetitionDivision_Team" Member="CompetitionDivision" ThisKey="LastDivisionQueriedID" OtherKey="CompetitionDivisionID" Type="CompetitionDivision" IsForeignKey="true" DeleteRule="SET NULL" />
       <Association Name="Player_Team" Member="Player" ThisKey="TeamID" OtherKey="PlayerID" Type="Player" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.TrainingDefinitions" Member="TrainingDefinitions">
-    <Type Name="TrainingDefinition">
-      <Column Name="TrainingDefinitionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="NVarChar(32) NOT NULL" CanBeNull="false" />
-      <Column Name="FitnessDelta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Time" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="TrainingDefinition_PendingTraining" Member="PendingTrainings" ThisKey="TrainingDefinitionID" OtherKey="TrainingDefinitionID" Type="PendingTraining" />
+  <Table Name="dbo.TeamStats" Member="TeamStats">
+    <Type Name="TeamStat">
+      <Column Name="TeamStatsID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumPlayedMatches" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumMatchesWon" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumMatchesDraw" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ScoredGoals" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ReceivedGoals" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Team_TeamStat" Member="Team" ThisKey="TeamStatsID" OtherKey="TeamID" Type="Team" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
 </Database>
