@@ -285,17 +285,17 @@
 		<s:Group width="350">
 			<!-- LEFT TEAM -->
 			<s:Group left="0">
-				<GameView:BadgeTeam id="MyBadge0" />
-				<s:Label left="40" top="7" width="96" maxDisplayedLines="1" text="Nombre" styleName="whiteBoldBig" id="MyName0"/>
-				<s:Label left="40" top="23" text="Equipo" styleName="greyBoldMedium" id="MyPredefinedTeamName0"/>
-				<s:Label width="35" left="122" top="7" text="3" styleName="whiteBoldHuge" textAlign="right" id="MyGoals0"/>
+				<s:Label left="10" top="0" width="150" maxDisplayedLines="1" text="Nombre" styleName="whiteBoldBig" id="MyName0"/>
+				<GameView:BadgeTeam id="MyBadge0" top="10" />
+				<s:Label left="40" top="25" text="Equipo" styleName="greyBoldMedium" id="MyPredefinedTeamName0"/>
+				<s:Label width="35" left="122" top="14" text="3" styleName="whiteBoldHuge" textAlign="right" id="MyGoals0"/>
 			</s:Group>
 			<!-- RIGHT TEAM -->
 			<s:Group right="0">
-				<GameView:BadgeTeam id="MyBadge1" right="0" />
-				<s:Label right="40" top="7" width="96" maxDisplayedLines="1" text="Nombre" styleName="whiteBoldBig" textAlign="right" id="MyName1"/>
-				<s:Label right="40" top="23" text="Equipo" styleName="greyBoldMedium" textAlign="right" id="MyPredefinedTeamName1" />
-				<s:Label width="35" top="7" text="0" styleName="whiteBoldHuge" textAlign="left" id="MyGoals1"/>
+				<s:Label right="10" top="0" width="150" maxDisplayedLines="1" text="Nombre" styleName="whiteBoldBig" textAlign="right" id="MyName1"/>
+				<GameView:BadgeTeam id="MyBadge1" top="10" right="0" />
+				<s:Label right="40" top="25" text="Equipo" styleName="greyBoldMedium" textAlign="right" id="MyPredefinedTeamName1" />
+				<s:Label width="35" top="14" text="0" styleName="whiteBoldHuge" textAlign="left" id="MyGoals1"/>
 			</s:Group>	
 		</s:Group>
 		
