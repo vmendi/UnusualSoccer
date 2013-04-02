@@ -74,6 +74,9 @@ package Match
 					"SPAIN",
 					"CHILE",
 					"SERBIA",
+					"INDONESIA",
+					"THAILAND",
+					"TURKEY",
 				],
 				// Grupo 5
 				[
@@ -84,6 +87,7 @@ package Match
 					"BRAZIL",
 					"NETHERLANDS",
 					"SWEDEN",
+					"ROMANIA",
 				]
 			]
 	}
