@@ -58,7 +58,7 @@
 						  knockout="false" quality="2" strength="1"/>
 		</s:filters>
 	</s:Group>
-	<GameView:XpBar x="230" y="42" Percent="{mTeamModel.LevelPercent}" />
+	<GameView:XpBar x="230" y="42" Percent="{mTeamModel.LevelPercent}" Text="{mTeamModel.GetNextLevelCompletionString(mTeamModel.TheTeam.XP)}" />
 	
 	<s:Label x="320" y="20" text="{resourceManager.getString('main','GeneralSkill')}: {mTeamModel.TheTeam.TrueSkill}" width="100" styleName="whiteBoldMedium" textAlign="center"/>
 	<GameView:BadgeCategory width="64" height="43" left="342" top="28" TrueSkill="{mTeamModel.TheTeam.TrueSkill}" />

@@ -45,14 +45,22 @@
 			MyXpBar.visible = true;
 		}
 		
+		[Bindable]
+		public function get Text() : String { return mText; }
+		public function set Text(v:String) : void {	mText = v; }
+		
+		
 		private var mAnimationEnabled : Boolean = true;
 		private var mPercent : Number = -1;
+		private var mText : String = "";
 		
 	]]></fx:Script>
 			
 	
 
 	<s:Image source="@Embed(source='/Assets/General.swf', symbol='XPMarco')"/>
+	<s:Label text="{Text}" />
+	
 	<!-- El 100% es 63 de width -->
 	<s:Rect id="MyXpBar" left="5" top="5" right="5" bottom="5" width="30" height="9" radiusX="4">
 		<s:fill>

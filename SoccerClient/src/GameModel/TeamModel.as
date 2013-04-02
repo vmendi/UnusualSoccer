@@ -336,6 +336,35 @@ package GameModel
 			}
 		}
 		
+		public function GetNextLevelCompletionString(xp : int) : String
+		{
+			var ret : String = "Max Level";		// TODO: Localize
+			
+			var maxLevelXPs : ArrayCollection = mMainModel.TheInitialConfig.LevelMaxXP;
+			var level : int = ConvertXPToLevel(xp, maxLevelXPs);
+			
+			if (level < maxLevelXPs.length && level > 0)
+			{			
+				// Ambos numeros basados en el XP del comienzo del nivel
+				var levelXP : int = maxLevelXPs[level] - maxLevelXPs[level-1];
+				var currXP : int = xp - maxLevelXPs[level-1];
+				
+				ret = currXP + " / " + levelXP; 
+			}
+			
+			return ret; 
+		}
+		
+		static private function ConvertXPToLevel(xp : int, maxLevelXPs : ArrayCollection) : int
+		{		
+			for (var currentLevel : int = 1; currentLevel < maxLevelXPs.length; currentLevel++)
+			{
+				if (maxLevelXPs[currentLevel] > xp)
+					return currentLevel;
+			}			
+			return 0;
+		}
+		
 
 		// En realidad esta instancia de TeamDetails es una comodidad para mostrar el SelfTeam de forma simetrica a los demas.
 		// Los TeamDetails es basicamente lo que se muestra en Friendly.TeamDetailsPanel cuando seleccionamos un equipo oponente
@@ -349,7 +378,7 @@ package GameModel
 		public  function get LevelPercent() : int { return mLevelPercent; }
 		private function set LevelPercent(v:int) : void { mLevelPercent = v; }
 		private var mLevelPercent : int = 0;
-		
+				
 
 		private var mFieldSoccerPlayers : ArrayCollection;
 		private var mSubstituteSoccerPlayers : ArrayCollection;

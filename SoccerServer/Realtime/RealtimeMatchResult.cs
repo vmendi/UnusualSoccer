@@ -88,12 +88,14 @@ namespace Realtime
                 mParticipation1 = (from p in mContext.MatchParticipations
                                    where p.MatchID == mBDDMatch.MatchID && p.TeamID == mBDDPlayer1.Team.TeamID
                                    select p).First();
-                mParticipation1.Goals = ResultPlayer1.Goals;
+                mParticipation1.Goals    = ResultPlayer1.Goals;
+                mParticipation1.GoalsOpp = ResultPlayer2.Goals;
 
                 mParticipation2 = (from p in mContext.MatchParticipations
                                    where p.MatchID == mBDDMatch.MatchID && p.TeamID == mBDDPlayer2.Team.TeamID
                                    select p).First();
-                mParticipation2.Goals = ResultPlayer2.Goals;
+                mParticipation2.Goals    = ResultPlayer2.Goals;
+                mParticipation2.GoalsOpp = ResultPlayer1.Goals;
 
                 // Puntos de Competicion
                 if (WasCompetition && !WasSameIP && !WasTooManyTimes)
