@@ -83,7 +83,7 @@
 		<s:Label x="234" width="54" y="4" text="{resourceManager.getString('main','GeneralLevel')}" styleName="whiteBoldBig" />
 		<s:Label right="18" y="4" text="{resourceManager.getString('main','GeneralSkill')}" styleName="whiteBoldBig" />
 		
-		<s:List id="MyRankingList" left="0" right="0" top="25" height="427"
+		<s:List id="MyRankingList" left="0" right="0" top="25" height="415"
 				dataProvider="{mRankingModel.TheRankingPage.Teams}" 
 				itemRenderer="GameView.RankingTeamItem" useVirtualLayout="false"
 				skinClass="GameView.Skins.DefaultListSkin" 

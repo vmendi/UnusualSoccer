@@ -22,12 +22,7 @@
 			font-weight: bold;
 			embedAsCFF: true;
 		}
-		
-		@font-face {
-			src:url("/Assets/Fonts/LedBoard/LEDBDREV.ttf");
-			fontFamily: MyLedBoard;
-			embedAsCFF: true;
-		}
+
 	</fx:Style>
 	
 
