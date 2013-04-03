@@ -141,12 +141,14 @@ package
 					message = innerError.toString();
 			}
 			
+			LogToServer("UncaughtError: " + message);
+			
+			// Para que molestar?
+			// ErrorDialog.Show("UncaughtError: " + message, ResourceManager.getInstance().getString("main", "ErrorPleaseNotifyDeveloperTit"));
+			
 			if ((FlexGlobals.topLevelApplication as Application) != null && (FlexGlobals.topLevelApplication as Application).stage != null)
 				ScreenCapture.SaveCaptureToServer((FlexGlobals.topLevelApplication as Application).stage, AppConfig.CANVAS_URL, 
 												  SoccerClient.GetFacebookFacade().FacebookID);
-			
-			LogToServer("UncaughtError: " + message);
-			ErrorDialog.Show("UncaughtError: " + message, ResourceManager.getInstance().getString("main", "ErrorPleaseNotifyDeveloperTit"));			
 		}
 		
 		static public function AsyncError(e:AsyncErrorEvent) : void

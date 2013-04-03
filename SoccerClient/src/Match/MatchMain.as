@@ -6,6 +6,8 @@ package Match
 	
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
+	import flash.events.IOErrorEvent;
+	import flash.events.SecurityErrorEvent;
 	import flash.system.ApplicationDomain;
 	import flash.system.SecurityDomain;
 	
@@ -52,6 +54,8 @@ package Match
 			var dispatcher : IEventDispatcher = ResourceManager.getInstance().loadResourceModule(fileURL, true,
 																								 ApplicationDomain.currentDomain, SecurityDomain.currentDomain);
 			dispatcher.addEventListener(ResourceEvent.ERROR, onError);
+			dispatcher.addEventListener(IOErrorEvent.IO_ERROR, onError);
+			dispatcher.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onError);
 			
 			// Solo se llamara al ultimo listener subscrito. Hemos comprobado que no es porque siempre le estamos pasando el mismo onComplete. En la comprobacion
 			// usabamos un Delegate para asegurar que cada vez le pasabamos una direccion de funcion distinta. Pero no, siempre llama sólo a la ultima subscripcion.

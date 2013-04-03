@@ -156,11 +156,21 @@ package GameModel
 			// Cuando veas el log de abajo, la teoria quedara corroborada
 			if (mTimer != null)
 			{
-				// Decretamos inactividad!
-				IsActive = false;
-				
-				// Paramos el timer hasta que haya nueva actividad
-				mTimer.reset();
+				// Ademas, sin tener que ver con lo de arriba: Creamos que estamos entrando en inactividad a pesar de haber partido. Creemos que
+				// es asi por el Disconnect(false)
+				if (mRealtimeModel.TheMatch != null)
+				{
+					ErrorMessages.LogToServer("WTF 8 IT WAS HAPPENING !!!!!!!!!!!!!");
+					StopAndDestroyTimer();
+				}
+				else
+				{					
+					// Decretamos inactividad!
+					IsActive = false;
+					
+					// Paramos el timer hasta que haya nueva actividad
+					mTimer.reset();
+				}
 			}
 			else
 			{

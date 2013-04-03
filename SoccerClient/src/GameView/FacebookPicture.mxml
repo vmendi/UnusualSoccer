@@ -95,9 +95,12 @@
 		{
 			if (mLoader != null)
 			{
-				mLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, OnLoadComplete);
-				mLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, OnError);
-				mLoader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, OnError);
+				try {
+					mLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, OnLoadComplete);
+					mLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, OnError);
+					mLoader.contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, OnError);
+				}
+				catch (e:Error)	{}
 				
 				try {
 					mLoader.close();

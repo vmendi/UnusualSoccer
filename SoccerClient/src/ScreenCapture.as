@@ -4,6 +4,7 @@ package
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	import flash.events.SecurityErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestHeader;
@@ -34,9 +35,10 @@ package
 				mLoader = new URLLoader();
 				mLoader.addEventListener(Event.COMPLETE, onLoaderComplete);
 				mLoader.addEventListener(IOErrorEvent.IO_ERROR, onError);
+				mLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onError);
 				mLoader.load(request);
 			}
-			catch(e : Error) { ErrorMessages.LogToServer("Error while capturing"); }
+			catch(e : Error) { ErrorMessages.LogToServer("Error while capturing " + e.message); }
 
 			function onLoaderComplete(e:Event) : void
 			{
