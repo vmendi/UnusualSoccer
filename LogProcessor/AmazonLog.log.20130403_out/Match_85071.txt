@@ -1,0 +1,19 @@
+IP-0A21899B 15:24:25.495 [INFO] [11] [NetEngine.NetRoom] Actor joined Room:MatchID 85071 ActorID:43148
+IP-0A21899B 15:24:25.495 [INFO] [11] [NetEngine.NetRoom] Actor joined Room:MatchID 85071 ActorID:42735
+IP-0A21899B 15:24:25.495 [INFO] [11] [NetEngine.NetLobby] Room Added: MatchID 85071
+IP-0A21899B 15:28:41.293 [INFO] [11] [Realtime.RealtimeMatch] 85071 Chat: WKS Slask Wroclaw> kuzwa
+IP-0A21899B 15:29:02.557 [INFO] [11] [Realtime.RealtimeMatch] 85071 Chat: LKS BAŻANCIANIE> to jest nie mozliwe
+IP-0A21899B 15:29:20.434 [INFO] [11] [Realtime.RealtimeMatch] 85071 Chat: WKS Slask Wroclaw> przeciez tez Tobie nie moge tak wbic
+IP-0A21899B 15:29:40.200 [INFO] [11] [Realtime.RealtimeMatch] 85071 Chat: WKS Slask Wroclaw> to wszystko od wytrenowania zalezy
+IP-0A21899B 15:31:46.141 [INFO] [11] [Realtime.RealtimeMatch] 85071 Chat: LKS BAŻANCIANIE> co ty mrazem kuzwa
+IP-0A21899B 15:32:00.618 [INFO] [11] [Realtime.RealtimeMatch] 85071 Chat: WKS Slask Wroclaw> nie mozesz ustawiac pilki na piatke by strzelic
+IP-0A21899B 15:33:45.593 [INFO] [11] [Realtime.RealtimeMatch] 85071 Chat: LKS BAŻANCIANIE> czemu bramkaerza naie mogle
+IP-0A21899B 15:33:52.348 [INFO] [11] [Realtime.RealtimeMatch] 85071 Chat: WKS Slask Wroclaw> za polem karnym nie mozna
+IP-0A21899B 15:33:59.664 [INFO] [11] [Realtime.RealtimeMatch] 85071 Chat: LKS BAŻANCIANIE> pioer
+IP-0A21899B 15:34:10.709 [ERROR] [11] [Realtime.RealtimeMatch] MatchID: 85071  STATE 1:  Result: 10 PaseToID: -1 CountTouchedCaps: 0 FramesSimulating: 4 ReasonTurnChanged: 0 T0: [0:(x=680, y=357)][1:(x=612, y=207)][2:(x=612, y=306)][3:(x=612, y=407)][4:(x=612, y=508.95)][5:(x=410, y=355)][6:(x=379, y=332.95)][7:(x=-250, y=-100)] T1: [0:(x=80, y=357)][1:(x=148, y=207)][2:(x=148, y=306)][3:(x=-400, y=-100)][4:(x=-550, y=-100)][5:(x=227, y=357)][6:(x=300.55, y=251.25)][7:(x=298, y=443)] B:(x=367.95, y=354) <ServerVars>: CurState=Playing Part=2 RemainingSecs=28.42064 Time=585.6844 Goals0=2 Goals1=0
+IP-0A21899B 15:34:10.709 [ERROR] [11] [Realtime.RealtimeMatch] MatchID: 85071  STATE 2:  Result: 10 PaseToID: -1 CountTouchedCaps: 0 FramesSimulating: 4 ReasonTurnChanged: 0 T0: [0:(x=680, y=357)][1:(x=612, y=207)][2:(x=612, y=306)][3:(x=612, y=407)][4:(x=612, y=508.95)][5:(x=410, y=355)][6:(x=379, y=332.9)][7:(x=-250, y=-100)] T1: [0:(x=80, y=357)][1:(x=148, y=207)][2:(x=148, y=306)][3:(x=-400, y=-100)][4:(x=-550, y=-100)][5:(x=227, y=357)][6:(x=300.5, y=251.35)][7:(x=298, y=443)] B:(x=367.95, y=354.05) <ServerVars>: CurState=Playing Part=2 RemainingSecs=28.42064 Time=585.6844 Goals0=2 Goals1=0
+IP-0A21899B 15:34:10.709 [ERROR] [11] [Realtime.RealtimeMatch] MatchID: 85071 >>>>>> FATAL ERROR UNSYNC STATE >>>>>> 85071 <ServerVars>: CurState=Playing Part=2 RemainingSecs=28.42064 Time=585.6844 Goals0=2 Goals1=0
+IP-0A21899B 15:34:15.187 [INFO] [11] [Realtime.RealtimeMatch] 85071 Chat: WKS Slask Wroclaw> nie wsciekaj sie tylko ucz sie grac
+IP-0A21899B 15:34:41.520 [INFO] [11] [NetEngine.NetRoom] Actor left Room:MatchID 85071 ActorID:42735
+IP-0A21899B 15:34:41.520 [INFO] [11] [NetEngine.NetRoom] Actor left Room:MatchID 85071 ActorID:43148
+IP-0A21899B 15:34:41.520 [INFO] [11] [NetEngine.NetLobby] Room Removed: MatchID 85071

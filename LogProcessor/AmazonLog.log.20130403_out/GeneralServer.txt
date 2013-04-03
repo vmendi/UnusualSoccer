@@ -1,0 +1,132 @@
+IP-0AF0065B 02:07:47.494 [ERROR] [16] [Weborb] WEBORB EXCEPTION:Exception: Arithmetic operation resulted in an overflow. StackTrace:    at Weborb.Protocols.Amf.RequestParser.readMessage(Stream input)
+IP-0AF0065B 02:07:47.494 [ERROR] [16] [SoccerServer.Global] Application_Error: http://canvas.unusualsoccer.com/weborb.aspx?SessionKey=AAADIZBHih7LcBAOWHDmtV4z6quZAy996utSFJI7VzYuQHBOfWgTe3yn2mBIQMbU8VCKLEJ2JhNKA9POE8EE41ij9i3CyrVToLgWsR3ZAntW0fbZA3Edy. LastError: System.Web.HttpException (0x80070057): The remote host closed the connection. The error code is 0x80070057.
+IP-0AF0065B 02:07:47.494 [ERROR] [16] [Weborb] WEBORB EXCEPTION:System.NullReferenceException: Object reference not set to an instance of an object.
+IP-0AF0065B 02:07:47.494 [ERROR] [16] [Weborb] WEBORB EXCEPTION:Weborb.Protocols.UnknownRequestFormatException: cannot parse request. possible reasons: malformed request or protocol formatter is not registered 
+IP-0AF0065B 03:47:47.352 [ERROR] [16] [Weborb] WEBORB EXCEPTION:System.NullReferenceException: Object reference not set to an instance of an object.
+IP-0AF0065B 03:47:47.352 [ERROR] [16] [SoccerServer.Global] Application_Error: http://canvas.unusualsoccer.com/weborb.aspx?SessionKey=AAADIZBHih7LcBABnebziNNj2poB9ZArOwMbJbZCttt7vYJR0Y0QV8xes5THAncxvuGePqR5C0zlgzScD7iHPzWSz3Avk65jfOpm0sLYlNHyy9XnZBbSZA. LastError: System.Web.HttpException (0x80070057): The remote host closed the connection. The error code is 0x80070057.
+IP-0AF0065B 03:47:47.352 [ERROR] [16] [Weborb] WEBORB EXCEPTION:Weborb.Protocols.UnknownRequestFormatException: cannot parse request. possible reasons: malformed request or protocol formatter is not registered 
+IP-0AF0065B 03:47:47.352 [ERROR] [16] [Weborb] WEBORB EXCEPTION:Exception: Arithmetic operation resulted in an overflow. StackTrace:    at Weborb.Protocols.Amf.RequestParser.readMessage(Stream input)
+IP-0A21BBBB 04:13:45.913 [ERROR] [20] [NetEngine.NetPlug] NetEngine.NetEngineException: Message Length too big
+IP-0AF0065B 05:09:42.682 [ERROR] [21] [HttpService.MainService] String or binary data would be truncated.
+IP-0AF0065B 09:09:31.391 [ERROR] [19] [HttpService.MainService] String or binary data would be truncated.
+IP-0AF0065B 11:39:59.950 [ERROR] [19] [Weborb] WEBORB EXCEPTION:System.UnauthorizedAccessException: Access to the path 'C:\inetpub\wwwsoccerserverv2\WEB-INF\flex\dynamic-remoting-config.xml' is denied.
+IP-0AF0065B 11:39:59.950 [ERROR] [19] [Weborb] WEBORB ERROR:Unable to save dynamic destinations. Did you grant Write permission to the WEB-INF/flex folder for the NETWORK SERVICE/ASPNET user?
+IP-0A21899B 11:40:56.145 [ERROR] [11] [Weborb] WEBORB ERROR:Unable to save dynamic destinations. Did you grant Write permission to the WEB-INF/flex folder for the NETWORK SERVICE/ASPNET user?
+IP-0A21899B 11:40:56.207 [ERROR] [11] [Weborb] WEBORB EXCEPTION:System.UnauthorizedAccessException: Access to the path 'C:\inetpub\wwwsoccerserverv2\WEB-INF\flex\dynamic-remoting-config.xml' is denied.
+IP-0AF0065B 12:13:58.149 [ERROR] [14] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 48157 84738
+IP-0AF0065B 12:18:20.432 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 39902 84741
+IP-0AF0065B 12:43:06.593 [ERROR] [14] [HttpService.MainService] String or binary data would be truncated.
+IP-0AF0065B 12:47:39.966 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 31931 84781
+IP-0AF0065B 12:58:12.011 [ERROR] [19] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 39708 84797
+IP-0A21899B 13:00:46.700 [ERROR] [11] [Realtime.RealtimeMatch] MatchID: 84819 ServerException: Fallo en OnServerPlayerReadyForMatchStart 1 <ServerVars>: CurState=Playing Part=1 RemainingSecs=300 Time=0 Goals0=0 Goals1=0
+IP-0AF0065B 13:08:48.022 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 38451 84816
+IP-0AF0065B 13:13:51.925 [ERROR] [14] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 27653 84824
+IP-0AF0065B 13:20:25.903 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 51832 84835
+IP-0AF0065B 13:24:44.739 [ERROR] [19] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 18710 84839
+IP-0AF0065B 13:24:56.626 [ERROR] [14] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 4030 84841
+IP-0AF0065B 13:25:12.959 [ERROR] [14] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 27653 84843
+IP-0AF0065B 13:31:24.348 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 51800 84853
+IP-0AF0065B 13:32:07.186 [ERROR] [14] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 46368 84854
+IP-0AF0065B 13:44:08.545 [ERROR] [19] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 10844 84880
+IP-0AF0065B 13:53:40.597 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 51800 84894
+IP-0AF0065B 13:58:32.832 [ERROR] [14] [SoccerServer.Global] Application_Error: http://canvas.unusualsoccer.com/default.aspx?fb_source=appcenter&fb_appcenter=1. LastError: System.Web.HttpUnhandledException (0x80004005): Exception of type 'System.Web.HttpUnhandledException' was thrown. ---> Facebook.WebExceptionWrapper: The remote server returned an error: (502) Bad Gateway.
+IP-0AF0065B 14:04:16.016 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 51800 84916
+IP-0AF0065B 14:18:30.938 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 39708 84944
+IP-0AF0065B 14:23:16.184 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 51800 84951
+IP-0A21899B 14:32:07.408 [ERROR] [11] [Realtime.RealtimeMatch] MatchID: 84972 >>>>>> FATAL ERROR UNSYNC STATE >>>>>> 84972 <ServerVars>: CurState=Playing Part=2 RemainingSecs=246.2269 Time=375.8654 Goals0=0 Goals1=2
+IP-0A21899B 14:32:07.408 [ERROR] [11] [Realtime.RealtimeMatch] MatchID: 84972  STATE 1:  Result: 10 PaseToID: -1 CountTouchedCaps: 0 FramesSimulating: 3 ReasonTurnChanged: 0 T0: [0:(x=680, y=357)][1:(x=-250, y=-100)][2:(x=612, y=306)][3:(x=612, y=407)][4:(x=578, y=466)][5:(x=533, y=357)][6:(x=281, y=313)][7:(x=177.05, y=534.15)] T1: [0:(x=80, y=357)][1:(x=286, y=356)][2:(x=227, y=207)][3:(x=227, y=306)][4:(x=117, y=473)][5:(x=167.9, y=505.8)][6:(x=387, y=420)][7:(x=298, y=443)] B:(x=63, y=527) <ServerVars>: CurState=Playing Part=2 RemainingSecs=246.2269 Time=375.8654 Goals0=0 Goals1=2
+IP-0A21899B 14:32:07.408 [ERROR] [11] [Realtime.RealtimeMatch] MatchID: 84972  STATE 2:  Result: 10 PaseToID: -1 CountTouchedCaps: 0 FramesSimulating: 3 ReasonTurnChanged: 0 T0: [0:(x=680, y=357)][1:(x=-250, y=-100)][2:(x=612, y=306)][3:(x=612, y=407)][4:(x=578, y=466)][5:(x=533, y=357)][6:(x=281, y=313)][7:(x=177.05, y=534.2)] T1: [0:(x=80, y=357)][1:(x=286, y=356)][2:(x=227, y=207)][3:(x=227, y=306)][4:(x=117, y=473)][5:(x=167.9, y=505.75)][6:(x=387, y=420)][7:(x=298, y=443)] B:(x=63, y=527) <ServerVars>: CurState=Playing Part=2 RemainingSecs=246.2269 Time=375.8654 Goals0=0 Goals1=2
+IP-0AF0065B 14:56:06.336 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 51800 85000
+IP-0AF0065B 15:19:37.494 [ERROR] [10] [Weborb] WEBORB EXCEPTION:System.NullReferenceException: Object reference not set to an instance of an object.
+IP-0AF0065B 15:19:37.494 [ERROR] [10] [Weborb] WEBORB EXCEPTION:Weborb.Protocols.UnknownRequestFormatException: cannot parse request. possible reasons: malformed request or protocol formatter is not registered 
+IP-0AF0065B 15:19:37.494 [ERROR] [10] [Weborb] WEBORB EXCEPTION:Exception: Unable to read beyond the end of the stream. StackTrace:    at System.IO.BinaryReader.ReadByte()
+IP-0AF0065B 15:19:37.494 [ERROR] [10] [SoccerServer.Global] Application_Error: http://canvas.unusualsoccer.com/weborb.aspx?SessionKey=AAADIZBHih7LcBAJGeC97d56OPz2Jc9SRwEG4LiNlffocsVUWOfi1dLl24Si85Dws228JtWCRSWZBbQCQWZC6bf7UDYsg64mwRa88FH7MzXDgXzoF6KB. LastError: System.Web.HttpException (0x80070057): The remote host closed the connection. The error code is 0x80070057.
+IP-0AF0065B 15:21:09.690 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 51800 85044
+IP-0AF0065B 15:21:34.494 [ERROR] [12] [Weborb] WEBORB EXCEPTION:System.NullReferenceException: Object reference not set to an instance of an object.
+IP-0AF0065B 15:21:34.494 [ERROR] [12] [SoccerServer.Global] Application_Error: http://canvas.unusualsoccer.com/weborb.aspx?SessionKey=AAADIZBHih7LcBAJGeC97d56OPz2Jc9SRwEG4LiNlffocsVUWOfi1dLl24Si85Dws228JtWCRSWZBbQCQWZC6bf7UDYsg64mwRa88FH7MzXDgXzoF6KB. LastError: System.Web.HttpException (0x80070057): The remote host closed the connection. The error code is 0x80070057.
+IP-0AF0065B 15:21:34.494 [ERROR] [12] [Weborb] WEBORB EXCEPTION:Exception: Unable to read beyond the end of the stream. StackTrace:    at System.IO.BinaryReader.ReadByte()
+IP-0AF0065B 15:21:34.494 [ERROR] [12] [Weborb] WEBORB EXCEPTION:Weborb.Protocols.UnknownRequestFormatException: cannot parse request. possible reasons: malformed request or protocol formatter is not registered 
+IP-0AF0065B 15:25:01.147 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 50086 85051
+IP-0AF0065B 15:25:28.494 [ERROR] [12] [Weborb] WEBORB EXCEPTION:Exception: Unable to read beyond the end of the stream. StackTrace:    at System.IO.BinaryReader.ReadByte()
+IP-0AF0065B 15:25:28.494 [ERROR] [12] [Weborb] WEBORB EXCEPTION:System.NullReferenceException: Object reference not set to an instance of an object.
+IP-0AF0065B 15:25:28.494 [ERROR] [12] [Weborb] WEBORB EXCEPTION:Weborb.Protocols.UnknownRequestFormatException: cannot parse request. possible reasons: malformed request or protocol formatter is not registered 
+IP-0AF0065B 15:25:28.494 [ERROR] [12] [SoccerServer.Global] Application_Error: http://canvas.unusualsoccer.com/weborb.aspx?SessionKey=AAADIZBHih7LcBAJGeC97d56OPz2Jc9SRwEG4LiNlffocsVUWOfi1dLl24Si85Dws228JtWCRSWZBbQCQWZC6bf7UDYsg64mwRa88FH7MzXDgXzoF6KB. LastError: System.Web.HttpException (0x80070057): The remote host closed the connection. The error code is 0x80070057.
+IP-0A21899B 15:34:10.709 [ERROR] [11] [Realtime.RealtimeMatch] MatchID: 85071  STATE 1:  Result: 10 PaseToID: -1 CountTouchedCaps: 0 FramesSimulating: 4 ReasonTurnChanged: 0 T0: [0:(x=680, y=357)][1:(x=612, y=207)][2:(x=612, y=306)][3:(x=612, y=407)][4:(x=612, y=508.95)][5:(x=410, y=355)][6:(x=379, y=332.95)][7:(x=-250, y=-100)] T1: [0:(x=80, y=357)][1:(x=148, y=207)][2:(x=148, y=306)][3:(x=-400, y=-100)][4:(x=-550, y=-100)][5:(x=227, y=357)][6:(x=300.55, y=251.25)][7:(x=298, y=443)] B:(x=367.95, y=354) <ServerVars>: CurState=Playing Part=2 RemainingSecs=28.42064 Time=585.6844 Goals0=2 Goals1=0
+IP-0A21899B 15:34:10.709 [ERROR] [11] [Realtime.RealtimeMatch] MatchID: 85071  STATE 2:  Result: 10 PaseToID: -1 CountTouchedCaps: 0 FramesSimulating: 4 ReasonTurnChanged: 0 T0: [0:(x=680, y=357)][1:(x=612, y=207)][2:(x=612, y=306)][3:(x=612, y=407)][4:(x=612, y=508.95)][5:(x=410, y=355)][6:(x=379, y=332.9)][7:(x=-250, y=-100)] T1: [0:(x=80, y=357)][1:(x=148, y=207)][2:(x=148, y=306)][3:(x=-400, y=-100)][4:(x=-550, y=-100)][5:(x=227, y=357)][6:(x=300.5, y=251.35)][7:(x=298, y=443)] B:(x=367.95, y=354.05) <ServerVars>: CurState=Playing Part=2 RemainingSecs=28.42064 Time=585.6844 Goals0=2 Goals1=0
+IP-0A21899B 15:34:10.709 [ERROR] [11] [Realtime.RealtimeMatch] MatchID: 85071 >>>>>> FATAL ERROR UNSYNC STATE >>>>>> 85071 <ServerVars>: CurState=Playing Part=2 RemainingSecs=28.42064 Time=585.6844 Goals0=2 Goals1=0
+IP-0AF0065B 15:35:44.990 [ERROR] [9] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 51800 85074
+IP-0AF0065B 15:56:08.713 [ERROR] [14] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 41096 85110
+IP-0AF0065B 15:58:27.459 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 51821 85116
+IP-0AF0065B 16:14:01.024 [ERROR] [14] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 38753 85151
+IP-0A21899B 16:15:50.072 [ERROR] [8] [NetEngine.NetPlug] NetEngine.NetEngineException: Message Length too big
+IP-0AF0065B 16:21:38.135 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 51821 85164
+IP-0AF0065B 16:25:52.399 [ERROR] [14] [Weborb] WEBORB ERROR:System.MissingMethodException: unable to find method with name RefreshTeamPurchaseInitialInfo and the given argument types
+IP-0AF0065B 16:29:52.717 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 51800 85185
+IP-0AF0065B 16:37:22.713 [ERROR] [9] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 38753 85208
+IP-0AF0065B 16:43:00.794 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 46102 85220
+IP-0AF0065B 16:44:58.433 [ERROR] [12] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 21857 85225
+IP-0AF0065B 16:48:32.947 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 38753 85237
+IP-0AF0065B 16:55:38.671 [ERROR] [14] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 41303 85256
+IP-0AF0065B 16:56:36.501 [ERROR] [9] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 21857 85259
+IP-0AF0065B 17:06:21.485 [ERROR] [19] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 46102 85288
+IP-0AF0065B 17:10:50.632 [ERROR] [9] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 17594 85303
+IP-0AF0065B 17:18:22.845 [ERROR] [12] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 52504 85322
+IP-0AF0065B 17:21:37.720 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 46102 85319
+IP-0AF0065B 17:26:58.674 [ERROR] [12] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 52357 85345
+IP-0AF0065B 17:27:29.313 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 14093 85347
+IP-0AF0065B 17:40:30.324 [ERROR] [19] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 50935 85381
+IP-0AF0065B 17:45:59.528 [ERROR] [19] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 50227 85396
+IP-0AF0065B 17:54:51.142 [ERROR] [19] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 50935 85423
+IP-0AF0065B 18:02:34.178 [ERROR] [19] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 50227 85448
+IP-0AF0065B 18:03:18.591 [ERROR] [19] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 41178 85452
+IP-0AF0065B 18:09:19.825 [ERROR] [14] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 50935 85472
+IP-0AF0065B 18:23:52.364 [ERROR] [19] [SoccerServer.Global] Application_Error: http://canvas.unusualsoccer.com/https:/canvas.unusualsoccer.com/. LastError: System.Web.HttpException (0x80004005): A potentially dangerous Request.Path value was detected from the client (:).
+IP-0AF0065B 18:23:57.887 [ERROR] [19] [SoccerServer.Global] Application_Error: http://canvas.unusualsoccer.com/https:/d3gkkiro3subwc.cloudfront.net/. LastError: System.Web.HttpException (0x80004005): A potentially dangerous Request.Path value was detected from the client (:).
+IP-0AF0065B 18:28:04.070 [ERROR] [12] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 44188 85529
+IP-0AF0065B 18:37:22.082 [ERROR] [19] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 52566 85566
+IP-0AF0065B 18:46:03.637 [ERROR] [9] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 41096 85595
+IP-0AF0065B 18:54:27.343 [ERROR] [9] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 52566 85624
+IP-0AF0065B 19:01:09.352 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 24996 85643
+IP-0AF0065B 19:06:40.462 [ERROR] [19] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 47472 85654
+IP-0AF0065B 19:14:00.460 [ERROR] [9] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 41096 85678
+IP-0AF0065B 19:22:32.263 [ERROR] [19] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 24996 85709
+IP-0AF0065B 19:25:05.516 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 4030 85715
+IP-0AF0065B 19:35:41.697 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 52608 85753
+IP-0AF0065B 19:36:17.405 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 48157 85758
+IP-0AF0065B 19:38:56.478 [ERROR] [12] [Weborb] WEBORB EXCEPTION:Exception: Arithmetic operation resulted in an overflow. StackTrace:    at Weborb.Protocols.Amf.RequestParser.readMessage(Stream input)
+IP-0AF0065B 19:38:56.478 [ERROR] [12] [Weborb] WEBORB EXCEPTION:Weborb.Protocols.UnknownRequestFormatException: cannot parse request. possible reasons: malformed request or protocol formatter is not registered 
+IP-0AF0065B 19:38:56.478 [ERROR] [12] [Weborb] WEBORB EXCEPTION:System.NullReferenceException: Object reference not set to an instance of an object.
+IP-0AF0065B 19:38:56.494 [ERROR] [12] [SoccerServer.Global] Application_Error: http://canvas.unusualsoccer.com/weborb.aspx?SessionKey=AAADIZBHih7LcBALZB5WqDszCsJNVa1qani6ZCgL0zYIfnRKrmfOgfIZAhjGomJSq0MOViIye7fxZAtorr2VwqSorTL1Nay5cuHeYIWLvkGoaiihAASZCFF. LastError: System.Web.HttpException (0x80070057): The remote host closed the connection. The error code is 0x80070057.
+IP-0AF0065B 20:03:31.880 [ERROR] [14] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 52504 85850
+IP-0A21899B 20:13:23.966 [ERROR] [11] [Realtime.RealtimeMatch] MatchID: 85910  STATE 2:  Result: 10 PaseToID: -1 CountTouchedCaps: 0 FramesSimulating: 2 ReasonTurnChanged: 0 T0: [0:(x=192, y=334)][1:(x=148, y=207)][2:(x=148, y=306)][3:(x=136, y=495)][4:(x=119.85, y=535)][5:(x=176, y=528)][6:(x=-250, y=-100)][7:(x=118, y=381)] T1: [0:(x=680, y=357)][1:(x=612, y=233)][2:(x=612, y=357)][3:(x=612, y=481)][4:(x=-400, y=-100)][5:(x=533, y=357)][6:(x=533, y=481)][7:(x=65.3, y=478.05)] B:(x=143.1, y=529.95) <ServerVars>: CurState=Playing Part=1 RemainingSecs=199.6768 Time=100.3232 Goals0=0 Goals1=0
+IP-0A21899B 20:13:23.966 [ERROR] [11] [Realtime.RealtimeMatch] MatchID: 85910  STATE 1:  Result: 10 PaseToID: -1 CountTouchedCaps: 0 FramesSimulating: 2 ReasonTurnChanged: 0 T0: [0:(x=192, y=334)][1:(x=148, y=207)][2:(x=148, y=306)][3:(x=136, y=495)][4:(x=119.8, y=535)][5:(x=176, y=528)][6:(x=-250, y=-100)][7:(x=118, y=381)] T1: [0:(x=680, y=357)][1:(x=612, y=233)][2:(x=612, y=357)][3:(x=612, y=481)][4:(x=-400, y=-100)][5:(x=533, y=357)][6:(x=533, y=481)][7:(x=65.35, y=478)] B:(x=143.15, y=529.95) <ServerVars>: CurState=Playing Part=1 RemainingSecs=199.6768 Time=100.3232 Goals0=0 Goals1=0
+IP-0A21899B 20:13:23.966 [ERROR] [11] [Realtime.RealtimeMatch] MatchID: 85910 >>>>>> FATAL ERROR UNSYNC STATE >>>>>> 85910 <ServerVars>: CurState=Playing Part=1 RemainingSecs=199.6768 Time=100.3232 Goals0=0 Goals1=0
+IP-0AF0065B 20:13:39.702 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 27840 85880
+IP-0AF0065B 20:26:38.685 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 52309 85925
+IP-0AF0065B 20:31:38.109 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 47694 85942
+IP-0AF0065B 20:38:23.194 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 47498 85965
+IP-0AF0065B 20:47:23.064 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 49523 85977
+IP-0AF0065B 20:50:58.826 [ERROR] [19] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 47498 86013
+IP-0AF0065B 20:51:08.217 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 4250 86014
+IP-0A21899B 20:55:30.220 [ERROR] [8] [NetEngine.NetPlug] System.Net.Sockets.SocketException (0x80004005): An existing connection was forcibly closed by the remote host
+IP-0AF0065B 21:25:05.463 [ERROR] [19] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 47498 86144
+IP-0AF0065B 21:29:34.314 [ERROR] [12] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 52647 86162
+IP-0AF0065B 21:30:18.945 [ERROR] [12] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 52672 86164
+IP-0AF0065B 21:33:31.481 [ERROR] [14] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 45167 86174
+IP-0AF0065B 21:41:43.286 [ERROR] [14] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 52672 86203
+IP-0AF0065B 21:43:51.690 [ERROR] [12] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 52647 86208
+IP-0AF0065B 21:43:52.017 [ERROR] [12] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 52647 86208
+IP-0AF0065B 21:45:42.013 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 26131 86214
+IP-0AF0065B 21:53:29.730 [ERROR] [14] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 45686 86246
+IP-0AF0065B 21:55:29.834 [ERROR] [12] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 52647 86251
+IP-0AF0065B 21:55:30.193 [ERROR] [12] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 52647 86251
+IP-0AF0065B 22:16:20.795 [ERROR] [19] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 38815 86325
+IP-0AF0065B 22:18:59.946 [ERROR] [14] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 51691 86335
+IP-0AF0065B 22:27:41.918 [ERROR] [9] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 43726 86372
+IP-0AF0065B 22:27:51.154 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 5427 86373
+IP-0AF0065B 22:32:14.963 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 52647 86392
+IP-0AF0065B 22:35:25.268 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 41096 86405
+IP-0AF0065B 22:39:00.392 [ERROR] [5] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 38815 86418
+IP-0AF0065B 22:48:09.839 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 16242 86452
+IP-0AF0065B 22:49:13.425 [ERROR] [9] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 38753 86456
+IP-0AF0065B 22:52:52.059 [ERROR] [10] [HttpService.MainService] El perdedor no puede solicitar GetExtraRewardForMatch 48157 86473
