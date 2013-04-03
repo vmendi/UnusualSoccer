@@ -95,8 +95,8 @@
 
 	</s:Group>
 	
-	<s:Group top="25" left="35">
-		<s:Rect left="-10" right="-10" top="-5" bottom="-5" alpha="1" radiusX="10">
+	<s:Group top="20" left="35">
+		<s:Rect left="-10" right="-10" top="-5" bottom="-5" alpha="1" radiusX="8">
 			<s:fill>
 				<s:SolidColor alpha="0.3" color="#ffffff"/>
 			</s:fill>

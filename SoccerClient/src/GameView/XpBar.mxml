@@ -59,9 +59,7 @@
 	
 
 	<s:Image source="@Embed(source='/Assets/General.swf', symbol='XPMarco')"/>
-	<s:Label text="{Text}" />
-	
-	<!-- El 100% es 63 de width -->
+
 	<s:Rect id="MyXpBar" left="5" top="5" right="5" bottom="5" width="30" height="9" radiusX="4">
 		<s:fill>
 			<s:SolidColor color="#8AF5FF"/>
@@ -72,4 +70,10 @@
 		</s:filters>
 	</s:Rect>
 	
+	<s:Label text="{Text}" styleName="blackBoldMediumHN" horizontalCenter="0" verticalCenter="0" blendMode="invert"  >
+		<!--<s:filters>
+			<s:GlowFilter alpha="0.75" blurX="8" blurY="8" color="#FFFFFF" inner="false"
+						  knockout="false" quality="2" strength="4"/>
+		</s:filters>-->
+	</s:Label>
 </s:Group>
