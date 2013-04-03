@@ -77,7 +77,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Backup.cs" />
+    <Compile Include="BackupOperation.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="DeleteAllOperation.cs" />
+    <Compile Include="RestoreOperation.cs" />
+    <Compile Include="UpdateOperation.cs" />
     <Compile Include="UpdateV2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -75,7 +75,7 @@ package GameModel
 		{
 			var myResult : Object = GetMyResult(matchResult, teamModel);
 			
-			return myResult.DiffXP > 0 || myResult.DiffSkillPoints > 0;
+			return myResult.DiffSkillPoints > 0;
 		}		
 	}
 }
