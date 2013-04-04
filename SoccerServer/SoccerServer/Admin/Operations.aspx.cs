@@ -86,7 +86,6 @@ namespace SoccerServer.Admin
                     var post = String.Format("https://graph.facebook.com/{0}?fields=locale&{1}",
                                               player.FacebookID,
                                               access_token);
-
                     try
                     {
                         var response = JsonConvert.DeserializeObject(AdminUtils.PostTo(post, null)) as JObject;
