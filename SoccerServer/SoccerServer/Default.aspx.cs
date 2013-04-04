@@ -197,7 +197,7 @@ namespace SoccerServer
         private string GetLocale()
         {
             if (mLocale == null)
-                mLocale = GetLocaleFromSignedRequest(FacebookWebContext.Current.SignedRequest);
+                mLocale = FilterLocale(GetLocaleFromSignedRequest(FacebookWebContext.Current.SignedRequest));
             
             return mLocale;
         }
@@ -207,8 +207,19 @@ namespace SoccerServer
         //
         static private string GetLocaleFromSignedRequest(FacebookSignedRequest fbSignedRequest)
         {
-            var locale = ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["locale"] as string;
+            string locale = "en_US";
 
+            try
+            {
+                locale = ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["locale"] as string;
+            }
+            catch (Exception) { }
+           
+            return locale;
+        }
+
+        static private string FilterLocale(string locale)
+        {
             // MahouLigaChapas nunca puede ser otro idioma que no sea español de España
             if (GlobalConfig.ServerSettings.VersionID == "MahouLigaChapas")
                 locale = "es_ES";
@@ -218,7 +229,7 @@ namespace SoccerServer
 
             // Siempre le pasamos al cliente un locale que sabemos que soporta.
             string[] supportedLocales = { "es_ES", "en_US", "es_LA" };
-            
+
             if (!supportedLocales.Contains(locale))
             {
                 //  - Todo lo español (es_US) -> español neutro (es_LA)

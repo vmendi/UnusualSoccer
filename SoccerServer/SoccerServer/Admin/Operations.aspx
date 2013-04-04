@@ -11,6 +11,7 @@
     <form id="form1" runat="server">
         
         <asp:Button runat="server" Text="Erase Orphan Matches" OnClick="EraseOrphanMatches_Click" /><br />
+        <asp:Button ID="Button3" runat="server" Text="Update FB locale" OnClick="UpdateFBEtc_Click" /><br />
                 
         <asp:Button ID="Button1" runat="server" Text="Heal injuries" OnClick="HealInjuries_Click" /><br />
         <asp:Button ID="Button2" runat="server" Text="Superpower for all" OnClick="GiveSuperpower_Click" /><br />

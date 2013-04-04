@@ -22,6 +22,7 @@ namespace DBUpdater
         }
 
         static string ConnectionStringLocalhost  = "Data Source=localhost;Initial Catalog=SoccerV2;Integrated Security=True";
+        // static string ConnectionStringAmazon = "Data Source=sql01.unusualsoccer.com;Initial Catalog=SoccerV2;User ID=sa;Password=Rinoplastia123&.";
         
         static void Main(string[] args)
         {

@@ -152,22 +152,9 @@ namespace SoccerServer.Admin
 
         private List<long> GetFriendList(long userID)
         {
-            var currentEnv = EnvironmentSelector.CurrentEnvironment;
-            var access_token = AdminUtils.GetApplicationAccessToken(currentEnv.AppId, currentEnv.AppSecret);
-
-            var post = String.Format("https://graph.facebook.com/{0}/friends/?{1}", // "https://graph.facebook.com/{0}?fields=friends&{1}"
-                                        userID.ToString(),
-                                        access_token);
-
-            var response = JsonConvert.DeserializeObject(AdminUtils.PostTo(post, null)) as JObject;
-
-            JArray friendsArray = (JArray)response["data"];
             List<long> ret = new List<long>();
 
-            foreach (JObject friend in friendsArray)
-            {
-                ret.Add((long)friend["id"]);
-            }
+            // TODO: Get it from the DB
 
             return ret;
         }
@@ -200,10 +187,8 @@ namespace SoccerServer.Admin
                                                       Description = "No llegaron a crear el equipo" },
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetCreatedTeamNoMatchsPlayed(),
                                                       Description = "Crearon el equipo pero no jugaron ni un partido" },
-                /*
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetNotLoggedInSinceWithFriends(7),
-                                                      Description = "No logeados desde hace más de 7 días CON amigos" },
-                */
+                                                      Description = "No logeados desde más 7 días CON amigos (TODO)." },
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetNewSince(1),
                                                       Description = "Nuevos desde ayer" },
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetPlayedNumMatchesSince(1, 1),
