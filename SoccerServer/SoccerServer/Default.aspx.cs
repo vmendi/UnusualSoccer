@@ -149,6 +149,11 @@ namespace SoccerServer
             return flashVars;
         }
 
+        public string GetCanvasUrl()
+        {
+            return GlobalConfig.FacebookSettings.CanvasUrl;
+        }
+
         public string GetPlayerParams()
         {
             return mPlayer.Params;
@@ -312,7 +317,7 @@ namespace SoccerServer
         private const int SPONSORPAY_APP_KEY_DEV = 11634;
         private const int SPONSORPAY_APP_KEY_RELEASE = 11371;
 
-        public int GetSponsorPay_AppKey()
+        public int GetSponsorPayAppKey()
         {
             //return SPONSORPAY_APP_KEY_DEBUG;
             //return SPONSORPAY_APP_KEY_DEV;

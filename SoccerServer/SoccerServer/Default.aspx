@@ -178,7 +178,8 @@
                     mixpanel.people.set("Gender", response.gender);
                     mixpanel.people.set("Age range", response.age_range.min + ((typeof response.age_range.max !== "undefined")? "-" + response.age_range.max : "+"));
 
-                    // setupPromotionBars();
+                    // setupPromotionBars(response.third_party_id);
+                    setupTrialPay(response.third_party_id);
 
                     theSWF.onRefreshFacebookMeResponse(response);
                 }
@@ -233,15 +234,36 @@
         }
     </script>
 
+    
+    <!-- TrialPay start -->
+    <script type="text/javascript" src="https://s-assets.tp-cdn.com/static3/js/api/payment_overlay.js"></script>
+
+    <script type="text/javascript">
+        var _trialPayThirdPartyId;
+
+        function setupTrialPay(thirdPartyId) {
+            _trialPayThirdPartyId = thirdPartyId;
+        }
+
+        function showTrialPayOfferWall() {
+            TRIALPAY.fb.show_overlay('<%= GetAppID() %>', 'fbpayments', { sid: _trialPayThirdPartyId, 
+                                                                          currency_url: "<%= GetCanvasUrl() %>" + "/OpenGraph/Currency.ashx?currencyID=0" });
+        }
+    </script>
+    <!-- TrialPay end -->
+
+
     <!-- SponsorPay start-->
     <script src="//iframe.sponsorpay.com/javascripts/widget/v2/widgets.js" charset="utf-8"></script>
     <script type="text/javascript">        
-        var _sp_video;
-        function setupSponsorPay(_year, _gender) {
+        var _sponsorPayVideo;
+                
+        function setupSponsorPay(_year, _gender) 
+        {
             var theSWF = document.getElementById('<%= SWF_SETTINGS["application"] %>');
 
-            _sp_video = new SPONSORPAY.Video.Iframe({
-                appid: <%= GetSponsorPay_AppKey() %>,   // the appid you get from the publisher dashboard
+            _sponsorPayVideo = new SPONSORPAY.Video.Iframe({
+                appid: <%= GetSponsorPayAppKey() %>,    // the appid you get from the publisher dashboard
                 uid: <%= GetUserFacebookID() %>,        // anything you want that is unique and constant per user
                 height: 1000,
                 width: 1000,
@@ -264,32 +286,17 @@
                     theSWF.SponsorPayRewardEarned();    // This function will be called after user clicked the green button after watching.
 
                     // Volvemos a refrescar si hay oferta disponible o no
-                    _sp_video.backgroundLoad();
+                    _sponsorPayVideo.backgroundLoad();
                 }
             });            
-            _sp_video.backgroundLoad();
+            _sponsorPayVideo.backgroundLoad();
         }
 
         function PlayVideo(){
-            _sp_video.showVideo();
+            _sponsorPayVideo.showVideo();
         }
     </script>
     <!-- SponsorPay end-->
-
-    <!-- Trialpay start -->
-    <script type="text/javascript" src="https://s-assets.tp-cdn.com/static3/js/api/payment_overlay.js"></script>
-    
-    <script type="text/javascript">
-        function onOfferAvailable_callback(obj) {
-            alert('Hay ofertas men!\n Corre a pillarlas : ' + obj.toString());
-        }
-
-        function onOfferUnavailable_callback() {
-            alert('No hay ofertas disponibles!\n Pero siempre te queda la opción de pillar Unusual Points');
-        }
-    </script>
-    <!-- Trialpay end -->
-
 </head>
 	
 <body>

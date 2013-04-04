@@ -56,6 +56,7 @@
     <DeployIisAppPath>SoccerServerV2</DeployIisAppPath>
     <IncludeAppPool>false</IncludeAppPool>
     <DeployIisAppPhysicalPath>c:\inetpub\wwwsoccerserverv2</DeployIisAppPhysicalPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Facebook, Version=5.4.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
@@ -210,8 +211,10 @@
     <Content Include="Imgs\Purchases\TicketPlatinum.png" />
     <Content Include="Imgs\Purchases\TicketSilver.png" />
     <Content Include="Imgs\Reporter.png" />
+    <Content Include="Imgs\TicketMatch.png" />
     <Content Include="Imgs\TrainingItem_en_US.swf" />
     <Content Include="Imgs\TrainingItem_es_ES.swf" />
+    <Content Include="Imgs\UnusualPoints.png" />
     <Content Include="logs\dummy.txt" />
     <Content Include="News.xml">
       <SubType>Designer</SubType>
@@ -299,6 +302,9 @@
     </Compile>
     <Compile Include="Cancelled.aspx.designer.cs">
       <DependentUpon>Cancelled.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OpenGraph\Currency.ashx.cs">
+      <DependentUpon>Currency.ashx</DependentUpon>
     </Compile>
     <Compile Include="OpenGraph\OpenGraph.ashx.cs">
       <DependentUpon>OpenGraph.ashx</DependentUpon>
@@ -390,6 +396,7 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="OpenGraph\OpenGraph.ashx" />
+    <Content Include="OpenGraph\Currency.ashx" />
     <None Include="packages.config" />
     <Content Include="Payment.ashx" />
     <Content Include="Weborb.config" />
@@ -406,6 +413,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DBUpdater\DBUpdater.csproj">
+      <Project>{9D7F507B-9CD6-4394-91CD-812C2311133B}</Project>
+      <Name>DBUpdater</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HttpService\HttpService.csproj">
       <Project>{111103BF-5CD3-432E-BF91-3E7E86F3FA89}</Project>
       <Name>HttpService</Name>
