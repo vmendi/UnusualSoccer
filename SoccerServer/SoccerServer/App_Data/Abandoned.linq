@@ -1,7 +1,6 @@
 <Query Kind="Statements">
   <Connection>
     <ID>b6676606-8217-455b-954b-31b9a1f69249</ID>
-    <Persist>true</Persist>
     <Server>sql01.unusualsoccer.com</Server>
     <SqlSecurity>true</SqlSecurity>
     <UserName>sa</UserName>
@@ -11,18 +10,42 @@
   </Connection>
 </Query>
 
+var today = DateTime.Now;
+int daysSince = 7;
+
+var totalTeams = (from t in Teams
+				  where (today - t.Team.CreationDate).TotalDays <= daysSince
+				  select t);
+
 var only1Match = (from t in Teams
+				  where (today - t.Team.CreationDate).TotalDays <= daysSince
 				  where t.MatchParticipations.Count() == 1
 				  select t);
 				  
+var only1MatchParts = (from t in Teams
+				  	   where (today - t.Team.CreationDate).TotalDays <= daysSince
+				       where t.MatchParticipations.Count() == 1
+				       select t.MatchParticipations.First());
+				  
+totalTeams.Count().Dump("Total teams created since " + daysSince.ToString() + " days ago");
 only1Match.Count().Dump("Teams that played only 1 match");
 only1Match.Count(team => team.MatchParticipations.First().Match.WasAbandoned.Value).Dump("Abandoned");
+only1MatchParts.Average(m => (m.Match.DateEnded - m.Match.DateStarted).Value.TotalSeconds).Dump("Avg seconds");
+only1MatchParts.Count(only1 => only1MatchParts.Contains(only1.Match.MatchParticipations.Single(s => s != only1))).Dump("Played against 1 part only too");
 
-var only2Matches = (from t in Teams
-				    where t.MatchParticipations.Count() == 2
-				    select t);
-					
-only2Matches.Count().Dump("Teams that played only 2 matches");
+int total = 0;
 
-only2Matches.Count(team => team.MatchParticipations.OrderBy(part => part.Match.DateStarted).First().Match.WasAbandoned.Value).Dump("First Abandoned");
-only2Matches.Count(team => team.MatchParticipations.OrderBy(part => part.Match.DateStarted).Skip(1).First().Match. WasAbandoned.Value).Dump("Second Abandoned");
+for (int c=1; c <= 5; c++)
+{
+	var loop =	(from t in Teams
+				 where (today - t.Team.CreationDate).TotalDays <= daysSince
+			 	 where t.MatchParticipations.Count() == c
+			 	 select t);
+
+	loop.Count().Dump("Teams that played only " + c.ToString() + " matches");
+	
+	total += loop.Count();
+}
+
+total.Dump("Total perdidos en 5 partidos");
+(100*((float)total / (float)totalTeams.Count())).Dump("Percent");

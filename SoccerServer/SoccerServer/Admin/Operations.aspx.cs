@@ -41,13 +41,11 @@ namespace SoccerServer.Admin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            /*
             if (EnvironmentSelector.CurrentEnvironment.Description.Contains("REAL"))
             {
                 Response.End();
                 return;
             }
-             */
 
             if (!IsPostBack)
                 RefreshAll();
@@ -57,85 +55,7 @@ namespace SoccerServer.Admin
         {
         }
 
-        protected void UpdateFBEtc_Click(object sender, EventArgs e)
-        {
-            var thread = new Thread(RunUpdate);
-            thread.Start();
-        }
 
-        private void RunUpdate()
-        {
-            var currentEnv = EnvironmentSelector.CurrentEnvironment;
-
-            using (SqlConnection con = new SqlConnection(currentEnv.ConnectionString))
-            {
-                con.Open();
-
-                var theContext = new SoccerDataModelDataContext(con);
-                var players = theContext.Players.ToList();
-
-                for (int c = 0; c < players.Count; c++)
-                {
-                    Player player = players[c];
-
-                    if (player.Locale != "")
-                        continue;
-
-                    var access_token = AdminUtils.GetApplicationAccessToken(currentEnv.AppId, currentEnv.AppSecret);
-
-                    var post = String.Format("https://graph.facebook.com/{0}?fields=locale&{1}",
-                                              player.FacebookID,
-                                              access_token);
-                    try
-                    {
-                        var response = JsonConvert.DeserializeObject(AdminUtils.PostTo(post, null)) as JObject;
-
-                        if ((string)response["locale"] != null)
-                        {
-                            Log.Debug("Number: " + c.ToString());
-
-                            string sql = String.Format("UPDATE [SoccerV2].[dbo].[Players] SET [Locale]='{1}' WHERE [PlayerID]={0}",
-                                                        player.PlayerID, (string)response["locale"]);
-                            SqlCommand cmd = new SqlCommand(sql, con);
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-                    catch (Exception e) 
-                    {
-                        Log.Error("Exception: " + e.Message);
-                    }                    
-                }
-            }
-        }
-
-        static private string GetCountryFromSignedRequest(FacebookSignedRequest fbSignedRequest)
-        {
-            // Si no hay pais, lo dejamos a Unknown, el cliente sabe que ese resultado existe y por lo tanto
-            // seleccionara por ejemplo un pais al azar
-            string country = "Unknown";
-
-            try
-            {
-                country = ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["country"] as string;
-            }
-            catch (Exception) { }
-
-            return country;
-        }
-
-        static private string GetLocaleFromSignedRequest(FacebookSignedRequest fbSignedRequest)
-        {
-            string locale = "en_US";
-
-            try
-            {
-                locale = ((fbSignedRequest.Data as JsonObject)["user"] as JsonObject)["locale"] as string;
-            }
-            catch (Exception) { }
-
-            return locale;
-        }
-  
         protected void EraseOrphanMatches_Click(object sender, EventArgs e)
         {
             var orphanMatches = (from s in mDC.Matches
@@ -188,7 +108,6 @@ namespace SoccerServer.Admin
 }
 
 
-
 /*
 protected void MisticalRefresh_Click(object sender, EventArgs e)
 {
@@ -217,6 +136,54 @@ protected void MisticalRefresh_Click(object sender, EventArgs e)
             tran.Commit();
         }
         con.Close();
+    }
+}
+*/
+
+/*
+
+private void RunUpdate()
+{
+    var currentEnv = EnvironmentSelector.CurrentEnvironment;
+
+    using (SqlConnection con = new SqlConnection(currentEnv.ConnectionString))
+    {
+        con.Open();
+
+        var theContext = new SoccerDataModelDataContext(con);
+        var players = theContext.Players.ToList();
+
+        for (int c = 0; c < players.Count; c++)
+        {
+            Player player = players[c];
+
+            if (player.Locale != "")
+                continue;
+
+            var access_token = AdminUtils.GetApplicationAccessToken(currentEnv.AppId, currentEnv.AppSecret);
+
+            var post = String.Format("https://graph.facebook.com/{0}?fields=locale&{1}",
+                                        player.FacebookID,
+                                        access_token);
+            try
+            {
+                var response = JsonConvert.DeserializeObject(AdminUtils.PostTo(post, null)) as JObject;
+
+                if ((string)response["locale"] != null)
+                {
+                    Log.Debug("Number: " + c.ToString());
+
+                    string sql = String.Format("UPDATE [SoccerV2].[dbo].[Players] SET [Locale]='{1}' WHERE [PlayerID]={0}",
+                                                player.PlayerID, (string)response["locale"]);
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e) 
+            {
+                Log.Error("Exception: " + e.Message);
+            }                    
+        }
     }
 }
 */
