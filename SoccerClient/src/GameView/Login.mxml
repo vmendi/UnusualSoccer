@@ -264,7 +264,7 @@
 									 prompt="{mLoginModel.DefaultName}" styleName="blackBoldMediumHN" />
 				</s:Group>
 			</s:Group>
-			<s:Label id="MyValidityLabel" x="32" y="126" width="420" maxDisplayedLines="1" color="#FFFFFF"
+			<s:Label id="MyValidityLabel" x="32" y="126" width="420" maxDisplayedLines="2" color="#FFFFFF"
 					 text="{resourceManager.getString('main','Login02EnterNameTxt')}"
 					 styleName="whiteBoldBig" textAlign="center"/>
 			<s:Button id="MyButtonNext" horizontalCenter="0" bottom="10" width="160" height="24"
