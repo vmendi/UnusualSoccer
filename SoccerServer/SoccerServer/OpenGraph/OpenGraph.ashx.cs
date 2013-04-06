@@ -28,7 +28,7 @@ namespace SoccerServer.OpenGraph
 
         public void ProcessRequest(HttpContext context)
         {
-            Log.Debug("Incoming ProcessRequest " + context.Request.UserAgent);
+            Log.Debug("Incoming OpenGraph.ashx " + context.Request.UserAgent);
 
             string data = context.Request.QueryString["data"];
             
@@ -60,7 +60,7 @@ namespace SoccerServer.OpenGraph
             return HttpUtility.ParseQueryString(final);
         }
 
-        private string FormatOutput(NameValueCollection clientData)
+        protected virtual string FormatOutput(NameValueCollection clientData)
         {
             return String.Format(htmlSrc, GlobalConfig.FacebookSettings.AppId,
                                           clientData["ns"],

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.IO;
+using System.Dynamic;
 using System.Linq;
-using System.Text;
 using System.Web;
 using System.Web.UI;
 using Facebook;
 using Facebook.Web;
-using HttpService;
 using ServerCommon.BDDModel;
 using ServerCommon;
 using System.Collections.Specialized;
@@ -51,8 +49,18 @@ namespace SoccerServer
             }
             else
             {
-                var auth = new CanvasAuthorizer(); // { Permissions = new[] { "publish_actions" } };
-                                                
+                CanvasAuthorizer auth = new CanvasAuthorizer();
+
+                string signedRequest = Request.Form["signed_request"];
+
+                // Temporalmente queremos conseguir los permisos de publish_actions SOLO para nuevos usuarios (no queremos que los antiguos les vuelva
+                // a salir el dialogo de autorizacion y perderlos)
+                if (Facebook.FacebookSignedRequest.Parse(GlobalConfig.FacebookSettings, signedRequest).AccessToken == null)
+                {
+                    // El user no estaba autorizado, alla vamos con nuestros nuevos permisos
+                    auth = new CanvasAuthorizer() { Permissions = new[] { "publish_actions" } };
+                }
+                
                 // Si no estamos logeados o autorizados, nos redireccionara automaticamente a la pagina de login/autorizacion
                 // En el web.config hay un handler de facebookredirect.axd, a traves de el se hacen las redirecciones
                 if (auth.Authorize())

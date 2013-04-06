@@ -40,7 +40,7 @@
 			GameMetrics.ReportEvent(GameMetrics.SKILL_PUBLISH, null);
 			
 			// Esto por dentro vera si ya tenemos los permisos o intentara adquirirlos...
-			PublishMessages.TryPermissionsAndPublishOpenGraph(PublishMessages.BuildSpecialTrainingPublishMessage(mSpecialTrainingDef.SpecialTrainingDefinitionID), onPublishCallback);
+			PublishMessages.EnsurePermissionsAndPublishOpenGraph(PublishMessages.BuildSpecialTrainingPublishMessage(mSpecialTrainingDef.SpecialTrainingDefinitionID), onPublishCallback);
 			
 			function onPublishCallback(published : Boolean) : void
 			{

@@ -131,6 +131,8 @@
     <Content Include="Default.aspx" />
     <Content Include="DefaultMahou.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Imgs\Achievements\FirstMatch-Icon.png" />
+    <Content Include="Imgs\Achievements\FirstMatch-Publication.png" />
     <Content Include="Imgs\BannerMeGustaBg.png" />
     <Content Include="Imgs\BannerMeGustaBg_en_US.png" />
     <Content Include="Imgs\BannerMeGustaBg_es_LA.png" />
@@ -196,7 +198,6 @@
     <Content Include="Imgs\NavIconMuro_es_LA.png" />
     <Content Include="Imgs\NavIcons.png" />
     <Content Include="Imgs\NavIconVisita.png" />
-    <Content Include="Imgs\PopupAppOffline.jpg" />
     <Content Include="Imgs\Purchases\PurchaseTrainer.png" />
     <Content Include="Imgs\Purchases\PurchaseTrainer_BestBuy.png" />
     <Content Include="Imgs\Purchases\PurchaseTrainer_BestValue.png" />
@@ -303,6 +304,9 @@
     <Compile Include="Cancelled.aspx.designer.cs">
       <DependentUpon>Cancelled.aspx</DependentUpon>
     </Compile>
+    <Compile Include="OpenGraph\Achievements.ashx.cs">
+      <DependentUpon>Achievements.ashx</DependentUpon>
+    </Compile>
     <Compile Include="OpenGraph\Currency.ashx.cs">
       <DependentUpon>Currency.ashx</DependentUpon>
     </Compile>
@@ -312,7 +316,6 @@
     <Compile Include="Rewards.ashx.cs">
       <DependentUpon>Rewards.ashx</DependentUpon>
     </Compile>
-    <Compile Include="Admin\AdminUtils.cs" />
     <Compile Include="Deauthorize.aspx.cs">
       <DependentUpon>Deauthorize.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -397,6 +400,7 @@
     </None>
     <Content Include="OpenGraph\OpenGraph.ashx" />
     <Content Include="OpenGraph\Currency.ashx" />
+    <Content Include="OpenGraph\Achievements.ashx" />
     <None Include="packages.config" />
     <Content Include="Payment.ashx" />
     <Content Include="Weborb.config" />

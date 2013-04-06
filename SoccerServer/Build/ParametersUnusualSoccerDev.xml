@@ -5,8 +5,8 @@
 	<setParameter name="appId" value="191393844257355" />
 	<setParameter name="appSecret" value="a06a6bf1080247ed87ba203422dcbb30" />
 	<setParameter name="canvasPage" value="http://apps.facebook.com/unusualsoccerdev/" />
-	<setParameter name="canvasUrl" value="http://unusualsoccerdev.unusualwonder.com/" />
-	<setParameter name="secureCanvasUrl" value="https://unusualsoccerdev.unusualwonder.com/" />
+	<setParameter name="canvasUrl" value="http://unusualsoccerdev.unusualsoccer.com/" />
+	<setParameter name="secureCanvasUrl" value="https://unusualsoccerdev.unusualsoccer.com/" />
 	
 	<setParameter name="versionID" value="UnusualSoccer" />
 	<setParameter name="enableRealtime" value="true" />

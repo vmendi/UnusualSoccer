@@ -43,7 +43,7 @@ package
 		
 		// Desde el cliente enviamos al servidor todos los datos a traves de una querystring codificada. El servidor es responsable de 
 		// generar una pagina html con los meta tags con los valores que aqui le mandamos.
-		static private function ComposePublishData(publishMessage : Object) : String
+		static private function ComposeOpenGraphData(publishMessage : Object) : String
 		{
 			var queryString : String = "title=" + encodeURIComponent(publishMessage.daTitle) + 
 									   "&description=" + encodeURIComponent(publishMessage.daDescription) +
@@ -52,10 +52,26 @@ package
 									   "&ns=" + encodeURIComponent(GetNamespace()) + 
 									   "&id=" + encodeURIComponent(publishMessage.daId) +
 									   "&viral_srcid=" + SoccerClient.GetFacebookFacade().FacebookID;
+			
+			return EncodeData(queryString);	
+		}
+		
+		// Para los achievements no podemos usar el mecanismo de mandar todo desde el cliente pq hay q pre-registrarlos
+		static private function PublishAchievement(achievementID : int) : void
+		{
+			var method : String = "/" + SoccerClient.GetFacebookFacade().FacebookID + "/achievements";
+			var params : Object = new Object();			
+			params.achievement = AppConfig.CANVAS_URL + '/OpenGraph/Achievements.ashx?achievementID='+achievementID;
+			
+			Facebook.api(method, OnPublishResponse, params, URLRequestMethod.POST);
 
-			var base64Encoder : Base64Encoder = new Base64Encoder();
-			base64Encoder.encodeUTFBytes(queryString);
-			return encodeURIComponent(base64Encoder.drain());
+			function OnPublishResponse(response : Object, fail : Object) : void
+			{
+				if (response == null)
+				{
+					ErrorMessages.LogToServer("Publish Achievement Error " + fail + " " + params.achievement);
+				}
+			}
 		}
 
 		static private function PublishOpenGraph(publishMessage : Object) : void
@@ -65,7 +81,7 @@ package
 			var params : Object = new Object();
 			
 			// { skill: 'URL que define la skill' }
-			params[publishMessage.daOpenGraphObjectType] = AppConfig.CANVAS_URL + '/OpenGraph/OpenGraph.ashx?data=' + ComposePublishData(publishMessage);
+			params[publishMessage.daOpenGraphObjectType] = AppConfig.CANVAS_URL + '/OpenGraph/OpenGraph.ashx?data=' + ComposeOpenGraphData(publishMessage);
 			
 			// Whether it's published in the user wall explicitly
 			if (publishMessage.daExplicitlyShared)
@@ -78,33 +94,18 @@ package
 				try {
 					if (response == null)
 					{
-						if (fail != null && fail.error != null)
-						{
-							ErrorMessages.LogToServer("Publish Open Graph Error: " + fail.error.type + " - " + fail.error.message + " - " + 
-													  AppConfig.CANVAS_URL + '/OpenGraph/OpenGraph.ashx?data=' + ComposePublishData(publishMessage));
-						}
-						else
-						{
-							ErrorMessages.LogToServer("Publish Open Graph Error: " + fail + " - " + 
-													  AppConfig.CANVAS_URL + '/OpenGraph/OpenGraph.ashx?data=' + ComposePublishData(publishMessage));
-						}
+						ErrorMessages.LogToServer("Publish Open Graph Error: " + fail +  
+												  AppConfig.CANVAS_URL + '/OpenGraph/OpenGraph.ashx?data=' + ComposeOpenGraphData(publishMessage));
 					}
 				}
 				catch(e:Error) {
-					// Ocurre... es como que IOErrorEvent.error no es null, pero luego sí
+					// Esto se queda asi hasta que verifiquemos q no pasa (IOErrorEvent no tenia message)
 					ErrorMessages.LogToServer("WTF 13177 " + fail);
 				}
 			}
 		}
 		
-		// Nos quedamos sólo con "unusualsoccer"
-		static private function GetNamespace() : String
-		{
-			var canvasPage : String = AppConfig.CANVAS_PAGE;
-			return canvasPage.substr(canvasPage.lastIndexOf("/", canvasPage.length)+1).toLowerCase();
-		}
-		
-		static public function TryPermissionsAndPublishOpenGraph(publishMessage : Object, callback : Function) : void
+		static public function EnsurePermissionsAndPublishOpenGraph(publishMessage : Object, callback : Function) : void
 		{
 			// Vamos a ver si ya tenemos los permisos o intentamos adquirirlos...
 			SoccerClient.GetFacebookFacade().EnsurePublishActionsPermission(onPermissions);
@@ -119,6 +120,27 @@ package
 				
 				callback(gotPermissions);
 			}
+		}
+		
+		static public function TryToPublishAchievement(achievementID : int, callback : Function) : void
+		{
+			PublishMessages.PublishAchievement(achievementID);
+			
+			var temp = 0;
+		}
+		
+		// Nos quedamos sólo con "unusualsoccer"
+		static private function GetNamespace() : String
+		{
+			var canvasPage : String = AppConfig.CANVAS_PAGE;
+			return canvasPage.substr(canvasPage.lastIndexOf("/", canvasPage.length)+1).toLowerCase();
+		}		
+		
+		static private function EncodeData(queryString : String) : String
+		{
+			var base64Encoder : Base64Encoder = new Base64Encoder();
+			base64Encoder.encodeUTFBytes(queryString);
+			return encodeURIComponent(base64Encoder.drain());
 		}
 	}
 }

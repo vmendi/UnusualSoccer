@@ -17,7 +17,7 @@ namespace DBUpdater
         [CommandLineArguments(Program = "DBUpdater", Title = "My little DB Updater", Description = "It helps update my DB")]
         class Options
         {
-            [CommandLineParameter(Name = "operation", ParameterIndex = 1, Required = true, Description = "update / delete_all")]
+            [CommandLineParameter(Name = "operation", ParameterIndex = 1, Required = true, Description = "update / delete_all / backup / restore")]
             public string Operation { get; set; }
         }
 
