@@ -38,6 +38,8 @@ namespace DBUpdater
                     BackupOperation.Run(ConnectionStringLocalhost);
                 else if (options.Operation == "restore")
                     RestoreOperation.Run(ConnectionStringLocalhost);
+                else if (options.Operation == "refresh_level")
+                    MiscOperations.RefreshLevel(ConnectionStringLocalhost);
                 else
                     Console.Out.WriteLine("Unknown operation");
             }

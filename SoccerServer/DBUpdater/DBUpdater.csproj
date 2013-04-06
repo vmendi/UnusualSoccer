@@ -110,6 +110,7 @@
     <Compile Include="BackupOperation.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="DeleteAllOperation.cs" />
+    <Compile Include="MiscOperations.cs" />
     <Compile Include="RestoreOperation.cs" />
     <Compile Include="UpdateOperation.cs" />
     <Compile Include="UpdateV2.cs" />
