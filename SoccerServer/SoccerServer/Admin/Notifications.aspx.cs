@@ -179,18 +179,62 @@ namespace SoccerServer.Admin
             { 
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetTestUsers(),
                                                       Description = "Usuarios de prueba" },
-                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetNotLoggedInSince(3),
-                                                      Description = "No logeados desde hace más de 3 días" },
-                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetNotLoggedInSince(7),
-                                                      Description = "No logeados desde hace más de 7 días" },
+
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetNoTeamCreated(),
                                                       Description = "No llegaron a crear el equipo" },
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetCreatedTeamNoMatchsPlayed(),
                                                       Description = "Crearon el equipo pero no jugaron ni un partido" },
-                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetNotLoggedInSinceWithFriends(7),
-                                                      Description = "No logeados desde más 7 días CON amigos (TODO)." },
+
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenSinceAndPlayedExactly(7, 1),
+                                                      Description = "LastSeen hace mas 7 días y jugaron 1 solo partido" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenSinceAndPlayedMoreThan(7, 1),
+                                                      Description = "LastSeen hace más 7 días y jugaron mas de 1 partido" },
+
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => CreatedPlayerNDaysAndPlayedRangeMatches(1, 0, 0),
+                                                      Description = "Crearon player ayer y no han jugado ningun partido" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => CreatedPlayerNDaysAndPlayedRangeMatches(1, 1, 1),
+                                                      Description = "Crearon player ayer y han jugado 1 partido" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => CreatedPlayerNDaysAndPlayedRangeMatches(1, 2, 5),
+                                                      Description = "Crearon player ayer y han jugado entre 2 y 5 partidos" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => CreatedPlayerNDaysAndPlayedRangeMatches(1, 6, 100000),
+                                                      Description = "Crearon player ayer y han jugado mas de 5 partidos" },
+
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => CreatedPlayerNDaysAndHavePlayedRangeMatches(1, 1, 1),
+                                                      Description = "Crearon player antes de ayer y han jugado 1 partido desde ayer" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => CreatedPlayerNDaysAndHavePlayedRangeMatches(1, 2, 5),
+                                                      Description = "Crearon player antes de ayer y han jugado 2-5 partidos desde ayer" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => CreatedPlayerNDaysAndHavePlayedRangeMatches(1, 6, 100000),
+                                                      Description = "Crearon player antes de ayer y han jugado >5 partidos desde ayer" },
+
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenExactlyNDaysAndHavePlayedRangeMatches(3, 0, 0),
+                                                      Description = "LastSeen 3 dias ago y 0 partidos en total" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenExactlyNDaysAndHavePlayedRangeMatches(3, 1, 1),
+                                                      Description = "LastSeen 3 dias ago y 1 partido en total" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenExactlyNDaysAndHavePlayedRangeMatches(3, 2, 5),
+                                                      Description = "LastSeen 3 dias ago y 2-5 partidos en total" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenExactlyNDaysAndHavePlayedRangeMatches(3, 6, 20),
+                                                      Description = "LastSeen 3 dias ago y 6-20 en total" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenExactlyNDaysAndHavePlayedRangeMatches(3, 21, 100000),
+                                                      Description = "LastSeen 3 dias ago y >20 en total" },
+
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenExactlyNDaysAndHavePlayedRangeMatches(7, 0, 0),
+                                                      Description = "LastSeen 7 dias ago y 0 partidos en total" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenExactlyNDaysAndHavePlayedRangeMatches(7, 1, 1),
+                                                      Description = "LastSeen 7 dias ago y 1 partido en total" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenExactlyNDaysAndHavePlayedRangeMatches(7, 2, 5),
+                                                      Description = "LastSeen 7 dias ago y 2-5 partidos en total" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenExactlyNDaysAndHavePlayedRangeMatches(7, 6, 20),
+                                                      Description = "LastSeen 7 dias ago y 6-20 en total" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenExactlyNDaysAndHavePlayedRangeMatches(7, 21, 100000),
+                                                      Description = "LastSeen 7 dias ago y >20 en total" },
+
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenSince(3),
+                                                      Description = "LastSeen más de 3 días" },
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenSinceWithFriends(7),
+                                                      Description = "LastSeen más 7 días CON amigos (TODO)." },
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetNewSince(1),
                                                       Description = "Nuevos desde ayer" },
+
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetPlayedNumMatchesSince(1, 1),
                                                       Description = "Han jugado al menos un partido desde ayer" },
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetPlayedNumMatchesSince(3, 1),
@@ -199,8 +243,10 @@ namespace SoccerServer.Admin
                                                       Description = "Han jugado al menos 5 partidos" },
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetPlayedNumMatchesSince(20, 3650),
                                                       Description = "Han jugado al menos 20 partidos" },
+
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetSoccerPlayersWithAveragePowerGreater(90),
                                                       Description = "Media del power de los futbolistas > 90" },
+
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetAllFacebookIDs(),
                                                       Description = "Todos los jugadores" },
             };
@@ -220,20 +266,84 @@ namespace SoccerServer.Admin
                     select p.FacebookID).ToList();
         }
 
-        private List<long> GetNotLoggedInSince(int days)
+        private List<long> LastSeenSince(int days)
         {            
             var now = DateTime.Now;
 
-            var query =  (from s in mDC.Sessions
-                          where (now - s.CreationDate).TotalDays >= days
-                          select s.Player.FacebookID).Distinct();
+            var query =  (from s in mDC.Players
+                          where (now - s.LastSeen).TotalDays >= days
+                          select s.FacebookID);
             
             return query.ToList();
         }
 
-        private List<long> GetNotLoggedInSinceWithFriends(int days)
+        private List<long> LastSeenSinceAndPlayedExactly(int days, int playedExactly)
         {
-            List<long> notLogged = GetNotLoggedInSince(days);
+            var now = DateTime.Now;
+
+            var query = (from s in mDC.Players
+                         where (now - s.LastSeen).TotalDays >= days &&
+                                s.Team.MatchParticipations.Count() == playedExactly
+                         select s.FacebookID);
+
+            return query.ToList();
+        }
+
+        private List<long> LastSeenSinceAndPlayedMoreThan(int days, int moreThan)
+        {
+            var now = DateTime.Now;
+
+            var query = (from s in mDC.Players
+                         where (now - s.LastSeen).TotalDays >= days &&
+                                s.Team.MatchParticipations.Count() > moreThan
+                         select s.FacebookID);
+
+            return query.ToList();
+        }
+
+        private List<long> CreatedPlayerNDaysAndPlayedRangeMatches(int days, int minRange, int maxRange)
+        {
+            var nDaysAgo = DateTime.Now.AddDays(-days);
+
+            var query = (from s in mDC.Players
+                         let numMatches = s.Team.MatchParticipations.Count()
+                         where nDaysAgo.DayOfYear == s.CreationDate.DayOfYear && nDaysAgo.Year == s.CreationDate.Year &&
+                               numMatches >= minRange && numMatches <= maxRange
+                         select s.FacebookID);
+
+            return query.ToList();
+        }
+
+        private List<long> CreatedPlayerNDaysAndHavePlayedRangeMatches(int days, int minRange, int maxRange)
+        {
+            var nDaysAgo = DateTime.Now.AddDays(-days);
+            var lowerLimit = new DateTime(nDaysAgo.Year, nDaysAgo.Month, nDaysAgo.Day);
+
+            var query = (from s in mDC.Players
+                         let numMatches = s.Team.MatchParticipations.Where(part => part.Match.DateStarted >= lowerLimit).Count()
+                         where s.CreationDate < lowerLimit &&
+                               numMatches >= minRange && numMatches <= maxRange
+                         select s.FacebookID);
+
+            return query.ToList();
+        }
+
+        private List<long> LastSeenExactlyNDaysAndHavePlayedRangeMatches(int days, int minRange, int maxRange)
+        {
+            var nDaysAgo = DateTime.Now.AddDays(-days);
+
+            var query = (from s in mDC.Players
+                         let numMatches = s.Team.MatchParticipations.Count()
+                         where nDaysAgo.DayOfYear == s.LastSeen.DayOfYear && nDaysAgo.Year == s.LastSeen.Year &&
+                               numMatches >= minRange && numMatches <= maxRange
+                         select s.FacebookID);
+
+            return query.ToList();
+        }
+
+        private List<long> LastSeenSinceWithFriends(int days)
+        {
+            List<long> notLogged = LastSeenSince(days);
             List<long> everybody = (from p in mDC.Players select p.FacebookID).ToList();
 
             var ret = new List<long>();
@@ -253,7 +363,7 @@ namespace SoccerServer.Admin
         private List<long> GetCreatedTeamNoMatchsPlayed()
         {            
             return (from p in mDC.Players
-                    where p.Team.MatchParticipations.Count == 0 && p.Team != null
+                    where p.Team != null && p.Team.MatchParticipations.Count == 0
                     select p.FacebookID).ToList();
         }
 
@@ -269,7 +379,7 @@ namespace SoccerServer.Admin
             var now = DateTime.Now;
             var query = (from p in mDC.Players
                          where (now - p.CreationDate).TotalDays <= days
-                         select p.FacebookID).Distinct();
+                         select p.FacebookID);
 
             return query.ToList();
         }
