@@ -89,14 +89,14 @@ namespace Realtime
                                    where p.MatchID == mBDDMatch.MatchID && p.TeamID == mBDDPlayer1.Team.TeamID
                                    select p).First();
 
-                mParticipation1.Goals    = ResultPlayer1.Goals;
+                mParticipation1.Goals = ResultPlayer1.Goals;
                 mParticipation1.GoalsOpp = ResultPlayer2.Goals;
 
                 mParticipation2 = (from p in mContext.MatchParticipations
                                    where p.MatchID == mBDDMatch.MatchID && p.TeamID == mBDDPlayer2.Team.TeamID
                                    select p).First();
 
-                mParticipation2.Goals    = ResultPlayer2.Goals;
+                mParticipation2.Goals = ResultPlayer2.Goals;
                 mParticipation2.GoalsOpp = ResultPlayer1.Goals;
 
                 // Puntos de Competicion
@@ -241,8 +241,8 @@ namespace Realtime
 
                 // Al loser no le damos skillpoints pero si permitimos que siga subiendo poco a poco
                 loser.Team.XP += 1;
-
                 winner.Team.XP += 3;
+
                 winner.Team.SkillPoints += 15;
             }
 
