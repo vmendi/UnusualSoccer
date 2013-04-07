@@ -117,7 +117,7 @@ package Match
 			LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeSkill" + idSkill), 0, 210);
 		}
 		
-		static public function ShowQuedanTurnos(turnos:int) : void
+		static public function ShowQuedanTiros(turnos:int) : void
 		{
 			if (turnos == 3)
 				PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros3"));
@@ -152,7 +152,7 @@ package Match
 		
 		static public function ShowMsgGoalkeeperOutside(immediate : Boolean) : void
 		{
-			// Lo delayamos 2 segundos para q no pise con los que vienen inmediatamente al inicio de cada turno (ShowQuedanTurnos)
+			// Lo delayamos 2 segundos para q no pise con los que vienen inmediatamente al inicio de cada tiro (ShowQuedanTiro)
 			// TODO: Cola de mensajes
 			if (immediate)
 				PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeGoalkeeperOutside"));

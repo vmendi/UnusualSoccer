@@ -780,7 +780,7 @@ package Match
 			
 			// Si es el jugador local el activo mostramos los tiros que nos quedan en el interface
 			if (CurTeam.IsLocalUser)
-				Cutscene.ShowQuedanTurnos(_RemainingHits);
+				Cutscene.ShowQuedanTiros(_RemainingHits);
 			
 			// Si salimos del subturno con el goalkeeper fuera del area, lo advertimos
 			if (!TheField.IsCapCenterInsideBigArea(CurTeam.GoalKeeper) && CurTeam.IsLocalUser)
@@ -876,7 +876,7 @@ package Match
 			
 			ResetTimeout();
 			
-			// Para colocar el portero sólo se posee la mitad de tiempo!!
+			// Para colocar el portero el tiempo puede ser otro distinto al del turno
 			if (reason == Enums.TurnTiroAPuerta)
 				this._Timeout = MatchConfig.TimeToPlaceGoalkeeper;
 			
