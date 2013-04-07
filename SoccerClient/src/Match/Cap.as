@@ -31,6 +31,7 @@ package Match
 	{
 		static public const Radius:Number = 15;
 		
+		private var _CapId:int = -1;							// Identificador de la chapa
 		private var _Name:String = null;						// Nombre del jugador
 		private var _Dorsal:int = 0;							// Nº de dorsal del jugador
 						
@@ -44,12 +45,11 @@ package Match
 		private var _TimeShowingInfluence:Number = 0;			// Tiempo que se lleva mostrando el area de influencias desde la última vez que se mando pintar
 		private var _ShowInfluence:Boolean=false;				// Indica si se está pintando
 		
-		private var _CapId:int = (-1);							// Identificador de la chapa
-		
 		private var _ColorInfluence:int = Enums.FriendColor; 			// Color del radio de influencia visual
 		private var _SizeInfluence:int = MatchConfig.RadiusPaseAlPie;	// tamaño del radio de influencia visual
 		
 		private var _IsInjured : Boolean = false;
+
 		private var _TeletransportPos : Point;
 		private var _ParallelShoot : ShootInfo;
 		private var _FacebookPictureLoader : Loader;
@@ -70,14 +70,12 @@ package Match
 		public function get OriginalPower() : int	 { return _OriginalPower; }
 		public function get OriginalControl() : int	 { return _OriginalControl; }
 		public function get OriginalDefense() : int  { return _OriginalDefense; }
-		
-		public function get Ghost() : Entity { return this.OwnerTeam.Ghost; }	// Ghost de la chapa (solo hay uno por equipo)
 	
 		public function set TeletransportPos(v:Point) : void { _TeletransportPos = v; }
 		
 		// Almacenamos en la propia chapa el tiro en paralelo con el enemigo a ejecutar en el siguiente tiro
 		public function get ParallelShoot() : ShootInfo { return _ParallelShoot; }
-		public function set ParallelShoot(s:ShootInfo) : void { _ParallelShoot = s; }		
+		public function set ParallelShoot(s:ShootInfo) : void { _ParallelShoot = s; }
 		
 
 		public function Cap(team:Team, id:int, descCap:Object, useSecondaryEquipment:Boolean) : void
@@ -133,7 +131,7 @@ package Match
 			LoadFacebookPicture(descCap.FacebookID);
 			
 			// Auto-añadimos al manager de entidades
-			MatchMain.Ref.Game.TheEntityManager.AddTagged(this, "Team"+(team.IdxTeam +1).toString() + "_" + _CapId.toString());
+			MatchMain.Ref.Game.TheEntityManager.AddTagged(this, "Team"+(team.TeamId +1).toString() + "_" + _CapId.toString());
 		}
 		
 		static public function PrepareVisualCap(visualCap : *, predefinedTeamNameID : String, useSecondary : Boolean, isGoalKeeper : Boolean) : void
@@ -157,37 +155,72 @@ package Match
 		// Cue visual de que es el turno del equipo de la chapa
 		public function ShowMyTurnVisualCue() : void
 		{
-			_Visual.Halo.play();	
+			_Visual.Halo.play();
 		}
 		
 		private function OnRemovedFromStage(e:Event) : void
 		{
-			_Visual.removeEventListener(MouseEvent.MOUSE_OVER, OnMouseDown);
-			_Visual.removeEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
-			_Visual.removeEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
+			try 
+			{
+				_Visual.removeEventListener(MouseEvent.MOUSE_DOWN, OnMouseDown);
+				_Visual.removeEventListener(MouseEvent.MOUSE_OVER, OnMouseOver);
+				_Visual.removeEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
+			}
+			catch(e:Error) 
+			{ 
+				ErrorMessages.LogToServer("WTF 198"); 
+			}
 		}
 		
 		private function OnMouseDown(e : MouseEvent) : void
 		{
-			MatchMain.Ref.Game.TheInterface.OnClickCap(this);
+			try 
+			{
+				MatchMain.Ref.Game.TheInterface.OnClickCap(this);
+			}
+			catch(e:Error) 
+			{ 
+				ErrorMessages.LogToServer("WTF 98"); 
+			}
 		}
 		
 		private function OnMouseOver(e : MouseEvent) : void
 		{	
-			if (TweenMax.getTweensOf(OnRealOver).length == 0)
-				TweenMax.delayedCall(0.8, OnRealOver);
+			try 
+			{
+				if (TweenMax.getTweensOf(OnRealOver).length == 0)
+					TweenMax.delayedCall(0.8, OnRealOver);
+			}
+			catch(e:Error) 
+			{ 
+				ErrorMessages.LogToServer("WTF 88"); 
+			}
 		}
 		private function OnRealOver() : void
 		{
-			MatchMain.Ref.Game.TheInterface.OnOverCap(this);
+			try 
+			{
+				MatchMain.Ref.Game.TheInterface.OnOverCap(this);
+			}
+			catch(e:Error)
+			{
+				ErrorMessages.LogToServer("WTF 38");
+			}
 		}
 		private function OnMouseOut(e : MouseEvent) : void
 		{
-			// Si habia algun over pendiente, lo cancelamos
-			if (TweenMax.getTweensOf(OnRealOver).length > 0)
-				TweenMax.killDelayedCallsTo(OnRealOver);
-			
-			MatchMain.Ref.Game.TheInterface.OnOutCap(this);
+			try 
+			{
+				// Si habia algun over pendiente, lo cancelamos
+				if (TweenMax.getTweensOf(OnRealOver).length > 0)
+					TweenMax.killDelayedCallsTo(OnRealOver);
+				
+				MatchMain.Ref.Game.TheInterface.OnOutCap(this);
+			}
+			catch(e:Error) 
+			{ 
+				ErrorMessages.LogToServer("WTF 78"); 
+			}
 		}
 		
 		// Dispara con una fuerza sobre una chapa. La fueza debe especificarse entre 0, 1
@@ -293,7 +326,7 @@ package Match
 			}
 				
 			// Apagamos al cabo de 2 segundos
-			if( ShowInfluence )
+			if (ShowInfluence)
 			{
 				_TimeShowingInfluence += elapsed;
 				

@@ -14,7 +14,6 @@ package Match
 		public static const SuccessMouseUp:int = 0;			// Finalizó terminando la operación (Mouse Up)
 		public static const Canceled:int = 1;				// Finalizó por cancelación (Llamada externa al stop)
 		
-		// Eventos		
 		public var OnStart:Signal = new Signal();			// Evento lanzado cuanto el controlador se arranca
 		public var OnStop:Signal = new Signal( int );		// Evento lanzado cuanto el controlador se detiene por cualquier razón
 		
@@ -71,8 +70,30 @@ package Match
 			_Target.Visual.stage.removeEventListener(MouseEvent.MOUSE_MOVE, MouseMove);
 		}
 		
-		public function MouseUp(e: MouseEvent) :void { Stop(SuccessMouseUp); }		
-		public function MouseMove(e: MouseEvent) :void { e.updateAfterEvent(); }	// updateAfterEvent -> Refresca a la velocidad del evento, no a la del framerate
+		public function MouseUp(e: MouseEvent) :void 
+		{
+			try 
+			{
+				Stop(SuccessMouseUp);
+			}
+			catch(e:Error)
+			{
+				ErrorMessages.LogToServer("WTF 123355");				
+			}
+		}
+		
+		public function MouseMove(e: MouseEvent) :void 
+		{ 
+			try 
+			{
+				// Refresca a la velocidad del evento, no a la del framerate
+				e.updateAfterEvent();
+			}
+			catch(e:Error)
+			{
+				ErrorMessages.LogToServer("WTF 123131");				
+			}
+		}	
 		
 		// Verifica si el controlador tiene unos valores válidos (para overrides en hijos)
 		public function IsValid() : Boolean	{ return true; }

@@ -252,7 +252,7 @@ package Match
 							if (!MatchConfig.OfflineMode)
 								MatchMain.Ref.Connection.Invoke("OnServerTimeout", null);
 							
-							EnterWaitState(GameState.WaitingCommandTimeout, Delegate.create(OnClientTimeout, this.CurTeam.IdxTeam)); 
+							EnterWaitState(GameState.WaitingCommandTimeout, Delegate.create(OnClientTimeout, this.CurTeam.TeamId)); 
 						}
 					}
 					break;
@@ -280,11 +280,11 @@ package Match
 						}
 
 						if (!MatchConfig.OfflineMode)
-							MatchMain.Ref.Connection.Invoke("OnServerGoalScored", null, scorerTeam.IdxTeam, validity);							
+							MatchMain.Ref.Connection.Invoke("OnServerGoalScored", null, scorerTeam.TeamId, validity);							
 						
 						// Cambiamos al estado esperando gol. Asi, por ejemplo cuando pare la simulacion, no haremos nada. Esperamos a que haya saque de centro
 						// o de porteria despues de la cutscene
-						EnterWaitState(GameState.WaitingGoal, Delegate.create(OnClientGoalScored, scorerTeam.IdxTeam, validity)); 
+						EnterWaitState(GameState.WaitingGoal, Delegate.create(OnClientGoalScored, scorerTeam.TeamId, validity)); 
 					}
 					else
 					if (!TheGamePhysics.IsSimulating)
@@ -637,9 +637,9 @@ package Match
 
 			// Si el portero del enemigo está dentro del area GRANDE, cambiamos el turno al enemigo...
 			if (TheField.IsCapCenterInsideBigArea(enemy.GoalKeeper))
-				SetTurn(enemy.IdxTeam, Enums.TurnTiroAPuerta);		// ... y una vez que se termine su turno se llamará a OnGoalKeeperSet
+				SetTurn(enemy.TeamId, Enums.TurnTiroAPuerta);		// ... y una vez que se termine su turno se llamará a OnGoalKeeperSet
 			else
-				OnGoalKeeperSet(enemy.IdxTeam);						// El portero no está en el area, saltamos directamente a portero colocado	
+				OnGoalKeeperSet(enemy.TeamId);						// El portero no está en el area, saltamos directamente a portero colocado	
 		}
 		
 		public function OnClientPosCap(idPlayer:int, capId:int, posX:Number, posY:Number) : void
@@ -662,7 +662,7 @@ package Match
 		{
 			// Solo manda comandos el jugador que tiene el turno
 			// TODO: Cuando implementemos el mecanismo para tener Skills tipo Catenaccio esto no sera siempre asi 
-			if (idPlayerExecutingCommand != CurTeam.IdxTeam)
+			if (idPlayerExecutingCommand != CurTeam.TeamId)
 				throw new Error(IDString + "No puede llegar " + fromServerCall + " del jugador no actual" );
 			
 			// Sólo podemos estar...
@@ -681,7 +681,7 @@ package Match
 		private function OnGoalKeeperSet(idPlayerWhoMovedTheGoalKeeper:int) : void
 		{
 			// Cambiamos el turno al enemigo (quien declaró que iba a tirar a puerta) para que realice el disparo
-			SetTurn(TheTeams[idPlayerWhoMovedTheGoalKeeper].AgainstTeam().IdxTeam, Enums.TurnGoalKeeperSet);
+			SetTurn(TheTeams[idPlayerWhoMovedTheGoalKeeper].AgainstTeam().TeamId, Enums.TurnGoalKeeperSet);
 		}
 
 		
@@ -732,7 +732,7 @@ package Match
 			TheBall.SetPosInFrontOf(team.GoalKeeper);
 
 			// Asignamos el turno al equipo que debe sacar de puerta
-			SetTurn(team.IdxTeam, reason);
+			SetTurn(team.TeamId, reason);
 		}
 		
 		private function SaqueCentro(team:Team, reason:int) : void
@@ -744,7 +744,7 @@ package Match
 			
 			TheBall.SetPosInFieldCenter();
 
-			SetTurn(team.IdxTeam, reason);
+			SetTurn(team.TeamId, reason);
 		}
 		
 		private function OponenteControlaPie(cap : Cap, reason : int) : void
@@ -755,7 +755,7 @@ package Match
 			// Cambiamos el turno al oponente, al propietario de la chapa que controla. Como es un control con el pie,
 			// al volver del SetTurn tenemos que mostrar el controlador.
 			// Es el unico punto donde usamos este mecanismo de callback, y lo odio.
-			SetTurn(cap.OwnerTeam.IdxTeam, reason, onTurnCallback);
+			SetTurn(cap.OwnerTeam.TeamId, reason, onTurnCallback);
 			
 			function onTurnCallback() : void
 			{

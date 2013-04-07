@@ -25,7 +25,7 @@ package Match
 		}
 		
 		//
-		// Validamos la posición del balón teniendo en cuenta que esté  dentro del campo
+		// Validamos la posición del balón teniendo en cuenta que esté dentro del campo
 		// y que no colisione con ninguna chapa ya existente (exceptuandola a ella)
 		// TODO: Estamos utilizando la funcion de chapa en vez de la de balón. Los radios son diferentes!
 		//		 VMG: Lo dejamos asi puesto q da un cierto margen
@@ -38,30 +38,44 @@ package Match
 
 		public override function MouseUp(e: MouseEvent) : void
 		{
-			// Tiene que estar dentro del campo. Si no es asi, continuamos como si no hubiera up, asi que no habra Stop
-			// y por lo tanto cancelacion del controlador
-			if (IsValid())
-				super.MouseUp(e);
+			try
+			{
+				// Tiene que estar dentro del campo. Si no es asi, continuamos como si no hubiera up, asi que no habra Stop
+				// y por lo tanto cancelacion del controlador
+				if (IsValid())
+					super.MouseUp(e);
+			}
+			catch (e:Error)
+			{
+				ErrorMessages.LogToServer("WTF 8765b");
+			}
 		}
 		
 		public override function MouseMove(e : MouseEvent) : void
 		{
-			super.MouseMove(e);
-			
-			// Obtenemos punto inicial y final de la linea de dirección
-			var source:Point = _TargetPos.clone();
-			var target:Point = EndPos;
-			
-			// Seleccionamos un color para la linea diferente en función de si la posición final es válida o no			
-			var color:uint = _ColorLine;
-			
-			if (!IsValid())
-				color = INVALID_COLOR;
-			
-			_Canvas.graphics.clear();
-			_Canvas.graphics.lineStyle(_Thickness, color, 0.7);
-			_Canvas.graphics.moveTo(source.x, source.y);
-			_Canvas.graphics.lineTo(target.x, target.y);
+			try
+			{
+				super.MouseMove(e);
+				
+				// Obtenemos punto inicial y final de la linea de dirección
+				var source:Point = _TargetPos.clone();
+				var target:Point = EndPos;
+				
+				// Seleccionamos un color para la linea diferente en función de si la posición final es válida o no			
+				var color:uint = _ColorLine;
+				
+				if (!IsValid())
+					color = INVALID_COLOR;
+				
+				_Canvas.graphics.clear();
+				_Canvas.graphics.lineStyle(_Thickness, color, 0.7);
+				_Canvas.graphics.moveTo(source.x, source.y);
+				_Canvas.graphics.lineTo(target.x, target.y);
+			}
+			catch (e:Error)
+			{
+				ErrorMessages.LogToServer("WTF 8765b");
+			}
 		}
 		
 		public override function get Direction() : Point

@@ -8,89 +8,14 @@ package Match
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
+	import mx.resources.ResourceManager;
+	
 	//
 	// Se encarga del controlador para posicionar una chapa (el portero)
 	//
 	public class ControllerPos extends Controller
 	{
-		//
-		// Arranca el sistema de control direccional con el ratón... y hace visible el ghost
-		public override function Start( _cap: Cap ):void
-		{
-			super.Start( _cap );
-			
-			// Activamos la parte visual
-			if (Target != null && Target.Ghost != null)
-			{
-				// Recolocamos el Ghost y lo hacemos visible
-				Target.Ghost.SetPos( EndPos );
-				Target.Ghost.Visual.visible = true;
-			}
-		}
-		
-		//
-		// Validamos la posición de la chapa teniendo en cuenta que:
-		//		- esté  dentro del campo
-		//		- esté dentro del area del area de la porteria (esto lo hacemos pq es para el portero)
-		//		- que no colisione con ninguna chapa ya existente (exceptuandola a ella)
-		//		- que no colisiones con el balón
-		//
-		public override function IsValid( ) : Boolean
-		{
-			return MatchMain.Ref.Game.TheField.IsPointFreeInsideField( EndPos, true, this.Target ) &&
-				   MatchMain.Ref.Game.TheField.IsCircleInsideSmallArea( EndPos, 0, this.Target.OwnerTeam.Side);
-		}
-		
-		public override function Stop(reason:int):void
-		{
-			super.Stop(reason);
-			
-			// Eliminamos la parte visual
-			_Canvas.graphics.clear( );
-			if( Target != null && Target.Ghost != null )
-				Target.Ghost.Visual.visible = false;
-		}
-		
-		//
-		// Genera una Stop tanto si el controlador IsValid como si no
-		//
-		public override function MouseUp( e: MouseEvent ) : void
-		{
-			super.MouseUp(e);
-		}
-		
-		public override function MouseMove( e: MouseEvent ) :void
-		{
-			super.MouseMove(e);
-			
-			// Obtenemos punto inicial y final de la linea de dirección
-			var source:Point = _TargetPos.clone();
-			var target:Point = EndPos;
-			
-			// Seleccionamos un color para la linea diferente en función de si la posición final
-			// es válida o no
-			var color:uint = _ColorLine;
-			if (!this.IsValid())
-				Graphics.ChangeColorMultiplier( Target.Ghost.Visual, 1.0, 0.4, 0.4 );
-			else
-				Graphics.ChangeColorMultiplier( Target.Ghost.Visual, 1.0, 1.0, 1.0 );
-			
-			// Recolocamos el Ghost
-			Target.Ghost.SetPos( EndPos ); 
-		}
-		
-		//
-		// Obtenemos el punto final
-		// 
-		public function get EndPos() : Point
-		{
-			// Obtenemos la dirección y la normalizamos a la distancia correcta 
-			var dir:Point = Direction;
-			var newPos:Point = Target.GetPos().add( dir );
-			
-			return newPos;
-		}
-		
+		private var _Ghost:Entity = null;
 		private var _Canvas : Sprite;
 		private var _ColorLine : uint;
 		
@@ -100,6 +25,95 @@ package Match
 		{
 			this._Canvas = canvas;						
 			this._ColorLine = COLOR;
+		}
+		
+		public override function Start(cap: Cap):void
+		{
+			super.Start(cap);
+			
+			if (Target == null)
+				throw new Error("WTF Target null");
+			
+			_Ghost = new Entity(ResourceManager.getInstance().getClass("match", "Cap"), MatchMain.Ref.Game.GameLayer);
+			_Ghost.Visual.alpha = 0.4;
+			_Ghost.Visual.visible = false;
+			Cap.PrepareVisualCap(_Ghost.Visual, cap.OwnerTeam.PredefinedTeamNameID, cap.OwnerTeam.UsingSecondUniform, true);
+			
+			_Ghost.SetPos(EndPos);
+			_Ghost.Visual.visible = true;
+		}
+		
+		public override function Stop(reason:int):void
+		{
+			super.Stop(reason);
+			
+			// Eliminamos la parte visual
+			_Canvas.graphics.clear();
+			
+			if (_Ghost == null)
+				throw new Error("WTF ghost null");
+			
+			MatchMain.Ref.Game.GameLayer.removeChild(_Ghost.Visual);
+			_Ghost = null;
+		}
+		
+		//
+		// Validamos la posición de la chapa teniendo en cuenta que:
+		//		- esté  dentro del campo
+		//		- esté dentro del area del area de la porteria (esto lo hacemos pq es para el portero)
+		//		- que no colisione con ninguna chapa ya existente (exceptuandola a ella)
+		//		- que no colisiones con el balón
+		//
+		public override function IsValid() : Boolean
+		{
+			return MatchMain.Ref.Game.TheField.IsPointFreeInsideField(EndPos, true, this.Target) &&
+				   MatchMain.Ref.Game.TheField.IsCircleInsideSmallArea(EndPos, 0, this.Target.OwnerTeam.Side);
+		}
+		
+		//
+		// Genera una Stop tanto si el controlador IsValid como si no
+		//
+		public override function MouseUp(e: MouseEvent) : void
+		{
+			super.MouseUp(e);
+		}
+		
+		public override function MouseMove( e: MouseEvent ) :void
+		{
+			try
+			{
+				super.MouseMove(e);
+				
+				// Obtenemos punto inicial y final de la linea de dirección
+				var source:Point = _TargetPos.clone();
+				var target:Point = EndPos;
+				
+				// Seleccionamos un color para la linea diferente en función de si la posición final es válida o no
+				var color:uint = _ColorLine;
+				if (!this.IsValid())
+					Graphics.ChangeColorMultiplier(_Ghost.Visual, 1.0, 0.4, 0.4);
+				else
+					Graphics.ChangeColorMultiplier(_Ghost.Visual, 1.0, 1.0, 1.0);
+				
+				// Recolocamos el Ghost
+				_Ghost.SetPos(EndPos); 
+			}
+			catch (e:Error)
+			{
+				ErrorMessages.LogToServer("WTF 123hg");
+			}
+		}
+		
+		//
+		// Obtenemos el punto final
+		// 
+		public function get EndPos() : Point
+		{
+			// Obtenemos la dirección y la normalizamos a la distancia correcta 
+			var dir:Point = Direction;
+			var newPos:Point = Target.GetPos().add(dir);
+			
+			return newPos;
 		}
 	}
 }
