@@ -16,6 +16,7 @@ package GameModel
 	
 	import mx.binding.utils.BindingUtils;
 	import mx.core.FlexGlobals;
+	import mx.messaging.messages.ErrorMessage;
 	import mx.resources.ResourceManager;
 	import mx.utils.URLUtil;
 	
@@ -69,7 +70,7 @@ package GameModel
 			if (mMatch != null)
 				mMatch.Shutdown(null);	// Esto provocara un MatchEnded con result == null, lo que pondra mMatch a null
 						
-			Disconnect(true);
+			Disconnect();
 		}
 		
 		private function OnConnectionConditionsChanged(v:Boolean) : void
@@ -78,10 +79,43 @@ package GameModel
 				return;
 			
 			if (!mMainModel.TheTeamPurchaseModel.HasCredit || !mMainModel.TheInactivityModel.IsActive)
-				Disconnect(false);
+			{
+				if (TheMatch == null)
+					Disconnect();
+				else
+					ErrorMessages.LogToServer("Desconexion por: " + mMainModel.TheTeamPurchaseModel.HasCredit + " " +  mMainModel.TheInactivityModel.IsActive);
+			}
 			else
 			if (!IsConnected)
 				InitialConnection(null);
+		}
+		
+		// Es publica solo para los tests!
+		public function Disconnect() : void
+		{
+			// Hemos comprobado que nos mandan desconexion porque se nos acabo el credito o pq entramos en inactividad.
+			// cuando esta el partido corriendo. Lo primero es logico, lo segundo seria de ser un problema del orden de
+			// eventos (IsActive = false se encola y llega no se sabe cuando. Si debugeamos comprobamos q llega inmediatamente, pero
+			// tambien estamos comprobando q TheMatch != null en aquel codigo del InactivityModel => o de repente el IsActive = false
+			// se esta encolando y cambiando el comportamiento que debugeamos o siempre q pasa esto es por !HasCredit. Ponemos un log
+			// mas arriba en OnConditionsChanged y vamos a comprobarlo)
+			if (TheMatch != null)
+			{
+				ErrorMessages.LogToServer("Intento de desconexion con el partido corriendo");
+				return;
+			}
+						
+			TheRoomModel = null;
+						
+			if (mServerConnection != null)
+			{
+				// No hace falta quitarnos de la lista de clientes de la conexion porque no dispatcha ningun mensaje mas, y ademas no la reusamos.
+				// Ademas, esta llamada no dispatchara una señal NetPlugClosed.
+				mServerConnection.Disconnect();	
+				mServerConnection = null;
+			}
+			
+			IsConnected = false;
 		}
 
 		// Publica para los tests...
@@ -150,25 +184,6 @@ package GameModel
 			// NOTE01: Idem
 		}
 		
-		// Podria ser privada si no fuera por los tests. El bCleaningShutdown lo necesitamos para el log pq hemos comprobado que llegan
-		// Disconnects con el partido no a null... necesitamos saber por que sitio entra
-		public function Disconnect(bCleaningShutdown : Boolean) : void
-		{
-			TheRoomModel = null;
-			
-			if (TheMatch != null)
-				ErrorMessages.LogToServer("Disconnect sin haber cerrado el partido?! " + bCleaningShutdown);
-						
-			if (mServerConnection != null)
-			{
-				// No hace falta quitarnos de la lista de clientes de la conexion porque no dispatcha ningun mensaje mas, y ademas no la reusamos.
-				// Ademas, esta llamada no dispatchara una señal NetPlugClosed.
-				mServerConnection.Disconnect();	
-				mServerConnection = null;
-			}
-
-			IsConnected = false;
-		}
 			
 		public function PushedDisconnected(reason : String) : void
 		{
@@ -240,6 +255,13 @@ package GameModel
 		
 		private function SwitchLookingForMatchResponded(lookingForMatch : Boolean) : void
 		{
+			// Se puede cruzar en el cable un mServerConnection.Invoke("SwitchLookingForMatch") y un PushedStartMatch...
+			if (mMatch != null)
+			{
+				ErrorMessages.LogToServer("Intento de SwitchLookingForMatchResponded con el partido corriendo");
+				return;
+			}
+			
 			if (lookingForMatch != mLookingForMatch)
 			{
 				mLookingForMatch = lookingForMatch;

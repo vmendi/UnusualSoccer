@@ -85,7 +85,7 @@
 			
 			function InitTest() : void
 			{
-				mMainGameModel.TheRealtimeModel.Disconnect(false);
+				mMainGameModel.TheRealtimeModel.Disconnect();
 				mMainGameModel = new MainGameModel();
 				currentTeam++;
 				SetLine(1, "Intento de creación de equipo " + currentTeam);
@@ -279,7 +279,7 @@
 			function startTest() : void
 			{
 				if (tempGameModel != null)
-					tempGameModel.TheRealtimeModel.Disconnect(false);
+					tempGameModel.TheRealtimeModel.Disconnect();
 				
 				if (counter++ < 1000)
 				{
@@ -316,7 +316,7 @@
 			
 			function onLoginSuccess() : void
 			{
-				tempGameModel.TheRealtimeModel.Disconnect(false);
+				tempGameModel.TheRealtimeModel.Disconnect();
 				tempGameModel = null;
 				
 				counter++;
@@ -416,7 +416,7 @@
 				SetLine(1, c.toString());
 				c++;
 
-				mMainGameModel.TheRealtimeModel.Disconnect(false);
+				mMainGameModel.TheRealtimeModel.Disconnect();
 				TweenNano.delayedCall(0.05, startTest);
 			}
 		}
