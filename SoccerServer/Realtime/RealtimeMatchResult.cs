@@ -88,12 +88,14 @@ namespace Realtime
                 mParticipation1 = (from p in mContext.MatchParticipations
                                    where p.MatchID == mBDDMatch.MatchID && p.TeamID == mBDDPlayer1.Team.TeamID
                                    select p).First();
+
                 mParticipation1.Goals    = ResultPlayer1.Goals;
                 mParticipation1.GoalsOpp = ResultPlayer2.Goals;
 
                 mParticipation2 = (from p in mContext.MatchParticipations
                                    where p.MatchID == mBDDMatch.MatchID && p.TeamID == mBDDPlayer2.Team.TeamID
                                    select p).First();
+
                 mParticipation2.Goals    = ResultPlayer2.Goals;
                 mParticipation2.GoalsOpp = ResultPlayer1.Goals;
 
@@ -341,16 +343,26 @@ namespace Realtime
             
             WasAbandoned = true;
 
+            // Vamos a crear el MatchAbandon, asi podemos almacenar el resultado antes del abandono
+            var matchAbandon = new MatchAbandon();
+            matchAbandon.MatchAbandonID = mMatch.MatchID;
+            matchAbandon.GoalsHome = ResultPlayer1.Goals;
+            matchAbandon.GoalsAway = ResultPlayer2.Goals;
+
             if (mMatch.HasPlayerAbandoned(mRealtimePlayer1))
             {
+                matchAbandon.HomeAbandoned = true;
                 ResultPlayer1.Goals = 0;
                 ResultPlayer2.Goals = ResultPlayer2.Goals < 3 ? 3 : ResultPlayer2.Goals;
             }
             else
             {
+                matchAbandon.HomeAbandoned = false;
                 ResultPlayer2.Goals = 0;
                 ResultPlayer1.Goals = ResultPlayer1.Goals < 3 ? 3 : ResultPlayer1.Goals;
             }
+
+            mContext.MatchAbandons.InsertOnSubmit(matchAbandon);            
         }
 
         private bool GetTooManyTimes()

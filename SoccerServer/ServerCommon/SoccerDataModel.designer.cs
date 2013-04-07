@@ -49,6 +49,9 @@ namespace ServerCommon
     partial void InsertConfigParam(ServerCommon.BDDModel.ConfigParam instance);
     partial void UpdateConfigParam(ServerCommon.BDDModel.ConfigParam instance);
     partial void DeleteConfigParam(ServerCommon.BDDModel.ConfigParam instance);
+    partial void InsertMatchAbandon(ServerCommon.BDDModel.MatchAbandon instance);
+    partial void UpdateMatchAbandon(ServerCommon.BDDModel.MatchAbandon instance);
+    partial void DeleteMatchAbandon(ServerCommon.BDDModel.MatchAbandon instance);
     partial void InsertMatch(ServerCommon.BDDModel.Match instance);
     partial void UpdateMatch(ServerCommon.BDDModel.Match instance);
     partial void DeleteMatch(ServerCommon.BDDModel.Match instance);
@@ -176,6 +179,14 @@ namespace ServerCommon
 			get
 			{
 				return this.GetTable<ServerCommon.BDDModel.ConfigParam>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ServerCommon.BDDModel.MatchAbandon> MatchAbandons
+		{
+			get
+			{
+				return this.GetTable<ServerCommon.BDDModel.MatchAbandon>();
 			}
 		}
 		
@@ -1737,6 +1748,181 @@ namespace ServerCommon.BDDModel
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MatchAbandons")]
+	public partial class MatchAbandon : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _MatchAbandonID;
+		
+		private int _GoalsHome;
+		
+		private int _GoalsAway;
+		
+		private bool _HomeAbandoned;
+		
+		private EntityRef<Match> _Match;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnMatchAbandonIDChanging(int value);
+    partial void OnMatchAbandonIDChanged();
+    partial void OnGoalsHomeChanging(int value);
+    partial void OnGoalsHomeChanged();
+    partial void OnGoalsAwayChanging(int value);
+    partial void OnGoalsAwayChanged();
+    partial void OnHomeAbandonedChanging(bool value);
+    partial void OnHomeAbandonedChanged();
+    #endregion
+		
+		public MatchAbandon()
+		{
+			this._Match = default(EntityRef<Match>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MatchAbandonID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int MatchAbandonID
+		{
+			get
+			{
+				return this._MatchAbandonID;
+			}
+			set
+			{
+				if ((this._MatchAbandonID != value))
+				{
+					if (this._Match.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMatchAbandonIDChanging(value);
+					this.SendPropertyChanging();
+					this._MatchAbandonID = value;
+					this.SendPropertyChanged("MatchAbandonID");
+					this.OnMatchAbandonIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GoalsHome", DbType="Int NOT NULL")]
+		public int GoalsHome
+		{
+			get
+			{
+				return this._GoalsHome;
+			}
+			set
+			{
+				if ((this._GoalsHome != value))
+				{
+					this.OnGoalsHomeChanging(value);
+					this.SendPropertyChanging();
+					this._GoalsHome = value;
+					this.SendPropertyChanged("GoalsHome");
+					this.OnGoalsHomeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GoalsAway", DbType="Int NOT NULL")]
+		public int GoalsAway
+		{
+			get
+			{
+				return this._GoalsAway;
+			}
+			set
+			{
+				if ((this._GoalsAway != value))
+				{
+					this.OnGoalsAwayChanging(value);
+					this.SendPropertyChanging();
+					this._GoalsAway = value;
+					this.SendPropertyChanged("GoalsAway");
+					this.OnGoalsAwayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HomeAbandoned", DbType="Bit NOT NULL")]
+		public bool HomeAbandoned
+		{
+			get
+			{
+				return this._HomeAbandoned;
+			}
+			set
+			{
+				if ((this._HomeAbandoned != value))
+				{
+					this.OnHomeAbandonedChanging(value);
+					this.SendPropertyChanging();
+					this._HomeAbandoned = value;
+					this.SendPropertyChanged("HomeAbandoned");
+					this.OnHomeAbandonedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Match_MatchAbandon", Storage="_Match", ThisKey="MatchAbandonID", OtherKey="MatchID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Match Match
+		{
+			get
+			{
+				return this._Match.Entity;
+			}
+			set
+			{
+				Match previousValue = this._Match.Entity;
+				if (((previousValue != value) 
+							|| (this._Match.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Match.Entity = null;
+						previousValue.MatchAbandon = null;
+					}
+					this._Match.Entity = value;
+					if ((value != null))
+					{
+						value.MatchAbandon = this;
+						this._MatchAbandonID = value.MatchID;
+					}
+					else
+					{
+						this._MatchAbandonID = default(int);
+					}
+					this.SendPropertyChanged("Match");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Matches")]
 	public partial class Match : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1762,6 +1948,8 @@ namespace ServerCommon.BDDModel
 		private int _MatchDuration;
 		
 		private int _TurnDuration;
+		
+		private EntityRef<MatchAbandon> _MatchAbandon;
 		
 		private EntitySet<MatchParticipation> _MatchParticipations;
 		
@@ -1793,6 +1981,7 @@ namespace ServerCommon.BDDModel
 		
 		public Match()
 		{
+			this._MatchAbandon = default(EntityRef<MatchAbandon>);
 			this._MatchParticipations = new EntitySet<MatchParticipation>(new Action<MatchParticipation>(this.attach_MatchParticipations), new Action<MatchParticipation>(this.detach_MatchParticipations));
 			OnCreated();
 		}
@@ -1993,6 +2182,35 @@ namespace ServerCommon.BDDModel
 					this._TurnDuration = value;
 					this.SendPropertyChanged("TurnDuration");
 					this.OnTurnDurationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Match_MatchAbandon", Storage="_MatchAbandon", ThisKey="MatchID", OtherKey="MatchAbandonID", IsUnique=true, IsForeignKey=false)]
+		public MatchAbandon MatchAbandon
+		{
+			get
+			{
+				return this._MatchAbandon.Entity;
+			}
+			set
+			{
+				MatchAbandon previousValue = this._MatchAbandon.Entity;
+				if (((previousValue != value) 
+							|| (this._MatchAbandon.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._MatchAbandon.Entity = null;
+						previousValue.Match = null;
+					}
+					this._MatchAbandon.Entity = value;
+					if ((value != null))
+					{
+						value.Match = this;
+					}
+					this.SendPropertyChanged("MatchAbandon");
 				}
 			}
 		}

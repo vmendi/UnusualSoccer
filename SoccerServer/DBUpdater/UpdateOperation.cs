@@ -35,10 +35,14 @@ namespace DBUpdater
                     int currentVersion = 0;
                     int.TryParse(GetValueFromConfig(theContext, "DBVersion"), out currentVersion);
 
+                    Console.Out.WriteLine("Current version is " + currentVersion.ToString());
+
                     var maxSQLVersion = GetMaxSQLVersion();
                     var maxCodeVersion = GetMaxCodeVersion();
 
                     var absoluteMax = Math.Max(maxCodeVersion, maxSQLVersion);
+
+                    Console.Out.WriteLine("Updating to " + absoluteMax.ToString());
 
                     for (int c = currentVersion + 1; c <= absoluteMax; c++)
                     {
@@ -46,18 +50,27 @@ namespace DBUpdater
                         IDBUpdater dbUpdaterCode = GetDBUpdaterForVersion(c);
 
                         if (dbUpdaterCode != null)
+                        {
+                            Console.Out.WriteLine("Running C# updater BeforeSQL version " + c.ToString());
                             dbUpdaterCode.BeforeSQL(con, tran, theContext);
+                        }
 
                         if (sqlCode != null)
+                        {
+                            Console.Out.WriteLine("Running SQL code version " + c.ToString());
                             ExecuteSQLCode(con, tran, sqlCode);
+                        }
 
                         if (dbUpdaterCode != null)
+                        {
+                            Console.Out.WriteLine("Running C# updater AfterSQL version " + c.ToString());
                             dbUpdaterCode.AfterSQL(con, tran, theContext);
+                        }
                     }
 
                     SetValueToConfig(theContext, "DBVersion", absoluteMax.ToString());
-
                     tran.Commit();
+                    Console.Out.WriteLine("Update to version " + absoluteMax.ToString() + " done.");
                 }
             }
         }
