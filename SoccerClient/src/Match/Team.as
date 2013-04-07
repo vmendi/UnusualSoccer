@@ -8,23 +8,22 @@ package Match
 
 	public class Team
 	{				
-		public const CAPS_BY_TEAM : int = 8;												// Número de chapas que tiene cada equipo
-		
-		public var IdxTeam:int = 0;															// Identificador de equipo
-		public var Side:int = 0;															// Lado del campo en el que está el equipo
-		
-		public var Ghost:Entity = null;														// Ghost utilizado para decidir donde colocarás el portero		
-		
+		public const CAPS_BY_TEAM : int = 8;
+
+		public function get TeamId() : int { return _TeamId; }
+		public function get Side() : int { return _Side; }
 		public function get Name() : String { return _DescTeam.Name; }						
 		public function get PredefinedTeamNameID():String { return _DescTeam.PredefinedTeamNameID; }
 		public function get FacebookID():String { return _DescTeam.FacebookID; }
 		public function get Fitness() : Number { return _DescTeam.Fitness; }
 		public function get Level() : Number { return _DescTeam.Level; }
 		public function get TrueSkill() : Number { return _DescTeam.TrueSkill; }
+		public function get UsingSecondUniform() : Boolean { return _UsingSecondUniform; }
+		
 		public function get CapsList() : Array { return _CapsList; }
 		public function get GoalKeeper() : Cap { return _CapsList[0]; }
 		
-		public function get IsLocalUser() : Boolean	{ return this.IdxTeam == MatchConfig.IdLocalUser; }
+		public function get IsLocalUser() : Boolean	{ return this.TeamId == MatchConfig.IdLocalUser; }
 		public function get IsAttackingTeam() : Boolean { return this == MatchMain.Ref.Game.CurTeam; }
 		
 		public function get Goals() : int {	return _Goals; }
@@ -33,18 +32,22 @@ package Match
 		// Array con los IDs de las Skills disponibles, las que vienen desde el manager
 		public function get AvailableSkills() : Array { return _AvailableSkills; }
 		
-		private var _CapsList:Array = new Array();
-		private var _Goals:int = 0;
-		private var _FormationName:String = "3-3-2";
-		private var _Skills:Object;								// Hash de habilidades. Key:ID / Value:Skill
-		private var _AvailableSkills : Array;					// Las mismas habilidades, puestas en forma de array
 		private var _DescTeam : Object = null;
-		
-		public function Init(descTeam:Object, idxTeam:int, useSecondaryEquipment:Boolean = false) : void
+		private var _TeamId : int = -1;
+		private var _Side : int = -1;
+		private var _CapsList : Array = new Array();
+		private var _Goals : int = 0;
+		private var _FormationName : String = "3-3-2";
+		private var _Skills : Object;							// Hash de habilidades. Key:ID / Value:Skill
+		private var _AvailableSkills : Array;					// Las mismas habilidades, puestas en forma de array
+		private var _UsingSecondUniform : Boolean;
+				
+		public function Init(descTeam:Object, idxTeam:int, useSecondUniform:Boolean = false) : void
 		{
-			IdxTeam = idxTeam;
+			_TeamId = idxTeam;
 			_DescTeam = descTeam;
-			_FormationName = descTeam.Formation;			
+			_FormationName = descTeam.Formation;
+			_UsingSecondUniform = useSecondUniform;
 
 			// Copiamos la lista de habilidades especiales, teniendo en cuenta que nos puede entrar un Array o un ArrayCollection
 			LoadSkills(descTeam.SpecialSkillsIDs is Array? descTeam.SpecialSkillsIDs : descTeam.SpecialSkillsIDs.toArray());
@@ -52,7 +55,7 @@ package Match
 			// Inicializamos cada una de las chapas 
 			for (var i:int = 0; i < CAPS_BY_TEAM; i++ )
 			{
-				CapsList.push(new Cap(this, i, descTeam.SoccerPlayers[i], useSecondaryEquipment));
+				CapsList.push(new Cap(this, i, descTeam.SoccerPlayers[i], useSecondUniform));
 			}
 			
 			// Echamos a las que esten lesionadas, excepto al portero!
@@ -63,22 +66,15 @@ package Match
 			}
 			
 			// El equipo 1 empieza en el lado izquierdo y el 2 en el derecho
-			if (IdxTeam == Enums.Team1)
-				Side = Enums.Left_Side;
-			else if(IdxTeam == Enums.Team2)
-				Side = Enums.Right_Side;
+			if (TeamId == Enums.Team1)
+				_Side = Enums.Left_Side;
+			else if(TeamId == Enums.Team2)
+				_Side = Enums.Right_Side;
 			
 			// Asignamos la posición inicial de cada chapa según la alineación y lado del campo en el que se encuentran
 			ResetToFormation();
-						
-			// Creamos una imagen de chapa Ghost (la utilizaremos para indicar donde mover el portero)
-			Ghost = new Entity(ResourceManager.getInstance().getClass("match", "Cap"), MatchMain.Ref.Game.GameLayer);
-			Ghost.Visual.alpha = 0.4;
-			Ghost.Visual.visible = false;
-			Cap.PrepareVisualCap(Ghost.Visual, PredefinedTeamNameID, useSecondaryEquipment, true);			
 		}
-		
-		
+
 		//
 		// Obtiene el equipo adversario a nosotros
 		//
@@ -99,10 +95,10 @@ package Match
 		public function SetToOppositeSide() : void
 		{
 			// El equipo 1 empieza en el lado izquierdo y el 2 en el derecho
-			if (IdxTeam == Enums.Team1)
-				Side = Enums.Right_Side;
-			else if(IdxTeam == Enums.Team2)
-				Side = Enums.Left_Side;
+			if (TeamId == Enums.Team1)
+				_Side = Enums.Right_Side;
+			else if(TeamId == Enums.Team2)
+				_Side = Enums.Left_Side;
 			else
 				throw new Error("WTF 2732");
 		}

@@ -227,7 +227,7 @@ package Match
 			Gui.Time.text = utils.TimeUtils.ConvertSecondsToString(currMatchTime);
 			
 			// Marcamos el jugador con el turno
-			if (MatchMain.Ref.Game.CurTeam.IdxTeam == Enums.Team1)
+			if (MatchMain.Ref.Game.CurTeam.TeamId == Enums.Team1)
 				Gui.MarcadorTurno.gotoAndStop("TeamHome");
 			else
 				Gui.MarcadorTurno.gotoAndStop("TeamAway");
@@ -404,7 +404,7 @@ package Match
 		}
 		
 		
-		public function OnClickCap( cap:Cap ) : void
+		public function OnClickCap(cap:Cap) : void
 		{		
 			if (!UserInputEnabled || IsAnyControllerStarted())
 				return;
@@ -466,7 +466,7 @@ package Match
 				
 				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandPosCap,
 											  Delegate.create(MatchMain.Ref.Game.OnClientPosCap,
-															  MatchMain.Ref.Game.CurTeam.IdxTeam, 
+															  MatchMain.Ref.Game.CurTeam.TeamId, 
 															  _PosControl.Target.Id, _PosControl.EndPos.x, _PosControl.EndPos.y)); 
 			}
 		}
@@ -483,7 +483,7 @@ package Match
 				
 				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandShoot, 
 											  Delegate.create(MatchMain.Ref.Game.OnClientShoot,	// Simulamos que el servidor nos ha devuelto el tiro
-															  _ShootControl.Target.OwnerTeam.IdxTeam, 
+															  _ShootControl.Target.OwnerTeam.TeamId, 
 															  _ShootControl.Target.Id, 
 															  _ShootControl.Direction.x, _ShootControl.Direction.y, _ShootControl.Force));
 			}
@@ -501,7 +501,7 @@ package Match
 				
 				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandPlaceBall,
 											  Delegate.create(MatchMain.Ref.Game.OnClientPlaceBall,
-															  _BallControl.Target.OwnerTeam.IdxTeam, 
+															  _BallControl.Target.OwnerTeam.TeamId, 
 															  _BallControl.Target.Id, _BallControl.Direction.x, _BallControl.Direction.y));
 			}
 		}
@@ -517,7 +517,7 @@ package Match
 					MatchMain.Ref.Connection.Invoke("OnServerTiroPuerta", null);
 				
 				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandTiroPuerta, 
-					Delegate.create(MatchMain.Ref.Game.OnClientTiroPuerta, MatchMain.Ref.Game.CurTeam.IdxTeam));
+												  Delegate.create(MatchMain.Ref.Game.OnClientTiroPuerta, MatchMain.Ref.Game.CurTeam.TeamId));
 			}
 		}
 		

@@ -61,33 +61,40 @@ package Match
 		}
 			
 		public override function MouseMove(e: MouseEvent) :void
-		{			
-			super.MouseMove(e);
-			
-			var dir:Point = Direction.clone(); 				// Dirección truncada a la máxima longitud
-			var source:Point = _TargetPos.clone(); 			// Posición del centro de la chapa
-			var recoil:Point = source.add(dir); 			// Punto del mouse respecto a la chapa, cuando soltemos nos dará la potencia del tiro
-			var recoilColor:uint = 0xff0000;
-			
-			_Canvas.graphics.clear();			
-
-			// Mientras que no sacas la flecha de la chapa no es un tiro válido
-			if (IsValid())
+		{
+			try
 			{
-				DrawPredictiveGizmo();
+				super.MouseMove(e);
 				
-				_PotenciaTiro.text = "PO: " + Math.round(Force*100);
-				recoilColor = _ColorLine;
+				var dir:Point = Direction.clone(); 				// Dirección truncada a la máxima longitud
+				var source:Point = _TargetPos.clone(); 			// Posición del centro de la chapa
+				var recoil:Point = source.add(dir); 			// Punto del mouse respecto a la chapa, cuando soltemos nos dará la potencia del tiro
+				var recoilColor:uint = 0xff0000;
+				
+				_Canvas.graphics.clear();			
+	
+				// Mientras que no sacas la flecha de la chapa no es un tiro válido
+				if (IsValid())
+				{
+					DrawPredictiveGizmo();
+					
+					_PotenciaTiro.text = "PO: " + Math.round(Force*100);
+					recoilColor = _ColorLine;
+				}
+				else
+				{
+					_PotenciaTiro.text = "";	
+				}
+				
+				// Pintamos la parte "trasera" del disparador, que va desde el centro de la chapa hasta el raton
+				_Canvas.graphics.lineStyle(_Thickness, recoilColor, 0.7);
+				_Canvas.graphics.moveTo(source.x, source.y);
+				_Canvas.graphics.lineTo(recoil.x, recoil.y);
 			}
-			else
+			catch (e:Error)
 			{
-				_PotenciaTiro.text = "";	
+				ErrorMessages.LogToServer("WTF 43123ba");
 			}
-			
-			// Pintamos la parte "trasera" del disparador, que va desde el centro de la chapa hasta el raton
-			_Canvas.graphics.lineStyle(_Thickness, recoilColor, 0.7);
-			_Canvas.graphics.moveTo(source.x, source.y);
-			_Canvas.graphics.lineTo(recoil.x, recoil.y);
 		}
 		
 		private function DrawPredictiveGizmo() : void

@@ -163,37 +163,51 @@ package Match
 		
 		static private function LaunchCutScene(cutScene:Class, x:Number, y:Number, callback:Function=null, parent:DisplayObjectContainer=null) : MovieClip
 		{
-			var mc:MovieClip = new cutScene() as MovieClip;
-			
-			mc.x = x;
-			mc.y = y;
-
-			if (parent == null)
-				MatchMain.Ref.Game.GUILayer.addChild(mc);
-			else
-				parent.addChild(mc);
-			
-			mc.gotoAndPlay(1);
-			
-			var labelEnd:String = "EndAnim";
-			
-			if (Graphics.HasLabel( labelEnd, mc )) 
-				utils.MovieClipListener.AddFrameScript(mc, labelEnd, Delegate.create(OnEndCutScene, mc, callback));
-			else
-				trace( "El MovieClip " + mc.name + " no tiene la etiqueta " + labelEnd );
+			try
+			{
+				var mc:MovieClip = new cutScene() as MovieClip;
+				
+				mc.x = x;
+				mc.y = y;
+	
+				if (parent == null)
+					MatchMain.Ref.Game.GUILayer.addChild(mc);
+				else
+					parent.addChild(mc);
+				
+				mc.gotoAndPlay(1);
+				
+				var labelEnd:String = "EndAnim";
+				
+				if (Graphics.HasLabel(labelEnd, mc)) 
+					utils.MovieClipListener.AddFrameScript(mc, labelEnd, Delegate.create(OnEndCutScene, mc, callback));
+				else
+					trace( "El MovieClip " + mc.name + " no tiene la etiqueta " + labelEnd );
+			}
+			catch(e:Error)
+			{
+				ErrorMessages.LogToServer("WTF 193");
+			}
 			
 			return mc;
 		}
 		
 		static private function OnEndCutScene(mc:MovieClip, callback:Function) : void
-		{			
-			mc.gotoAndStop(1);
-			mc.visible = false;
-			
-			mc.parent.removeChild(mc);
-			
-			if( callback != null )
-				callback();
+		{
+			try
+			{
+				mc.gotoAndStop(1);
+				mc.visible = false;
+				
+				mc.parent.removeChild(mc);
+				
+				if (callback != null)
+					callback();
+			}
+			catch(e:Error)
+			{
+				ErrorMessages.LogToServer("WTF 1293");
+			}
 		}
 		
 		static private function FillFault(item:MovieClip, fault:Fault) : void
