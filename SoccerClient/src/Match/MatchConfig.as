@@ -30,8 +30,8 @@ package Match
 		
 		public static const DistToPutBallHandling:int = 10;		// Distancia a la chapa a la que colocamos la pelota cuando se recibe un pase al pie
 		
-		public static const AutoPasePermitido:Boolean = false;		// La chapa con la que se dispara puede recibir pase al pie despues de tocar el balon
-		public static const PorteroTeletransportado:Boolean = true;	// Portero teletransportado o portero parallelshoot?
+		public static const AutoPasePermitido:Boolean = true;			// La chapa con la que se dispara puede recibir pase al pie despues de tocar el balon
+		public static const PorteroTeletransportado:Boolean = false;	// Portero teletransportado o portero parallelshoot?
 		
 		public static const CapMass:Number = 4;
 		public static const CapLinearDamping:Number = 5;
