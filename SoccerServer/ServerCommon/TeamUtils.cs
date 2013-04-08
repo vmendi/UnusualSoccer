@@ -174,5 +174,28 @@ namespace ServerCommon
 			
 			return 0;
         }
+
+        public enum MatchResult
+        {
+            Win = 0,
+            Draw = 1,
+            Lose = 2
+        }
+
+        static public int GetXPForLevel(int level, MatchResult result)
+        {
+            int idx = (int)result;
+
+            if (level < 20)
+                return (new int[] { 3, 2, 1 })[idx];
+            
+            if (level < 30)
+                return (new int[] { 6, 4, 2 })[idx];
+
+            if (level < 40)
+                return (new int[] { 9, 6, 3 })[idx];
+
+            return (new int[] { 12, 8, 4 })[idx];
+        }
     }
 }

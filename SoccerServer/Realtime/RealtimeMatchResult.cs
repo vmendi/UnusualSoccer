@@ -223,8 +223,8 @@ namespace Realtime
 
             if (ResultPlayer1.Goals == ResultPlayer2.Goals)
             {
-                mBDDPlayer1.Team.XP += 2;
-                mBDDPlayer2.Team.XP += 2;
+                mBDDPlayer1.Team.XP += TeamUtils.GetXPForLevel(mBDDPlayer1.Team.Level, TeamUtils.MatchResult.Draw);
+                mBDDPlayer2.Team.XP += TeamUtils.GetXPForLevel(mBDDPlayer2.Team.Level, TeamUtils.MatchResult.Draw);
 
                 mBDDPlayer1.Team.SkillPoints += 5;
                 mBDDPlayer2.Team.SkillPoints += 5;
@@ -240,8 +240,8 @@ namespace Realtime
                 }
 
                 // Al loser no le damos skillpoints pero si permitimos que siga subiendo poco a poco
-                loser.Team.XP += 1;
-                winner.Team.XP += 3;
+                loser.Team.XP += TeamUtils.GetXPForLevel(loser.Team.Level, TeamUtils.MatchResult.Lose);
+                winner.Team.XP += TeamUtils.GetXPForLevel(winner.Team.Level, TeamUtils.MatchResult.Win);
 
                 winner.Team.SkillPoints += 15;
             }
