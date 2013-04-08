@@ -52,9 +52,9 @@ package Match
 			// FRIM: Frame Rate Independent Motion
 			// True  = la velocidad de la máquina y del stage no afecta al resultado, siempre dura lo mismo
 			// False = La velocidad de la máquina y del stage afecta al resultado ya que cada iteración simplemente se avanza un paso. Buena para sincronía de red
-			TheBox2D = new QuickBox2D(parent, { debug: MatchConfig.DebugPhysic, iterations: MatchConfig.PhyFPS, timeStep: 1.0/MatchMain.Ref.stage.frameRate,frim: false });
-			TheBox2D.gravity = new b2Vec2( 0, 0 );
-			TheBox2D.createStageWalls( );
+			TheBox2D = new QuickBox2D(parent, { debug: MatchConfig.DebugPhysic, iterations: MatchConfig.PhyFPS, timeStep: 1.0/MatchMain.Ref.stage.frameRate, frim: false });
+			TheBox2D.gravity = new b2Vec2(0, 0);
+			TheBox2D.createStageWalls();
 			
 			if (MatchConfig.DragPhysicObjects)
 				TheBox2D.mouseDrag();
@@ -244,9 +244,7 @@ package Match
 			}
 		}
 				
-		//
 		// Retorna true si hay algo todavia moviendose
-		//
 		private function get IsPhysicSimulating() : Boolean
 		{
 			for each (var entity:Entity in MatchMain.Ref.Game.TheEntityManager.Items)

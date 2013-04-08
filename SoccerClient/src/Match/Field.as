@@ -64,11 +64,11 @@ package Match
 		public function CreatePorterias(parent:MovieClip) : void
 		{
 			var goalLeft:Entity = new Entity(ResourceManager.getInstance().getClass("match", "GoalLeft"), parent);
-			MatchMain.Ref.Game.TheEntityManager.Add( goalLeft );
+			MatchMain.Ref.Game.TheEntityManager.Add(goalLeft);
 			goalLeft.SetPos(new Point(X_GOAL_LEFT, Y_GOAL));
 			
 			var goalRight:Entity = new Entity(ResourceManager.getInstance().getClass("match", "GoalRight"), parent);
-			MatchMain.Ref.Game.TheEntityManager.Add( goalRight );
+			MatchMain.Ref.Game.TheEntityManager.Add(goalRight);
 			goalRight.SetPos(new Point(X_GOAL_RIGHT, Y_GOAL));
 		}
 		
@@ -89,10 +89,10 @@ package Match
 		protected function CreatePhysicWalls() : void
 		{
 			// Todo lo que le entra a Box2D tiene que estar convertido a coords fisicas 
-			var sw:Number = MatchConfig.Screen2Physic( SizeX );
-			var sh:Number = MatchConfig.Screen2Physic( SizeY );	
-			var offsetX:Number = MatchConfig.Screen2Physic( OffsetX );
-			var offsetY:Number = MatchConfig.Screen2Physic( OffsetY );
+			var sw:Number = MatchConfig.Screen2Physic(SizeX);
+			var sh:Number = MatchConfig.Screen2Physic(SizeY);	
+			var offsetX:Number = MatchConfig.Screen2Physic(OffsetX);
+			var offsetY:Number = MatchConfig.Screen2Physic(OffsetY);
 			
 			// NOTE: La posición especificada para Box2D tanto en cajas como círculos siempre es el centro
 			var heightGoal:Number = MatchConfig.Screen2Physic(HeightGoal);

@@ -44,7 +44,7 @@ package Match
 			ItemList.splice(idx, 1);
 		}
 				
-		public function Run( elapsed:Number ) : void
+		public function Run(elapsed:Number) : void
 		{
 			for each (var item:Entity in Items)
 			{
@@ -52,7 +52,7 @@ package Match
 			}
 		}
 		
-		public function Draw( elapsed:Number ) : void
+		public function Draw(elapsed:Number) : void
 		{
 			for each (var item:Entity in Items)
 			{
