@@ -41,7 +41,7 @@ namespace Achievements
             public string FacebookID { get; set; }
 
             [CommandLineParameter(Command = "AchievementID", Required = false, Description = "The Achievement ID")]
-            public string AchievementID { get; set; }            
+            public string AchievementID { get; set; }
         }
 
         static void Main(string[] args)

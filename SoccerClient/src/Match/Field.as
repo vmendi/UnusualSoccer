@@ -3,6 +3,7 @@ package Match
 	import Box2D.actionsnippet.qbox.QuickBox2D;
 	import Box2D.actionsnippet.qbox.QuickObject;
 	
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
@@ -63,13 +64,11 @@ package Match
 		// 
 		public function CreatePorterias(parent:MovieClip) : void
 		{
-			var goalLeft:Entity = new Entity(ResourceManager.getInstance().getClass("match", "GoalLeft"), parent);
-			MatchMain.Ref.Game.TheEntityManager.Add( goalLeft );
-			goalLeft.SetPos(new Point(X_GOAL_LEFT, Y_GOAL));
+			var goalLeft:DisplayObject = parent.addChild(new (ResourceManager.getInstance().getClass("match", "GoalLeft")));
+			goalLeft.x = X_GOAL_LEFT; goalLeft.y = Y_GOAL;
 			
-			var goalRight:Entity = new Entity(ResourceManager.getInstance().getClass("match", "GoalRight"), parent);
-			MatchMain.Ref.Game.TheEntityManager.Add( goalRight );
-			goalRight.SetPos(new Point(X_GOAL_RIGHT, Y_GOAL));
+			var goalRight:DisplayObject = parent.addChild(new (ResourceManager.getInstance().getClass("match", "GoalRight")));
+			goalRight.x = X_GOAL_RIGHT; goalRight.y = Y_GOAL;
 		}
 		
 		/* 
@@ -89,10 +88,10 @@ package Match
 		protected function CreatePhysicWalls() : void
 		{
 			// Todo lo que le entra a Box2D tiene que estar convertido a coords fisicas 
-			var sw:Number = MatchConfig.Screen2Physic( SizeX );
-			var sh:Number = MatchConfig.Screen2Physic( SizeY );	
-			var offsetX:Number = MatchConfig.Screen2Physic( OffsetX );
-			var offsetY:Number = MatchConfig.Screen2Physic( OffsetY );
+			var sw:Number = MatchConfig.Screen2Physic(SizeX);
+			var sh:Number = MatchConfig.Screen2Physic(SizeY);	
+			var offsetX:Number = MatchConfig.Screen2Physic(OffsetX);
+			var offsetY:Number = MatchConfig.Screen2Physic(OffsetY);
 			
 			// NOTE: La posición especificada para Box2D tanto en cajas como círculos siempre es el centro
 			var heightGoal:Number = MatchConfig.Screen2Physic(HeightGoal);
@@ -101,7 +100,7 @@ package Match
 			var hc2:Number = offsetY + MatchConfig.Screen2Physic(SizeY) - (halfHeightWithoutGoal/2);
 			var centerGoalLeft:Point = GetCenterGoal(Enums.Left_Side);
 			var centerGoalRight:Point = GetCenterGoal(Enums.Right_Side);
-			var halfBall:Number = MatchConfig.Screen2Physic(BallEntity.Radius/2);
+			var halfBall:Number = MatchConfig.Screen2Physic(Ball.Radius/2);
 			
 			var halfSizeSmallAreaX : Number = MatchConfig.Screen2Physic(SmallAreaLeft.width / 2);
 
@@ -267,7 +266,7 @@ package Match
 				}
 			
 				// Comprobamos que no colisionemos con el balón				
-				if (checkAgainstBall && MatchMain.Ref.Game.TheBall.InsideCircle(pos, Cap.Radius+BallEntity.Radius))
+				if (checkAgainstBall && MatchMain.Ref.Game.TheBall.InsideCircle(pos, Cap.Radius+Ball.Radius))
 					bValid = false;
 			}
 			

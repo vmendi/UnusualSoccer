@@ -10,11 +10,11 @@ package Match
 		public static var	Debug:Boolean = false;				// Indica que estamos en modo debug. Se habilitan trucos/trazas y similares
 		public static var   OfflineMode:Boolean = false;		// Arranque directo sin manager. No se hace caso a este valor, se detecta y se settea automaticamente.
 		
-		public static const DrawBackground:Boolean = true;		// Pintar el fondo del juego ?
-		public static const DebugPhysic:Boolean = false;		// Indica si depuramos la física (pintar el mundo físico y otras cosas más)
+		public static const DebugPhysic:Boolean = false;		// Indica si depuramos la física (pintar el mundo físico)
 		public static const DragPhysicObjects:Boolean = false;	// Indica si podemos arrastrar los objetos físicos con el ratón
+		public static const DrawBackground:Boolean = true;		// Pintar el fondo del juego ? (util en combinacion con DebugPhysic)		
 				
-		public static const ClientVersion:int = 203;			// Versión del cliente
+		public static const ClientVersion:int = 204;			// Versión del cliente
 				
 		public static const PhyFPS:int = 30;					// La física se ejecuta 30 veces por segundo
 		public static const PixelsPerMeter:uint = 30;			// 30 píxeles es igual a 1 metro físico

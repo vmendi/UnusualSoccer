@@ -12,8 +12,7 @@ package Match
 		public var TheInterface:GameInterface;
 		public var TheGamePhysics:GamePhysics;
 		public var TheField:Field;
-		public var TheBall:BallEntity;
-		public var TheEntityManager:EntityManager;
+		public var TheBall:Ball;
 		public var TheAudioManager:AudioManager;
 		public var TheTeams:Array = new Array();
 		
@@ -58,13 +57,23 @@ package Match
 			return TheTeams[teamId].CapsList[capId]; 
 		}
 		
+		public function GetAllPhyEntities() : Array
+		{
+			var allPhyEntities : Array = new Array(TheBall);
+			
+			allPhyEntities = allPhyEntities.concat(TheTeams[Enums.Team1].CapsList);
+			allPhyEntities = allPhyEntities.concat(TheTeams[Enums.Team2].CapsList);
+			
+			return allPhyEntities;
+		}
+		
 		// Obtiene el equipo que está en un lado del campo
 		public function TeamInSide(side:int) : Team
 		{
-			if (side == TheTeams[ Enums.Team1 ].Side)
-				return TheTeams[ Enums.Team1 ];
-			if (side == TheTeams[ Enums.Team2 ].Side)
-				return TheTeams[ Enums.Team2 ];
+			if (side == TheTeams[Enums.Team1].Side)
+				return TheTeams[Enums.Team1];
+			if (side == TheTeams[Enums.Team2 ].Side)
+				return TheTeams[Enums.Team2];
 			
 			return null;
 		}
@@ -100,10 +109,9 @@ package Match
 			MatchConfig.TurnTime = turnTimeSecs;
 			
 			TheAudioManager = new AudioManager();
-			TheEntityManager = new EntityManager();
 			TheGamePhysics = new GamePhysics(PhyLayer);
 			TheField = new Field(GameLayer);
-			TheBall = new BallEntity(GameLayer);
+			TheBall = new Ball(GameLayer);
 			
 			// Creamos las porterias al final para que se pinten por encima de todo
 			TheField.CreatePorterias(GameLayer);
@@ -112,12 +120,11 @@ package Match
 			TheAudioManager.AddClass("SoundCollisionCapBall", ResourceManager.getInstance().getClass("match", "SoundCollisionCapBall"));			
 			TheAudioManager.AddClass("SoundCollisionCapCap", ResourceManager.getInstance().getClass("match", "SoundCollisionCapCap"));			
 			TheAudioManager.AddClass("SoundCollisionWall", ResourceManager.getInstance().getClass("match", "SoundCollisionWall"));
-						
+
 			// Lanzamos el sonido ambiente como música para que se detenga automaticamente al finalizar
 			//TheAudioManager.AddClass("SoundAmbience", MatchAssets.SoundAmbience);
 			//TheAudioManager.PlayMusic("SoundAmbience", 0.3);
-						
-			// TODO: Deberiamos utilizar una semilla envíada desde el servidor!!!
+
 			_Random = new Random(123);
 			_Timer = new Match.Time();
 			
@@ -153,8 +160,8 @@ package Match
 		//
 		public function CreateLayers() : void
 		{
-			GameLayer = MatchMain.Ref.addChild(new MovieClip()) as MovieClip;
 			PhyLayer = MatchMain.Ref.addChild(new MovieClip()) as MovieClip;
+			GameLayer = MatchMain.Ref.addChild(new MovieClip()) as MovieClip;
 			GUILayer = MatchMain.Ref.addChild(new MovieClip()) as MovieClip;
 			
 			// Nuestra caja de chat... hemos probado a añadirla a la capa de GUI (MatchMain.Ref.Game.GUILayer), pero: 
@@ -170,24 +177,29 @@ package Match
 			if (_State == GameState.NotInit)
 				return;
 			
-			TheEntityManager.Draw(elapsed);
+			TheTeams[Enums.Team1].Draw(elapsed);
+			TheTeams[Enums.Team2].Draw(elapsed);
+			
+			TheBall.Draw(elapsed);
 		}
 
-		//
-		// Bucle principal de la aplicación. 
-		//
 		public function Run(elapsed:Number) : void
 		{
 			// Si todavia no hemos recibido datos desde el servidor... o el juego ya se ha acabado
 			if (_State == GameState.NotInit)
 				return;
 			
+			// Determinamos si la simulacion ha acabado, redondeo de posiciones, etc
+			TheGamePhysics.Run(elapsed);
+			
+			// Update de ambos equipos, ellos se encargaran de actualizar las chapas
 			TheTeams[Enums.Team1].Run(elapsed);
 			TheTeams[Enums.Team2].Run(elapsed);
 			
-			TheGamePhysics.Run();
-			TheEntityManager.Run(elapsed);
-						
+			// Y antes que nosotros mismos, necesitamos que nuestra pelota este actualizada
+			TheBall.Run(elapsed);
+
+
 			switch(_State)
 			{
 				case GameState.Init:
@@ -560,7 +572,7 @@ package Match
 
 			// Posicion en la que queda la pelota
 			var dir:Point = new Point(dirX, dirY);  
-			dir.normalize(Cap.Radius + BallEntity.Radius + MatchConfig.DistToPutBallHandling);
+			dir.normalize(Cap.Radius + Ball.Radius + MatchConfig.DistToPutBallHandling);
 			
 			var newPos : Point = cap.GetPos().add(dir);
 			
@@ -938,7 +950,7 @@ package Match
 		{
 			var enemy : Cap = null;
 			
-			var capList:Array = enemyTeam.InsideCircle(TheBall.GetPos(), Cap.Radius + BallEntity.Radius + enemyTeam.RadiusSteal );
+			var capList:Array = enemyTeam.InsideCircle(TheBall.GetPos(), Cap.Radius + Ball.Radius + enemyTeam.RadiusSteal );
 			if(capList.length >= 1)
 				enemy = TheBall.NearestEntity(capList) as Cap;
 			
@@ -1006,7 +1018,7 @@ package Match
 			
 			for each (var cap:Cap in capList)
 			{
-				if (cap.InsideCircle(TheBall.GetPos(), Cap.Radius + BallEntity.Radius + CurTeam.RadiusPase))
+				if (cap.InsideCircle(TheBall.GetPos(), Cap.Radius + Ball.Radius + CurTeam.RadiusPase))
 				{
 					if (MatchConfig.AutoPasePermitido || cap != TheGamePhysics.AttackingTeamShooterCap)
 						potential.push(cap);

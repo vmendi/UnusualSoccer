@@ -15,7 +15,7 @@ package Match
 	//
 	public class ControllerPos extends Controller
 	{
-		private var _Ghost:Entity = null;
+		private var _Ghost:DisplayObject = null;
 		private var _Canvas : Sprite;
 		private var _ColorLine : uint;
 		
@@ -23,7 +23,7 @@ package Match
 		
 		public function ControllerPos(canvas:Sprite)		
 		{
-			this._Canvas = canvas;						
+			this._Canvas = canvas;
 			this._ColorLine = COLOR;
 		}
 		
@@ -34,13 +34,14 @@ package Match
 			if (Target == null)
 				throw new Error("WTF Target null");
 			
-			_Ghost = new Entity(ResourceManager.getInstance().getClass("match", "Cap"), MatchMain.Ref.Game.GameLayer);
-			_Ghost.Visual.alpha = 0.4;
-			_Ghost.Visual.visible = false;
-			Cap.PrepareVisualCap(_Ghost.Visual, cap.OwnerTeam.PredefinedTeamNameID, cap.OwnerTeam.UsingSecondUniform, true);
+			var ghostClass : Class = ResourceManager.getInstance().getClass("match", "Cap");
+			_Ghost = MatchMain.Ref.Game.GameLayer.addChild(new ghostClass);
+			_Ghost.alpha = 0.4;
+			_Ghost.visible = false;
+			Cap.PrepareVisualCap(_Ghost, cap.OwnerTeam.PredefinedTeamNameID, cap.OwnerTeam.UsingSecondUniform, true);
 			
-			_Ghost.SetPos(EndPos);
-			_Ghost.Visual.visible = true;
+			_Ghost.x = EndPos.x; _Ghost.y = EndPos.y;
+			_Ghost.visible = true;
 		}
 		
 		public override function Stop(reason:int):void
@@ -53,7 +54,7 @@ package Match
 			if (_Ghost == null)
 				throw new Error("WTF ghost null");
 			
-			MatchMain.Ref.Game.GameLayer.removeChild(_Ghost.Visual);
+			MatchMain.Ref.Game.GameLayer.removeChild(_Ghost);
 			_Ghost = null;
 		}
 		
@@ -70,15 +71,13 @@ package Match
 				   MatchMain.Ref.Game.TheField.IsCircleInsideSmallArea(EndPos, 0, this.Target.OwnerTeam.Side);
 		}
 		
-		//
 		// Genera una Stop tanto si el controlador IsValid como si no
-		//
 		public override function MouseUp(e: MouseEvent) : void
 		{
 			super.MouseUp(e);
 		}
 		
-		public override function MouseMove( e: MouseEvent ) :void
+		public override function MouseMove(e: MouseEvent) :void
 		{
 			try
 			{
@@ -91,12 +90,12 @@ package Match
 				// Seleccionamos un color para la linea diferente en función de si la posición final es válida o no
 				var color:uint = _ColorLine;
 				if (!this.IsValid())
-					Graphics.ChangeColorMultiplier(_Ghost.Visual, 1.0, 0.4, 0.4);
+					Graphics.ChangeColorMultiplier(_Ghost, 1.0, 0.4, 0.4);
 				else
-					Graphics.ChangeColorMultiplier(_Ghost.Visual, 1.0, 1.0, 1.0);
+					Graphics.ChangeColorMultiplier(_Ghost, 1.0, 1.0, 1.0);
 				
 				// Recolocamos el Ghost
-				_Ghost.SetPos(EndPos); 
+				_Ghost.x = EndPos.x; _Ghost.y = EndPos.y; 
 			}
 			catch (e:Error)
 			{

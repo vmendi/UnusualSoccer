@@ -69,7 +69,7 @@ package
 			{
 				if (response == null)
 				{
-					ErrorMessages.LogToServer("Publish Achievement Error " + fail + " " + params.achievement);
+					ErrorMessages.LogToServer("Publish Achievement Error: " + fail + " " + params.achievement);
 				}
 			}
 		}
@@ -91,16 +91,9 @@ package
 			
 			function OnPublishResponse(response : Object, fail : Object) : void
 			{
-				try {
-					if (response == null)
-					{
-						ErrorMessages.LogToServer("Publish Open Graph Error: " + fail +  
-												  AppConfig.CANVAS_URL + '/OpenGraph/OpenGraph.ashx?data=' + ComposeOpenGraphData(publishMessage));
-					}
-				}
-				catch(e:Error) {
-					// Esto se queda asi hasta que verifiquemos q no pasa (IOErrorEvent no tenia message)
-					ErrorMessages.LogToServer("WTF 13177 " + fail);
+				if (response == null)
+				{
+					ErrorMessages.LogToServer("Publish Open Graph Error: " + fail);
 				}
 			}
 		}

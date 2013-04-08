@@ -50,11 +50,9 @@ package Match
 		public function GamePhysics(parent : MovieClip)
 		{
 			// FRIM: Frame Rate Independent Motion
-			// True  = la velocidad de la máquina y del stage no afecta al resultado, siempre dura lo mismo
-			// False = La velocidad de la máquina y del stage afecta al resultado ya que cada iteración simplemente se avanza un paso. Buena para sincronía de red
-			TheBox2D = new QuickBox2D(parent, { debug: MatchConfig.DebugPhysic, iterations: MatchConfig.PhyFPS, timeStep: 1.0/MatchMain.Ref.stage.frameRate,frim: false });
-			TheBox2D.gravity = new b2Vec2( 0, 0 );
-			TheBox2D.createStageWalls( );
+			TheBox2D = new QuickBox2D(parent, { debug: MatchConfig.DebugPhysic, iterations: MatchConfig.PhyFPS, timeStep: 1.0/MatchMain.Ref.stage.frameRate, frim: false });
+			TheBox2D.gravity = new b2Vec2(0, 0);
+			TheBox2D.createStageWalls();
 			
 			if (MatchConfig.DragPhysicObjects)
 				TheBox2D.mouseDrag();
@@ -64,6 +62,12 @@ package Match
 						
 			// Para poder hacer proceso (olvidar contactos) antes que el RENDER, que es donde se calcula la simulacion
 			TheBox2D.main.addEventListener(Event.ENTER_FRAME, OnPhysicsEnterFrame);
+		}
+		
+		private function OnPhysicsEnterFrame(e:Event) : void
+		{
+			// Olvidamos los contactos del Run anterior 
+			_TouchedCapsLastRun.length = 0;
 		}
 		
 		public function Start() : void
@@ -125,12 +129,12 @@ package Match
 				var ent1:PhyEntity = _Contacts.currentPoint.shape1.m_userData as PhyEntity;
 				var ent2:PhyEntity = _Contacts.currentPoint.shape2.m_userData as PhyEntity;
 				
-				var ball:BallEntity = null;
+				var ball:Ball = null;
 				var cap:Cap = null;
 				
 				// Determinamos si una de las entidades colisionadas es el balón
-				if(ent1 is BallEntity) ball = ent1 as BallEntity;
-				if(ent2 is BallEntity) ball = ent2 as BallEntity;
+				if(ent1 is Ball) ball = ent1 as Ball;
+				if(ent2 is Ball) ball = ent2 as Ball;
 				
 				// Determinamos si una de las entidades colisionadas es una chapa
 				if(ent1 is Cap) cap = ent1 as Cap;
@@ -229,29 +233,20 @@ package Match
 			return fault;
 		}
 		
-		//
-		// Detiene la simulación física de todas las entidades 
-		// 
 		public function StopSimulation() : void		
 		{
-			for each (var entity:Entity in MatchMain.Ref.Game.TheEntityManager.Items)
+			for each (var phyEntity:PhyEntity in MatchMain.Ref.Game.GetAllPhyEntities())
 			{
-				if (entity is PhyEntity)
-				{
-					var phyEntity:PhyEntity = entity as PhyEntity;
-					phyEntity.StopMovement();
-				}
+				phyEntity.StopMovement();
 			}
 		}
-				
-		//
+
 		// Retorna true si hay algo todavia moviendose
-		//
 		private function get IsPhysicSimulating() : Boolean
 		{
-			for each (var entity:Entity in MatchMain.Ref.Game.TheEntityManager.Items)
+			for each (var phyEntity:PhyEntity in MatchMain.Ref.Game.GetAllPhyEntities())
 			{
-				if (entity is PhyEntity && (entity as PhyEntity).IsMoving)
+				if (phyEntity.IsMoving)
 					return true;
 			}
 			
@@ -262,8 +257,7 @@ package Match
 		{			
 			return _TouchedCaps.indexOf(cap) != -1;
 		}
-				
-		// Ha tocado la pelota cualquiera de las chapas del equipo?
+
 		public function HasTouchedBallAny(team : Team) : Boolean
 		{
 			for each(var cap : Cap in team.CapsList)
@@ -274,7 +268,7 @@ package Match
 			return false;
 		}
 		
-		public function Run() : void
+		public function Run(elapsed:Number) : void
 		{
 			if (_SimulatingShoot)
 			{
@@ -297,27 +291,23 @@ package Match
 				// Si nos paramos en este Run, redondeamos las posiciones
 				// HACK anti UNSYNC! qué pasa en los bordes con las colisiones?
 				if (!_SimulatingShoot)
-				{
-					for each (var entity:Entity in MatchMain.Ref.Game.TheEntityManager.Items)
-					{
-						if (entity is PhyEntity)
-						{
-							var phyEntity:PhyEntity = entity as PhyEntity;
-							var currPos : Point = phyEntity.GetPos();
-							phyEntity.SetPos(new Point(Math.round(currPos.x), Math.round(currPos.y)));
-						}
-					}
-				}
+					RoundPositions();
 			}
 		}
 		
-		private function OnPhysicsEnterFrame(e:Event) : void
+		private function RoundPositions() : void
 		{
-			// Olvidamos los contactos del Run anterior 
-			_TouchedCapsLastRun.length = 0;
+			for each (var phyEntity:PhyEntity in MatchMain.Ref.Game.GetAllPhyEntities())
+			{
+				var currPos : Point = phyEntity.GetPos();
+				phyEntity.SetPos(new Point(Math.round(currPos.x), Math.round(currPos.y)));
+			}
 		}
+		
+		
+		private var _phyEntities : Array = new Array();
 
-		private var _Ball : BallEntity;
+		private var _Ball : Ball;
 		private var _Field : Field;
 		
 		private var _Contacts : QuickContacts;					// Manager para controlar los contactos físicos entre objetos

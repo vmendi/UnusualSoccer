@@ -79,22 +79,20 @@ package Match
 		
 
 		public function Cap(team:Team, id:int, descCap:Object, useSecondaryEquipment:Boolean) : void
-		{				
-			var phyInit : Object = { radius: MatchConfig.Screen2Physic( Radius ),
-									 isBullet: true, 								// UseCCD: Detección de colisión continua (Ninguna chapa se debe atravesar)
-									 mass: MatchConfig.CapMass,
-									 isSleeping: true,
-									 allowSleep: true, 
-									 friction: .3, 
-									 restitution: .8,								// Fuerza que recupera en un choque
-									 linearDamping: MatchConfig.CapLinearDamping, 
-									 angularDamping: MatchConfig.CapLinearDamping }
-			
-			super(ResourceManager.getInstance().getClass("match", "Cap"), MatchMain.Ref.Game.GameLayer, PhyEntity.Circle, phyInit);
-			
-			// Choca con todo
-			phyInit.categoryBits = 1;
-			
+		{			
+			super(MatchMain.Ref.Game.GameLayer, { 
+				  skin: ResourceManager.getInstance().getClass("match", "Cap"),
+				  radius: MatchConfig.Screen2Physic(Radius),
+				  categoryBits: 1,								// Choca con todo
+				  isBullet: true, 								// UseCCD: Detección de colisión continua (Ninguna chapa se debe atravesar)
+				  mass: MatchConfig.CapMass,
+				  isSleeping: true,
+				  allowSleep: true, 
+				  friction: .3, 
+			      restitution: .8,								// Fuerza que recupera en un choque
+				  linearDamping: MatchConfig.CapLinearDamping, 
+				  angularDamping: MatchConfig.CapLinearDamping });
+						
 			// Elegimos el asset de jugador o portero y con la equipación primaria o secundaria
 			PrepareVisualCap(_Visual, team.PredefinedTeamNameID, useSecondaryEquipment, id == 0)
 						
@@ -129,9 +127,6 @@ package Match
 			// Solo mostramos la foto de los amigos del equipo local (privacidad...)
 			// if (team.IsLocalUser) Ahora si ahora no (3/23/2013)
 			LoadFacebookPicture(descCap.FacebookID);
-			
-			// Auto-añadimos al manager de entidades
-			MatchMain.Ref.Game.TheEntityManager.AddTagged(this, "Team"+(team.TeamId +1).toString() + "_" + _CapId.toString());
 		}
 		
 		static public function PrepareVisualCap(visualCap : *, predefinedTeamNameID : String, useSecondary : Boolean, isGoalKeeper : Boolean) : void
@@ -229,7 +224,7 @@ package Match
 			dir.normalize(force * MatchConfig.HighCapMaxImpulse);
 						
 			// El impulso lo aplicamos en sentido contrario, ya que funciona como una goma elástica
-			PhyObject.body.ApplyImpulse(new b2Vec2(-dir.x, -dir.y), PhyObject.body.GetWorldCenter());
+			_PhyObject.body.ApplyImpulse(new b2Vec2(-dir.x, -dir.y), _PhyObject.body.GetWorldCenter());
 		}
 		
 		// Obtiene el vector de dirección desde la chapa que apunta hacia la portería contraria

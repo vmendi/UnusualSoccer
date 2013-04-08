@@ -8,45 +8,43 @@ package Match
 	
 	import mx.resources.ResourceManager;
 
-	public class BallEntity extends PhyEntity
+	public class Ball extends PhyEntity
 	{
 		static public const Radius:Number = 9;
 		
 		// Ultima posicion donde se forzo la posicion o donde paro despues de una simulacion
 		public function get LastPosBallStopped() : Point { return _LastPosBallStopped; }
 		
-		public function BallEntity(parent:MovieClip) : void
+		public function Ball(parent:MovieClip) : void
 		{
 			// Inicializamos la entidad
-			super(ResourceManager.getInstance().getClass("match", "BalonAnimado"), parent, PhyEntity.Circle, {
+			super(parent, {
+				  skin: ResourceManager.getInstance().getClass("match", "BalonAnimado"),
 				  categoryBits:4,
 				  maskBits: 1 + 2 + 4,			// Choca con todo excepto con BackPorteria (que tiene categoryBits==8)
 				  mass: MatchConfig.BallMass, 	// 0.04
 				  fixedRotation: true,			// If set to true the rigid body will not rotate.
 				  isBullet: true, 				// UseCCD: Detección de colisión continua
-				  radius:MatchConfig.Screen2Physic( Radius ), 
+				  radius:MatchConfig.Screen2Physic(Radius),
 				  isSleeping: true,
 				  allowSleep: true, 
 				  linearDamping: MatchConfig.BallLinearDamping, 
 				  angularDamping: MatchConfig.BallLinearDamping, 
 				  friction: .2, 
-				  restitution: .8 } );		// Fuerza que recupera en un choque
+				  restitution: .8 });			// Fuerza que recupera en un choque
 			
 			// Reasignamos la escala del balón, ya que la física lo escala para que encaje con el radio físico asignado
 			this.Visual.scaleX = 1.0;
 			this.Visual.scaleY = 1.0;
 			
 			this.SetPosInFieldCenter();
-						
-			// Nos auto-añadimos al manager de entidades
-			MatchMain.Ref.Game.TheEntityManager.AddTagged(this, "Ball");
 		}
 		
 		
-		public override function Run(elapsed:Number):void
+		public function Run(elapsed:Number):void
 		{
 			// Por si nos despiertan, anotamos la ultima posicion en la que estuvimos dormidos
-			if (PhyObject.body.IsSleeping())
+			if (_PhyObject.body.IsSleeping())
 				_LastPosBallStopped = GetPos();
 		}		
 
@@ -56,7 +54,7 @@ package Match
 		public override function Draw(elapsed:Number) : void
 		{
 			var mcVisual : MovieClip = (_Visual as MovieClip);
-			var vel : b2Vec2 = PhyObject.body.GetLinearVelocity();
+			var vel : b2Vec2 = _PhyObject.body.GetLinearVelocity();
 			
 			var perimeter : Number = MatchConfig.Screen2Physic(Radius) * 2 * Math.PI;
 			var numFrames : Number = mcVisual.framesLoaded;
@@ -75,7 +73,7 @@ package Match
 				if (vel.y < 0)
 					angle = -angle;
 				
-				PhyObject.angle = angle;
+				_PhyObject.angle = angle;
 			}
 		}
 				
@@ -88,7 +86,7 @@ package Match
 		{
 			var pos:Point = cap.GetPos();
 			
-			var len:Number = Cap.Radius + BallEntity.Radius;
+			var len:Number = Cap.Radius + Ball.Radius;
 			var dir:Point = new Point(len, 0);
 			if (cap.OwnerTeam.Side == Enums.Right_Side)
 				dir = new Point(-len, 0);

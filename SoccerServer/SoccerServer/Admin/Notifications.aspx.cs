@@ -185,10 +185,13 @@ namespace SoccerServer.Admin
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => GetCreatedTeamNoMatchsPlayed(),
                                                       Description = "Crearon el equipo pero no jugaron ni un partido" },
 
+                new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenSinceAndPlayedMoreThan(7, -1),
+                                                      Description = "LastSeen hace más 7 días y crearon equipo (0 o mas partidos)" },
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenSinceAndPlayedExactly(7, 1),
                                                       Description = "LastSeen hace mas 7 días y jugaron 1 solo partido" },
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => LastSeenSinceAndPlayedMoreThan(7, 1),
                                                       Description = "LastSeen hace más 7 días y jugaron mas de 1 partido" },
+                
 
                 new GetFacebookIDsWithDescription() { GetFacebookIDs = () => CreatedPlayerNDaysAndPlayedRangeMatches(1, 0, 0),
                                                       Description = "Crearon player ayer y no han jugado ningun partido" },
@@ -294,8 +297,8 @@ namespace SoccerServer.Admin
             var now = DateTime.Now;
 
             var query = (from s in mDC.Players
-                         where (now - s.LastSeen).TotalDays >= days &&
-                                s.Team.MatchParticipations.Count() > moreThan
+                         where s.Team != null && (now - s.LastSeen).TotalDays >= days &&
+                               s.Team.MatchParticipations.Count() > moreThan
                          select s.FacebookID);
 
             return query.ToList();

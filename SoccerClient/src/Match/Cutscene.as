@@ -15,36 +15,41 @@ package Match
 	
 	public final class Cutscene
 	{
-		// 
-		// Ha terminado una mitad
-		//
 		static public function ShowFinishPart(part:int, callback:Function) : void
 		{						
-			// Reproducimos una cutscene u otra en función de si ha acabado la primera parte o el partido 
-			if( part == 1 )
+			if (part == 1)
 				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeFinTiempo1"), 0, 210, callback); 
-			else if ( part == 2 )
+			else if (part == 2)
 				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeFinPartido"), 0, 210, callback);
 			else
 				throw new Error("Unknown part");
 		}
 		
-		// 
-		// Reproduce una animación dependiendo de si el gol es válido o no
-		//
 		static public function ShowGoalScored(validity:int, callback:Function) : void
 		{						
-			if( validity == Enums.GoalValid )
+			if (validity == Enums.GoalValid)
 				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeGol"), 0, 210, callback);
 			else
-			if( validity == Enums.GoalInvalidNoDeclarado )
+			if (validity == Enums.GoalInvalidNoDeclarado)
 				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeGolinvalido"), 0, 210, callback); 
 			else
-			if( validity == Enums.GoalInvalidPropioCampo )
+			if (validity == Enums.GoalInvalidPropioCampo)
 				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeGolinvalidoPropioCampo"), 0, 210, callback); 
 			else
 				throw new Error("Validez del gol desconocida");
 		}
+		
+		static public function ShowAreaPortero(side : int, callback:Function) : void
+		{
+			if (side == Enums.Left_Side)
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaLeft.x, Field.SmallAreaLeft.y, callback);
+			else
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaRight.x, Field.SmallAreaRight.y, callback);
+			
+			// Y ademas, un cartelito sin esperas
+			PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeControlPortero"));
+		}
+		
 		
 		static public function ShowConflictOverCaps(conflict:Conflict):void
 		{
@@ -59,18 +64,7 @@ package Match
 			var mcLoser : MovieClip = LaunchCutScene(ResourceManager.getInstance().getClass("match", "ConflictoPierde"), loser.Visual.x, loser.Visual.y);
 			mcLoser.ConflictoNum.Num.text = paramLoser.toString();
 		}
-		
-		static public function ShowAreaPortero(side : int, callback:Function) : void
-		{
-			if (side == Enums.Left_Side)
-				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaLeft.x, Field.SmallAreaLeft.y, callback);
-			else
-				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaRight.x, Field.SmallAreaRight.y, callback);
-			
-			// Y ademas, un cartelito sin esperas
-			PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeControlPortero"));
-		}
-		
+	
 		
 		static public function ShowTurn(reason:int, isMyTurn:Boolean) : void
 		{
