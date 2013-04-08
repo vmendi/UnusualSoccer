@@ -147,38 +147,18 @@ package GameModel
 		
 		private function OnTimer(e:Event) : void
 		{
-			try {
-				// Tenemos la sospecha de que puede llegar el evento a pesar de haberse llamado a stop, por una cuestion
-				// de que el evento ya estaba encolado y flash no se encarga de retirarlo.
-				// La teoria es:
-				// Llega un PushedMatchStart desde el server, en el mismo tick en el q se produce el OnTimer.
-				// Flash los encola los dos.
-				// Primero se ejecuta el MatchStart, q para el timer de inactividad. Pero no se desencola el evento!!
-				// Cuando veas el log de abajo, la teoria quedara corroborada
-				if (mTimer != null)
-				{
-					// Ademas, sin tener que ver con lo de arriba: Creamos que estamos entrando en inactividad a pesar de haber partido. Creemos que
-					// es asi por el Disconnect(false)
-					if (mRealtimeModel.TheMatch != null)
-					{
-						ErrorMessages.LogToServer("WTF 8 IT WAS HAPPENING !!!!!!!!!!!!!");
-						StopAndDestroyTimer();
-					}
-					else
-					{					
-						// Decretamos inactividad!
-						IsActive = false;
-						
-						// Paramos el timer hasta que haya nueva actividad
-						mTimer.reset();
-					}
-				}
-				else
-				{
-					ErrorMessages.LogToServer("WTF 86765 IT WAS HAPPENING !!!!!!!!!!!!!");
-				}
+			try 
+			{
+				// Decretamos inactividad!
+				IsActive = false;
+				
+				// Paramos el timer hasta que haya nueva actividad
+				mTimer.reset();
 			}
-			catch(e:Error) { ErrorMessages.LogToServer("WTF Timer 91200 " + e.toString()); } 
+			catch(e:Error)
+			{ 
+				ErrorMessages.LogToServer("WTF Timer 91200 " + e.toString()); 
+			} 
 		}
 				
 		private var mTimer : Timer;

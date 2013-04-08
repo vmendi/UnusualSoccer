@@ -69,7 +69,7 @@ package GameModel
 			// Nos aseguramos de dejar el partido limpio y de cerrar el socket
 			if (mMatch != null)
 				mMatch.Shutdown(null);	// Esto provocara un MatchEnded con result == null, lo que pondra mMatch a null
-						
+
 			Disconnect();
 		}
 		
@@ -80,6 +80,9 @@ package GameModel
 			
 			if (!mMainModel.TheTeamPurchaseModel.HasCredit || !mMainModel.TheInactivityModel.IsActive)
 			{
+				// Si hay un RefreshTeam volando en el cable nos llegara RemainingMatches == 0 despues de haber empezado el partido, 
+				// puesto q lo descontamos al empezar. Tambien puede ocurrir que se nos acabe el ticket durante el partido.
+				// Por estos dos motivos, lo controlamos aqui
 				if (TheMatch == null)
 					Disconnect();
 				else
@@ -92,19 +95,7 @@ package GameModel
 		
 		// Es publica solo para los tests!
 		public function Disconnect() : void
-		{
-			// Hemos comprobado que nos mandan desconexion porque se nos acabo el credito o pq entramos en inactividad.
-			// cuando esta el partido corriendo. Lo primero es logico, lo segundo seria de ser un problema del orden de
-			// eventos (IsActive = false se encola y llega no se sabe cuando. Si debugeamos comprobamos q llega inmediatamente, pero
-			// tambien estamos comprobando q TheMatch != null en aquel codigo del InactivityModel => o de repente el IsActive = false
-			// se esta encolando y cambiando el comportamiento que debugeamos o siempre q pasa esto es por !HasCredit. Ponemos un log
-			// mas arriba en OnConditionsChanged y vamos a comprobarlo)
-			if (TheMatch != null)
-			{
-				ErrorMessages.LogToServer("Intento de desconexion con el partido corriendo");
-				return;
-			}
-						
+		{						
 			TheRoomModel = null;
 						
 			if (mServerConnection != null)
