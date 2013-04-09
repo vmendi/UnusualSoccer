@@ -42,7 +42,7 @@ package GameModel
 			// Y luego sólo nuestras Stats
 			SelectedRankingTeam = mSelfRankingTeam;
 		}
-						
+
 		private function OnRefreshMatchStatsResponded(e:ResultEvent) : void
 		{
 			mSelectedRankingTeamMatchStats = e.result as TeamMatchStats;

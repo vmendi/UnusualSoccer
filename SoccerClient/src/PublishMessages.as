@@ -117,9 +117,15 @@ package
 		
 		static public function TryToPublishAchievement(achievementID : int, callback : Function) : void
 		{
-			PublishMessages.PublishAchievement(achievementID);
+			var hasPermissions : Boolean = SoccerClient.GetFacebookFacade().HasPublishActionsPermission();
 			
-			var temp = 0;
+			// Vemos si los tenemos primero, simplemente porque hubo una epoca en que no los pediamos. Esta
+			// funcion es una "Try" y no una "Ensure", y por lo tanto no los pedimos si no los teniamos
+			if (hasPermissions)
+				PublishMessages.PublishAchievement(achievementID);
+			
+			if (callback != null)
+				callback(hasPermissions);
 		}
 		
 		// Nos quedamos sólo con "unusualsoccer"

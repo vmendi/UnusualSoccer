@@ -94,6 +94,8 @@ package
 		static public const PEOPLE_NUM_SKILLS : String = "Num skills";
 		static public const PEOPLE_NUM_PURCHASES : String = "Num purchases";
 		
+		static public const CORNER_CHEATING : String = "Corner Cheating";
+		
 		
 		static public function ReportEvent(event:String, properties:Object) : void
 		{

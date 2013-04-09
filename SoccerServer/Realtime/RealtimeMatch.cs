@@ -473,22 +473,6 @@ namespace Realtime
                 Broadcast("OnClientChatMsg", msg);
         }
 
-        public void OnAbort(NetPlug plug)
-        {
-            LogEx("OnAbort: Player: " + GetIdPlayer(plug.Actor as RealtimePlayer));
-
-            RealtimePlayer self = plug.Actor as RealtimePlayer;
-            RealtimePlayer opp = GetOpponentOf(self);
-
-            PlayerIdAbandon = GetIdPlayer(self);
-
-            RealtimeMatchResult matchResult = FinishMatch();
-
-            // Practicamente como el LeaveActor pero informando ademas al que pide el OnAbort
-            opp.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
-            self.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
-        }
-
         private RealtimeMatchResult FinishMatch()
         {
             Stopwatch stopwatch = new Stopwatch();
@@ -534,6 +518,23 @@ namespace Realtime
 
             // Hay que notificar al oponente de que ha habido cancelacion
             opp.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
+        }
+
+        // Uno de los players nos pide explicitamente acabar
+        public void OnAbort(NetPlug plug)
+        {
+            LogEx("OnAbort: Player: " + GetIdPlayer(plug.Actor as RealtimePlayer));
+
+            RealtimePlayer self = plug.Actor as RealtimePlayer;
+            RealtimePlayer opp = GetOpponentOf(self);
+
+            PlayerIdAbandon = GetIdPlayer(self);
+
+            RealtimeMatchResult matchResult = FinishMatch();
+
+            // Practicamente como el LeaveActor pero informando ademas al que pide el OnAbort
+            opp.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
+            self.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
         }
         
         

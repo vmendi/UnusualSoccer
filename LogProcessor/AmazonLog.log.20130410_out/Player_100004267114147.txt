@@ -1,0 +1,2 @@
+IP-0AF0065B 00:28:36.708 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004267114147 - UncaughtError: Error: invalidIndex
+IP-0AF0065B 00:28:36.833 [ERROR] [14] [HttpService.MainService] CLIENT_ERROR:100004267114147 - UncaughtError: Error: invalidIndex

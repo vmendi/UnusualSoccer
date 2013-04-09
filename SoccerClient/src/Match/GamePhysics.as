@@ -15,6 +15,10 @@ package Match
 		public var TheBox2D:QuickBox2D;
 		
 		public function get IsSimulating() : Boolean { return _SimulatingShoot;	}
+		public function get TimeStep() : Number { return _TimeStep; }
+		
+		public function get NumTouchedCaps() : int 	 	{ return _TouchedCaps.length; }
+		public function get NumFramesSimulated() : int	{ return _FramesSimulating; }
 		
 		public function get IsGoal()   : Boolean { return _SideGoal != -1; }
 		public function get SideGoal() : int	 { return _SideGoal; }					// Enums.Left_Side, Enums.Right_Side. Porteria donde entro el gol
@@ -23,11 +27,8 @@ package Match
 		public function get TheFault() : Fault   { return _DetectedFault; }
 		
 		// Chapa del equipo atacante que ha ejecutado un disparo (distincion relevante en los tiros paralelos con el portero, el cual es del equipo defensor)
-		public function get AttackingTeamShooterCap()  : Cap { return _AttackingTeamShooterCap; }
-		
-		public function get NumTouchedCaps() : int 	 	{ return _TouchedCaps.length; }
-		public function get NumFramesSimulated() : int	{ return _FramesSimulating; }
-		
+		public function get AttackingTeamShooterCap() : Cap { return _AttackingTeamShooterCap; }
+				
 		
 		// Es gol en propia meta?
 		public function IsSelfGoal() : Boolean
@@ -35,7 +36,7 @@ package Match
 			if (!IsGoal)
 				throw new Error("No deberias preguntar por el IsSelfGoal cuando no ha sido Goal");
 			
-			return _AttackingTeamShooterCap.OwnerTeam == MatchMain.Ref.Game.TeamInSide(SideGoal);
+			return _AttackingTeamShooterCap.OwnerTeam == _Game.TeamInSide(SideGoal);
 		}
 		
 		// Equipo que ha marcado el gol
@@ -44,13 +45,16 @@ package Match
 			if (!IsGoal)
 				throw new Error("No deberias preguntar por el ScorerTeam cuando no ha sido Goal");
 			
-			return MatchMain.Ref.Game.TeamInSide(Enums.AgainstSide(SideGoal))
+			return _Game.TeamInSide(Enums.AgainstSide(SideGoal))
 		}
 
-		public function GamePhysics(parent : MovieClip)
+		public function GamePhysics(game : Game, theTimeStep:Number)
 		{
+			_Game = game;
+			_TimeStep = theTimeStep;
+			
 			// FRIM: Frame Rate Independent Motion
-			TheBox2D = new QuickBox2D(parent, { debug: MatchConfig.DebugPhysic, iterations: MatchConfig.PhyFPS, timeStep: 1.0/MatchMain.Ref.stage.frameRate, frim: false });
+			TheBox2D = new QuickBox2D(_Game.PhyLayer, { debug: MatchConfig.DebugPhysic, iterations: MatchConfig.PhyFPS, timeStep: _TimeStep, frim: false });
 			TheBox2D.gravity = new b2Vec2(0, 0);
 			TheBox2D.createStageWalls();
 			
@@ -71,10 +75,7 @@ package Match
 		}
 		
 		public function Start() : void
-		{
-			_Ball  = MatchMain.Ref.Game.TheBall;
-			_Field = MatchMain.Ref.Game.TheField;
-			
+		{			
 			TheBox2D.start();
 		}
 		
@@ -94,7 +95,7 @@ package Match
 				_FramesSimulating = 0;
 				_TouchedCaps.length = 0;
 				
-				if (cap.OwnerTeam.IsAttackingTeam)
+				if (cap.OwnerTeam.IsCurTeam)
 					_AttackingTeamShooterCap = cap;
 
 				cap.Shoot(shootInfo.Dir, shootInfo.Force);
@@ -117,9 +118,10 @@ package Match
 			//if (e.type == QuickContacts.ADD)
 			{
 				// Detectamos GOL: Para ello comprobamos si ha habido un contacto entre los sensores de las porterías y el balón				
-				if( _Contacts.isCurrentContact( _Ball.PhyBody, _Field.GoalLeft ) )
+				if (_Contacts.isCurrentContact(_Game.TheBall.PhyObj, _Game.TheField.GoalLeftPhyObj))
 					_SideGoal = Enums.Left_Side;
-				else if( _Contacts.isCurrentContact( _Ball.PhyBody, _Field.GoalRight ) )
+				else 
+				if( _Contacts.isCurrentContact(_Game.TheBall.PhyObj, _Game.TheField.GoalRightPhyObj))
 					_SideGoal = Enums.Right_Side;
 			}
 			
@@ -146,19 +148,19 @@ package Match
 					_TouchedCaps.push(cap);
 					_TouchedCapsLastRun.push(cap);
 										
-					MatchMain.Ref.Game.TheAudioManager.Play("SoundCollisionCapBall");
+					_Game.TheAudioManager.Play("SoundCollisionCapBall");
 				}
 				else
 				{
 					// chapa / chapa
 					if (ent1 is Cap && ent2 is Cap)
-						MatchMain.Ref.Game.TheAudioManager.Play("SoundCollisionCapCap");
+						_Game.TheAudioManager.Play("SoundCollisionCapCap");
 					// chapa / muro 
 					else if(cap != null && (ent1 == null || ent2 == null)) 
-						MatchMain.Ref.Game.TheAudioManager.Play( "SoundCollisionWall");
+						_Game.TheAudioManager.Play( "SoundCollisionWall");
 					// balón / muro 
 					else if(ball != null && (ent1 == null || ent2 == null))
-						MatchMain.Ref.Game.TheAudioManager.Play("SoundCollisionWall");
+						_Game.TheAudioManager.Play("SoundCollisionWall");
 				}
 				
 				// Posible falta
@@ -169,7 +171,7 @@ package Match
 						// Mandamos a detener la simulacion en el proximo Run. Aqui no podemos pararla porque
 						// estamos procesando el contacto, en este momento si haces un PutToSleep la chapa
 						// se queda en el vacio sideral
-						mbWantToStopSimulation = true;
+						_bWantToStopSimulation = true;
 					}
 				}
 			}
@@ -189,19 +191,19 @@ package Match
 				// Detectamos que chapa es de las dos
 				var attacker:Cap = null;
 				var defender:Cap = null;
-				if (cap1.OwnerTeam ==  MatchMain.Ref.Game.CurTeam)
+				if (cap1.OwnerTeam.IsCurTeam)
 				{
 					attacker = cap1;
 					defender = cap2;
 				}
-				else if(cap2.OwnerTeam == MatchMain.Ref.Game.CurTeam)
+				else if(cap2.OwnerTeam.IsCurTeam)
 				{
 					attacker = cap2;
 					defender = cap1;
 				}
 								
 				// Calculamos la velocidad con la que ha impactado 
-				var vVel:b2Vec2 = attacker.PhyBody.body.GetLinearVelocity();
+				var vVel:b2Vec2 = attacker.PhyObj.body.GetLinearVelocity();
 								
 				// Calculamos la velocidad proyectando sobre el vector diferencial de las 2 chapas, de esta
 				// forma calculamos el coeficiente de impacto real y excluye rozamientos
@@ -235,7 +237,7 @@ package Match
 		
 		public function StopSimulation() : void		
 		{
-			for each (var phyEntity:PhyEntity in MatchMain.Ref.Game.GetAllPhyEntities())
+			for each (var phyEntity:PhyEntity in _Game.GetAllPhyEntities())
 			{
 				phyEntity.StopMovement();
 			}
@@ -244,7 +246,7 @@ package Match
 		// Retorna true si hay algo todavia moviendose
 		private function get IsPhysicSimulating() : Boolean
 		{
-			for each (var phyEntity:PhyEntity in MatchMain.Ref.Game.GetAllPhyEntities())
+			for each (var phyEntity:PhyEntity in _Game.GetAllPhyEntities())
 			{
 				if (phyEntity.IsMoving)
 					return true;
@@ -278,14 +280,14 @@ package Match
 				if (!IsPhysicSimulating)
 					_SimulatingShoot = false;
 				else 
-				if (mbWantToStopSimulation)
+				if (_bWantToStopSimulation)
 				{
 					// Paramos la simulacion para que Game vea el fin y se procese la falta (o el motivo que sea por el que se ha producido
 					// el mbWantToStopSimulation) en el OnClientShootEnd
 					StopSimulation();
 					
 					_SimulatingShoot = false
-					mbWantToStopSimulation = false;
+					_bWantToStopSimulation = false;
 				}
 				
 				// Si nos paramos en este Run, redondeamos las posiciones
@@ -297,20 +299,18 @@ package Match
 		
 		private function RoundPositions() : void
 		{
-			for each (var phyEntity:PhyEntity in MatchMain.Ref.Game.GetAllPhyEntities())
+			for each (var phyEntity:PhyEntity in _Game.GetAllPhyEntities())
 			{
 				var currPos : Point = phyEntity.GetPos();
 				phyEntity.SetPos(new Point(Math.round(currPos.x), Math.round(currPos.y)));
 			}
 		}
 		
-		
-		private var _phyEntities : Array = new Array();
 
-		private var _Ball : Ball;
-		private var _Field : Field;
-		
-		private var _Contacts : QuickContacts;					// Manager para controlar los contactos físicos entre objetos
+		private var _Game : Game;
+
+		private var _TimeStep : Number;
+		private var _Contacts : QuickContacts;
 		private var _TouchedCaps:Array = new Array();			// Lista de chapas en las que ha rebotado la pelota antes de detenerse
 		private var _TouchedCapsLastRun:Array = new Array();	// Lista de chapas que ha tocado la pelota solo en este Run
 		private var _SideGoal:int= -1;							// Lado que ha marcado goal
@@ -320,6 +320,6 @@ package Match
 		private var _AttackingTeamShooterCap : Cap = null;
 		private var _FramesSimulating:int = 0;					// Contador de frames simulando
 		
-		private var mbWantToStopSimulation : Boolean = false;
+		private var _bWantToStopSimulation : Boolean = false;
 	}
 }

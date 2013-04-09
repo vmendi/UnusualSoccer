@@ -14,7 +14,7 @@ package Match
 	
 	import utils.MovieClipMouseDisabler;
 
-	public final class Chat extends Sprite
+	public final class Chat
 	{
 		private const MAX_CHARS : int = 50;
 		private const MAX_LINES : int = 3;
@@ -28,11 +28,14 @@ package Match
 		private var ctInput : TextField = null;
 		
 		private var mLines : Array = new Array();
+		private var mLocalUserName : String = "";
 		
-		public function Chat()
+		public function Chat(parent:DisplayObjectContainer, localUserName : String)
 		{
+			mLocalUserName = localUserName;
+			
 			mcChat = new (ResourceManager.getInstance().getClass("match", "Chat") as Class) as DisplayObject;
-			addChild(mcChat);
+			parent.addChild(mcChat);
 						
 			mcChat.x = 52;
 			mcChat.y = 480;
@@ -42,31 +45,21 @@ package Match
 			ctInput = mcChat["mcInput"]["ctInput"];
 									
 			ctInput.maxChars = MAX_CHARS;	
-						
-			addEventListener(Event.ADDED_TO_STAGE, OnAddedToStage);
+
+			mcChat.addEventListener(Event.REMOVED_FROM_STAGE, OnRemovedFromStage);
+			mcChat.stage.addEventListener(KeyboardEvent.KEY_DOWN, OnStageKeyDown);
+			
+			MovieClipMouseDisabler.DisableMouse(mcChat as DisplayObjectContainer, true);
+			mcInput.visible = false;
+			
+			ctInput.mouseEnabled = true;
 		}
 		
-		private function OnAddedToStage(e:Event) : void
-		{
-			try {
-				removeEventListener(Event.ADDED_TO_STAGE, OnAddedToStage);
-				addEventListener(Event.REMOVED_FROM_STAGE, OnRemovedFromStage);
-				
-				stage.addEventListener(KeyboardEvent.KEY_DOWN, OnStageKeyDown);
-				
-				MovieClipMouseDisabler.DisableMouse(this, true);
-				mcInput.visible = false;
-				
-				ctInput.mouseEnabled = true;
-			}
-			catch (e:Error) { ErrorMessages.LogToServer("Chat.OnAddedToStage"); }
-		}
-
 		private function OnRemovedFromStage(e:Event) : void
 		{	
 			try {
-				removeEventListener(Event.REMOVED_FROM_STAGE, OnRemovedFromStage);
-				stage.removeEventListener(KeyboardEvent.KEY_DOWN, OnStageKeyDown);
+				mcChat.removeEventListener(Event.REMOVED_FROM_STAGE, OnRemovedFromStage);
+				mcChat.stage.removeEventListener(KeyboardEvent.KEY_DOWN, OnStageKeyDown);
 				
 				for each(var line : Object in mLines)
 					TweenMax.killTweensOf(line.TheTextField);
@@ -84,7 +77,7 @@ package Match
 					if (!mcInput.visible)
 					{
 						mcInput.visible = true;
-						stage.focus = ctInput;
+						mcChat.stage.focus = ctInput;
 					}
 					else
 					{
@@ -110,7 +103,7 @@ package Match
 		{
 			if (msg != "")
 			{
-				msg = MatchMain.Ref.Game.LocalUserTeam.Name + "> " + msg;
+				msg = mLocalUserName + ": " + msg;
 				MatchMain.Ref.Connection.Invoke("OnMsgToChatAdded", null, msg);
 			}
 		}

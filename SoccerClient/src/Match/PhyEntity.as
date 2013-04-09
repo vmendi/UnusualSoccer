@@ -10,14 +10,15 @@ package Match
 	import flash.geom.Point;
 	
 	public class PhyEntity
-	{				
-		protected var _PhyObject:QuickObject = null;	// Box2D
-		protected var _Visual : * = null;
-		
+	{	
+		protected var _Game : Game;
+		protected var _Visual : *;
+		protected var _PhyObject : QuickObject;		// Box2D
 			
-		public function PhyEntity(parent : DisplayObjectContainer, params : Object) : void
+		public function PhyEntity(parent : DisplayObjectContainer, params : Object, game : Game) : void
 		{
-			_PhyObject = MatchMain.Ref.Game.TheGamePhysics.TheBox2D.addCircle(params);			
+			_Game = game;
+			_PhyObject = _Game.TheGamePhysics.TheBox2D.addCircle(params);
 						
 			// Cogemos el objeto visual desde el objeto físico. NOTE: No tenemos control de cuando se está actualizando
 			_Visual = _PhyObject.userData;
@@ -61,7 +62,7 @@ package Match
 			return _Visual;
 		}
 			
-		public function get PhyBody() : QuickObject
+		public function get PhyObj() : QuickObject
 		{
 			return _PhyObject;
 		}
@@ -93,7 +94,7 @@ package Match
 			_PhyObject.body.SetMass(massData);
 		}
 				
-		public function InsideCircle(center:Point, radius:Number) : Boolean
+		public function IsInsideCircle(center:Point, radius:Number) : Boolean
 		{
 			var vDist:Point = center.subtract(GetPos());
 			var length:Number = vDist.length;

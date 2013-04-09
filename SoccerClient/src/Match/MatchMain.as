@@ -100,7 +100,7 @@ package Match
 					
 					if (stage != null)
 					{
-						_Game = new Match.Game();
+						_Game = new Match.Game(_Instance);
 						
 						Connection = netConnection;			
 						Connection.AddClient(Game);
@@ -129,7 +129,7 @@ package Match
 			
 			function innerInit() : void
 			{
-				_Game = new Match.Game();
+				_Game = new Match.Game(_Instance);
 
 				Game.InitFromServer((-1), InitOfflineData.GetDescTeam("ARGENTINA", false), InitOfflineData.GetDescTeam("USA", true),
 										  Enums.Team1, MatchConfig.PartTime * 2, MatchConfig.TurnTime, true, MatchConfig.ClientVersion);

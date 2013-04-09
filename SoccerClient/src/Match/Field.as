@@ -5,7 +5,6 @@ package Match
 	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.display.MovieClip;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
@@ -41,35 +40,34 @@ package Match
 		private var Y_GOAL:Number = 294;
 		
 		// Sensores de gol colocados en cada portería para detectar el gol
-		public var GoalLeft : QuickObject = null;
-		public var GoalRight : QuickObject = null;
+		public var GoalLeftPhyObj  : QuickObject;
+		public var GoalRightPhyObj : QuickObject;		
+		public var Visual		   : DisplayObjectContainer;
 		
-		public var Visual:DisplayObjectContainer = null;
-
+		private var _Game:Game;
 		
-		public function Field(parent:MovieClip) : void
+		
+		public function Field(game:Game) : void
 		{
-			// Creamos la representacion visual
-			Visual = parent.addChild(new (ResourceManager.getInstance().getClass("match", "Field") as Class)()) as DisplayObjectContainer;
+			_Game = game;			
+			Visual = _Game.GameLayer.addChild(new (ResourceManager.getInstance().getClass("match", "Field") as Class)()) as DisplayObjectContainer;
 			
 			if (!MatchConfig.DrawBackground)
 				Visual.visible = false;
-						
-			// Crea objetos físicos para gestionar el estadio
-			CreatePhysicWalls();
+
+			CreatePhysicWalls(_Game.TheGamePhysics.TheBox2D);
 		}
 		
-		//
-		// Se llama despues para que sean las ultimas y aparezcan on top
-		// 
-		public function CreatePorterias(parent:MovieClip) : void
+		// Se llama despues para que sean las ultimas y aparezcan on top 
+		public function CreatePorterias() : void
 		{
-			var goalLeft:DisplayObject = parent.addChild(new (ResourceManager.getInstance().getClass("match", "GoalLeft")));
+			var goalLeft:DisplayObject = _Game.GameLayer.addChild(new (ResourceManager.getInstance().getClass("match", "GoalLeft")));
 			goalLeft.x = X_GOAL_LEFT; goalLeft.y = Y_GOAL;
 			
-			var goalRight:DisplayObject = parent.addChild(new (ResourceManager.getInstance().getClass("match", "GoalRight")));
+			var goalRight:DisplayObject = _Game.GameLayer.addChild(new (ResourceManager.getInstance().getClass("match", "GoalRight")));
 			goalRight.x = X_GOAL_RIGHT; goalRight.y = Y_GOAL;
 		}
+		
 		
 		/* 
 			Chapas: Chocan con TODO.
@@ -85,7 +83,7 @@ package Match
 			BackPorteria:
 			Category: 8
 		*/
-		protected function CreatePhysicWalls() : void
+		protected function CreatePhysicWalls(phy:QuickBox2D) : void
 		{
 			// Todo lo que le entra a Box2D tiene que estar convertido a coords fisicas 
 			var sw:Number = MatchConfig.Screen2Physic(SizeX);
@@ -104,7 +102,6 @@ package Match
 			
 			var halfSizeSmallAreaX : Number = MatchConfig.Screen2Physic(SmallAreaLeft.width / 2);
 
-			var phy:QuickBox2D = MatchMain.Ref.Game.TheGamePhysics.TheBox2D;
 			var fillColor:int = 0xFF0000;
 			var fillAlpha:Number = 0;
 			if (MatchConfig.Debug)
@@ -135,8 +132,8 @@ package Match
 			phy.addBox({categoryBits:8, x: MatchConfig.Screen2Physic( centerGoalRight.x ) + halfGrosor, y: MatchConfig.Screen2Physic( centerGoalRight.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
 			
 			// Creamos los sensores para chequear el gol
-			GoalLeft = phy.addBox({isSensor: true, x: MatchConfig.Screen2Physic(centerGoalLeft.x) - halfGrosor - halfBall, y:MatchConfig.Screen2Physic( centerGoalLeft.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
-			GoalRight = phy.addBox({isSensor: true, x: MatchConfig.Screen2Physic(centerGoalRight.x) + halfGrosor + halfBall, y:MatchConfig.Screen2Physic( centerGoalRight.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
+			GoalLeftPhyObj = phy.addBox({isSensor: true, x: MatchConfig.Screen2Physic(centerGoalLeft.x) - halfGrosor - halfBall, y:MatchConfig.Screen2Physic( centerGoalLeft.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
+			GoalRightPhyObj = phy.addBox({isSensor: true, x: MatchConfig.Screen2Physic(centerGoalRight.x) + halfGrosor + halfBall, y:MatchConfig.Screen2Physic( centerGoalRight.y ), density: 0, width:grosor, height:heightGoal, fillColor:fillColor, fillAlpha:fillAlpha, lineAlpha:fillAlpha, isBullet: bCCD });
 		}
 		
 		//
@@ -161,6 +158,12 @@ package Match
 				x += SizeX;
 			
 			return new Point(x, y);
+		}
+		
+		static public function GetCorners() : Array
+		{
+			return [ new Point(OffsetX, OffsetY), new Point(OffsetX + SizeX, OffsetY), 
+					 new Point(OffsetX + SizeX, OffsetY + SizeY), new Point(OffsetX, OffsetY + SizeY)];
 		}
 		
 		public function IsCircleInsideSmallArea(pos:Point, radius:Number, side:int) : Boolean
@@ -256,17 +259,17 @@ package Match
 			if (bValid)
 			{
 				// Validamos contra las chapas
-				for each (var team:Team in MatchMain.Ref.Game.TheTeams)
+				for each (var team:Team in _Game.TheTeams)
 				{
 					for each (var cap:Cap in team.CapsList)
 					{
-						if (cap != ignoreCap && cap.InsideCircle(pos, Cap.Radius+Cap.Radius))
+						if (cap != ignoreCap && cap.IsInsideCircle(pos, Cap.Radius+Cap.Radius))
 							return false;
 					}
 				}
 			
 				// Comprobamos que no colisionemos con el balón				
-				if (checkAgainstBall && MatchMain.Ref.Game.TheBall.InsideCircle(pos, Cap.Radius+Ball.Radius))
+				if (checkAgainstBall && _Game.TheBall.IsInsideCircle(pos, Cap.Radius+Ball.Radius))
 					bValid = false;
 			}
 			

@@ -112,7 +112,7 @@
 			//
 			// WasTooManyTimes: Estos dos jugadores han jugado ya mas de N veces en el dia de hoy, asi que no les damos puntos.
 			// WasJust: el resultado es justo... o sea, q la diff de niveles no era exagerada, o q sí lo era pero gano o empato el de menor nivel
-			// WasAbandoned: Ha habido un abandono. Como no tenemos boton de abandonar, sera siempre el del oponente.
+			// WasAbandoned: Ha habido un abandono.
 			// WasSameIP: Los dos jugadores tenían la misma IP
 			//
 			if (mMatchResult.WasSameIP)

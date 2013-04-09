@@ -15,43 +15,50 @@ package Match
 	
 	public final class Cutscene
 	{
-		static public function ShowFinishPart(part:int, callback:Function) : void
+		private var _Parent : DisplayObjectContainer;
+		
+		public function Cutscene(parent : DisplayObjectContainer) : void
+		{
+			_Parent = parent;
+		}
+		
+		public function ShowFinishPart(part:int, callback:Function) : void
 		{						
 			if (part == 1)
-				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeFinTiempo1"), 0, 210, callback); 
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeFinTiempo1"), 0, 210, callback, _Parent); 
 			else if (part == 2)
-				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeFinPartido"), 0, 210, callback);
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeFinPartido"), 0, 210, callback, _Parent);
 			else
 				throw new Error("Unknown part");
 		}
 		
-		static public function ShowGoalScored(validity:int, callback:Function) : void
+		public function ShowGoalScored(validity:int, callback:Function) : void
 		{						
 			if (validity == Enums.GoalValid)
-				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeGol"), 0, 210, callback);
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeGol"), 0, 210, callback, _Parent);
 			else
 			if (validity == Enums.GoalInvalidNoDeclarado)
-				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeGolinvalido"), 0, 210, callback); 
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeGolinvalido"), 0, 210, callback, _Parent); 
 			else
 			if (validity == Enums.GoalInvalidPropioCampo)
-				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeGolinvalidoPropioCampo"), 0, 210, callback); 
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeGolinvalidoPropioCampo"), 0, 210, callback, _Parent); 
 			else
 				throw new Error("Validez del gol desconocida");
 		}
 		
-		static public function ShowAreaPortero(side : int, callback:Function) : void
+		public function ShowAreaPortero(side : int, callback:Function) : void
 		{
 			if (side == Enums.Left_Side)
-				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaLeft.x, Field.SmallAreaLeft.y, callback);
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaLeft.x, Field.SmallAreaLeft.y, callback, _Parent);
 			else
-				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaRight.x, Field.SmallAreaRight.y, callback);
+				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaRight.x, Field.SmallAreaRight.y, callback, _Parent);
 			
 			// Y ademas, un cartelito sin esperas
 			PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeControlPortero"));
 		}
 		
 		
-		static public function ShowConflictOverCaps(conflict:Conflict):void
+		public function ShowConflictOverCaps(conflict:Conflict):void
 		{
 			var winner : Cap = conflict.Stolen? conflict.DefenderCap : conflict.AttackerCap;
 			var loser : Cap = conflict.Stolen? conflict.AttackerCap : conflict.DefenderCap;;
@@ -60,17 +67,17 @@ package Match
 			var paramWinnerTit : String = conflict.Stolen? ResourceManager.getInstance().getString("main", "MatchDefinitionDefense") : ResourceManager.getInstance().getString("main", "MatchDefinitionControl");
 			var paramLoserTit : String = conflict.Stolen? ResourceManager.getInstance().getString("main", "MatchDefinitionControl") : ResourceManager.getInstance().getString("main", "MatchDefinitionDefense");
 
-			var mcWinner : MovieClip = LaunchCutScene(ResourceManager.getInstance().getClass("match", "ConflictoGana"), winner.Visual.x, winner.Visual.y);		
+			var mcWinner : MovieClip = LaunchCutScene(ResourceManager.getInstance().getClass("match", "ConflictoGana"), winner.Visual.x, winner.Visual.y, null, _Parent);		
 			mcWinner.ConflictoNum.Num.text = paramWinner.toString();
 			mcWinner.ConflictoNum.Tit.text = paramWinnerTit;
 			
-			var mcLoser : MovieClip = LaunchCutScene(ResourceManager.getInstance().getClass("match", "ConflictoPierde"), loser.Visual.x, loser.Visual.y);
+			var mcLoser : MovieClip = LaunchCutScene(ResourceManager.getInstance().getClass("match", "ConflictoPierde"), loser.Visual.x, loser.Visual.y, null, _Parent);
 			mcLoser.ConflictoNum.Num.text = paramLoser.toString();
 			mcLoser.ConflictoNum.Tit.text = paramLoserTit;
 		}
 	
 		
-		static public function ShowTurn(reason:int, isMyTurn:Boolean) : void
+		public function ShowTurn(reason:int, isMyTurn:Boolean, fault : Fault) : void
 		{
 			if (isMyTurn)
 			{
@@ -78,7 +85,7 @@ package Match
 					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoPropioRobo"));
 				else 
 				if(reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaFalta)
-					FillFault(LaunchCutScene(ResourceManager.getInstance().getClass("match", "FaltaContraria"), 0, 210), MatchMain.Ref.Game.TheGamePhysics.TheFault);
+					FillFault(LaunchCutScene(ResourceManager.getInstance().getClass("match", "FaltaContraria"), 0, 210, null, _Parent), fault);
 				else 
 				if(reason == Enums.TurnSaquePuertaInvalidGoal)
 					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoPropioSaquePuerta"));
@@ -95,7 +102,7 @@ package Match
 					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoContrarioRobo"));
 				else 
 				if (reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaFalta)
-					FillFault(LaunchCutScene(ResourceManager.getInstance().getClass("match", "FaltaPropia"), 0, 210), MatchMain.Ref.Game.TheGamePhysics.TheFault);
+					FillFault(LaunchCutScene(ResourceManager.getInstance().getClass("match", "FaltaPropia"), 0, 210, null, _Parent), fault);
 				else 
 				if (reason == Enums.TurnTiroAPuerta)
 					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaAnuncio"));
@@ -105,17 +112,12 @@ package Match
 			}
 		}
 		
-		static private function ChainWithDelay(otherMovieClipClass:Class, x:Number, y:Number, delaySeconds:Number) : Function
+		public function ShowMensajeSkill(idSkill:int) : void
 		{
-			return Delegate.create(TweenMax.delayedCall, delaySeconds, LaunchCutScene, [ otherMovieClipClass, x, y ]);
+			LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeSkill" + idSkill), 0, 210, null, _Parent);
 		}
 		
-		static public function ShowMensajeSkill(idSkill:int) : void
-		{
-			LaunchCutScene(ResourceManager.getInstance().getClass("match", "MensajeSkill" + idSkill), 0, 210);
-		}
-		
-		static public function ShowQuedanTiros(turnos:int) : void
+		public function ShowQuedanTiros(turnos:int) : void
 		{
 			if (turnos == 3)
 				PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros3"));
@@ -130,7 +132,7 @@ package Match
 		//
 		// Se ha producido un pase al pie. Pudo haber conflicto o no, pero se resolvio SIN robo.
 		//
-		static public function ShowMsgPasePieConseguido(bUltimoPase:Boolean, conflicto:Conflict) : void
+		public function ShowMsgPasePieConseguido(bUltimoPase:Boolean, conflicto:Conflict) : void
 		{
 			if (conflicto != null)
 			{
@@ -148,7 +150,7 @@ package Match
 			}
 		}
 		
-		static public function ShowMsgGoalkeeperOutside(immediate : Boolean) : void
+		public function ShowMsgGoalkeeperOutside(immediate : Boolean) : void
 		{
 			// Lo delayamos 2 segundos para q no pise con los que vienen inmediatamente al inicio de cada tiro (ShowQuedanTiro)
 			// TODO: Cola de mensajes
@@ -159,20 +161,11 @@ package Match
 		}
 		
 		
-		static private function LaunchCutScene(cutScene:Class, x:Number, y:Number, callback:Function=null, parent:DisplayObjectContainer=null) : MovieClip
+		static private function LaunchCutScene(cutScene:Class, x:Number, y:Number, callback:Function, parent:DisplayObjectContainer) : MovieClip
 		{
 			try
 			{
-				var mc:MovieClip = new cutScene() as MovieClip;
-				
-				mc.x = x;
-				mc.y = y;
-	
-				if (parent == null)
-					MatchMain.Ref.Game.GUILayer.addChild(mc);
-				else
-					parent.addChild(mc);
-				
+				var mc : MovieClip = CreateMovieClip(cutScene, x, y, parent);
 				mc.gotoAndPlay(1);
 				
 				var labelEnd:String = "EndAnim";
@@ -180,7 +173,7 @@ package Match
 				if (Graphics.HasLabel(labelEnd, mc)) 
 					utils.MovieClipListener.AddFrameScript(mc, labelEnd, Delegate.create(OnEndCutScene, mc, callback));
 				else
-					trace( "El MovieClip " + mc.name + " no tiene la etiqueta " + labelEnd );
+					trace("El MovieClip " + mc.name + " no tiene la etiqueta " + labelEnd);
 			}
 			catch(e:Error)
 			{
@@ -209,11 +202,9 @@ package Match
 		}
 		
 		static private function FillFault(item:MovieClip, fault:Fault) : void
-		{
-			var game:Game = MatchMain.Ref.Game;
-			
-			if (fault.YellowCard && fault.RedCard)		// 2 amarillas
-				item.Tarjeta.gotoAndStop( "dobleamarilla" );
+		{			
+			if (fault.YellowCard && fault.RedCard)
+				item.Tarjeta.gotoAndStop("dobleamarilla");
 			else 
 			if (fault.RedCard)
 				item.Tarjeta.gotoAndStop("roja");
@@ -221,10 +212,10 @@ package Match
 			if (fault.YellowCard)
 				item.Tarjeta.gotoAndStop("amarilla");
 			else
-				item.Tarjeta.gotoAndStop( 0 );
+				item.Tarjeta.gotoAndStop(0);
 		}
 		
-		static public function CreateGraphic(cutScene:Class, x:Number, y:Number, parent:DisplayObjectContainer) : DisplayObject
+		static private function CreateGraphic(cutScene:Class, x:Number, y:Number, parent:DisplayObjectContainer) : DisplayObject
 		{
 			var item:DisplayObject = new cutScene() as DisplayObject;
 			
@@ -236,25 +227,9 @@ package Match
 			return item;
 		}
 		
-		static public function CreateMovieClip(cutScene:Class, x:Number, y:Number, parent:DisplayObjectContainer) : MovieClip
+		static private function CreateMovieClip(cutScene:Class, x:Number, y:Number, parent:DisplayObjectContainer) : MovieClip
 		{
 			return CreateGraphic(cutScene, x, y, parent) as MovieClip;
-		}
-		
-		
-		static public function LaunchTween(itemClass:Class, x:Number, y:Number, seconds:Number, parent:DisplayObjectContainer) : void
-		{		
-			if (itemClass == null)
-				throw new Error("Intento de lanzar un cartelito desconocido");
-			
-			var item : DisplayObject = CreateGraphic(itemClass, x ,y, parent);
-			
-			TweenMax.to(item, seconds, {alpha:0, onComplete: Delegate.create(OnFinishTween, item) } );
-		}
-		
-		static private function OnFinishTween(item:DisplayObject) : void
-		{
-			item.parent.removeChild(item);
 		}
 	}
 }

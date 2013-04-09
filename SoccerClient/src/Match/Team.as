@@ -24,7 +24,7 @@ package Match
 		public function get GoalKeeper() : Cap { return _CapsList[0]; }
 		
 		public function get IsLocalUser() : Boolean	{ return this.TeamId == MatchConfig.IdLocalUser; }
-		public function get IsAttackingTeam() : Boolean { return this == MatchMain.Ref.Game.CurTeam; }
+		public function get IsCurTeam() : Boolean { return this == _Game.CurTeam; }
 		
 		public function get Goals() : int {	return _Goals; }
 		public function set Goals(value:int) : void { _Goals = value; }
@@ -41,9 +41,11 @@ package Match
 		private var _Skills : Object;							// Hash de habilidades. Key:ID / Value:Skill
 		private var _AvailableSkills : Array;					// Las mismas habilidades, puestas en forma de array
 		private var _UsingSecondUniform : Boolean;
+		private var _Game : Game;
 				
-		public function Init(descTeam:Object, idxTeam:int, useSecondUniform:Boolean = false) : void
+		public function Team(descTeam:Object, idxTeam:int, useSecondUniform:Boolean, theGame : Game) : void
 		{
+			_Game = theGame;
 			_TeamId = idxTeam;
 			_DescTeam = descTeam;
 			_FormationName = descTeam.Formation;
@@ -55,7 +57,7 @@ package Match
 			// Inicializamos cada una de las chapas 
 			for (var i:int = 0; i < CAPS_BY_TEAM; i++ )
 			{
-				CapsList.push(new Cap(this, i, descTeam.SoccerPlayers[i], useSecondUniform));
+				CapsList.push(new Cap(this, i, descTeam.SoccerPlayers[i], useSecondUniform, _Game));
 			}
 			
 			// Echamos a las que esten lesionadas, excepto al portero!
@@ -80,11 +82,11 @@ package Match
 		//
 		public function AgainstTeam() : Team
 		{
-			if (this == MatchMain.Ref.Game.TheTeams[Enums.Team1])
-				return MatchMain.Ref.Game.TheTeams[Enums.Team2];
+			if (this == _Game.TheTeams[Enums.Team1])
+				return _Game.TheTeams[Enums.Team2];
 			
-			if(this == MatchMain.Ref.Game.TheTeams[Enums.Team2])
-				return MatchMain.Ref.Game.TheTeams[Enums.Team1];
+			if (this == _Game.TheTeams[Enums.Team2])
+				return _Game.TheTeams[Enums.Team1];
 			
 			throw new Error("WTF 27");
 		}
@@ -124,7 +126,7 @@ package Match
 			GoalKeeper.FadeClone(1);
 			
 			// Si hay algún obstaculo en esa posicion, no podemos resetear al portero, ignoramos la orden
-			if (MatchMain.Ref.Game.TheField.IsPointFreeInsideField(desiredPos, true, GoalKeeper))
+			if (_Game.TheField.IsPointFreeInsideField(desiredPos, true, GoalKeeper))
 				SetFormationPosForCap(GoalKeeper, currentFormation[0], Side);
 			
 			// Olvidamos las posiciones de teletransporte
@@ -150,7 +152,7 @@ package Match
 		{
 			for each (var theCap : Cap in CapsList)
 			{
-				if (MatchMain.Ref.Game.TheField.IsTouchingSmallArea(theCap) && theCap != GoalKeeper && theCap.YellowCards < 2)
+				if (_Game.TheField.IsTouchingSmallArea(theCap) && theCap != GoalKeeper && theCap.YellowCards < 2)
 				{
 					theCap.FadeClone(1);
 					EjectCapInsideSmallArea(theCap);					
@@ -160,7 +162,7 @@ package Match
 		
 		private function EjectCapInsideSmallArea(theCap : Cap) : void
 		{			
-			var field : Field  = MatchMain.Ref.Game.TheField;			
+			var field : Field = _Game.TheField;
 			var available : Array = field.CheckConditionOnGridPoints(isFreeAroundPenaltyPoint, 15);
 			
 			if (available.length == 0)
@@ -250,22 +252,6 @@ package Match
 				pos.x = Field.CenterX - pos.x + Field.CenterX;
 			
 			return pos;
-		}
-				
-		//
-		// Calcula la lista de chapas que están dentro del circulo indicado
-		//
-		public function InsideCircle(center:Point, radius:Number) : Array
-		{
-			var inside:Array = new Array();
-			
-			for each (var cap:Cap in CapsList)
-			{
-				if (cap.InsideCircle(center, radius))
-					inside.push(cap);
-			}
-			
-			return inside;
 		}
 		
 		private function LoadSkills(availableSkillsIDs:Array) : void
@@ -408,7 +394,7 @@ package Match
 				throw new Error("El portero no es expulsable!");
 			
 			// Contabilizamos el numero de expulsiones
-			MatchMain.Ref.Game.FireCount++;
+			_Game.FireCount++;
 			
 			// Cuando se expulsa un jugador lo registramos como 2 tarjetas amarillas, porque no tenemos un flag único para ello
 			cap.YellowCards = 2;
@@ -419,7 +405,7 @@ package Match
 			
 			// Colocamos la chapa fuera del area de visión. Las llevamos a puntos distintos para que no colisionen
 			var pos:Point = new Point(-100, -100);
-			pos.x -= MatchMain.Ref.Game.FireCount * ((Cap.Radius * 2) * 5);
+			pos.x -= _Game.FireCount * ((Cap.Radius * 2) * 5);
 			cap.SetPos(pos);			
 		}
 		
@@ -441,6 +427,106 @@ package Match
 			}
 		}
 		
+		// Comprueba si la posición del equipo actual es válida para marcar gol. 
+		public function IsTeamPosValidToScore() : Boolean
+		{
+			var bValid:Boolean = true;
+			
+			if (!IsUsingSkill(Enums.Tiroagoldesdetupropiocampo))
+			{
+				if ((Side == Enums.Right_Side && _Game.TheBall.LastPosBallStopped.x >= Field.CenterX) ||
+					(Side == Enums.Left_Side && _Game.TheBall.LastPosBallStopped.x <= Field.CenterX))
+					bValid = false;
+			}
+			
+			return bValid;
+		}
+		
+		
+		public function IsCornerCheat() : Boolean
+		{
+			var corners : Array = Field.GetCorners();
+			var ballPos : Point = _Game.TheBall.GetPos();
+			var bRet : Boolean = false;
+			
+			for each(var corner : Point in corners)
+			{
+				// If the ball is farther than the threshold, this corner is not interesting				
+				if (ballPos.subtract(corner).length > MatchConfig.ThresholdCheatRadius)
+					continue;
+				
+				var numCaps : int = GetCapsInsideCircle(corner, MatchConfig.ThresholdCheatRadius).length;
+				
+				if (numCaps >= MatchConfig.MaxCapsInCheatThreshold)
+				{
+					bRet = true;
+					break;
+				}
+			}
+			return bRet;
+		}
+				
+		// Calcula la lista de chapas que están dentro del circulo indicado
+		public function GetCapsInsideCircle(center:Point, radius:Number) : Array
+		{
+			var inside:Array = new Array();
+			
+			for each (var cap:Cap in _CapsList)
+			{
+				if (cap.IsInsideCircle(center, radius))
+					inside.push(cap);
+			}
+			
+			return inside;
+		}
+		
+		public function GetPotentialPaseAlPieForShooter(shooterCap : Cap) : Array
+		{
+			if (shooterCap.OwnerTeam != this)
+				throw new Error("Why are you asking? I don't own that cap");
+			
+			var potential : Array = new Array();
+						
+			for each (var cap:Cap in _CapsList)
+			{
+				if (cap.IsInsideCircle(_Game.TheBall.GetPos(), Cap.Radius + Ball.Radius + this.RadiusPase))
+				{
+					if (MatchConfig.AutoPasePermitido || cap != shooterCap)
+						potential.push(cap);
+				}
+			}
+			
+			// Si hay más de una chapa candidata evitamos hacer autopase, el jugador querrá pasar al resto de chapas
+			if (potential.length > 1 && potential.indexOf(shooterCap) != -1)
+				potential.splice(potential.indexOf(shooterCap), 1);
+			
+			return potential;
+		}
+		
+		// El enemigo más capaz de robarme el balon. De momento consideramos que es el más cercano.
+		public function GetPotencialStealer() : Cap
+		{
+			var enemy : Cap = null;
+			
+			var capList:Array = GetCapsInsideCircle(_Game.TheBall.GetPos(), Cap.Radius + Ball.Radius + RadiusSteal);
+			
+			if(capList.length >= 1)
+				enemy = _Game.TheBall.NearestEntity(capList) as Cap;
+			
+			return enemy;
+		}
+		
+		public function GetCapString() : String
+		{
+			var capListStr:String = "";
+			
+			for each (var cap:Cap in _CapsList)
+			{
+				capListStr += "[" +cap.Id + ":"+cap.GetPos().toString() + "]";
+			}
+			
+			return capListStr;
+		}
 	}
 }
 

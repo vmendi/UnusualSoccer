@@ -30,13 +30,16 @@ package Match
 		
 		public static const DistToPutBallHandling:int = 10;		// Distancia a la chapa a la que colocamos la pelota cuando se recibe un pase al pie
 		
-		public static const AutoPasePermitido:Boolean = true;			// La chapa con la que se dispara puede recibir pase al pie despues de tocar el balon
-		public static const PorteroTeletransportado:Boolean = false;	// Portero teletransportado o portero parallelshoot?
+		public static const AutoPasePermitido:Boolean = true;		// La chapa con la que se dispara puede recibir pase al pie despues de tocar el balon
+		public static const ParallelGoalkeeper:Boolean = true;		// Portero teletransportado o portero parallelshoot?
 		
 		public static const CapMass:Number = 4;
 		public static const CapLinearDamping:Number = 5;
 		public static const BallMass:Number = 3;
 		public static const BallLinearDamping:Number = 3;
+		
+		public static const ThresholdCheatRadius:Number = 80;	// Radio desde las esquinas donde miramos que no amontonen chapas
+		public static const MaxCapsInCheatThreshold:int = 2;	// Max num de chapas permitidas en ese radio (y el balon)
 		
 		// Porcentaje de la skill restaurado por segundo para cada habilidad
 		public static var PercentSkilLRestoredPerSec:Array = [

@@ -93,8 +93,10 @@ package
 				{
 					mMe = response;
 					
-					// Aseguramos que tenemos los permisos frescos
-					RefreshPermisions(callback);
+					// Antes llamabamos a RefreshPermissions, pero no hace falta, nos viene ya desde el primer /me
+					mPermissions = response.permissions.data[0];
+					
+					callback();
 				}
 				else
 				{
@@ -198,10 +200,19 @@ package
 			
 			function onPermissions(result:Object, fail:Object) : void
 			{
-				mPermissions = (result as Array)[0];
-				
-				if (callback != null)
-					callback();
+				try {
+					if (result != null)
+						mPermissions = (result as Array)[0];
+					else
+						ErrorMessages.LogToServer("Error while refreshing permissions");
+
+					if (callback != null)
+						callback();
+				}
+				catch(e:Error)
+				{
+					ErrorMessages.LogToServer("WTF 675");
+				}
 			}
 		}
 		

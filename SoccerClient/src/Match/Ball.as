@@ -15,10 +15,9 @@ package Match
 		// Ultima posicion donde se forzo la posicion o donde paro despues de una simulacion
 		public function get LastPosBallStopped() : Point { return _LastPosBallStopped; }
 		
-		public function Ball(parent:MovieClip) : void
+		public function Ball(game:Game) : void
 		{
-			// Inicializamos la entidad
-			super(parent, {
+			super(game.GameLayer, {
 				  skin: ResourceManager.getInstance().getClass("match", "BalonAnimado"),
 				  categoryBits:4,
 				  maskBits: 1 + 2 + 4,			// Choca con todo excepto con BackPorteria (que tiene categoryBits==8)
@@ -31,7 +30,7 @@ package Match
 				  linearDamping: MatchConfig.BallLinearDamping, 
 				  angularDamping: MatchConfig.BallLinearDamping, 
 				  friction: .2, 
-				  restitution: .8 });			// Fuerza que recupera en un choque
+				  restitution: .8 }, game);		// Fuerza que recupera en un choque
 			
 			// Reasignamos la escala del balón, ya que la física lo escala para que encaje con el radio físico asignado
 			this.Visual.scaleX = 1.0;
@@ -76,12 +75,8 @@ package Match
 				_PhyObject.angle = angle;
 			}
 		}
-				
-		// 
-		// Asigna la posición de la pelota en frente de la chapa
-		// En frente quiere decir mirando a la dirección de la mitad del campo del oponente
-		// NOTE: No se valida la posición!
-		//
+
+		// InFrontOf: Mirando a la dirección de la mitad del campo del oponente
 		public function SetPosInFrontOf(cap:Cap) : void
 		{
 			var pos:Point = cap.GetPos();

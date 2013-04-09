@@ -28,6 +28,9 @@ package
 		static public function IncorrectMatchVersion() : void
 		{
 			OnCleaningShutdownSignal.dispatch();
+			
+			ErrorMessages.LogToServer("Incorrect Match Version");
+			
 			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorIncorrectMatchVersionMsg"),
 							 ResourceManager.getInstance().getString("main", "ErrorIncorrectMatchVersionTit"), "center");
 		}
@@ -35,6 +38,9 @@ package
 		static public function FacebookConnectionError() : void
 		{
 			OnCleaningShutdownSignal.dispatch();
+			
+			ErrorMessages.LogToServer("Facebook Connection Error");
+			
 			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorFacebookConnectionMsg"),
 							 ResourceManager.getInstance().getString("main", "ErrorFacebookConnectionTit"), "center");
 		}
@@ -93,6 +99,7 @@ package
 			
 			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorRealtimeLoginFailedMsg"),
 					   		 ResourceManager.getInstance().getString("main", "ErrorRealtimeLoginFailedTit"), "center");
+			
 			LogToServer("RealtimeLoginFailed");
 		}
 		
@@ -101,14 +108,17 @@ package
 			GameMetrics.ReportEvent(GameMetrics.CANT_CONNECT_REALTIME, { 'reason':reason } );
 			
 			OnCleaningShutdownSignal.dispatch();
+			
 			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorRealtimeConnFailedMsg"),
 							 ResourceManager.getInstance().getString("main", "ErrorRealtimeConnFailedTit"), "center");
+			
 			LogToServer("RealtimeConnectionFailed " + reason);
 		}
 		
 		static public function ResourceLoadFailed(reason : String) : void
 		{
 			OnCleaningShutdownSignal.dispatch();
+			
 			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorResourceLoadFailedMsg"),
 							 ResourceManager.getInstance().getString("main", "ErrorResourceLoadFailedTit"), "center");
 			
@@ -118,37 +128,45 @@ package
 		
 		static public function UncaughtErrorHandler(e:Event):void
 		{	
-			// Vamos a dejar que continue
-			// OnCleaningShutdownSignal.dispatch();
+			try {
+				// Vamos a dejar que continue
+				// OnCleaningShutdownSignal.dispatch();
 			
-			var innerError : Object = (e as Object).error;
-			var message : String = "";
-			var result : int = 0;
-			
-			if (innerError is Error)
-			{
-				var stackTrace : String = (innerError as Error).getStackTrace();
-				if (stackTrace != null)
-					message = stackTrace;
-				else				
-					message = Error(innerError).message;
-			}
-			else
-			{
-				if (innerError is ErrorEvent)
-					message = ErrorEvent(innerError).text;
+				var innerError : Object = (e as Object).error;
+				var message : String = "";
+				var result : int = 0;
+				
+				if (innerError is Error)
+				{
+					var stackTrace : String = (innerError as Error).getStackTrace();
+					if (stackTrace != null)
+						message = stackTrace;
+					else				
+						message = Error(innerError).message;
+				}
 				else
-					message = innerError.toString();
+				{
+					if (innerError is ErrorEvent)
+						message = ErrorEvent(innerError).text;
+					else
+						message = innerError.toString();
+				}
+				
+				LogToServer("UncaughtError: " + message);
+				
+				// Para que molestar?
+				// ErrorDialog.Show("UncaughtError: " + message, ResourceManager.getInstance().getString("main", "ErrorPleaseNotifyDeveloperTit"));
+				
+				if ((FlexGlobals.topLevelApplication as Application) != null && (FlexGlobals.topLevelApplication as Application).stage != null)
+				{
+					ScreenCapture.SaveCaptureToServer((FlexGlobals.topLevelApplication as Application).stage, AppConfig.CANVAS_URL, 
+													  SoccerClient.GetFacebookFacade().FacebookID);
+				}
 			}
-			
-			LogToServer("UncaughtError: " + message);
-			
-			// Para que molestar?
-			// ErrorDialog.Show("UncaughtError: " + message, ResourceManager.getInstance().getString("main", "ErrorPleaseNotifyDeveloperTit"));
-			
-			if ((FlexGlobals.topLevelApplication as Application) != null && (FlexGlobals.topLevelApplication as Application).stage != null)
-				ScreenCapture.SaveCaptureToServer((FlexGlobals.topLevelApplication as Application).stage, AppConfig.CANVAS_URL, 
-												  SoccerClient.GetFacebookFacade().FacebookID);
+			catch(err:Error)
+			{
+				LogToServer("WTF 371 " + err);
+			}
 		}
 		
 		static public function AsyncError(e:AsyncErrorEvent) : void

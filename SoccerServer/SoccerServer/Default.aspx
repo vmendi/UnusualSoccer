@@ -166,7 +166,7 @@
         // This method will be called from AS3 after the FB SDK is initialized (with FB.init). We avoid calling Facebook.api("/me") 
         // multiple times. We call only once from JS and pass the information back to AS3 using onFacebookMeRefreshed
         function refreshFacebookMe() {
-            FB.api('/me?fields=third_party_id,name,currency,friends,gender,age_range', function(response) {
+            FB.api('/me?fields=third_party_id,name,currency,friends,gender,age_range,permissions', function(response) {
                 
                 var theSWF = document.getElementById('<%= SWF_SETTINGS["application"] %>');
 

@@ -35,25 +35,31 @@ package Match
 																	mimeType='application/x-font', advancedAntiAliasing='true', embedAsCFF="false")] 
 		private var dummyFont : Class;
 		
-		private var _ShootControl:ControllerShoot = null;		// Control de disparo : Se encarga de pintar/gestionar la flecha de disparo
-		private var _BallControl:ControllerBall = null;			// Control para posicionar la pelota
-		private var _PosControl:ControllerPos = null;			// Control para posicionar chapas (lo usamos solo para el portero)
-		private var _ControllerCanvas:Sprite = null;			// El contenedor donde se pinta las flecha de direccion
+		private var _Game:Game;
 		
-		private var _TotalTimeoutTime:Number = 0;				// Tiempo total que representa la tarta
+		private var _ShootControl:ControllerShoot;		// Control de disparo : Se encarga de pintar/gestionar la flecha de disparo
+		private var _BallControl:ControllerBall;		// Control para posicionar la pelota
+		private var _PosControl:ControllerPos;			// Control para posicionar chapas (lo usamos solo para el portero)
+		private var _ControllerCanvas:Sprite;			// El contenedor donde se pinta las flecha de direccion
+		
+		private var _TotalTimeoutTime:Number = 0;		// Tiempo total que representa la tarta
+		private var _Gui : *;							// Los elementos del interface que nos vienen preinstanciados como hijos
 
 		
 		public function set TotalTimeoutTime(val : Number) : void { _TotalTimeoutTime = val; }
 		
 		
-		public function GameInterface() : void
-		{		
+		public function GameInterface(theGame : Game) : void
+		{
+			_Game = theGame;
+			_Gui = _Game.TheField.Visual;
+			
 			// Canvas de pintado compartido entre todos los controllers. Lo añadimos al principio del interface, 
 			// para que se pinte encima de la GameLayer pero por debajo de todo lo de la GUILayer
-			_ControllerCanvas = MatchMain.Ref.Game.GUILayer.addChild(new Sprite()) as Sprite;
+			_ControllerCanvas = _Game.GUILayer.addChild(new Sprite()) as Sprite;
 			
-			// Los botones se crean tambien en la GUILayer, por debajo de Cutscenes e InfoPanel
-			CreateSpecialSkillButtons(MatchMain.Ref.Game.GUILayer);
+			// Los botones se crean tambien en la GUILayer, por debajo de Cutscenes y PanelInfo
+			CreateSpecialSkillButtons(_Game.GUILayer);
 
 			// Inicializamos los controladores (disparo, balón, posición)
 			_ShootControl = new ControllerShoot(_ControllerCanvas);
@@ -63,33 +69,31 @@ package Match
 			_ShootControl.OnStop.add(OnStopControllerShoot);
 			_BallControl.OnStop.add(OnStopControllerBall);
 			_PosControl.OnStop.add(OnStopControllerPos);
-						
-			var Gui:* = MatchMain.Ref.Game.TheField.Visual;
 
 			// Hay parte del GUI que nos viene en el campo y no hay que instanciar
-			Gui.SoundButton.addEventListener(MouseEvent.MOUSE_DOWN, OnMute);
-			Gui.BotonTiroPuerta.addEventListener(MouseEvent.MOUSE_DOWN, OnTiroPuerta);			
+			_Gui.SoundButton.addEventListener(MouseEvent.MOUSE_DOWN, OnMute);
+			_Gui.BotonTiroPuerta.addEventListener(MouseEvent.MOUSE_DOWN, OnTiroPuerta);			
 									
-			// Gui.BotonAbandonar.addEventListener( MouseEvent.CLICK, OnAbandonarClick );
-			Gui.BotonAbandonar.visible = false;
+			// _Gui.BotonAbandonar.addEventListener(MouseEvent.CLICK, OnAbandonarClick);
+			_Gui.BotonAbandonar.visible = false;
 			
-			// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el quipo
-			var teams:Array = MatchMain.Ref.Game.TheTeams;
+			// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el equipo
+			var teams:Array = _Game.TheTeams;
 			
-			Gui.BadgeHome.gotoAndStop(teams[Enums.Team1].PredefinedTeamNameID);
-			Gui.BadgeAway.gotoAndStop(teams[Enums.Team2].PredefinedTeamNameID);
+			_Gui.BadgeHome.gotoAndStop(teams[Enums.Team1].PredefinedTeamNameID);
+			_Gui.BadgeAway.gotoAndStop(teams[Enums.Team2].PredefinedTeamNameID);
 			
-			Gui.TeamHome.text = teams[Enums.Team1].Name;
-			Gui.TeamAway.text = teams[Enums.Team2].Name;
+			_Gui.TeamHome.text = teams[Enums.Team1].Name;
+			_Gui.TeamAway.text = teams[Enums.Team2].Name;
 			
-			Gui.LevelHome.text = ResourceManager.getInstance().getString("main", "GeneralLevel") + " " + teams[Enums.Team1].Level;
-			Gui.LevelAway.text = ResourceManager.getInstance().getString("main", "GeneralLevel") + " " + teams[Enums.Team2].Level;
+			_Gui.LevelHome.text = ResourceManager.getInstance().getString("main", "GeneralLevel") + " " + teams[Enums.Team1].Level;
+			_Gui.LevelAway.text = ResourceManager.getInstance().getString("main", "GeneralLevel") + " " + teams[Enums.Team2].Level;
 			
-			Gui.SkillHome.text = ResourceManager.getInstance().getString("main", "GeneralSkill") + " " + teams[Enums.Team1].TrueSkill;
-			Gui.SkillAway.text = ResourceManager.getInstance().getString("main", "GeneralSkill") + " " + teams[Enums.Team2].TrueSkill;
+			_Gui.SkillHome.text = ResourceManager.getInstance().getString("main", "GeneralSkill") + " " + teams[Enums.Team1].TrueSkill;
+			_Gui.SkillAway.text = ResourceManager.getInstance().getString("main", "GeneralSkill") + " " + teams[Enums.Team2].TrueSkill;
 			
-			LoadFacebookPicture(Gui.PictureHome, teams[Enums.Team1].FacebookID);
-			LoadFacebookPicture(Gui.PictureAway, teams[Enums.Team2].FacebookID);
+			LoadFacebookPicture(_Gui.PictureHome, teams[Enums.Team1].FacebookID);
+			LoadFacebookPicture(_Gui.PictureAway, teams[Enums.Team2].FacebookID);
 			
 			UpdateMuteButton();
 		}
@@ -116,7 +120,7 @@ package Match
 		
 		private function CreateSpecialSkillButtons(parent:DisplayObjectContainer) : void
 		{
-			var localTeam : Team = MatchMain.Ref.Game.LocalUserTeam;
+			var localTeam : Team = _Game.LocalUserTeam;
 			
 			var BUTTON_WIDTH : Number = 40;															// Contando con el espacio a la derecha
 			var allButtonsWidth : Number = localTeam.AvailableSkills.length * BUTTON_WIDTH - 10;	// Restamos el espacio a la derecha del ultimo			
@@ -169,20 +173,19 @@ package Match
 				if (so.data.hasOwnProperty("Muted"))
 					bMuted = so.data.Muted;
 				
-				var Gui:* = MatchMain.Ref.Game.TheField.Visual;
 				if (bMuted)
 				{
-					MatchMain.Ref.Game.TheAudioManager.Mute(true);
+					_Game.TheAudioManager.Mute(true);
 					
-					Gui.SoundButton.BotonOn.visible = false;
-					Gui.SoundButton.BotonOff.visible = true;
+					_Gui.SoundButton.BotonOn.visible = false;
+					_Gui.SoundButton.BotonOff.visible = true;
 				}
 				else
 				{
-					MatchMain.Ref.Game.TheAudioManager.Mute(false);
+					_Game.TheAudioManager.Mute(false);
 					
-					Gui.SoundButton.BotonOn.visible = true;
-					Gui.SoundButton.BotonOff.visible = false;
+					_Gui.SoundButton.BotonOn.visible = true;
+					_Gui.SoundButton.BotonOff.visible = false;
 				}
 			}
 			catch(e:Error) 
@@ -193,16 +196,15 @@ package Match
 		
 		private function DisableMuteSystem() : void
 		{
-			var Gui:* = MatchMain.Ref.Game.TheField.Visual;
-			MatchMain.Ref.Game.TheAudioManager.Mute(true);
-			Gui.SoundButton.BotonOn.visible = false;
-			Gui.SoundButton.BotonOff.visible = false;
+			_Game.TheAudioManager.Mute(true);
+			_Gui.SoundButton.BotonOn.visible = false;
+			_Gui.SoundButton.BotonOff.visible = false;
 		}
 		
 		// Indica si se acepta la entrada del usuario. Solo en un estado concreto y cuando tiene el turno el usuario local
 		public function get UserInputEnabled() : Boolean
 		{
-			return MatchMain.Ref.Game.IsPlaying && MatchMain.Ref.Game.CurTeam.IsLocalUser;
+			return _Game.IsPlaying && _Game.CurTeam.IsLocalUser;
 		}
 		
 		//
@@ -214,23 +216,22 @@ package Match
 			if (!UserInputEnabled)
 				CancelControllers();
 			
-			var teams:Array = MatchMain.Ref.Game.TheTeams;
-			var Gui:* = MatchMain.Ref.Game.TheField.Visual;
-
-			// Rellenamos los goles
-			Gui.Score.text = teams[Enums.Team1].Goals.toString() + " : " + teams[Enums.Team2].Goals.toString(); 
+			var teams:Array = _Game.TheTeams;
 			
-			// Actualizamos la parte de juego en la que estamos "gui.Period"
-			Gui.Period.text = MatchMain.Ref.Game.Part.toString() + "T";
+			// Rellenamos los goles
+			_Gui.Score.text = teams[Enums.Team1].Goals.toString() + " : " + teams[Enums.Team2].Goals.toString(); 
+			
+			// Actualizamos la parte de juego en la que estamos "_Gui.Period"
+			_Gui.Period.text = _Game.Part.toString() + "T";
 			
 			// Actualizamos el tiempo del partido
-			Gui.Time.text = utils.TimeUtils.ConvertSecondsToString(currMatchTime);
+			_Gui.Time.text = utils.TimeUtils.ConvertSecondsToString(currMatchTime);
 			
 			// Marcamos el jugador con el turno
-			if (MatchMain.Ref.Game.CurTeam.TeamId == Enums.Team1)
-				Gui.MarcadorTurno.gotoAndStop("TeamHome");
+			if (_Game.CurTeam.TeamId == Enums.Team1)
+				_Gui.MarcadorTurno.gotoAndStop("TeamHome");
 			else
-				Gui.MarcadorTurno.gotoAndStop("TeamAway");
+				_Gui.MarcadorTurno.gotoAndStop("TeamAway");
 			
 			UpdateTimeoutCounter(currTimeoutTime);
 			UpdateSpecialSkills();
@@ -238,13 +239,11 @@ package Match
 		}
 		
 		private function UpdateTimeoutCounter(currTimeoutTime : Number) : void
-		{
-			var Gui:* = MatchMain.Ref.Game.TheField.Visual;
-			
+		{			
 			// Color de la tarta basado en si es tu turno o no
 			var colorTransform : ColorTransform = new ColorTransform(1.0, 1.0, 1.0);
 			
-			if (MatchMain.Ref.Game.CurTeam.IsLocalUser)
+			if (_Game.CurTeam.IsLocalUser)
 			{
 				var percentTime : Number = (currTimeoutTime / _TotalTimeoutTime) * 100;
 				
@@ -260,7 +259,7 @@ package Match
 				}
 			}
 						
-			(Gui.ContadorTiempoTurno as DisplayObject).transform.colorTransform = colorTransform;
+			(_Gui.ContadorTiempoTurno as DisplayObject).transform.colorTransform = colorTransform;
 			
 			// Actualizamos el tiempo del sub-turno
 			var timeout:Number = currTimeoutTime / _TotalTimeoutTime;
@@ -268,8 +267,8 @@ package Match
 			if (timeout > 1.0)	// Just in case...
 				timeout = 1.0;
 			
-			var frame:int = (1.0 - timeout) * Gui.ContadorTiempoTurno.totalFrames;
-			Gui.ContadorTiempoTurno.gotoAndStop( frame );
+			var frame:int = (1.0 - timeout) * _Gui.ContadorTiempoTurno.totalFrames;
+			_Gui.ContadorTiempoTurno.gotoAndStop( frame );
 		}
 		
 		//
@@ -285,7 +284,7 @@ package Match
 				return false;
 			
 			// Si estamos en el turno de colocación de portero, ninguna habilidad está disponible para nadie!
-			if (MatchMain.Ref.Game.ReasonTurnChanged == Enums.TurnTiroAPuerta)
+			if (_Game.ReasonTurnChanged == Enums.TurnTiroAPuerta)
 				return false;
 			
 			// Tampoco permitimos pulsar los botones de habilidad mientras mostramos cualquiera de los controladores,
@@ -301,11 +300,11 @@ package Match
 		//
 		private function UpdateSpecialSkills() : void
 		{
-			var localTeam : Team = MatchMain.Ref.Game.LocalUserTeam;
+			var localTeam : Team = _Game.LocalUserTeam;
 			
 			for each (var skillID : int in localTeam.AvailableSkills)
 			{
-				var buttonMC:MovieClip = MatchMain.Ref.Game.GUILayer.getChildByName("BotonSkill" + skillID) as MovieClip;
+				var buttonMC:MovieClip = _Game.GUILayer.getChildByName("BotonSkill" + skillID) as MovieClip;
 
 				if (!IsSkillAvailableForTurn(skillID))
 				{
@@ -348,7 +347,7 @@ package Match
 		private function OnUseSkillButtonClick(event:MouseEvent, idSkill:int) : void
 		{			
 			// Comprobamos si está cargado y se puede utilizar en este turno
-			var localTeam:Team = MatchMain.Ref.Game.LocalUserTeam;
+			var localTeam:Team = _Game.LocalUserTeam;
 			
 			// Dentro de IsSkillAllowedInTurn se hacen las comprobaciones pertinentes de UserInputEnabled y IsAnyControllerStarted.
 			// TODO: Creo que el IsSkillAvailableForTurn sobra puesto que estabamos haciendo el mouseEnabled del boton mal. Ahora no deberia llegar.
@@ -357,8 +356,8 @@ package Match
 				if (!MatchConfig.OfflineMode)
 					MatchMain.Ref.Connection.Invoke("OnServerUseSkill", null, idSkill);
 				
-				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandUseSkill,
-											  	  Delegate.create(MatchMain.Ref.Game.OnClientUseSkill, MatchConfig.IdLocalUser, idSkill));
+				_Game.EnterWaitState(GameState.WaitingCommandUseSkill,
+											  	  Delegate.create(_Game.OnClientUseSkill, MatchConfig.IdLocalUser, idSkill));
 			}
 		}
 		
@@ -390,13 +389,13 @@ package Match
 			panelInfo.x = cap.Visual.x;			
 			panelInfo.y = cap.Visual.y - Cap.Radius - 4;
 		
-			var theLayer : DisplayObjectContainer = MatchMain.Ref.Game.GUILayer;
+			var theLayer : DisplayObjectContainer = _Game.GUILayer;
 			theLayer.addChild(panelInfo);
 		}
 		
 		public function OnOutCap(cap : Cap) : void
 		{
-			var theLayer : DisplayObjectContainer = MatchMain.Ref.Game.GUILayer;
+			var theLayer : DisplayObjectContainer = _Game.GUILayer;
 			var panelInfo : DisplayObject = theLayer.getChildByName("PanelInfo") as DisplayObject;
 			
 			if (panelInfo != null)
@@ -409,30 +408,28 @@ package Match
 			if (!UserInputEnabled || IsAnyControllerStarted())
 				return;
 			
-			var game:Game = MatchMain.Ref.Game;
-			
 			// Si estamos en modo de colocación de portero:
-			if (game.ReasonTurnChanged == Enums.TurnTiroAPuerta)
+			if (_Game.ReasonTurnChanged == Enums.TurnTiroAPuerta)
 			{
-				if (game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
+				if (_Game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
 				{
-					if (MatchConfig.PorteroTeletransportado)
-						_PosControl.Start(cap);
-					else
+					if (MatchConfig.ParallelGoalkeeper)
 						_ShootControl.Start(cap);
+					else
+						_PosControl.Start(cap);					
 				}
 			}
 			// Si estamos en modo de saque de puerta:
 			else 
-			if(Enums.IsSaquePuerta(game.ReasonTurnChanged))
+			if(Enums.IsSaquePuerta(_Game.ReasonTurnChanged))
 			{
-				if (game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
+				if (_Game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
 					_ShootControl.Start(cap);
 			}
 			// Si estamos en modo normal (modo disparo):
 			else 
 			{
-				if (game.CurTeam == cap.OwnerTeam)
+				if (_Game.CurTeam == cap.OwnerTeam)
 					_ShootControl.Start(cap);
 			}
 		}
@@ -447,7 +444,7 @@ package Match
 		//
 		public function ShowControllerBall(cap:Cap) : void
 		{
-			if (MatchMain.Ref.Game.CurTeam != cap.OwnerTeam)
+			if (_Game.CurTeam != cap.OwnerTeam)
 				throw new Error("Intento de mostrar ControllerBall de chapa que no es local");
 			
 			_BallControl.Start(cap);
@@ -464,10 +461,8 @@ package Match
 				if (!MatchConfig.OfflineMode)
 					MatchMain.Ref.Connection.Invoke("OnServerPosCap", null, _PosControl.Target.Id, _PosControl.EndPos.x, _PosControl.EndPos.y);
 				
-				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandPosCap,
-											  Delegate.create(MatchMain.Ref.Game.OnClientPosCap,
-															  MatchMain.Ref.Game.CurTeam.TeamId, 
-															  _PosControl.Target.Id, _PosControl.EndPos.x, _PosControl.EndPos.y)); 
+				_Game.EnterWaitState(GameState.WaitingCommandPosCap, Delegate.create(_Game.OnClientPosCap, _Game.CurTeam.TeamId, 
+									 _PosControl.Target.Id, _PosControl.EndPos.x, _PosControl.EndPos.y)); 
 			}
 		}
 		
@@ -481,11 +476,10 @@ package Match
 				if (!MatchConfig.OfflineMode)
 					MatchMain.Ref.Connection.Invoke("OnServerShoot", null, _ShootControl.Target.Id, _ShootControl.Direction.x, _ShootControl.Direction.y, _ShootControl.Force);
 				
-				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandShoot, 
-											  Delegate.create(MatchMain.Ref.Game.OnClientShoot,	// Simulamos que el servidor nos ha devuelto el tiro
-															  _ShootControl.Target.OwnerTeam.TeamId, 
-															  _ShootControl.Target.Id, 
-															  _ShootControl.Direction.x, _ShootControl.Direction.y, _ShootControl.Force));
+				_Game.EnterWaitState(GameState.WaitingCommandShoot, 
+									 Delegate.create(_Game.OnClientShoot,	// Simulamos que el servidor nos ha devuelto el tiro
+									_ShootControl.Target.OwnerTeam.TeamId, 
+									_ShootControl.Target.Id, _ShootControl.Direction.x, _ShootControl.Direction.y, _ShootControl.Force));
 			}
 		}
 		
@@ -499,10 +493,9 @@ package Match
 				if (!MatchConfig.OfflineMode)
 					MatchMain.Ref.Connection.Invoke("OnServerPlaceBall", null, _BallControl.Target.Id, _BallControl.Direction.x, _BallControl.Direction.y);
 				
-				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandPlaceBall,
-											  Delegate.create(MatchMain.Ref.Game.OnClientPlaceBall,
-															  _BallControl.Target.OwnerTeam.TeamId, 
-															  _BallControl.Target.Id, _BallControl.Direction.x, _BallControl.Direction.y));
+				_Game.EnterWaitState(GameState.WaitingCommandPlaceBall,
+									 Delegate.create(_Game.OnClientPlaceBall,
+									 _BallControl.Target.OwnerTeam.TeamId, _BallControl.Target.Id, _BallControl.Direction.x, _BallControl.Direction.y));
 			}
 		}
 		
@@ -516,8 +509,7 @@ package Match
 				if (!MatchConfig.OfflineMode)
 					MatchMain.Ref.Connection.Invoke("OnServerTiroPuerta", null);
 				
-				MatchMain.Ref.Game.EnterWaitState(GameState.WaitingCommandTiroPuerta, 
-												  Delegate.create(MatchMain.Ref.Game.OnClientTiroPuerta, MatchMain.Ref.Game.CurTeam.TeamId));
+				_Game.EnterWaitState(GameState.WaitingCommandTiroPuerta, Delegate.create(_Game.OnClientTiroPuerta, _Game.CurTeam.TeamId));
 			}
 		}
 		
@@ -527,20 +519,18 @@ package Match
 		//   - y que estés en posición válida: más del medio campo o habilidad especial "Tiroagoldesdetupropiocampo"		
 		private function UpdateButtonTiroPuerta() : void
 		{
-			var Gui:* = MatchMain.Ref.Game.TheField.Visual;
-			
 			var bActive:Boolean = UserInputEnabled;
 			
 			// Con cualquiera de los controladores activados ya no se podra clickar. Es decir, se puede clickar con el raton "libre"
 			bActive = bActive && !IsAnyControllerStarted(); 
 			
 			// Si ya se ha declarado tiro a puerta no permitimos pulsar el botón
-			bActive = bActive && !MatchMain.Ref.Game.IsTiroPuertaDeclarado();
+			bActive = bActive && !_Game.IsTiroPuertaDeclarado();
 			
 			// Posición válida para tirar a puerta o Tenemos la habilidad especial de permitir gol de más de medio campo? 
-			bActive = bActive && MatchMain.Ref.Game.IsTeamPosValidToScore();
+			bActive = bActive && _Game.CurTeam.IsTeamPosValidToScore();
 			
-			Gui.BotonTiroPuerta.visible = bActive;
+			_Gui.BotonTiroPuerta.visible = bActive;
 		}
 		
 		//
@@ -563,13 +553,7 @@ package Match
 		//
 		public function OnAbandonarClick(event:Object) : void
 		{
-			trace("OnAbandonarClick: Cerrando cliente ....");
-			
-			// Notificamos al servidor para que lo propague en los usuarios
-			if (MatchMain.Ref.Connection == null)
-				throw new Error("OnAbandonarClick: La conexión es nula. Ya se ha cerrado el cliente");
-				
-			MatchMain.Ref.Connection.Invoke("OnAbort", null);				
+			MatchMain.Ref.Connection.Invoke("OnAbort", null);
 		}		
 	}
 }

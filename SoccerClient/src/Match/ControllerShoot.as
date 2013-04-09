@@ -106,13 +106,13 @@ package Match
 			var v:Number = impulse / MatchConfig.CapMass;
 			
 			// Calculamos la modificación que la velocidad sufrirá en cada iteración por acción del linearDamping: b2Island.as line 188
-			var vmod:Number = b2Math.b2Clamp(1.0 - MatchMain.Ref.Game.TheGamePhysics.TheBox2D.timeStep * MatchConfig.CapLinearDamping, 0.0, 1.0);
+			var vmod:Number = b2Math.b2Clamp(1.0 - MatchMain.Ref.Game.TheGamePhysics.TimeStep * MatchConfig.CapLinearDamping, 0.0, 1.0);
 			var dist:Number = 0;
 			
 			while (v > 0.01)
 			{
 				v *= vmod;
-				dist += (v * MatchMain.Ref.Game.TheGamePhysics.TheBox2D.timeStep);
+				dist += (v * MatchMain.Ref.Game.TheGamePhysics.TimeStep);
 			}
 			
 			dist *= MatchConfig.PixelsPerMeter;

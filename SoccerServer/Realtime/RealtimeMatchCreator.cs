@@ -157,6 +157,7 @@ namespace Realtime
                                      select s.SpecialTrainingDefinitionID).ToList();
             data.Formation = bddPlayer.Team.Formation;
             data.Fitness = bddPlayer.Team.Fitness;
+            data.MatchesCount = bddPlayer.Team.MatchParticipations.Count();
 
             var soccerPlayers = (from p in bddPlayer.Team.SoccerPlayers
                                  where p.FieldPosition < 100

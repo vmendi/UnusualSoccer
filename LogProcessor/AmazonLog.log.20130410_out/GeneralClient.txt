@@ -1,0 +1,151 @@
+IP-0AF0065B 23:09:22.305 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:1103589511 - Desconexion por: false true
+IP-0AF0065B 23:11:22.721 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100003666454143 - Publish Open Graph Error: [IOErrorEvent type="ioError" bubbles=false cancelable=false eventPhase=2 text="Error #2032"]http://canvas.unusualsoccer.com/OpenGraph/OpenGraph.ashx?data=dGl0bGU9JUMyJUExVmljdG9yaWEhJmRlc2NyaXB0aW9uPWNldmFkYSUyMGhhJTIwc2lkbyUyMGRl%0AcnJvdGFkbyUyMHBvciUyMDMtMC4lMjBFbnRyYSUyMGFob3JhJTIwZW4lMjBVbnVzdWFsJTIwU29j%0AY2VyJTIweSUyMHQlQzMlQkElMjB0YW1iaSVDMyVBOW4lMjBwb2RyJUMzJUExcyUyMGNvbXBldGly%0AJTIwZW4lMjBsb3MlMjBwYXJ0aWRvcyUyMGRlJTIwZiVDMyVCQXRib2wlMjBvbmxpbmUlMjBtJUMz%0AJUExcyUyMGVtb2Npb25hbnRlcy4maW1hZ2U9aHR0cCUzQSUyRiUyRmNhbnZhcy51bnVzdWFsc29j%0AY2VyLmNvbSUyRkltZ3MlMkZNZXNzYWdlVmljdG9yeV9lc19MQS5wbmclM0YxJm9wZW5HcmFwaE9i%0AamVjdFR5cGU9bWF0Y2gmbnM9dW51c3VhbHNvY2NlciZpZD1NYXRjaEVuZCZ2aXJhbF9zcmNpZD0x%0AMDAwMDM2NjY0NTQxNDM%3D
+IP-0AF0065B 23:42:03.858 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 23:42:21.330 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 23:42:45.603 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 23:42:52.951 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 23:43:03.559 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 23:43:20.126 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 23:43:38.487 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 23:49:33.666 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 23:57:05.723 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 23:57:13.804 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 00:02:41.716 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 00:09:08.128 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 00:09:49.000 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 00:09:49.031 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 00:09:55.583 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 00:13:40.598 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 00:19:53.625 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 00:26:00.802 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 09:19:42.423 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 09:19:53.951 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 09:25:26.465 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 09:26:56.353 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 09:27:06.758 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 09:27:21.094 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 09:27:28.754 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 14:00:19.819 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 14:01:06.868 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 14:02:12.294 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 14:05:41.069 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 14:05:41.069 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:739073258 - UncaughtError: Error: Error #2063
+IP-0AF0065B 23:50:02.417 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100003925962802 - Publish Open Graph Error: [IOErrorEvent type="ioError" bubbles=false cancelable=false eventPhase=2 text="Error #2032"]http://canvas.unusualsoccer.com/OpenGraph/OpenGraph.ashx?data=dGl0bGU9JUMyJUExVmljdG9yaWEhJmRlc2NyaXB0aW9uPU9jZWFuJTIwQ29sb3VyJTIwU2NlbmUl%0AMjBoYSUyMHNpZG8lMjBkZXJyb3RhZG8lMjBwb3IlMjAwLTMuJTIwRW50cmElMjBhaG9yYSUyMGVu%0AJTIwVW51c3VhbCUyMFNvY2NlciUyMHklMjB0JUMzJUJBJTIwdGFtYmklQzMlQTluJTIwcG9kciVD%0AMyVBMXMlMjBjb21wZXRpciUyMGVuJTIwbG9zJTIwcGFydGlkb3MlMjBkZSUyMGYlQzMlQkF0Ym9s%0AJTIwb25saW5lJTIwbSVDMyVBMXMlMjBlbW9jaW9uYW50ZXMuJmltYWdlPWh0dHAlM0ElMkYlMkZj%0AYW52YXMudW51c3VhbHNvY2Nlci5jb20lMkZJbWdzJTJGTWVzc2FnZVZpY3RvcnlfZXNfTEEucG5n%0AJTNGMSZvcGVuR3JhcGhPYmplY3RUeXBlPW1hdGNoJm5zPXVudXN1YWxzb2NjZXImaWQ9TWF0Y2hF%0AbmQmdmlyYWxfc3JjaWQ9MTAwMDAzOTI1OTYyODAy
+IP-0AF0065B 23:50:05.366 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:1611910166 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 23:54:55.650 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100002936014792 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 23:59:43.611 [ERROR] [14] [HttpService.MainService] CLIENT_ERROR:100001937871962 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 00:06:16.310 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100000097099458 - UncaughtError: Error #2048
+IP-0AF0065B 00:28:04.448 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100004438597536 - Desconexion por: false true
+IP-0AF0065B 00:28:36.708 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004267114147 - UncaughtError: Error: invalidIndex
+IP-0AF0065B 00:28:36.833 [ERROR] [14] [HttpService.MainService] CLIENT_ERROR:100004267114147 - UncaughtError: Error: invalidIndex
+IP-0AF0065B 00:42:31.808 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100004458610389 - Publish Open Graph Error: [IOErrorEvent type="ioError" bubbles=false cancelable=false eventPhase=2 text="Error #2032"]http://canvas.unusualsoccer.com/OpenGraph/OpenGraph.ashx?data=dGl0bGU9VmljdG9yeSEmZGVzY3JpcHRpb249MS0xJTIwdmljdG9yeSUyMG92ZXIlMjBMb3MlMjBN%0Ab3ZpbWVudGFyaW9zISUyMFBsYXklMjBub3clMjB0aGUlMjBtb3N0JTIwZW5nYWdpbmclMjBtdWx0%0AaXBsYXllciUyMHNvY2NlciUyMGdhbWUlMjBvbmxpbmUuJmltYWdlPWh0dHAlM0ElMkYlMkZjYW52%0AYXMudW51c3VhbHNvY2Nlci5jb20lMkZJbWdzJTJGTWVzc2FnZVZpY3RvcnlfZW5fVVMucG5nJTNG%0AMSZvcGVuR3JhcGhPYmplY3RUeXBlPW1hdGNoJm5zPXVudXN1YWxzb2NjZXImaWQ9TWF0Y2hFbmQm%0AdmlyYWxfc3JjaWQ9MTAwMDA0NDU4NjEwMzg5
+IP-0AF0065B 13:21:02.149 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004458610389 - Publish Open Graph Error: [IOErrorEvent type="ioError" bubbles=false cancelable=false eventPhase=2 text="Error #2032"]http://canvas.unusualsoccer.com/OpenGraph/OpenGraph.ashx?data=dGl0bGU9VmljdG9yeSEmZGVzY3JpcHRpb249NS0wJTIwdmljdG9yeSUyMG92ZXIlMjBXZWVkLUJv%0AeXMhJTIwUGxheSUyMG5vdyUyMHRoZSUyMG1vc3QlMjBlbmdhZ2luZyUyMG11bHRpcGxheWVyJTIw%0Ac29jY2VyJTIwZ2FtZSUyMG9ubGluZS4maW1hZ2U9aHR0cCUzQSUyRiUyRmNhbnZhcy51bnVzdWFs%0Ac29jY2VyLmNvbSUyRkltZ3MlMkZNZXNzYWdlVmljdG9yeV9lbl9VUy5wbmclM0YxJm9wZW5HcmFw%0AaE9iamVjdFR5cGU9bWF0Y2gmbnM9dW51c3VhbHNvY2NlciZpZD1NYXRjaEVuZCZ2aXJhbF9zcmNp%0AZD0xMDAwMDQ0NTg2MTAzODk%3D
+IP-0AF0065B 16:01:45.303 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100004458610389 - Publish Open Graph Error: [IOErrorEvent type="ioError" bubbles=false cancelable=false eventPhase=2 text="Error #2032"]http://canvas.unusualsoccer.com/OpenGraph/OpenGraph.ashx?data=dGl0bGU9VmljdG9yeSEmZGVzY3JpcHRpb249MC0wJTIwdmljdG9yeSUyMG92ZXIlMjAlNUJESVNf%0AVFVSX0JFRCU1RCElMjBQbGF5JTIwbm93JTIwdGhlJTIwbW9zdCUyMGVuZ2FnaW5nJTIwbXVsdGlw%0AbGF5ZXIlMjBzb2NjZXIlMjBnYW1lJTIwb25saW5lLiZpbWFnZT1odHRwJTNBJTJGJTJGY2FudmFz%0ALnVudXN1YWxzb2NjZXIuY29tJTJGSW1ncyUyRk1lc3NhZ2VWaWN0b3J5X2VuX1VTLnBuZyUzRjEm%0Ab3BlbkdyYXBoT2JqZWN0VHlwZT1tYXRjaCZucz11bnVzdWFsc29jY2VyJmlkPU1hdGNoRW5kJnZp%0AcmFsX3NyY2lkPTEwMDAwNDQ1ODYxMDM4OQ%3D%3D
+IP-0AF0065B 22:24:58.244 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100004458610389 - Publish Open Graph Error: [IOErrorEvent type="ioError" bubbles=false cancelable=false eventPhase=2 text="Error #2032"]http://canvas.unusualsoccer.com/OpenGraph/OpenGraph.ashx?data=dGl0bGU9VmljdG9yeSEmZGVzY3JpcHRpb249Mi0zJTIwdmljdG9yeSUyMG92ZXIlMjB2YW4lMjBk%0AZXIlMjB2YWFydCUyMHRlYW0hJTIwUGxheSUyMG5vdyUyMHRoZSUyMG1vc3QlMjBlbmdhZ2luZyUy%0AMG11bHRpcGxheWVyJTIwc29jY2VyJTIwZ2FtZSUyMG9ubGluZS4maW1hZ2U9aHR0cCUzQSUyRiUy%0ARmNhbnZhcy51bnVzdWFsc29jY2VyLmNvbSUyRkltZ3MlMkZNZXNzYWdlVmljdG9yeV9lbl9VUy5w%0AbmclM0YxJm9wZW5HcmFwaE9iamVjdFR5cGU9bWF0Y2gmbnM9dW51c3VhbHNvY2NlciZpZD1NYXRj%0AaEVuZCZ2aXJhbF9zcmNpZD0xMDAwMDQ0NTg2MTAzODk%3D
+IP-0AF0065B 01:00:16.102 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:1358539663 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 01:02:04.709 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:644899158 - Publish Open Graph Error: [object Object]http://canvas.unusualsoccer.com/OpenGraph/OpenGraph.ashx?data=dGl0bGU9JUMyJUExVmljdG9yaWEhJmRlc2NyaXB0aW9uPXBlcG9zJTIwZmMlMjBoYSUyMHNpZG8l%0AMjBkZXJyb3RhZG8lMjBwb3IlMjA0LTAuJTIwRW50cmElMjBhaG9yYSUyMGVuJTIwVW51c3VhbCUy%0AMFNvY2NlciUyMHklMjB0JUMzJUJBJTIwdGFtYmklQzMlQTluJTIwcG9kciVDMyVBMXMlMjBjb21w%0AZXRpciUyMGVuJTIwbG9zJTIwcGFydGlkb3MlMjBkZSUyMGYlQzMlQkF0Ym9sJTIwb25saW5lJTIw%0AbSVDMyVBMXMlMjBlbW9jaW9uYW50ZXMuJmltYWdlPWh0dHAlM0ElMkYlMkZjYW52YXMudW51c3Vh%0AbHNvY2Nlci5jb20lMkZJbWdzJTJGTWVzc2FnZVZpY3RvcnlfZXNfTEEucG5nJTNGMSZvcGVuR3Jh%0AcGhPYmplY3RUeXBlPW1hdGNoJm5zPXVudXN1YWxzb2NjZXImaWQ9TWF0Y2hFbmQmdmlyYWxfc3Jj%0AaWQ9NjQ0ODk5MTU4
+IP-0AF0065B 01:32:18.838 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:1456452067 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 01:50:34.769 [ERROR] [9] [HttpService.MainService] CLIENT_ERROR:1120686618 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 18:58:21.956 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:1120686618 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 02:22:55.828 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100002675064299 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 02:22:55.828 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100002675064299 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 02:24:13.344 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:1778507755 - NetPlug.ProcessNetInvoke: InitFromServer - TypeError: Error #1009
+IP-0AF0065B 02:43:21.142 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100003164419166 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 02:43:21.625 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100003164419166 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 02:43:22.203 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100003164419166 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 03:12:32.382 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100003164419166 - Publish Open Graph Error: [IOErrorEvent type="ioError" bubbles=false cancelable=false eventPhase=2 text="Error #2032"]http://canvas.unusualsoccer.com/OpenGraph/OpenGraph.ashx?data=dGl0bGU9VmljdG9yeSEmZGVzY3JpcHRpb249MC0wJTIwdmljdG9yeSUyMG92ZXIlMjBkZXBvcnRp%0Adm8lMjBkZSUyMGJhcmNlbG9uYSElMjBQbGF5JTIwbm93JTIwdGhlJTIwbW9zdCUyMGVuZ2FnaW5n%0AJTIwbXVsdGlwbGF5ZXIlMjBzb2NjZXIlMjBnYW1lJTIwb25saW5lLiZpbWFnZT1odHRwJTNBJTJG%0AJTJGY2FudmFzLnVudXN1YWxzb2NjZXIuY29tJTJGSW1ncyUyRk1lc3NhZ2VWaWN0b3J5X2VuX1VT%0ALnBuZyUzRjEmb3BlbkdyYXBoT2JqZWN0VHlwZT1tYXRjaCZucz11bnVzdWFsc29jY2VyJmlkPU1h%0AdGNoRW5kJnZpcmFsX3NyY2lkPTEwMDAwMzE2NDQxOTE2Ng%3D%3D
+IP-0AF0065B 02:46:18.779 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100000049729410 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 03:15:06.354 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100005306558483 - UncaughtError: TypeError: Error #1009
+IP-0AF0065B 04:37:04.056 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100000506094509 - Publish Open Graph Error: [IOErrorEvent type="ioError" bubbles=false cancelable=false eventPhase=2 text="Error #2032"]http://canvas.unusualsoccer.com/OpenGraph/OpenGraph.ashx?data=dGl0bGU9JUMyJUExVmljdG9yaWEhJmRlc2NyaXB0aW9uPXZpa3RvciUyMGhhJTIwc2lkbyUyMGRl%0AcnJvdGFkbyUyMHBvciUyMDMtMC4lMjBFbnRyYSUyMGFob3JhJTIwZW4lMjBVbnVzdWFsJTIwU29j%0AY2VyJTIweSUyMHQlQzMlQkElMjB0YW1iaSVDMyVBOW4lMjBwb2RyJUMzJUExcyUyMGNvbXBldGly%0AJTIwZW4lMjBsb3MlMjBwYXJ0aWRvcyUyMGRlJTIwZiVDMyVCQXRib2wlMjBvbmxpbmUlMjBtJUMz%0AJUExcyUyMGVtb2Npb25hbnRlcy4maW1hZ2U9aHR0cCUzQSUyRiUyRmNhbnZhcy51bnVzdWFsc29j%0AY2VyLmNvbSUyRkltZ3MlMkZNZXNzYWdlVmljdG9yeV9lc19MQS5wbmclM0YxJm9wZW5HcmFwaE9i%0AamVjdFR5cGU9bWF0Y2gmbnM9dW51c3VhbHNvY2NlciZpZD1NYXRjaEVuZCZ2aXJhbF9zcmNpZD0x%0AMDAwMDA1MDYwOTQ1MDk%3D
+IP-0AF0065B 05:02:17.459 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100004055858365 - UncaughtError: Error #2048
+IP-0AF0065B 05:23:53.099 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100000723525915 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 05:26:10.253 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100003745635308 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 07:50:23.616 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100002345854717 - Publish Open Graph Error: [IOErrorEvent type="ioError" bubbles=false cancelable=false eventPhase=2 text="Error #2032"]http://canvas.unusualsoccer.com/OpenGraph/OpenGraph.ashx?data=dGl0bGU9VmljdG9yeSEmZGVzY3JpcHRpb249MS0yJTIwdmljdG9yeSUyMG92ZXIlMjBKdW5pb3Il%0AMjBTdGFyJTIwQmlzdHJpdGEhJTIwUGxheSUyMG5vdyUyMHRoZSUyMG1vc3QlMjBlbmdhZ2luZyUy%0AMG11bHRpcGxheWVyJTIwc29jY2VyJTIwZ2FtZSUyMG9ubGluZS4maW1hZ2U9aHR0cCUzQSUyRiUy%0ARmNhbnZhcy51bnVzdWFsc29jY2VyLmNvbSUyRkltZ3MlMkZNZXNzYWdlVmljdG9yeV9lbl9VUy5w%0AbmclM0YxJm9wZW5HcmFwaE9iamVjdFR5cGU9bWF0Y2gmbnM9dW51c3VhbHNvY2NlciZpZD1NYXRj%0AaEVuZCZ2aXJhbF9zcmNpZD0xMDAwMDIzNDU4NTQ3MTc%3D
+IP-0AF0065B 09:31:19.525 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100003807394787 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 09:31:24.064 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100003807394787 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 09:31:24.595 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100003807394787 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 09:31:24.797 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100003807394787 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 09:31:25.265 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100003807394787 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 09:31:25.499 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100003807394787 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 09:31:25.733 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100003807394787 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 09:31:25.936 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100003807394787 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 09:31:26.264 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100003807394787 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 09:31:26.420 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100003807394787 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 09:31:26.591 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100003807394787 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 09:31:26.825 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100003807394787 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 09:31:27.169 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100003807394787 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 09:36:19.948 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100000166124238 - Publish Open Graph Error: [IOErrorEvent type="ioError" bubbles=false cancelable=false eventPhase=2 text="Error #2032"]http://canvas.unusualsoccer.com/OpenGraph/OpenGraph.ashx?data=dGl0bGU9JUMyJUExVmljdG9yaWEhJmRlc2NyaXB0aW9uPUFLUUpUZGlhbW9uZCUyMGhhJTIwc2lk%0AbyUyMGRlcnJvdGFkbyUyMHBvciUyMDAtNC4lMjBFbnRyYSUyMGFob3JhJTIwZW4lMjBVbnVzdWFs%0AJTIwU29jY2VyJTIweSUyMHQlQzMlQkElMjB0YW1iaSVDMyVBOW4lMjBwb2RyJUMzJUExcyUyMGNv%0AbXBldGlyJTIwZW4lMjBsb3MlMjBwYXJ0aWRvcyUyMGRlJTIwZiVDMyVCQXRib2wlMjBvbmxpbmUl%0AMjBtJUMzJUExcyUyMGVtb2Npb25hbnRlcy4maW1hZ2U9aHR0cCUzQSUyRiUyRmNhbnZhcy51bnVz%0AdWFsc29jY2VyLmNvbSUyRkltZ3MlMkZNZXNzYWdlVmljdG9yeV9lc19MQS5wbmclM0YxJm9wZW5H%0AcmFwaE9iamVjdFR5cGU9bWF0Y2gmbnM9dW51c3VhbHNvY2NlciZpZD1NYXRjaEVuZCZ2aXJhbF9z%0AcmNpZD0xMDAwMDAxNjYxMjQyMzg%3D
+IP-0AF0065B 10:21:07.933 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100000830820615 - UncaughtError: Error #2048
+IP-0AF0065B 10:44:11.450 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:1419604586 - WTF 78
+IP-0AF0065B 11:10:10.914 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:1419604586 - WTF 78
+IP-0AF0065B 13:17:24.326 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:1419604586 - WTF 78
+IP-0AF0065B 10:53:11.348 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100000831896809 - UncaughtError: Error #2048
+IP-0AF0065B 10:53:28.586 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100000527298885 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 11:38:11.188 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100005412990514 - Publish Open Graph Error: [IOErrorEvent type="ioError" bubbles=false cancelable=false eventPhase=2 text="Error #2032"]http://canvas.unusualsoccer.com/OpenGraph/OpenGraph.ashx?data=dGl0bGU9VmljdG9yeSEmZGVzY3JpcHRpb249MS0xJTIwdmljdG9yeSUyMG92ZXIlMjBKYW1pZSUy%0AME1vdW50Zm9yZCUyMEZDISUyMFBsYXklMjBub3clMjB0aGUlMjBtb3N0JTIwZW5nYWdpbmclMjBt%0AdWx0aXBsYXllciUyMHNvY2NlciUyMGdhbWUlMjBvbmxpbmUuJmltYWdlPWh0dHAlM0ElMkYlMkZj%0AYW52YXMudW51c3VhbHNvY2Nlci5jb20lMkZJbWdzJTJGTWVzc2FnZVZpY3RvcnlfZW5fVVMucG5n%0AJTNGMSZvcGVuR3JhcGhPYmplY3RUeXBlPW1hdGNoJm5zPXVudXN1YWxzb2NjZXImaWQ9TWF0Y2hF%0AbmQmdmlyYWxfc3JjaWQ9MTAwMDA1NDEyOTkwNTE0
+IP-0AF0065B 11:48:38.429 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100005412990514 - Publish Open Graph Error: [IOErrorEvent type="ioError" bubbles=false cancelable=false eventPhase=2 text="Error #2032"]http://canvas.unusualsoccer.com/OpenGraph/OpenGraph.ashx?data=dGl0bGU9VmljdG9yeSEmZGVzY3JpcHRpb249MC0wJTIwdmljdG9yeSUyMG92ZXIlMjBTdHVhcnQl%0AMjBIYXJncmVhdmVzJTIwRkMhJTIwUGxheSUyMG5vdyUyMHRoZSUyMG1vc3QlMjBlbmdhZ2luZyUy%0AMG11bHRpcGxheWVyJTIwc29jY2VyJTIwZ2FtZSUyMG9ubGluZS4maW1hZ2U9aHR0cCUzQSUyRiUy%0ARmNhbnZhcy51bnVzdWFsc29jY2VyLmNvbSUyRkltZ3MlMkZNZXNzYWdlVmljdG9yeV9lbl9VUy5w%0AbmclM0YxJm9wZW5HcmFwaE9iamVjdFR5cGU9bWF0Y2gmbnM9dW51c3VhbHNvY2NlciZpZD1NYXRj%0AaEVuZCZ2aXJhbF9zcmNpZD0xMDAwMDU0MTI5OTA1MTQ%3D
+IP-0AF0065B 11:55:45.620 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100003993440842 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 12:16:28.518 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100004826200383 - UncaughtError: Error #2048
+IP-0AF0065B 13:20:44.505 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:1471491290 - UncaughtError: TypeError: Error #1009
+IP-0AF0065B 13:21:39.261 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100002598477532 - Publish Open Graph Error: [object Object]http://canvas.unusualsoccer.com/OpenGraph/OpenGraph.ashx?data=dGl0bGU9VmljdG9yeSEmZGVzY3JpcHRpb249MC0wJTIwdmljdG9yeSUyMG92ZXIlMjAlRTAlQjgl%0AOTglRTAlQjglQjElRTAlQjglOEElRTAlQjglOTglRTAlQjglQTMlRTAlQjglQTMlRTAlQjglQTEl%0ARTAlQjglQTMlRTAlQjglQjElRTAlQjglODElRTAlQjglODElRTAlQjglODElRTAlQjglODElRTAl%0AQjglODElRTAlQjglODElRTAlQjglODElRTAlQjglODElRTAlQjglODElRTAlQjklODAlRTAlQjkl%0AODAlRTAlQjglOTklRTAlQjglOTkhJTIwUGxheSUyMG5vdyUyMHRoZSUyMG1vc3QlMjBlbmdhZ2lu%0AZyUyMG11bHRpcGxheWVyJTIwc29jY2VyJTIwZ2FtZSUyMG9ubGluZS4maW1hZ2U9aHR0cCUzQSUy%0ARiUyRmNhbnZhcy51bnVzdWFsc29jY2VyLmNvbSUyRkltZ3MlMkZNZXNzYWdlVmljdG9yeV9lbl9V%0AUy5wbmclM0YxJm9wZW5HcmFwaE9iamVjdFR5cGU9bWF0Y2gmbnM9dW51c3VhbHNvY2NlciZpZD1N%0AYXRjaEVuZCZ2aXJhbF9zcmNpZD0xMDAwMDI1OTg0Nzc1MzI%3D
+IP-0AF0065B 15:07:29.261 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100001876341700 - UncaughtError: Error #2048
+IP-0AF0065B 15:11:42.979 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100003787368763 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 15:19:43.054 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:1734140665 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 16:02:32.508 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100004551545706 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 16:02:35.441 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100004551545706 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 16:11:22.316 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100004878159616 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 16:11:23.813 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100004878159616 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 16:39:28.938 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100004836521083 - UncaughtError: Error #2048
+IP-0AF0065B 16:52:42.991 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100003588047156 - ResourceLoadFailed: on LoadMatchResources callback not null
+IP-0AF0065B 16:52:42.975 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100003588047156 - ResourceLoadFailed: on LoadMatchResources callback not null
+IP-0AF0065B 16:54:00.117 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100002480353592 - UncaughtError: Error #2048
+IP-0AF0065B 17:00:09.042 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100000118182146 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 17:00:09.057 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100000118182146 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 17:00:09.042 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100000118182146 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 17:00:09.042 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100000118182146 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 18:13:12.527 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:13:12.511 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF02 1028 - 1246
+IP-0AF0065B 18:13:13.603 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:13:24.118 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:13:24.757 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:13:25.085 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:13:27.284 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:13:27.425 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:13:29.032 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:13:29.110 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:13:31.231 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:13:34.273 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:13:35.911 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:13:43.836 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:13:44.148 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:13:44.413 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:13:47.299 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:14:00.497 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:14:01.714 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:14:03.929 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:14:10.465 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:14:10.871 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:14:12.914 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:14:13.538 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:14:16.690 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:14:19.045 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:14:30.074 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:15:40.774 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100004263221111 - OnSocketData: WTF01 0
+IP-0AF0065B 18:18:32.826 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100003970457722 - UncaughtError: Error #2048
+IP-0AF0065B 18:32:17.764 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100002283462213 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 18:33:06.841 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100003385300849 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 18:33:07.341 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100003385300849 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 18:33:07.528 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100003385300849 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 18:51:42.521 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100001741607016 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 18:58:23.766 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100002339888881 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 19:05:29.785 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100003533724749 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 19:11:08.429 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:1727372460 - UncaughtError: Error #2048
+IP-0AF0065B 19:40:55.191 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004394230793 - Publish Open Graph Error: [object Object]http://canvas.unusualsoccer.com/OpenGraph/OpenGraph.ashx?data=dGl0bGU9VmljdG9yeSEmZGVzY3JpcHRpb249MC0zJTIwdmljdG9yeSUyMG92ZXIlMjBBZ25pZXN6%0Aa2ElMjBOaWVkemllbGElMjBGQyElMjBQbGF5JTIwbm93JTIwdGhlJTIwbW9zdCUyMGVuZ2FnaW5n%0AJTIwbXVsdGlwbGF5ZXIlMjBzb2NjZXIlMjBnYW1lJTIwb25saW5lLiZpbWFnZT1odHRwJTNBJTJG%0AJTJGY2FudmFzLnVudXN1YWxzb2NjZXIuY29tJTJGSW1ncyUyRk1lc3NhZ2VWaWN0b3J5X2VuX1VT%0ALnBuZyUzRjEmb3BlbkdyYXBoT2JqZWN0VHlwZT1tYXRjaCZucz11bnVzdWFsc29jY2VyJmlkPU1h%0AdGNoRW5kJnZpcmFsX3NyY2lkPTEwMDAwNDM5NDIzMDc5Mw%3D%3D
+IP-0AF0065B 19:41:57.950 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100002044322053 - ResourceLoadFailed: on Init.innerInit - faking ResourceLoadFailed
+IP-0AF0065B 19:44:03.967 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100003264131502 - ResourceLoadFailed: on LoadMatchResources callback not null
+IP-0AF0065B 19:44:03.967 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100003264131502 - ResourceLoadFailed: on LoadMatchResources callback not null
+IP-0AF0065B 21:56:52.825 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:697831315 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 21:58:43.850 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:1794967558 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 21:58:55.020 [ERROR] [16] [HttpService.MainService] CLIENT_ERROR:100001224382469 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 22:12:42.721 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100002142513793 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 22:15:47.018 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:1359835124 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 22:35:09.140 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100002822825203 - Intento de SwitchLookingForMatchResponded con el partido corriendo

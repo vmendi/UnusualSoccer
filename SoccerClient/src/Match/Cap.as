@@ -31,32 +31,6 @@ package Match
 	{
 		static public const Radius:Number = 15;
 		
-		private var _CapId:int = -1;							// Identificador de la chapa
-		private var _Name:String = null;						// Nombre del jugador
-		private var _Dorsal:int = 0;							// Nº de dorsal del jugador
-						
-		private var _OriginalDefense:int = 50;					// Tal y como vienen del manager, sin multiplicar por Fitness
-		private var _OriginalPower:int = 50;				
-		private var _OriginalControl:int = 50; 
-				
-		private var _OwnerTeam:Team = null;						// Equipo dueño de la chapa
-		
-		private var _Influence:Sprite = null;					// Objeto visual para pintar la influencia de la chapa
-		private var _TimeShowingInfluence:Number = 0;			// Tiempo que se lleva mostrando el area de influencias desde la última vez que se mando pintar
-		private var _ShowInfluence:Boolean=false;				// Indica si se está pintando
-		
-		private var _ColorInfluence:int = Enums.FriendColor; 			// Color del radio de influencia visual
-		private var _SizeInfluence:int = MatchConfig.RadiusPaseAlPie;	// tamaño del radio de influencia visual
-		
-		private var _IsInjured : Boolean = false;
-
-		private var _TeletransportPos : Point;
-		private var _ParallelShoot : ShootInfo;
-		private var _FacebookPictureLoader : Loader;
-				
-		public var YellowCards:int = 0; 						// Número de tarjetas amarillas (2 => roja => expulsión)
-		
-		
 		public function get OwnerTeam() : Team	  { return _OwnerTeam; }
 		public function get Name() : String		  { return _Name; }
 		public function get Id() : int			  { return _CapId; }
@@ -77,10 +51,37 @@ package Match
 		public function get ParallelShoot() : ShootInfo { return _ParallelShoot; }
 		public function set ParallelShoot(s:ShootInfo) : void { _ParallelShoot = s; }
 		
-
-		public function Cap(team:Team, id:int, descCap:Object, useSecondaryEquipment:Boolean) : void
+		
+		private var _CapId:int = -1;							// Identificador de la chapa
+		private var _Name:String;								// Nombre del jugador
+		private var _Dorsal:int;								// Nº de dorsal del jugador
+		
+		private var _OriginalDefense:int = 50;					// Tal y como vienen del manager, sin multiplicar por Fitness
+		private var _OriginalPower:int = 50;				
+		private var _OriginalControl:int = 50; 
+		
+		private var _OwnerTeam:Team;							// Equipo dueño de la chapa
+		
+		private var _Influence:Sprite;							// Objeto visual para pintar la influencia de la chapa
+		private var _TimeShowingInfluence:Number;				// Tiempo que se lleva mostrando el area de influencias desde la última vez que se mando pintar
+		private var _ShowInfluence:Boolean=false;				// Indica si se está pintando
+		
+		private var _ColorInfluence:int=Enums.FriendColor; 			// Color del radio de influencia visual
+		private var _SizeInfluence:int=MatchConfig.RadiusPaseAlPie;	// tamaño del radio de influencia visual
+		
+		private var _IsInjured : Boolean = false;
+		
+		private var _TeletransportPos : Point;
+		private var _ParallelShoot : ShootInfo;
+		private var _FacebookPictureLoader : Loader;
+		
+		
+		public var YellowCards:int = 0; 						// Número de tarjetas amarillas (2 => roja => expulsión)
+		
+		
+		public function Cap(team:Team, id:int, descCap:Object, useSecondaryEquipment:Boolean, game : Game) : void
 		{			
-			super(MatchMain.Ref.Game.GameLayer, { 
+			super(game.GameLayer, { 
 				  skin: ResourceManager.getInstance().getClass("match", "Cap"),
 				  radius: MatchConfig.Screen2Physic(Radius),
 				  categoryBits: 1,								// Choca con todo
@@ -91,8 +92,8 @@ package Match
 				  friction: .3, 
 			      restitution: .8,								// Fuerza que recupera en un choque
 				  linearDamping: MatchConfig.CapLinearDamping, 
-				  angularDamping: MatchConfig.CapLinearDamping });
-						
+				  angularDamping: MatchConfig.CapLinearDamping }, game);
+									
 			// Elegimos el asset de jugador o portero y con la equipación primaria o secundaria
 			PrepareVisualCap(_Visual, team.PredefinedTeamNameID, useSecondaryEquipment, id == 0)
 						
@@ -120,13 +121,13 @@ package Match
 			// Creamos un Sprite linkado a la chapa, donde pintaremos los radios de influencia de la chapa
 			// Estos sprites los introducimos como hijos del campo, para asegurar que se vean debajo de las chapas 
 			_Influence = new Sprite();
-			MatchMain.Ref.Game.TheField.Visual.addChild(_Influence);
+			_Game.TheField.Visual.addChild(_Influence);
 			DrawInfluence();
 			_Influence.alpha = 0.0;
 						
 			// Solo mostramos la foto de los amigos del equipo local (privacidad...)
-			// if (team.IsLocalUser) Ahora si ahora no (3/23/2013)
-			LoadFacebookPicture(descCap.FacebookID);
+			if (team.IsLocalUser) // Ahora si ahora no (3/23/2013, 4/10/2013)
+				LoadFacebookPicture(descCap.FacebookID);
 		}
 		
 		static public function PrepareVisualCap(visualCap : *, predefinedTeamNameID : String, useSecondary : Boolean, isGoalKeeper : Boolean) : void
@@ -171,7 +172,7 @@ package Match
 		{
 			try 
 			{
-				MatchMain.Ref.Game.TheInterface.OnClickCap(this);
+				_Game.TheInterface.OnClickCap(this);
 			}
 			catch(e:Error) 
 			{ 
@@ -195,7 +196,7 @@ package Match
 		{
 			try 
 			{
-				MatchMain.Ref.Game.TheInterface.OnOverCap(this);
+				_Game.TheInterface.OnOverCap(this);
 			}
 			catch(e:Error)
 			{
@@ -210,7 +211,7 @@ package Match
 				if (TweenMax.getTweensOf(OnRealOver).length > 0)
 					TweenMax.killDelayedCallsTo(OnRealOver);
 				
-				MatchMain.Ref.Game.TheInterface.OnOutCap(this);
+				_Game.TheInterface.OnOutCap(this);
 			}
 			catch(e:Error) 
 			{ 
@@ -262,7 +263,7 @@ package Match
 		//
 		// Cambia el color del radio de influencia. NOTE: Esto no quiere decir que se pinte!
 		//
-		public function SetInfluenceAspect( color:int, size:Number ) : void
+		public function SetInfluenceAspect(color:int, size:Number) : void
 		{
 			// Si algo cambia, reasignamos
 			if (color != _ColorInfluence || size != _SizeInfluence)
@@ -290,7 +291,7 @@ package Match
 		//
 		// Mostramos/ocultamos el radio de influencia de la chapa
 		// y reseteamos el tiempo mostrando influencia
-		public function set ShowInfluence( value:Boolean ) : void
+		public function set ShowInfluence(value:Boolean) : void
 		{
 			if (value != _ShowInfluence)
 			{	
@@ -313,19 +314,16 @@ package Match
 		{
 			super.Draw(elapsed);
 			
-			if (this.Visual)
-			{
-				// Reasignamos la posicion del objeto de radio de influencia, para que siga a la chapa
-				_Influence.x = GetPos().x;			
-				_Influence.y = GetPos().y;
-			}
-				
+			// Reasignamos la posicion del objeto de radio de influencia, para que siga a la chapa
+			_Influence.x = GetPos().x;			
+			_Influence.y = GetPos().y;
+							
 			// Apagamos al cabo de 2 segundos
 			if (ShowInfluence)
 			{
 				_TimeShowingInfluence += elapsed;
 				
-				if( _TimeShowingInfluence > 2.0 )
+				if (_TimeShowingInfluence > 2.0)
 					ShowInfluence = false;
 			}
 		}
@@ -383,7 +381,7 @@ package Match
 			Visual.parent.addChild(cloned);
 			cloned.x = Visual.x; 
 			cloned.y = Visual.y;
-			cloned.rotationZ = PhyBody.angle * 180.0 / Math.PI;
+			cloned.rotationZ = PhyObj.angle * 180.0 / Math.PI;
 			
 			Cap.PrepareVisualCap(cloned, OwnerTeam.PredefinedTeamNameID, Visual.Second.visible, Visual.Goalkeeper.visible);
 			

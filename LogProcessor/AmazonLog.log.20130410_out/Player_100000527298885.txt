@@ -1,0 +1,1 @@
+IP-0AF0065B 10:53:28.586 [ERROR] [12] [HttpService.MainService] CLIENT_ERROR:100000527298885 - Intento de SwitchLookingForMatchResponded con el partido corriendo

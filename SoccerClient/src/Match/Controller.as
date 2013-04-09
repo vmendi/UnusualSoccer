@@ -15,7 +15,7 @@ package Match
 		public static const Canceled:int = 1;				// Finalizó por cancelación (Llamada externa al stop)
 		
 		public var OnStart:Signal = new Signal();			// Evento lanzado cuanto el controlador se arranca
-		public var OnStop:Signal = new Signal( int );		// Evento lanzado cuanto el controlador se detiene por cualquier razón
+		public var OnStop:Signal = new Signal(int);			// Evento lanzado cuanto el controlador se detiene por cualquier razón
 		
 		// Estamos entre un Start y un Stop?
 		public function get IsStarted() : Boolean	{	return _IsStarted; 	}

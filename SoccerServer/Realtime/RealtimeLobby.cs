@@ -412,6 +412,7 @@ namespace Realtime
         public List<int> SpecialSkillsIDs;				// Habilidades disponibles, como maximo entraran 9, ID entre 1 e infinito
         public String Formation;						// Nombre de la formacion: "331", "322", etc..
         public int Fitness;                             // Se multiplica en el partido
+        public int MatchesCount;                        // How many matches has the team played
         
         // Todos los futbolistas, ordenados según la posición/formacion. Primero siempre el portero.
         public List<SoccerPlayerData> SoccerPlayers = new List<SoccerPlayerData>();
