@@ -5,105 +5,119 @@ package Match
 	import Box2D.Common.Math.*;
 	import Box2D.actionsnippet.qbox.QuickObject;
 	
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.geom.Point;
 	
-	//
-	// Entidad con aspecto visual y físico 
-	//
-	public class PhyEntity extends Entity
-	{
-		// Tipos de primitivas físicas
-		static public const Circle:int = 1;
-		static public const Box:int = 2;
-				
-		protected var PhyObject:QuickObject = null	// Box2D
+	public class PhyEntity
+	{				
+		protected var _PhyObject:QuickObject = null;	// Box2D
+		protected var _Visual : * = null;
 		
 			
-		public function PhyEntity(assetClass:Class, parent:DisplayObjectContainer, primitiveType:Number, params:Object) : void
+		public function PhyEntity(parent : DisplayObjectContainer, params : Object) : void
 		{
-			// Nosotros nos encargamos de inicializar, nuestro padre no hace nada
-			super(null,null);
-			
-			// Asignamos valores por defecto si no los ha asignado el usuario
-			params.skin = assetClass;
-			if( params.isSleeping == null )
-				params.isSleeping = true;
-			if( params.allowSleep == null )
-				params.allowSleep = true;
-				
-			// Creamos la primitiva física indicada
-			if (primitiveType == Circle)
-				PhyObject = MatchMain.Ref.Game.TheGamePhysics.TheBox2D.addCircle(params);
-			else if(primitiveType == Box)
-				PhyObject = MatchMain.Ref.Game.TheGamePhysics.TheBox2D.addBox(params);
+			_PhyObject = MatchMain.Ref.Game.TheGamePhysics.TheBox2D.addCircle(params);			
 						
-			// Cogemos el objeto visual desde el objeto físico
-			// NOTE: No tenemos control de cuando se está actualizando
-			_Visual = PhyObject.userData;
+			// Cogemos el objeto visual desde el objeto físico. NOTE: No tenemos control de cuando se está actualizando
+			_Visual = _PhyObject.userData;
+			parent.addChild(_Visual);
 			
-			// Si nos han indicado un padre al que linkar lo linkamos
-			if (_Visual != null && parent != null)
-				parent.addChild(_Visual);
-			
-			// Asignamos al userData del "shape" del objeto físico a una referencia a la entidad
-			if (PhyObject != null)
-				PhyObject.shape.m_userData = this;
+			// Guardamos una copia dentro de nosotros mismos dentro del shape (luego en GamePhysics.OnContact se lee de aqui)
+			_PhyObject.shape.m_userData = this;
 		}
 		
-		public override function Destroy() : void
-		{
-			super.Destroy();
+		public function Destroy() : void
+		{	
+			if (_Visual == null || _PhyObject == null)
+				throw new Error("WTF 55");
 			
-			if (PhyObject != null)
-			{
-				PhyObject.destroy();			
-				PhyObject = null;
-			}
-		}		
-	
-		public override function SetPos(pos:Point) : void
+			_Visual.parent.removeChild(_Visual);
+			_Visual = null;
+			
+			_PhyObject.destroy();			
+			_PhyObject = null;
+		}
+
+		public function Draw(elapsed:Number) : void
 		{
-			super.SetPos(pos); 
-			PhyObject.setLoc(MatchConfig.Screen2Physic(pos.x), MatchConfig.Screen2Physic(pos.y)); 
+		}
+
+		public function SetPos(pos:Point) : void
+		{
+			_Visual.x = pos.x;
+			_Visual.y = pos.y;
+			
+			_PhyObject.setLoc(MatchConfig.Screen2Physic(pos.x), MatchConfig.Screen2Physic(pos.y));
 		}
 		
+		public function GetPos() : Point
+		{
+			return new Point(_Visual.x, _Visual.y);
+		}
+		
+		public function get Visual() : *
+		{
+			return _Visual;
+		}
+			
 		public function get PhyBody() : QuickObject
 		{
-			return PhyObject;
+			return _PhyObject;
 		}
-				
-		//
+
 		// Detiene cualquier tipo de movimiento físico que esté realizando la entidad
-		//
 		public function StopMovement() : void
 		{
 			// Dormimos el objeto inmediatamente, para que deje de simular!
-			PhyObject.body.PutToSleep();
-		}
-
-		//
-		// Devuelve si la entidad está o no en movimiento (simulando)
-		//
-		public function get IsMoving() : Boolean
-		{
-			return !PhyObject.body.IsSleeping();
+			_PhyObject.body.PutToSleep();
 		}
 		
-		//
+		// Devuelve si la entidad está o no en movimiento (simulando)
+		public function get IsMoving() : Boolean
+		{
+			return !_PhyObject.body.IsSleeping();
+		}
+		
 		// Immovable Goalkeeper...
-		//
 		public function SetImmovable(immovable : Boolean) : void
 		{
 			var massData : b2MassData = new b2MassData();			
-			massData.I = PhyObject.body.m_I;
+			massData.I = _PhyObject.body.m_I;
 									
 			if (immovable)
 				massData.mass = 0;				
 			else
 				massData.mass = MatchConfig.CapMass;
 			
-			PhyObject.body.SetMass(massData);
+			_PhyObject.body.SetMass(massData);
+		}
+				
+		public function InsideCircle(center:Point, radius:Number) : Boolean
+		{
+			var vDist:Point = center.subtract(GetPos());
+			var length:Number = vDist.length;
+						
+			return length <= radius;
+		}
+		
+		public function NearestEntity(entities:Array) : PhyEntity
+		{
+			var nearestEntity : PhyEntity = null;
+			var nearestDistance : Number = Number.MAX_VALUE;
+			
+			for each(var ent : PhyEntity in entities)
+			{
+				var vDist:Point = ent.GetPos().subtract(this.GetPos());
+				var length:Number = vDist.length;
+				if (length < nearestDistance)
+				{
+					nearestDistance = length;
+					nearestEntity = ent;
+				}
+			}
+			
+			return nearestEntity;
 		}
 	}
 

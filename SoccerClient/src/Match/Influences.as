@@ -12,7 +12,7 @@ package Match
 			var friendCaps:Array = _Game.CurTeam.CapsList;
 			for each( var friend:Cap in friendCaps )
 			{
-				friend.SetInfluenceAspect( Enums.FriendColor, Cap.Radius + BallEntity.Radius + _CurTeam.RadiusPase );
+				friend.SetInfluenceAspect( Enums.FriendColor, Cap.Radius + Ball.Radius + _CurTeam.RadiusPase );
 				friend.ShowInfluence = true;
 			}				
 			
@@ -22,7 +22,7 @@ package Match
 			
 			for each (var enemy:Cap in enemyCaps)
 			{
-				enemy.SetInfluenceAspect( Enums.EnemyColor, Cap.Radius + BallEntity.Radius + enemyTeam.RadiusSteal );
+				enemy.SetInfluenceAspect( Enums.EnemyColor, Cap.Radius + Ball.Radius + enemyTeam.RadiusSteal );
 				enemy.ShowInfluence = true;
 			}
 		}
@@ -50,7 +50,7 @@ package Match
 					
 					for each( var friend:Cap in potential )
 					{
-						friend.SetInfluenceAspect( Enums.FriendColor, Cap.Radius + BallEntity.Radius + _CurTeam.RadiusPase );
+						friend.SetInfluenceAspect( Enums.FriendColor, Cap.Radius + Ball.Radius + _CurTeam.RadiusPase );
 						friend.ShowInfluence = true;
 					}
 					
@@ -67,11 +67,11 @@ package Match
 				if (_Game.TheGamePhysics.HasTouchedBallAny(_CurTeam))
 				{
 					var enemyTeam:Team = _CurTeam.AgainstTeam();
-					var enemyCaps:Array = enemyTeam.InsideCircle(_Game.TheBall.GetPos(), Cap.Radius + BallEntity.Radius + enemyTeam.RadiusSteal);
+					var enemyCaps:Array = enemyTeam.InsideCircle(_Game.TheBall.GetPos(), Cap.Radius + Ball.Radius + enemyTeam.RadiusSteal);
 					
 					for each( var enemy:Cap in enemyCaps )
 					{
-						enemy.SetInfluenceAspect( Enums.EnemyColor, Cap.Radius + BallEntity.Radius + enemyTeam.RadiusSteal );
+						enemy.SetInfluenceAspect( Enums.EnemyColor, Cap.Radius + Ball.Radius + enemyTeam.RadiusSteal );
 						enemy.ShowInfluence = true;
 					}
 					

@@ -11,15 +11,6 @@ namespace DBUpdater
     {
         static public void RefreshLevel(string connectionString)
         {
-            // Determinar en que version estamos
-
-            // Determinar hasta que version hay en el HD
-            // Determinar hasta que version tenemos en las funciones
-            // Cual es la maxima?
-
-            // Correr hasta la maxima!
-
-            // NOTE: El SoccerDataContext debera ser uno "compatible" con todas las operaciones que se hagan, el ultimo en general.
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
@@ -47,5 +38,33 @@ namespace DBUpdater
                 }
             }
         }
+
+        static public void GiftMatches20(string connectionString)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+
+                SoccerDataModelDataContext theContext = new SoccerDataModelDataContext(con);
+                                
+                DateTime now = DateTime.Now;
+                var notEngaged = theContext.Players.Where(p => p.Team != null && (now - p.LastSeen).TotalDays >= 7).ToList();
+
+                Console.Out.WriteLine(String.Format("Updating {0} players", notEngaged.Count()));
+
+                string sql = "UPDATE [SoccerV2].[dbo].[TeamPurchases] SET [RemainingMatches]=@remaining WHERE [TeamPurchaseID]=@teamPurchaseID";
+
+                foreach (var player in notEngaged)
+                {
+                    SqlCommand cmd = new SqlCommand(sql, con);
+
+                    cmd.Parameters.Add(new SqlParameter("@teamPurchaseID", player.PlayerID));
+                    cmd.Parameters.Add(new SqlParameter("@remaining", 20));
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
     }
 }

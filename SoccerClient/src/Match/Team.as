@@ -68,7 +68,7 @@ package Match
 			// El equipo 1 empieza en el lado izquierdo y el 2 en el derecho
 			if (TeamId == Enums.Team1)
 				_Side = Enums.Left_Side;
-			else if(TeamId == Enums.Team2)
+			else
 				_Side = Enums.Right_Side;
 			
 			// Asignamos la posición inicial de cada chapa según la alineación y lado del campo en el que se encuentran
@@ -344,6 +344,14 @@ package Match
 			}
 		}
 		
+		public function Draw(elapsed:Number) : void
+		{
+			for each(var cap : Cap in _CapsList)
+			{
+				cap.Draw(elapsed);
+			}
+		}
+		
 		// 
 		// Obtenemos el radio de pase al pie del equipo, teniendo en cuenta las habilidades especiales.
 		//
@@ -380,7 +388,7 @@ package Match
 			var groupIdx:int = 0;
 			for each (var group:Array in TeamGroups.Groups)
 			{
-				groupIdx ++;
+				groupIdx++;
 				for each (var name:String in group)
 				{
 					if (name == teamNameID)

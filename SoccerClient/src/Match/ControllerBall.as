@@ -11,7 +11,7 @@ package Match
 	{
 		public function ControllerBall(canvas:Sprite)		
 		{
-			_MaxLengthLine = Cap.Radius + BallEntity.Radius + MatchConfig.DistToPutBallHandling;
+			_MaxLengthLine = Cap.Radius + Ball.Radius + MatchConfig.DistToPutBallHandling;
 			_Canvas = canvas;
 			_ColorLine = COLOR;
 			_Thickness = THICKNESS;
@@ -93,7 +93,7 @@ package Match
 		{
 			// Obtenemos la dirección y la normalizamos a la distancia correcta 
 			var dir:Point = Direction;
-			dir.normalize( Cap.Radius + BallEntity.Radius + MatchConfig.DistToPutBallHandling );
+			dir.normalize( Cap.Radius + Ball.Radius + MatchConfig.DistToPutBallHandling );
 			var newPos:Point = Target.GetPos().add( dir );
 			
 			return newPos;

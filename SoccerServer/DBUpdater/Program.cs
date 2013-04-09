@@ -19,27 +19,30 @@ namespace DBUpdater
         {
             [CommandLineParameter(Name = "operation", ParameterIndex = 1, Required = true, Description = "update / delete_all / backup / restore")]
             public string Operation { get; set; }
-        }
 
-        static string ConnectionStringLocalhost  = "Data Source=localhost;Initial Catalog=SoccerV2;Integrated Security=True";
-        // static string ConnectionStringAmazon = "Data Source=sql01.unusualsoccer.com;Initial Catalog=SoccerV2;User ID=sa;Password=Rinoplastia123&.";
+            [CommandLineParameter(Command = "Amazon", Required = false, Description = "Live environment")]
+            public bool Amazon { get; set; }
+        }
         
         static void Main(string[] args)
         {
             try
             {
                 var options = CommandLine.Parse<Options>();
-
+                var connString = GetConnectionString(options);
+                               
                 if (options.Operation == "update")
-                    UpdateOperation.Run(ConnectionStringLocalhost);
+                    UpdateOperation.Run(connString);
                 else if (options.Operation == "delete_all")
-                    DeleteAllOperation.Run(ConnectionStringLocalhost);
+                    DeleteAllOperation.Run(connString);
                 else if (options.Operation == "backup")
-                    BackupOperation.Run(ConnectionStringLocalhost);
+                    BackupOperation.Run(connString);
                 else if (options.Operation == "restore")
-                    RestoreOperation.Run(ConnectionStringLocalhost);
+                    RestoreOperation.Run(connString);
                 else if (options.Operation == "refresh_level")
-                    MiscOperations.RefreshLevel(ConnectionStringLocalhost);
+                    MiscOperations.RefreshLevel(connString);
+                else if (options.Operation == "gift_matches_20")
+                    MiscOperations.GiftMatches20(connString);
                 else
                     Console.Out.WriteLine("Unknown operation");
             }
@@ -50,7 +53,26 @@ namespace DBUpdater
                 Console.Out.WriteLine("");
                 Console.Out.Write(exc.StackTrace);                
             }
-        }     
+        }
+
+        static string GetConnectionString(Options options)
+        {
+            string ConnectionStringLocalhost  = "Data Source=localhost;Initial Catalog=SoccerV2;Integrated Security=True";
+            string ConnectionStringAmazon = "Data Source=sql01.unusualsoccer.com;Initial Catalog=SoccerV2;User ID=sa;Password=Rinoplastia123&.";
+            string ret = ConnectionStringLocalhost;
+
+            if (options.Amazon)
+            {
+                Console.Out.WriteLine("This will update the real DB in Amazon!!! Are you sure? (Y/N)");
+
+                if (Console.ReadKey(true).KeyChar.ToString().ToUpper() == "Y")
+                {
+                    Console.Out.WriteLine("Using Amazon live environment");
+                    ret = ConnectionStringAmazon;
+                }
+            }
+            return ret;
+        }
     }
 
 }
