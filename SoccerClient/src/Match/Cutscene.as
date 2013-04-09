@@ -57,12 +57,16 @@ package Match
 			var loser : Cap = conflict.Stolen? conflict.AttackerCap : conflict.DefenderCap;;
 			var paramWinner : Number = conflict.Stolen? conflict.Defense : conflict.Control;
 			var paramLoser : Number = conflict.Stolen? conflict.Control : conflict.Defense;
+			var paramWinnerTit : String = conflict.Stolen? ResourceManager.getInstance().getString("main", "MatchDefinitionDefense") : ResourceManager.getInstance().getString("main", "MatchDefinitionControl");
+			var paramLoserTit : String = conflict.Stolen? ResourceManager.getInstance().getString("main", "MatchDefinitionControl") : ResourceManager.getInstance().getString("main", "MatchDefinitionDefense");
 
 			var mcWinner : MovieClip = LaunchCutScene(ResourceManager.getInstance().getClass("match", "ConflictoGana"), winner.Visual.x, winner.Visual.y);		
 			mcWinner.ConflictoNum.Num.text = paramWinner.toString();
+			mcWinner.ConflictoNum.Tit.text = paramWinnerTit;
 			
 			var mcLoser : MovieClip = LaunchCutScene(ResourceManager.getInstance().getClass("match", "ConflictoPierde"), loser.Visual.x, loser.Visual.y);
 			mcLoser.ConflictoNum.Num.text = paramLoser.toString();
+			mcLoser.ConflictoNum.Tit.text = paramLoserTit;
 		}
 	
 		
