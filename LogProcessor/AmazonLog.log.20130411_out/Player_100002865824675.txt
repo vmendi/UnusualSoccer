@@ -1,0 +1,10 @@
+IP-0AF0065B 21:29:36.241 [ERROR] [19] [HttpService.MainService] CLIENT_ERROR:100002865824675 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 21:29:37.301 [ERROR] [19] [HttpService.MainService] CLIENT_ERROR:100002865824675 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 21:29:37.769 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100002865824675 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 21:29:40.811 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100002865824675 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 21:29:41.638 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100002865824675 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 21:29:43.807 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100002865824675 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 21:29:44.602 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100002865824675 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 21:29:44.977 [ERROR] [19] [HttpService.MainService] CLIENT_ERROR:100002865824675 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 21:29:46.006 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100002865824675 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 21:29:49.937 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100002865824675 - Intento de SwitchLookingForMatchResponded con el partido corriendo

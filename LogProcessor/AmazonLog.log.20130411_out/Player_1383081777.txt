@@ -1,0 +1,2 @@
+IP-0AF0065B 18:07:55.654 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:1383081777 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 18:07:56.606 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:1383081777 - Intento de SwitchLookingForMatchResponded con el partido corriendo

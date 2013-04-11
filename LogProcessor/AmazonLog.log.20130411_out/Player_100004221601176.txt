@@ -1,0 +1,5 @@
+IP-0AF0065B 16:22:42.891 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004221601176 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 16:22:42.891 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004221601176 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 16:22:42.891 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004221601176 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 16:22:42.891 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004221601176 - Intento de SwitchLookingForMatchResponded con el partido corriendo
+IP-0AF0065B 16:22:42.891 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004221601176 - Intento de SwitchLookingForMatchResponded con el partido corriendo
