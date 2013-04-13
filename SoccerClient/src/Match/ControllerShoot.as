@@ -98,7 +98,7 @@ package Match
 		}
 		
 		private function DrawPredictiveGizmo() : void
-		{			
+		{
 			// Queremos calcular el lugar exacto al que llegará la chapa si no choca con nada. Hacemos lo mismo que hace el Box2D
 			var impulse:Number = Force * MatchConfig.HighCapMaxImpulse;
 			

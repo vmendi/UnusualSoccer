@@ -4,7 +4,7 @@ package Match
 	{
 		public static var 	MatchId:int = -1;					// Identificador del partido en el servidor
 		public static var 	IdLocalUser:int = -1;				// Identificador del usuario local (a quien controlamos nosotros desde el cliente)
-		public static var 	PartTime:Number = 60.0;				// Tiempo que dura cada parte (en segundos)
+		public static var 	PartTime:Number = 180.0;			// Tiempo que dura cada parte (en segundos)
 		public static var 	TurnTime:Number = 15.0;				// Tiempo máximo que dura cada sub-turno (en segundos)
 		
 		public static var	Debug:Boolean = false;				// Indica que estamos en modo debug. Se habilitan trucos/trazas y similares
@@ -12,9 +12,9 @@ package Match
 		
 		public static const DebugPhysic:Boolean = false;		// Indica si depuramos la física (pintar el mundo físico)
 		public static const DragPhysicObjects:Boolean = false;	// Indica si podemos arrastrar los objetos físicos con el ratón
-		public static const DrawBackground:Boolean = true;		// Pintar el fondo del juego ? (util en combinacion con DebugPhysic)		
+		public static const DrawField:Boolean = true;			// Pintar el campo del juego ? (util en combinacion con DebugPhysic)		
 				
-		public static const ClientVersion:int = 204;			// Versión del cliente
+		public static const ClientVersion:int = 205;			// Versión del cliente
 				
 		public static const PhyFPS:int = 30;					// La física se ejecuta 30 veces por segundo
 		public static const PixelsPerMeter:uint = 30;			// 30 píxeles es igual a 1 metro físico
@@ -75,13 +75,13 @@ package Match
 		//
 		// Conversión de unidades de pantalla (pixels) a unidades del motor de física (metros)
 		//
-		static public function Screen2Physic( val:Number ) : Number
+		static public function Screen2Physic(val:Number) : Number
 		{
-			return( val / PixelsPerMeter );  
+			return(val / PixelsPerMeter);  
 		}
-		static public function Physic2Screen( val:Number ) : Number
+		static public function Physic2Screen(val:Number) : Number
 		{
-			return( val * PixelsPerMeter );  
+			return(val * PixelsPerMeter);  
 		}
 		
 	}

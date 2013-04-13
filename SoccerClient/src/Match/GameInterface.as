@@ -40,31 +40,34 @@ package Match
 		private var _ShootControl:ControllerShoot;		// Control de disparo : Se encarga de pintar/gestionar la flecha de disparo
 		private var _BallControl:ControllerBall;		// Control para posicionar la pelota
 		private var _PosControl:ControllerPos;			// Control para posicionar chapas (lo usamos solo para el portero)
-		private var _ControllerCanvas:Sprite;			// El contenedor donde se pinta las flecha de direccion
-		
+				
 		private var _TotalTimeoutTime:Number = 0;		// Tiempo total que representa la tarta
 		private var _Gui : *;							// Los elementos del interface que nos vienen preinstanciados como hijos
 
 		
 		public function set TotalTimeoutTime(val : Number) : void { _TotalTimeoutTime = val; }
+		public function get GUI() : * { return _Gui; }
 		
 		
 		public function GameInterface(theGame : Game) : void
 		{
 			_Game = theGame;
-			_Gui = _Game.TheField.Visual;
+			_Gui = _Game.FieldLayer.addChild(new (ResourceManager.getInstance().getClass("match", "Field") as Class)());
+			
+			if (!MatchConfig.DrawField)
+				_Gui.visible = false;
 			
 			// Canvas de pintado compartido entre todos los controllers. Lo añadimos al principio del interface, 
 			// para que se pinte encima de la GameLayer pero por debajo de todo lo de la GUILayer
-			_ControllerCanvas = _Game.GUILayer.addChild(new Sprite()) as Sprite;
+			var controllerCanvas : Sprite = _Game.GUILayer.addChild(new Sprite()) as Sprite;
 			
 			// Los botones se crean tambien en la GUILayer, por debajo de Cutscenes y PanelInfo
 			CreateSpecialSkillButtons(_Game.GUILayer);
 
 			// Inicializamos los controladores (disparo, balón, posición)
-			_ShootControl = new ControllerShoot(_ControllerCanvas);
-			_BallControl = new ControllerBall(_ControllerCanvas);
-			_PosControl = new ControllerPos(_ControllerCanvas);
+			_ShootControl = new ControllerShoot(controllerCanvas);
+			_BallControl = new ControllerBall(controllerCanvas);
+			_PosControl = new ControllerPos(controllerCanvas);
 			
 			_ShootControl.OnStop.add(OnStopControllerShoot);
 			_BallControl.OnStop.add(OnStopControllerBall);

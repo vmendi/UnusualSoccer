@@ -67,8 +67,8 @@ package Match
 		//
 		public override function IsValid() : Boolean
 		{
-			return MatchMain.Ref.Game.TheField.IsPointFreeInsideField(EndPos, true, this.Target) &&
-				   MatchMain.Ref.Game.TheField.IsCircleInsideSmallArea(EndPos, 0, this.Target.OwnerTeam.Side);
+			return MatchMain.Ref.Game.TheGamePhysics.IsPointFreeInsideField(EndPos, true, this.Target) &&
+				   Field.IsCircleInsideSmallArea(EndPos, 0, this.Target.OwnerTeam.Side);
 		}
 		
 		// Genera una Stop tanto si el controlador IsValid como si no

@@ -7,6 +7,7 @@ package Match
 	import mx.resources.ResourceManager;
 	
 	import utils.Delegate;
+	import utils.MovieClipMouseDisabler;
 
 	public class Game
 	{
@@ -20,22 +21,27 @@ package Match
 
 		// --> PhyLayer
 		//    --> Solo el debug de Box2D
-		// --> GameLayer
-		//    --> TheField.Visual
-		//       --> Influences
+		// --> FieldLayer
+		//    --> GameInterface.GUI
+		// -- InfluencesLayer
+		//    --> Influences
+		// --> GameLayer		
 		//    --> Chapas & Balon
 		// --> GUILayer
 		//    --> Los controllers
-		//    --> Los botones de las SpecialSkills
+		//    --> Los botones de las SpecialSkills (GameInterface.GUI deberia estar aqui!)
 		//	  --> PanelInfo
 		//    --> Cutscene
 		// --> ChatLayer
 		//    --> mcChat dentro de Chat
 		//
-		public var PhyLayer:MovieClip; 
+		public var PhyLayer:MovieClip;
+		public var FieldLayer:MovieClip;
+		public var InfluencesLayer:MovieClip;
 		public var GameLayer:MovieClip;
 		public var GUILayer:MovieClip;	
 		public var ChatLayer:MovieClip;
+		public var DebugLayer:MovieClip;
 		
 		private var _Cutscene:Cutscene;
 		private var _Chat:Chat;
@@ -138,11 +144,10 @@ package Match
 
 			TheAudioManager = new AudioManager();
 			TheGamePhysics = new GamePhysics(this, 1.0/_Parent.stage.frameRate);
-			TheField = new Field(this);
 			TheBall = new Ball(this);
 			
-			// Creamos las porterias al final para que se pinten por encima de todo
-			TheField.CreatePorterias();
+			// Las porterias las ultimas para que el balon pase por debajo
+			Field.CreateVisualGoals(GameLayer);
 			
 			// Registramos sonidos para lanzarlos luego 
 			TheAudioManager.AddClass("SoundCollisionCapBall", ResourceManager.getInstance().getClass("match", "SoundCollisionCapBall"));			
@@ -186,9 +191,12 @@ package Match
 		public function CreateLayers() : void
 		{
 			PhyLayer = _Parent.addChild(new MovieClip()) as MovieClip;
+			FieldLayer = _Parent.addChild(new MovieClip()) as MovieClip;
+			InfluencesLayer = _Parent.addChild(new MovieClip()) as MovieClip;
 			GameLayer = _Parent.addChild(new MovieClip()) as MovieClip;
 			GUILayer = _Parent.addChild(new MovieClip()) as MovieClip;
 			ChatLayer = _Parent.addChild(new MovieClip()) as MovieClip;
+			DebugLayer = _Parent.addChild(new MovieClip()) as MovieClip;
 		}
 		
 		public function Draw(elapsed:Number) : void
@@ -432,6 +440,11 @@ package Match
 				// Comienza la simulacion!
 				ChangeState(GameState.Simulating);
 				
+				/****
+				 * TEST
+				 * ****/
+				TheGamePhysics.CreateNewPrediction().NewPrediction(cap, new ShootInfo(new Point(dirX, dirY), force));
+				
 				// Ejecucion del tiro del atacante
 				TheGamePhysics.Shoot(cap, new ShootInfo(new Point(dirX, dirY), force));
 			}
@@ -477,7 +490,7 @@ package Match
 					var dir:Point = attacker.GetPos().subtract(defender.GetPos());
 					
 					// Movemos la chapa en una dirección una cantidad (probamos varios puntos intermedios si colisiona) 
-					TheField.MoveCapInDir(attacker, dir, 80, true, 4);
+					TheGamePhysics.MoveCapInDir(attacker, dir, 80, true, 4);
 				}
 				
 				// Tenemos que sacar de puerta al tratarse de una falta al portero?
@@ -654,7 +667,7 @@ package Match
 			var enemy:Team = team.AgainstTeam();
 
 			// Si el portero del enemigo está dentro del area GRANDE, cambiamos el turno al enemigo...
-			if (TheField.IsCapCenterInsideBigArea(enemy.GoalKeeper))
+			if (Field.IsCapCenterInsideBigArea(enemy.GoalKeeper))
 				SetTurn(enemy.TeamId, Enums.TurnTiroAPuerta);		// ... y una vez que se termine su turno se llamará a OnGoalKeeperSet
 			else
 				OnGoalKeeperSet(enemy.TeamId);						// El portero no está en el area, saltamos directamente a portero colocado	
@@ -801,7 +814,7 @@ package Match
 				_Cutscene.ShowQuedanTiros(_RemainingHits);
 			
 			// Si salimos del subturno con el goalkeeper fuera del area, lo advertimos
-			if (!TheField.IsCapCenterInsideBigArea(CurTeam.GoalKeeper) && CurTeam.IsLocalUser)
+			if (!Field.IsCapCenterInsideBigArea(CurTeam.GoalKeeper) && CurTeam.IsLocalUser)
 				_Cutscene.ShowMsgGoalkeeperOutside(_RemainingHits == 0);
 			
 			//
@@ -943,7 +956,7 @@ package Match
 			// Immoveable goalkeeper
 			CurTeam.GoalKeeper.SetImmovable(false);
 			
-			if (TheField.IsCapCenterInsideSmallArea(CurTeam.AgainstTeam().GoalKeeper) && reason != Enums.TurnGoalKeeperSet)
+			if (Field.IsCapCenterInsideSmallArea(CurTeam.AgainstTeam().GoalKeeper) && reason != Enums.TurnGoalKeeperSet)
 				CurTeam.AgainstTeam().GoalKeeper.SetImmovable(true);
 			else
 				CurTeam.AgainstTeam().GoalKeeper.SetImmovable(false);
@@ -1014,8 +1027,8 @@ package Match
 			var enemy : Team = CurTeam.AgainstTeam();
 			
 			// El portero por supuesto tiene que estar dentro del area pequeña
-			return TheField.IsCapCenterInsideSmallArea(enemy.GoalKeeper) &&
-				   TheField.IsPointInsideSmallArea(ballPos, enemy.Side);
+			return Field.IsCapCenterInsideSmallArea(enemy.GoalKeeper) &&
+				   Field.IsPointInsideSmallArea(ballPos, enemy.Side);
 		}
 		
 		// Comprueba si se ha declarado tiro a puerta o si se posee la habilidad especial mano de dios

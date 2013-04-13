@@ -12,31 +12,32 @@ package Match
 	{
 		static public const Radius:Number = 9;
 		
-		// Ultima posicion donde se forzo la posicion o donde paro despues de una simulacion
-		public function get LastPosBallStopped() : Point { return _LastPosBallStopped; }
-		
+				
 		public function Ball(game:Game) : void
 		{
-			super(game.GameLayer, {
-				  skin: ResourceManager.getInstance().getClass("match", "BalonAnimado"),
-				  categoryBits:4,
-				  maskBits: 1 + 2 + 4,			// Choca con todo excepto con BackPorteria (que tiene categoryBits==8)
-				  mass: MatchConfig.BallMass, 	// 0.04
-				  fixedRotation: true,			// If set to true the rigid body will not rotate.
-				  isBullet: true, 				// UseCCD: Detección de colisión continua
-				  radius:MatchConfig.Screen2Physic(Radius),
-				  isSleeping: true,
-				  allowSleep: true, 
-				  linearDamping: MatchConfig.BallLinearDamping, 
-				  angularDamping: MatchConfig.BallLinearDamping, 
-				  friction: .2, 
-				  restitution: .8 }, game);		// Fuerza que recupera en un choque
+			super(game.GameLayer, ResourceManager.getInstance().getClass("match", "BalonAnimado"), game);
 			
 			// Reasignamos la escala del balón, ya que la física lo escala para que encaje con el radio físico asignado
 			this.Visual.scaleX = 1.0;
 			this.Visual.scaleY = 1.0;
 			
 			this.SetPosInFieldCenter();
+		}
+		
+		protected override function get PhysicsParams():Object
+		{
+			return { categoryBits:4,
+					 maskBits: 1 + 2 + 4,			// Choca con todo excepto con BackPorteria (que tiene categoryBits==8)
+					 mass: MatchConfig.BallMass, 	// 0.04
+					 fixedRotation: true,			// If set to true the rigid body will not rotate.
+				     isBullet: true, 				// UseCCD: Detección de colisión continua
+					 radius:MatchConfig.Screen2Physic(Radius),
+					 isSleeping: true,
+					 allowSleep: true, 
+					 linearDamping: MatchConfig.BallLinearDamping, 
+					 angularDamping: MatchConfig.BallLinearDamping, 
+					 friction: .2, 
+					 restitution: .8 };
 		}
 		
 		
@@ -110,6 +111,12 @@ package Match
 		public function SetPosInFieldCenter() : void
 		{
 			SetPos(new Point(Field.CenterX, Field.CenterY));
+		}
+		
+		// Ultima posicion donde se forzo la posicion o donde paro despues de una simulacion
+		public function get LastPosBallStopped() : Point 
+		{ 
+			return _LastPosBallStopped; 
 		}
 						
 		private var _LastPosBallStopped:Point = null;

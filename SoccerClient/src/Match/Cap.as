@@ -81,18 +81,7 @@ package Match
 		
 		public function Cap(team:Team, id:int, descCap:Object, useSecondaryEquipment:Boolean, game : Game) : void
 		{			
-			super(game.GameLayer, { 
-				  skin: ResourceManager.getInstance().getClass("match", "Cap"),
-				  radius: MatchConfig.Screen2Physic(Radius),
-				  categoryBits: 1,								// Choca con todo
-				  isBullet: true, 								// UseCCD: Detección de colisión continua (Ninguna chapa se debe atravesar)
-				  mass: MatchConfig.CapMass,
-				  isSleeping: true,
-				  allowSleep: true, 
-				  friction: .3, 
-			      restitution: .8,								// Fuerza que recupera en un choque
-				  linearDamping: MatchConfig.CapLinearDamping, 
-				  angularDamping: MatchConfig.CapLinearDamping }, game);
+			super(game.GameLayer, ResourceManager.getInstance().getClass("match", "Cap"), game);
 									
 			// Elegimos el asset de jugador o portero y con la equipación primaria o secundaria
 			PrepareVisualCap(_Visual, team.PredefinedTeamNameID, useSecondaryEquipment, id == 0)
@@ -121,13 +110,27 @@ package Match
 			// Creamos un Sprite linkado a la chapa, donde pintaremos los radios de influencia de la chapa
 			// Estos sprites los introducimos como hijos del campo, para asegurar que se vean debajo de las chapas 
 			_Influence = new Sprite();
-			_Game.TheField.Visual.addChild(_Influence);
+			_Game.InfluencesLayer.addChild(_Influence);
 			DrawInfluence();
 			_Influence.alpha = 0.0;
 						
 			// Solo mostramos la foto de los amigos del equipo local (privacidad...)
 			if (team.IsLocalUser) // Ahora si ahora no (3/23/2013, 4/10/2013)
 				LoadFacebookPicture(descCap.FacebookID);
+		}
+		
+		protected override function get PhysicsParams() : Object
+		{
+			return { radius: MatchConfig.Screen2Physic(Radius),
+					 categoryBits: 1,								// Choca con todo
+					 isBullet: true, 								// UseCCD: Detección de colisión continua (Ninguna chapa se debe atravesar)
+					 mass: MatchConfig.CapMass,
+					 isSleeping: true,
+					 allowSleep: true, 
+					 friction: .3, 
+					 restitution: .8,								// Fuerza que recupera en un choque
+					 linearDamping: MatchConfig.CapLinearDamping, 
+					 angularDamping: MatchConfig.CapLinearDamping };	
 		}
 		
 		static public function PrepareVisualCap(visualCap : *, predefinedTeamNameID : String, useSecondary : Boolean, isGoalKeeper : Boolean) : void

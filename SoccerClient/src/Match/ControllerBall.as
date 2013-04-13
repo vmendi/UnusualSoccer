@@ -33,7 +33,7 @@ package Match
 		public override function IsValid() : Boolean
 		{
 			// NOTE: Indicamos que no tenga en cuenta el balón, ya que es el mismo el que estamos colocando
-			return MatchMain.Ref.Game.TheField.IsPointFreeInsideField(EndPos, false, this.Target);
+			return MatchMain.Ref.Game.TheGamePhysics.IsPointFreeInsideField(EndPos, false, this.Target);
 		}
 
 		public override function MouseUp(e: MouseEvent) : void

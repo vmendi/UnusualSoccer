@@ -3,6 +3,7 @@ package Match
 	import Box2D.Collision.Shapes.b2MassData;
 	import Box2D.Common.*;
 	import Box2D.Common.Math.*;
+	import Box2D.actionsnippet.qbox.QuickBox2D;
 	import Box2D.actionsnippet.qbox.QuickObject;
 	
 	import flash.display.DisplayObject;
@@ -15,10 +16,14 @@ package Match
 		protected var _Visual : *;
 		protected var _PhyObject : QuickObject;		// Box2D
 			
-		public function PhyEntity(parent : DisplayObjectContainer, params : Object, game : Game) : void
+		public function PhyEntity(parent : DisplayObjectContainer, visualClass : Class, game : Game) : void
 		{
 			_Game = game;
-			_PhyObject = _Game.TheGamePhysics.TheBox2D.addCircle(params);
+			
+			var thePhysicsParams : Object = PhysicsParams;
+			thePhysicsParams.skin = visualClass;
+			
+			_PhyObject = _Game.TheGamePhysics.TheBox2D.addCircle(thePhysicsParams);
 						
 			// Cogemos el objeto visual desde el objeto físico. NOTE: No tenemos control de cuando se está actualizando
 			_Visual = _PhyObject.userData;
@@ -26,6 +31,25 @@ package Match
 			
 			// Guardamos una copia dentro de nosotros mismos dentro del shape (luego en GamePhysics.OnContact se lee de aqui)
 			_PhyObject.shape.m_userData = this;
+		}
+		
+		public function ClonePhysics(box2d : QuickBox2D) : QuickObject
+		{
+			if (IsMoving)
+				throw new Error("WTF 667 - El clonado se debe hacer en reposo");
+			
+			var newPhyObj : QuickObject = box2d.addCircle(PhysicsParams);
+			var ourPos : Point = GetPos();
+			
+			newPhyObj.setLoc(MatchConfig.Screen2Physic(ourPos.x), MatchConfig.Screen2Physic(ourPos.y));
+			
+			return newPhyObj;
+		}
+		
+		// Our children (cap, ball...) will take charge of returning their physics params for creation 
+		protected function get PhysicsParams() : Object
+		{
+			return new Object();
 		}
 		
 		public function Destroy() : void

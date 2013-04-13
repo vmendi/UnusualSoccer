@@ -1,19 +1,20 @@
 package Match
 {
+	import Box2D.Collision.Shapes.b2Shape;
 	import Box2D.Common.Math.b2Vec2;
 	import Box2D.actionsnippet.qbox.QuickBox2D;
 	import Box2D.actionsnippet.qbox.QuickContacts;
+	import Box2D.actionsnippet.qbox.QuickObject;
 	
 	import com.greensock.*;
 	
-	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.geom.Point;
 
 	public final class GamePhysics
 	{
 		public var TheBox2D:QuickBox2D;
-		
+				
 		public function get IsSimulating() : Boolean { return _SimulatingShoot;	}
 		public function get TimeStep() : Number { return _TimeStep; }
 		
@@ -47,6 +48,14 @@ package Match
 			
 			return _Game.TeamInSide(Enums.AgainstSide(SideGoal))
 		}
+		
+		public function CreateNewPrediction() : GamePhysicsPredictions
+		{
+			if (_LastGamePhysicsPrediction != null)
+				_LastGamePhysicsPrediction.Shutdown();
+			
+			return (_LastGamePhysicsPrediction = new GamePhysicsPredictions(_Game, this));
+		}
 
 		public function GamePhysics(game : Game, theTimeStep:Number)
 		{
@@ -63,9 +72,12 @@ package Match
 			
 			_Contacts = TheBox2D.addContactListener();
 			_Contacts.addEventListener(QuickContacts.ADD, OnContact);
-						
-			// Para poder hacer proceso (olvidar contactos) antes que el RENDER, que es donde se calcula la simulacion
+
+			// Para poder hacer proceso (olvidar contactos) antes que el onRender del QuickObject2D, que es donde se calcula la simulacion
 			TheBox2D.main.addEventListener(Event.ENTER_FRAME, OnPhysicsEnterFrame);
+			
+			// El campo crea todos los muros y sensores
+			Field.CreateFieldPhysics(TheBox2D);
 		}
 		
 		private function OnPhysicsEnterFrame(e:Event) : void
@@ -75,7 +87,8 @@ package Match
 		}
 		
 		public function Start() : void
-		{			
+		{
+			// Empieza a escuchar el evento ENTER_FRAME
 			TheBox2D.start();
 		}
 		
@@ -104,6 +117,20 @@ package Match
 			}
 		}
 		
+		static public function IsCurrentContact(contacts : QuickContacts, quickObject : QuickObject, userData : String) : Boolean
+		{
+			var shape1:b2Shape = contacts.currentPoint.shape1;
+			var shape2:b2Shape = contacts.currentPoint.shape2;
+			
+			if (shape1.GetBody() == quickObject.body && shape2.GetUserData() == userData) 
+				return true;
+			
+			if (shape2.GetBody() == quickObject.body && shape1.GetUserData() == userData)
+				return true;
+
+			return false;
+		}
+		
 		//
 		// Se llama cada vez que 2 cuerpos físicos producen un contacto
 		// NOTE: - Lo utilizamos para detectar cuando se produce gol
@@ -115,64 +142,59 @@ package Match
 			if (IsGoal || IsFault)
 				return;
 			
-			//if (e.type == QuickContacts.ADD)
+			// Detectamos GOL: Para ello comprobamos si ha habido un contacto entre los sensores de las porterías y el balón
+			if (IsCurrentContact(_Contacts, _Game.TheBall.PhyObj, "GoalLeftSensor"))
+				_SideGoal = Enums.Left_Side;
+			else
+			if(IsCurrentContact(_Contacts, _Game.TheBall.PhyObj, "GoalRightSensor"))
+				_SideGoal = Enums.Right_Side;
+
+				
+			// Obtenemos las entidades que han colisionado (están dentro del userData de las shapes)
+			var ent1:PhyEntity = _Contacts.currentPoint.shape1.m_userData as PhyEntity;
+			var ent2:PhyEntity = _Contacts.currentPoint.shape2.m_userData as PhyEntity;
+			
+			var ball:Ball = null;
+			var cap:Cap = null;
+			
+			// Determinamos si una de las entidades colisionadas es el balón
+			if(ent1 is Ball) ball = ent1 as Ball;
+			if(ent2 is Ball) ball = ent2 as Ball;
+			
+			// Determinamos si una de las entidades colisionadas es una chapa
+			if(ent1 is Cap) cap = ent1 as Cap;
+			if(ent2 is Cap) cap = ent2 as Cap;
+			
+			// Tenemos una colisión entre una chapa y el balón?
+			if (cap != null && ball != null)
 			{
-				// Detectamos GOL: Para ello comprobamos si ha habido un contacto entre los sensores de las porterías y el balón				
-				if (_Contacts.isCurrentContact(_Game.TheBall.PhyObj, _Game.TheField.GoalLeftPhyObj))
-					_SideGoal = Enums.Left_Side;
-				else 
-				if( _Contacts.isCurrentContact(_Game.TheBall.PhyObj, _Game.TheField.GoalRightPhyObj))
-					_SideGoal = Enums.Right_Side;
+				_TouchedCaps.push(cap);
+				_TouchedCapsLastRun.push(cap);
+									
+				_Game.TheAudioManager.Play("SoundCollisionCapBall");
+			}
+			else
+			{
+				// chapa / chapa
+				if (ent1 is Cap && ent2 is Cap)
+					_Game.TheAudioManager.Play("SoundCollisionCapCap");
+				// chapa / muro 
+				else if(cap != null && (ent1 == null || ent2 == null)) 
+					_Game.TheAudioManager.Play( "SoundCollisionWall");
+				// balón / muro 
+				else if(ball != null && (ent1 == null || ent2 == null))
+					_Game.TheAudioManager.Play("SoundCollisionWall");
 			}
 			
-			//if( e.type == QuickContacts.RESULT )
-			{
-				// Obtenemos las entidades que han colisionado (están dentro del userData de las shapes)
-				var ent1:PhyEntity = _Contacts.currentPoint.shape1.m_userData as PhyEntity;
-				var ent2:PhyEntity = _Contacts.currentPoint.shape2.m_userData as PhyEntity;
-				
-				var ball:Ball = null;
-				var cap:Cap = null;
-				
-				// Determinamos si una de las entidades colisionadas es el balón
-				if(ent1 is Ball) ball = ent1 as Ball;
-				if(ent2 is Ball) ball = ent2 as Ball;
-				
-				// Determinamos si una de las entidades colisionadas es una chapa
-				if(ent1 is Cap) cap = ent1 as Cap;
-				if(ent2 is Cap) cap = ent2 as Cap;
-				
-				// Tenemos una colisión entre una chapa y el balón?
-				if (cap != null && ball != null)
-				{
-					_TouchedCaps.push(cap);
-					_TouchedCapsLastRun.push(cap);
-										
-					_Game.TheAudioManager.Play("SoundCollisionCapBall");
-				}
-				else
-				{
-					// chapa / chapa
-					if (ent1 is Cap && ent2 is Cap)
-						_Game.TheAudioManager.Play("SoundCollisionCapCap");
-					// chapa / muro 
-					else if(cap != null && (ent1 == null || ent2 == null)) 
-						_Game.TheAudioManager.Play( "SoundCollisionWall");
-					// balón / muro 
-					else if(ball != null && (ent1 == null || ent2 == null))
-						_Game.TheAudioManager.Play("SoundCollisionWall");
-				}
-				
-				// Posible falta
-				if (ent1 is Cap && ent2 is Cap)
-				{					
-					if ((_DetectedFault = DetectFault(Cap(ent1), Cap(ent2))) != null)
-					{	
-						// Mandamos a detener la simulacion en el proximo Run. Aqui no podemos pararla porque
-						// estamos procesando el contacto, en este momento si haces un PutToSleep la chapa
-						// se queda en el vacio sideral
-						_bWantToStopSimulation = true;
-					}
+			// Posible falta
+			if (ent1 is Cap && ent2 is Cap)
+			{					
+				if ((_DetectedFault = DetectFault(Cap(ent1), Cap(ent2))) != null)
+				{	
+					// Mandamos a detener la simulacion en el proximo Run. Aqui no podemos pararla porque
+					// estamos procesando el contacto, en este momento si haces un PutToSleep la chapa
+					// se queda en el vacio sideral
+					_bWantToStopSimulation = true;
 				}
 			}
 		}
@@ -306,6 +328,78 @@ package Match
 			}
 		}
 		
+		//
+		// Una posicion para ser libre debe:
+		//		- Estar contenida dentro de la zona de juego del campo 
+		// 		- No colisionar con ninguna chapa
+		//		- No colisionar con el balón
+		//
+		public function IsPointFreeInsideField(pos:Point, checkAgainstBall:Boolean, ignoreCap:Cap = null) : Boolean
+		{
+			// Nos aseguramos de que esta dentro del campo
+			var bValid:Boolean = Field.IsCircleInsideField(pos, Cap.Radius);
+			
+			if (bValid)
+			{
+				// Validamos contra las chapas
+				for each (var team:Team in _Game.TheTeams)
+				{
+					for each (var cap:Cap in team.CapsList)
+					{
+						if (cap != ignoreCap && cap.IsInsideCircle(pos, Cap.Radius+Cap.Radius))
+							return false;
+					}
+				}
+				
+				// Comprobamos que no colisionemos con el balón				
+				if (checkAgainstBall && _Game.TheBall.IsInsideCircle(pos, Cap.Radius+Ball.Radius))
+					bValid = false;
+			}
+			
+			return bValid;
+		}
+		
+		//
+		// Mueve una chapa en una dirección validando que la posición sea correcta.
+		// Si no lo consigue opcionalmente intenta situarla en intervalos dentro del vector de dirección
+		//
+		// Devolvemos el 'intento' que fué existoso
+		//   0 		-> No conseguimos situar chapa (se queda en la posición que está)
+		//  '+n'	-> El nº de intento en el que hemos conseguido situar la chapa
+		//
+		public function MoveCapInDir(cap:Cap, dir:Point, amount:Number, checkAgainstBall:Boolean, stepsToTry:int = 1) : int		
+		{
+			var trySuccess:int = 0;		// por defecto no hemos conseguido situar la chapa 
+			
+			dir.normalize(1.0);
+			
+			// Intentaremos posicionar la chapa en la posición indicada, si no es válida vamos probando
+			// en posiciones intermedias de la dirección indicada 
+			for (var i:int = 0; i < stepsToTry; i++)
+			{
+				// Calculamos la posición a la que mover la chapa
+				var tryFactor:Number = 1.0 - (i / stepsToTry); 
+				var dirTry:Point = new Point(dir.x * (amount * tryFactor), dir.y * (amount * tryFactor));  
+				var endPos:Point = cap.GetPos().add(dirTry);
+				
+				// Validamos la posición de la chapa, teniendonos en cuenta a nosotros mismos
+				// Validamos contra bandas y otras chapas, ...
+				if (IsPointFreeInsideField(endPos, checkAgainstBall, cap))
+				{
+					// Movemos la chapa a la posición y terminamos
+					cap.SetPos(endPos);
+					trySuccess = i+1;
+					break;
+				}
+			}
+			
+			// Devolvemos el 'intento' que fué existoso
+			//   0 		-> No conseguimos situar chapa
+			//  '+n'	-> El nº de intento en el que hemos conseguido situar la chapa
+			return trySuccess;
+		}
+		
+		
 
 		private var _Game : Game;
 
@@ -321,5 +415,8 @@ package Match
 		private var _FramesSimulating:int = 0;					// Contador de frames simulando
 		
 		private var _bWantToStopSimulation : Boolean = false;
+		
+		// Queremos persistir nuestra GamePhysicsPredictions para que se vea el debug hasta que pidamos una nueva
+		private var _LastGamePhysicsPrediction : GamePhysicsPredictions;
 	}
 }
