@@ -413,12 +413,12 @@ package Match
 		//
 		// Disparar chapa
 		//
-		public function OnClientShoot(idPlayer:int, capID:int, dirX:Number, dirY:Number, force:Number) : void
+		public function OnClientShoot(idPlayer:int, capID:int, dirX:Number, dirY:Number, impulse:Number) : void
 		{
 			VerifyStateWhenReceivingCommand(GameState.WaitingCommandShoot, idPlayer, "OnClientShoot");
 			
-			// Obtenemos la chapa que dispara
 			var cap:Cap = GetCap(idPlayer, capID);
+			var shootInfo : ShootInfo = new ShootInfo(new Point(dirX, dirY), impulse);
 			
 			if (ReasonTurnChanged == Enums.TurnTiroAPuerta && MatchConfig.ParallelGoalkeeper)
 			{
@@ -426,7 +426,7 @@ package Match
 					throw new Error(IDString + "En un tiro a puerta el defensor solo puede mover al portero!");
 				
 				// Almacenamos el tiro para ejecutarlo en paralelo con el del atacante
-				cap.ParallelShoot = new ShootInfo(new Point(dirX, dirY), force, false);
+				cap.ParallelShoot = new ShootInfo(new Point(dirX, dirY), impulse);
 				
 				// Hemos configurado al portero con su tiro paralelo, ahora pasamos el turno al atacante para que tire!
 				OnGoalKeeperSet(idPlayer);
@@ -437,10 +437,10 @@ package Match
 				{
 					if (MatchConfig.ParallelGoalkeeper)
 					{
-						var gpShoot : ShootInfo = TheGamePhysics.NewGoalkeeperPrediction(cap, new ShootInfo(new Point(dirX, dirY), force, false));
+						var goalkeeperShoot : ShootInfo = TheGamePhysics.NewGoalkeeperPrediction(cap, shootInfo);
 						
-						if (gpShoot != null)
-							TheGamePhysics.Shoot(cap.OwnerTeam.AgainstTeam().GoalKeeper, gpShoot);
+						if (goalkeeperShoot != null)
+							TheGamePhysics.Shoot(cap.OwnerTeam.AgainstTeam().GoalKeeper, goalkeeperShoot);
 						
 						//TheGamePhysics.Shoot(CurTeam.AgainstTeam().GoalKeeper, CurTeam.AgainstTeam().GoalKeeper.ParallelShoot);
 					}
@@ -454,13 +454,13 @@ package Match
 				
 				// Aplicamos habilidad especial
 				if (cap.OwnerTeam.IsUsingSkill(Enums.Superpotencia))
-					force *= MatchConfig.PowerMultiplier;
+					shootInfo.Impulse *= MatchConfig.PowerMultiplier;
 				
 				// Comienza la simulacion!
 				ChangeState(GameState.Simulating);
 				
 				// Ejecucion del tiro del atacante
-				TheGamePhysics.Shoot(cap, new ShootInfo(new Point(dirX, dirY), force, false));
+				TheGamePhysics.Shoot(cap, shootInfo);
 			}
 		}
 		

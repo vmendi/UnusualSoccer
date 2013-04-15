@@ -117,11 +117,11 @@ package Match
 				
 				if (_GamePhysics.IsPointFreeInsideField(historyPos, false, goalKeeper))
 				{	
-					var dir : Point = historyPos.subtract(goalKeeper.GetPos());
+					var dir : Point = goalKeeper.GetPos().subtract(historyPos);	// En negativo para ser igual que el ControllerShoot 
 					dir.normalize(1);
-					var impulse : Number = vel *  MatchConfig.CapMass;
+					var impulse : Number = vel * MatchConfig.CapMass;
 					
-					ret = new ShootInfo(dir, impulse, true);
+					ret = new ShootInfo(dir, impulse);
 					
 					DrawLineBetween(goalKeeper.GetPos(), historyPos);
 					break;
@@ -245,7 +245,8 @@ package Match
 		private function Shoot(shootInfo : ShootInfo) : void
 		{
 			var dir : Point = shootInfo.Dir.clone();
-			dir.normalize(shootInfo.Force * MatchConfig.HighCapMaxImpulse);
+			dir.normalize(shootInfo.Impulse);
+			
 			_Shooter.body.ApplyImpulse(new b2Vec2(-dir.x, -dir.y), _Shooter.body.GetWorldCenter());
 		}
 

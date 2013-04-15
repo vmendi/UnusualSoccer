@@ -235,21 +235,21 @@ namespace Realtime
 
         #region Shoot
         
-        public void OnServerShoot(NetPlug plug, int capID, float dirX, float dirY, float force)
+        public void OnServerShoot(NetPlug plug, int capID, float dirX, float dirY, float impulse)
         {
             int idPlayer = GetIdPlayer(plug.Actor as RealtimePlayer);
 
             // Otro disparo mas
             TotalShootCount++;
 
-            LogEx("OnServerShoot: " + idPlayer + " Shoot: " + TotalShootCount + " Cap ID: " + capID + " dir: " + dirX + ", " + dirY + " force: " + force + " CPES: " + CountPlayersEndShoot);
+            LogEx("OnServerShoot: " + idPlayer + " Shoot: " + TotalShootCount + " Cap ID: " + capID + " dir: " + dirX + ", " + dirY + " impulse: " + impulse + " CPES: " + CountPlayersEndShoot);
 
             if (CurState != State.Playing || CountPlayersEndShoot != 0 || CountPlayersReportGoal != 0)
                 LogEx("ServerException: OnServerShoot en estado incorrecto", true);
 
             CurState = State.Simulating;
 
-            Broadcast("OnClientShoot", idPlayer, capID, dirX, dirY, force);
+            Broadcast("OnClientShoot", idPlayer, capID, dirX, dirY, impulse);
         }
 
         public void OnServerEndShoot(NetPlug plug)

@@ -479,12 +479,12 @@ package Match
 			if (_ShootControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
 			{
 				if (!MatchConfig.OfflineMode)
-					MatchMain.Ref.Connection.Invoke("OnServerShoot", null, _ShootControl.Target.Id, _ShootControl.Direction.x, _ShootControl.Direction.y, _ShootControl.Force);
+					MatchMain.Ref.Connection.Invoke("OnServerShoot", null, _ShootControl.Target.Id, _ShootControl.Direction.x, _ShootControl.Direction.y, _ShootControl.Impulse);
 				
 				_Game.EnterWaitState(GameState.WaitingCommandShoot, 
 									 Delegate.create(_Game.OnClientShoot,	// Simulamos que el servidor nos ha devuelto el tiro
 									_ShootControl.Target.OwnerTeam.TeamId, 
-									_ShootControl.Target.Id, _ShootControl.Direction.x, _ShootControl.Direction.y, _ShootControl.Force));
+									_ShootControl.Target.Id, _ShootControl.Direction.x, _ShootControl.Direction.y, _ShootControl.Impulse));
 			}
 		}
 		

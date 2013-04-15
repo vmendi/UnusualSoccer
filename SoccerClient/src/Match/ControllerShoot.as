@@ -97,13 +97,11 @@ package Match
 			}
 		}
 		
+		// Queremos calcular el lugar exacto al que llegará la chapa si no choca con nada
 		private function DrawPredictiveGizmo() : void
-		{
-			// Queremos calcular el lugar exacto al que llegará la chapa si no choca con nada. Hacemos lo mismo que hace el Box2D
-			var impulse:Number = Force * MatchConfig.HighCapMaxImpulse;
-			
+		{			
 			// Calculamos la velocidad inicial como lo hace el motor al aplicar un impulso
-			var v:Number = impulse / MatchConfig.CapMass;
+			var v:Number = Impulse / MatchConfig.CapMass;
 			
 			// Aplicamos nuestra formula de la cual hay una foto (4/14/2013)
 			var R : Number = 1.0 - MatchMain.Ref.Game.TheGamePhysics.TimeStep * MatchConfig.CapLinearDamping;
@@ -119,7 +117,7 @@ package Match
 			_Canvas.graphics.moveTo(_TargetPos.x, _TargetPos.y);
 			_Canvas.graphics.lineTo(destination.x, destination.y);
 		}
-		
+				
 		// Obtenemos el vector de dirección del disparo, evitando que sobrepase nuestra longitud máxima 
 		public override function get Direction() : Point
 		{
@@ -154,7 +152,7 @@ package Match
 		}
 		
 		// Obtiene la fuerza de disparo como un valor de (0.0 - 1.0)
-		public function get Force() : Number
+		private function get Force() : Number
 		{						
 			var theCap : DisplayObject = _Target.Visual as DisplayObject;
 			
@@ -191,6 +189,11 @@ package Match
 			}
 			
 			return force;
+		}
+		
+		public function get Impulse() : Number
+		{
+			return Force * MatchConfig.HighCapMaxImpulse;
 		}
 		
 		private function ClipAgainstBorder(point : Point, dir : Point, borderPoint : Point, borderDir : Point) : Point

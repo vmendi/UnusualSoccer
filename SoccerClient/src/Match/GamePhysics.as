@@ -128,23 +128,10 @@ package Match
 					_AttackingTeamShooterCap = cap;
 				
 				var dir : Point = shootInfo.Dir.clone();
-				
-				if (shootInfo.IsImpulse)
-				{
-					// La fuerza es en realidad el impulse
-					dir.normalize(shootInfo.Force);
-				}
-				else
-				{
-					// Force entre 0 y 1, HighCapMaxImpulse en espacio de la fisica
-					dir.normalize(shootInfo.Force * MatchConfig.HighCapMaxImpulse);
-					
-					// Lo aplicamos ademas en sentido contrario ya que por fuera nos viene el vector invertido, es el del disparador
-					dir.x *= -1;
-					dir.y *= -1;
-				}
-				
-				cap.PhyObj.body.ApplyImpulse(new b2Vec2(dir.x, dir.y), cap.PhyObj.body.GetWorldCenter());
+				dir.normalize(shootInfo.Impulse);
+
+				// Lo aplicamos ademas en sentido contrario ya que por fuera nos viene el vector invertido, es el del disparador
+				cap.PhyObj.body.ApplyImpulse(new b2Vec2(-dir.x, -dir.y), cap.PhyObj.body.GetWorldCenter());
 				
 				_SimulatingShoot = true;
 			}
