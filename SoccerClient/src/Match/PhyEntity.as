@@ -1,12 +1,10 @@
 package Match
 {
-	import Box2D.Collision.Shapes.b2MassData;
 	import Box2D.Common.*;
 	import Box2D.Common.Math.*;
 	import Box2D.actionsnippet.qbox.QuickBox2D;
 	import Box2D.actionsnippet.qbox.QuickObject;
 	
-	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.geom.Point;
 	
@@ -104,19 +102,6 @@ package Match
 			return !_PhyObject.body.IsSleeping();
 		}
 		
-		// Immovable Goalkeeper...
-		public function SetImmovable(immovable : Boolean) : void
-		{
-			var massData : b2MassData = new b2MassData();			
-			massData.I = _PhyObject.body.m_I;
-									
-			if (immovable)
-				massData.mass = 0;				
-			else
-				massData.mass = MatchConfig.CapMass;
-			
-			_PhyObject.body.SetMass(massData);
-		}
 				
 		public function IsInsideCircle(center:Point, radius:Number) : Boolean
 		{

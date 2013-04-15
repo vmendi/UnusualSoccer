@@ -105,15 +105,9 @@ package Match
 			// Calculamos la velocidad inicial como lo hace el motor al aplicar un impulso
 			var v:Number = impulse / MatchConfig.CapMass;
 			
-			// Calculamos la modificación que la velocidad sufrirá en cada iteración por acción del linearDamping: b2Island.as line 188
-			var vmod:Number = b2Math.b2Clamp(1.0 - MatchMain.Ref.Game.TheGamePhysics.TimeStep * MatchConfig.CapLinearDamping, 0.0, 1.0);
-			var dist:Number = 0;
-			
-			while (v > 0.01)
-			{
-				v *= vmod;
-				dist += (v * MatchMain.Ref.Game.TheGamePhysics.TimeStep);
-			}
+			// Aplicamos nuestra formula de la cual hay una foto (4/14/2013)
+			var R : Number = 1.0 - MatchMain.Ref.Game.TheGamePhysics.TimeStep * MatchConfig.CapLinearDamping;
+			var dist : Number = v * MatchMain.Ref.Game.TheGamePhysics.TimeStep * R / (1-R); 
 			
 			dist *= MatchConfig.PixelsPerMeter;
 			

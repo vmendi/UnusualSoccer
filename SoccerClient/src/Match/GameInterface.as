@@ -54,7 +54,7 @@ package Match
 			_Game = theGame;
 			_Gui = _Game.FieldLayer.addChild(new (ResourceManager.getInstance().getClass("match", "Field") as Class)());
 			
-			if (!MatchConfig.DrawField)
+			if (MatchConfig.DrawPhysics)
 				_Gui.visible = false;
 			
 			// Canvas de pintado compartido entre todos los controllers. Lo añadimos al principio del interface, 
@@ -394,6 +394,8 @@ package Match
 		
 			var theLayer : DisplayObjectContainer = _Game.GUILayer;
 			theLayer.addChild(panelInfo);
+			
+			trace("Cap id: "  + cap.Id + " x: " + cap.GetPos().x + " " + cap.GetPos().y);
 		}
 		
 		public function OnOutCap(cap : Cap) : void

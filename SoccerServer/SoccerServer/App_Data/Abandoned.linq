@@ -1,6 +1,7 @@
 <Query Kind="Statements">
   <Connection>
     <ID>b6676606-8217-455b-954b-31b9a1f69249</ID>
+    <Persist>true</Persist>
     <Server>sql01.unusualsoccer.com</Server>
     <SqlSecurity>true</SqlSecurity>
     <UserName>sa</UserName>
@@ -11,7 +12,7 @@
 </Query>
 
 var today = DateTime.Now;
-int daysSince = 7;
+int daysSince = 3;
 
 var totalTeams = (from t in Teams
 				  where (today - t.Team.CreationDate).TotalDays <= daysSince

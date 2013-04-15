@@ -74,10 +74,10 @@ package Match
 			// El THICKNESS taparia los botones del interfaz POR TENER fillColor, fillAlpha, etc. Para evitarlo ponemos skin:"none"			
 						
 			// Bottom 
-			phy.addBox({x:offsetX + sw / 2 + 0.05, restitution:1, y:offsetY + sh + H_THICKNESS, width:sw, height:THICKNESS, skin:"none", isBullet:true });
+			phy.addBox({x:offsetX + sw / 2 + 0.05, restitution:1, y:offsetY + sh + H_THICKNESS, width:sw, height:THICKNESS, skin:"none", isBullet:true, density:0});
 			
 			// Top
-			phy.addBox({x:offsetX + sw / 2 + 0.05, restitution:1, y:offsetY + 0 - H_THICKNESS, width:sw, height:THICKNESS, skin:"none", isBullet:true});
+			phy.addBox({x:offsetX + sw / 2 + 0.05, restitution:1, y:offsetY + 0 - H_THICKNESS, width:sw, height:THICKNESS, skin:"none", isBullet:true, density:0});
 			
 			// Left
 			phy.addBox(AddCommonPhysicParams({x:offsetX + 0 - H_THICKNESS, y:hc1, restitution:1, width:THICKNESS, height:halfHeightWithoutGoal}));

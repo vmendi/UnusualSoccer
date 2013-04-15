@@ -1,7 +1,9 @@
 package Match
 {
+	import Box2D.Collision.Shapes.b2MassData;
 	import Box2D.Common.*;
 	import Box2D.Common.Math.*;
+	import Box2D.actionsnippet.qbox.QuickObject;
 	
 	import com.greensock.*;
 	
@@ -221,16 +223,7 @@ package Match
 				ErrorMessages.LogToServer("WTF 78"); 
 			}
 		}
-		
-		// Dispara con una fuerza sobre una chapa. La fueza debe especificarse entre 0, 1
-		public function Shoot(dir:Point, force:Number) : void
-		{
-			dir.normalize(force * MatchConfig.HighCapMaxImpulse);
-						
-			// El impulso lo aplicamos en sentido contrario, ya que funciona como una goma elástica
-			_PhyObject.body.ApplyImpulse(new b2Vec2(-dir.x, -dir.y), _PhyObject.body.GetWorldCenter());
-		}
-		
+				
 		// Obtiene el vector de dirección desde la chapa que apunta hacia la portería contraria
 		public function get DirToGoal() : Point
 		{
@@ -405,6 +398,25 @@ package Match
 				SetPos(_TeletransportPos);
 				_TeletransportPos = null;
 			}
+		}
+				
+		// Immovable Goalkeeper...
+		public function SetImmovable(immovable : Boolean) : void
+		{
+			Cap.SetImmovable(_PhyObject, immovable);
+		}
+		
+		static public function SetImmovable(phyObject : QuickObject, immovable : Boolean) : void
+		{
+			var massData : b2MassData = new b2MassData();			
+			massData.I = phyObject.body.m_I;
+			
+			if (immovable)
+				massData.mass = 0;
+			else
+				massData.mass = MatchConfig.CapMass;
+			
+			phyObject.body.SetMass(massData);
 		}
 	}
 }

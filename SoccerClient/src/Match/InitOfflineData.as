@@ -28,7 +28,7 @@ package Match
 				};						
 				descTeam.SoccerPlayers.push(descCap);
 			}
-			
+						
 			// Forzosamente tienen que estar todas las habilidades disponibles para los dos equipos, por una cuestion de cómo
 			// se maneja el interfaz (es el mismo interfaz para los dos, los botones estan precreados no se conmuta segun el turno)
 			descTeam.SpecialSkillsIDs = Enums.AllSkills;

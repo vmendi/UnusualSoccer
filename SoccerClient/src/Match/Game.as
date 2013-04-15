@@ -7,7 +7,6 @@ package Match
 	import mx.resources.ResourceManager;
 	
 	import utils.Delegate;
-	import utils.MovieClipMouseDisabler;
 
 	public class Game
 	{
@@ -78,6 +77,19 @@ package Match
 		public function Game(parent : DisplayObjectContainer) : void
 		{
 			_Parent = parent;
+		}
+		
+		public function SetDebugPos() : void
+		{
+			GetCap(0, 3).SetPos(new Point(220, 235));
+			GetCap(0, 6).SetPos(new Point(301, 435));
+			GetCap(0, 2).SetPos(new Point(176, 475));
+			GetCap(0, 1).SetPos(new Point(138, 225));
+			 
+			GetCap(1, 5).SetPos(new Point(193, 290));
+			//GetCap(1, 6).SetPos(new Point(282, 345));
+			
+			TheBall.SetPos(new Point(163, 300));
 		}
 		
 		// Obtiene una chapa de un equipo determinado a partir de su identificador de equipo y chapa
@@ -414,7 +426,7 @@ package Match
 					throw new Error(IDString + "En un tiro a puerta el defensor solo puede mover al portero!");
 				
 				// Almacenamos el tiro para ejecutarlo en paralelo con el del atacante
-				cap.ParallelShoot = new ShootInfo(new Point(dirX, dirY), force);
+				cap.ParallelShoot = new ShootInfo(new Point(dirX, dirY), force, false);
 				
 				// Hemos configurado al portero con su tiro paralelo, ahora pasamos el turno al atacante para que tire!
 				OnGoalKeeperSet(idPlayer);
@@ -424,7 +436,14 @@ package Match
 				if (ReasonTurnChanged == Enums.TurnGoalKeeperSet)
 				{
 					if (MatchConfig.ParallelGoalkeeper)
-						TheGamePhysics.Shoot(CurTeam.AgainstTeam().GoalKeeper, CurTeam.AgainstTeam().GoalKeeper.ParallelShoot);
+					{
+						var gpShoot : ShootInfo = TheGamePhysics.NewGoalkeeperPrediction(cap, new ShootInfo(new Point(dirX, dirY), force, false));
+						
+						if (gpShoot != null)
+							TheGamePhysics.Shoot(cap.OwnerTeam.AgainstTeam().GoalKeeper, gpShoot);
+						
+						//TheGamePhysics.Shoot(CurTeam.AgainstTeam().GoalKeeper, CurTeam.AgainstTeam().GoalKeeper.ParallelShoot);
+					}
 					else
 						CurTeam.AgainstTeam().GoalKeeper.GotoTeletransportAndResetPos();
 				}
@@ -440,13 +459,8 @@ package Match
 				// Comienza la simulacion!
 				ChangeState(GameState.Simulating);
 				
-				/****
-				 * TEST
-				 * ****/
-				TheGamePhysics.CreateNewPrediction().NewPrediction(cap, new ShootInfo(new Point(dirX, dirY), force));
-				
 				// Ejecucion del tiro del atacante
-				TheGamePhysics.Shoot(cap, new ShootInfo(new Point(dirX, dirY), force));
+				TheGamePhysics.Shoot(cap, new ShootInfo(new Point(dirX, dirY), force, false));
 			}
 		}
 		
@@ -774,8 +788,10 @@ package Match
 			TheTeams[Enums.Team2].ResetToFormation();
 			
 			TheBall.SetPosInFieldCenter();
-
-			SetTurn(team.TeamId, reason);
+			
+			SetDebugPos();
+			SetTurn(1, reason);
+			//SetTurn(team.TeamId, reason);
 		}
 		
 		private function OponenteControlaPie(cap : Cap, reason : int) : void

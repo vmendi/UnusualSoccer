@@ -49,21 +49,34 @@ package Match
 			return _Game.TeamInSide(Enums.AgainstSide(SideGoal))
 		}
 		
-		public function CreateNewPrediction() : GamePhysicsPredictions
+		
+		public function NewGoalkeeperPrediction(shooter : Cap, shootInfo : ShootInfo) : ShootInfo
 		{
+			// Las predicciones son de usar y tirar, hay que pedir una nueva cada vez (por una cuestion de las trazas de debug en realidad, nos
+			// conviene dejarlas persistiendo y que se vean hasta que se pida otra prediccion)
 			if (_LastGamePhysicsPrediction != null)
 				_LastGamePhysicsPrediction.Shutdown();
 			
-			return (_LastGamePhysicsPrediction = new GamePhysicsPredictions(_Game, this));
+			_LastGamePhysicsPrediction = new GamePhysicsPredictions(_Game, this);
+			
+			try {
+				return _LastGamePhysicsPrediction.NewGoalkeeperPrediction(shooter, shootInfo);
+			}
+			catch(e:Error)
+			{
+				ErrorMessages.LogToServer("WTF 243 - Failed prediction");
+			}
+			
+			return null; 
 		}
-
+		
 		public function GamePhysics(game : Game, theTimeStep:Number)
 		{
 			_Game = game;
 			_TimeStep = theTimeStep;
 			
 			// FRIM: Frame Rate Independent Motion
-			TheBox2D = new QuickBox2D(_Game.PhyLayer, { debug: MatchConfig.DebugPhysic, iterations: MatchConfig.PhyFPS, timeStep: _TimeStep, frim: false });
+			TheBox2D = new QuickBox2D(_Game.PhyLayer, { debug: MatchConfig.DrawPhysics, iterations: MatchConfig.PhyFPS, timeStep: _TimeStep, frim: false });
 			TheBox2D.gravity = new b2Vec2(0, 0);
 			TheBox2D.createStageWalls();
 			
@@ -96,6 +109,9 @@ package Match
 		{
 			if (TheBox2D.main.stage != null)
 				TheBox2D.destroy();
+			
+			if (_LastGamePhysicsPrediction != null)
+				_LastGamePhysicsPrediction.Shutdown();
 		}
 		
 		public function Shoot(cap : Cap, shootInfo : ShootInfo) : void
@@ -110,8 +126,25 @@ package Match
 				
 				if (cap.OwnerTeam.IsCurTeam)
 					_AttackingTeamShooterCap = cap;
-
-				cap.Shoot(shootInfo.Dir, shootInfo.Force);
+				
+				var dir : Point = shootInfo.Dir.clone();
+				
+				if (shootInfo.IsImpulse)
+				{
+					// La fuerza es en realidad el impulse
+					dir.normalize(shootInfo.Force);
+				}
+				else
+				{
+					// Force entre 0 y 1, HighCapMaxImpulse en espacio de la fisica
+					dir.normalize(shootInfo.Force * MatchConfig.HighCapMaxImpulse);
+					
+					// Lo aplicamos ademas en sentido contrario ya que por fuera nos viene el vector invertido, es el del disparador
+					dir.x *= -1;
+					dir.y *= -1;
+				}
+				
+				cap.PhyObj.body.ApplyImpulse(new b2Vec2(dir.x, dir.y), cap.PhyObj.body.GetWorldCenter());
 				
 				_SimulatingShoot = true;
 			}
