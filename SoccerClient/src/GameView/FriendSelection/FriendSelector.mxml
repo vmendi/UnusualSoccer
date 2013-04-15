@@ -21,6 +21,7 @@
 		import GameView.ImportantMessageDialog;
 		
 		import com.facebook.graph.Facebook;
+		import com.greensock.TweenNano;
 		
 		import mx.collections.ArrayCollection;
 		import mx.core.FlexGlobals;
@@ -61,6 +62,9 @@
 			mFriendsModel = mMainModel.TheFriendsModel;
 			
 			mSelectableFriends = CalcSelectableFriends();
+			
+			//Iniciamos el estado de las invitaciones como 'none' = "No hay invitados".
+			mInviteAllState = 'none';
 		}
 		
 		private function CalcSelectableFriends() : ArrayCollection
@@ -99,61 +103,141 @@
 		private function FilterFunction(obj : Object) : Boolean
 		{
 			return (obj as Friend).Name.toLowerCase().indexOf(MySearchInput.text.toLowerCase()) != -1;
+		}		
+		
+		// Maquina de estados del botón "Invitar a todos / Invitar a nínguno"		
+		protected function SetInviteAllState(newState:String):void
+		{
+			if (newState != mInviteAllState)
+			{
+				mInviteAllState = newState;
+				switch(newState)
+				{
+					case "all":
+					case "some":
+						InviteButton.label = resourceManager.getString('main','InviteNone');
+						break;
+					case "none":
+						InviteButton.label = resourceManager.getString('main','InviteAll');
+						break;
+				}
+			}
 		}
-				
+		
+		protected function InviteButtonClickHandler(event:MouseEvent):void
+		{
+			if (mInviteAllState == "none")
+				InviteAll();
+			else
+				InviteNone();
+		}
+		
+		// Invita a todos los amigos
+		protected function InviteAll():void
+		{
+			//Ponemos a todos los amigos en la lista de invitados
+			for each(var friend : Friend in mSelectableFriends)
+			{
+				mSelectedFriends.addItem(friend);
+			}
+			mSelectableFriends = new ArrayCollection();
+			SetInviteAllState("all");
+		}
+		
+		// Limpia la lista de invitados
+		protected function InviteNone():void
+		{
+			//Ponemos a todos los amigos en la lista de invitables
+			for each(var friend : Friend in mSelectedFriends)
+			{
+				mSelectableFriends.addItem(friend);
+			}
+			// Vaciamos la lista de invitados
+			mSelectedFriends = new ArrayCollection();
+			// Y ponemos el estado de las invitaciones a 'none' = ningún invitado
+			SetInviteAllState("none");
+		}
+		
+		
 		private function SendRequests() : void
 		{
 			currentState = "Waiting";
 			
 			GameMetrics.ReportEvent(GameMetrics.FRIEND_SELECTOR_REQUEST, {numSelectedFriends:mSelectedFriends.length});
 			GameMetrics.Increment(GameMetrics.PEOPLE_NUM_INVITES_SENT, mSelectedFriends.length);
-									
-			var user_ids : Array = [];
 			
 			if (mSelectedFriends.length > 0)
 			{
-				for each(var friend : Friend in mSelectedFriends)
+				//Si pending_invitations está vacío, guardamos todos los Ids de los invitados en las pending_invitations
+				if(mPendingInvitations.length <=0)
 				{
-					user_ids.push(friend.FacebookID.toString());
-					
-					GameMetrics.ReportEvent(GameMetrics.FRIEND_SELECTOR_INVITE_SENT, {friendID:friend.FacebookID.toString()});
+					for each(var friend : Friend in mSelectedFriends)
+					{
+						mPendingInvitations.push(friend.FacebookID.toString());
+						
+						//GameMetrics.ReportEvent(GameMetrics.FRIEND_SELECTOR_INVITE_SENT, {friendID:friend.FacebookID.toString()});
+					}
 				}
-				
-				var data : Object =	{ 
-									message: resourceManager.getString('main','FriendSelectorRequestTxt'),
-									to: user_ids
-									};
-	
-				Facebook.ui("apprequests", data, OnSendRequestsCallback);
+				// Comenzamos con el envío de las solicitudes
+				SendInvitations();
 			}
 			else
 			{
 				// Como si cancelaran...
-				OnSendRequestsCallback(null);
+				QuitInviting(null);
 			}
 		}
 		
-		private function OnSendRequestsCallback(response:Object) : Boolean
+		
+		// Envía invitaciones a los IDs que recibimos en la función.
+		private function SendInvitations():void
+		{
+			var invitationsCounter : int = (mPendingInvitations.length < MAX_INVITATIONS)? mPendingInvitations.length : MAX_INVITATIONS;
+			var user_ids : Array = mPendingInvitations.splice(0, invitationsCounter);
+			var data : Object =	{ 
+				message: resourceManager.getString('main', 'FriendSelectorRequestTxt'),
+					to: user_ids
+			}; 
+			Facebook.ui("apprequests", data, ResponseCallback);	
+		}
+		
+		// Funcion que se ejecuta cuando Facebook nos contesta tras invitar a amigos
+		private function ResponseCallback(fbResponse:Object) : Boolean
 		{	
+			if(mPendingInvitations.length > 0)
+			{
+				TweenNano.delayedCall(2, SendInvitations);
+			}
+			else
+			{
+				QuitInviting(fbResponse);				
+			}
+			return true;
+		}
+		
+		//Esta función, sirve para terminar de invitar a amigos.
+		private function QuitInviting(fbResponse:Object):Boolean
+		{
 			PopUpManager.removePopUp(this);
 			
-			if (response != null)
+			if (fbResponse != null)
 			{
 				// Los mandamos a crear al servidor
-				mMainModel.TheTeamModel.CreateRequests(response.request, response.to);
+				mMainModel.TheTeamModel.CreateRequests(fbResponse.request, fbResponse.to);
 				
 				// Mensaje de exito
 				ImportantMessageDialog.Show(resourceManager.getString('main','FriendSelectorReqSuccessTxt'), 
-											resourceManager.getString('main','FriendSelectorReqSuccessTit'), "center");
+					resourceManager.getString('main','FriendSelectorReqSuccessTit'), "center");
 			}
 			
 			return true;
 		}
-				
+		
 		private function OnMyFriendListChangeHandler(e:IndexChangeEvent):void
 		{			
 			mSelectedFriends.addItem(mSelectableFriends[e.newIndex])
 			mSelectableFriends.removeItemAt(e.newIndex);
+			SetInviteAllState("some");
 		}
 		
 		protected function OnMySelectedListChangeHandler(e:IndexChangeEvent):void
@@ -168,6 +252,11 @@
 		// Presentation model
 		[Bindable] private var mSelectableFriends : ArrayCollection;
 		[Bindable] private var mSelectedFriends : ArrayCollection = new ArrayCollection();
+		
+		// Revelo: Fixing 50+ invitations
+		private const MAX_INVITATIONS:int = 49;           		// Constante para que indica el máximo de invitaciones permitidas.
+		private var mPendingInvitations : Array = [];			// Array que almacenará todas los ID's a los que el usuario invitará.
+		private var mInviteAllState : String = "none";
 		
 	]]></fx:Script>
 	
@@ -246,7 +335,8 @@
 				>
 			<s:layout><s:HorizontalLayout gap="10" columnWidth="90" /></s:layout>
 		</s:List>	
-				
+		<s:Button id="InviteButton" left="20" bottom="180" height="21" label="{resourceManager.getString('main','InviteAll')}"
+				  click="InviteButtonClickHandler(event)" skinClass="GameView.Skins.ButtonDarkGreySkin"/>		
 		
 		<s:Group bottom="15" horizontalCenter="0">
 			<s:layout><s:HorizontalLayout gap="20" /></s:layout>
