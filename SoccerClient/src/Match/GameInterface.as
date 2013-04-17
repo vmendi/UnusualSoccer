@@ -81,29 +81,28 @@ package Match
 			_Gui.BotonAbandonar.visible = false;
 			
 			// Asigna el aspecto visual según que equipo sea. Tenemos que posicionarla en el frame que se llama como el equipo
-			var teams:Array = _Game.TheTeams;
 			
-			_Gui.BadgeHome.gotoAndStop(teams[Enums.Team1].PredefinedTeamNameID);
-			_Gui.BadgeAway.gotoAndStop(teams[Enums.Team2].PredefinedTeamNameID);
+			_Gui.BadgeHome.gotoAndStop(_Game.Team1.PredefinedTeamNameID);
+			_Gui.BadgeAway.gotoAndStop(_Game.Team2.PredefinedTeamNameID);
 			
-			_Gui.TeamHome.text = teams[Enums.Team1].Name;
-			_Gui.TeamAway.text = teams[Enums.Team2].Name;
+			_Gui.TeamHome.text = _Game.Team1.Name;
+			_Gui.TeamAway.text = _Game.Team2.Name;
 			
-			_Gui.LevelHome.text = ResourceManager.getInstance().getString("main", "GeneralLevel") + " " + teams[Enums.Team1].Level;
-			_Gui.LevelAway.text = ResourceManager.getInstance().getString("main", "GeneralLevel") + " " + teams[Enums.Team2].Level;
+			_Gui.LevelHome.text = ResourceManager.getInstance().getString("main", "GeneralLevel") + " " + _Game.Team1.Level;
+			_Gui.LevelAway.text = ResourceManager.getInstance().getString("main", "GeneralLevel") + " " + _Game.Team2.Level;
 			
-			_Gui.SkillHome.text = ResourceManager.getInstance().getString("main", "GeneralSkill") + " " + teams[Enums.Team1].TrueSkill;
-			_Gui.SkillAway.text = ResourceManager.getInstance().getString("main", "GeneralSkill") + " " + teams[Enums.Team2].TrueSkill;
+			_Gui.SkillHome.text = ResourceManager.getInstance().getString("main", "GeneralSkill") + " " + _Game.Team1.TrueSkill;
+			_Gui.SkillAway.text = ResourceManager.getInstance().getString("main", "GeneralSkill") + " " + _Game.Team2.TrueSkill;
 			
-			LoadFacebookPicture(_Gui.PictureHome, teams[Enums.Team1].FacebookID);
-			LoadFacebookPicture(_Gui.PictureAway, teams[Enums.Team2].FacebookID);
+			LoadFacebookPicture(_Gui.PictureHome, _Game.Team1.FacebookID);
+			LoadFacebookPicture(_Gui.PictureAway, _Game.Team2.FacebookID);
 			
 			UpdateMuteButton();
 		}
 		
-		static private function LoadFacebookPicture(parent : DisplayObjectContainer, facebookID : Number) : void
+		static private function LoadFacebookPicture(parent : DisplayObjectContainer, facebookID : String) : void
 		{	
-			if (facebookID != -1)
+			if (facebookID != "-1")
 			{
 				// Pasamos de los posibles errores o completes, no tenemos nada que hacer en ellos
 				var theLoader : Loader = parent.addChild(new Loader()) as Loader;
@@ -207,7 +206,7 @@ package Match
 		// Indica si se acepta la entrada del usuario. Solo en un estado concreto y cuando tiene el turno el usuario local
 		public function get UserInputEnabled() : Boolean
 		{
-			return _Game.IsPlaying && _Game.CurTeam.IsLocalUser;
+			return _Game.IsPlaying && _Game.CurrTeam.IsLocalUser;
 		}
 		
 		//
@@ -218,11 +217,9 @@ package Match
 			// Aseguramos que los controladores no estan activos si no es nuestro turno o no estamos jugando
 			if (!UserInputEnabled)
 				CancelControllers();
-			
-			var teams:Array = _Game.TheTeams;
-			
+						
 			// Rellenamos los goles
-			_Gui.Score.text = teams[Enums.Team1].Goals.toString() + " : " + teams[Enums.Team2].Goals.toString(); 
+			_Gui.Score.text = _Game.Team1.Goals.toString() + " : " + _Game.Team2.Goals.toString(); 
 			
 			// Actualizamos la parte de juego en la que estamos "_Gui.Period"
 			_Gui.Period.text = _Game.Part.toString() + "T";
@@ -231,7 +228,7 @@ package Match
 			_Gui.Time.text = utils.TimeUtils.ConvertSecondsToString(currMatchTime);
 			
 			// Marcamos el jugador con el turno
-			if (_Game.CurTeam.TeamId == Enums.Team1)
+			if (_Game.CurrTeam.TeamId == Enums.Team1)
 				_Gui.MarcadorTurno.gotoAndStop("TeamHome");
 			else
 				_Gui.MarcadorTurno.gotoAndStop("TeamAway");
@@ -246,7 +243,7 @@ package Match
 			// Color de la tarta basado en si es tu turno o no
 			var colorTransform : ColorTransform = new ColorTransform(1.0, 1.0, 1.0);
 			
-			if (_Game.CurTeam.IsLocalUser)
+			if (_Game.CurrTeam.IsLocalUser)
 			{
 				var percentTime : Number = (currTimeoutTime / _TotalTimeoutTime) * 100;
 				
@@ -416,7 +413,7 @@ package Match
 			// Si estamos en modo de colocación de portero:
 			if (_Game.ReasonTurnChanged == Enums.TurnTiroAPuerta)
 			{
-				if (_Game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
+				if (_Game.CurrTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
 				{
 					if (MatchConfig.ParallelGoalkeeper)
 						_ShootControl.Start(cap);
@@ -428,13 +425,13 @@ package Match
 			else 
 			if(Enums.IsSaquePuerta(_Game.ReasonTurnChanged))
 			{
-				if (_Game.CurTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
+				if (_Game.CurrTeam == cap.OwnerTeam && cap.OwnerTeam.IsLocalUser && cap.Id == 0)
 					_ShootControl.Start(cap);
 			}
 			// Si estamos en modo normal (modo disparo):
 			else 
 			{
-				if (_Game.CurTeam == cap.OwnerTeam)
+				if (_Game.CurrTeam == cap.OwnerTeam)
 					_ShootControl.Start(cap);
 			}
 		}
@@ -449,7 +446,7 @@ package Match
 		//
 		public function ShowControllerBall(cap:Cap) : void
 		{
-			if (_Game.CurTeam != cap.OwnerTeam)
+			if (_Game.CurrTeam != cap.OwnerTeam)
 				throw new Error("Intento de mostrar ControllerBall de chapa que no es local");
 			
 			_BallControl.Start(cap);
@@ -466,7 +463,7 @@ package Match
 				if (!MatchConfig.OfflineMode)
 					MatchMain.Ref.Connection.Invoke("OnServerPosCap", null, _PosControl.Target.Id, _PosControl.EndPos.x, _PosControl.EndPos.y);
 				
-				_Game.EnterWaitState(GameState.WaitingCommandPosCap, Delegate.create(_Game.OnClientPosCap, _Game.CurTeam.TeamId, 
+				_Game.EnterWaitState(GameState.WaitingCommandPosCap, Delegate.create(_Game.OnClientPosCap, _Game.CurrTeam.TeamId, 
 									 _PosControl.Target.Id, _PosControl.EndPos.x, _PosControl.EndPos.y)); 
 			}
 		}
@@ -514,7 +511,7 @@ package Match
 				if (!MatchConfig.OfflineMode)
 					MatchMain.Ref.Connection.Invoke("OnServerTiroPuerta", null);
 				
-				_Game.EnterWaitState(GameState.WaitingCommandTiroPuerta, Delegate.create(_Game.OnClientTiroPuerta, _Game.CurTeam.TeamId));
+				_Game.EnterWaitState(GameState.WaitingCommandTiroPuerta, Delegate.create(_Game.OnClientTiroPuerta, _Game.CurrTeam.TeamId));
 			}
 		}
 		
@@ -530,7 +527,7 @@ package Match
 			bActive = bActive && !_Game.IsTiroPuertaDeclarado();
 			
 			// Posición válida para tirar a puerta o Tenemos la habilidad especial de permitir gol de más de medio campo? 
-			bActive = bActive && _Game.CurTeam.IsTeamPosValidToScore();
+			bActive = bActive && _Game.CurrTeam.IsTeamPosValidToScore();
 			
 			_Gui.BotonTiroPuerta.visible = bActive;
 		}

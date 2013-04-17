@@ -21,12 +21,11 @@ package Match
 		public function get UsingSecondUniform() : Boolean { return _UsingSecondUniform; }
 		public function get MatchesCount() : int { return _DescTeam.MatchesCount; }
 		
-		
 		public function get CapsList() : Array { return _CapsList; }
 		public function get GoalKeeper() : Cap { return _CapsList[0]; }
 		
 		public function get IsLocalUser() : Boolean	{ return this.TeamId == MatchConfig.IdLocalUser; }
-		public function get IsCurTeam() : Boolean { return this == _Game.CurTeam; }
+		public function get IsCurrTeam() : Boolean { return this == _Game.CurrTeam; }
 		
 		public function get Goals() : int {	return _Goals; }
 		public function set Goals(value:int) : void { _Goals = value; }
@@ -79,23 +78,18 @@ package Match
 			ResetToFormation();
 		}
 
-		//
-		// Obtiene el equipo adversario a nosotros
-		//
-		public function AgainstTeam() : Team
+		public function Opponent() : Team
 		{
-			if (this == _Game.TheTeams[Enums.Team1])
-				return _Game.TheTeams[Enums.Team2];
+			if (this == _Game.Team1)
+				return _Game.Team2;
 			
-			if (this == _Game.TheTeams[Enums.Team2])
-				return _Game.TheTeams[Enums.Team1];
+			if (this == _Game.Team2)
+				return _Game.Team1;
 			
 			throw new Error("WTF 27");
 		}
 		
-		//
 		// Ponemos al equipo en el lado invertido (es la 2ª parte)
-		//
 		public function SetToOppositeSide() : void
 		{
 			// El equipo 1 empieza en el lado izquierdo y el 2 en el derecho
@@ -361,7 +355,7 @@ package Match
 			var radius:int = MatchConfig.RadiusSteal;
 			
 			// Si nuestro oponente usa MasterDribbling, tenemos que reducir nuestra area de robo
-			if (AgainstTeam().IsUsingSkill(Enums.MasterDribbling))
+			if (Opponent().IsUsingSkill(Enums.MasterDribbling))
 				radius *= MatchConfig.MasterDribblingMultiplier;
 			
 			return radius;
@@ -474,11 +468,21 @@ package Match
 			
 			for each (var cap:Cap in _CapsList)
 			{
-				if (cap.IsInsideCircle(center, radius))
+				if (cap.IsCenterInsideCircle(center, radius))
 					inside.push(cap);
 			}
 			
 			return inside;
+		}
+		
+		public function IsAnyCapInsideCircle(circleCenter:Point, circleRadius:Number, ignoreCap:Cap) : Boolean
+		{
+			for each (var cap:Cap in _CapsList)
+			{
+				if (cap != ignoreCap && cap.IsCenterInsideCircle(circleCenter, circleRadius))
+					return true;
+			}
+			return false;
 		}
 		
 		public function GetPotentialPaseAlPieForShooter(shooterCap : Cap) : Array
@@ -490,7 +494,7 @@ package Match
 						
 			for each (var cap:Cap in _CapsList)
 			{
-				if (cap.IsInsideCircle(_Game.TheBall.GetPos(), Cap.Radius + Ball.Radius + this.RadiusPase))
+				if (cap.IsCenterInsideCircle(_Game.TheBall.GetPos(), Cap.Radius + Ball.Radius + this.RadiusPase))
 				{
 					if (MatchConfig.AutoPasePermitido || cap != shooterCap)
 						potential.push(cap);

@@ -84,7 +84,7 @@ package Match
 				throw new Error("WTF 920 - Fue gol con insuficientes colisiones!");
 
 			// Dejamos perfilado por si en el futuro queremos iterar por los segmentos
-			return CalcBestInterceptionInSegment(0, shooter.OwnerTeam.AgainstTeam().GoalKeeper);
+			return CalcBestInterceptionInSegment(0, shooter.OwnerTeam.Opponent().GoalKeeper);
 		}
 		
 		private function CalcBestInterceptionInSegment(segIdx : int, goalKeeper : Cap) : ShootInfo
@@ -220,7 +220,10 @@ package Match
 			_AllPhyObjects = new Array();
 			_AllPhyObjects.push(_Ball);
 						
-			for each(var team : Team in _Game.TheTeams)
+			cloneTeam(_Game.Team1);
+			cloneTeam(_Game.Team2);
+			
+			function cloneTeam(team : Team) : void
 			{
 				for each(var cap : Cap in team.CapsList)
 				{
@@ -228,7 +231,7 @@ package Match
 					
 					if (cap == shooter)
 						_Shooter = cloned;
-					else
+					else 
 					if (cap == team.GoalKeeper)
 						PhyEntity.SetMass(cloned, 0);	// Immovable
 					

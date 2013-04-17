@@ -15,8 +15,7 @@ package Match
 		public var TheField:Field;
 		public var TheBall:Ball;
 		public var TheAudioManager:AudioManager;
-		//public var TheTeams:Array = new Array();
-		
+				
 
 		// --> PhyLayer
 		//    --> Solo el debug de Box2D
@@ -47,17 +46,19 @@ package Match
 		
 		private var _Parent : DisplayObjectContainer;
 		
-		private var _IdxCurTeam:int = Enums.Team1;				// Idice del equipo actual que le toca jugar
-		private var _State:int = GameState.NotInit;				// Estado inicial
-		private var _TicksInCurState:int = 0;					// Ticks en el estado actual
-		private var _Part:int = 0;								// El juego se divide en 2 partes. Parte en la que nos encontramos (1=1ª 2=2ª)
+		private var _Team1:Team;
+		private var _Team2:Team;
+		private var _CurrTeamId:int = Enums.Team1;				// Id del equipo actual que le toca jugar
+		private var _State:int = GameState.NotInit;
+		private var _TicksInCurState:int = 0;
+		private var _Part:int = 0;
 		private var _RemainingHits:int = 0;						// Nº de golpes restantes permitidos antes de perder el turno
 		private var _RemainingPasesAlPie : int = 0;				// No de pases al pie que quedan
 		private var _TimeSecs:Number = 0;						// Tiempo en segundos que queda de la "mitad" actual del partido
 		private var _Timeout:Number = 0;						// Tiempo en segundos que queda para que ejecutes un disparo
 				
-		public var ReasonTurnChanged:int = (-1);				// Razón por la que hemos cambiado al turno actual		
-		public var FireCount:int = 0;							// Contador de jugadores expulsados durante el partido.
+		public var ReasonTurnChanged:int = -1;
+		public var FireCount:int = 0;							// Contador de jugadores expulsados durante el partido
 
 		private var _Timer : Match.Time;
 		private var _Random : Match.Random;
@@ -68,10 +69,21 @@ package Match
 		private var _CallbackOnAllPlayersReady:Function = null;	// Llamar cuando todos los jugadores están listos
 		
 		
-		public function get CurTeam() : Team { return TheTeams[_IdxCurTeam]; }
-		public function get Team1() : Team { return TheTeams[Enums.Team1]; }
-		public function get Team2() : Team { return TheTeams[Enums.Team2]; }
-		public function get LocalUserTeam() : Team { return TheTeams[MatchConfig.IdLocalUser]; }
+		public function get CurrTeam() : Team { return GetTeam(_CurrTeamId); }
+		public function get Team1() : Team { return _Team1; }
+		public function get Team2() : Team { return _Team2; }
+		public function get LocalUserTeam() : Team { return GetTeam(MatchConfig.IdLocalUser); }
+		
+		public function GetTeam(teamId:int) : Team
+		{
+			if (teamId == Enums.Team1) 
+				return _Team1;
+			if (teamId == Enums.Team2) 
+				return _Team2;
+			
+			throw new Error("WTF 567 - Unknown teamId");
+		}
+				
 		public function get Part() : int { return _Part; }
 		public function get IsPlaying() : Boolean { return _State == GameState.Playing; }
 		
@@ -82,7 +94,7 @@ package Match
 		
 		public function IsGoalGoodIdea() : Boolean
 		{
-			
+			return true;
 		}
 		
 		public function Game(parent : DisplayObjectContainer) : void
@@ -102,22 +114,22 @@ package Match
 			
 			TheBall.SetPos(new Point(163, 300));
 		}
-		
+				
 		// Obtiene una chapa de un equipo determinado a partir de su identificador de equipo y chapa
 		public function GetCap(teamId:int, capId:int) : Cap
 		{
 			if (teamId != Enums.Team1 && teamId != Enums.Team2)
 				throw new Error(IDString + "Identificador invalido");
 			
-			return TheTeams[teamId].CapsList[capId]; 
+			return GetTeam(teamId).CapsList[capId]; 
 		}
 		
 		public function GetAllPhyEntities() : Array
 		{
 			var allPhyEntities : Array = new Array(TheBall);
 			
-			allPhyEntities = allPhyEntities.concat(TheTeams[Enums.Team1].CapsList);
-			allPhyEntities = allPhyEntities.concat(TheTeams[Enums.Team2].CapsList);
+			allPhyEntities = allPhyEntities.concat(_Team1.CapsList);
+			allPhyEntities = allPhyEntities.concat(_Team2.CapsList);
 			
 			return allPhyEntities;
 		}
@@ -125,10 +137,10 @@ package Match
 		// Obtiene el equipo que está en un lado del campo
 		public function TeamInSide(side:int) : Team
 		{
-			if (side == TheTeams[Enums.Team1].Side)
-				return TheTeams[Enums.Team1];
-			if (side == TheTeams[Enums.Team2 ].Side)
-				return TheTeams[Enums.Team2];
+			if (side == _Team1.Side)
+				return _Team1;
+			if (side == _Team2.Side)
+				return _Team2;
 			
 			return null;
 		}
@@ -196,8 +208,8 @@ package Match
 			}
 			
 			// Creamos los dos equipos (utilizando la equipación indicada)
-			TheTeams.push(new Team(descTeam1, Enums.Team1, useSecondaryEquipment1, this));
-			TheTeams.push(new Team(descTeam2, Enums.Team2, useSecondaryEquipment2, this));
+			_Team1 = new Team(descTeam1, Enums.Team1, useSecondaryEquipment1, this);
+			_Team2 = new Team(descTeam2, Enums.Team2, useSecondaryEquipment2, this);
 			
 			// Publicacion de Achievements
 			MatchAchievements.ProcessAchievementMatchStart(LocalUserTeam);
@@ -228,8 +240,8 @@ package Match
 			if (_State == GameState.NotInit)
 				return;
 			
-			TheTeams[Enums.Team1].Draw(elapsed);
-			TheTeams[Enums.Team2].Draw(elapsed);
+			_Team1.Draw(elapsed);
+			_Team2.Draw(elapsed);
 			
 			TheBall.Draw(elapsed);
 		}
@@ -244,8 +256,8 @@ package Match
 			TheGamePhysics.Run(elapsed);
 			
 			// Update de ambos equipos, ellos se encargaran de actualizar las chapas
-			TheTeams[Enums.Team1].Run(elapsed);
-			TheTeams[Enums.Team2].Run(elapsed);
+			_Team1.Run(elapsed);
+			_Team2.Run(elapsed);
 			
 			// Y antes que nosotros mismos, necesitamos que nuestra pelota este actualizada
 			TheBall.Run(elapsed);
@@ -275,8 +287,8 @@ package Match
 					
 					_Part++;	// Pasamos a la segunda parte
 					
-					TheTeams[Enums.Team1].SetToOppositeSide();
-					TheTeams[Enums.Team2].SetToOppositeSide();
+					_Team1.SetToOppositeSide();
+					_Team2.SetToOppositeSide();
 					 
 					ChangeState(GameState.NewPart);
 					break;
@@ -286,7 +298,7 @@ package Match
 				case GameState.NewPart:
 				{
 					_TimeSecs = MatchConfig.PartTime;
-					SaqueCentro(Part == 1? TheTeams[Enums.Team1] : TheTeams[Enums.Team2], Enums.TurnSaqueCentroNewPart);
+					SaqueCentro(Part == 1? _Team1 : _Team2, Enums.TurnSaqueCentroNewPart);
 					break;
 				}
 
@@ -309,12 +321,12 @@ package Match
 						_Timeout = 0;
 						
 						// Al jugador que no tiene el turno simplemente le llega el Timeout, él no lo genera
-						if (this.CurTeam.IsLocalUser)
+						if (this.CurrTeam.IsLocalUser)
 						{
 							if (!MatchConfig.OfflineMode)
 								MatchMain.Ref.Connection.Invoke("OnServerTimeout", null);
 							
-							EnterWaitState(GameState.WaitingCommandTimeout, Delegate.create(OnClientTimeout, this.CurTeam.TeamId)); 
+							EnterWaitState(GameState.WaitingCommandTimeout, Delegate.create(OnClientTimeout, this.CurrTeam.TeamId)); 
 						}
 					}
 					break;
@@ -445,7 +457,7 @@ package Match
 			}
 			else
 			{
-				var enemyGoalkeeper : Cap = shooter.OwnerTeam.AgainstTeam().GoalKeeper;
+				var enemyGoalkeeper : Cap = shooter.OwnerTeam.Opponent().GoalKeeper;
 				
 				if (IsAutoGoalKeeper && Field.IsCapCenterInsideBigArea(enemyGoalkeeper))
 				{
@@ -507,7 +519,7 @@ package Match
 			
 			// Al acabar el tiro movemos el portero a su posición de formación en caso de la ultima accion fuera un saque de puerta
 			if (Enums.IsSaquePuerta(ReasonTurnChanged))
-				CurTeam.ResetToFormationOnlyGoalKeeper();
+				CurrTeam.ResetToFormationOnlyGoalKeeper();
 			
 			var paseToCap : Cap = CheckPaseAlPie();
 			var detectedFault : Fault = TheGamePhysics.TheFault;
@@ -597,9 +609,9 @@ package Match
 				// Cuando no hay pase al pie pero la chapa se queda cerca de un contrario, la perdemos directamente!
 				// (pero: unicamente cuando hayamos tocado la pelota con una de nuestras chapas, es decir, permitimos mover una 
 				// chapa SIN tocar el balón y que no por ello lo pierdas)
-				var potentialStealer : Cap = CurTeam.AgainstTeam().GetPotencialStealer();
+				var potentialStealer : Cap = CurrTeam.Opponent().GetPotencialStealer();
 				
-				if (potentialStealer != null && TheGamePhysics.HasTouchedBallAny(this.CurTeam))
+				if (potentialStealer != null && TheGamePhysics.HasTouchedBallAny(this.CurrTeam))
 				{
 					result |= 64;
 
@@ -616,7 +628,7 @@ package Match
 			}
 			
 			// Informamos al servidor para que compare entre los dos clientes
-			var capListStr:String = "T0: " + TheTeams[0].GetCapString() + " T1: " + TheTeams[1].GetCapString() + " B:" + TheBall.GetPos().toString(); 
+			var capListStr:String = "T0: " + Team1.GetCapString() + " T1: " + Team2.GetCapString() + " B:" + TheBall.GetPos().toString(); 
 			
 			if (!MatchConfig.OfflineMode)
 			{
@@ -655,7 +667,7 @@ package Match
 				EnterWaitState(GameState.WaitingControlPortero, null);
 				
 				// Mostramos un parpadeo en el area, sacamos de puerta
-				_Cutscene.ShowAreaPortero(CurTeam.AgainstTeam().Side, ShowAreaPorteroCutsceneEnd);
+				_Cutscene.ShowAreaPortero(CurrTeam.Opponent().Side, ShowAreaPorteroCutsceneEnd);
 			}
 		}
 		
@@ -668,14 +680,14 @@ package Match
 			if (this._State != GameState.WaitingControlPortero)
 				throw new Error(IDString + "ShowAreaPorteroCutsceneEnd: El estado debería ser WaitingControlPortero. _State=" + this._State);
 			
-			SaquePuerta(CurTeam.AgainstTeam(), Enums.TurnSaquePuertaControlPortero);
+			SaquePuerta(CurrTeam.Opponent(), Enums.TurnSaquePuertaControlPortero);
 		}
 		
 		public function OnClientUseSkill(idPlayer:int, idSkill:int) : void
 		{
 			VerifyStateWhenReceivingCommand(GameState.WaitingCommandUseSkill, idPlayer, "OnClientUseSkill");
 
-			var team:Team = TheTeams[idPlayer];
+			var team:Team = GetTeam(idPlayer);
 			team.UseSkill(idSkill);
 			
 			if (idPlayer != MatchConfig.IdLocalUser)
@@ -707,8 +719,7 @@ package Match
 		{
 			VerifyStateWhenReceivingCommand(GameState.WaitingCommandTiroPuerta, idPlayer, "OnClientTiroPuerta");
 			
-			var team:Team = TheTeams[idPlayer];
-			var enemy:Team = team.AgainstTeam();
+			var enemy:Team = GetTeam(idPlayer).Opponent();
 
 			// Si el portero del enemigo está dentro del area GRANDE, cambiamos el turno al enemigo...
 			if (Field.IsCapCenterInsideBigArea(enemy.GoalKeeper))
@@ -727,7 +738,7 @@ package Match
 			// Guardamos la posicion de teletransporte y si es el equipo local, la vamos mostrando ya
 			GetCap(idPlayer, capId).TeletransportPos = new Point(posX, posY);
 			
-			if (CurTeam.IsLocalUser)
+			if (CurrTeam.IsLocalUser)
 				GetCap(idPlayer, capId).SetPos(new Point(posX, posY));
 			
 			ChangeState(GameState.Playing);
@@ -737,11 +748,11 @@ package Match
 		{
 			// Solo manda comandos el jugador que tiene el turno
 			// TODO: Cuando implementemos el mecanismo para tener Skills tipo Catenaccio esto no sera siempre asi 
-			if (idPlayerExecutingCommand != CurTeam.TeamId)
+			if (idPlayerExecutingCommand != CurrTeam.TeamId)
 				throw new Error(IDString + "No puede llegar " + fromServerCall + " del jugador no actual" );
 			
 			// Sólo podemos estar...
-			if (CurTeam.IsLocalUser)
+			if (CurrTeam.IsLocalUser)
 			{
 				// ...esperando el comando si somos el que lo manda  
 				if (_State != expectedStateIfLocalPlayer)
@@ -756,7 +767,7 @@ package Match
 		private function OnGoalKeeperSet(idPlayerWhoMovedTheGoalKeeper:int) : void
 		{
 			// Cambiamos el turno al enemigo (quien declaró que iba a tirar a puerta) para que realice el disparo
-			SetTurn(TheTeams[idPlayerWhoMovedTheGoalKeeper].AgainstTeam().TeamId, Enums.TurnGoalKeeperSet);
+			SetTurn(GetTeam(idPlayerWhoMovedTheGoalKeeper).Opponent().TeamId, Enums.TurnGoalKeeperSet);
 		}
 
 		
@@ -768,7 +779,7 @@ package Match
 
 			// Contabilizamos el gol
 			if (validity == Enums.GoalValid)
-				TheTeams[idPlayer].Goals++;
+				GetTeam(idPlayer).Goals++;
 									
 			_Cutscene.ShowGoalScored(validity, Delegate.create(ShowGoalScoredCutsceneEnd, idPlayer, validity));
 		}
@@ -786,7 +797,7 @@ package Match
 			if (this._State != GameState.WaitingGoal)
 				throw new Error(IDString + "ShowGoalScoredCutsceneEnd: El estado debería ser WaitingGoal. _State=" + this._State);
 						
-			var turnTeam:Team = TheTeams[idPlayer].AgainstTeam();
+			var turnTeam:Team = GetTeam(idPlayer).Opponent();
 			
 			if (validity == Enums.GoalValid)
 				SaqueCentro(turnTeam, Enums.TurnSaqueCentroGoal);
@@ -802,7 +813,7 @@ package Match
 			TheGamePhysics.StopSimulation();
 
 			team.ResetToSaquePuerta();
-			team.AgainstTeam().ResetToFormation();
+			team.Opponent().ResetToFormation();
 						
 			TheBall.SetPosInFrontOf(team.GoalKeeper);
 
@@ -814,8 +825,8 @@ package Match
 		{
 			TheGamePhysics.StopSimulation();
 			
-			TheTeams[Enums.Team1].ResetToFormation();
-			TheTeams[Enums.Team2].ResetToFormation();
+			_Team1.ResetToFormation();
+			_Team2.ResetToFormation();
 			
 			TheBall.SetPosInFieldCenter();
 			
@@ -826,7 +837,7 @@ package Match
 		
 		private function OponenteControlaPie(cap : Cap, reason : int) : void
 		{
-			if (cap.OwnerTeam != CurTeam.AgainstTeam())
+			if (cap.OwnerTeam != CurrTeam.Opponent())
 				throw new Error(IDString + "La chapa parametro debe ser la que controla, es decir, de mi oponente");
 			
 			// Cambiamos el turno al oponente, al propietario de la chapa que controla. Como es un control con el pie,
@@ -856,11 +867,11 @@ package Match
 			ResetTimeout();
 			
 			// Si es el jugador local el activo mostramos los tiros que nos quedan en el interface
-			if (CurTeam.IsLocalUser)
+			if (CurrTeam.IsLocalUser)
 				_Cutscene.ShowQuedanTiros(_RemainingHits);
 			
 			// Si salimos del subturno con el goalkeeper fuera del area, lo advertimos
-			if (!Field.IsCapCenterInsideBigArea(CurTeam.GoalKeeper) && CurTeam.IsLocalUser)
+			if (!Field.IsCapCenterInsideBigArea(CurrTeam.GoalKeeper) && CurrTeam.IsLocalUser)
 				_Cutscene.ShowMsgGoalkeeperOutside(_RemainingHits == 0);
 			
 			//
@@ -877,8 +888,8 @@ package Match
 			ReasonTurnChanged = Enums.TurnByTurn;
 			
 			// Al consumir un SubTurno las skills dejan de tener efecto
-			TheTeams[Enums.Team1].DesactiveSkills();
-			TheTeams[Enums.Team2].DesactiveSkills();
+			_Team1.DesactiveSkills();
+			_Team2.DesactiveSkills();
 
 			// Comprobamos si hemos consumido todos los disparos. Si es así, pasamos el turno al oponente.
 			if (_RemainingHits == 0)
@@ -891,9 +902,9 @@ package Match
 
 		private function YieldTurnToOpponent(reason:int) : void
 		{
-			if (_IdxCurTeam == Enums.Team1)
+			if (_CurrTeamId == Enums.Team1)
 				SetTurn(Enums.Team2, reason);
-			else if(_IdxCurTeam == Enums.Team2)
+			else if(_CurrTeamId == Enums.Team2)
 				SetTurn(Enums.Team1, reason);
 		}
 		
@@ -934,10 +945,10 @@ package Match
 		private function SetTurnAllReady(idTeam:int, reason:int, callback : Function) : void
 		{
 			// A paseo...
-			if (CurTeam.IsLocalUser && CurTeam.IsCornerCheat())
+			if (CurrTeam.IsLocalUser && CurrTeam.IsCornerCheat())
 			{
 				MatchMain.Ref.Connection.Invoke("OnAbort", null);
-				GameMetrics.ReportEvent(GameMetrics.CORNER_CHEATING, { facebookID: CurTeam.FacebookID });
+				GameMetrics.ReportEvent(GameMetrics.CORNER_CHEATING, { facebookID: CurrTeam.FacebookID });
 				return;
 			}
 
@@ -946,17 +957,17 @@ package Match
 				MatchConfig.IdLocalUser = idTeam;
 			
 			// Cambio de turno!
-			_IdxCurTeam = idTeam;
+			_CurrTeamId = idTeam;
 			
 			// Guardamos la razón por la que hemos cambiado de turno
 			ReasonTurnChanged = reason;
 			
 			// Vemos los futbolistas que han acabado dentro del area pequeña en el turno anterior, los sacamos fuera
-			TheTeams[Enums.Team1].EjectPlayersInsideSmallArea();
-			TheTeams[Enums.Team2].EjectPlayersInsideSmallArea();
+			_Team1.EjectPlayersInsideSmallArea();
+			_Team2.EjectPlayersInsideSmallArea();
 			
 			// Nos aseguramos de resetear el linear damping del portero por si en el tiro anterior hemos hecho un AutoGoalkeeper
-			CurTeam.GoalKeeper.SetLinearDamping(MatchConfig.CapLinearDamping);
+			CurrTeam.GoalKeeper.SetLinearDamping(MatchConfig.CapLinearDamping);
 			
 			// Reseteamos los contadores de tiros
 			_RemainingHits = MatchConfig.MaxHitsPerTurn;
@@ -986,32 +997,32 @@ package Match
 			// Al cambiar el turno, también desactivamos las skills que se estuvieran utilizando, salvo durante toda la logica de tiro a puerta 
 			if (reason != Enums.TurnTiroAPuerta && reason != Enums.TurnGoalKeeperSet)
 			{
-				TheTeams[Enums.Team1].DesactiveSkills();
-				TheTeams[Enums.Team2].DesactiveSkills();
+				_Team1.DesactiveSkills();
+				_Team2.DesactiveSkills();
 			}
 			
 			// Si en el tiro anterior hubo un teletransporte que no ha sido ejecutado en el OnClientShoot (por timeout), tenemos que ejecutarlo ahora!
 			// Es decir, siempre ejecutamos el teletransporte pendiente del jugador al que le entra el turno.
 			// NOTE 1: Como para tirar a puerta solo hay 1 turno, no necesitamos hacer esto mismo en el ConsumeSubTurn
 			if (MatchConfig.ParallelGoalkeeper)
-				CurTeam.GoalKeeper.ParallelShoot = null;	// Podemos olvidar el posible ParallelShoot no ejecutado por timeout. Idem NOTE 1.
+				CurrTeam.GoalKeeper.ParallelShoot = null;	// Podemos olvidar el posible ParallelShoot no ejecutado por timeout. Idem NOTE 1.
 			else
-				CurTeam.GoalKeeper.GotoTeletransportAndResetPos();
+				CurrTeam.GoalKeeper.GotoTeletransportAndResetPos();
 						
 			// Mostramos un mensaje animado de cambio de turno
 			_Cutscene.ShowTurn(reason, idTeam == MatchConfig.IdLocalUser, TheGamePhysics.TheFault);
 			
 			// Y pintamos el halo alrededor de las chapas!
-			CurTeam.ShowMyTurnVisualCue(reason);
+			CurrTeam.ShowMyTurnVisualCue(reason);
 			
 			// Immoveable goalkeeper
-			CurTeam.GoalKeeper.SetImmovable(false);
+			CurrTeam.GoalKeeper.SetImmovable(false);
 			
 			// Inmovible solo en la pequenia y cuando no es el tiro a puerta
-			if (Field.IsCapCenterInsideSmallArea(CurTeam.AgainstTeam().GoalKeeper) && reason != Enums.TurnGoalKeeperSet)
-				CurTeam.AgainstTeam().GoalKeeper.SetImmovable(true);
+			if (Field.IsCapCenterInsideSmallArea(CurrTeam.Opponent().GoalKeeper) && reason != Enums.TurnGoalKeeperSet)
+				CurrTeam.Opponent().GoalKeeper.SetImmovable(true);
 			else
-				CurTeam.AgainstTeam().GoalKeeper.SetImmovable(false);
+				CurrTeam.Opponent().GoalKeeper.SetImmovable(false);
 			
 			// Damos una oportunidad al codigo que ha querido cambiar el turno de hacer mas cosas una vez que ya se lo hemos dado
 			if (callback != null)
@@ -1027,7 +1038,7 @@ package Match
 		private function CheckConflictoSteal(attacker:Cap) : Conflict
 		{			
 			// Comprobamos las chapas enemigas en el radio de robo
-			var stealer:Cap = attacker.OwnerTeam.AgainstTeam().GetPotencialStealer();
+			var stealer:Cap = attacker.OwnerTeam.Opponent().GetPotencialStealer();
 			
 			if (stealer == null)
 				return null;
@@ -1068,7 +1079,7 @@ package Match
 				return null;
 						
 			// La más cercana al balon de todas las potenciales
-			return TheBall.NearestEntity(CurTeam.GetPotentialPaseAlPieForShooter(TheGamePhysics.AttackingTeamShooterCap)) as Cap;
+			return TheBall.NearestEntity(CurrTeam.GetPotentialPaseAlPieForShooter(TheGamePhysics.AttackingTeamShooterCap)) as Cap;
 		}
 		
 		//
@@ -1076,7 +1087,7 @@ package Match
 		//
 		private function CheckGoalkeeperControl(ballPos:Point) : Boolean
 		{
-			var enemy : Team = CurTeam.AgainstTeam();
+			var enemy : Team = CurrTeam.Opponent();
 			
 			// El portero por supuesto tiene que estar dentro del area pequeña
 			return Field.IsCapCenterInsideSmallArea(enemy.GoalKeeper) &&
@@ -1086,7 +1097,7 @@ package Match
 		// Estamos tirando a puerta o seria valido tirar a puerta (en el caso de mano de dios/autoportero)?
 		public function IsTiroPuertaDeclarado() : Boolean
 		{
-			return CurTeam.IsUsingSkill(Enums.Manodedios) || IsAutoGoalKeeper
+			return CurrTeam.IsUsingSkill(Enums.Manodedios) || IsAutoGoalKeeper
 				   ReasonTurnChanged == Enums.TurnTiroAPuerta || 
 				   ReasonTurnChanged == Enums.TurnGoalKeeperSet;
 		}

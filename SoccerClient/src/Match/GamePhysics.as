@@ -70,6 +70,11 @@ package Match
 			return null; 
 		}
 		
+		public function CalcAlternativePrediction(shooter : Cap, shootInfo : ShootInfo, goalKeeperPred : ShootInfo) : ShootInfo
+		{
+			return null;
+		}
+		
 		public function AutoGoalkeeperShoot(goalkeeper : Cap, goalkeeperShoot : ShootInfo) : void
 		{
 			// El portero ademas estaba inamovible, tenemos que permiterle moverse. Cambiamos su damping tb para que
@@ -134,7 +139,7 @@ package Match
 				_FramesSimulating = 0;
 				_TouchedCaps.length = 0;
 				
-				if (cap.OwnerTeam.IsCurTeam)
+				if (cap.OwnerTeam.IsCurrTeam)
 					_AttackingTeamShooterCap = cap;
 				
 				var dir : Point = shootInfo.Dir.clone();
@@ -243,12 +248,12 @@ package Match
 				// Detectamos que chapa es de las dos
 				var attacker:Cap = null;
 				var defender:Cap = null;
-				if (cap1.OwnerTeam.IsCurTeam)
+				if (cap1.OwnerTeam.IsCurrTeam)
 				{
 					attacker = cap1;
 					defender = cap2;
 				}
-				else if(cap2.OwnerTeam.IsCurTeam)
+				else if(cap2.OwnerTeam.IsCurrTeam)
 				{
 					attacker = cap2;
 					defender = cap1;
@@ -358,34 +363,23 @@ package Match
 			}
 		}
 		
-		//
 		// Una posicion para ser libre debe:
-		//		- Estar contenida dentro de la zona de juego del campo 
+		//		- Estar contenida dentro de la zona de juego del campo
 		// 		- No colisionar con ninguna chapa
 		//		- No colisionar con el balón
-		//
-		public function IsPointFreeInsideField(pos:Point, checkAgainstBall:Boolean, ignoreCap:Cap = null) : Boolean
+		public function IsPointFreeInsideField(pos:Point, checkAgainstBall:Boolean, ignoreCap:Cap) : Boolean
 		{
 			// Nos aseguramos de que esta dentro del campo
-			var bValid:Boolean = Field.IsCircleInsideField(pos, Cap.Radius);
+			var bValid : Boolean = Field.IsCircleInsideField(pos, Cap.Radius);
 			
-			if (bValid)
-			{
-				// Validamos contra las chapas
-				for each (var team:Team in _Game.TheTeams)
-				{
-					for each (var cap:Cap in team.CapsList)
-					{
-						if (cap != ignoreCap && cap.IsInsideCircle(pos, Cap.Radius+Cap.Radius))
-							return false;
-					}
-				}
+			// Ahora contra el resto de las chapas
+			bValid = bValid && !_Game.Team1.IsAnyCapInsideCircle(pos, Cap.Radius + Cap.Radius, ignoreCap);
+			bValid = bValid && !_Game.Team2.IsAnyCapInsideCircle(pos, Cap.Radius + Cap.Radius, ignoreCap); 
 				
-				// Comprobamos que no colisionemos con el balón				
-				if (checkAgainstBall && _Game.TheBall.IsInsideCircle(pos, Cap.Radius+Ball.Radius))
-					bValid = false;
-			}
-			
+			// Y finalmente contra el balon
+			if (bValid && checkAgainstBall)
+				bValid = !_Game.TheBall.IsCenterInsideCircle(pos, Cap.Radius + Ball.Radius);
+						
 			return bValid;
 		}
 		

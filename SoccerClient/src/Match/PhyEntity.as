@@ -103,13 +103,9 @@ package Match
 			return !_PhyObject.body.IsSleeping();
 		}
 		
-				
-		public function IsInsideCircle(center:Point, radius:Number) : Boolean
+		public function IsCenterInsideCircle(center:Point, radius:Number) : Boolean
 		{
-			var vDist:Point = center.subtract(GetPos());
-			var length:Number = vDist.length;
-						
-			return length <= radius;
+			return center.subtract(GetPos()).length <= radius;
 		}
 		
 		public function NearestEntity(entities:Array) : PhyEntity

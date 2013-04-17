@@ -6,10 +6,10 @@ package Match
 		static private function ShowAllInfluences() : void
 		{
 			var _Game : Game = MatchMain.Ref.Game;
-			var _CurTeam : Team = _Game.CurTeam;
+			var _CurTeam : Team = _Game.CurrTeam;
 			
 			// Mostramos todas las influencias de pase al pie
-			var friendCaps:Array = _Game.CurTeam.CapsList;
+			var friendCaps:Array = _Game.CurrTeam.CapsList;
 			for each( var friend:Cap in friendCaps )
 			{
 				friend.SetInfluenceAspect(Enums.FriendColor, Cap.Radius + Ball.Radius + _CurTeam.RadiusPase);
@@ -17,7 +17,7 @@ package Match
 			}				
 			
 			// Mostramos todas las influencias de robo
-			var enemyTeam:Team = _CurTeam.AgainstTeam();
+			var enemyTeam:Team = _CurTeam.Opponent();
 			var enemyCaps:Array = enemyTeam.CapsList;
 			
 			for each (var enemy:Cap in enemyCaps)
@@ -33,7 +33,7 @@ package Match
 		static public function UpdateInfluences(remainingHits : int, remainingPasesAlPie : int) : void
 		{
 			var _Game : Game = MatchMain.Ref.Game; 
-			var _CurTeam : Team = _Game.CurTeam;
+			var _CurTeam : Team = _Game.CurrTeam;
 			
 			// Determinamos si debemos mostrar "TODAS" las influencias (si el jugador local tiene la habilidad de mostrar radios)
 			if (_CurTeam.IsUsingSkill(Enums.Verareas) && _CurTeam.IsLocalUser)
@@ -66,7 +66,7 @@ package Match
 			// Si ninguna de nuestras chapas ha tocado la pelota, no se produce la perdida, asi que tampoco pintamos el area
 			if (_Game.TheGamePhysics.HasTouchedBallAny(_CurTeam))
 			{
-				var enemyTeam:Team = _CurTeam.AgainstTeam();
+				var enemyTeam:Team = _CurTeam.Opponent();
 				var enemyCaps:Array = enemyTeam.GetCapsInsideCircle(_Game.TheBall.GetPos(), Cap.Radius + Ball.Radius + enemyTeam.RadiusSteal);
 				
 				for each (var enemy:Cap in enemyCaps)
