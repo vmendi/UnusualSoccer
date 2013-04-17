@@ -518,18 +518,15 @@ package Match
 			}
 		}
 		
-		// Activamos desactivamos el botón de tiro a puerta en función de si:
-		//   - El interface está activo o no
-		//   - Asegurando que durante un tiro a puerta no esté activo
-		//   - y que estés en posición válida: más del medio campo o habilidad especial "Tiroagoldesdetupropiocampo"		
+		// Activacion/Desactivacion del boton en funcion de una lista de cosas		
 		private function UpdateButtonTiroPuerta() : void
 		{
 			var bActive:Boolean = UserInputEnabled;
-			
+						
 			// Con cualquiera de los controladores activados ya no se podra clickar. Es decir, se puede clickar con el raton "libre"
 			bActive = bActive && !IsAnyControllerStarted(); 
 			
-			// Si ya se ha declarado tiro a puerta no permitimos pulsar el botón
+			// Si ya se ha declarado tiro a puerta no seguimos mostrando el boton
 			bActive = bActive && !_Game.IsTiroPuertaDeclarado();
 			
 			// Posición válida para tirar a puerta o Tenemos la habilidad especial de permitir gol de más de medio campo? 

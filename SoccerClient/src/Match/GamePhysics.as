@@ -70,6 +70,16 @@ package Match
 			return null; 
 		}
 		
+		public function AutoGoalkeeperShoot(goalkeeper : Cap, goalkeeperShoot : ShootInfo) : void
+		{
+			// El portero ademas estaba inamovible, tenemos que permiterle moverse. Cambiamos su damping tb para que
+			// no salga muy lejos
+			goalkeeper.SetImmovable(false);
+			goalkeeper.SetLinearDamping(MatchConfig.AutoGoalkeeperLinearDamping);
+			
+			Shoot(goalkeeper, goalkeeperShoot);
+		}
+		
 		public function GamePhysics(game : Game, theTimeStep:Number)
 		{
 			_Game = game;

@@ -399,24 +399,14 @@ package Match
 				_TeletransportPos = null;
 			}
 		}
-				
+		
 		// Immovable Goalkeeper...
 		public function SetImmovable(immovable : Boolean) : void
 		{
-			Cap.SetImmovable(_PhyObject, immovable);
-		}
-		
-		static public function SetImmovable(phyObject : QuickObject, immovable : Boolean) : void
-		{
-			var massData : b2MassData = new b2MassData();			
-			massData.I = phyObject.body.m_I;
-			
 			if (immovable)
-				massData.mass = 0;
+				PhyEntity.SetMass(_PhyObject, 0);
 			else
-				massData.mass = MatchConfig.CapMass;
-			
-			phyObject.body.SetMass(massData);
+				PhyEntity.SetMass(_PhyObject, MatchConfig.CapMass);
 		}
 	}
 }

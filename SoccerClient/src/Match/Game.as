@@ -15,7 +15,7 @@ package Match
 		public var TheField:Field;
 		public var TheBall:Ball;
 		public var TheAudioManager:AudioManager;
-		public var TheTeams:Array = new Array();
+		//public var TheTeams:Array = new Array();
 		
 
 		// --> PhyLayer
@@ -69,10 +69,21 @@ package Match
 		
 		
 		public function get CurTeam() : Team { return TheTeams[_IdxCurTeam]; }
+		public function get Team1() : Team { return TheTeams[Enums.Team1]; }
+		public function get Team2() : Team { return TheTeams[Enums.Team2]; }
 		public function get LocalUserTeam() : Team { return TheTeams[MatchConfig.IdLocalUser]; }
 		public function get Part() : int { return _Part; }
 		public function get IsPlaying() : Boolean { return _State == GameState.Playing; }
 		
+		public function get IsAutoGoalKeeper() : Boolean
+		{
+			return (Team1.MatchesCount < 15 || Team2.MatchesCount < 15);
+		}
+		
+		public function IsGoalGoodIdea() : Boolean
+		{
+			
+		}
 		
 		public function Game(parent : DisplayObjectContainer) : void
 		{
@@ -138,8 +149,6 @@ package Match
 			GameMetrics.ReportEvent(GameMetrics.PLAY_MATCH, {matchTime: matchTimeSecs, turnTime: turnTimeSecs, isFriendly:isFriendlyParam});
 			GameMetrics.Increment(GameMetrics.PEOPLE_NUM_MATCHES, 1);	
 			
-			MatchAchievements.ProcessAchievementMatchStart(idLocalPlayerTeam == Enums.Team1? descTeam1 : descTeam2);
-			
 			if (MatchConfig.ClientVersion < minClientVersion)
 			{
 				ErrorMessages.IncorrectMatchVersion();
@@ -189,6 +198,9 @@ package Match
 			// Creamos los dos equipos (utilizando la equipación indicada)
 			TheTeams.push(new Team(descTeam1, Enums.Team1, useSecondaryEquipment1, this));
 			TheTeams.push(new Team(descTeam2, Enums.Team2, useSecondaryEquipment2, this));
+			
+			// Publicacion de Achievements
+			MatchAchievements.ProcessAchievementMatchStart(LocalUserTeam);
 											
 			// Inicializamos el interfaz de juego. Es necesario que todo lo demas este inicializado!
 			TheInterface = new GameInterface(this);
@@ -321,13 +333,13 @@ package Match
 						//	   que tenga la habilidad especial de "Tiroagoldesdetupropiocampo"
 						var validity : int = Enums.GoalValid;
 						
-						if (!TheGamePhysics.IsSelfGoal())	// En propia meta siempre es gol		
+						if (!TheGamePhysics.IsSelfGoal())	// En propia meta siempre es gol
 						{
 							if (!scorerTeam.IsTeamPosValidToScore())
 								validity = Enums.GoalInvalidPropioCampo;				
 							else 
 							if (!IsTiroPuertaDeclarado())
-								validity = Enums.GoalInvalidNoDeclarado;
+								validity = Enums.GoalInvalidNoDeclarado;							
 						}
 
 						if (!MatchConfig.OfflineMode)
@@ -359,12 +371,12 @@ package Match
 				case GameState.WaitingEndPart:
 				case GameState.WaitingControlPortero:
 				case GameState.WaitingPlayersAllReadyForSetTurn:
-				case GameState.WaitingCommandTimeout:				
+				case GameState.WaitingCommandTimeout:
 				case GameState.WaitingCommandPlaceBall:
 				case GameState.WaitingCommandUseSkill:
-				case GameState.WaitingCommandTiroPuerta: 		
-				case GameState.WaitingCommandShoot: 				
-				case GameState.WaitingCommandPosCap: 	
+				case GameState.WaitingCommandTiroPuerta:
+				case GameState.WaitingCommandShoot:
+				case GameState.WaitingCommandPosCap:
 				{
 					if (MatchConfig.OfflineMode && _OfflineWaitCall != null)
 					{
@@ -380,7 +392,7 @@ package Match
 			if (_State != GameState.NotInit)
 				TheInterface.Update(_Timeout, _TimeSecs);
 		}
-				
+
 		public function EnterWaitState(state:int, offlineCall:Function) : void
 		{
 			ChangeState(state);
@@ -417,7 +429,7 @@ package Match
 		{
 			VerifyStateWhenReceivingCommand(GameState.WaitingCommandShoot, idPlayer, "OnClientShoot");
 			
-			var cap:Cap = GetCap(idPlayer, capID);
+			var shooter : Cap = GetCap(idPlayer, capID);
 			var shootInfo : ShootInfo = new ShootInfo(new Point(dirX, dirY), impulse);
 			
 			if (ReasonTurnChanged == Enums.TurnTiroAPuerta && MatchConfig.ParallelGoalkeeper)
@@ -426,41 +438,59 @@ package Match
 					throw new Error(IDString + "En un tiro a puerta el defensor solo puede mover al portero!");
 				
 				// Almacenamos el tiro para ejecutarlo en paralelo con el del atacante
-				cap.ParallelShoot = new ShootInfo(new Point(dirX, dirY), impulse);
+				shooter.ParallelShoot = new ShootInfo(new Point(dirX, dirY), impulse);
 				
 				// Hemos configurado al portero con su tiro paralelo, ahora pasamos el turno al atacante para que tire!
 				OnGoalKeeperSet(idPlayer);
 			}
 			else
 			{
+				var enemyGoalkeeper : Cap = shooter.OwnerTeam.AgainstTeam().GoalKeeper;
+				
+				if (IsAutoGoalKeeper && Field.IsCapCenterInsideBigArea(enemyGoalkeeper))
+				{
+					var goalkeeperShoot : ShootInfo = TheGamePhysics.NewGoalkeeperPrediction(shooter, shootInfo);
+					
+					// Hemos detectado gol?
+					if (goalkeeperShoot != null)
+					{
+						// Decidimos si queremos pararnosla o no
+						if (IsGoalGoodIdea())
+						{
+							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, goalkeeperShoot);
+							
+							// Si el portero es automatico es como cuando se anuncia el tiro a puerta, el tiro es ya el ultimo
+							_RemainingHits = 1;
+							_RemainingPasesAlPie = 0;
+						}
+						else
+						{
+							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, TheGamePhysics.CalcAlternativePrediction(shooter, shootInfo, goalkeeperShoot));
+						}
+					}
+				}
+				else
 				if (ReasonTurnChanged == Enums.TurnGoalKeeperSet)
 				{
 					if (MatchConfig.ParallelGoalkeeper)
-					{
-						var goalkeeperShoot : ShootInfo = TheGamePhysics.NewGoalkeeperPrediction(cap, shootInfo);
-						
-						if (goalkeeperShoot != null)
-							TheGamePhysics.Shoot(cap.OwnerTeam.AgainstTeam().GoalKeeper, goalkeeperShoot);
-						
-						//TheGamePhysics.Shoot(CurTeam.AgainstTeam().GoalKeeper, CurTeam.AgainstTeam().GoalKeeper.ParallelShoot);
-					}
+						TheGamePhysics.Shoot(enemyGoalkeeper, enemyGoalkeeper.ParallelShoot);
 					else
-						CurTeam.AgainstTeam().GoalKeeper.GotoTeletransportAndResetPos();
-				}
+						enemyGoalkeeper.GotoTeletransportAndResetPos();
+				}			
 				
-				// Nada mas lanzar resetamos el tiempo. Esto hace que la tarta se rellene y que si al acabar la simulacion no hay ConsumeSubTurn o 
+				// Nada mas lanzar resetamos el tiempo. Esto hace que si al acabar la simulacion no hay ConsumeSubTurn o 
 				// YieldTurnToOpponent, por ejemplo, en una pase al pie, el tiempo este bien para el siguiente sub-turno.
 				ResetTimeout();
 				
 				// Aplicamos habilidad especial
-				if (cap.OwnerTeam.IsUsingSkill(Enums.Superpotencia))
+				if (shooter.OwnerTeam.IsUsingSkill(Enums.Superpotencia))
 					shootInfo.Impulse *= MatchConfig.PowerMultiplier;
 				
 				// Comienza la simulacion!
 				ChangeState(GameState.Simulating);
 				
 				// Ejecucion del tiro del atacante
-				TheGamePhysics.Shoot(cap, shootInfo);
+				TheGamePhysics.Shoot(shooter, shootInfo);
 			}
 		}
 		
@@ -478,7 +508,7 @@ package Match
 			// Al acabar el tiro movemos el portero a su posición de formación en caso de la ultima accion fuera un saque de puerta
 			if (Enums.IsSaquePuerta(ReasonTurnChanged))
 				CurTeam.ResetToFormationOnlyGoalKeeper();
-
+			
 			var paseToCap : Cap = CheckPaseAlPie();
 			var detectedFault : Fault = TheGamePhysics.TheFault;
 									
@@ -591,8 +621,8 @@ package Match
 			if (!MatchConfig.OfflineMode)
 			{
 				MatchMain.Ref.Connection.Invoke("OnResultShoot", null, result, 
-											TheGamePhysics.NumTouchedCaps, paseToCap != null ? paseToCap.Id : -1, TheGamePhysics.NumFramesSimulated, 
-											ReasonTurnChanged, capListStr);
+											    TheGamePhysics.NumTouchedCaps, paseToCap != null ? paseToCap.Id : -1, TheGamePhysics.NumFramesSimulated, 
+											    ReasonTurnChanged, capListStr);
 			}
 		}
 
@@ -903,31 +933,36 @@ package Match
 		
 		private function SetTurnAllReady(idTeam:int, reason:int, callback : Function) : void
 		{
+			// A paseo...
 			if (CurTeam.IsLocalUser && CurTeam.IsCornerCheat())
 			{
 				MatchMain.Ref.Connection.Invoke("OnAbort", null);
 				GameMetrics.ReportEvent(GameMetrics.CORNER_CHEATING, { facebookID: CurTeam.FacebookID });
 				return;
 			}
-			
-			// DEBUG: En modo offline nos convertimos en el otro jugador, para poder testear!
+
+			// En modo offline nos convertimos en jugador que coge el turno, para poder testear!
 			if (MatchConfig.OfflineMode)
 				MatchConfig.IdLocalUser = idTeam;
-						
+			
+			// Cambio de turno!
+			_IdxCurTeam = idTeam;
+			
 			// Guardamos la razón por la que hemos cambiado de turno
 			ReasonTurnChanged = reason;
-						
+			
 			// Vemos los futbolistas que han acabado dentro del area pequeña en el turno anterior, los sacamos fuera
 			TheTeams[Enums.Team1].EjectPlayersInsideSmallArea();
 			TheTeams[Enums.Team2].EjectPlayersInsideSmallArea();
 			
-			// Y ahora si, cambio de turno...
-			_IdxCurTeam = idTeam;
+			// Nos aseguramos de resetear el linear damping del portero por si en el tiro anterior hemos hecho un AutoGoalkeeper
+			CurTeam.GoalKeeper.SetLinearDamping(MatchConfig.CapLinearDamping);
 			
-			// Reseteamos el nº de subtiros y el tiempo disponible para el subturno (time-out)
+			// Reseteamos los contadores de tiros
 			_RemainingHits = MatchConfig.MaxHitsPerTurn;
 			_RemainingPasesAlPie = MatchConfig.MaxNumPasesAlPie;
 			
+			// ...y el tiempo disponible para el subturno
 			ResetTimeout();
 			
 			// Para colocar el portero el tiempo puede ser otro distinto al del turno
@@ -972,6 +1007,7 @@ package Match
 			// Immoveable goalkeeper
 			CurTeam.GoalKeeper.SetImmovable(false);
 			
+			// Inmovible solo en la pequenia y cuando no es el tiro a puerta
 			if (Field.IsCapCenterInsideSmallArea(CurTeam.AgainstTeam().GoalKeeper) && reason != Enums.TurnGoalKeeperSet)
 				CurTeam.AgainstTeam().GoalKeeper.SetImmovable(true);
 			else
@@ -1047,10 +1083,10 @@ package Match
 				   Field.IsPointInsideSmallArea(ballPos, enemy.Side);
 		}
 		
-		// Comprueba si se ha declarado tiro a puerta o si se posee la habilidad especial mano de dios
+		// Estamos tirando a puerta o seria valido tirar a puerta (en el caso de mano de dios/autoportero)?
 		public function IsTiroPuertaDeclarado() : Boolean
 		{
-			return CurTeam.IsUsingSkill(Enums.Manodedios) || 
+			return CurTeam.IsUsingSkill(Enums.Manodedios) || IsAutoGoalKeeper
 				   ReasonTurnChanged == Enums.TurnTiroAPuerta || 
 				   ReasonTurnChanged == Enums.TurnGoalKeeperSet;
 		}

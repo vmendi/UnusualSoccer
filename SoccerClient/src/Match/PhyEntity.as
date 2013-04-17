@@ -1,5 +1,6 @@
 package Match
 {
+	import Box2D.Collision.Shapes.b2MassData;
 	import Box2D.Common.*;
 	import Box2D.Common.Math.*;
 	import Box2D.actionsnippet.qbox.QuickBox2D;
@@ -128,6 +129,20 @@ package Match
 			}
 			
 			return nearestEntity;
+		}
+		
+		public function SetLinearDamping(linearDamping : Number) : void
+		{
+			_PhyObject.body.m_linearDamping = linearDamping;
+		}
+		
+		static public function SetMass(phyObject : QuickObject, newMass : Number) : void
+		{
+			var massData : b2MassData = new b2MassData();			
+			massData.I = phyObject.body.m_I;
+			massData.mass = newMass;
+			
+			phyObject.body.SetMass(massData);
 		}
 	}
 

@@ -12,7 +12,7 @@ package Match
 		
 		public static const DrawPhysics:Boolean = false;		// Indica si depuramos la física (pintar el mundo físico)
 		public static const DragPhysicObjects:Boolean = false;	// Indica si podemos arrastrar los objetos físicos con el ratón				
-		public static const DrawPredictions:Boolean = true;		// Paint GamePhysicsPredictions debugging aids
+		public static const DrawPredictions:Boolean = false;	// Paint GamePhysicsPredictions debugging aids
 				
 		public static const ClientVersion:int = 205;			// Versión del cliente
 				
@@ -37,6 +37,7 @@ package Match
 		public static const CapLinearDamping:Number = 5;
 		public static const BallMass:Number = 3;
 		public static const BallLinearDamping:Number = 3;
+		public static const AutoGoalkeeperLinearDamping:Number = 8;
 		
 		public static const ThresholdCheatRadius:Number = 80;	// Radio desde las esquinas donde miramos que no amontonen chapas
 		public static const MaxCapsInCheatThreshold:int = 2;	// Max num de chapas permitidas en ese radio (y el balon)

@@ -93,7 +93,7 @@ package Match
 			var numPoints : int = _BallContactHistory[segIdx].History.length;
 			var currGoalKeeperPos : Point = goalKeeper.GetPos();
 			
-			var R : Number = 1.0 - _GamePhysics.TimeStep * MatchConfig.CapLinearDamping;
+			var R : Number = 1.0 - _GamePhysics.TimeStep * MatchConfig.AutoGoalkeeperLinearDamping;
 			var H : Number = (1-R) / (_GamePhysics.TimeStep * R);
 			
 			// Cogemos el primer segmento y exploramos desde su ultimo punto hasta el primero, viendo que velocidad
@@ -230,7 +230,7 @@ package Match
 						_Shooter = cloned;
 					else
 					if (cap == team.GoalKeeper)
-						Cap.SetImmovable(cloned, true);
+						PhyEntity.SetMass(cloned, 0);	// Immovable
 					
 					_AllPhyObjects.push(cloned);
 				}

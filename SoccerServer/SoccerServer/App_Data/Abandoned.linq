@@ -12,27 +12,31 @@
 </Query>
 
 var today = DateTime.Now;
-int daysSince = 3;
+int daysSince = 7;
 
 var totalTeams = (from t in Teams
 				  where (today - t.Team.CreationDate).TotalDays <= daysSince
-				  select t);
-
-var only1Match = (from t in Teams
-				  where (today - t.Team.CreationDate).TotalDays <= daysSince
-				  where t.MatchParticipations.Count() == 1
 				  select t);
 				  
 var only1MatchParts = (from t in Teams
 				  	   where (today - t.Team.CreationDate).TotalDays <= daysSince
 				       where t.MatchParticipations.Count() == 1
 				       select t.MatchParticipations.First());
+
+var only1MatchPartsAbandoned = only1MatchParts.Where(part => part.Match.WasAbandoned.Value);
 				  
 totalTeams.Count().Dump("Total teams created since " + daysSince.ToString() + " days ago");
-only1Match.Count().Dump("Teams that played only 1 match");
-only1Match.Count(team => team.MatchParticipations.First().Match.WasAbandoned.Value).Dump("Abandoned");
-only1MatchParts.Average(m => (m.Match.DateEnded - m.Match.DateStarted).Value.TotalSeconds).Dump("Avg seconds");
-only1MatchParts.Count(only1 => only1MatchParts.Contains(only1.Match.MatchParticipations.Single(s => s != only1))).Dump("Played against 1 part only too");
+only1MatchParts.Count().Dump("Teams that played only 1 match");
+only1MatchPartsAbandoned.Count().Dump("Abandoned");
+
+only1MatchPartsAbandoned.Average(m => (m.Match.DateEnded - m.Match.DateStarted).Value.TotalSeconds).Dump("Avg seconds (only abandoned)");
+//only1MatchParts.Count(only1 => only1MatchParts.Contains(only1.Match.MatchParticipations.Single(s => s != only1))).Dump("Played against 1 part only too");
+
+var withAbandonedResult = only1MatchParts.Where(part => part.Match.MatchAbandons != null);
+
+withAbandonedResult.Count().Dump("Tenemos resultado antes del abandono de:");
+withAbandonedResult.Count(part => part.Match.MatchAbandons.GoalsHome == part.Match.MatchAbandons.GoalsAway).Dump("Abandonadas con 0-0");
+withAbandonedResult.Count(part => part.Match.MatchAbandons.GoalsHome != part.Match.MatchAbandons.GoalsAway).Dump("Abandonadas con X-X");
 
 int total = 0;
 

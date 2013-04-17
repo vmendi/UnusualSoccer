@@ -19,6 +19,8 @@ package Match
 		public function get Level() : Number { return _DescTeam.Level; }
 		public function get TrueSkill() : Number { return _DescTeam.TrueSkill; }
 		public function get UsingSecondUniform() : Boolean { return _UsingSecondUniform; }
+		public function get MatchesCount() : int { return _DescTeam.MatchesCount; }
+		
 		
 		public function get CapsList() : Array { return _CapsList; }
 		public function get GoalKeeper() : Cap { return _CapsList[0]; }
@@ -42,7 +44,7 @@ package Match
 		private var _AvailableSkills : Array;					// Las mismas habilidades, puestas en forma de array
 		private var _UsingSecondUniform : Boolean;
 		private var _Game : Game;
-				
+
 		public function Team(descTeam:Object, idxTeam:int, useSecondUniform:Boolean, theGame : Game) : void
 		{
 			_Game = theGame;
