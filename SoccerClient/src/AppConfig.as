@@ -25,6 +25,7 @@ package
 		
 		static public var TUTORIAL : String = null;
 		static public var COUNTRY: String = null;
+		static public var MATCH_COUNT: String = null;
 		
 		// Una pregunta que nos hacemos en varios sitios, por tenerla centralizada
 		static public function get IsMahouLigaChapas() : Boolean { return VERSION_ID=='MahouLigaChapas'; }
@@ -89,6 +90,9 @@ package
 			
 			if (parameters.hasOwnProperty("Country"))
 				COUNTRY = parameters["Country"];
+			
+			if (parameters.hasOwnProperty("MatchCount"))
+				MATCH_COUNT = parameters["MatchCount"];
 		}
 		
 		static private function ProcessQueryString(theQueryString : String) : Object

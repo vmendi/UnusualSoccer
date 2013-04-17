@@ -199,6 +199,15 @@ package Match
 					useSecondaryEquipment1 = true;
 			}
 			
+			// Parse Query String (debug aids)
+			if (AppConfig.MATCH_COUNT != null)
+			{
+				if (idLocalPlayerTeam == Enums.Team1)
+					descTeam1.MatchesCount = parseInt(AppConfig.MATCH_COUNT);
+				else
+					descTeam2.MatchesCount = parseInt(AppConfig.MATCH_COUNT);
+			}
+			
 			// Creamos los dos equipos (utilizando la equipación indicada)
 			_Team1 = new Team(descTeam1, Enums.Team1, useSecondaryEquipment1, this);
 			_Team2 = new Team(descTeam2, Enums.Team2, useSecondaryEquipment2, this);
