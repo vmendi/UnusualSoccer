@@ -49,7 +49,7 @@ package Match
 			mcChat.addEventListener(Event.REMOVED_FROM_STAGE, OnRemovedFromStage);
 			mcChat.stage.addEventListener(KeyboardEvent.KEY_DOWN, OnStageKeyDown);
 			
-			MovieClipMouseDisabler.DisableMouse(mcChat as DisplayObjectContainer, true);
+			MovieClipMouseDisabler.DisableMouse(parent as DisplayObjectContainer, true);
 			mcInput.visible = false;
 			
 			ctInput.mouseEnabled = true;

@@ -70,9 +70,13 @@ package Match
 			return null; 
 		}
 		
-		public function CalcAlternativePrediction(shooter : Cap, shootInfo : ShootInfo, goalKeeperPred : ShootInfo) : ShootInfo
+		public function RecalcShotToAllowGoal(shooter : Cap, shootInfo : ShootInfo, goalKeeperPred : ShootInfo) : ShootInfo
 		{
-			return null;
+			if (_LastGamePhysicsPrediction == null)
+				throw new Error("WTF 59f - Can't call here without a prediction");
+			
+			// TODO
+			return new ShootInfo(new Point(goalKeeperPred.Dir.x, goalKeeperPred.Dir.y) , goalKeeperPred.Impulse/3);
 		}
 		
 		public function AutoGoalkeeperShoot(goalkeeper : Cap, goalkeeperShoot : ShootInfo) : void

@@ -12,7 +12,8 @@ package Match
 				Level:awesome? 50 : 1,
 				TrueSkill:awesome? 15000 : 0,
 				Formation:"2-2-3",
-				SoccerPlayers: []
+				SoccerPlayers: [],
+				MatchesCount: awesome? 1 : 25
 			}
 
 			for (var c:int=0; c < 8; ++c)

@@ -27,8 +27,8 @@ package Match
 		public function get IsLocalUser() : Boolean	{ return this.TeamId == MatchConfig.IdLocalUser; }
 		public function get IsCurrTeam() : Boolean { return this == _Game.CurrTeam; }
 		
-		public function get Goals() : int {	return _Goals; }
-		public function set Goals(value:int) : void { _Goals = value; }
+		public function get Goals() : Number {	return _Goals; }
+		public function set Goals(value:Number) : void { _Goals = value; }
 		
 		// Array con los IDs de las Skills disponibles, las que vienen desde el manager
 		public function get AvailableSkills() : Array { return _AvailableSkills; }

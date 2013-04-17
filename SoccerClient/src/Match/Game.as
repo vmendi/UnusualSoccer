@@ -56,6 +56,7 @@ package Match
 		private var _RemainingPasesAlPie : int = 0;				// No de pases al pie que quedan
 		private var _TimeSecs:Number = 0;						// Tiempo en segundos que queda de la "mitad" actual del partido
 		private var _Timeout:Number = 0;						// Tiempo en segundos que queda para que ejecutes un disparo
+		private var _ScoreBalancer:ScoreBalancer;
 				
 		public var ReasonTurnChanged:int = -1;
 		public var FireCount:int = 0;							// Contador de jugadores expulsados durante el partido
@@ -86,16 +87,7 @@ package Match
 				
 		public function get Part() : int { return _Part; }
 		public function get IsPlaying() : Boolean { return _State == GameState.Playing; }
-		
-		public function get IsAutoGoalKeeper() : Boolean
-		{
-			return (Team1.MatchesCount < 15 || Team2.MatchesCount < 15);
-		}
-		
-		public function IsGoalGoodIdea() : Boolean
-		{
-			return true;
-		}
+	
 		
 		public function Game(parent : DisplayObjectContainer) : void
 		{
@@ -211,6 +203,8 @@ package Match
 			_Team1 = new Team(descTeam1, Enums.Team1, useSecondaryEquipment1, this);
 			_Team2 = new Team(descTeam2, Enums.Team2, useSecondaryEquipment2, this);
 			
+			_ScoreBalancer = new ScoreBalancer(Team1, Team2, _Random);
+			
 			// Publicacion de Achievements
 			MatchAchievements.ProcessAchievementMatchStart(LocalUserTeam);
 											
@@ -219,7 +213,7 @@ package Match
 			
 			_Cutscene = new Cutscene(GUILayer);
 			_Chat = new Chat(ChatLayer, LocalUserTeam.Name) as Chat;
-			
+						
 			// Hemos terminado de cargar/inicializar
 			ChangeState(GameState.Init);
 		}
@@ -459,7 +453,7 @@ package Match
 			{
 				var enemyGoalkeeper : Cap = shooter.OwnerTeam.Opponent().GoalKeeper;
 				
-				if (IsAutoGoalKeeper && Field.IsCapCenterInsideBigArea(enemyGoalkeeper))
+				if (_ScoreBalancer.IsAutoGoalKeeper && Field.IsCapCenterInsideBigArea(enemyGoalkeeper))
 				{
 					var goalkeeperShoot : ShootInfo = TheGamePhysics.NewGoalkeeperPrediction(shooter, shootInfo);
 					
@@ -467,17 +461,18 @@ package Match
 					if (goalkeeperShoot != null)
 					{
 						// Decidimos si queremos pararnosla o no
-						if (IsGoalGoodIdea())
+						if (_ScoreBalancer.IsGoalGoodIdea(shooter.OwnerTeam, goalkeeperShoot))
 						{
+							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, TheGamePhysics.RecalcShotToAllowGoal(shooter, shootInfo, goalkeeperShoot));
+						}
+						else
+						{
+							// El gol no es buena idea, nos la paramos
 							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, goalkeeperShoot);
 							
 							// Si el portero es automatico es como cuando se anuncia el tiro a puerta, el tiro es ya el ultimo
 							_RemainingHits = 1;
-							_RemainingPasesAlPie = 0;
-						}
-						else
-						{
-							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, TheGamePhysics.CalcAlternativePrediction(shooter, shootInfo, goalkeeperShoot));
+							_RemainingPasesAlPie = 0;	
 						}
 					}
 				}
@@ -830,9 +825,7 @@ package Match
 			
 			TheBall.SetPosInFieldCenter();
 			
-			SetDebugPos();
-			SetTurn(1, reason);
-			//SetTurn(team.TeamId, reason);
+			SetTurn(team.TeamId, reason);
 		}
 		
 		private function OponenteControlaPie(cap : Cap, reason : int) : void
@@ -1097,7 +1090,7 @@ package Match
 		// Estamos tirando a puerta o seria valido tirar a puerta (en el caso de mano de dios/autoportero)?
 		public function IsTiroPuertaDeclarado() : Boolean
 		{
-			return CurrTeam.IsUsingSkill(Enums.Manodedios) || IsAutoGoalKeeper
+			return CurrTeam.IsUsingSkill(Enums.Manodedios) || _ScoreBalancer.IsAutoGoalKeeper
 				   ReasonTurnChanged == Enums.TurnTiroAPuerta || 
 				   ReasonTurnChanged == Enums.TurnGoalKeeperSet;
 		}
