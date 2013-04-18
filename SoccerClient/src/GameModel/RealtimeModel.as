@@ -5,6 +5,7 @@ package GameModel
 	import HttpService.MainService;
 	import HttpService.TransferModel.vo.Team;
 	
+	import Match.MatchConfig;
 	import Match.MatchMain;
 	
 	import NetEngine.InvokeResponse;
@@ -16,7 +17,6 @@ package GameModel
 	
 	import mx.binding.utils.BindingUtils;
 	import mx.core.FlexGlobals;
-	import mx.messaging.messages.ErrorMessage;
 	import mx.resources.ResourceManager;
 	import mx.utils.URLUtil;
 	
@@ -324,7 +324,8 @@ package GameModel
 
 		public function PushedMatchUnsync() : void
 		{
-			//Alert.show("Unsync state!", "BETA");
+			ErrorMessages.LogToServer("Additional Info, ClientVersion: " + MatchConfig.ClientVersion + "  Team name: " + mMainModel.TheTeamModel.TheTeam.Name +
+									  " FacebookID: " + SoccerClient.GetFacebookFacade().FacebookID);
 		}
 		
 		// Partido abandonado, por nosotros o por nuestro enemigo. Como no tenemos boton de abandonar, en general sera por abandono del
