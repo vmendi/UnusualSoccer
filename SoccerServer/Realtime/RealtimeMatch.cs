@@ -38,9 +38,10 @@ namespace Realtime
         
         public const string PLAYER_1 = "player1";
         public const string PLAYER_2 = "player2";
-        const int Player1 = 0;                                  // Identificador para el player 1
-        const int Player2 = 1;                                  // Identificador para el player 2
-        const int Invalid = (-1);                               // Identificador inválido
+        const int Player1 = 0;                                  
+        const int Player2 = 1;
+
+        const int Invalid = -1;                                         // Id general de invalidez
 
         public const String MATCHLOG_VERBOSE = "MATCH VERBOSE";
         public const String MATCHLOG_ERROR = "MATCH ERROR";
@@ -52,7 +53,7 @@ namespace Realtime
         RealtimePlayerData[] PlayersData = new RealtimePlayerData[2];   // Los jugadores en el manager
         PlayerState[] PlayersState = new PlayerState[2];                // Estado de los jugadores
 
-        int PlayerIdAbandon = Invalid;                            // Jugador que ha abandonado el partido
+        int PlayerIdAbandon = Invalid;                                  // Jugador que ha abandonado el partido
 
         private State CurState = State.WaitingForMatchStart;   // Estado actual del servidor de juego       
         private int CountPlayersEndShoot = 0;
