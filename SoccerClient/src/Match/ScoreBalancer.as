@@ -10,6 +10,9 @@ package Match
 		private function get Team1() : Team { return _Team1; }
 		private function get Team2() : Team { return _Team2; }
 		
+		private const ULTRA_NOOB_THRESHOLD : int = 10;
+		private const NOOB_THRESHOLD : int = 15;
+		
 		public function ScoreBalancer(team1 : Team, team2 : Team, random : Random) : void
 		{
 			_Team1 = team1;
@@ -19,14 +22,15 @@ package Match
 		
 		public function get IsAutoGoalKeeper() : Boolean
 		{
-			return _Team1.MatchesCount <= 20 || _Team2.MatchesCount <= 20;
+			//return _Team1.MatchesCount <= MATCHES_UPPER_THRESHOLD || _Team2.MatchesCount <= MATCHES_UPPER_THRESHOLD;
+			return false;
 		}
 		
 		public function IsGoalGoodIdea(scorerTeam : Team, goalkeeperShoot : ShootInfo) : Boolean
 		{
 			var goodIdea : Number = 0;
 			
-			if ((Team1.MatchesCount < 10 && Team2.MatchesCount < 10) ||
+			if ((Team1.MatchesCount < ULTRA_NOOB_THRESHOLD && Team2.MatchesCount < ULTRA_NOOB_THRESHOLD) ||
 				(Team1.MatchesCount == Team2.MatchesCount))
 			{
 				// The two of them are ultra-noobs or they have played equal number of matches
@@ -35,12 +39,12 @@ package Match
 			else
 			{
 				// Are we dealing with one ultra-noob?
-				if (Team1.MatchesCount >= 10 && Team2.MatchesCount >= 10)
+				if (Team1.MatchesCount >= ULTRA_NOOB_THRESHOLD && Team2.MatchesCount >= ULTRA_NOOB_THRESHOLD)
 				{
 					// No, both of them are at least noobs
 					
 					// Is one of them a regular player? Favor the noob
-					if (Team1.MatchesCount >= 20 || Team2.MatchesCount >= 20)
+					if (Team1.MatchesCount >= NOOB_THRESHOLD || Team2.MatchesCount >= NOOB_THRESHOLD)
 						goodIdea = GoalBasedUnfairApproach(scorerTeam);
 					else
 					// Both of them are noobs
@@ -87,8 +91,7 @@ package Match
 		{
 			var newbier : Team = Team1.MatchesCount < Team2.MatchesCount? Team1 : Team2;
 			var other : Team =  Team1.MatchesCount < Team2.MatchesCount? Team2 : Team1;
-			var diffMatchesCount : Number = other.MatchesCount - newbier.MatchesCount;
-			
+						
 			if (newbier.Goals <= other.Goals)
 			{
 				if (scorerTeam == newbier)

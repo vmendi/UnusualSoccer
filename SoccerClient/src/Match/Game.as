@@ -1099,9 +1099,8 @@ package Match
 		// Estamos tirando a puerta o seria valido tirar a puerta (en el caso de mano de dios/autoportero)?
 		public function IsTiroPuertaDeclarado() : Boolean
 		{
-			return CurrTeam.IsUsingSkill(Enums.Manodedios) || _ScoreBalancer.IsAutoGoalKeeper
-				   ReasonTurnChanged == Enums.TurnTiroAPuerta || 
-				   ReasonTurnChanged == Enums.TurnGoalKeeperSet;
+			return CurrTeam.IsUsingSkill(Enums.Manodedios) || _ScoreBalancer.IsAutoGoalKeeper ||
+				   ReasonTurnChanged == Enums.TurnTiroAPuerta ||  ReasonTurnChanged == Enums.TurnGoalKeeperSet;
 		}
 		
 	
