@@ -15,24 +15,26 @@ package Match
 	
 	public class ControllerShoot extends Controller
 	{		
-		public function ControllerShoot(canvas:Sprite)
+		public function ControllerShoot(canvas:Sprite, game : Game)
 		{
 			var array : Array = Font.enumerateFonts(false);
+		
+			_Game = game;
 			
-			_PotenciaTiro  = new TextField();			
-			_PotenciaTiro.selectable = false;
-			_PotenciaTiro.mouseEnabled = false;
-			_PotenciaTiro.embedFonts = true;
-			_PotenciaTiro.antiAliasType = flash.text.AntiAliasType.ADVANCED;
-			_PotenciaTiro.defaultTextFormat = new TextFormat("HelveticaNeue LT 77 BdCn", 14, null, true);			
-			_PotenciaTiro.textColor = 0xFFFFFF;
-			_PotenciaTiro.width = 60;
-			_PotenciaTiro.height = 20;
+			_ShotPower  = new TextField();			
+			_ShotPower.selectable = false;
+			_ShotPower.mouseEnabled = false;
+			_ShotPower.embedFonts = true;
+			_ShotPower.antiAliasType = flash.text.AntiAliasType.ADVANCED;
+			_ShotPower.defaultTextFormat = new TextFormat("HelveticaNeue LT 77 BdCn", 14, null, true);			
+			_ShotPower.textColor = 0xFFFFFF;
+			_ShotPower.width = 60;
+			_ShotPower.height = 20;
 			
 			_Canvas = canvas;
-			_Canvas.addChild(_PotenciaTiro);
+			_Canvas.addChild(_ShotPower);
 			
-			_MaxLengthLine = MAX_LONG_SHOOT;
+			_MaxLengthLine = MAX_LONG_SHOT;
 			_Thickness = THICKNESS_SHOOT;						
 		}
 	
@@ -40,17 +42,17 @@ package Match
 		{
 			super.Start(_cap);
 		
-			_PotenciaTiro.text = "";
-			_PotenciaTiro.visible = true;
-			_PotenciaTiro.x = _Target.Visual.x;
-			_PotenciaTiro.y = _Target.Visual.y;
+			_ShotPower.text = "";
+			_ShotPower.visible = true;
+			_ShotPower.x = _Target.Visual.x;
+			_ShotPower.y = _Target.Visual.y;
 		}
 		
 		public override function Stop(reason:int):void
 		{
 			super.Stop(reason);
 
-			_PotenciaTiro.visible = false;
+			_ShotPower.visible = false;
 			_Canvas.graphics.clear();
 		}
 		
@@ -78,12 +80,12 @@ package Match
 				{
 					DrawPredictiveGizmo();
 					
-					_PotenciaTiro.text = "PO: " + Math.round(Force*100);
+					_ShotPower.text = "PO: " + Math.round(Force*100);
 					recoilColor = _ColorLine;
 				}
 				else
 				{
-					_PotenciaTiro.text = "";	
+					_ShotPower.text = "";	
 				}
 				
 				// Pintamos la parte "trasera" del disparador, que va desde el centro de la chapa hasta el raton
@@ -100,14 +102,14 @@ package Match
 		// Queremos calcular el lugar exacto al que llegará la chapa si no choca con nada
 		private function DrawPredictiveGizmo() : void
 		{			
-			// Calculamos la velocidad inicial como lo hace el motor al aplicar un impulso
-			var v:Number = Impulse / MatchConfig.CapMass;
+			var dist : Number = CalcUnclippedCapTravelDistance();
 			
-			// Aplicamos nuestra formula de la cual hay una foto (4/14/2013)
-			var R : Number = 1.0 - MatchMain.Ref.Game.TheGamePhysics.TimeStep * MatchConfig.CapLinearDamping;
-			var dist : Number = v * MatchMain.Ref.Game.TheGamePhysics.TimeStep * R / (1-R); 
-			
-			dist *= MatchConfig.PixelsPerMeter;
+			function SearchCollisionAgainstCap(team : Team) : void
+			{
+				for each(var cap : Cap in team.CapsList)
+				{					
+				}
+			}
 			
 			var target : Point = Direction.clone();
 			target.normalize(dist);
@@ -116,6 +118,18 @@ package Match
 			_Canvas.graphics.lineStyle(Cap.Radius*2, 0xFFFFFF, 0.2);
 			_Canvas.graphics.moveTo(_TargetPos.x, _TargetPos.y);
 			_Canvas.graphics.lineTo(destination.x, destination.y);
+		}
+		
+		private function CalcUnclippedCapTravelDistance() : void
+		{
+			// Calculamos la velocidad inicial como lo hace el motor al aplicar un impulso
+			var v:Number = Impulse / MatchConfig.CapMass;
+			
+			// Aplicamos nuestra formula de la cual hay una foto (4/14/2013)
+			var R : Number = 1.0 - _Game.TheGamePhysics.TimeStep * MatchConfig.CapLinearDamping;
+			var dist : Number = v * _Game.TheGamePhysics.TimeStep * R / (1-R); 
+			
+			return dist * MatchConfig.PixelsPerMeter;
 		}
 				
 		// Obtenemos el vector de dirección del disparo, evitando que sobrepase nuestra longitud máxima 
@@ -230,14 +244,15 @@ package Match
 			return dist;
 		}
 
+		private var _Game : Game;
 		private var _Canvas : Sprite;
 		private var _MaxLengthLine : uint;
 		private var _ColorLine : uint;
 		private var _Thickness : uint;
-		private var _PotenciaTiro : TextField;
+		private var _ShotPower : TextField;
 
 		private const STAGE_MARGIN : Number = 15;
-		private const MAX_LONG_SHOOT:Number = 130;
+		private const MAX_LONG_SHOT:Number = 130;
 		private const COLOR_SHOOT:uint = 0xE97026;
 		private const THICKNESS_SHOOT:uint = 7;
 	}

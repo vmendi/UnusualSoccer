@@ -65,9 +65,9 @@ package Match
 			CreateSpecialSkillButtons(_Game.GUILayer);
 
 			// Inicializamos los controladores (disparo, balón, posición)
-			_ShootControl = new ControllerShoot(controllerCanvas);
-			_BallControl = new ControllerBall(controllerCanvas);
-			_PosControl = new ControllerPos(controllerCanvas);
+			_ShootControl = new ControllerShoot(controllerCanvas, _Game);
+			_BallControl = new ControllerBall(controllerCanvas, _Game);
+			_PosControl = new ControllerPos(controllerCanvas, _Game);
 			
 			_ShootControl.OnStop.add(OnStopControllerShoot);
 			_BallControl.OnStop.add(OnStopControllerBall);

@@ -9,8 +9,9 @@ package Match
 	//
 	public class ControllerBall extends Controller
 	{
-		public function ControllerBall(canvas:Sprite)		
+		public function ControllerBall(canvas:Sprite, game : Game)		
 		{
+			_Game = game;
 			_MaxLengthLine = Cap.Radius + Ball.Radius + MatchConfig.DistToPutBallHandling;
 			_Canvas = canvas;
 			_ColorLine = COLOR;
@@ -33,7 +34,7 @@ package Match
 		public override function IsValid() : Boolean
 		{
 			// NOTE: Indicamos que no tenga en cuenta el balón, ya que es el mismo el que estamos colocando
-			return MatchMain.Ref.Game.TheGamePhysics.IsPointFreeInsideField(EndPos, false, this.Target);
+			return _Game.TheGamePhysics.IsPointFreeInsideField(EndPos, false, this.Target);
 		}
 
 		public override function MouseUp(e: MouseEvent) : void
@@ -98,7 +99,8 @@ package Match
 			
 			return newPos;
 		}
-		
+
+		private var _Game : Game;
 		private var _Canvas : Sprite;
 		private var _MaxLengthLine : uint;
 		private var _ColorLine : uint;
