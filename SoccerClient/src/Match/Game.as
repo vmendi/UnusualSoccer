@@ -969,7 +969,7 @@ package Match
 			_Team2.EjectPlayersInsideSmallArea();
 			
 			// Nos aseguramos de resetear el linear damping del portero por si en el tiro anterior hemos hecho un AutoGoalkeeper
-			CurrTeam.GoalKeeper.SetLinearDamping(MatchConfig.CapLinearDamping);
+			CurrTeam.GoalKeeper.LinearDamping = MatchConfig.CapLinearDamping;
 			
 			// Reseteamos los contadores de tiros
 			_RemainingHits = MatchConfig.MaxHitsPerTurn;

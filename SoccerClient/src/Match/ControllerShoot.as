@@ -106,11 +106,21 @@ package Match
 			var direction : Point = new Point(-Direction.x, -Direction.y);
 			direction.normalize(1);
 
-			var collInfo : CollisionInfo = _Game.TheGamePhysics.SearchCollisionAgainstClosestCap(_TargetCap, direction, Impulse);
+			var collInfo : CollisionInfo = _Game.TheGamePhysics.SearchCollisionAgainstClosestPhyEntity(_TargetCap, direction, Impulse);
 			
 			_Canvas.graphics.lineStyle(Cap.Radius*2, 0xFFFFFF, 0.2);
 			_Canvas.graphics.moveTo(_TargetCapPos.x, _TargetCapPos.y);
 			_Canvas.graphics.lineTo(collInfo.Pos1.x, collInfo.Pos1.y);
+			
+			if (collInfo.PhyEntity2 != null)
+			{
+				_Canvas.graphics.lineStyle(1, 0xFFFFFF, 1);
+				_Canvas.graphics.moveTo(collInfo.Pos1.x, collInfo.Pos1.y);
+				_Canvas.graphics.lineTo(collInfo.AfterCollision1.x, collInfo.AfterCollision1.y);
+				
+				_Canvas.graphics.moveTo(collInfo.Pos2.x, collInfo.Pos2.y);
+				_Canvas.graphics.lineTo(collInfo.AfterCollision2.x, collInfo.AfterCollision2.y);
+			}
 		}
 		
 				
@@ -187,6 +197,7 @@ package Match
 			return force;
 		}
 		
+		// Impulso en el espacio de la fisica
 		public function get Impulse() : Number
 		{
 			return Force * MatchConfig.HighCapMaxImpulse;

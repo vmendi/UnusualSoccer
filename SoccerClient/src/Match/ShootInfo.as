@@ -4,8 +4,8 @@ package Match
 
 	public final class ShootInfo
 	{
-		public var Dir : Point;
-		public var Impulse : Number;
+		public var Dir : Point;				// Siempre una direccion, irrelevante el espacio
+		public var Impulse : Number;		// Siempre en espacio de fisica
 		
 		public function ShootInfo(dir : Point, impulse:Number) : void
 		{

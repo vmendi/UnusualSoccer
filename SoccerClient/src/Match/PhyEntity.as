@@ -127,9 +127,19 @@ package Match
 			return nearestEntity;
 		}
 		
-		public function SetLinearDamping(linearDamping : Number) : void
+		public function get Mass() : Number
+		{
+			return _PhyObject.body.m_mass;
+		}		
+		
+		public function set LinearDamping(linearDamping : Number) : void
 		{
 			_PhyObject.body.m_linearDamping = linearDamping;
+		}
+		
+		public function get LinearDamping() : Number
+		{
+			return _PhyObject.body.m_linearDamping;
 		}
 		
 		static public function SetMass(phyObject : QuickObject, newMass : Number) : void

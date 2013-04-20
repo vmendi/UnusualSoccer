@@ -4,6 +4,17 @@ package utils
 
 	public class MathUtils
 	{
+		static public function Multiply(vect : Point, scalar : Number) : Point
+		{
+			return new Point(vect.x*scalar, vect.y*scalar);
+		}
+		
+		static public function Dot(vect1 : Point, vect2 : Point) : Number
+		{
+			return vect1.x*vect2.x + vect1.y*vect2.y;
+		}
+		
+		
 		//
 		// Comprueba si un punto(pos) está contenido dentro de un rectángulo
 		//
