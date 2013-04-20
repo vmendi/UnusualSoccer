@@ -31,7 +31,7 @@ package Match
 	
 	public class Cap extends PhyEntity
 	{
-		static public const Radius:Number = 15;
+		static public const CapRadius:Number = 15;
 		
 		public function get OwnerTeam() : Team	  { return _OwnerTeam; }
 		public function get Name() : String		  { return _Name; }
@@ -123,16 +123,23 @@ package Match
 		
 		protected override function get PhysicsParams() : Object
 		{
-			return { radius: MatchConfig.Screen2Physic(Radius),
+			return { radius:MatchConfig.Screen2Physic(CapRadius),
 					 categoryBits: 1,								// Choca con todo
 					 isBullet: true, 								// UseCCD: Detección de colisión continua (Ninguna chapa se debe atravesar)
 					 mass: MatchConfig.CapMass,
+					 fixedRotation: false,
 					 isSleeping: true,
 					 allowSleep: true, 
-					 friction: .3, 
-					 restitution: .8,								// Fuerza que recupera en un choque
 					 linearDamping: MatchConfig.CapLinearDamping, 
-					 angularDamping: MatchConfig.CapLinearDamping };	
+					 angularDamping: MatchConfig.CapLinearDamping,
+					 friction: .3, 
+					 restitution: .8
+			};	
+		}
+		
+		public override function get Radius() : Number
+		{
+			return CapRadius;
 		}
 		
 		static public function PrepareVisualCap(visualCap : *, predefinedTeamNameID : String, useSecondary : Boolean, isGoalKeeper : Boolean) : void

@@ -48,7 +48,7 @@ package Match
 		// Our children (cap, ball...) will take charge of returning their physics params for creation 
 		protected function get PhysicsParams() : Object
 		{
-			return new Object();
+			throw new Error("WTF 987f - This method must be overriden");
 		}
 		
 		public function Destroy() : void
@@ -127,9 +127,25 @@ package Match
 			return nearestEntity;
 		}
 		
-		public function SetLinearDamping(linearDamping : Number) : void
+		// En espacio de pantalla
+		public function get Radius() : Number
+		{
+			throw new Error("WTF 59o - This method must be overriden");
+		}
+		
+		public function get Mass() : Number
+		{
+			return _PhyObject.body.m_mass;
+		}		
+		
+		public function set LinearDamping(linearDamping : Number) : void
 		{
 			_PhyObject.body.m_linearDamping = linearDamping;
+		}
+		
+		public function get LinearDamping() : Number
+		{
+			return _PhyObject.body.m_linearDamping;
 		}
 		
 		static public function SetMass(phyObject : QuickObject, newMass : Number) : void

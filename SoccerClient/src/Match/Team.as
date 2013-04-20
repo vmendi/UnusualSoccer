@@ -400,7 +400,7 @@ package Match
 			
 			// Colocamos la chapa fuera del area de visión. Las llevamos a puntos distintos para que no colisionen
 			var pos:Point = new Point(-100, -100);
-			pos.x -= _Game.FireCount * ((Cap.Radius * 2) * 5);
+			pos.x -= _Game.FireCount * ((Cap.CapRadius * 2) * 5);
 			cap.SetPos(pos);			
 		}
 		
@@ -494,7 +494,7 @@ package Match
 						
 			for each (var cap:Cap in _CapsList)
 			{
-				if (cap.IsCenterInsideCircle(_Game.TheBall.GetPos(), Cap.Radius + Ball.Radius + this.RadiusPase))
+				if (cap.IsCenterInsideCircle(_Game.TheBall.GetPos(), Cap.CapRadius + Ball.BallRadius + this.RadiusPase))
 				{
 					if (MatchConfig.AutoPasePermitido || cap != shooterCap)
 						potential.push(cap);
@@ -513,7 +513,7 @@ package Match
 		{
 			var enemy : Cap = null;
 			
-			var capList:Array = GetCapsInsideCircle(_Game.TheBall.GetPos(), Cap.Radius + Ball.Radius + RadiusSteal);
+			var capList:Array = GetCapsInsideCircle(_Game.TheBall.GetPos(), Cap.CapRadius + Ball.BallRadius + RadiusSteal);
 			
 			if(capList.length >= 1)
 				enemy = _Game.TheBall.NearestEntity(capList) as Cap;

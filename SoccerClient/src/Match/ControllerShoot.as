@@ -10,54 +10,64 @@ package Match
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
+	import mx.resources.ResourceManager;
+	
 	import utils.MathUtils;
 
 	
 	public class ControllerShoot extends Controller
 	{		
-		public function ControllerShoot(canvas:Sprite)
+		public function ControllerShoot(canvas:Sprite, game : Game)
 		{
 			var array : Array = Font.enumerateFonts(false);
+		
+			_Game = game;
 			
-			_PotenciaTiro  = new TextField();			
-			_PotenciaTiro.selectable = false;
-			_PotenciaTiro.mouseEnabled = false;
-			_PotenciaTiro.embedFonts = true;
-			_PotenciaTiro.antiAliasType = flash.text.AntiAliasType.ADVANCED;
-			_PotenciaTiro.defaultTextFormat = new TextFormat("HelveticaNeue LT 77 BdCn", 14, null, true);			
-			_PotenciaTiro.textColor = 0xFFFFFF;
-			_PotenciaTiro.width = 60;
-			_PotenciaTiro.height = 20;
+			_ShotPower  = new TextField();			
+			_ShotPower.selectable = false;
+			_ShotPower.mouseEnabled = false;
+			_ShotPower.embedFonts = true;
+			_ShotPower.antiAliasType = flash.text.AntiAliasType.ADVANCED;
+			_ShotPower.defaultTextFormat = new TextFormat("HelveticaNeue LT 77 BdCn", 14, null, true);			
+			_ShotPower.textColor = 0xFFFFFF;
+			_ShotPower.width = 60;
+			_ShotPower.height = 20;
 			
 			_Canvas = canvas;
-			_Canvas.addChild(_PotenciaTiro);
+			_Canvas.addChild(_ShotPower);
 			
-			_MaxLengthLine = MAX_LONG_SHOOT;
+			_MaxLengthLine = MAX_LONG_SHOT;
 			_Thickness = THICKNESS_SHOOT;						
 		}
 	
-		public override function Start(_cap:Cap) : void
+		public override function Start(cap:Cap) : void
 		{
-			super.Start(_cap);
+			super.Start(cap);
 		
-			_PotenciaTiro.text = "";
-			_PotenciaTiro.visible = true;
-			_PotenciaTiro.x = _Target.Visual.x;
-			_PotenciaTiro.y = _Target.Visual.y;
+			_ShotPower.text = "";
+			_ShotPower.visible = true;
+			_ShotPower.x = _TargetCap.Visual.x;
+			_ShotPower.y = _TargetCap.Visual.y;
+			
+			_Ghost = _Game.GameLayer.addChild(new (ResourceManager.getInstance().getClass("match", "Cap") as Class));
+			_Ghost.alpha = 0.4;
+			_Ghost.visible = false;
+			Cap.PrepareVisualCap(_Ghost, cap.OwnerTeam.PredefinedTeamNameID, cap.OwnerTeam.UsingSecondUniform, true);
 		}
 		
 		public override function Stop(reason:int):void
 		{
 			super.Stop(reason);
 
-			_PotenciaTiro.visible = false;
+			_Ghost.visible = false;
+			_ShotPower.visible = false;
 			_Canvas.graphics.clear();
 		}
 		
 		public override function IsValid() : Boolean
 		{
 			// Por debajo del radio de la chapa no tiramos, es una cancelacion
-			return Direction.length >= Cap.Radius;
+			return Direction.length >= Cap.CapRadius;
 		}
 			
 		public override function MouseMove(e: MouseEvent) :void
@@ -67,23 +77,24 @@ package Match
 				super.MouseMove(e);
 				
 				var dir:Point = Direction.clone(); 				// Dirección truncada a la máxima longitud
-				var source:Point = _TargetPos.clone(); 			// Posición del centro de la chapa
+				var source:Point = _TargetCapPos.clone(); 			// Posición del centro de la chapa
 				var recoil:Point = source.add(dir); 			// Punto del mouse respecto a la chapa, cuando soltemos nos dará la potencia del tiro
 				var recoilColor:uint = 0xff0000;
 				
-				_Canvas.graphics.clear();			
+				_Canvas.graphics.clear();
 	
 				// Mientras que no sacas la flecha de la chapa no es un tiro válido
 				if (IsValid())
 				{
 					DrawPredictiveGizmo();
 					
-					_PotenciaTiro.text = "PO: " + Math.round(Force*100);
+					_ShotPower.text = "PO: " + Math.round(Force*100);
 					recoilColor = _ColorLine;
 				}
 				else
 				{
-					_PotenciaTiro.text = "";	
+					_Ghost.visible = false;
+					_ShotPower.text = "";
 				}
 				
 				// Pintamos la parte "trasera" del disparador, que va desde el centro de la chapa hasta el raton
@@ -99,36 +110,52 @@ package Match
 		
 		// Queremos calcular el lugar exacto al que llegará la chapa si no choca con nada
 		private function DrawPredictiveGizmo() : void
-		{			
-			// Calculamos la velocidad inicial como lo hace el motor al aplicar un impulso
-			var v:Number = Impulse / MatchConfig.CapMass;
+		{	
+			// The shot direction is inverted, we behave as if we were an elastic band
+			var direction : Point = new Point(-Direction.x, -Direction.y);
+			direction.normalize(1);
+
+			var collInfo : CollisionInfo = _Game.TheGamePhysics.SearchCollisionAgainstClosestPhyEntity(_TargetCap, direction, Impulse);
 			
-			// Aplicamos nuestra formula de la cual hay una foto (4/14/2013)
-			var R : Number = 1.0 - MatchMain.Ref.Game.TheGamePhysics.TimeStep * MatchConfig.CapLinearDamping;
-			var dist : Number = v * MatchMain.Ref.Game.TheGamePhysics.TimeStep * R / (1-R); 
+			_Canvas.graphics.lineStyle(Cap.CapRadius*2, 0xFFFFFF, 0.2);
+			_Canvas.graphics.moveTo(_TargetCapPos.x, _TargetCapPos.y);
+			_Canvas.graphics.lineTo(collInfo.Pos1.x, collInfo.Pos1.y);
 			
-			dist *= MatchConfig.PixelsPerMeter;
+			if (collInfo.PhyEntity2 != null)
+			{
+				_Canvas.graphics.lineStyle(2, 0xFFFFFF, 0.5);
+				_Canvas.graphics.moveTo(collInfo.Pos1.x, collInfo.Pos1.y);
+				_Canvas.graphics.lineTo(collInfo.AfterCollision1.x, collInfo.AfterCollision1.y);
+				
+				_Canvas.graphics.moveTo(collInfo.Pos2.x, collInfo.Pos2.y);
+				_Canvas.graphics.lineTo(collInfo.AfterCollision2.x, collInfo.AfterCollision2.y);
+			}
 			
-			var target : Point = Direction.clone();
-			target.normalize(dist);
-			var destination:Point = _TargetPos.subtract(target);
-			
-			_Canvas.graphics.lineStyle(Cap.Radius*2, 0xFFFFFF, 0.2);
-			_Canvas.graphics.moveTo(_TargetPos.x, _TargetPos.y);
-			_Canvas.graphics.lineTo(destination.x, destination.y);
+			if (_TargetCapPos.subtract(collInfo.Pos1).length > 2 * Cap.CapRadius)
+			{
+				_Ghost.visible = true;
+				_Ghost.x = collInfo.Pos1.x;
+				_Ghost.y = collInfo.Pos1.y;
+				_Ghost.rotation = Target.Visual.rotation;
+			}
+			else
+			{
+				_Ghost.visible = false;
+			}
 		}
+		
 				
 		// Obtenemos el vector de dirección del disparo, evitando que sobrepase nuestra longitud máxima 
 		public override function get Direction() : Point
 		{
 			// Clampeamos contra los 4 borders
-			var theCap : DisplayObject = _Target.Visual;
-			var theCapParent:DisplayObject = _Target.Visual.parent;
+			var theCap : DisplayObject = _TargetCap.Visual;
+			var theCapParent:DisplayObject = _TargetCap.Visual.parent;
 			
 			var stageWidth : Number = theCap.stage.stageWidth;
 			var stageHeight : Number = theCap.stage.stageHeight;
 			
-			var dir : Point = new Point((theCapParent.mouseX - _TargetPos.x), (theCapParent.mouseY - _TargetPos.y));
+			var dir : Point = new Point((theCapParent.mouseX - _TargetCapPos.x), (theCapParent.mouseY - _TargetCapPos.y));
 			var theCapPos : Point = theCap.localToGlobal(new Point(0,0));
 			
 			// Dir es el segmento que va desde la chapa hasta el raton, lo vamos clippeando contra cada uno de los bordes
@@ -148,13 +175,13 @@ package Match
 		private function get PowerAdjustedMaxLengthLine() : Number
 		{
 			var myScale : Number = _MaxLengthLine / MatchConfig.HighCapMaxImpulse;
-			return (MatchConfig.LowCapMaxImpulse + ((MatchConfig.HighCapMaxImpulse - MatchConfig.LowCapMaxImpulse) * (_Target.Power / 100.0))) * myScale;
+			return (MatchConfig.LowCapMaxImpulse + ((MatchConfig.HighCapMaxImpulse - MatchConfig.LowCapMaxImpulse) * (_TargetCap.Power / 100.0))) * myScale;
 		}
 		
 		// Obtiene la fuerza de disparo como un valor de (0.0 - 1.0)
 		private function get Force() : Number
 		{						
-			var theCap : DisplayObject = _Target.Visual as DisplayObject;
+			var theCap : DisplayObject = _TargetCap.Visual as DisplayObject;
 			
 			var stageWidth : Number = theCap.stage.stageWidth;
 			var stageHeight : Number = theCap.stage.stageHeight;
@@ -170,7 +197,7 @@ package Match
 			var len:Number = Direction.length;
 			var force : Number = 0;
 			
-			if (len >= Cap.Radius)
+			if (len >= Cap.CapRadius)
 			{
 				// Una pequeña renormalizacion para tener en cuenta que queremos que la fuerza en funcion de len sea:
 				// 		0 en len=Cap.Radius 
@@ -178,19 +205,20 @@ package Match
 				//
 				// Montamos una linea con estas dos condiciones...
 				//
-				force = PowerAdjustedMaxLengthLine * len / ((PowerAdjustedMaxLengthLine - Cap.Radius) * _MaxLengthLine) -
-						PowerAdjustedMaxLengthLine * Cap.Radius / ((PowerAdjustedMaxLengthLine - Cap.Radius) * _MaxLengthLine);
+				force = PowerAdjustedMaxLengthLine * len / ((PowerAdjustedMaxLengthLine - Cap.CapRadius) * _MaxLengthLine) -
+						PowerAdjustedMaxLengthLine * Cap.CapRadius / ((PowerAdjustedMaxLengthLine - Cap.CapRadius) * _MaxLengthLine);
 			
 				if (dists[0] < PowerAdjustedMaxLengthLine)
 				{
 					// Ademas tenemos que hacer una regla de 3 cuando estamos clipando
-					force *= (PowerAdjustedMaxLengthLine - Cap.Radius) / (dists[0] - Cap.Radius);	
+					force *= (PowerAdjustedMaxLengthLine - Cap.CapRadius) / (dists[0] - Cap.CapRadius);	
 				}	
 			}
 			
 			return force;
 		}
 		
+		// Impulso en el espacio de la fisica
 		public function get Impulse() : Number
 		{
 			return Force * MatchConfig.HighCapMaxImpulse;
@@ -230,14 +258,16 @@ package Match
 			return dist;
 		}
 
+		private var _Game : Game;
+		private var _Ghost:DisplayObject;
 		private var _Canvas : Sprite;
 		private var _MaxLengthLine : uint;
 		private var _ColorLine : uint;
 		private var _Thickness : uint;
-		private var _PotenciaTiro : TextField;
+		private var _ShotPower : TextField;
 
 		private const STAGE_MARGIN : Number = 15;
-		private const MAX_LONG_SHOOT:Number = 130;
+		private const MAX_LONG_SHOT:Number = 130;
 		private const COLOR_SHOOT:uint = 0xE97026;
 		private const THICKNESS_SHOOT:uint = 7;
 	}

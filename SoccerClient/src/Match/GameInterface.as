@@ -65,9 +65,9 @@ package Match
 			CreateSpecialSkillButtons(_Game.GUILayer);
 
 			// Inicializamos los controladores (disparo, balón, posición)
-			_ShootControl = new ControllerShoot(controllerCanvas);
-			_BallControl = new ControllerBall(controllerCanvas);
-			_PosControl = new ControllerPos(controllerCanvas);
+			_ShootControl = new ControllerShoot(controllerCanvas, _Game);
+			_BallControl = new ControllerBall(controllerCanvas, _Game);
+			_PosControl = new ControllerPos(controllerCanvas, _Game);
 			
 			_ShootControl.OnStop.add(OnStopControllerShoot);
 			_BallControl.OnStop.add(OnStopControllerBall);
@@ -76,7 +76,7 @@ package Match
 			// Hay parte del GUI que nos viene en el campo y no hay que instanciar
 			_Gui.SoundButton.addEventListener(MouseEvent.MOUSE_DOWN, OnMute);
 			_Gui.BotonTiroPuerta.addEventListener(MouseEvent.MOUSE_DOWN, OnTiroPuerta);			
-									
+
 			// _Gui.BotonAbandonar.addEventListener(MouseEvent.CLICK, OnAbandonarClick);
 			_Gui.BotonAbandonar.visible = false;
 			
@@ -387,7 +387,7 @@ package Match
 			
 			// -4 para evitar el fenomeno out-over-out-over ad-infinitum (para evitar solapamiento cartel-chapa)
 			panelInfo.x = cap.Visual.x;			
-			panelInfo.y = cap.Visual.y - Cap.Radius - 4;
+			panelInfo.y = cap.Visual.y - Cap.CapRadius - 4;
 		
 			var theLayer : DisplayObjectContainer = _Game.GUILayer;
 			theLayer.addChild(panelInfo);

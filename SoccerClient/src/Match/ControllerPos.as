@@ -14,17 +14,13 @@ package Match
 	// Se encarga del controlador para posicionar una chapa (el portero)
 	//
 	public class ControllerPos extends Controller
-	{
-		private var _Ghost:DisplayObject = null;
-		private var _Canvas : Sprite;
-		private var _ColorLine : uint;
-		
-		private const COLOR:uint = 0x2670E9;
-		
-		public function ControllerPos(canvas:Sprite)		
+	{		
+		public function ControllerPos(canvas:Sprite, game : Game)		
 		{
-			this._Canvas = canvas;
-			this._ColorLine = COLOR;
+			_Game = game;
+			
+			_Canvas = canvas;
+			_ColorLine = COLOR;
 		}
 		
 		public override function Start(cap: Cap):void
@@ -35,13 +31,11 @@ package Match
 				throw new Error("WTF Target null");
 			
 			var ghostClass : Class = ResourceManager.getInstance().getClass("match", "Cap");
-			_Ghost = MatchMain.Ref.Game.GameLayer.addChild(new ghostClass);
+			_Ghost = _Game.GameLayer.addChild(new ghostClass);
 			_Ghost.alpha = 0.4;
-			_Ghost.visible = false;
 			Cap.PrepareVisualCap(_Ghost, cap.OwnerTeam.PredefinedTeamNameID, cap.OwnerTeam.UsingSecondUniform, true);
 			
 			_Ghost.x = EndPos.x; _Ghost.y = EndPos.y;
-			_Ghost.visible = true;
 		}
 		
 		public override function Stop(reason:int):void
@@ -54,7 +48,7 @@ package Match
 			if (_Ghost == null)
 				throw new Error("WTF ghost null");
 			
-			MatchMain.Ref.Game.GameLayer.removeChild(_Ghost);
+			_Game.GameLayer.removeChild(_Ghost);
 			_Ghost = null;
 		}
 		
@@ -67,7 +61,7 @@ package Match
 		//
 		public override function IsValid() : Boolean
 		{
-			return MatchMain.Ref.Game.TheGamePhysics.IsPointFreeInsideField(EndPos, true, this.Target) &&
+			return _Game.TheGamePhysics.IsPointFreeInsideField(EndPos, true, this.Target) &&
 				   Field.IsCircleInsideSmallArea(EndPos, 0, this.Target.OwnerTeam.Side);
 		}
 		
@@ -84,7 +78,7 @@ package Match
 				super.MouseMove(e);
 				
 				// Obtenemos punto inicial y final de la linea de dirección
-				var source:Point = _TargetPos.clone();
+				var source:Point = _TargetCapPos.clone();
 				var target:Point = EndPos;
 				
 				// Seleccionamos un color para la linea diferente en función de si la posición final es válida o no
@@ -114,5 +108,12 @@ package Match
 			
 			return newPos;
 		}
+		
+		private var _Ghost:DisplayObject = null;
+		private var _Canvas : Sprite;
+		private var _ColorLine : uint;
+		private var _Game : Game;
+		
+		private const COLOR:uint = 0x2670E9;
 	}
 }

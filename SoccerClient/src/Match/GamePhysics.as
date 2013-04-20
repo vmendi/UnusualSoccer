@@ -10,6 +10,8 @@ package Match
 	
 	import flash.events.Event;
 	import flash.geom.Point;
+	
+	import utils.MathUtils;
 
 	public final class GamePhysics
 	{
@@ -84,7 +86,7 @@ package Match
 			// El portero ademas estaba inamovible, tenemos que permiterle moverse. Cambiamos su damping tb para que
 			// no salga muy lejos
 			goalkeeper.SetImmovable(false);
-			goalkeeper.SetLinearDamping(MatchConfig.AutoGoalkeeperLinearDamping);
+			goalkeeper.LinearDamping = MatchConfig.AutoGoalkeeperLinearDamping;
 			
 			Shoot(goalkeeper, goalkeeperShoot);
 		}
@@ -148,7 +150,7 @@ package Match
 				
 				var dir : Point = shootInfo.Dir.clone();
 				dir.normalize(shootInfo.Impulse);
-
+				
 				// Lo aplicamos ademas en sentido contrario ya que por fuera nos viene el vector invertido, es el del disparador
 				cap.PhyObj.body.ApplyImpulse(new b2Vec2(-dir.x, -dir.y), cap.PhyObj.body.GetWorldCenter());
 				
@@ -374,15 +376,15 @@ package Match
 		public function IsPointFreeInsideField(pos:Point, checkAgainstBall:Boolean, ignoreCap:Cap) : Boolean
 		{
 			// Nos aseguramos de que esta dentro del campo
-			var bValid : Boolean = Field.IsCircleInsideField(pos, Cap.Radius);
+			var bValid : Boolean = Field.IsCircleInsideField(pos, Cap.CapRadius);
 			
 			// Ahora contra el resto de las chapas
-			bValid = bValid && !_Game.Team1.IsAnyCapInsideCircle(pos, Cap.Radius + Cap.Radius, ignoreCap);
-			bValid = bValid && !_Game.Team2.IsAnyCapInsideCircle(pos, Cap.Radius + Cap.Radius, ignoreCap); 
+			bValid = bValid && !_Game.Team1.IsAnyCapInsideCircle(pos, Cap.CapRadius + Cap.CapRadius, ignoreCap);
+			bValid = bValid && !_Game.Team2.IsAnyCapInsideCircle(pos, Cap.CapRadius + Cap.CapRadius, ignoreCap); 
 				
 			// Y finalmente contra el balon
 			if (bValid && checkAgainstBall)
-				bValid = !_Game.TheBall.IsCenterInsideCircle(pos, Cap.Radius + Ball.Radius);
+				bValid = !_Game.TheBall.IsCenterInsideCircle(pos, Cap.CapRadius + Ball.BallRadius);
 						
 			return bValid;
 		}
@@ -427,8 +429,176 @@ package Match
 			return trySuccess;
 		}
 		
+		private function GetAllPhyEntitiesSortedByDistance(toPoint : Point) : Array
+		{
+			var all : Array = _Game.GetAllPhyEntities();
+			
+			all.sort(function(a : PhyEntity, b : PhyEntity) : int {
+				var aDist : Number = a.GetPos().subtract(toPoint).length;
+				var bDist : Number = b.GetPos().subtract(toPoint).length;
+				
+				if (aDist < bDist)
+					return -1;
+				if (aDist > bDist)
+					return 1;
+				return 0;
+			});
+			
+			return all;
+		}
 		
+		//
+		// http://www.gamasutra.com/view/feature/131424/pool_hall_lessons_fast_accurate_.php?print=1
+		//
+		public function SearchCollisionAgainstClosestPhyEntity(fromEnt : PhyEntity, capDirection : Point, capImpulse : Number) : CollisionInfo
+		{
+			var allPhyEntities : Array = GetAllPhyEntitiesSortedByDistance(fromEnt.GetPos());
+			var unclippedTravelDist : Number = CalcTravelDistance(capImpulse, fromEnt.Mass, fromEnt.LinearDamping);
+			
+			var collisionInfo : CollisionInfo = new CollisionInfo;
+			collisionInfo.PhyEntity1 = fromEnt;
+			
+			for each(var toEnt : PhyEntity in allPhyEntities)
+			{
+				if (toEnt == fromEnt)
+					continue;
+				
+				var diffVect : Point = toEnt.GetPos().subtract(fromEnt.GetPos());
+				var diffVectDist : Number = diffVect.length;
+				
+				if (unclippedTravelDist < diffVectDist - (fromEnt.Radius + toEnt.Radius))
+					continue;
+				
+				var D : Number = MathUtils.Dot(capDirection, diffVect);					
+				
+				if (D < 0)
+					continue;
+				
+				var F : Number = Math.sqrt(diffVectDist*diffVectDist - D*D);
+				var I : Number = fromEnt.Radius + toEnt.Radius;
+				
+				if (F > I)
+					continue;
+				
+				// We have a collision
+				var collisionDist : Number = (D - Math.sqrt(I*I - F*F));
+				
+				collisionInfo.Pos1 = fromEnt.GetPos().add(MathUtils.Multiply(capDirection, collisionDist));
+				collisionInfo.PhyEntity2 = toEnt;
+				collisionInfo.Pos2 = toEnt.GetPos();
+				
+				// Now the velocities
+				//SetFixedExitVelocities(30, collisionInfo, capDirection);
+				CalcExitVelocities(collisionInfo, capDirection, capImpulse, collisionDist);
+								
+				break;
+			}
 
+			if (collisionInfo.Pos1 == null)
+			{
+				var distVect : Point = capDirection.clone();
+				distVect.normalize(unclippedTravelDist);
+				collisionInfo.Pos1 = fromEnt.GetPos().add(distVect);
+			}
+			
+			return collisionInfo;
+		}
+		
+		// WARNING: we are not including the angular part, friction and restitution and so the result of this calculation won't be precise
+		private function CalcExitVelocities(collisionInfo : CollisionInfo, capDirection : Point, capImpulse : Number, collisionDist : Number) : void
+		{
+			var N : Point = collisionInfo.Pos2.subtract(collisionInfo.Pos1);
+			N.normalize(1);
+			
+			var v1 : Point = MathUtils.Multiply(capDirection, CalcVelAfterDistance(collisionDist, capImpulse, 
+												collisionInfo.PhyEntity1.Mass, collisionInfo.PhyEntity1.LinearDamping));
+			var v2 : Point = new Point(0, 0);
+			
+			var a1 : Number = MathUtils.Dot(v1, N);
+			var a2 : Number = MathUtils.Dot(v2, N);
+			
+			var optimizedP : Number = 2*(a1-a2) / (collisionInfo.PhyEntity1.Mass + collisionInfo.PhyEntity2.Mass);
+			
+			collisionInfo.V1 = v1.subtract(MathUtils.Multiply(N, optimizedP * collisionInfo.PhyEntity2.Mass));
+			collisionInfo.V2 = v2.add(MathUtils.Multiply(N, optimizedP * collisionInfo.PhyEntity1.Mass));
+			
+			var distV1 : Number = CalcTravelDistance(collisionInfo.V1.length * collisionInfo.PhyEntity1.Mass / MatchConfig.PixelsPerMeter,
+													 collisionInfo.PhyEntity1.Mass, collisionInfo.PhyEntity1.LinearDamping);
+			
+			collisionInfo.AfterCollision1 = collisionInfo.V1.clone();
+			collisionInfo.AfterCollision1.normalize(distV1);
+			collisionInfo.AfterCollision1 = collisionInfo.AfterCollision1.add(collisionInfo.Pos1);
+			
+			var distV2 : Number = CalcTravelDistance(collisionInfo.V2.length * collisionInfo.PhyEntity2.Mass / MatchConfig.PixelsPerMeter,
+													 collisionInfo.PhyEntity2.Mass, collisionInfo.PhyEntity2.LinearDamping);
+			
+			// HACK temporal para ver que tal se juega con balon quasi-predictivo. Si queremos hacerlo 100% predictivo probablemente
+			// hay que hacerlo con el Box2D
+			if (collisionInfo.PhyEntity2 is Ball)
+				distV2 *= 0.80;
+			
+			collisionInfo.AfterCollision2 = collisionInfo.V2.clone();
+			collisionInfo.AfterCollision2.normalize(distV2);
+			collisionInfo.AfterCollision2 = collisionInfo.AfterCollision2.add(collisionInfo.Pos2);
+		}
+		
+		private function SetFixedExitVelocities(dist : Number, collisionInfo : CollisionInfo, capDirection : Point) : void
+		{
+			var N : Point = collisionInfo.Pos2.subtract(collisionInfo.Pos1);
+			N.normalize(1);
+			
+			var v1 : Point = capDirection;
+			var v2 : Point = new Point(0, 0);
+			
+			var a1 : Number = MathUtils.Dot(v1, N);
+			var a2 : Number = MathUtils.Dot(v2, N);
+						
+			collisionInfo.V1 = v1.subtract(N);
+			collisionInfo.V2 = v2.add(N);
+			
+			collisionInfo.V1.normalize(1);
+			collisionInfo.V2.normalize(1);
+			
+			collisionInfo.AfterCollision1 = collisionInfo.V1.clone();
+			collisionInfo.AfterCollision1.normalize(dist);
+			collisionInfo.AfterCollision1 = collisionInfo.AfterCollision1.add(collisionInfo.Pos1);
+			
+			collisionInfo.AfterCollision2 = collisionInfo.V2.clone();
+			collisionInfo.AfterCollision2.normalize(dist);
+			collisionInfo.AfterCollision2 = collisionInfo.AfterCollision2.add(collisionInfo.Pos2);
+		}
+		
+		private function CalcVelAfterDistance(dist : Number, impulse : Number, mass : Number, linearDamping : Number) : Number
+		{
+			var v0:Number = impulse / mass;			// La velocidad asi calculada esta en espacio de fisica!!
+			dist /= MatchConfig.PixelsPerMeter;		// Entra en espacio de pantalla, sale en espacio de pantalla
+			
+			// First, we need to calculate the time to travel this distance
+			var R : Number = 1.0 - _TimeStep * linearDamping;
+			var num : Number = (1-R) * dist;
+			var den : Number = v0 * _TimeStep * R;
+			var n : Number = Math.log(1 - (num/den))/Math.log(R);
+						
+			if (isNaN(n))
+				return 0;
+						
+			// And then it's easy to obtain the velocity (refer to the picture!)
+			return v0*Math.pow(R, n) * MatchConfig.PixelsPerMeter;
+		}
+		
+		private function CalcTravelDistance(impulse : Number, mass : Number, linearDamping : Number) : Number
+		{
+			// Calculamos la velocidad inicial como lo hace el motor al aplicar un impulso
+			var v0:Number = impulse / mass;
+			
+			// Aplicamos nuestra formula de la cual hay una foto (4/14/2013)
+			var R : Number = 1.0 - _TimeStep * linearDamping;
+			var dist : Number = v0 * _TimeStep * R / (1-R); 
+			
+			return dist * MatchConfig.PixelsPerMeter;
+		}
+		
+		
 		private var _Game : Game;
 
 		private var _TimeStep : Number;
