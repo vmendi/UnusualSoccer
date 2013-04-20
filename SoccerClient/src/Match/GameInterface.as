@@ -387,7 +387,7 @@ package Match
 			
 			// -4 para evitar el fenomeno out-over-out-over ad-infinitum (para evitar solapamiento cartel-chapa)
 			panelInfo.x = cap.Visual.x;			
-			panelInfo.y = cap.Visual.y - Cap.Radius - 4;
+			panelInfo.y = cap.Visual.y - Cap.CapRadius - 4;
 		
 			var theLayer : DisplayObjectContainer = _Game.GUILayer;
 			theLayer.addChild(panelInfo);

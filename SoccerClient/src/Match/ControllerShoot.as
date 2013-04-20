@@ -59,7 +59,7 @@ package Match
 		public override function IsValid() : Boolean
 		{
 			// Por debajo del radio de la chapa no tiramos, es una cancelacion
-			return Direction.length >= Cap.Radius;
+			return Direction.length >= Cap.CapRadius;
 		}
 			
 		public override function MouseMove(e: MouseEvent) :void
@@ -108,7 +108,7 @@ package Match
 
 			var collInfo : CollisionInfo = _Game.TheGamePhysics.SearchCollisionAgainstClosestPhyEntity(_TargetCap, direction, Impulse);
 			
-			_Canvas.graphics.lineStyle(Cap.Radius*2, 0xFFFFFF, 0.2);
+			_Canvas.graphics.lineStyle(Cap.CapRadius*2, 0xFFFFFF, 0.2);
 			_Canvas.graphics.moveTo(_TargetCapPos.x, _TargetCapPos.y);
 			_Canvas.graphics.lineTo(collInfo.Pos1.x, collInfo.Pos1.y);
 			
@@ -176,7 +176,7 @@ package Match
 			var len:Number = Direction.length;
 			var force : Number = 0;
 			
-			if (len >= Cap.Radius)
+			if (len >= Cap.CapRadius)
 			{
 				// Una pequeña renormalizacion para tener en cuenta que queremos que la fuerza en funcion de len sea:
 				// 		0 en len=Cap.Radius 
@@ -184,13 +184,13 @@ package Match
 				//
 				// Montamos una linea con estas dos condiciones...
 				//
-				force = PowerAdjustedMaxLengthLine * len / ((PowerAdjustedMaxLengthLine - Cap.Radius) * _MaxLengthLine) -
-						PowerAdjustedMaxLengthLine * Cap.Radius / ((PowerAdjustedMaxLengthLine - Cap.Radius) * _MaxLengthLine);
+				force = PowerAdjustedMaxLengthLine * len / ((PowerAdjustedMaxLengthLine - Cap.CapRadius) * _MaxLengthLine) -
+						PowerAdjustedMaxLengthLine * Cap.CapRadius / ((PowerAdjustedMaxLengthLine - Cap.CapRadius) * _MaxLengthLine);
 			
 				if (dists[0] < PowerAdjustedMaxLengthLine)
 				{
 					// Ademas tenemos que hacer una regla de 3 cuando estamos clipando
-					force *= (PowerAdjustedMaxLengthLine - Cap.Radius) / (dists[0] - Cap.Radius);	
+					force *= (PowerAdjustedMaxLengthLine - Cap.CapRadius) / (dists[0] - Cap.CapRadius);	
 				}	
 			}
 			

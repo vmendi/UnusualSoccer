@@ -48,7 +48,7 @@ package Match
 		// Our children (cap, ball...) will take charge of returning their physics params for creation 
 		protected function get PhysicsParams() : Object
 		{
-			return new Object();
+			throw new Error("WTF 987f - This method must be overriden");
 		}
 		
 		public function Destroy() : void
@@ -125,6 +125,12 @@ package Match
 			}
 			
 			return nearestEntity;
+		}
+		
+		// En espacio de pantalla
+		public function get Radius() : Number
+		{
+			throw new Error("WTF 59o - This method must be overriden");
 		}
 		
 		public function get Mass() : Number

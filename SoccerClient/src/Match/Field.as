@@ -95,7 +95,7 @@ package Match
 			var heightGoal:Number = MatchConfig.Screen2Physic(HEIGHT_GOAL);
 			var centerGoalLeft:Point = GetCenterGoal(Enums.Left_Side);
 			var centerGoalRight:Point = GetCenterGoal(Enums.Right_Side);			
-			var halfBall:Number = MatchConfig.Screen2Physic(Ball.Radius/2);			
+			var halfBall:Number = MatchConfig.Screen2Physic(Ball.BallRadius/2);			
 			
 			// Muros en las porterías para que sólo rebote las chapas y no el balón
 			phy.addBox(AddCommonPhysicParams({categoryBits:8, 
@@ -254,13 +254,13 @@ package Match
 			
 			if (cap.OwnerTeam.Side == Enums.Left_Side)
 			{
-				if (thePos.x - Cap.Radius < Field.SmallAreaLeft.right &&
+				if (thePos.x - Cap.CapRadius < Field.SmallAreaLeft.right &&
 					(thePos.y > Field.SmallAreaLeft.top && thePos.y < Field.SmallAreaLeft.bottom))
 					bRet = true;
 			}
 			else
 			{
-				if (thePos.x + Cap.Radius > Field.SmallAreaRight.left &&
+				if (thePos.x + Cap.CapRadius > Field.SmallAreaRight.left &&
 					(thePos.y > Field.SmallAreaLeft.top && thePos.y < Field.SmallAreaLeft.bottom))
 					bRet = true;
 			}

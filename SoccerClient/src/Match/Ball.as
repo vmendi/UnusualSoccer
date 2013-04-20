@@ -10,8 +10,7 @@ package Match
 
 	public class Ball extends PhyEntity
 	{
-		static public const Radius:Number = 9;
-		
+		static public const BallRadius:Number = 9;	
 				
 		public function Ball(game:Game) : void
 		{
@@ -31,13 +30,18 @@ package Match
 					 mass: MatchConfig.BallMass, 	// 0.04
 					 fixedRotation: true,			// If set to true the rigid body will not rotate.
 				     isBullet: true, 				// UseCCD: Detección de colisión continua
-					 radius:MatchConfig.Screen2Physic(Radius),
+					 radius:MatchConfig.Screen2Physic(BallRadius),
 					 isSleeping: true,
 					 allowSleep: true, 
 					 linearDamping: MatchConfig.BallLinearDamping, 
 					 angularDamping: MatchConfig.BallLinearDamping, 
 					 friction: .2, 
 					 restitution: .8 };
+		}
+		
+		public override function get Radius() : Number
+		{
+			return BallRadius;
 		}
 		
 		
@@ -56,7 +60,7 @@ package Match
 			var mcVisual : MovieClip = (_Visual as MovieClip);
 			var vel : b2Vec2 = _PhyObject.body.GetLinearVelocity();
 			
-			var perimeter : Number = MatchConfig.Screen2Physic(Radius) * 2 * Math.PI;
+			var perimeter : Number = MatchConfig.Screen2Physic(BallRadius) * 2 * Math.PI;
 			var numFrames : Number = mcVisual.framesLoaded;
 			
 			_CurrentFrame += vel.Length() * elapsed * numFrames / perimeter;
@@ -82,7 +86,7 @@ package Match
 		{
 			var pos:Point = cap.GetPos();
 			
-			var len:Number = Cap.Radius + Ball.Radius;
+			var len:Number = Cap.CapRadius + Ball.BallRadius;
 			var dir:Point = new Point(len, 0);
 			if (cap.OwnerTeam.Side == Enums.Right_Side)
 				dir = new Point(-len, 0);

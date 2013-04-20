@@ -376,15 +376,15 @@ package Match
 		public function IsPointFreeInsideField(pos:Point, checkAgainstBall:Boolean, ignoreCap:Cap) : Boolean
 		{
 			// Nos aseguramos de que esta dentro del campo
-			var bValid : Boolean = Field.IsCircleInsideField(pos, Cap.Radius);
+			var bValid : Boolean = Field.IsCircleInsideField(pos, Cap.CapRadius);
 			
 			// Ahora contra el resto de las chapas
-			bValid = bValid && !_Game.Team1.IsAnyCapInsideCircle(pos, Cap.Radius + Cap.Radius, ignoreCap);
-			bValid = bValid && !_Game.Team2.IsAnyCapInsideCircle(pos, Cap.Radius + Cap.Radius, ignoreCap); 
+			bValid = bValid && !_Game.Team1.IsAnyCapInsideCircle(pos, Cap.CapRadius + Cap.CapRadius, ignoreCap);
+			bValid = bValid && !_Game.Team2.IsAnyCapInsideCircle(pos, Cap.CapRadius + Cap.CapRadius, ignoreCap); 
 				
 			// Y finalmente contra el balon
 			if (bValid && checkAgainstBall)
-				bValid = !_Game.TheBall.IsCenterInsideCircle(pos, Cap.Radius + Ball.Radius);
+				bValid = !_Game.TheBall.IsCenterInsideCircle(pos, Cap.CapRadius + Ball.BallRadius);
 						
 			return bValid;
 		}
@@ -429,11 +429,11 @@ package Match
 			return trySuccess;
 		}
 		
-		private function GetAllCapsSortedByDistance(toPoint : Point) : Array
+		private function GetAllPhyEntitiesSortedByDistance(toPoint : Point) : Array
 		{
-			var allCaps : Array = _Game.Team1.CapsList.concat(_Game.Team2.CapsList);
+			var all : Array = _Game.GetAllPhyEntities();
 			
-			allCaps.sort(function(a : Cap, b : Cap) : int {
+			all.sort(function(a : PhyEntity, b : PhyEntity) : int {
 				var aDist : Number = a.GetPos().subtract(toPoint).length;
 				var bDist : Number = b.GetPos().subtract(toPoint).length;
 				
@@ -444,30 +444,29 @@ package Match
 				return 0;
 			});
 			
-			return allCaps;
+			return all;
 		}
 		
 		//
 		// http://www.gamasutra.com/view/feature/131424/pool_hall_lessons_fast_accurate_.php?print=1
 		//
-		public function SearchCollisionAgainstClosestPhyEntity(fromCap : PhyEntity, capDirection : Point, capImpulse : Number) : CollisionInfo
+		public function SearchCollisionAgainstClosestPhyEntity(fromEnt : PhyEntity, capDirection : Point, capImpulse : Number) : CollisionInfo
 		{
-			var fromCapPos : Point = fromCap.GetPos();
-			var allCaps : Array = GetAllCapsSortedByDistance(fromCapPos);
-			var unclippedTravelDist : Number = CalcTravelDistance(capImpulse, fromCap.Mass, fromCap.LinearDamping);
+			var allPhyEntities : Array = GetAllPhyEntitiesSortedByDistance(fromEnt.GetPos());
+			var unclippedTravelDist : Number = CalcTravelDistance(capImpulse, fromEnt.Mass, fromEnt.LinearDamping);
 			
 			var collisionInfo : CollisionInfo = new CollisionInfo;
-			collisionInfo.PhyEntity1 = fromCap;
+			collisionInfo.PhyEntity1 = fromEnt;
 			
-			for each(var cap : Cap in allCaps)
+			for each(var toEnt : PhyEntity in allPhyEntities)
 			{
-				if (cap == fromCap)
+				if (toEnt == fromEnt)
 					continue;
 				
-				var diffVect : Point = cap.GetPos().subtract(fromCapPos);
+				var diffVect : Point = toEnt.GetPos().subtract(fromEnt.GetPos());
 				var diffVectDist : Number = diffVect.length;
 				
-				if (unclippedTravelDist < diffVectDist - Cap.Radius*2)
+				if (unclippedTravelDist < diffVectDist - (fromEnt.Radius + toEnt.Radius))
 					continue;
 				
 				var D : Number = MathUtils.Dot(capDirection, diffVect);					
@@ -476,7 +475,7 @@ package Match
 					continue;
 				
 				var F : Number = Math.sqrt(diffVectDist*diffVectDist - D*D);
-				var I : Number = Cap.Radius*2;
+				var I : Number = fromEnt.Radius + toEnt.Radius;
 				
 				if (F > I)
 					continue;
@@ -484,9 +483,9 @@ package Match
 				// We have a collision
 				var collisionDist : Number = (D - Math.sqrt(I*I - F*F));
 				
-				collisionInfo.Pos1 = fromCapPos.add(MathUtils.Multiply(capDirection, collisionDist));
-				collisionInfo.PhyEntity2 = cap;
-				collisionInfo.Pos2 = cap.GetPos();
+				collisionInfo.Pos1 = fromEnt.GetPos().add(MathUtils.Multiply(capDirection, collisionDist));
+				collisionInfo.PhyEntity2 = toEnt;
+				collisionInfo.Pos2 = toEnt.GetPos();
 				
 				// Now the velocities
 				var N : Point = collisionInfo.Pos2.subtract(collisionInfo.Pos1);
@@ -514,7 +513,7 @@ package Match
 			{
 				var distVect : Point = capDirection.clone();
 				distVect.normalize(unclippedTravelDist);
-				collisionInfo.Pos1 = fromCapPos.add(distVect);
+				collisionInfo.Pos1 = fromEnt.GetPos().add(distVect);
 			}
 			
 			return collisionInfo;

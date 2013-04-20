@@ -651,7 +651,7 @@ package Match
 
 			// Posicion en la que queda la pelota
 			var dir:Point = new Point(dirX, dirY);  
-			dir.normalize(Cap.Radius + Ball.Radius + MatchConfig.DistToPutBallHandling);
+			dir.normalize(Cap.CapRadius + Ball.BallRadius + MatchConfig.DistToPutBallHandling);
 			
 			var newPos : Point = cap.GetPos().add(dir);
 			
