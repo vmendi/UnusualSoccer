@@ -76,7 +76,7 @@ package Match
 			// Hay parte del GUI que nos viene en el campo y no hay que instanciar
 			_Gui.SoundButton.addEventListener(MouseEvent.MOUSE_DOWN, OnMute);
 			_Gui.BotonTiroPuerta.addEventListener(MouseEvent.MOUSE_DOWN, OnTiroPuerta);			
-									
+
 			// _Gui.BotonAbandonar.addEventListener(MouseEvent.CLICK, OnAbandonarClick);
 			_Gui.BotonAbandonar.visible = false;
 			

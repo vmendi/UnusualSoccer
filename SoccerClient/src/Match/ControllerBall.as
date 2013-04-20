@@ -59,7 +59,7 @@ package Match
 				super.MouseMove(e);
 				
 				// Obtenemos punto inicial y final de la linea de dirección
-				var source:Point = _TargetPos.clone();
+				var source:Point = _TargetCapPos.clone();
 				var target:Point = EndPos;
 				
 				// Seleccionamos un color para la linea diferente en función de si la posición final es válida o no			

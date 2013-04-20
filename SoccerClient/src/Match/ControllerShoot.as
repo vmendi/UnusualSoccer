@@ -44,8 +44,8 @@ package Match
 		
 			_ShotPower.text = "";
 			_ShotPower.visible = true;
-			_ShotPower.x = _Target.Visual.x;
-			_ShotPower.y = _Target.Visual.y;
+			_ShotPower.x = _TargetCap.Visual.x;
+			_ShotPower.y = _TargetCap.Visual.y;
 		}
 		
 		public override function Stop(reason:int):void
@@ -69,7 +69,7 @@ package Match
 				super.MouseMove(e);
 				
 				var dir:Point = Direction.clone(); 				// Dirección truncada a la máxima longitud
-				var source:Point = _TargetPos.clone(); 			// Posición del centro de la chapa
+				var source:Point = _TargetCapPos.clone(); 			// Posición del centro de la chapa
 				var recoil:Point = source.add(dir); 			// Punto del mouse respecto a la chapa, cuando soltemos nos dará la potencia del tiro
 				var recoilColor:uint = 0xff0000;
 				
@@ -101,48 +101,30 @@ package Match
 		
 		// Queremos calcular el lugar exacto al que llegará la chapa si no choca con nada
 		private function DrawPredictiveGizmo() : void
-		{			
-			var dist : Number = CalcUnclippedCapTravelDistance();
-			
-			function SearchCollisionAgainstCap(team : Team) : void
-			{
-				for each(var cap : Cap in team.CapsList)
-				{					
-				}
-			}
-			
-			var target : Point = Direction.clone();
-			target.normalize(dist);
-			var destination:Point = _TargetPos.subtract(target);
+		{	
+			// The shot direction is inverted, we behave as if we were an elastic band
+			var direction : Point = new Point(-Direction.x, -Direction.y);
+			direction.normalize(1);
+
+			var collInfo : CollisionInfo = _Game.TheGamePhysics.SearchCollisionAgainstClosestCap(_TargetCap, direction, Impulse);
 			
 			_Canvas.graphics.lineStyle(Cap.Radius*2, 0xFFFFFF, 0.2);
-			_Canvas.graphics.moveTo(_TargetPos.x, _TargetPos.y);
-			_Canvas.graphics.lineTo(destination.x, destination.y);
+			_Canvas.graphics.moveTo(_TargetCapPos.x, _TargetCapPos.y);
+			_Canvas.graphics.lineTo(collInfo.Pos1.x, collInfo.Pos1.y);
 		}
 		
-		private function CalcUnclippedCapTravelDistance() : void
-		{
-			// Calculamos la velocidad inicial como lo hace el motor al aplicar un impulso
-			var v:Number = Impulse / MatchConfig.CapMass;
-			
-			// Aplicamos nuestra formula de la cual hay una foto (4/14/2013)
-			var R : Number = 1.0 - _Game.TheGamePhysics.TimeStep * MatchConfig.CapLinearDamping;
-			var dist : Number = v * _Game.TheGamePhysics.TimeStep * R / (1-R); 
-			
-			return dist * MatchConfig.PixelsPerMeter;
-		}
 				
 		// Obtenemos el vector de dirección del disparo, evitando que sobrepase nuestra longitud máxima 
 		public override function get Direction() : Point
 		{
 			// Clampeamos contra los 4 borders
-			var theCap : DisplayObject = _Target.Visual;
-			var theCapParent:DisplayObject = _Target.Visual.parent;
+			var theCap : DisplayObject = _TargetCap.Visual;
+			var theCapParent:DisplayObject = _TargetCap.Visual.parent;
 			
 			var stageWidth : Number = theCap.stage.stageWidth;
 			var stageHeight : Number = theCap.stage.stageHeight;
 			
-			var dir : Point = new Point((theCapParent.mouseX - _TargetPos.x), (theCapParent.mouseY - _TargetPos.y));
+			var dir : Point = new Point((theCapParent.mouseX - _TargetCapPos.x), (theCapParent.mouseY - _TargetCapPos.y));
 			var theCapPos : Point = theCap.localToGlobal(new Point(0,0));
 			
 			// Dir es el segmento que va desde la chapa hasta el raton, lo vamos clippeando contra cada uno de los bordes
@@ -162,13 +144,13 @@ package Match
 		private function get PowerAdjustedMaxLengthLine() : Number
 		{
 			var myScale : Number = _MaxLengthLine / MatchConfig.HighCapMaxImpulse;
-			return (MatchConfig.LowCapMaxImpulse + ((MatchConfig.HighCapMaxImpulse - MatchConfig.LowCapMaxImpulse) * (_Target.Power / 100.0))) * myScale;
+			return (MatchConfig.LowCapMaxImpulse + ((MatchConfig.HighCapMaxImpulse - MatchConfig.LowCapMaxImpulse) * (_TargetCap.Power / 100.0))) * myScale;
 		}
 		
 		// Obtiene la fuerza de disparo como un valor de (0.0 - 1.0)
 		private function get Force() : Number
 		{						
-			var theCap : DisplayObject = _Target.Visual as DisplayObject;
+			var theCap : DisplayObject = _TargetCap.Visual as DisplayObject;
 			
 			var stageWidth : Number = theCap.stage.stageWidth;
 			var stageHeight : Number = theCap.stage.stageHeight;

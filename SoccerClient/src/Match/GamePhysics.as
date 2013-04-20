@@ -427,8 +427,79 @@ package Match
 			return trySuccess;
 		}
 		
-		
+		//
+		// http://www.gamasutra.com/view/feature/131424/pool_hall_lessons_fast_accurate_.php?print=1
+		//
+		public function SearchCollisionAgainstClosestCap(fromCap : Cap, capDirection : Point, capImpulse : Number) : CollisionInfo
+		{
+			var dist : Number = CalcUnclippedCapTravelDistance(capImpulse);
+			var allCaps : Array = _Game.Team1.CapsList.concat(_Game.Team2.CapsList);
+			var fromCapPos : Point = fromCap.GetPos();
+			
+			allCaps.sort();
+			
+			var collisionInfo : CollisionInfo = new CollisionInfo;
+			collisionInfo.PhyEntity1 = fromCap;
+			
+			for each(var cap : Cap in allCaps)
+			{
+				if (cap == fromCap)
+					continue;
+				
+				var diffVect : Point = cap.GetPos().subtract(fromCapPos);
+				var diffVectDist : Number = diffVect.length;
+				
+				if (dist < diffVectDist - Cap.Radius*2)
+					continue;
+				
+				var D : Number = capDirection.x*diffVect.x + capDirection.y*diffVect.y;					
+				
+				if (D < 0)
+					continue;
+				
+				var F : Number = Math.sqrt(diffVectDist*diffVectDist - D*D);
+				var I : Number = Cap.Radius*2;
+				
+				if (F > I)
+					continue;
+				
+				var T : Number = Math.sqrt(I*I - F*F);
+				var collisionDist : Number = (D-T);
+				
+				collisionInfo.Pos1 = fromCapPos.add(new Point(capDirection.x*collisionDist, capDirection.y*collisionDist));
+				
+				collisionInfo.PhyEntity2 = cap;
+				collisionInfo.Pos2 = cap.GetPos();
+				break;
+			}
+						
+			if (collisionInfo.Pos1 == null)
+			{
+				var distVect : Point = capDirection.clone();
+				distVect.normalize(dist);
+				collisionInfo.Pos1 = fromCapPos.add(distVect);
+			}
+			else
+			{
+				
+			}
 
+			return collisionInfo;
+		}
+		
+		private function CalcUnclippedCapTravelDistance(capImpulse : Number) : Number
+		{
+			// Calculamos la velocidad inicial como lo hace el motor al aplicar un impulso
+			var v:Number = capImpulse / MatchConfig.CapMass;
+			
+			// Aplicamos nuestra formula de la cual hay una foto (4/14/2013)
+			var R : Number = 1.0 - _TimeStep * MatchConfig.CapLinearDamping;
+			var dist : Number = v * _TimeStep * R / (1-R); 
+			
+			return dist * MatchConfig.PixelsPerMeter;
+		}
+		
+		
 		private var _Game : Game;
 
 		private var _TimeStep : Number;

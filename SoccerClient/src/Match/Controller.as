@@ -21,16 +21,14 @@ package Match
 		public function get IsStarted() : Boolean	{	return _IsStarted; 	}
 		
 		// Chapa sobre la que se esta aplicando el controlador
-		public function get Target() : Cap	{ return _Target; }
+		public function get Target() : Cap	{ return _TargetCap; }
 		
 		
-		//
-		// Arranca el sistema de control direccional con el ratón
-		//
+		// Arranca el sistema de control del raton
 		public function Start(_cap: Cap): void					
 		{	
-			_Target = _cap;
-			_TargetPos = _Target.GetPos().clone();								
+			_TargetCap = _cap;
+			_TargetCapPos = _TargetCap.GetPos().clone();								
 			
 			// Nos registramos a los eventos de entrada de todo el flash
 			AddHandlers();
@@ -41,9 +39,7 @@ package Match
 			OnStart.dispatch();
 		}
 		
-		//
 		// Detiene el sistema de control direccional con el ratón, lo que implica dejar de visualizarlo
-		//
 		public function Stop(reason:int):void
 		{
 			// Nos desregistramos de los eventos de entrada 
@@ -56,18 +52,16 @@ package Match
 			OnStop.dispatch(reason);
 		}
 		
-		//
 		// Nos registramos a los eventos de ratón del objeto indicado "stage" 
-		//
 		protected function AddHandlers():void
 		{
-			_Target.Visual.stage.addEventListener(MouseEvent.MOUSE_UP, MouseUp);	
-			_Target.Visual.stage.addEventListener(MouseEvent.MOUSE_MOVE, MouseMove);
+			_TargetCap.Visual.stage.addEventListener(MouseEvent.MOUSE_UP, MouseUp);	
+			_TargetCap.Visual.stage.addEventListener(MouseEvent.MOUSE_MOVE, MouseMove);
 		}
 		protected function RemoveHandlers():void
 		{
-			_Target.Visual.stage.removeEventListener(MouseEvent.MOUSE_UP, MouseUp);	
-			_Target.Visual.stage.removeEventListener(MouseEvent.MOUSE_MOVE, MouseMove);
+			_TargetCap.Visual.stage.removeEventListener(MouseEvent.MOUSE_UP, MouseUp);	
+			_TargetCap.Visual.stage.removeEventListener(MouseEvent.MOUSE_MOVE, MouseMove);
 		}
 		
 		public function MouseUp(e: MouseEvent) :void 
@@ -104,13 +98,13 @@ package Match
 			// 
 			// MouseX, MouseY es relativo a espacio de transformación del DisplayObject sobre el cual lo pedimos
 			// TargetPos fue pedida respecto al padre (GetPos), asi que para ambas coordenadas esten en el mismo espacio:
-			var relativeTo:DisplayObject = _Target.Visual.parent;
+			var relativeTo:DisplayObject = _TargetCap.Visual.parent;
 			
-			return new Point((relativeTo.mouseX - _TargetPos.x), (relativeTo.mouseY - _TargetPos.y));
+			return new Point((relativeTo.mouseX - _TargetCapPos.x), (relativeTo.mouseY - _TargetCapPos.y));
 		}		
 		
-		protected var _Target:Cap; 
-		protected var _TargetPos:Point;
+		protected var _TargetCap:Cap; 
+		protected var _TargetCapPos:Point;
 		protected var _IsStarted:Boolean = false;		
 	}		
 }
