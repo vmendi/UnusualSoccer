@@ -22,6 +22,14 @@
 			font-weight: bold;
 			embedAsCFF: true;
 		}
+		
+		@font-face {
+			src:url("/Assets/Fonts/HelveticaNeueLT/LTe50928.ttf");
+			fontFamily: MyFontHelveticaNeue97Bold;
+			font-weight: bold;
+			embedAsCFF: true;
+		}
+		
 
 	</fx:Style>
 	

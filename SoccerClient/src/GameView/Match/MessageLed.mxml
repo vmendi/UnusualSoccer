@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="760" height="169"
+		 cacheAsBitmap="true" mouseChildren="false" mouseEnabled="false">
+	
+	<fx:Style source="../styles.css" />
+	
+	<fx:Script><![CDATA[
+		import mx.core.FlexGlobals;
+		import mx.core.IFlexModule;
+		import mx.events.EffectEvent;
+		import mx.managers.PopUpManager;
+		
+		
+		public static function Show(text : String) : void
+		{
+			var theDialog : MessageLed = new MessageLed();
+			var parent : Sprite = FlexGlobals.topLevelApplication as Sprite;
+			
+			theDialog.Msg = text;
+			
+			theDialog.moduleFactory = IFlexModule(parent).moduleFactory;
+			
+			PopUpManager.addPopUp(theDialog, parent, false, null);
+			PopUpManager.centerPopUp(theDialog);
+			
+			theDialog.MySequence.play();
+		}
+		
+		protected function MySequence_effectEndHandler(event:EffectEvent):void
+		{
+			PopUpManager.removePopUp(this);			
+		}
+		
+		[Bindable]
+		public function get Msg() : String { return mMsg; }
+		public function set Msg(msg : String) : void { mMsg = msg; }
+		
+		private var mMsg : String = null;
+		
+	]]></fx:Script>
+	
+	<fx:Declarations>
+		<s:Sequence id="MySequence" effectEnd="MySequence_effectEndHandler(event)">
+			<s:Fade target="{this}" alphaFrom="0" alphaTo="1" duration="250"/>	
+			<s:Fade target="{this}" alphaFrom="1" alphaTo="1" duration="1500"/>
+			<s:Fade target="{this}" alphaFrom="1" alphaTo="0" duration="250"/>
+		</s:Sequence>			
+	</fx:Declarations>
+	
+	<s:Group>
+		<s:Group left="0" right="0" top="0" bottom="0">
+			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='MessageLedBg')" fillMode="clip" />
+			<s:Label id="myMsg"
+					 maxWidth="760"
+					 height="142"
+					 textAlign="center"
+					 verticalAlign="middle"
+					 horizontalCenter="0" verticalCenter="0"
+					 styleName="whiteBoldLed"
+					 text="{Msg}"/> 
+			<s:filters>
+				<s:GlowFilter id="glowNormal" strength="2" alpha="0.7" blurX="12" blurY="12" color="#FFFFFF" quality="3"	/>
+			</s:filters>
+		</s:Group>
+	</s:Group>
+	
+	<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='MessageLedMaskLeds')" fillMode="clip" x="0" y="15" />
+	
+</s:Group>

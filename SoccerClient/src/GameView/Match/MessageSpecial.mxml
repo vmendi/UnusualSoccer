@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="424" height="67" mouseChildren="false" mouseEnabled="false"
+		 addedToStage="group1_addedToStageHandler(event)">
+	
+	<fx:Style source="../styles.css" />
+	
+	<fx:Script><![CDATA[
+		import mx.core.FlexGlobals;
+		import mx.core.IFlexModule;
+		import mx.events.EffectEvent;
+		import mx.managers.PopUpManager;
+		
+		
+		public static function Show(text : String, img : Class) : void
+		{
+			var theDialog : MessageSpecial = new MessageSpecial();
+			var parent : Sprite = FlexGlobals.topLevelApplication as Sprite;
+			
+			theDialog.Msg = text;
+			theDialog.Img = img;
+			
+			theDialog.moduleFactory = IFlexModule(parent).moduleFactory;
+			
+			PopUpManager.addPopUp(theDialog, parent, false, null);
+			PopUpManager.centerPopUp(theDialog);
+			
+			theDialog.MySequence.play();
+		}
+		
+		protected function MySequence_effectEndHandler(event:EffectEvent):void
+		{
+			PopUpManager.removePopUp(this);			
+		}
+		
+		[Bindable]
+		public function get Msg() : String { return mMsg; }
+		public function set Msg(msg : String) : void { mMsg = msg; }
+		
+		public function get Img() : Class { return mImg; }
+		public function set Img(img : Class) : void { mImg = img; }
+		
+		private var mMsg : String = null;
+		private var mImg : Class = null;
+		
+		protected function group1_addedToStageHandler(event:Event):void
+		{
+			// TODO Auto-generated method stub
+			MySequence.play();
+		}
+		
+	]]></fx:Script>
+	
+	<fx:Declarations>
+		<s:Sequence id="MySequence" effectEnd="MySequence_effectEndHandler(event)">
+			<s:Fade target="{this}" alphaFrom="0" alphaTo="1" duration="250"/>	
+			<s:Fade target="{this}" alphaFrom="1" alphaTo="1" duration="1500"/>
+			<s:Fade target="{this}" alphaFrom="1" alphaTo="0" duration="250"/>
+		</s:Sequence>			
+	</fx:Declarations>
+	
+	<s:SWFLoader id="MyBg" source="@Embed(source='/Assets/General.swf', symbol='MessageSpecialBg')" />
+	
+	<s:Group>
+		<s:Group left="0" right="0" top="0" bottom="0">
+			<s:Label id="myMsg"
+					 width="296"
+					 textAlign="center"
+					 verticalAlign="middle"
+					 left="98" top="14"
+					 styleName="whiteBoldVeryBig"
+					 text="TU RIVAL VA A USAR SUPERPOTENCIA"/> <!--{Msg}-->
+			<s:filters>
+				<s:GlowFilter id="glowNormal" strength="2" alpha="0.7" blurX="12" blurY="12" color="#FFFFFF" quality="3"	/>
+			</s:filters>
+		</s:Group>
+	</s:Group>
+	
+	<!--<s:SWFLoader id="MyImg" source="{Img}" />-->
+	
+</s:Group>
