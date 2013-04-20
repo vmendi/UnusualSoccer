@@ -202,10 +202,8 @@ package Match
 			// Parse Query String (debug aids)
 			if (AppConfig.MATCH_COUNT != null)
 			{
-				if (idLocalPlayerTeam == Enums.Team1)
-					descTeam1.MatchesCount = parseInt(AppConfig.MATCH_COUNT);
-				else
-					descTeam2.MatchesCount = parseInt(AppConfig.MATCH_COUNT);
+				descTeam1.MatchesCount = parseInt(AppConfig.MATCH_COUNT.split("-")[0]);
+				descTeam2.MatchesCount = parseInt(AppConfig.MATCH_COUNT.split("-")[1]);
 			}
 			
 			// Creamos los dos equipos (utilizando la equipación indicada)
