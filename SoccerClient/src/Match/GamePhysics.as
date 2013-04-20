@@ -488,24 +488,9 @@ package Match
 				collisionInfo.Pos2 = toEnt.GetPos();
 				
 				// Now the velocities
-				var N : Point = collisionInfo.Pos2.subtract(collisionInfo.Pos1);
-				N.normalize(1);
-
-				var v1 : Point = MathUtils.Multiply(capDirection, CalcVelAfterDistance(collisionDist, capImpulse, 
-																					   collisionInfo.PhyEntity1.Mass, collisionInfo.PhyEntity1.LinearDamping));
-				var v2 : Point = new Point(0, 0);
-				
-				var a1 : Number = MathUtils.Dot(v1, N);
-				var a2 : Number = MathUtils.Dot(v2, N);
-				
-				var optimizedP : Number = (2*(a1-a2)) / (collisionInfo.PhyEntity1.Mass + collisionInfo.PhyEntity2.Mass);
-				
-				collisionInfo.V1 = v1.subtract(MathUtils.Multiply(N, optimizedP * collisionInfo.PhyEntity2.Mass));
-				collisionInfo.V2 = v2.add(MathUtils.Multiply(N, optimizedP * collisionInfo.PhyEntity1.Mass));
-				
-				// Un poco mas de predictibilidad! Distancias que recorreremos a estas velocidades
-				CalcAfterCollision(collisionInfo);
-				
+				//SetFixedExitVelocities(30, collisionInfo, capDirection);
+				CalcExitVelocities(collisionInfo, capDirection, capImpulse, collisionDist);
+								
 				break;
 			}
 
@@ -519,8 +504,24 @@ package Match
 			return collisionInfo;
 		}
 		
-		private function CalcAfterCollision(collisionInfo : CollisionInfo) : void
+		// WARNING: we are not including the angular part, friction and restitution and so the result of this calculation won't be precise
+		private function CalcExitVelocities(collisionInfo : CollisionInfo, capDirection : Point, capImpulse : Number, collisionDist : Number) : void
 		{
+			var N : Point = collisionInfo.Pos2.subtract(collisionInfo.Pos1);
+			N.normalize(1);
+			
+			var v1 : Point = MathUtils.Multiply(capDirection, CalcVelAfterDistance(collisionDist, capImpulse, 
+												collisionInfo.PhyEntity1.Mass, collisionInfo.PhyEntity1.LinearDamping));
+			var v2 : Point = new Point(0, 0);
+			
+			var a1 : Number = MathUtils.Dot(v1, N);
+			var a2 : Number = MathUtils.Dot(v2, N);
+			
+			var optimizedP : Number = 2*(a1-a2) / (collisionInfo.PhyEntity1.Mass + collisionInfo.PhyEntity2.Mass);
+			
+			collisionInfo.V1 = v1.subtract(MathUtils.Multiply(N, optimizedP * collisionInfo.PhyEntity2.Mass));
+			collisionInfo.V2 = v2.add(MathUtils.Multiply(N, optimizedP * collisionInfo.PhyEntity1.Mass));
+			
 			var distV1 : Number = CalcTravelDistance(collisionInfo.V1.length * collisionInfo.PhyEntity1.Mass / MatchConfig.PixelsPerMeter,
 													 collisionInfo.PhyEntity1.Mass, collisionInfo.PhyEntity1.LinearDamping);
 			
@@ -531,8 +532,39 @@ package Match
 			var distV2 : Number = CalcTravelDistance(collisionInfo.V2.length * collisionInfo.PhyEntity2.Mass / MatchConfig.PixelsPerMeter,
 													 collisionInfo.PhyEntity2.Mass, collisionInfo.PhyEntity2.LinearDamping);
 			
+			// HACK temporal para ver que tal se juega con balon quasi-predictivo. Si queremos hacerlo 100% predictivo probablemente
+			// hay que hacerlo con el Box2D
+			if (collisionInfo.PhyEntity2 is Ball)
+				distV2 *= 0.80;
+			
 			collisionInfo.AfterCollision2 = collisionInfo.V2.clone();
 			collisionInfo.AfterCollision2.normalize(distV2);
+			collisionInfo.AfterCollision2 = collisionInfo.AfterCollision2.add(collisionInfo.Pos2);
+		}
+		
+		private function SetFixedExitVelocities(dist : Number, collisionInfo : CollisionInfo, capDirection : Point) : void
+		{
+			var N : Point = collisionInfo.Pos2.subtract(collisionInfo.Pos1);
+			N.normalize(1);
+			
+			var v1 : Point = capDirection;
+			var v2 : Point = new Point(0, 0);
+			
+			var a1 : Number = MathUtils.Dot(v1, N);
+			var a2 : Number = MathUtils.Dot(v2, N);
+						
+			collisionInfo.V1 = v1.subtract(N);
+			collisionInfo.V2 = v2.add(N);
+			
+			collisionInfo.V1.normalize(1);
+			collisionInfo.V2.normalize(1);
+			
+			collisionInfo.AfterCollision1 = collisionInfo.V1.clone();
+			collisionInfo.AfterCollision1.normalize(dist);
+			collisionInfo.AfterCollision1 = collisionInfo.AfterCollision1.add(collisionInfo.Pos1);
+			
+			collisionInfo.AfterCollision2 = collisionInfo.V2.clone();
+			collisionInfo.AfterCollision2.normalize(dist);
 			collisionInfo.AfterCollision2 = collisionInfo.AfterCollision2.add(collisionInfo.Pos2);
 		}
 		
@@ -546,10 +578,10 @@ package Match
 			var num : Number = (1-R) * dist;
 			var den : Number = v0 * _TimeStep * R;
 			var n : Number = Math.log(1 - (num/den))/Math.log(R);
-			
+						
 			if (isNaN(n))
 				return 0;
-			
+						
 			// And then it's easy to obtain the velocity (refer to the picture!)
 			return v0*Math.pow(R, n) * MatchConfig.PixelsPerMeter;
 		}

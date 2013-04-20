@@ -14,14 +14,7 @@ package Match
 	// Se encarga del controlador para posicionar una chapa (el portero)
 	//
 	public class ControllerPos extends Controller
-	{
-		private var _Ghost:DisplayObject = null;
-		private var _Canvas : Sprite;
-		private var _ColorLine : uint;
-		private var _Game : Game;
-		
-		private const COLOR:uint = 0x2670E9;
-		
+	{		
 		public function ControllerPos(canvas:Sprite, game : Game)		
 		{
 			_Game = game;
@@ -40,11 +33,9 @@ package Match
 			var ghostClass : Class = ResourceManager.getInstance().getClass("match", "Cap");
 			_Ghost = _Game.GameLayer.addChild(new ghostClass);
 			_Ghost.alpha = 0.4;
-			_Ghost.visible = false;
 			Cap.PrepareVisualCap(_Ghost, cap.OwnerTeam.PredefinedTeamNameID, cap.OwnerTeam.UsingSecondUniform, true);
 			
 			_Ghost.x = EndPos.x; _Ghost.y = EndPos.y;
-			_Ghost.visible = true;
 		}
 		
 		public override function Stop(reason:int):void
@@ -117,5 +108,12 @@ package Match
 			
 			return newPos;
 		}
+		
+		private var _Ghost:DisplayObject = null;
+		private var _Canvas : Sprite;
+		private var _ColorLine : uint;
+		private var _Game : Game;
+		
+		private const COLOR:uint = 0x2670E9;
 	}
 }

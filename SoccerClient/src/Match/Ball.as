@@ -25,18 +25,19 @@ package Match
 		
 		protected override function get PhysicsParams():Object
 		{
-			return { categoryBits:4,
+			return { radius:MatchConfig.Screen2Physic(BallRadius), 
+					 categoryBits:4,
 					 maskBits: 1 + 2 + 4,			// Choca con todo excepto con BackPorteria (que tiene categoryBits==8)
-					 mass: MatchConfig.BallMass, 	// 0.04
-					 fixedRotation: true,			// If set to true the rigid body will not rotate.
-				     isBullet: true, 				// UseCCD: Detección de colisión continua
-					 radius:MatchConfig.Screen2Physic(BallRadius),
+					 isBullet: true,
+					 mass: MatchConfig.BallMass,
+					 fixedRotation: true,				      					 
 					 isSleeping: true,
 					 allowSleep: true, 
 					 linearDamping: MatchConfig.BallLinearDamping, 
 					 angularDamping: MatchConfig.BallLinearDamping, 
 					 friction: .2, 
-					 restitution: .8 };
+					 restitution: .8
+			};
 		}
 		
 		public override function get Radius() : Number

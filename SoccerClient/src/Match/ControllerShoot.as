@@ -10,6 +10,8 @@ package Match
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
+	import mx.resources.ResourceManager;
+	
 	import utils.MathUtils;
 
 	
@@ -38,20 +40,26 @@ package Match
 			_Thickness = THICKNESS_SHOOT;						
 		}
 	
-		public override function Start(_cap:Cap) : void
+		public override function Start(cap:Cap) : void
 		{
-			super.Start(_cap);
+			super.Start(cap);
 		
 			_ShotPower.text = "";
 			_ShotPower.visible = true;
 			_ShotPower.x = _TargetCap.Visual.x;
 			_ShotPower.y = _TargetCap.Visual.y;
+			
+			_Ghost = _Game.GameLayer.addChild(new (ResourceManager.getInstance().getClass("match", "Cap") as Class));
+			_Ghost.alpha = 0.4;
+			_Ghost.visible = false;
+			Cap.PrepareVisualCap(_Ghost, cap.OwnerTeam.PredefinedTeamNameID, cap.OwnerTeam.UsingSecondUniform, true);
 		}
 		
 		public override function Stop(reason:int):void
 		{
 			super.Stop(reason);
 
+			_Ghost.visible = false;
 			_ShotPower.visible = false;
 			_Canvas.graphics.clear();
 		}
@@ -73,7 +81,7 @@ package Match
 				var recoil:Point = source.add(dir); 			// Punto del mouse respecto a la chapa, cuando soltemos nos dará la potencia del tiro
 				var recoilColor:uint = 0xff0000;
 				
-				_Canvas.graphics.clear();			
+				_Canvas.graphics.clear();
 	
 				// Mientras que no sacas la flecha de la chapa no es un tiro válido
 				if (IsValid())
@@ -85,7 +93,8 @@ package Match
 				}
 				else
 				{
-					_ShotPower.text = "";	
+					_Ghost.visible = false;
+					_ShotPower.text = "";
 				}
 				
 				// Pintamos la parte "trasera" del disparador, que va desde el centro de la chapa hasta el raton
@@ -114,12 +123,24 @@ package Match
 			
 			if (collInfo.PhyEntity2 != null)
 			{
-				_Canvas.graphics.lineStyle(1, 0xFFFFFF, 1);
+				_Canvas.graphics.lineStyle(2, 0xFFFFFF, 0.5);
 				_Canvas.graphics.moveTo(collInfo.Pos1.x, collInfo.Pos1.y);
 				_Canvas.graphics.lineTo(collInfo.AfterCollision1.x, collInfo.AfterCollision1.y);
 				
 				_Canvas.graphics.moveTo(collInfo.Pos2.x, collInfo.Pos2.y);
 				_Canvas.graphics.lineTo(collInfo.AfterCollision2.x, collInfo.AfterCollision2.y);
+			}
+			
+			if (_TargetCapPos.subtract(collInfo.Pos1).length > 2 * Cap.CapRadius)
+			{
+				_Ghost.visible = true;
+				_Ghost.x = collInfo.Pos1.x;
+				_Ghost.y = collInfo.Pos1.y;
+				_Ghost.rotation = Target.Visual.rotation;
+			}
+			else
+			{
+				_Ghost.visible = false;
 			}
 		}
 		
@@ -238,6 +259,7 @@ package Match
 		}
 
 		private var _Game : Game;
+		private var _Ghost:DisplayObject;
 		private var _Canvas : Sprite;
 		private var _MaxLengthLine : uint;
 		private var _ColorLine : uint;

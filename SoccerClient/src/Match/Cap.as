@@ -123,16 +123,18 @@ package Match
 		
 		protected override function get PhysicsParams() : Object
 		{
-			return { radius: MatchConfig.Screen2Physic(CapRadius),
+			return { radius:MatchConfig.Screen2Physic(CapRadius),
 					 categoryBits: 1,								// Choca con todo
 					 isBullet: true, 								// UseCCD: Detección de colisión continua (Ninguna chapa se debe atravesar)
 					 mass: MatchConfig.CapMass,
+					 fixedRotation: false,
 					 isSleeping: true,
 					 allowSleep: true, 
-					 friction: .3, 
-					 restitution: .8,								// Fuerza que recupera en un choque
 					 linearDamping: MatchConfig.CapLinearDamping, 
-					 angularDamping: MatchConfig.CapLinearDamping };	
+					 angularDamping: MatchConfig.CapLinearDamping,
+					 friction: .3, 
+					 restitution: .8
+			};	
 		}
 		
 		public override function get Radius() : Number
