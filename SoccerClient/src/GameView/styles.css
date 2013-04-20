@@ -161,3 +161,11 @@
 	font-weight:bold;
 	color:#000000;
 }
+
+.whiteBoldLed {
+	font-family:MyFontHelveticaNeue97Bold;
+	font-size:90pt;
+	font-weight:bold;
+	color:#FFFFFF;
+}
+

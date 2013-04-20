@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 width="760" height="23">
+	
+	<fx:Style source="../styles.css" />
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.core.FlexGlobals;
+			import mx.core.IFlexModule;
+			import mx.events.EffectEvent;
+			import mx.managers.PopUpManager;
+			
+			public static function Show(text : String) : void
+			{
+				var theDialog : MessageTicker = new MessageTicker();
+				var parent : Sprite = FlexGlobals.topLevelApplication as Sprite;
+				
+				theDialog.Msg = text;
+				
+				theDialog.moduleFactory = IFlexModule(parent).moduleFactory;
+				
+				PopUpManager.addPopUp(theDialog, parent, false, null);
+				PopUpManager.centerPopUp(theDialog);
+				
+				theDialog.myMsg.filters = [theDialog.myMotionBlurFilter];
+				theDialog.MySequence.play();
+			}
+			
+			protected function MySequence_effectEndHandler(event:EffectEvent):void
+			{
+				PopUpManager.removePopUp(this);
+			}
+
+			protected function initScroll_effectEndHandler(event:EffectEvent):void
+			{
+				myMsg.filters = null;
+			}
+			
+			protected function endScroll_effectEndHandler(event:EffectEvent):void
+			{
+				myMsg.filters = [myMotionBlurFilter];
+			}
+			
+			[Bindable]
+			public function get Msg() : String { return mMsg; }
+			public function set Msg(msg : String) : void { mMsg = msg; }
+			
+			private var mMsg : String = null;
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:Sequence id="MySequence" effectEnd="MySequence_effectEndHandler(event)">
+			<s:Move target="{myMsg}" xFrom="-740" xTo="10" duration="750" effectEnd="initScroll_effectEndHandler(event)" />
+			<s:Parallel effectEnd="endScroll_effectEndHandler(event)">
+				<s:Fade target="{myRectangle}" alphaFrom="0.8" alphaTo="0" duration="500" />
+				<s:Fade target="{myMsg}" alphaFrom="1" alphaTo="1" duration="1500"/>
+			</s:Parallel>			
+			<s:Move target="{myMsg}" xFrom="10" xTo="760" duration="750" />
+		</s:Sequence>
+		<s:BlurFilter id="myMotionBlurFilter" blurX="10.0" blurY="0.0" quality="2"/>
+	</fx:Declarations>
+
+	<!--
+	<s:Graphic>
+		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='MatchTicketBg')" fillMode="clip" />
+	</s:Graphic>
+	-->
+	
+	<s:Graphic>
+		<s:Rect id="myRectangle" x="0" y="0" width="760" height="23" alpha="0" blendMode="overlay">
+			<s:fill>
+				<s:SolidColor color="#ffffff" />
+			</s:fill>
+		</s:Rect>
+	</s:Graphic>
+
+	<s:Label id="myMsg"
+			 y="4"
+			 x="-740"
+			 width="740"
+			 textAlign="center"
+			 verticalAlign="middle"
+			 styleName="whiteBoldBig"
+			 text="YOU DIDN'T STEAL THE BALL"/>
+
+</s:Group>
