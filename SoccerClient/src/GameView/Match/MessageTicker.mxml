@@ -64,11 +64,7 @@
 		<s:BlurFilter id="myMotionBlurFilter" blurX="10.0" blurY="0.0" quality="2"/>
 	</fx:Declarations>
 
-	<!--
-	<s:Graphic>
-		<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='MatchTicketBg')" fillMode="clip" />
-	</s:Graphic>
-	-->
+	<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='MatchTickerBg')" fillMode="clip" />
 	
 	<s:Graphic>
 		<s:Rect id="myRectangle" x="0" y="0" width="760" height="23" alpha="0" blendMode="overlay">

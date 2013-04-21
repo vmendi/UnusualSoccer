@@ -194,9 +194,9 @@
 	
 	</s:Group>
 	
-	<!--<Match:MessageTicker x="0" y="110" />-->
+	<Match:MessageTicker x="0" y="110" />
 	<!--<Match:MessageTutorial x="422" y="538" />-->
 	<!--<Match:MessageLed x="0" y="268" />-->
-	<Match:MessageSpecial horizontalCenter="0" verticalCenter="0" />
+	<!--<Match:MessageSpecial horizontalCenter="0" verticalCenter="0" />-->
 	
 </s:Group>
