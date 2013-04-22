@@ -1,5 +1,6 @@
 package Match
 {
+	import GameView.Match.MessageTicker;
 	import GameView.PopupIngameMsg;
 	
 	import com.greensock.*;
@@ -54,7 +55,7 @@ package Match
 				LaunchCutScene(ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaRight.x, Field.SmallAreaRight.y, callback, _Parent);
 			
 			// Y ademas, un cartelito sin esperas
-			PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeControlPortero"));
+			MessageTicker.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeControlPortero"));
 		}
 		
 		
@@ -82,33 +83,33 @@ package Match
 			if (isMyTurn)
 			{
 				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)
-					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoPropioRobo"));
+					MessageTicker.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoPropioRobo"));
 				else 
 				if(reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaFalta)
 					FillFault(LaunchCutScene(ResourceManager.getInstance().getClass("match", "FaltaContraria"), 0, 210, null, _Parent), fault);
 				else 
 				if(reason == Enums.TurnSaquePuertaInvalidGoal)
-					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoPropioSaquePuerta"));
+					MessageTicker.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoPropioSaquePuerta"));
 				else 
 				if (reason == Enums.TurnTiroAPuerta)
-					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaRecepcion"));
+					MessageTicker.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaRecepcion"));
 				else 
 				if (reason == Enums.TurnGoalKeeperSet)
-					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaConfirmacion"));
+					MessageTicker.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaConfirmacion"));
 			}
 			else
 			{
 				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)	
-					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoContrarioRobo"));
+					MessageTicker.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoContrarioRobo"));
 				else 
 				if (reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaFalta)
 					FillFault(LaunchCutScene(ResourceManager.getInstance().getClass("match", "FaltaPropia"), 0, 210, null, _Parent), fault);
 				else 
 				if (reason == Enums.TurnTiroAPuerta)
-					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaAnuncio"));
+					MessageTicker.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaAnuncio"));
 				else 
 				if (reason == Enums.TurnGoalKeeperSet)
-					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaRecepcion2"));
+					MessageTicker.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaRecepcion2"));
 			}
 		}
 		
@@ -120,13 +121,13 @@ package Match
 		public function ShowQuedanTiros(turnos:int) : void
 		{
 			if (turnos == 3)
-				PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros3"));
+				MessageTicker.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros3"));
 			else
 			if (turnos == 2)
-				PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros2"));
+				MessageTicker.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros2"));
 			else 
 			if (turnos == 1)
-				PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros1"));
+				MessageTicker.Show(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros1"));
 		}
 		
 		//
@@ -137,16 +138,16 @@ package Match
 			if (conflicto != null)
 			{
 				if (!bUltimoPase)
-					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajePaseAlPieNoRobo"));
+					MessageTicker.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajePaseAlPieNoRobo"));
 				else
-					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeUltimoPaseAlPieNoRobo"));
+					MessageTicker.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeUltimoPaseAlPieNoRobo"));
 			}
 			else
 			{	
 				if (!bUltimoPase)
-					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajePaseAlPie"));
+					MessageTicker.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajePaseAlPie"));
 				else
-					PopupIngameMsg.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeUltimoPaseAlPie"));
+					MessageTicker.Show(ResourceManager.getInstance().getString("matchmsgs", "MensajeUltimoPaseAlPie"));
 			}
 		}
 		

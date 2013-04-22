@@ -22,8 +22,8 @@ package Match
 		
 		public function get IsAutoGoalKeeper() : Boolean
 		{
-			//return _Team1.MatchesCount <= MATCHES_UPPER_THRESHOLD || _Team2.MatchesCount <= MATCHES_UPPER_THRESHOLD;
-			return false;
+			return _Team1.MatchesCount <= NOOB_THRESHOLD || _Team2.MatchesCount <= NOOB_THRESHOLD;
+			//return false;
 		}
 		
 		public function IsGoalGoodIdea(scorerTeam : Team, goalkeeperShoot : ShootInfo) : Boolean

@@ -10,7 +10,7 @@ package Match
 			
 			// Mostramos todas las influencias de pase al pie
 			var friendCaps:Array = _Game.CurrTeam.CapsList;
-			for each( var friend:Cap in friendCaps )
+			for each (var friend:Cap in friendCaps)
 			{
 				friend.SetInfluenceAspect(Enums.FriendColor, Cap.CapRadius + Ball.BallRadius + _CurTeam.RadiusPase);
 				friend.ShowInfluence = true;
