@@ -357,7 +357,8 @@
 			
 			function abandonMatch() : void
 			{
-				mMainGameModel.TheRealtimeModel.TheMatch.Game.TheInterface.OnAbandonarClick(null);
+				// TODO
+				// mMainGameModel.TheRealtimeModel.TheMatch.Game.TheInterface.OnAbandonarClick(null);
 			}
 			
 			function onMatchEnded(matchResult : Object) : void

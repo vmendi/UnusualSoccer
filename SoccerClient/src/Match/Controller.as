@@ -64,13 +64,13 @@ package Match
 			_TargetCap.Visual.stage.removeEventListener(MouseEvent.MOUSE_MOVE, MouseMove);
 		}
 		
-		public function MouseUp(e: MouseEvent) :void 
+		public function MouseUp(e:MouseEvent) : void 
 		{
 			try 
 			{
 				Stop(SuccessMouseUp);
 			}
-			catch(e:Error)
+			catch(er:Error)
 			{
 				ErrorMessages.LogToServer("WTF 123355");				
 			}

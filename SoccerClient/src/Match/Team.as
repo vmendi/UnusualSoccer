@@ -24,7 +24,7 @@ package Match
 		public function get CapsList() : Array { return _CapsList; }
 		public function get GoalKeeper() : Cap { return _CapsList[0]; }
 		
-		public function get IsLocalUser() : Boolean	{ return this.TeamId == MatchConfig.IdLocalUser; }
+		public function get IsLocalUser() : Boolean	{ return this == _Game.LocalUserTeam; }
 		public function get IsCurrTeam() : Boolean { return this == _Game.CurrTeam; }
 		
 		public function get Goals() : Number {	return _Goals; }

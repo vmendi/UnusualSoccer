@@ -346,18 +346,12 @@ package Match
 		//
 		private function OnUseSkillButtonClick(event:MouseEvent, idSkill:int) : void
 		{			
-			// Comprobamos si está cargado y se puede utilizar en este turno
-			var localTeam:Team = _Game.LocalUserTeam;
-			
+			// Comprobamos si está cargado y se puede utilizar en este turno		
 			// Dentro de IsSkillAllowedInTurn se hacen las comprobaciones pertinentes de UserInputEnabled y IsAnyControllerStarted.
 			// TODO: Creo que el IsSkillAvailableForTurn sobra puesto que estabamos haciendo el mouseEnabled del boton mal. Ahora no deberia llegar.
-			if (localTeam.GetSkillPercentCharged(idSkill) >= 100 && IsSkillAvailableForTurn(idSkill))
+			if (_Game.LocalUserTeam.GetSkillPercentCharged(idSkill) >= 100 && IsSkillAvailableForTurn(idSkill))
 			{
-				if (!MatchConfig.OfflineMode)
-					MatchMain.Ref.Connection.Invoke("OnServerUseSkill", null, idSkill);
-				
-				_Game.EnterWaitState(GameState.WaitingCommandUseSkill,
-											  	  Delegate.create(_Game.OnClientUseSkill, MatchConfig.IdLocalUser, idSkill));
+				_Game.InvokeServer("OnServerUseSkill", GameState.WaitingCommandUseSkill, idSkill);
 			}
 		}
 		
@@ -460,11 +454,8 @@ package Match
 			// Si reason != SuccessMouseUp el stop se ha producido por cancelacion y simplemente ignoramos
 			if (_PosControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
 			{
-				if (!MatchConfig.OfflineMode)
-					MatchMain.Ref.Connection.Invoke("OnServerPosCap", null, _PosControl.Target.Id, _PosControl.EndPos.x, _PosControl.EndPos.y);
-				
-				_Game.EnterWaitState(GameState.WaitingCommandPosCap, Delegate.create(_Game.OnClientPosCap, _Game.CurrTeam.TeamId, 
-									 _PosControl.Target.Id, _PosControl.EndPos.x, _PosControl.EndPos.y)); 
+				_Game.InvokeServer("OnServerPosCap", GameState.WaitingCommandPosCap, 
+								   _PosControl.Target.Id, _PosControl.EndPos.x, _PosControl.EndPos.y);
 			}
 		}
 		
@@ -475,13 +466,8 @@ package Match
 			// el controlador se inicio, por ejemplo por TimeOut. 
 			if (_ShootControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
 			{
-				if (!MatchConfig.OfflineMode)
-					MatchMain.Ref.Connection.Invoke("OnServerShoot", null, _ShootControl.Target.Id, _ShootControl.Direction.x, _ShootControl.Direction.y, _ShootControl.Impulse);
-				
-				_Game.EnterWaitState(GameState.WaitingCommandShoot, 
-									 Delegate.create(_Game.OnClientShoot,	// Simulamos que el servidor nos ha devuelto el tiro
-									_ShootControl.Target.OwnerTeam.TeamId, 
-									_ShootControl.Target.Id, _ShootControl.Direction.x, _ShootControl.Direction.y, _ShootControl.Impulse));
+				_Game.InvokeServer("OnServerShoot", GameState.WaitingCommandShoot, 
+								   _ShootControl.Target.Id, _ShootControl.Direction.x, _ShootControl.Direction.y, _ShootControl.Impulse);
 			}
 		}
 		
@@ -492,12 +478,8 @@ package Match
 		{	
 			if (_BallControl.IsValid() && UserInputEnabled && reason == Controller.SuccessMouseUp)
 			{
-				if (!MatchConfig.OfflineMode)
-					MatchMain.Ref.Connection.Invoke("OnServerPlaceBall", null, _BallControl.Target.Id, _BallControl.Direction.x, _BallControl.Direction.y);
-				
-				_Game.EnterWaitState(GameState.WaitingCommandPlaceBall,
-									 Delegate.create(_Game.OnClientPlaceBall,
-									 _BallControl.Target.OwnerTeam.TeamId, _BallControl.Target.Id, _BallControl.Direction.x, _BallControl.Direction.y));
+				_Game.InvokeServer("OnServerPlaceBall", GameState.WaitingCommandPlaceBall, 
+								   _BallControl.Target.Id, _BallControl.Direction.x, _BallControl.Direction.y);
 			}
 		}
 		
@@ -508,10 +490,7 @@ package Match
 		{
 			if (UserInputEnabled)
 			{
-				if (!MatchConfig.OfflineMode)
-					MatchMain.Ref.Connection.Invoke("OnServerTiroPuerta", null);
-				
-				_Game.EnterWaitState(GameState.WaitingCommandTiroPuerta, Delegate.create(_Game.OnClientTiroPuerta, _Game.CurrTeam.TeamId));
+				_Game.InvokeServer("OnServerTiroPuerta", GameState.WaitingCommandTiroPuerta);
 			}
 		}
 		
@@ -532,9 +511,7 @@ package Match
 			_Gui.BotonTiroPuerta.visible = bActive;
 		}
 		
-		//
 		// Cancela cualquier operación de entrada que estuviera ocurriendo 
-		//
 		private function CancelControllers() : void
 		{
 			if (_ShootControl.IsStarted)
@@ -547,12 +524,10 @@ package Match
 				_PosControl.Stop(Controller.Canceled);
 		}
 
-		// 
 		// Han pulsado en el botón de "Cerrar Partido"
-		//
 		public function OnAbandonarClick(event:Object) : void
 		{
-			MatchMain.Ref.Connection.Invoke("OnAbort", null);
+			_Game.InvokeServer("OnAbort", GameState.WaitingOnAbort);
 		}		
 	}
 }

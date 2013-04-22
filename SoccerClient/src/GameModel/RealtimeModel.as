@@ -328,8 +328,7 @@ package GameModel
 									  " FacebookID: " + SoccerClient.GetFacebookFacade().FacebookID);
 		}
 		
-		// Partido abandonado, por nosotros o por nuestro enemigo. Como no tenemos boton de abandonar, en general sera por abandono del
-		// enemigo (salvo en los tests). Nosotros hacemos una salida limpia. Lo controlamos desde aqui y no desde el partido porque el 
+		// Partido abandonado, por nosotros o por nuestro enemigo. Lo controlamos desde aqui y no desde el partido porque el 
 		// partido puede no estar inicializado todavia.
 		public function PushedMatchAbandoned(result:Object) : void
 		{

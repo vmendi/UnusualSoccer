@@ -1,20 +1,14 @@
 package Match
 {
 	public class MatchConfig
-	{
-		public static var 	MatchId:int = -1;					// Identificador del partido en el servidor
-		public static var 	IdLocalUser:int = -1;				// Identificador del usuario local (a quien controlamos nosotros desde el cliente)
-		public static var 	PartTime:Number = 180.0;			// Tiempo que dura cada parte (en segundos)
-		public static var 	TurnTime:Number = 15.0;				// Tiempo máximo que dura cada sub-turno (en segundos)
+	{		
 		
-		public static var	Debug:Boolean = false;				// Indica que estamos en modo debug. Se habilitan trucos/trazas y similares
-		public static var   OfflineMode:Boolean = false;		// Arranque directo sin manager. No se hace caso a este valor, se detecta y se settea automaticamente.
-		
+		public static const	Debug:Boolean = false;				// Indica que estamos en modo debug. Se habilitan trucos/trazas y similares		
 		public static const DrawPhysics:Boolean = false;		// Indica si depuramos la física (pintar el mundo físico)
 		public static const DragPhysicObjects:Boolean = false;	// Indica si podemos arrastrar los objetos físicos con el ratón				
 		public static const DrawPredictions:Boolean = false;	// Paint GamePhysicsPredictions debugging aids
 				
-		public static const ClientVersion:int = 206;			// Versión del cliente
+		public static const ClientVersion:int = 207;			// Versión del cliente
 				
 		public static const PhyFPS:int = 30;					// La física se ejecuta 30 veces por segundo
 		public static const PixelsPerMeter:uint = 30;			// 30 píxeles es igual a 1 metro físico
@@ -43,7 +37,7 @@ package Match
 		public static const MaxCapsInCheatThreshold:int = 2;	// Max num de chapas permitidas en ese radio (y el balon)
 		
 		// Porcentaje de la skill restaurado por segundo para cada habilidad
-		public static var PercentSkilLRestoredPerSec:Array = [
+		public static const PercentSkilLRestoredPerSec:Array = [
 																[Enums.Superpotencia, 2.0],
 																[Enums.Furiaroja, 1.5],
 																[Enums.Catenaccio, 1.5],
@@ -71,7 +65,7 @@ package Match
 		public static const VelFaultT2:Number = 25.0;				// Límite inferior de tarjeta amarilla 
 		public static const VelFaultT3:Number = 32.0;				// Límite inferior de tarjeta roja
 		
-		public static var TimeToPlaceGoalkeeper:Number = 10.0;		// Tiempo máximo para colocar al portero, independiente del tiempo del turno
+		public static const TimeToPlaceGoalkeeper:Number = 10.0;	// Tiempo máximo para colocar al portero, independiente del tiempo del turno
 				
 		//
 		// Conversión de unidades de pantalla (pixels) a unidades del motor de física (metros)

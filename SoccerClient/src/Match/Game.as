@@ -1,5 +1,7 @@
 package Match
 {
+	import NetEngine.NetPlug;
+	
 	import flash.display.DisplayObjectContainer;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
@@ -15,7 +17,7 @@ package Match
 		public var TheField:Field;
 		public var TheBall:Ball;
 		public var TheAudioManager:AudioManager;
-				
+						
 
 		// --> PhyLayer
 		//    --> Solo el debug de Box2D
@@ -44,22 +46,29 @@ package Match
 		private var _Cutscene:Cutscene;
 		private var _Chat:Chat;
 		
-		private var _Parent : DisplayObjectContainer;
+		private var _Parent : MatchMain;
+		private var _Connection : NetPlug;
 		
 		private var _Team1:Team;
 		private var _Team2:Team;
 		private var _CurrTeamId:int = Enums.Team1;				// Id del equipo actual que le toca jugar
+		
+		private var _IdLocalUser:int = -1;
+		private var _MatchId:int = -1;
+				
 		private var _State:int = GameState.NotInit;
-		private var _TicksInCurState:int = 0;
-		private var _Part:int = 0;
-		private var _RemainingHits:int = 0;						// Nº de golpes restantes permitidos antes de perder el turno
-		private var _RemainingPasesAlPie : int = 0;				// No de pases al pie que quedan
-		private var _TimeSecs:Number = 0;						// Tiempo en segundos que queda de la "mitad" actual del partido
-		private var _Timeout:Number = 0;						// Tiempo en segundos que queda para que ejecutes un disparo
+		private var _TicksInCurState:int;
+		private var _Part:int;
+		private var _RemainingHits:int;						// Nº de golpes restantes permitidos antes de perder el turno
+		private var _RemainingPasesAlPie:int;				// No de pases al pie que quedan
+		private var _TimeSecs:Number;						// Tiempo en segundos que queda de la "mitad" actual del partido
+		private var _Timeout:Number;						// Tiempo en segundos que queda para que ejecutes un disparo
+		private var _PartTime:Number;						// Tiempo que dura una parte, tal y como viene del servidor
+		private var _TurnTime:Number;						// Tiempo que dura el sub-turno
 		private var _ScoreBalancer:ScoreBalancer;
 				
 		public var ReasonTurnChanged:int = -1;
-		public var FireCount:int = 0;							// Contador de jugadores expulsados durante el partido
+		public var FireCount:int;							// Contador de jugadores expulsados durante el partido
 
 		private var _Timer : Match.Time;
 		private var _Random : Match.Random;
@@ -71,9 +80,11 @@ package Match
 		
 		
 		public function get CurrTeam() : Team { return GetTeam(_CurrTeamId); }
+		public function get LocalUserTeam() : Team { return GetTeam(_IdLocalUser); }
 		public function get Team1() : Team { return _Team1; }
-		public function get Team2() : Team { return _Team2; }
-		public function get LocalUserTeam() : Team { return GetTeam(MatchConfig.IdLocalUser); }
+		public function get Team2() : Team { return _Team2; }		
+		
+		public function get OfflineMode() : Boolean { return _Connection == null; }
 		
 		public function GetTeam(teamId:int) : Team
 		{
@@ -87,26 +98,16 @@ package Match
 				
 		public function get Part() : int { return _Part; }
 		public function get IsPlaying() : Boolean { return _State == GameState.Playing; }
+		
+		public function get IDString() : String { return "MatchID: " + _MatchId + " LocalID: " + _IdLocalUser + " "; }
 	
 		
-		public function Game(parent : DisplayObjectContainer) : void
+		public function Game(parent : MatchMain, connection : NetPlug) : void
 		{
 			_Parent = parent;
+			_Connection = connection;
 		}
-		
-		public function SetDebugPos() : void
-		{
-			GetCap(0, 3).SetPos(new Point(220, 235));
-			GetCap(0, 6).SetPos(new Point(301, 435));
-			GetCap(0, 2).SetPos(new Point(176, 475));
-			GetCap(0, 1).SetPos(new Point(138, 225));
-			 
-			GetCap(1, 5).SetPos(new Point(193, 290));
-			//GetCap(1, 6).SetPos(new Point(282, 345));
-			
-			TheBall.SetPos(new Point(163, 300));
-		}
-				
+
 		// Obtiene una chapa de un equipo determinado a partir de su identificador de equipo y chapa
 		public function GetCap(teamId:int, capId:int) : Cap
 		{
@@ -126,7 +127,6 @@ package Match
 			return allPhyEntities;
 		}
 		
-		// Obtiene el equipo que está en un lado del campo
 		public function TeamInSide(side:int) : Team
 		{
 			if (side == _Team1.Side)
@@ -151,7 +151,7 @@ package Match
 		{
 			GameMetrics.ReportPageView(GameMetrics.VIEW_MATCH);
 			GameMetrics.ReportEvent(GameMetrics.PLAY_MATCH, {matchTime: matchTimeSecs, turnTime: turnTimeSecs, isFriendly:isFriendlyParam});
-			GameMetrics.Increment(GameMetrics.PEOPLE_NUM_MATCHES, 1);	
+			GameMetrics.Increment(GameMetrics.PEOPLE_NUM_MATCHES, 1);
 			
 			if (MatchConfig.ClientVersion < minClientVersion)
 			{
@@ -159,10 +159,10 @@ package Match
 				return;
 			}
 			
-			MatchConfig.IdLocalUser = idLocalPlayerTeam;
-			MatchConfig.MatchId = matchId;
-			MatchConfig.PartTime = matchTimeSecs / 2;
-			MatchConfig.TurnTime = turnTimeSecs;
+			_IdLocalUser = idLocalPlayerTeam;
+			_MatchId = matchId;
+			_PartTime = matchTimeSecs / 2;
+			_TurnTime = turnTimeSecs;
 
 			// Creamos las capas iniciales de pintado para asegurar el orden
 			CreateLayers();
@@ -219,8 +219,8 @@ package Match
 			TheInterface = new GameInterface(this);
 			
 			_Cutscene = new Cutscene(GUILayer);
-			_Chat = new Chat(ChatLayer, LocalUserTeam.Name) as Chat;
-						
+			_Chat = new Chat(ChatLayer, this);
+
 			// Hemos terminado de cargar/inicializar
 			ChangeState(GameState.Init);
 		}
@@ -252,14 +252,14 @@ package Match
 			// Si todavia no hemos recibido datos desde el servidor... o el juego ya se ha acabado
 			if (_State == GameState.NotInit)
 				return;
-			
+
 			// Determinamos si la simulacion ha acabado, redondeo de posiciones, etc
 			TheGamePhysics.Run(elapsed);
-			
+
 			// Update de ambos equipos, ellos se encargaran de actualizar las chapas
 			_Team1.Run(elapsed);
 			_Team2.Run(elapsed);
-			
+
 			// Y antes que nosotros mismos, necesitamos que nuestra pelota este actualizada
 			TheBall.Run(elapsed);
 
@@ -276,7 +276,7 @@ package Match
 				case GameState.EndMatch:
 				{
 					// Notificamos hacia afuera y se encargaran de llamarnos a Shutdown
-					MatchMain.Ref.Shutdown(_MatchResultFromServer);
+					_Parent.Shutdown(_MatchResultFromServer);
 					break;
 				}
 					
@@ -298,7 +298,7 @@ package Match
 				// Nueva parte del juego! (Pasamos por aqui 2 veces, una por parte)
 				case GameState.NewPart:
 				{
-					_TimeSecs = MatchConfig.PartTime;
+					_TimeSecs = _PartTime;
 					SaqueCentro(Part == 1? _Team1 : _Team2, Enums.TurnSaqueCentroNewPart);
 					break;
 				}
@@ -322,13 +322,8 @@ package Match
 						_Timeout = 0;
 						
 						// Al jugador que no tiene el turno simplemente le llega el Timeout, él no lo genera
-						if (this.CurrTeam.IsLocalUser)
-						{
-							if (!MatchConfig.OfflineMode)
-								MatchMain.Ref.Connection.Invoke("OnServerTimeout", null);
-							
-							EnterWaitState(GameState.WaitingCommandTimeout, Delegate.create(OnClientTimeout, this.CurrTeam.TeamId)); 
-						}
+						if (CurrTeam.IsLocalUser)
+							InvokeServer("OnServerTimeout", GameState.WaitingCommandTimeout);
 					}
 					break;
 				}
@@ -354,27 +349,21 @@ package Match
 							if (!IsTiroPuertaDeclarado())
 								validity = Enums.GoalInvalidNoDeclarado;							
 						}
-
-						if (!MatchConfig.OfflineMode)
-							MatchMain.Ref.Connection.Invoke("OnServerGoalScored", null, scorerTeam.TeamId, validity);							
 						
 						// Cambiamos al estado esperando gol. Asi, por ejemplo cuando pare la simulacion, no haremos nada. Esperamos a que haya saque de centro
 						// o de porteria despues de la cutscene
-						EnterWaitState(GameState.WaitingGoal, Delegate.create(OnClientGoalScored, scorerTeam.TeamId, validity)); 
+						InvokeServer("OnServerGoalScored", GameState.WaitingGoal, scorerTeam.TeamId, validity);
 					}
 					else
 					if (!TheGamePhysics.IsSimulating)
 					{
-						if (!MatchConfig.OfflineMode)
-							MatchMain.Ref.Connection.Invoke("OnServerEndShoot", null);
-						
 						// Si la física ha terminado de simular quiere decir que en nuestro cliente hemos terminado la simulación del disparo.
 						// Se lo notificamos al servidor y nos quedamos a la espera de la confirmación de ambos jugadores
-						EnterWaitState(GameState.WaitingClientsToEndShoot, OnClientEndShoot);
+						InvokeServer("OnServerEndShoot", GameState.WaitingClientsToEndShoot);
 					}
 					else
 					{	
-						Influences.UpdateInfluences(_RemainingHits, _RemainingPasesAlPie);
+						Influences.UpdateInfluences(_RemainingHits, _RemainingPasesAlPie, this);
 					}
 					break;
 				}
@@ -391,7 +380,7 @@ package Match
 				case GameState.WaitingCommandShoot:
 				case GameState.WaitingCommandPosCap:
 				{
-					if (MatchConfig.OfflineMode && _OfflineWaitCall != null)
+					if (OfflineMode && _OfflineWaitCall != null)
 					{
 						var backup : Function = _OfflineWaitCall;
 						_OfflineWaitCall = null;
@@ -404,19 +393,35 @@ package Match
 			// Lo ultimo, para que todo lo anterior haya refrescado el estado
 			if (_State != GameState.NotInit)
 				TheInterface.Update(_Timeout, _TimeSecs);
-		}
-
-		public function EnterWaitState(state:int, offlineCall:Function) : void
+		}	
+		
+		public function InvokeServer(serverCommand : String, waitState : int, ...args) : void
 		{
-			ChangeState(state);
+			if (_State == GameState.NotInit)
+				throw new Error("WTF 974 - InvokeServer after shutting down the game " + serverCommand);
 			
-			_OfflineWaitCall = offlineCall;
+			if (!OfflineMode)
+				_Connection.Invoke.apply(_Connection, [serverCommand, null].concat(args));
+			
+			// Generacion del delegate para la emulacion de la llamada desde el servidor en modo offline
+			var clientFunc : Function = this[serverCommand.replace("Server", "Client")];
+			var idTeamArray : Array = [CurrTeam.TeamId];
+			var gameThis : Game = this;
+			
+			function myInnerFunc() : void
+			{
+				clientFunc.apply(gameThis, idTeamArray.concat(args));
+			}
+			_OfflineWaitCall = myInnerFunc;
+			
+			// And finally, we wait for the server response
+			ChangeState(waitState);
 		}
 		
-		public function ResetTimeout() : void
+		private function ResetTimeout() : void
 		{
 			_Timer.ResetElapsed();
-			_Timeout = MatchConfig.TurnTime;
+			_Timeout = _TurnTime;
 			
 			TheInterface.TotalTimeoutTime = _Timeout;
 		}
@@ -632,11 +637,11 @@ package Match
 			// Informamos al servidor para que compare entre los dos clientes
 			var capListStr:String = "T0: " + Team1.GetCapString() + " T1: " + Team2.GetCapString() + " B:" + TheBall.GetPos().toString(); 
 			
-			if (!MatchConfig.OfflineMode)
+			if (!OfflineMode)
 			{
-				MatchMain.Ref.Connection.Invoke("OnResultShoot", null, result, 
-											    TheGamePhysics.NumTouchedCaps, paseToCap != null ? paseToCap.Id : -1, TheGamePhysics.NumFramesSimulated, 
-											    ReasonTurnChanged, capListStr);
+				_Connection.Invoke("OnResultShoot", null, result, 
+								   TheGamePhysics.NumTouchedCaps, paseToCap != null ? paseToCap.Id : -1, TheGamePhysics.NumFramesSimulated, 
+								   ReasonTurnChanged, capListStr);
 			}
 		}
 
@@ -666,7 +671,7 @@ package Match
 				// al darse muchas veces que tu oponente no puede colocar al portero para impedir el gol
 				
 				// Entramos ademas en un estado de espera con nombre adecuado, por no quedarnos en WaitingCommandPlaceBall
-				EnterWaitState(GameState.WaitingControlPortero, null);
+				ChangeState(GameState.WaitingControlPortero);
 				
 				// Mostramos un parpadeo en el area, sacamos de puerta
 				_Cutscene.ShowAreaPortero(CurrTeam.Opponent().Side, ShowAreaPorteroCutsceneEnd);
@@ -676,7 +681,7 @@ package Match
 		private function ShowAreaPorteroCutsceneEnd() : void
 		{
 			// Como estabamos tocando una cutscene, es posible que cuando acabe ya se haya acabado el partido (por fin del tiempo, por abandono...)
-			if (MatchMain.Ref == null)
+			if (_State == GameState.NotInit)
 				return;
 			
 			if (this._State != GameState.WaitingControlPortero)
@@ -692,7 +697,7 @@ package Match
 			var team:Team = GetTeam(idPlayer);
 			team.UseSkill(idSkill);
 			
-			if (idPlayer != MatchConfig.IdLocalUser)
+			if (idPlayer != _IdLocalUser)
 				_Cutscene.ShowMensajeSkill(idSkill);
 			
 			// Hay algunas habilidades que las podemos aplicar directamente aqui, otras se evaluaran durante el resto del turno
@@ -782,7 +787,7 @@ package Match
 			// Contabilizamos el gol
 			if (validity == Enums.GoalValid)
 				GetTeam(idPlayer).Goals++;
-									
+
 			_Cutscene.ShowGoalScored(validity, Delegate.create(ShowGoalScoredCutsceneEnd, idPlayer, validity));
 		}
 		
@@ -793,7 +798,7 @@ package Match
 			// En el caso del goal, el servidor deja de contar el tiempo con lo cual no se pueden producir fines. Sin embargo,
 			// lo que si se producen son abandonos por parte del contrario, asi que tb tenemos que comprobar aqui si el juego
 			// ha sido desinicializado
-			if (MatchMain.Ref == null)
+			if (_State == GameState.NotInit)
 				return;
 			
 			if (this._State != GameState.WaitingGoal)
@@ -912,13 +917,13 @@ package Match
 		{
 			ChangeState(GameState.WaitingPlayersAllReadyForSetTurn);
 			
-			if (!MatchConfig.OfflineMode)
+			if (!OfflineMode)
 			{
 				// Función a llamar cuando todos los players estén listos
 				_CallbackOnAllPlayersReady = Delegate.create(SetTurnAllReady, idTeam, reason, callback);
 				
 				// Mandamos nuestro 'estamos listos'
-				MatchMain.Ref.Connection.Invoke("OnServerPlayerReadyForSetTurn", null, idTeam, reason);
+				_Connection.Invoke("OnServerPlayerReadyForSetTurn", null, idTeam, reason);
 			}
 			else
 			{
@@ -947,14 +952,14 @@ package Match
 			// A paseo...
 			if (CurrTeam.IsLocalUser && CurrTeam.IsCornerCheat())
 			{
-				MatchMain.Ref.Connection.Invoke("OnAbort", null);
+				_Connection.Invoke("OnAbort", null);
 				GameMetrics.ReportEvent(GameMetrics.CORNER_CHEATING, { facebookID: CurrTeam.FacebookID });
 				return;
 			}
 
 			// En modo offline nos convertimos en jugador que coge el turno, para poder testear!
-			if (MatchConfig.OfflineMode)
-				MatchConfig.IdLocalUser = idTeam;
+			if (OfflineMode)
+				_IdLocalUser = idTeam;
 			
 			// Cambio de turno!
 			_CurrTeamId = idTeam;
@@ -1010,7 +1015,7 @@ package Match
 				CurrTeam.GoalKeeper.GotoTeletransportAndResetPos();
 						
 			// Mostramos un mensaje animado de cambio de turno
-			_Cutscene.ShowTurn(reason, idTeam == MatchConfig.IdLocalUser, TheGamePhysics.TheFault);
+			_Cutscene.ShowTurn(reason, idTeam == _IdLocalUser, TheGamePhysics.TheFault);
 			
 			// Y pintamos el halo alrededor de las chapas!
 			CurrTeam.ShowMyTurnVisualCue(reason);
@@ -1068,7 +1073,7 @@ package Match
 		// 
 		// Mejor chapa a la que se podria producir pase al pie. No chequea conflictos con chapas enemigas.
 		//
-		public function CheckPaseAlPie() : Cap
+		private function CheckPaseAlPie() : Cap
 		{
 			// Si no nos queda ya ninguno más...
 			if (_RemainingPasesAlPie == 0)
@@ -1110,7 +1115,7 @@ package Match
 				throw new Error(IDString + "Se ha producido un OnClientFinishPart sin estar esperando el SetTurn");
 			
 			// Nos quedamos esperando a que acabe la cut-scene. Esto congela el tiempo, que es lo mismo que hace el servidor
-			EnterWaitState(GameState.WaitingEndPart, null);
+			ChangeState(GameState.WaitingEndPart);
 			
 			_MatchResultFromServer = result;
 			
@@ -1121,7 +1126,7 @@ package Match
 		private function ShowFinishPartCutsceneEnd() : void
 		{
 			// El juego puede haberse shutdowneado por abandono del oponente, reseteo del servidor, etc. Es el mismo caso que ShowGoalScoredCutsceneEnd
-			if (MatchMain.Ref == null)
+			if (_State == GameState.NotInit)
 				return;
 			
 			if (_State != GameState.WaitingEndPart)
@@ -1159,9 +1164,25 @@ package Match
 			_Chat.AddLine(msg);
 		}
 		
-		public function get IDString() : String 
-		{ 
-			return "MatchID: " + MatchConfig.MatchId + " LocalID: " + MatchConfig.IdLocalUser + " "; 
+		public function InvokeOnServerChatMsg(msg : String) : void
+		{
+			if (msg != "" && !OfflineMode)
+			{
+				_Connection.Invoke("OnServerChatMsg", null, LocalUserTeam.Name + ": " + msg);
+			}
+		}
+		
+		private function SetDebugPos() : void
+		{
+			GetCap(0, 3).SetPos(new Point(220, 235));
+			GetCap(0, 6).SetPos(new Point(301, 435));
+			GetCap(0, 2).SetPos(new Point(176, 475));
+			GetCap(0, 1).SetPos(new Point(138, 225));
+			
+			GetCap(1, 5).SetPos(new Point(193, 290));
+			//GetCap(1, 6).SetPos(new Point(282, 345));
+			
+			TheBall.SetPos(new Point(163, 300));
 		}
 	}	
 }

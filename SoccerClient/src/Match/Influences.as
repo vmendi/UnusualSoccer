@@ -3,13 +3,12 @@ package Match
 	
 	public final class Influences
 	{
-		static private function ShowAllInfluences() : void
+		static private function ShowAllInfluences(game : Game) : void
 		{
-			var _Game : Game = MatchMain.Ref.Game;
-			var _CurTeam : Team = _Game.CurrTeam;
+			var _CurTeam : Team = game.CurrTeam;
 			
 			// Mostramos todas las influencias de pase al pie
-			var friendCaps:Array = _Game.CurrTeam.CapsList;
+			var friendCaps:Array = game.CurrTeam.CapsList;
 			for each (var friend:Cap in friendCaps)
 			{
 				friend.SetInfluenceAspect(Enums.FriendColor, Cap.CapRadius + Ball.BallRadius + _CurTeam.RadiusPase);
@@ -30,23 +29,22 @@ package Match
 		//
 		// Muestra los areas de influencia de las chapas que están en el radio de la pelota
 		//
-		static public function UpdateInfluences(remainingHits : int, remainingPasesAlPie : int) : void
+		static public function UpdateInfluences(remainingHits : int, remainingPasesAlPie : int, game : Game) : void
 		{
-			var _Game : Game = MatchMain.Ref.Game; 
-			var _CurTeam : Team = _Game.CurrTeam;
+			var _CurTeam : Team = game.CurrTeam;
 			
 			// Determinamos si debemos mostrar "TODAS" las influencias (si el jugador local tiene la habilidad de mostrar radios)
 			if (_CurTeam.IsUsingSkill(Enums.Verareas) && _CurTeam.IsLocalUser)
 			{
-				ShowAllInfluences();
+				ShowAllInfluences(game);
 				return;
 			}
 			
 			// Si los subturnos o los pases al pie estan agotados, no mostramos ninguna influencia amiga.
 			// Además, el pase al pie sólo empieza a ser posible cuando la chapa que lanza ha tocado la pelota.
-			if (remainingHits != 0 && remainingPasesAlPie != 0 && _Game.TheGamePhysics.HasTouchedBall(_Game.TheGamePhysics.AttackingTeamShooterCap))
+			if (remainingHits != 0 && remainingPasesAlPie != 0 && game.TheGamePhysics.HasTouchedBall(game.TheGamePhysics.AttackingTeamShooterCap))
 			{
-				var potential:Array = _CurTeam.GetPotentialPaseAlPieForShooter(_Game.TheGamePhysics.AttackingTeamShooterCap);
+				var potential:Array = _CurTeam.GetPotentialPaseAlPieForShooter(game.TheGamePhysics.AttackingTeamShooterCap);
 				
 				for each (var friend:Cap in potential)
 				{
@@ -64,10 +62,10 @@ package Match
 			
 			// Mostramos las chapas enemigas que podrían robar la pelota o sobre las que podríamos perder la pelota
 			// Si ninguna de nuestras chapas ha tocado la pelota, no se produce la perdida, asi que tampoco pintamos el area
-			if (_Game.TheGamePhysics.HasTouchedBallAny(_CurTeam))
+			if (game.TheGamePhysics.HasTouchedBallAny(_CurTeam))
 			{
 				var enemyTeam:Team = _CurTeam.Opponent();
-				var enemyCaps:Array = enemyTeam.GetCapsInsideCircle(_Game.TheBall.GetPos(), Cap.CapRadius + Ball.BallRadius + enemyTeam.RadiusSteal);
+				var enemyCaps:Array = enemyTeam.GetCapsInsideCircle(game.TheBall.GetPos(), Cap.CapRadius + Ball.BallRadius + enemyTeam.RadiusSteal);
 				
 				for each (var enemy:Cap in enemyCaps)
 				{

@@ -1,10 +1,11 @@
 package Match
 {
+	import NetEngine.NetPlug;
+	
 	import com.greensock.TweenMax;
 	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.text.TextField;
@@ -28,11 +29,12 @@ package Match
 		private var ctInput : TextField = null;
 		
 		private var mLines : Array = new Array();
-		private var mLocalUserName : String = "";
 		
-		public function Chat(parent:DisplayObjectContainer, localUserName : String)
+		private var mGame : Game;
+		
+		public function Chat(parent:DisplayObjectContainer, game : Game)
 		{
-			mLocalUserName = localUserName;
+			mGame = game;
 			
 			mcChat = new (ResourceManager.getInstance().getClass("match", "Chat") as Class) as DisplayObject;
 			parent.addChild(mcChat);
@@ -81,7 +83,7 @@ package Match
 					}
 					else
 					{
-						PostMessage(ctInput.text);
+						mGame.InvokeOnServerChatMsg(ctInput.text);
 						mcInput.visible = false;
 						ctInput.text = "";
 					}
@@ -97,15 +99,6 @@ package Match
 				}
 			}
 			catch (e:Error) { ErrorMessages.LogToServer("Chat.OnStageKeyDown"); }
-		}
-		
-		private function PostMessage(msg : String) : void
-		{
-			if (msg != "")
-			{
-				msg = mLocalUserName + ": " + msg;
-				MatchMain.Ref.Connection.Invoke("OnMsgToChatAdded", null, msg);
-			}
 		}
 		
 		public function AddLine(msg:String) : void

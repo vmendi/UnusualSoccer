@@ -464,7 +464,7 @@ namespace Realtime
             Broadcast("OnClientTiroPuerta", idPlayer);
         }
 
-        public void OnMsgToChatAdded(NetPlug plug, string msg)
+        public void OnServerChatMsg(NetPlug plug, string msg)
         {
             Log.Info(MatchID + " Chat: " + msg);
 

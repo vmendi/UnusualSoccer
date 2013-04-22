@@ -19,17 +19,8 @@ package Match
 	
 	public class MatchMain extends UIComponent
 	{
-		static public function get Ref() : MatchMain { return _Instance; }
-		public function get Game() : Match.Game { return _Game; }
-		public var Connection : NetPlug = null;		
-
 		public function MatchMain()
-		{
-			if (_Instance != null)
-				throw new Error("WTF 3312");
-			
-			_Instance = this;
-		
+		{		
 			// Nos mantenemos siempre subscritos, en la propia funcion comprobamos si estamos ok
 			addEventListener(Event.ENTER_FRAME, OnFrame);
 		}
@@ -85,64 +76,64 @@ package Match
 		//
 		public function Init(netConnection: NetPlug) : void
 		{
-			MatchConfig.OfflineMode = false;
+			_Connection = netConnection;
 			
 			try {
-				LoadMatchResources(innerInit);
+				LoadMatchResources(InnerInit);
 			}
-			catch(e:Error) { ErrorMessages.LogToServer("LoadMatchResources! " + e.message); }
-
-			function innerInit() : void
+			catch(e:Error) { 
+				ErrorMessages.LogToServer("LoadMatchResources! " + e.message); 
+			}
+		}
+		
+		private function InnerInit() : void
+		{
+			try 
 			{
-				try {
-					if (_Instance == null)	// Es posible que el oponente se haya desconectado en este tiempo...
-						return;
+				// Es posible que el oponente se haya desconectado entre Init e InnerInit
+				if (_Connection == null)
+					return;
+				
+				if (stage != null)
+				{
+					_Game = new Game(this, _Connection);
+					_Connection.AddClient(_Game);
 					
-					if (stage != null)
-					{
-						_Game = new Match.Game(_Instance);
-						
-						Connection = netConnection;			
-						Connection.AddClient(Game);
-						
-						// Indicamos al servidor que nuestro cliente necesita los datos del partido para continuar. Esto llamara a InitFromServer desde el servidor
-						Connection.Invoke("OnRequestData", null);
-					}
-					else
-					{					
-						// Hemos comprobado que a aqui se llega en muy rara ocasión sin stage. Forzosamente tiene que ser
-						// que nos han quitado de la stage desde que se llamo al Init, pero sin llamarnos a Shutdown. Hipotesis:
-						// - Algun tipo de navegacion dentro del manager (desde un popup?) que provoca salir de la pantalla RealtimeMatch
-						// - La botonera principal envia su mensaje tarde, cuando ya estamos en el partido. 
-						ErrorMessages.ResourceLoadFailed("on Init.innerInit - faking ResourceLoadFailed");
-					}
+					// Indicamos al servidor que nuestro cliente necesita los datos del partido para continuar. Esto llamara a InitFromServer desde el servidor
+					_Connection.Invoke("OnRequestData", null);
 				}
-				catch(e:Error) { ErrorMessages.LogToServer("En innerInit! " + e.message); }
+				else
+				{					
+					// Hemos comprobado que a aqui se llega en muy rara ocasión sin stage. Forzosamente tiene que ser
+					// que nos han quitado de la stage desde que se llamo al Init, pero sin llamarnos a Shutdown. Hipotesis:
+					// - Algun tipo de navegacion dentro del manager (desde un popup?) que provoca salir de la pantalla RealtimeMatch
+					// - La botonera principal envia su mensaje tarde, cuando ya estamos en el partido. 
+					ErrorMessages.ResourceLoadFailed("on Init.innerInit - faking ResourceLoadFailed");
+				}
+			}
+			catch(e:Error)
+			{ 
+				ErrorMessages.LogToServer("En innerInit! " + e.message); 
 			}
 		}
 		
 		public function InitOffline() : void
+		{			
+			LoadMatchResources(OfflineInnerInit);
+		}
+		
+		private function OfflineInnerInit() : void
 		{
-			MatchConfig.OfflineMode = true;
-			
-			LoadMatchResources(innerInit);
-			
-			function innerInit() : void
-			{
-				_Game = new Match.Game(_Instance);
-				_Game.InitFromServer((-1), InitOfflineData.GetDescTeam("ARGENTINA", false), InitOfflineData.GetDescTeam("USA", true),
-									 Enums.Team1, MatchConfig.PartTime * 2, MatchConfig.TurnTime, true, MatchConfig.ClientVersion);
-			}
+			_Game = new Match.Game(this, null);
+			_Game.InitFromServer(-1, InitOfflineData.GetDescTeam("ARGENTINA", false), InitOfflineData.GetDescTeam("USA", true),
+								 Enums.Team1, 300, 15, true, MatchConfig.ClientVersion);
 		}
 		
 		private function OnFrame(event:Event):void
 		{
-			if (_Instance == null)
-				throw new Error("WTF 9533");
-			
-			try {
-				// _Game indicara que ya estamos inicializamos
-				if (_Game != null)
+			try 
+			{
+				if (_Game != null)	// _Game indicara que ya estamos inicializamos
 				{
 					if (stage == null)
 						throw new Error("WTF 6789");
@@ -156,35 +147,43 @@ package Match
 					_Game.Draw(elapsed);
 				}
 			}
-			catch(e:Error) { ErrorMessages.LogToServer("En OnFrame! " + e.message);	}
+			catch(e:Error)
+			{ 
+				ErrorMessages.LogToServer("En OnFrame! " + e.message);	
+			}
 		}
 		
 		// Desde aqui nos ocupamos de destruir todo, especialmente los listeners (globales) para no perder memoria.
 		// Nos llaman siempre: por fin del partido normal, por PushedMatchAbandoned y por OnCleaningSignalShutdown.
 		public function Shutdown(result : Object) : void
 		{
-			try {
+			try 
+			{
 				removeEventListener(Event.ENTER_FRAME, OnFrame);
 				
 				// Es posible que nos llegue este Shutdown antes de estar inicializados (PushedMatchAbandoned)
 				if (_Game != null)
 				{
-					Connection.RemoveClient(_Game);
+					_Connection.RemoveClient(_Game);
 					_Game.Shutdown();
-										
+					_Game = null;
+
 					TweenMax.killAll();
 				}
 	
-				// Internamente nadie puede llamarnos mas
-				_Instance = null;
+				// Senialamos que hemos acabado, asi que en todos los eventos asincronos hay que chequear esto
+				_Connection = null;
 				
 				// ... y notificamos hacia afuera (al RealtimeModel)
 				dispatchEvent(new utils.GenericEvent("OnMatchEnded", result));
 			}
-			catch(e:Error) { ErrorMessages.LogToServer("En Shutdown! " + e.message);}
+			catch(e:Error) 
+			{ 
+				ErrorMessages.LogToServer("En Shutdown! " + e.message);
+			}
 		}
 		
-		private var _Game : Match.Game;
-		static private var _Instance:MatchMain = null;
+		private var _Game : Game;
+		private var _Connection : NetPlug;
 	}
 }
