@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark"
-		 width="340" height="84" >
+		 width="340" height="84"
+		 creationComplete="creationCompleteHandler(event)">
 	
 	<fx:Script>
 		<![CDATA[
 			import mx.core.FlexGlobals;
 			import mx.core.IFlexModule;
 			import mx.events.EffectEvent;
+			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 			
 			import utils.Delegate;
@@ -25,64 +27,12 @@
 				PopUpManager.addPopUp(theDialog, parent, false, null);
 				PopUpManager.centerPopUp(theDialog);
 				
-				theDialog.ShowBg();
-			}
-			
-			private function Refresh():void
-			{
-				if (MyBg.content != null)
-				{
-					var mc : MovieClip = MyBg.content as MovieClip;
-					utils.MovieClipListener.AddFrameScript(mc, "showEnd", Delegate.create(OnEndShowBg, mc, null));
-					utils.MovieClipListener.AddFrameScript(mc, "hideEnd", Delegate.create(OnEndHideBg, mc, null));
-					MyBg.visible = true;
-				}
+				theDialog.MySequence.play();
 			}
 			
 			protected function MySequence_effectEndHandler(event:EffectEvent):void
 			{
-				HideBg();
-			}
-			
-			private function ShowBg() : void
-			{
-				var mc : MovieClip = MyBg.content as MovieClip;
-				mc.gotoAndPlay("show");
-				
-			}
-			
-			private function HideBg() : void
-			{
-				myMsg.visible = false;
-				var mc : MovieClip = MyBg.content as MovieClip;
-				mc.gotoAndPlay("hide");
-			}
-			
-			private function OnEndShowBg(mc:MovieClip, callback:Function) : void
-			{
-				try
-				{
-					mc.stop();
-					myMsg.visible = true;
-					MySequence.play();
-				}
-				catch(e:Error)
-				{
-					ErrorMessages.LogToServer("WTF 6655");
-				}
-			}
-
-			private function OnEndHideBg(mc:MovieClip, callback:Function) : void
-			{
-				try
-				{
-					mc.stop();
-					PopUpManager.removePopUp(this);	
-				}
-				catch(e:Error)
-				{
-					ErrorMessages.LogToServer("WTF 6655");
-				}
+				PopUpManager.removePopUp(this);
 			}
 			
 			[Bindable]
@@ -91,22 +41,59 @@
 			
 			private var mMsg : String = null;
 			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				MySequence.play();
+			}
+			
 		]]>
 	</fx:Script>
 	
 	<fx:Declarations>
 		<s:Sequence id="MySequence" effectEnd="MySequence_effectEndHandler(event)">
+			<s:Parallel duration="0">
+				<s:Fade target="{MyHost}" alphaTo="1" />
+				<s:Fade target="{MyEllipse}" alphaTo="0.8" />
+				<s:Fade target="{MyRectangle}" alphaTo="1" />
+			</s:Parallel>
+			<s:Fade target="{MyEllipse}" alphaTo="0" duration="300" />
+			<s:Animate target="{MyRectangle}" duration="300">
+				<s:SimpleMotionPath property="width" valueTo="299" />
+			</s:Animate>
+			<s:Parallel duration="300">
+				<s:Fade target="{MyRectangle}" alphaTo="0" />
+				<s:Fade target="{MyBg}" alphaTo="1" />
+			</s:Parallel>
 			<s:Parallel>
 				<s:Move target="{myMsg}" xFrom="104" xTo="94" duration="150" />
 				<s:Fade target="{myMsg}" alphaFrom="0" alphaTo="1" duration="150" />
 			</s:Parallel>
-			<s:Fade target="{myMsg}" alphaFrom="1" alphaTo="1" duration="1750" />
-			<s:Fade target="{myMsg}" alphaFrom="1" alphaTo="0" duration="250" />
+			<s:Fade target="{this}" alphaFrom="1" alphaTo="1" duration="2500"/>
+			<s:Fade target="{this}" alphaFrom="1" alphaTo="0" duration="200"/>
 		</s:Sequence>	
 	</fx:Declarations>
-
-	<s:SWFLoader id="MyBg" source="@Embed(source='/Assets/General.swf', symbol='MessageTutorialBg')" creationComplete="Refresh()" visible="false"/>
 	
+	<s:BitmapImage x="10" y="11" id="MyBg" source="@Embed(source='/Assets/General.swf', symbol='MessageTutorialBg')" fillMode="clip" alpha="0" />
+	<s:Rect id="MyRectangle" x="40" y="17" width="0" height="63" alpha="0">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#00FFFF" joints="miter" miterLimit="4" weight="2"/>
+		</s:stroke>
+		<s:fill>
+			<s:SolidColor color="#00FFFF" alpha="0.24"/>
+		</s:fill>
+	</s:Rect>
+	<s:Group x="0" y="0">
+		<s:BitmapImage id="MyHost" source="@Embed(source='/Assets/General.swf', symbol='MessageTutorialHost')" fillMode="clip" alpha="0" />
+		<s:Ellipse id="MyEllipse" left="5" right="5" top="5" bottom="5" alpha="0">
+			<s:fill>
+				<s:SolidColor color="#B5EEF7"/>
+			</s:fill>
+			<s:filters>
+				<s:GlowFilter alpha="1" blurX="80" blurY="80" color="#B5EEF7" inner="false" knockout="false" quality="2" strength="4"/>
+				<s:BlurFilter blurX="8" blurY="8" quality="2"/>
+			</s:filters>
+		</s:Ellipse>
+	</s:Group>
 	<s:Label id="myMsg"
 			 x="114" y="28"
 			 alpha="0"
@@ -114,7 +101,7 @@
 			 textAlign="left"
 			 verticalAlign="middle"
 			 styleName="whiteBoldBig"
-			 text="{Msg}"/>
+			 text="Recuerda avisar a puerta antes de tirar o el gol no será válido!"/> <!--{Msg}-->
 	
 </s:Group>
 

@@ -2,8 +2,8 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
-		 width="424" height="67" mouseChildren="false" mouseEnabled="false"
-		 addedToStage="group1_addedToStageHandler(event)">
+		 mouseChildren="false" mouseEnabled="false"
+		 creationComplete="creationCompleteHandler(event)">
 	
 	<fx:Style source="../styles.css" />
 	
@@ -11,6 +11,7 @@
 		import mx.core.FlexGlobals;
 		import mx.core.IFlexModule;
 		import mx.events.EffectEvent;
+		import mx.events.FlexEvent;
 		import mx.managers.PopUpManager;
 		
 		
@@ -45,9 +46,17 @@
 		private var mMsg : String = null;
 		private var mImg : Class = null;
 		
-		protected function group1_addedToStageHandler(event:Event):void
+		[Bindable]
+		private var mLeft : Number = 70;
+		[Bindable]
+		private var mRight : Number = 30;
+		[Bindable]
+		private var mTop : Number = 18;
+		[Bindable]
+		private var mBottom : Number = 18;
+		
+		protected function creationCompleteHandler(event:FlexEvent):void
 		{
-			// TODO Auto-generated method stub
 			MySequence.play();
 		}
 		
@@ -55,29 +64,88 @@
 	
 	<fx:Declarations>
 		<s:Sequence id="MySequence" effectEnd="MySequence_effectEndHandler(event)">
-			<s:Fade target="{this}" alphaFrom="0" alphaTo="1" duration="250"/>	
+			<s:Animate target="{MyEllipse}" duration="200">
+				<s:SimpleMotionPath property="left" valueFrom="{MyBorder.width/2-mLeft-10}" valueTo="{MyBorder.width/2-MyBorder.height/2-mLeft+5}" />
+				<s:SimpleMotionPath property="right" valueFrom="{MyBorder.width/2-mRight-10}" valueTo="{MyBorder.width/2-MyBorder.height/2-mRight+5}" />
+				<s:SimpleMotionPath property="top" valueFrom="{MyBorder.height/2-mTop-10}" valueTo="{-mTop+5}" />
+				<s:SimpleMotionPath property="bottom" valueFrom="{MyBorder.height/2-mBottom-10}" valueTo="{-mBottom+5}" />
+				<s:SimpleMotionPath property="alpha" valueFrom="0" valueTo="0.7" />
+			</s:Animate>
+			<s:Parallel duration="300">
+				<s:Animate target="{MyEllipse}">
+					<s:SimpleMotionPath property="left" valueTo="{-mLeft}" />
+					<s:SimpleMotionPath property="right" valueTo="{-mRight}" />
+					<s:SimpleMotionPath property="alpha" valueTo="0" />
+				</s:Animate>
+				<s:Animate target="{MyRectangle}">
+					<s:SimpleMotionPath property="left" valueFrom="{MyBorder.width/2-mLeft-10}" valueTo="{-mLeft}" />
+					<s:SimpleMotionPath property="right" valueFrom="{MyBorder.width/2-mRight-10}" valueTo="{-mRight}" />
+					<s:SimpleMotionPath property="alpha" valueTo="1" />
+				</s:Animate>
+			</s:Parallel>
+			<s:Parallel duration="200">
+				<s:Fade target="{MyBorder}" alphaFrom="0" alphaTo="1" />
+				<s:Fade target="{MyRectangle}" alphaFrom="1" alphaTo="0" />
+			</s:Parallel>
+			<s:Fade target="{MyEllipse2}" alphaTo="0.8" duration="0" />
+			<s:Fade target="{MyIcon}" alphaTo="1" duration="0" />
+			<s:Fade target="{MyEllipse2}" alphaTo="0" duration="200" />
+			<s:Animate target="{myMsg}" duration="150">
+				<s:SimpleMotionPath property="alpha" valueFrom="0" valueTo="1" />
+			</s:Animate>
 			<s:Fade target="{this}" alphaFrom="1" alphaTo="1" duration="1500"/>
-			<s:Fade target="{this}" alphaFrom="1" alphaTo="0" duration="250"/>
-		</s:Sequence>			
+			<s:Fade target="{this}" alphaFrom="1" alphaTo="0" duration="200"/>
+		</s:Sequence>
 	</fx:Declarations>
 	
-	<s:SWFLoader id="MyBg" source="@Embed(source='/Assets/General.swf', symbol='MessageSpecialBg')" />
-	
-	<s:Group>
-		<s:Group left="0" right="0" top="0" bottom="0">
-			<s:Label id="myMsg"
-					 width="296"
-					 textAlign="center"
-					 verticalAlign="middle"
-					 left="98" top="14"
-					 styleName="whiteBoldVeryBig"
-					 text="TU RIVAL VA A USAR SUPERPOTENCIA"/> <!--{Msg}-->
+	<s:Group x="{mLeft+22}" verticalCenter="0">
+		<s:Rect id="MyBorder" left="{-mLeft}" right="{-mRight}" top="{-mTop}" bottom="{-mBottom}" alpha="0" radiusX="16" >
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#d5d7d7" joints="miter" miterLimit="4" weight="3"/>
+			</s:stroke>
+			<s:fill>
+				<s:BitmapFill source="@Embed(source='/Assets/General.swf', symbol='MessageSpecialBg')" fillMode="scale" />
+			</s:fill>
+		</s:Rect>
+		<s:Label id="myMsg"
+				 maxWidth="600"
+				 maxDisplayedLines="1"
+				 styleName="whiteBoldMessageSpecial"
+				 text="TARJETA ROJA - EXPULSIÓN!"
+				 alpha="0"> <!--{Msg}-->
 			<s:filters>
-				<s:GlowFilter id="glowNormal" strength="2" alpha="0.7" blurX="12" blurY="12" color="#FFFFFF" quality="3"	/>
+				<s:GlowFilter id="glowNormal" strength="2" alpha="0.5" blurX="12" blurY="12" color="#FFFFFF" quality="3"	/>
 			</s:filters>
-		</s:Group>
+		</s:Label>
+		<s:Rect id="MyRectangle" left="{MyBorder.width/2-mLeft-10}" right="{MyBorder.width/2-mRight-10}" top="{-mTop}" bottom="{-mBottom}" alpha="0" radiusX="16">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#00FFFF" joints="miter" miterLimit="4" weight="2"/>
+			</s:stroke>
+			<s:fill>
+				<s:SolidColor color="#00FFFF" alpha="0.24"/>
+			</s:fill>
+		</s:Rect>
+		<s:Ellipse id="MyEllipse" left="{MyBorder.width/2-mLeft-10}" right="{MyBorder.width/2-mRight-10}" top="{MyBorder.height/2-mTop-10}" bottom="{MyBorder.height/2-mBottom-10}" alpha="0">
+			<s:fill>
+				<s:SolidColor color="#B5EEF7"/>
+			</s:fill>
+			<s:filters>
+				<s:GlowFilter alpha="1" blurX="80" blurY="80" color="#B5EEF7" inner="false" knockout="false" quality="2" strength="4"/>
+				<s:BlurFilter blurX="8" blurY="8" quality="2"/>
+			</s:filters>
+		</s:Ellipse>
 	</s:Group>
-	
-	<!--<s:SWFLoader id="MyImg" source="{Img}" />-->
-	
+	<s:Group x="0" y="0" >
+		<s:BitmapImage id="MyIcon" source="@Embed(source='/Assets/MatchAssets.swf', symbol='MessageSpecialDobleAmarilla')" fillMode="clip" alpha="0" />
+		<s:Ellipse id="MyEllipse2" left="0" right="0" top="0" bottom="0" alpha="0" >
+			<s:fill>
+				<s:SolidColor color="#B5EEF7"/>
+			</s:fill>
+			<s:filters>
+				<s:GlowFilter alpha="1" blurX="80" blurY="80" color="#B5EEF7" inner="false" knockout="false" quality="2" strength="4"/>
+				<s:BlurFilter blurX="8" blurY="8" quality="2"/>
+			</s:filters>
+		</s:Ellipse>
+	</s:Group>
+
 </s:Group>

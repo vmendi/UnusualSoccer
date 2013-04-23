@@ -162,6 +162,13 @@
 	color:#000000;
 }
 
+.whiteBoldMessageSpecial {
+	font-family:MyFontHelveticaNeue97Bold;
+	font-size:25pt;
+	font-weight:bold;
+	color:#FFFFFF;
+}
+
 .whiteBoldLed {
 	font-family:MyFontHelveticaNeue97Bold;
 	font-size:90pt;
