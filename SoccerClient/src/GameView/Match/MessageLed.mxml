@@ -3,7 +3,8 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 width="760" height="169"
-		 cacheAsBitmap="true" mouseChildren="false" mouseEnabled="false">
+		 cacheAsBitmap="true" mouseChildren="false" mouseEnabled="false"
+		 creationComplete="creationCompleteHandler(event)">
 	
 	<fx:Style source="../styles.css" />
 	
@@ -11,6 +12,7 @@
 		import mx.core.FlexGlobals;
 		import mx.core.IFlexModule;
 		import mx.events.EffectEvent;
+		import mx.events.FlexEvent;
 		import mx.managers.PopUpManager;
 		
 		
@@ -40,33 +42,88 @@
 		
 		private var mMsg : String = null;
 		
+		protected function creationCompleteHandler(event:FlexEvent):void
+		{
+			MySequence.play();
+		}
+		
 	]]></fx:Script>
 	
 	<fx:Declarations>
 		<s:Sequence id="MySequence" effectEnd="MySequence_effectEndHandler(event)">
-			<s:Fade target="{this}" alphaFrom="0" alphaTo="1" duration="250"/>	
-			<s:Fade target="{this}" alphaFrom="1" alphaTo="1" duration="1500"/>
+			<s:Animate target="{MyEllipse}" duration="200">
+				<s:SimpleMotionPath property="alpha" valueTo="0.8" />
+				<s:SimpleMotionPath property="width" valueTo="50" />
+				<s:SimpleMotionPath property="height" valueTo="50" />
+			</s:Animate>
+			<s:Parallel duration="200">
+				<s:Animate target="{MyEllipse}">
+					<s:SimpleMotionPath property="alpha" valueTo="0" />
+					<s:SimpleMotionPath property="width" valueTo="760" />
+				</s:Animate>
+				<s:Animate target="{MyRectangle}">
+					<s:SimpleMotionPath property="width" valueTo="760" />
+					<s:SimpleMotionPath property="alpha" valueTo="1" />
+				</s:Animate>
+			</s:Parallel>
+			<s:Parallel duration="200">
+				<s:Fade target="{MyBg}" alphaTo="1" />
+				<s:Animate target="{bgMask}" >
+					<s:SimpleMotionPath property="height" valueTo="169" />
+				</s:Animate>
+				<s:Fade target="{MyRectangle}" alphaTo="0" />
+			</s:Parallel>
+			<s:Fade target="{MyMask}" alphaTo="0.8" duration="0" />
+			<s:Parallel duration="200">
+				<s:Fade target="{myMsg}" alphaTo="1" />
+				<s:Scale target="{myMsg}" scaleXFrom="1.4" scaleXTo="1" scaleYFrom="1.4" scaleYTo="1" >
+					<s:easer>
+						<s:Elastic/>
+					</s:easer>
+				</s:Scale>
+			</s:Parallel>
+			<s:Fade target="{this}" alphaFrom="1" alphaTo="1" duration="2000"/>
 			<s:Fade target="{this}" alphaFrom="1" alphaTo="0" duration="250"/>
 		</s:Sequence>			
 	</fx:Declarations>
 	
-	<s:Group>
-		<s:Group left="0" right="0" top="0" bottom="0">
-			<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='MessageLedBg')" fillMode="clip" />
-			<s:Label id="myMsg"
-					 maxWidth="760"
-					 height="142"
-					 textAlign="center"
-					 verticalAlign="middle"
-					 horizontalCenter="0" verticalCenter="0"
-					 styleName="whiteBoldLed"
-					 text="{Msg}"/> 
-			<s:filters>
-				<s:GlowFilter id="glowNormal" strength="2" alpha="0.7" blurX="12" blurY="12" color="#FFFFFF" quality="3"	/>
-			</s:filters>
-		</s:Group>
+	<s:BitmapImage id="MyBg" source="@Embed(source='/Assets/General.swf', symbol='MessageLedBg')" fillMode="clip" mask="{bgMask}" alpha="0" />
+	<s:Group width="760" height="40" horizontalCenter="0" verticalCenter="0" id="bgMask">
+		<s:Rect id="bgMaskRect" left="0" top="0" right="0" bottom="0">
+			<s:fill>
+				<s:SolidColor />
+			</s:fill>
+		</s:Rect>
 	</s:Group>
-	
-	<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='MessageLedMaskLeds')" fillMode="clip" x="0" y="15" />
+	<s:Rect id="MyRectangle" width="0" height="40" verticalCenter="0" horizontalCenter="0" alpha="0">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#00FFFF" joints="miter" miterLimit="4" weight="2"/>
+		</s:stroke>
+		<s:fill>
+			<s:SolidColor color="#00FFFF" alpha="0.24"/>
+		</s:fill>
+	</s:Rect>
+	<s:Ellipse id="MyEllipse" width="30" height="30" alpha="0" horizontalCenter="0" verticalCenter="0">
+		<s:fill>
+			<s:SolidColor color="#B5EEF7"/>
+		</s:fill>
+		<s:filters>
+			<s:GlowFilter alpha="1" blurX="80" blurY="80" color="#B5EEF7" inner="false" knockout="false" quality="2" strength="4"/>
+			<s:BlurFilter blurX="8" blurY="8" quality="2"/>
+		</s:filters>
+	</s:Ellipse>
+	<s:Label id="myMsg"
+			 alpha="0"
+			 maxWidth="760"
+			 textAlign="center"
+			 verticalAlign="middle"
+			 horizontalCenter="0" verticalCenter="0"
+			 styleName="whiteBoldLed"
+			 text="GOOOOOOL!"><!--{Msg}-->
+		<s:filters>
+			<s:GlowFilter id="glowNormal" strength="2" alpha="0.7" blurX="12" blurY="12" color="#FFFFFF" quality="3"	/>
+		</s:filters>
+	</s:Label>
+	<s:BitmapImage id="MyMask" source="@Embed(source='/Assets/General.swf', symbol='MessageLedMaskLeds')" fillMode="clip" x="0" y="15" alpha="0" />
 	
 </s:Group>
