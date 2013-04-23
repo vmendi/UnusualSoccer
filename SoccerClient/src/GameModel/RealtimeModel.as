@@ -1,12 +1,12 @@
 package GameModel
 {
 	import GameView.ImportantMessageDialog;
+	import GameView.Match.RealtimeMatch;
 	
 	import HttpService.MainService;
 	import HttpService.TransferModel.vo.Team;
 	
 	import Match.MatchConfig;
-	import Match.MatchMain;
 	
 	import NetEngine.InvokeResponse;
 	import NetEngine.NetPlug;
@@ -265,7 +265,7 @@ package GameModel
 		private function set LookingForMatch(v:Boolean) : void { throw new Error("Use switch"); }
 		
 		// La vista necesitara añadirlo a la stage
-		public function get TheMatch() : MatchMain { return mMatch; }
+		public function get TheMatch() : RealtimeMatch { return mMatch; }
 				
 		// Si el comienzo de partido viene de la aceptación de un challenge, firstActorID será siempre el aceptador, y
 		// secondActorID será el que lanzó el challenge
@@ -279,31 +279,17 @@ package GameModel
 			
 			// Ya no estamos buscando
 			SwitchLookingForMatchResponded(false);
-				
-			mMatch = new MatchMain();
-			
-			mMatch.addEventListener("OnMatchEnded", OnMatchEnded);
-			mMatch.addEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage);
 
-			// Nosotros lanzamos la señal y alguien (RealtimeMatch.mxml) se encargara de añadirlo a la stage
-			MatchStarted.dispatch();
-		}
-		
-		private function OnMatchAddedToStage(e:Event) : void
-		{
-			// Ocurrira si llega un PushedMatchAbandoned inmediatamente despues del PushedStartMatch?
-			// Creo que es imposible puesto q removemos el evento en OnMatchEnded
-			if (mMatch == null)
-				throw new Error("OnMatchAddedToStage: Es null");
-			
-			mMatch.removeEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage)
+			mMatch = new RealtimeMatch();
+			mMatch.addEventListener("OnMatchEnded", OnMatchEnded);
 			mMatch.Init(mServerConnection);
-		}
+			
+			// Nosotros lanzamos la señal y alguien (MainView.mxml) se encargara de añadirlo a la stage
+			MatchStarted.dispatch();
+		}		
 		
 		private function OnMatchEnded(e:GenericEvent) : void
 		{
-			// No problemo, a un remove se le puede llamar dos veces. Es necesario cuando PushedMatchAbandoned y no estabamos añadidos a la stage todavía.
-			mMatch.removeEventListener(Event.ADDED_TO_STAGE, OnMatchAddedToStage);
 			mMatch.removeEventListener("OnMatchEnded", OnMatchEnded);
 			mMatch = null;
 			
@@ -358,7 +344,7 @@ package GameModel
 		private var mIsConnected : Boolean = false;
 		private var mbFirstTimeInitialized : Boolean = false;
 		
-		private var mMatch : MatchMain;
+		private var mMatch : RealtimeMatch;
 		private var mRoomModel : RoomModel;
 		
 		private var mLocalRealtimePlayer : RealtimePlayer;		

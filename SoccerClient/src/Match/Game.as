@@ -1,5 +1,7 @@
 package Match
 {
+	import GameView.Match.RealtimeMatch;
+	
 	import NetEngine.NetPlug;
 	
 	import flash.display.DisplayObjectContainer;
@@ -46,7 +48,7 @@ package Match
 		private var _Cutscene:Cutscene;
 		private var _Chat:Chat;
 		
-		private var _Parent : MatchMain;
+		private var _Parent : DisplayObjectContainer;
 		private var _Connection : NetPlug;
 		
 		private var _Team1:Team;
@@ -79,12 +81,20 @@ package Match
 		private var _CallbackOnAllPlayersReady:Function = null;	// Llamar cuando todos los jugadores están listos
 		
 		
+		public function get OfflineMode() : Boolean { return _Connection == null; }
+		
+		public function get Part() : int { return _Part; }
+		
 		public function get CurrTeam() : Team { return GetTeam(_CurrTeamId); }
 		public function get LocalUserTeam() : Team { return GetTeam(_IdLocalUser); }
 		public function get Team1() : Team { return _Team1; }
-		public function get Team2() : Team { return _Team2; }		
+		public function get Team2() : Team { return _Team2; }
+				
+		public function get IsPlaying() : Boolean { return _State == GameState.Playing; }
+		public function get IsEndMatch() : Boolean { return _State == GameState.EndMatch; }
+		public function get MatchResult() : Object { return _MatchResultFromServer; }
 		
-		public function get OfflineMode() : Boolean { return _Connection == null; }
+		public function get IDString() : String { return "MatchID: " + _MatchId + " LocalID: " + _IdLocalUser + " "; }
 		
 		public function GetTeam(teamId:int) : Team
 		{
@@ -95,14 +105,8 @@ package Match
 			
 			throw new Error("WTF 567 - Unknown teamId");
 		}
-				
-		public function get Part() : int { return _Part; }
-		public function get IsPlaying() : Boolean { return _State == GameState.Playing; }
-		
-		public function get IDString() : String { return "MatchID: " + _MatchId + " LocalID: " + _IdLocalUser + " "; }
-	
-		
-		public function Game(parent : MatchMain, connection : NetPlug) : void
+
+		public function Game(parent : DisplayObjectContainer, connection : NetPlug) : void
 		{
 			_Parent = parent;
 			_Connection = connection;
@@ -275,8 +279,7 @@ package Match
 
 				case GameState.EndMatch:
 				{
-					// Notificamos hacia afuera y se encargaran de llamarnos a Shutdown
-					_Parent.Shutdown(_MatchResultFromServer);
+					// Desde fuera tienen que vigilar este estado y llamarnos a Shutdown
 					break;
 				}
 					
@@ -418,6 +421,35 @@ package Match
 			ChangeState(waitState);
 		}
 		
+		private function VerifyStateOnServerMessage(state:int, isCommand:Boolean, originIdPlayer:int, fromServerCall:String) : void
+		{
+			// Sólo podemos estar...
+			if (isCommand)
+			{
+				// Solo manda comandos el jugador que tiene el turno (Current)
+				// TODO: Cuando implementemos el mecanismo para tener Skills tipo Catenaccio esto no sera siempre asi 
+				if (originIdPlayer != CurrTeam.TeamId)
+					throw new Error(IDString + "No puede llegar el comando " + fromServerCall + " del jugador no actual");
+				
+				if (CurrTeam.IsLocalUser)
+				{
+					// ...esperando el comando si somos el que lo manda 
+					if (_State != state)
+						throw new Error(IDString + fromServerCall + " en estado: " + _State + " Player: " + originIdPlayer + " RTC: " + ReasonTurnChanged);
+				}
+				else if (_State != GameState.Playing)	// ...en estado Playing si somos el otro jugador, el que no tiene el turno.
+					throw new Error(IDString + fromServerCall + " sin estar en Playing. Nuestro estado es: " + _State +" RTC: " + ReasonTurnChanged);
+			}
+			else
+			{
+				// Si no es un comando, ambos clientes tienen que estar en el mismo estado, esperando la confirmacion del servidor
+				if (_State != state)
+					throw new Error(IDString + "No estabamos esperando en el estado adecuado cuando se llamo a " + fromServerCall);
+			}
+		}
+		
+		
+		
 		private function ResetTimeout() : void
 		{
 			_Timer.ResetElapsed();
@@ -431,7 +463,7 @@ package Match
 		//
 		public function OnClientTimeout(idPlayer:int) : void
 		{
-			VerifyStateWhenReceivingCommand(GameState.WaitingCommandTimeout, idPlayer, "OnClientTimeout");
+			VerifyStateOnServerMessage(GameState.WaitingCommandTimeout, true, idPlayer, "OnClientTimeout");
 						
 			// Si se acaba el tiempo cuando estamos colocando al portero...
 			if (ReasonTurnChanged == Enums.TurnTiroAPuerta)
@@ -445,7 +477,7 @@ package Match
 		//
 		public function OnClientShoot(idPlayer:int, capID:int, dirX:Number, dirY:Number, impulse:Number) : void
 		{
-			VerifyStateWhenReceivingCommand(GameState.WaitingCommandShoot, idPlayer, "OnClientShoot");
+			VerifyStateOnServerMessage(GameState.WaitingCommandShoot, true, idPlayer, "OnClientShoot");
 			
 			var shooter : Cap = GetCap(idPlayer, capID);
 			var shootInfo : ShootInfo = new ShootInfo(new Point(dirX, dirY), impulse);
@@ -495,7 +527,7 @@ package Match
 						TheGamePhysics.Shoot(enemyGoalkeeper, enemyGoalkeeper.ParallelShoot);
 					else
 						enemyGoalkeeper.GotoTeletransportAndResetPos();
-				}			
+				}
 				
 				// Nada mas lanzar resetamos el tiempo. Esto hace que si al acabar la simulacion no hay ConsumeSubTurn o 
 				// YieldTurnToOpponent, por ejemplo, en una pase al pie, el tiempo este bien para el siguiente sub-turno.
@@ -513,15 +545,13 @@ package Match
 			}
 		}
 		
-		//
-		// El servidor nos indica que todos los clientes han terminado de simular el disparo!
-		//
-		public function OnClientEndShoot() : void
+		// El servidor nos indica que todos los clientes han terminado de simular el disparo! EL idPlayer es siempre
+		// el local, puesto que fuimos nosotros quienes terminamos de simularlo (aunque el servidor espere a tener
+		// los dos para mandarnos este mensaje)
+		public function OnClientEndShoot(idPlayer:int) : void
 		{
-			// Confirmamos que estamos en el estado correcto. El servidor no permite cambios de estado mientras estamos simulando
-			if (this._State != GameState.WaitingClientsToEndShoot)
-				throw new Error(IDString + "OnClientEndShoot en estado " + this._State);
-			
+			VerifyStateOnServerMessage(GameState.WaitingClientsToEndShoot, false, idPlayer, "OnClientEndShoot");
+						
 			var result:int = 0;
 			
 			// Al acabar el tiro movemos el portero a su posición de formación en caso de la ultima accion fuera un saque de puerta
@@ -647,7 +677,7 @@ package Match
 
 		public function OnClientPlaceBall(idPlayer:int, capID:int, dirX:Number, dirY:Number) : void
 		{
-			VerifyStateWhenReceivingCommand(GameState.WaitingCommandPlaceBall, idPlayer, "OnClientPlaceBall");
+			VerifyStateOnServerMessage(GameState.WaitingCommandPlaceBall, true, idPlayer, "OnClientPlaceBall");
 
 			// Obtenemos la chapa en la que vamos a colocar la pelota
 			var cap:Cap = GetCap(idPlayer, capID);
@@ -692,7 +722,7 @@ package Match
 		
 		public function OnClientUseSkill(idPlayer:int, idSkill:int) : void
 		{
-			VerifyStateWhenReceivingCommand(GameState.WaitingCommandUseSkill, idPlayer, "OnClientUseSkill");
+			VerifyStateOnServerMessage(GameState.WaitingCommandUseSkill, true, idPlayer, "OnClientUseSkill");
 
 			var team:Team = GetTeam(idPlayer);
 			team.UseSkill(idSkill);
@@ -724,7 +754,7 @@ package Match
 		
 		public function OnClientTiroPuerta(idPlayer:int) : void
 		{
-			VerifyStateWhenReceivingCommand(GameState.WaitingCommandTiroPuerta, idPlayer, "OnClientTiroPuerta");
+			VerifyStateOnServerMessage(GameState.WaitingCommandTiroPuerta, true, idPlayer, "OnClientTiroPuerta");
 			
 			var enemy:Team = GetTeam(idPlayer).Opponent();
 
@@ -737,7 +767,7 @@ package Match
 		
 		public function OnClientPosCap(idPlayer:int, capId:int, posX:Number, posY:Number) : void
 		{
-			VerifyStateWhenReceivingCommand(GameState.WaitingCommandPosCap, idPlayer, "OnClientPosCap");
+			VerifyStateOnServerMessage(GameState.WaitingCommandPosCap, true, idPlayer, "OnClientPosCap");
 
 			if (capId != 0 || ReasonTurnChanged != Enums.TurnTiroAPuerta)
 				throw new Error(IDString + "This is madness!");
@@ -751,25 +781,6 @@ package Match
 			ChangeState(GameState.Playing);
 		}
 		
-		private function VerifyStateWhenReceivingCommand(expectedStateIfLocalPlayer:int, idPlayerExecutingCommand:int, fromServerCall:String) : void
-		{
-			// Solo manda comandos el jugador que tiene el turno
-			// TODO: Cuando implementemos el mecanismo para tener Skills tipo Catenaccio esto no sera siempre asi 
-			if (idPlayerExecutingCommand != CurrTeam.TeamId)
-				throw new Error(IDString + "No puede llegar " + fromServerCall + " del jugador no actual" );
-			
-			// Sólo podemos estar...
-			if (CurrTeam.IsLocalUser)
-			{
-				// ...esperando el comando si somos el que lo manda  
-				if (_State != expectedStateIfLocalPlayer)
-					throw new Error(IDString + fromServerCall + " en estado: " + _State + " Player: " + idPlayerExecutingCommand + " RTC: " + ReasonTurnChanged);
-			}
-			else if (_State != GameState.Playing)	// ...en estado Playing si somos el otro jugador, el que no tiene el turno.
-				throw new Error(IDString + fromServerCall + " sin estar en Playing. Nuestro estado es: " + _State +" RTC: " + ReasonTurnChanged);
-		}
-		
-		
 		// Un jugador ha terminado la colocación de su portero. Volvemos al turno del otro jugador para que efectúe su lanzamiento
 		private function OnGoalKeeperSet(idPlayerWhoMovedTheGoalKeeper:int) : void
 		{
@@ -779,16 +790,15 @@ package Match
 
 		
 		// Un jugador ha marcado gol!!! Reproducimos una cut-scene
-		public function OnClientGoalScored(idPlayer:int, validity:int) : void
+		public function OnClientGoalScored(idPlayer:int, idScorer:int, validity:int) : void
 		{
-			if (this._State != GameState.WaitingGoal)
-				throw new Error(IDString + "OnClientGoalScored: El estado debería ser WaitingGoal. _State=" + this._State);
-
+			VerifyStateOnServerMessage(GameState.WaitingGoal, false, idPlayer, "OnClientGoalScored");
+			
 			// Contabilizamos el gol
 			if (validity == Enums.GoalValid)
-				GetTeam(idPlayer).Goals++;
+				GetTeam(idScorer).Goals++;
 
-			_Cutscene.ShowGoalScored(validity, Delegate.create(ShowGoalScoredCutsceneEnd, idPlayer, validity));
+			_Cutscene.ShowGoalScored(validity, Delegate.create(ShowGoalScoredCutsceneEnd, idScorer, validity));
 		}
 		
 		
@@ -803,7 +813,7 @@ package Match
 			
 			if (this._State != GameState.WaitingGoal)
 				throw new Error(IDString + "ShowGoalScoredCutsceneEnd: El estado debería ser WaitingGoal. _State=" + this._State);
-						
+
 			var turnTeam:Team = GetTeam(idPlayer).Opponent();
 			
 			if (validity == Enums.GoalValid)
@@ -1138,7 +1148,7 @@ package Match
 				ChangeState(GameState.EndMatch);
 		}
 		
-		// Nos llaman siempre desde MatchMain
+		// Nos llaman siempre desde RealtimeMatch
 		public function Shutdown() : void
 		{
 			if (_State != GameState.NotInit)

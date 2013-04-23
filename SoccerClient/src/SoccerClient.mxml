@@ -38,10 +38,9 @@
 		import GameModel.MainGameModel;
 		
 		import GameView.MainView;
+		import GameView.Match.RealtimeMatch;
 		
 		import HttpService.DataTypeInitializer;
-		
-		import Match.MatchMain;
 		
 		import mx.events.FlexEvent;
 		
@@ -94,7 +93,7 @@
 			ConfigureLocale();
 
 			// Podemos ir cargando recursos que luego necesitaremos (despues de tener el Locale configurado)
-			MatchMain.LoadMatchResources(null);
+			RealtimeMatch.LoadMatchResources(null);
 			
 			mMainGameModel = new MainGameModel();
 			mMainGameModel.InitialRefresh(OnInitialRefreshSuccess);

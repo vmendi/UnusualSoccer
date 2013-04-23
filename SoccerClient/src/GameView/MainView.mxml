@@ -10,12 +10,12 @@
 	<s:states>
 		<s:State name="Waiting"/>
 		<s:State name="Login"/>
+		<s:State name="OnRealtimeMatch"/>
 		<s:State name="Competition" stateGroups="InGame"/>
 		<s:State name="Team" stateGroups="InGame"/>
 		<s:State name="Friendly" stateGroups="InGame"/>
 		<s:State name="Training" stateGroups="InGame"/>
-		<s:State name="TrainingSpecial" stateGroups="InGame"/>
-		<s:State name="OnRealtimeMatch"/>
+		<s:State name="TrainingSpecial" stateGroups="InGame"/>		
 		<s:State name="Ranking" stateGroups="InGame"/>
 	</s:states>
 
@@ -73,6 +73,9 @@
 		private function OnMatchStarted() : void
 		{
 			currentState = "OnRealtimeMatch";
+			
+			// Nosotros lo añadimos, el mismo se encarga de removerse
+			addElement(SoccerClient.GetMainGameModel().TheRealtimeModel.TheMatch);
 		}
 			
 		private function OnMatchEnded(matchResult:Object) : void
@@ -150,15 +153,10 @@
 	]]></fx:Script>
 	
 	<s:Group>
-	
 		<s:layout>
 			<s:VerticalLayout gap="0"/>
-		</s:layout>
-			
+		</s:layout>			
 		<GameView:Login id="MyLogin" includeIn="Login" />
-		
-		<Match:RealtimeMatch width="760" includeIn="OnRealtimeMatch" />
-		
 		<GameView:StatusPanel height="80" includeIn="InGame"/>		
 				
 		<s:Group width="760" height="51" includeIn="InGame">

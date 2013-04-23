@@ -12,11 +12,10 @@
 		import GameModel.RoomModel;
 		
 		import GameView.ErrorDialog;
+		import GameView.Match.RealtimeMatch;
 		
 		import HttpService.MainService;
 		import HttpService.TransferModel.vo.RankingPage;
-		
-		import Match.MatchMain;
 		
 		import NetEngine.InvokeResponse;
 		import NetEngine.NetPlug;
@@ -646,7 +645,7 @@
 		// El test del partido offline!
 		private function Test11() : void
 		{
-			var match : MatchMain = new MatchMain();
+			var match : RealtimeMatch = new RealtimeMatch();
 			this.addElement(match);
 			
 			// Queremos ver los margenes
@@ -654,8 +653,6 @@
 			this.graphics.beginFill(0xFF0000);
 			this.graphics.drawRect(0, 0, 1000, 1000);
 			this.graphics.endFill();
-			
-			match.InitOffline();
 		}
 						
 		private function SetLine(indexOfLine : int, msg : String) : void

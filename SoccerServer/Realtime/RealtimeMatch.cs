@@ -228,7 +228,7 @@ namespace Realtime
                         RemainingSecs = 0;
 
                     if (((int)RemainingSecs) % 10 == 0)
-                        this.Broadcast("OnClientSyncTime", RemainingSecs);                   
+                        Broadcast("OnClientSyncTime", RemainingSecs);                   
                 }
                     break;
             }
@@ -265,7 +265,7 @@ namespace Realtime
             // Contabilizamos jugadores listos 
             CountPlayersEndShoot++;
 
-            // Si "TODOS=2" jugadores están listos notificamos a los clientes. Además reseteamos las variables de espera
+            // Si "TODOS=2" jugadores están listos notificamos a los clientes
             if (CountPlayersEndShoot == 2)
             {
                 CountPlayersEndShoot = 0;
@@ -276,7 +276,10 @@ namespace Realtime
 
                 CurState = State.Playing;                
 
-                Broadcast("OnClientEndShoot");
+                // Llamamos sin broadcast para que cada cliente reciba su propio parametro: quien provoco el 
+                // OnServerEndShoot, para cada cliente es "el mismo".
+                Players[Player1].NetPlug.Invoke("OnClientEndShoot", Player1);
+                Players[Player2].NetPlug.Invoke("OnClientEndShoot", Player2);
             }
         }
 
@@ -346,8 +349,10 @@ namespace Realtime
                 if (ValidityGoal == Invalid)
                     LogEx("ServerException: La validez del gol es inválida", true);
 
-                // Propagamos a los usuarios
-                Broadcast("OnClientGoalScored", scoredPlayer, ValidityGoal);
+                // Propagamos a los usuarios, uno a uno pq esto es un mensaje en el que cada uno nos reporto el gol y nosotros
+                // solo contestamos cuando nos han llegado ambos mensajes
+                Players[Player1].NetPlug.Invoke("OnClientGoalScored", Player1, scoredPlayer, ValidityGoal);
+                Players[Player2].NetPlug.Invoke("OnClientGoalScored", Player2, scoredPlayer, ValidityGoal);
 
                 ValidityGoal = Invalid;
 
