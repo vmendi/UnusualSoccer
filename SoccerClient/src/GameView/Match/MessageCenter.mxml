@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 width="100%" height="100%">
+
+	<fx:Script><![CDATA[
+		import Match.Conflict;
+		import Match.Enums;
+		import Match.Fault;
+		
+		import mx.resources.ResourceManager;
+		
+		public function ShowGoalScored(validity:int, callback:Function) : void
+		{						
+			if (validity == Enums.GoalValid)
+				AddMessageLed("GOOOOL", callback);
+			else if (validity == Enums.GoalInvalidNoDeclarado)
+				AddMessageLed("TODO", callback); 
+			else if (validity == Enums.GoalInvalidPropioCampo)
+				AddMessageLed("TODO", callback); 
+			else
+				throw new Error("Validez del gol desconocida");
+		}
+		
+		public function ShowRemainingShots(turnos:int) : void
+		{
+			if (turnos == 3)
+				AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros3"));
+			else if (turnos == 2)
+				AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros2"));
+			else if (turnos == 1)
+				AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros1"));
+		}
+		
+		public function ShowTurn(reason:int, isMyTurn:Boolean, fault : Fault) : void
+		{
+			if (isMyTurn)
+			{
+				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)
+					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoPropioRobo"));
+				else if(reason == Enums.TurnSaquePuertaInvalidGoal)
+					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoPropioSaquePuerta"));
+				else if (reason == Enums.TurnTiroAPuerta)
+					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaRecepcion"));
+				else if (reason == Enums.TurnGoalKeeperSet)
+					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaConfirmacion"));
+				else if(reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaFalta)
+					ShowFault(fault); 
+			}
+			else
+			{
+				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)	
+					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoContrarioRobo"));
+				else if (reason == Enums.TurnTiroAPuerta)
+					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaAnuncio"));
+				else if (reason == Enums.TurnGoalKeeperSet)
+					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaRecepcion2"));
+				else if (reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaFalta)
+					ShowFault(fault);						
+			}
+		}
+		
+		private function ShowFault(fault : Fault) : void
+		{
+			/*
+			if (fault.YellowCard && fault.RedCard)
+				item.Tarjeta.gotoAndStop("dobleamarilla");
+			else if (fault.RedCard)
+					item.Tarjeta.gotoAndStop("roja");
+			else if (fault.YellowCard)
+				item.Tarjeta.gotoAndStop("amarilla");
+			else
+				item.Tarjeta.gotoAndStop(0);
+			*/
+			
+			// @Embed(source='/Assets/MatchAssets.swf', symbol='MessageSpecialDobleAmarilla')
+			AddMessageSpecial("TODO Msg Falta", ResourceManager.getInstance().getClass("match", "FaltaPropia"));
+		}
+		
+		// Se ha producido un pase al pie. Pudo haber conflicto o no, pero se resolvio sin producirse el robo.
+		public function ShowMsgPasePie(bUltimoPase:Boolean, conflicto:Conflict) : void
+		{
+			if (conflicto != null)
+			{
+				if (!bUltimoPase)
+					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajePaseAlPieNoRobo"));
+				else
+					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeUltimoPaseAlPieNoRobo"));
+			}
+			else
+			{
+				if (!bUltimoPase)
+					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajePaseAlPie"));
+				else
+					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeUltimoPaseAlPie"));
+			}
+		}
+		
+		
+		public function ShowMsgGoalkeeperOutside() : void
+		{
+			AddMessageTutorial(ResourceManager.getInstance().getString("matchmsgs", "MensajeGoalkeeperOutside"));
+		}
+		
+		
+		public function AddMessageTicker(text : String) : void
+		{
+			var newMsg : MessageTicker = new MessageTicker();
+			newMsg.Msg = text;
+			
+			// We add our child, it takes care of removing itself
+			addElement(newMsg);
+		}
+		
+		public function AddMessageSpecial(text : String, imgClass : Class) : void
+		{
+			var newMsg  : MessageSpecial = new MessageSpecial();
+			newMsg.Init(text, imgClass);
+			
+			addElement(newMsg);
+		}
+		
+		public function AddMessageLed(text : String, callback : Function) : void
+		{
+			var newMsg  : MessageLed = new MessageLed();
+			newMsg.Init(text, callback);
+			
+			addElement(newMsg);
+		}
+		
+		public function AddMessageTutorial(text : String) : void
+		{
+			var newMsg  : MessageTutorial = new MessageTutorial();
+			newMsg.Msg = text;
+			
+			addElement(newMsg);
+		}
+		
+	]]></fx:Script>
+	
+	<!-- El fondo del MsgTicker -->
+	<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='MatchTickerBg')" fillMode="clip" x="0" y="110" />
+	
+</s:Group>

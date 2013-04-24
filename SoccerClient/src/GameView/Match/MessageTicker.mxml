@@ -1,86 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark"
-		 width="760" height="23">
+		 width="760" height="23"
+		 addedToStage="AddedToStageHandler(event)"
+		 x="0" y="110"
+		 >
 	
 	<fx:Style source="../styles.css" />
 	
-	<fx:Script>
-		<![CDATA[
-			import mx.core.FlexGlobals;
-			import mx.core.IFlexModule;
-			import mx.events.EffectEvent;
-			import mx.managers.PopUpManager;
-			
-			public static function Show(text : String) : void
-			{
-				var theDialog : MessageTicker = new MessageTicker();
-				var parent : Sprite = FlexGlobals.topLevelApplication as Sprite;
-				
-				theDialog.Msg = text;
-				
-				theDialog.moduleFactory = IFlexModule(parent).moduleFactory;
-				
-				PopUpManager.addPopUp(theDialog, parent, false, null);
-				PopUpManager.centerPopUp(theDialog);
-				
-				theDialog.myMsg.filters = [theDialog.myMotionBlurFilter];
-				theDialog.MySequence.play();
-			}
-			
-			protected function MySequence_effectEndHandler(event:EffectEvent):void
-			{
-				PopUpManager.removePopUp(this);
-			}
+	<fx:Script><![CDATA[
+		import mx.events.EffectEvent;
+		
+		[Bindable]
+		public function get Msg() : String { return mMsg; }
+		public function set Msg(msg : String) : void { mMsg = msg; }
+		
+		protected function AddedToStageHandler(event:Event):void
+		{
+			MyMsg.filters = [MyMotionBlurFilter];
+			MySequence.play();
+		}
+		
+		protected function MySequence_effectEndHandler(event:EffectEvent):void
+		{
+			(parent as Group).removeElement(this);
+		}
 
-			protected function initScroll_effectEndHandler(event:EffectEvent):void
-			{
-				myMsg.filters = null;
-			}
-			
-			protected function endScroll_effectEndHandler(event:EffectEvent):void
-			{
-				myMsg.filters = [myMotionBlurFilter];
-			}
-			
-			[Bindable]
-			public function get Msg() : String { return mMsg; }
-			public function set Msg(msg : String) : void { mMsg = msg; }
-			
-			private var mMsg : String = null;
-			
-		]]>
-	</fx:Script>
+		protected function EnterScroll_effectEndHandler(event:EffectEvent):void
+		{
+			MyMsg.filters = null;
+		}
+		
+		protected function ExitScroll_effectEndHandler(event:EffectEvent):void
+		{
+			MyMsg.filters = [MyMotionBlurFilter];
+		}
+
+		private var mMsg : String = null;						
+	]]></fx:Script>
 	
 	<fx:Declarations>
 		<s:Sequence id="MySequence" effectEnd="MySequence_effectEndHandler(event)">
-			<s:Move target="{myMsg}" xFrom="-740" xTo="10" duration="750" effectEnd="initScroll_effectEndHandler(event)" />
-			<s:Parallel effectEnd="endScroll_effectEndHandler(event)">
-				<s:Fade target="{myRectangle}" alphaFrom="0.8" alphaTo="0" duration="500" />
-				<s:Fade target="{myMsg}" alphaFrom="1" alphaTo="1" duration="1500"/>
+			<s:Move target="{MyMsg}" xFrom="-740" xTo="10" duration="750" effectEnd="EnterScroll_effectEndHandler(event)" />
+			<s:Parallel effectEnd="ExitScroll_effectEndHandler(event)">
+				<s:Fade target="{MyRectangle01}" alphaFrom="0.8" alphaTo="0" duration="500" />
+				<s:Fade target="{MyMsg}" alphaFrom="1" alphaTo="1" duration="1500"/>
 			</s:Parallel>			
-			<s:Move target="{myMsg}" xFrom="10" xTo="760" duration="750" />
+			<s:Move target="{MyMsg}" xFrom="10" xTo="760" duration="750" />
 		</s:Sequence>
-		<s:BlurFilter id="myMotionBlurFilter" blurX="10.0" blurY="0.0" quality="2"/>
+		<s:BlurFilter id="MyMotionBlurFilter" blurX="10.0" blurY="0.0" quality="2"/>
 	</fx:Declarations>
-
-	<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='MatchTickerBg')" fillMode="clip" />
 	
 	<s:Graphic>
-		<s:Rect id="myRectangle" x="0" y="0" width="760" height="23" alpha="0" blendMode="overlay">
+		<s:Rect id="MyRectangle01" x="0" y="0" width="760" height="23" alpha="0" blendMode="overlay">
 			<s:fill>
 				<s:SolidColor color="#ffffff" />
 			</s:fill>
 		</s:Rect>
 	</s:Graphic>
 
-	<s:Label id="myMsg"
-			 y="4"
-			 x="-740"
-			 width="740"
-			 textAlign="center"
-			 verticalAlign="middle"
-			 styleName="whiteBoldBig"
-			 text="YOU DIDN'T STEAL THE BALL"/>
+	<s:Label id="MyMsg" y="4" x="-740" width="740" textAlign="center" verticalAlign="middle"  styleName="whiteBoldBig" text="{Msg}"/>
 
 </s:Group>

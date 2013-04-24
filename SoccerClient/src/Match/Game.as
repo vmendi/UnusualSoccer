@@ -1,5 +1,6 @@
 package Match
 {
+	import GameView.Match.MessageCenter;
 	import GameView.Match.RealtimeMatch;
 	
 	import NetEngine.NetPlug;
@@ -46,6 +47,7 @@ package Match
 		public var DebugLayer:MovieClip;
 		
 		private var _Cutscene:Cutscene;
+		private var _MessageCenter:MessageCenter;
 		private var _Chat:Chat;
 		
 		private var _Parent : DisplayObjectContainer;
@@ -61,7 +63,7 @@ package Match
 		private var _State:int = GameState.NotInit;
 		private var _TicksInCurState:int;
 		private var _Part:int;
-		private var _RemainingHits:int;						// Nº de golpes restantes permitidos antes de perder el turno
+		private var _RemainingShots:int;						// Nº de golpes restantes permitidos antes de perder el turno
 		private var _RemainingPasesAlPie:int;				// No de pases al pie que quedan
 		private var _TimeSecs:Number;						// Tiempo en segundos que queda de la "mitad" actual del partido
 		private var _Timeout:Number;						// Tiempo en segundos que queda para que ejecutes un disparo
@@ -106,10 +108,11 @@ package Match
 			throw new Error("WTF 567 - Unknown teamId");
 		}
 
-		public function Game(parent : DisplayObjectContainer, connection : NetPlug) : void
+		public function Game(parent:DisplayObjectContainer, messageCenter:MessageCenter, connection:NetPlug) : void
 		{
 			_Parent = parent;
-			_Connection = connection;
+			_MessageCenter = messageCenter;
+			_Connection = connection;			
 		}
 
 		// Obtiene una chapa de un equipo determinado a partir de su identificador de equipo y chapa
@@ -366,7 +369,7 @@ package Match
 					}
 					else
 					{	
-						Influences.UpdateInfluences(_RemainingHits, _RemainingPasesAlPie, this);
+						Influences.UpdateInfluences(_RemainingShots, _RemainingPasesAlPie, this);
 					}
 					break;
 				}
@@ -515,7 +518,7 @@ package Match
 							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, goalkeeperShoot);
 							
 							// Si el portero es automatico es como cuando se anuncia el tiro a puerta, el tiro es ya el ultimo
-							_RemainingHits = 1;
+							_RemainingShots = 1;
 							_RemainingPasesAlPie = 0;	
 						}
 					}
@@ -624,14 +627,14 @@ package Match
 					result |= 32;
 					
 					// Además si era el último sub-turno le damos un sub-turno EXTRA. Mientras hagas pase al pie puedes seguir tirando.
-					if (_RemainingHits == 1)
-						_RemainingHits++;
+					if (_RemainingShots == 1)
+						_RemainingShots++;
 					
 					// Si esto llega a 0, no volveremos a entrar aqui porque GetPaseAlPie() siempre retornara null -> paseToCap == null
 					_RemainingPasesAlPie--;
 					
 					// Mostramos el cartel de pase al pie en los 2 clientes!
-					_Cutscene.ShowMsgPasePieConseguido(_RemainingPasesAlPie == 0, theConflict);
+					_MessageCenter.ShowMsgPasePie(_RemainingPasesAlPie == 0, theConflict);
 					
 					// Y el controlador...
 					if (paseToCap.OwnerTeam.IsLocalUser)
@@ -741,7 +744,7 @@ package Match
 			else 
 			if (idSkill == Enums.Turnoextra)
 			{
-				_RemainingHits++;
+				_RemainingShots++;
 			}
 			else 
 			if (idSkill == Enums.PorteriaSegura)
@@ -798,7 +801,7 @@ package Match
 			if (validity == Enums.GoalValid)
 				GetTeam(idScorer).Goals++;
 
-			_Cutscene.ShowGoalScored(validity, Delegate.create(ShowGoalScoredCutsceneEnd, idScorer, validity));
+			_MessageCenter.ShowGoalScored(validity, Delegate.create(ShowGoalScoredCutsceneEnd, idScorer, validity));
 		}
 		
 		
@@ -876,18 +879,18 @@ package Match
 		// 
 		private function ConsumeSubTurn() : void
 		{
-			_RemainingHits--;
+			_RemainingShots--;
 			
 			// Reseteamos el tiempo disponible para el subturno (time-out)
 			ResetTimeout();
 			
 			// Si es el jugador local el activo mostramos los tiros que nos quedan en el interface
 			if (CurrTeam.IsLocalUser)
-				_Cutscene.ShowQuedanTiros(_RemainingHits);
-			
+				_MessageCenter.ShowRemainingShots(_RemainingShots);
+							
 			// Si salimos del subturno con el goalkeeper fuera del area, lo advertimos
 			if (!Field.IsCapCenterInsideBigArea(CurrTeam.GoalKeeper) && CurrTeam.IsLocalUser)
-				_Cutscene.ShowMsgGoalkeeperOutside(_RemainingHits == 0);
+				_MessageCenter.ShowMsgGoalkeeperOutside();
 			
 			//
 			// Se olvida porque por ejemplo se limita la chapa clickable en el saque puerta, si no
@@ -907,7 +910,7 @@ package Match
 			_Team2.DesactiveSkills();
 
 			// Comprobamos si hemos consumido todos los disparos. Si es así, pasamos el turno al oponente.
-			if (_RemainingHits == 0)
+			if (_RemainingShots == 0)
 				YieldTurnToOpponent(Enums.TurnByTurn);
 			else
 				ChangeState(GameState.Playing);
@@ -985,7 +988,7 @@ package Match
 			CurrTeam.GoalKeeper.LinearDamping = MatchConfig.CapLinearDamping;
 			
 			// Reseteamos los contadores de tiros
-			_RemainingHits = MatchConfig.MaxHitsPerTurn;
+			_RemainingShots = MatchConfig.MaxHitsPerTurn;
 			_RemainingPasesAlPie = MatchConfig.MaxNumPasesAlPie;
 			
 			// ...y el tiempo disponible para el subturno
@@ -998,7 +1001,7 @@ package Match
 			// Para tirar a puerta solo se posee un tiro y se pierden todos los pases al pie
 			if (reason == Enums.TurnGoalKeeperSet)
 			{
-				_RemainingHits = 1;
+				_RemainingShots = 1;
 				_RemainingPasesAlPie = 0;
 			}
 			
@@ -1006,7 +1009,7 @@ package Match
 			// De esta forma luego tendrá los mismos que un turno normal
 			if (reason == Enums.TurnStolen || reason == Enums.TurnFault || reason == Enums.TurnLost)
 			{
-				_RemainingHits++;
+				_RemainingShots++;
 			}
 			
 			// Al cambiar el turno, también desactivamos las skills que se estuvieran utilizando, salvo durante toda la logica de tiro a puerta 
@@ -1025,7 +1028,7 @@ package Match
 				CurrTeam.GoalKeeper.GotoTeletransportAndResetPos();
 						
 			// Mostramos un mensaje animado de cambio de turno
-			_Cutscene.ShowTurn(reason, idTeam == _IdLocalUser, TheGamePhysics.TheFault);
+			_MessageCenter.ShowTurn(reason, idTeam == _IdLocalUser, TheGamePhysics.TheFault);
 			
 			// Y pintamos el halo alrededor de las chapas!
 			CurrTeam.ShowMyTurnVisualCue(reason);

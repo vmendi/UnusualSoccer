@@ -29,7 +29,7 @@ package Match
 		//
 		// Muestra los areas de influencia de las chapas que están en el radio de la pelota
 		//
-		static public function UpdateInfluences(remainingHits : int, remainingPasesAlPie : int, game : Game) : void
+		static public function UpdateInfluences(remainingShots : int, remainingPasesAlPie : int, game : Game) : void
 		{
 			var _CurTeam : Team = game.CurrTeam;
 			
@@ -42,7 +42,7 @@ package Match
 			
 			// Si los subturnos o los pases al pie estan agotados, no mostramos ninguna influencia amiga.
 			// Además, el pase al pie sólo empieza a ser posible cuando la chapa que lanza ha tocado la pelota.
-			if (remainingHits != 0 && remainingPasesAlPie != 0 && game.TheGamePhysics.HasTouchedBall(game.TheGamePhysics.AttackingTeamShooterCap))
+			if (remainingShots != 0 && remainingPasesAlPie != 0 && game.TheGamePhysics.HasTouchedBall(game.TheGamePhysics.AttackingTeamShooterCap))
 			{
 				var potential:Array = _CurTeam.GetPotentialPaseAlPieForShooter(game.TheGamePhysics.AttackingTeamShooterCap);
 				

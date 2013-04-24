@@ -2,52 +2,36 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 width="340" height="84"
-		 creationComplete="creationCompleteHandler(event)">
+		 right="0" bottom="0"
+		 addedToStage="AddedToStageHandler(event)"		 
+		 >
 	
-	<fx:Script>
-		<![CDATA[
-			import mx.core.FlexGlobals;
-			import mx.core.IFlexModule;
-			import mx.events.EffectEvent;
-			import mx.events.FlexEvent;
-			import mx.managers.PopUpManager;
-			
-			import utils.Delegate;
-			import utils.MovieClipListener;
-			
-			public static function Show(text : String) : void
-			{
-				var theDialog : MessageTutorial = new MessageTutorial();
-				var parent : Sprite = FlexGlobals.topLevelApplication as Sprite;
-				
-				theDialog.Msg = text;
-				
-				theDialog.moduleFactory = IFlexModule(parent).moduleFactory;
-				
-				PopUpManager.addPopUp(theDialog, parent, false, null);
-				PopUpManager.centerPopUp(theDialog);
-				
-				theDialog.MySequence.play();
-			}
-			
-			protected function MySequence_effectEndHandler(event:EffectEvent):void
-			{
-				PopUpManager.removePopUp(this);
-			}
-			
-			[Bindable]
-			public function get Msg() : String { return mMsg; }
-			public function set Msg(msg : String) : void { mMsg = msg; }
-			
-			private var mMsg : String = null;
-			
-			protected function creationCompleteHandler(event:FlexEvent):void
-			{
-				MySequence.play();
-			}
-			
-		]]>
-	</fx:Script>
+	<fx:Script><![CDATA[
+		import mx.core.FlexGlobals;
+		import mx.core.IFlexModule;
+		import mx.events.EffectEvent;
+		import mx.events.FlexEvent;
+		import mx.managers.PopUpManager;
+		
+		import utils.Delegate;
+		import utils.MovieClipListener;
+		
+		protected function AddedToStageHandler(event:Event):void
+		{
+			MySequence.play();			
+		}
+		
+		protected function MySequence_effectEndHandler(event:EffectEvent):void
+		{
+			(parent as Group).removeElement(this);
+		}
+		
+		[Bindable]
+		public function get Msg() : String { return mMsg; }
+		public function set Msg(msg : String) : void { mMsg = msg; }
+		
+		private var mMsg : String = null;
+	]]></fx:Script>
 	
 	<fx:Declarations>
 		<s:Sequence id="MySequence" effectEnd="MySequence_effectEndHandler(event)">
@@ -101,7 +85,7 @@
 			 textAlign="left"
 			 verticalAlign="middle"
 			 styleName="whiteBoldBig"
-			 text="Recuerda avisar a puerta antes de tirar o el gol no será válido!"/> <!--{Msg}-->
+			 text="{Msg}"/>
 	
 </s:Group>
 

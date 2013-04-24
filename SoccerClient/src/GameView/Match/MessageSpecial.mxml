@@ -3,62 +3,39 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 mouseChildren="false" mouseEnabled="false"
-		 creationComplete="creationCompleteHandler(event)">
+		 addedToStage="AddedToStageHandler(event)"
+		 horizontalCenter="0" y="450"
+		 >
 	
 	<fx:Style source="../styles.css" />
 	
 	<fx:Script><![CDATA[
-		import mx.core.FlexGlobals;
-		import mx.core.IFlexModule;
 		import mx.events.EffectEvent;
 		import mx.events.FlexEvent;
-		import mx.managers.PopUpManager;
-		
-		
-		public static function Show(text : String, img : Class) : void
+				
+		protected function AddedToStageHandler(event:Event):void
 		{
-			var theDialog : MessageSpecial = new MessageSpecial();
-			var parent : Sprite = FlexGlobals.topLevelApplication as Sprite;
-			
-			theDialog.Msg = text;
-			theDialog.Img = img;
-			
-			theDialog.moduleFactory = IFlexModule(parent).moduleFactory;
-			
-			PopUpManager.addPopUp(theDialog, parent, false, null);
-			PopUpManager.centerPopUp(theDialog);
-			
-			theDialog.MySequence.play();
+			MySequence.play();
 		}
 		
 		protected function MySequence_effectEndHandler(event:EffectEvent):void
 		{
-			PopUpManager.removePopUp(this);			
+			(parent as Group).removeElement(this);	
 		}
 		
-		[Bindable]
-		public function get Msg() : String { return mMsg; }
-		public function set Msg(msg : String) : void { mMsg = msg; }
-		
-		public function get Img() : Class { return mImg; }
-		public function set Img(img : Class) : void { mImg = img; }
-		
-		private var mMsg : String = null;
-		private var mImg : Class = null;
-		
-		[Bindable]
-		private var mLeft : Number = 70;
-		[Bindable]
-		private var mRight : Number = 30;
-		[Bindable]
-		private var mTop : Number = 18;
-		[Bindable]
-		private var mBottom : Number = 18;
-		
-		protected function creationCompleteHandler(event:FlexEvent):void
+		public function Init(msg : String, imgClass : Class) : void
 		{
-			MySequence.play();
-		}
+			mMsg = msg;
+			mImg = imgClass;
+		}			
+		
+		[Bindable] private var mMsg : String;		
+		[Bindable] private var mImg : Class;
+		
+		[Bindable] private var mLeft : Number = 70;
+		[Bindable] private var mRight : Number = 30;
+		[Bindable] private var mTop : Number = 18;
+		[Bindable] private var mBottom : Number = 18;
 		
 	]]></fx:Script>
 	
@@ -111,8 +88,8 @@
 				 maxWidth="600"
 				 maxDisplayedLines="1"
 				 styleName="whiteBoldMessageSpecial"
-				 text="TARJETA ROJA - EXPULSIÓN!"
-				 alpha="0"> <!--{Msg}-->
+				 text="{mMsg}"
+				 alpha="0">
 			<s:filters>
 				<s:GlowFilter id="glowNormal" strength="2" alpha="0.5" blurX="12" blurY="12" color="#FFFFFF" quality="3"	/>
 			</s:filters>
@@ -136,7 +113,7 @@
 		</s:Ellipse>
 	</s:Group>
 	<s:Group x="0" y="0" >
-		<s:BitmapImage id="MyIcon" source="@Embed(source='/Assets/MatchAssets.swf', symbol='MessageSpecialDobleAmarilla')" fillMode="clip" alpha="0" />
+		<s:BitmapImage id="MyIcon" source="{mImg}" fillMode="clip" alpha="0" />
 		<s:Ellipse id="MyEllipse2" left="0" right="0" top="0" bottom="0" alpha="0" >
 			<s:fill>
 				<s:SolidColor color="#B5EEF7"/>

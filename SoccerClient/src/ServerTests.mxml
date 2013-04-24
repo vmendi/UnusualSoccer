@@ -2,9 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 xmlns:mx="library://ns.adobe.com/flex/mx">
-	<s:layout>
-		<s:VerticalLayout/>
-	</s:layout>
+	
 	<fx:Script><![CDATA[
 		import GameModel.InactivityModel;
 		import GameModel.MainGameModel;
@@ -649,7 +647,6 @@
 			this.addElement(match);
 			
 			// Queremos ver los margenes
-			this.y = -20;
 			this.graphics.beginFill(0xFF0000);
 			this.graphics.drawRect(0, 0, 1000, 1000);
 			this.graphics.endFill();
@@ -693,8 +690,7 @@
 				
 	]]></fx:Script>
 	
-	
-	<s:Label id="MyDebugTest" left="0" right="0" top="0" bottom="0"/>
-	
+	<s:Label id="MyDebugTest" left="0" right="0" top="0" bottom="0" includeInLayout="false"/>
+		
 </s:Group>
 

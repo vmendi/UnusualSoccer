@@ -2,8 +2,9 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:Match="GameView.Match.*"
 		 addedToStage="AddedToStageHandler(event)"
-		 >
+		 width="100%" height="100%">
 		
 	<fx:Script><![CDATA[
 		import Match.Enums;
@@ -104,7 +105,7 @@
 				
 				if (stage != null)
 				{
-					_Game = new Game(MyMatchLayer, _Connection);
+					_Game = new Game(MyMatchLayer, MyMessageCenter, _Connection);
 					_Connection.AddClient(_Game);
 					
 					// Indicamos al servidor que nuestro cliente necesita los datos del partido para continuar. Esto llamara a InitFromServer desde el servidor
@@ -127,7 +128,7 @@
 				
 		private function OfflineInnerInit() : void
 		{
-			_Game = new Match.Game(MyMatchLayer, null);
+			_Game = new Match.Game(MyMatchLayer, MyMessageCenter, null);
 			_Game.InitFromServer(-1, InitOfflineData.GetDescTeam("ARGENTINA", false), InitOfflineData.GetDescTeam("USA", true),
 								 Enums.Team1, 300, 15, true, MatchConfig.ClientVersion);
 		}
@@ -195,5 +196,6 @@
 	]]></fx:Script>
 	
 	<mx:UIComponent id="MyMatchLayer" />
-	
+	<Match:MessageCenter id="MyMessageCenter" />
+		
 </s:Group>

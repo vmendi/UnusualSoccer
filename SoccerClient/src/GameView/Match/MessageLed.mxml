@@ -4,7 +4,9 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 width="760" height="169"
 		 cacheAsBitmap="true" mouseChildren="false" mouseEnabled="false"
-		 creationComplete="creationCompleteHandler(event)">
+		 addedToStage="AddedToStageHandler(event)"
+		 x="0" verticalCenter="0"
+		 >
 	
 	<fx:Style source="../styles.css" />
 	
@@ -15,37 +17,28 @@
 		import mx.events.FlexEvent;
 		import mx.managers.PopUpManager;
 		
-		
-		public static function Show(text : String) : void
+		protected function AddedToStageHandler(event:Event):void
 		{
-			var theDialog : MessageLed = new MessageLed();
-			var parent : Sprite = FlexGlobals.topLevelApplication as Sprite;
-			
-			theDialog.Msg = text;
-			
-			theDialog.moduleFactory = IFlexModule(parent).moduleFactory;
-			
-			PopUpManager.addPopUp(theDialog, parent, false, null);
-			PopUpManager.centerPopUp(theDialog);
-			
-			theDialog.MySequence.play();
-		}
+			MySequence.play();
+		}		
 		
 		protected function MySequence_effectEndHandler(event:EffectEvent):void
 		{
-			PopUpManager.removePopUp(this);			
+			(parent as Group).removeElement(this);
+			
+			if (mCallback != null)
+				mCallback();
 		}
 		
-		[Bindable]
-		public function get Msg() : String { return mMsg; }
-		public function set Msg(msg : String) : void { mMsg = msg; }
-		
-		private var mMsg : String = null;
-		
-		protected function creationCompleteHandler(event:FlexEvent):void
+		public function Init(msg : String, callback : Function) : void
 		{
-			MySequence.play();
+			mMsg = msg;
+			mCallback = callback;
 		}
+		
+		private var mCallback : Function;
+				
+		[Bindable] private var mMsg : String;
 		
 	]]></fx:Script>
 	
@@ -119,7 +112,7 @@
 			 verticalAlign="middle"
 			 horizontalCenter="0" verticalCenter="0"
 			 styleName="whiteBoldLed"
-			 text="GOOOOOOL!"><!--{Msg}-->
+			 text="{mMsg}">
 		<s:filters>
 			<s:GlowFilter id="glowNormal" strength="2" alpha="0.7" blurX="12" blurY="12" color="#FFFFFF" quality="3"	/>
 		</s:filters>
