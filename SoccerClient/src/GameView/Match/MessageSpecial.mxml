@@ -12,6 +12,13 @@
 	<fx:Script><![CDATA[
 		import mx.events.EffectEvent;
 		import mx.events.FlexEvent;
+		
+		
+		public function Init(msg : String, imgClass : Class) : void
+		{
+			mMsg = msg;
+			mImg = imgClass;
+		}
 				
 		protected function AddedToStageHandler(event:Event):void
 		{
@@ -22,16 +29,10 @@
 		{
 			(parent as Group).removeElement(this);	
 		}
-		
-		public function Init(msg : String, imgClass : Class) : void
-		{
-			mMsg = msg;
-			mImg = imgClass;
-		}			
-		
+
 		[Bindable] private var mMsg : String;		
 		[Bindable] private var mImg : Class;
-		
+
 		[Bindable] private var mLeft : Number = 70;
 		[Bindable] private var mRight : Number = 30;
 		[Bindable] private var mTop : Number = 18;

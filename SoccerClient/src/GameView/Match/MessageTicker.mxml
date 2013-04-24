@@ -11,10 +11,11 @@
 	<fx:Script><![CDATA[
 		import mx.events.EffectEvent;
 		
-		[Bindable]
-		public function get Msg() : String { return mMsg; }
-		public function set Msg(msg : String) : void { mMsg = msg; }
-		
+		public function Init(msg : String) : void
+		{
+			mMsg = msg;
+		}
+
 		protected function AddedToStageHandler(event:Event):void
 		{
 			MyMsg.filters = [MyMotionBlurFilter];
@@ -35,8 +36,10 @@
 		{
 			MyMsg.filters = [MyMotionBlurFilter];
 		}
-
-		private var mMsg : String = null;						
+		
+		[Bindable]
+		private var mMsg : String;
+		
 	]]></fx:Script>
 	
 	<fx:Declarations>
@@ -59,6 +62,6 @@
 		</s:Rect>
 	</s:Graphic>
 
-	<s:Label id="MyMsg" y="4" x="-740" width="740" textAlign="center" verticalAlign="middle"  styleName="whiteBoldBig" text="{Msg}"/>
+	<s:Label id="MyMsg" y="4" x="-740" width="740" textAlign="center" verticalAlign="middle"  styleName="whiteBoldBig" text="{mMsg}"/>
 
 </s:Group>

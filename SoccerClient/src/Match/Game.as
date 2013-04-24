@@ -1,7 +1,6 @@
 package Match
 {
 	import GameView.Match.MessageCenter;
-	import GameView.Match.RealtimeMatch;
 	
 	import NetEngine.NetPlug;
 	
@@ -46,7 +45,6 @@ package Match
 		public var ChatLayer:MovieClip;
 		public var DebugLayer:MovieClip;
 		
-		private var _Cutscene:Cutscene;
 		private var _MessageCenter:MessageCenter;
 		private var _Chat:Chat;
 		
@@ -224,8 +222,6 @@ package Match
 											
 			// Inicializamos el interfaz de juego. Es necesario que todo lo demas este inicializado!
 			TheInterface = new GameInterface(this);
-			
-			_Cutscene = new Cutscene(GUILayer);
 			_Chat = new Chat(ChatLayer, this);
 
 			// Hemos terminado de cargar/inicializar
@@ -610,7 +606,7 @@ package Match
 				var theConflict : Conflict = CheckConflictoSteal(paseToCap);
 				
 				if (theConflict != null)
-					_Cutscene.ShowConflictOverCaps(theConflict);
+					_MessageCenter.ShowConflictOverCaps(theConflict);
 
 				// Si se produce el robo, activamos el controlador de pelota al usuario que ha robado el pase y pasamos el turno.
 				if (theConflict != null && theConflict.Stolen)
@@ -707,7 +703,7 @@ package Match
 				ChangeState(GameState.WaitingControlPortero);
 				
 				// Mostramos un parpadeo en el area, sacamos de puerta
-				_Cutscene.ShowAreaPortero(CurrTeam.Opponent().Side, ShowAreaPorteroCutsceneEnd);
+				_MessageCenter.ShowAreaPortero(CurrTeam.Opponent().Side, ShowAreaPorteroCutsceneEnd);
 			}
 		}
 		
@@ -731,7 +727,7 @@ package Match
 			team.UseSkill(idSkill);
 			
 			if (idPlayer != _IdLocalUser)
-				_Cutscene.ShowMensajeSkill(idSkill);
+				_MessageCenter.ShowMensajeSkill(idSkill);
 			
 			// Hay algunas habilidades que las podemos aplicar directamente aqui, otras se evaluaran durante el resto del turno
 			if (idSkill == Enums.Tiempoextraturno)
@@ -1133,7 +1129,7 @@ package Match
 			_MatchResultFromServer = result;
 			
 			// Lanzamos la cutscene de fin de tiempo, cuando termine pasamos realmente de parte o finalizamos el partido
-			_Cutscene.ShowFinishPart(_Part, ShowFinishPartCutsceneEnd);
+			_MessageCenter.ShowFinishPart(_Part, ShowFinishPartCutsceneEnd);
 		}
 		
 		private function ShowFinishPartCutsceneEnd() : void

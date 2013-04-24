@@ -4,6 +4,22 @@ package utils
 	
 	public final class MovieClipLabels
 	{
+		/***
+		  Comprueba si existe una etiqueta en el movieclip
+		*/
+		public static function HasLabel(label : String, mc : MovieClip) : Boolean
+		{
+			var labels : Array = mc.currentLabels;
+			
+			for (var c: int = 0; c < labels.length; c++)
+			{
+				if (labels[c].name == label)
+					return( true );
+			}
+			
+			return false;
+		}
+		
 		/**
 		   Numero de fotogramas que hay entre dos etiquetas
 		*/
@@ -53,6 +69,18 @@ package utils
 			{
 				var frame : int = MovieClipLabels.GetFrameOfLabel(labelAndFuncs[c].label, targetMC);
 				targetMC.addFrameScript(frame-1, null);
+			}
+		}
+		
+		
+		public static function AddFrameScript(mc:MovieClip, labelName:String, func : Function) : void
+		{
+			for (var i:int=0;i < mc.currentLabels.length;i++)
+			{
+				if (mc.currentLabels[i].name==labelName)
+				{
+					mc.addFrameScript(mc.currentLabels[i].frame-1, func);
+				}
 			}
 		}
 	}

@@ -17,6 +17,13 @@
 		import mx.events.FlexEvent;
 		import mx.managers.PopUpManager;
 		
+		
+		public function Init(msg : String, callback : Function) : void
+		{
+			mMsg = msg;
+			mCallback = callback;
+		}
+		
 		protected function AddedToStageHandler(event:Event):void
 		{
 			MySequence.play();
@@ -28,12 +35,6 @@
 			
 			if (mCallback != null)
 				mCallback();
-		}
-		
-		public function Init(msg : String, callback : Function) : void
-		{
-			mMsg = msg;
-			mCallback = callback;
 		}
 		
 		private var mCallback : Function;

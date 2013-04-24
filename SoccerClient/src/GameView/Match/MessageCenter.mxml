@@ -1,62 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark"
-		 width="100%" height="100%">
+		 width="100%" height="100%"
+		 creationComplete="CreationCompleteHandler(event)"
+		 >
 
 	<fx:Script><![CDATA[
+		import Match.Cap;
 		import Match.Conflict;
 		import Match.Enums;
 		import Match.Fault;
+		import Match.Field;
 		
+		import flash.utils.getDefinitionByName;
+		
+		import mx.core.UIComponent;
+		import mx.events.FlexEvent;
 		import mx.resources.ResourceManager;
+		
+		protected function CreationCompleteHandler(event:FlexEvent):void
+		{
+			/* Las "usamos" aqui para que linke */
+			new MessageTicker();
+			new MessageSpecial();
+			new MessageLed();
+			new MessageTutorial();
+			new MessageMovieClip();
+		}
+		
+		public function ShowFinishPart(part:int, callback:Function) : void
+		{						
+			if (part == 1)
+				AddMessage(LedClass, "TODO - Fin de la primera parte", callback); 
+			else if (part == 2)
+				AddMessage(LedClass, "TODO - Fin del partido", callback);
+			else
+				throw new Error("Unknown part");
+		}
+		
+		public function ShowMensajeSkill(idSkill:int) : void
+		{
+			AddMessage(SpecialClass, "TODOOO", ResourceManager.getInstance().getClass("match", "MensajeSkill" + idSkill));
+		}
 		
 		public function ShowGoalScored(validity:int, callback:Function) : void
 		{						
 			if (validity == Enums.GoalValid)
-				AddMessageLed("GOOOOL", callback);
+				AddMessage(LedClass, "GOOOOL", callback);
 			else if (validity == Enums.GoalInvalidNoDeclarado)
-				AddMessageLed("TODO", callback); 
+				AddMessage(LedClass, "TODO Gol no declarado", callback);
 			else if (validity == Enums.GoalInvalidPropioCampo)
-				AddMessageLed("TODO", callback); 
+				AddMessage(LedClass, "TODO Gol propio campo", callback);
 			else
 				throw new Error("Validez del gol desconocida");
 		}
 		
+		public function ShowAreaPortero(side : int, callback : Function) : void
+		{
+			if (side == Enums.Left_Side)
+				AddMessage(MovieClipClass, ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaLeft.x, Field.SmallAreaLeft.y, callback);
+			else
+				AddMessage(MovieClipClass, ResourceManager.getInstance().getClass("match", "AreaPortero"), Field.SmallAreaRight.x, Field.SmallAreaRight.y, callback);
+			
+			AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeControlPortero"));
+		}
+		
+		public function ShowConflictOverCaps(conflict:Conflict) : void
+		{
+			var winner : Cap = conflict.Stolen? conflict.DefenderCap : conflict.AttackerCap;
+			var loser : Cap = conflict.Stolen? conflict.AttackerCap : conflict.DefenderCap;
+			var paramWinner : Number = conflict.Stolen? conflict.Defense : conflict.Control;
+			var paramLoser : Number = conflict.Stolen? conflict.Control : conflict.Defense;
+			var paramWinnerTit : String = conflict.Stolen? ResourceManager.getInstance().getString("main", "MatchDefinitionDefense") : 
+														   ResourceManager.getInstance().getString("main", "MatchDefinitionControl");
+			var paramLoserTit : String = conflict.Stolen? ResourceManager.getInstance().getString("main", "MatchDefinitionControl") : 
+														  ResourceManager.getInstance().getString("main", "MatchDefinitionDefense");
+			
+			var mcWinnerMsg : MessageMovieClip = AddMessage(MovieClipClass, ResourceManager.getInstance().getClass("match", "ConflictoGana"), 
+															winner.Visual.x, winner.Visual.y, null) as MessageMovieClip;
+			var mcWinner : MovieClip = mcWinnerMsg.TheMovieClip;
+			mcWinner.ConflictoNum.Num.text = paramWinner.toString();
+			mcWinner.ConflictoNum.Tit.text = paramWinnerTit;
+
+			var mcLoserMsg : MessageMovieClip = AddMessage(MovieClipClass, ResourceManager.getInstance().getClass("match", "ConflictoPierde"), 
+														   loser.Visual.x, loser.Visual.y, null) as MessageMovieClip;
+			var mcLoser : MovieClip = mcLoserMsg.TheMovieClip;
+			mcLoser.ConflictoNum.Num.text = paramLoser.toString();
+			mcLoser.ConflictoNum.Tit.text = paramLoserTit;
+		}
+
 		public function ShowRemainingShots(turnos:int) : void
 		{
 			if (turnos == 3)
-				AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros3"));
+				AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros3"));
 			else if (turnos == 2)
-				AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros2"));
+				AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros2"));
 			else if (turnos == 1)
-				AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros1"));
+				AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "QuedanTiros1"));
 		}
 		
-		public function ShowTurn(reason:int, isMyTurn:Boolean, fault : Fault) : void
+		public function ShowTurn(reason:int, isMyTurn:Boolean, fault:Fault) : void
 		{
 			if (isMyTurn)
 			{
 				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)
-					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoPropioRobo"));
+					AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoPropioRobo"));
 				else if(reason == Enums.TurnSaquePuertaInvalidGoal)
-					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoPropioSaquePuerta"));
+					AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoPropioSaquePuerta"));
 				else if (reason == Enums.TurnTiroAPuerta)
-					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaRecepcion"));
+					AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaRecepcion"));
 				else if (reason == Enums.TurnGoalKeeperSet)
-					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaConfirmacion"));
+					AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaConfirmacion"));
 				else if(reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaFalta)
-					ShowFault(fault); 
+					ShowFault(fault);
 			}
 			else
 			{
 				if (reason == Enums.TurnLost || reason == Enums.TurnStolen)	
-					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoContrarioRobo"));
+					AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoContrarioRobo"));
 				else if (reason == Enums.TurnTiroAPuerta)
-					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaAnuncio"));
+					AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaAnuncio"));
 				else if (reason == Enums.TurnGoalKeeperSet)
-					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaRecepcion2"));
+					AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaRecepcion2"));
 				else if (reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaFalta)
-					ShowFault(fault);						
+					ShowFault(fault);
 			}
 		}
 		
@@ -74,7 +141,7 @@
 			*/
 			
 			// @Embed(source='/Assets/MatchAssets.swf', symbol='MessageSpecialDobleAmarilla')
-			AddMessageSpecial("TODO Msg Falta", ResourceManager.getInstance().getClass("match", "FaltaPropia"));
+			AddMessage(SpecialClass, "TODO Msg Falta", ResourceManager.getInstance().getClass("match", "FaltaPropia"));
 		}
 		
 		// Se ha producido un pase al pie. Pudo haber conflicto o no, pero se resolvio sin producirse el robo.
@@ -83,62 +150,41 @@
 			if (conflicto != null)
 			{
 				if (!bUltimoPase)
-					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajePaseAlPieNoRobo"));
+					AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "MensajePaseAlPieNoRobo"));
 				else
-					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeUltimoPaseAlPieNoRobo"));
+					AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeUltimoPaseAlPieNoRobo"));
 			}
 			else
 			{
 				if (!bUltimoPase)
-					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajePaseAlPie"));
+					AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "MensajePaseAlPie"));
 				else
-					AddMessageTicker(ResourceManager.getInstance().getString("matchmsgs", "MensajeUltimoPaseAlPie"));
+					AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeUltimoPaseAlPie"));
 			}
 		}
 		
-		
 		public function ShowMsgGoalkeeperOutside() : void
 		{
-			AddMessageTutorial(ResourceManager.getInstance().getString("matchmsgs", "MensajeGoalkeeperOutside"));
+			AddMessage(TutorialClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeGoalkeeperOutside"));
 		}
 		
-		
-		public function AddMessageTicker(text : String) : void
+		public function AddMessage(messageClass:Class, ...args) : UIComponent
 		{
-			var newMsg : MessageTicker = new MessageTicker();
-			newMsg.Msg = text;
-			
+			var newMsg : UIComponent = new messageClass() as UIComponent;
+			(newMsg as Object).Init.apply(newMsg, args);
+
 			// We add our child, it takes care of removing itself
 			addElement(newMsg);
-		}
-		
-		public function AddMessageSpecial(text : String, imgClass : Class) : void
-		{
-			var newMsg  : MessageSpecial = new MessageSpecial();
-			newMsg.Init(text, imgClass);
 			
-			addElement(newMsg);
+			return newMsg;
 		}
 		
-		public function AddMessageLed(text : String, callback : Function) : void
-		{
-			var newMsg  : MessageLed = new MessageLed();
-			newMsg.Init(text, callback);
-			
-			addElement(newMsg);
-		}
-		
-		public function AddMessageTutorial(text : String) : void
-		{
-			var newMsg  : MessageTutorial = new MessageTutorial();
-			newMsg.Msg = text;
-			
-			addElement(newMsg);
-		}
-		
+		private const TutorialClass : Class = getDefinitionByName("GameView.Match.MessageTutorial") as Class; 
+		private const TickerClass : Class = getDefinitionByName("GameView.Match.MessageTicker") as Class;
+		private const SpecialClass : Class = getDefinitionByName("GameView.Match.MessageSpecial") as Class;
+		private const LedClass : Class = getDefinitionByName("GameView.Match.MessageLed") as Class;
+		private const MovieClipClass : Class = getDefinitionByName("GameView.Match.MessageMovieClip") as Class;
+
 	]]></fx:Script>
-	
-	<!-- El fondo del MsgTicker -->
-	<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='MatchTickerBg')" fillMode="clip" x="0" y="110" />
 	
 </s:Group>

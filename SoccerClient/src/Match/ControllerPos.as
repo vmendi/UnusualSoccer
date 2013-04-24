@@ -6,9 +6,12 @@ package Match
 	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
+	import flash.geom.ColorTransform;
 	import flash.geom.Point;
 	
 	import mx.resources.ResourceManager;
+	
+	import utils.MovieClipLabels;
 	
 	//
 	// Se encarga del controlador para posicionar una chapa (el portero)
@@ -83,10 +86,11 @@ package Match
 				
 				// Seleccionamos un color para la linea diferente en función de si la posición final es válida o no
 				var color:uint = _ColorLine;
+				
 				if (!this.IsValid())
-					Graphics.ChangeColorMultiplier(_Ghost, 1.0, 0.4, 0.4);
+					ChangeColorMultiplier(_Ghost, 1.0, 0.4, 0.4);
 				else
-					Graphics.ChangeColorMultiplier(_Ghost, 1.0, 1.0, 1.0);
+					ChangeColorMultiplier(_Ghost, 1.0, 1.0, 1.0);
 				
 				// Recolocamos el Ghost
 				_Ghost.x = EndPos.x; _Ghost.y = EndPos.y; 
@@ -95,6 +99,15 @@ package Match
 			{
 				ErrorMessages.LogToServer("WTF 123hg");
 			}
+		}
+		
+		static private function ChangeColorMultiplier(element: DisplayObject, r:Number, g:Number, b:Number): void
+		{
+			var colorTransform : ColorTransform = element.transform.colorTransform;
+			colorTransform.redMultiplier = r;
+			colorTransform.greenMultiplier = g;
+			colorTransform.blueMultiplier = b;
+			element.transform.colorTransform = colorTransform;
 		}
 		
 		//

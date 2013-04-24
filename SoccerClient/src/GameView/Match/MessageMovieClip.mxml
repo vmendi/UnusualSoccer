@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:UIComponent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" xmlns:mx="library://ns.adobe.com/flex/mx"
+				>
+	
+	<fx:Style source="../styles.css" />
+	
+	<fx:Script><![CDATA[
+		import mx.events.EffectEvent;
+		import mx.events.FlexEvent;
+		
+		import spark.components.Group;
+		
+		import utils.Delegate;
+		import utils.MovieClipLabels;
+		
+		public function get TheMovieClip() : MovieClip
+		{
+			return mMovieClip;
+		}
+		
+		public function Init(imgClass : Class, xCoord:Number, yCoord:Number, callback : Function) : void
+		{
+			mMovieClipClass = imgClass;
+			mCallback = callback;
+			mCoordX = xCoord;
+			mCoordY = yCoord;
+			
+			mMovieClip = LaunchMovieClip(mMovieClipClass, mCoordX, mCoordY, OnMovieClipEnd, this);
+		}
+		
+		private function OnMovieClipEnd() : void
+		{
+			(parent as Group).removeElement(this);
+			
+			if (mCallback != null)
+				mCallback();
+		}
+			
+		static private function LaunchMovieClip(mcClass:Class, x:Number, y:Number, callback:Function, parent:DisplayObjectContainer) : MovieClip
+		{
+			try
+			{
+				var mc : MovieClip = CreateMovieClip(mcClass, x, y, parent);
+				mc.gotoAndPlay(1);
+				
+				var labelEnd:String = "EndAnim";
+				
+				if (MovieClipLabels.HasLabel(labelEnd, mc)) 
+					MovieClipLabels.AddFrameScript(mc, labelEnd, Delegate.create(OnEndAnim, mc, callback));
+				else
+					throw new Error("WTF 9012c - El MovieClip " + mc.name + " no tiene la etiqueta " + labelEnd);
+			}
+			catch(e:Error)
+			{
+				ErrorMessages.LogToServer("WTF 193");
+			}
+			
+			return mc;
+		}
+		
+		static private function OnEndAnim(mc:MovieClip, callback:Function) : void
+		{
+			try
+			{
+				mc.gotoAndStop(1);
+								
+				if (callback != null)
+					callback();
+			}
+			catch(e:Error)
+			{
+				ErrorMessages.LogToServer("WTF 1293");
+			}
+		}
+			
+		static private function CreateMovieClip(cutScene:Class, x:Number, y:Number, parent:DisplayObjectContainer) : MovieClip
+		{
+			var item:MovieClip = new cutScene() as MovieClip;
+			
+			item.x = x;
+			item.y = y;
+
+			parent.addChild(item);
+			
+			return item;
+		}
+		
+		private var mMovieClip : MovieClip;
+		private var mMovieClipClass : Class;
+		private var mCallback : Function;
+		private var mCoordX : Number;
+		private var mCoordY : Number;
+
+	]]></fx:Script>
+	
+</mx:UIComponent>

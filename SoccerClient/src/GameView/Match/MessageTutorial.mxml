@@ -16,6 +16,11 @@
 		import utils.Delegate;
 		import utils.MovieClipListener;
 		
+		public function Init(msg : String) : void
+		{
+			mMsg = msg;
+		}
+		
 		protected function AddedToStageHandler(event:Event):void
 		{
 			MySequence.play();			
@@ -27,9 +32,6 @@
 		}
 		
 		[Bindable]
-		public function get Msg() : String { return mMsg; }
-		public function set Msg(msg : String) : void { mMsg = msg; }
-		
 		private var mMsg : String = null;
 	]]></fx:Script>
 	
@@ -85,7 +87,7 @@
 			 textAlign="left"
 			 verticalAlign="middle"
 			 styleName="whiteBoldBig"
-			 text="{Msg}"/>
+			 text="{mMsg}"/>
 	
 </s:Group>
 

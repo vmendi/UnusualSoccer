@@ -7,19 +7,7 @@ package utils
 		import flash.utils.*;
 		import flash.text.*;
 		import flash.events.*;
-	
-	
-		static public function AddFrameScript(mc:MovieClip, labelName:String, func : Function) : void
-		{
-			for (var i:int=0;i < mc.currentLabels.length;i++)
-			{
-				if (mc.currentLabels[i].name==labelName)
-				{
-					mc.addFrameScript(mc.currentLabels[i].frame-1, func);
-				}
-			}
-		}
-		
+			
 		public function MovieClipListener(target : MovieClip):void
 		{
 			mTarget = target;
