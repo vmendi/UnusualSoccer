@@ -178,7 +178,7 @@
 			
 			return newMsg;
 		}
-		
+				
 		private const TutorialClass : Class = getDefinitionByName("GameView.Match.MessageTutorial") as Class; 
 		private const TickerClass : Class = getDefinitionByName("GameView.Match.MessageTicker") as Class;
 		private const SpecialClass : Class = getDefinitionByName("GameView.Match.MessageSpecial") as Class;

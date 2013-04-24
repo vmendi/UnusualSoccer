@@ -19,7 +19,11 @@
 		protected function AddedToStageHandler(event:Event):void
 		{
 			MyMsg.filters = [MyMotionBlurFilter];
-			MySequence.play();
+			
+			mTickerQueue.push(this);
+			
+			if (mTickerQueue.length == 1)
+				MySequence.play();
 		}
 		
 		protected function MySequence_effectEndHandler(event:EffectEvent):void
@@ -33,12 +37,17 @@
 		}
 		
 		protected function ExitScroll_effectEndHandler(event:EffectEvent):void
-		{
+		{			
 			MyMsg.filters = [MyMotionBlurFilter];
+			
+			mTickerQueue.shift();
+			
+			if (mTickerQueue.length > 0)
+				mTickerQueue[0].MySequence.play();
 		}
 		
-		[Bindable]
-		private var mMsg : String;
+		[Bindable] private var mMsg : String;		
+		static private var mTickerQueue : Array = new Array();	
 		
 	]]></fx:Script>
 	
