@@ -477,7 +477,7 @@ package Match
 				var F : Number = Math.sqrt(diffVectDist*diffVectDist - D*D);
 				var I : Number = fromEnt.Radius + toEnt.Radius;
 				
-				if (F > I)
+				if (F >= I)
 					continue;
 				
 				// We have a collision
@@ -486,7 +486,7 @@ package Match
 				collisionInfo.Pos1 = fromEnt.GetPos().add(MathUtils.Multiply(capDirection, collisionDist));
 				collisionInfo.PhyEntity2 = toEnt;
 				collisionInfo.Pos2 = toEnt.GetPos();
-				
+								
 				// Now the velocities
 				//SetFixedExitVelocities(30, collisionInfo, capDirection);
 				CalcExitVelocities(collisionInfo, capDirection, capImpulse, collisionDist);
@@ -521,13 +521,20 @@ package Match
 			
 			collisionInfo.V1 = v1.subtract(MathUtils.Multiply(N, optimizedP * collisionInfo.PhyEntity2.Mass));
 			collisionInfo.V2 = v2.add(MathUtils.Multiply(N, optimizedP * collisionInfo.PhyEntity1.Mass));
-			
+						
 			var distV1 : Number = CalcTravelDistance(collisionInfo.V1.length * collisionInfo.PhyEntity1.Mass / MatchConfig.PixelsPerMeter,
 													 collisionInfo.PhyEntity1.Mass, collisionInfo.PhyEntity1.LinearDamping);
 			
-			collisionInfo.AfterCollision1 = collisionInfo.V1.clone();
-			collisionInfo.AfterCollision1.normalize(distV1);
-			collisionInfo.AfterCollision1 = collisionInfo.AfterCollision1.add(collisionInfo.Pos1);
+			if (MathUtils.ThresholdNotEqual(distV1, 0, 0.1))
+			{			
+				collisionInfo.AfterCollision1 = collisionInfo.V1.clone();
+				collisionInfo.AfterCollision1.normalize(distV1);
+				collisionInfo.AfterCollision1 = collisionInfo.AfterCollision1.add(collisionInfo.Pos1);				
+			}
+			else
+			{
+				collisionInfo.AfterCollision1 = collisionInfo.Pos1.clone();
+			}
 			
 			var distV2 : Number = CalcTravelDistance(collisionInfo.V2.length * collisionInfo.PhyEntity2.Mass / MatchConfig.PixelsPerMeter,
 													 collisionInfo.PhyEntity2.Mass, collisionInfo.PhyEntity2.LinearDamping);
@@ -537,9 +544,16 @@ package Match
 			if (collisionInfo.PhyEntity2 is Ball)
 				distV2 *= 0.80;
 			
-			collisionInfo.AfterCollision2 = collisionInfo.V2.clone();
-			collisionInfo.AfterCollision2.normalize(distV2);
-			collisionInfo.AfterCollision2 = collisionInfo.AfterCollision2.add(collisionInfo.Pos2);
+			if (MathUtils.ThresholdNotEqual(distV2, 0, 0.1))
+			{
+				collisionInfo.AfterCollision2 = collisionInfo.V2.clone();
+				collisionInfo.AfterCollision2.normalize(distV2);
+				collisionInfo.AfterCollision2 = collisionInfo.AfterCollision2.add(collisionInfo.Pos2);	
+			}
+			else
+			{
+				collisionInfo.AfterCollision2 = collisionInfo.Pos2;
+			}			
 		}
 		
 		private function SetFixedExitVelocities(dist : Number, collisionInfo : CollisionInfo, capDirection : Point) : void

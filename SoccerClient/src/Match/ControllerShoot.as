@@ -126,7 +126,7 @@ package Match
 				_Canvas.graphics.lineStyle(2, 0xFFFFFF, 0.5);
 				_Canvas.graphics.moveTo(collInfo.Pos1.x, collInfo.Pos1.y);
 				_Canvas.graphics.lineTo(collInfo.AfterCollision1.x, collInfo.AfterCollision1.y);
-				
+								
 				_Canvas.graphics.moveTo(collInfo.Pos2.x, collInfo.Pos2.y);
 				_Canvas.graphics.lineTo(collInfo.AfterCollision2.x, collInfo.AfterCollision2.y);
 			}
