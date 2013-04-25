@@ -581,7 +581,7 @@ package Match
 						
 			if (isNaN(n))
 				return 0;
-						
+
 			// And then it's easy to obtain the velocity (refer to the picture!)
 			return v0*Math.pow(R, n) * MatchConfig.PixelsPerMeter;
 		}

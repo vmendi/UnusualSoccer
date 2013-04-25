@@ -12,8 +12,6 @@
 		import Match.Fault;
 		import Match.Field;
 		
-		import flash.utils.getDefinitionByName;
-		
 		import mx.core.UIComponent;
 		import mx.events.FlexEvent;
 		import mx.resources.ResourceManager;
