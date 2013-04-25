@@ -3,11 +3,7 @@ package GameModel
 	import HttpService.MainService;
 	import HttpService.TransferModel.vo.SoccerPlayer;
 	
-<<<<<<< HEAD
 	import flash.external.ExternalInterface;
-=======
-	//import com.facebook.graph.Facebook;
->>>>>>> origin/tuentichapas
 	
 	import mx.binding.utils.BindingUtils;
 	import mx.collections.ArrayCollection;
@@ -24,11 +20,6 @@ package GameModel
 			// No necesitamos pasar por el InitialRefresh, no es una llamada a nuestro servidor
 
 			/////Facebook.api("/me/friends", OnFriendsLoaded);
-<<<<<<< HEAD
-=======
-			
-			//TODO funcion para recogerlo amigos de Tuenti
->>>>>>> origin/tuentichapas
 		}
 		/*
 		private function OnFriendsLoaded(response:Object, fail:Object) : void 

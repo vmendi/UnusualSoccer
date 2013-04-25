@@ -76,8 +76,7 @@ package
 			mSignature +='timestamp=' + theUnixEpoch;
 			mSignature +='title=' + theTitle;
 			mSignature +=AppConfig.SECRET;
-			
-<<<<<<< HEAD
+
 			//la firma es el hash MD5 de los parametros concatenados alfabéticamente key + value
 			var sign:String = MD5.hash(mSignature);
 			
@@ -94,12 +93,12 @@ package
 			
 			//Decimos a Javascript que ejecute la llamada con los parametros configurados
 			ExternalInterface.call("publishMessage", params);
-=======
+			////////////////////
 			// Publicacion asumiendo que tenemos el permiso?
 			if (directPublish)
 			{
 				//Facebook.api("/me/feed", onPublishResponse, data, URLRequestMethod.POST);
-				//TODO Función para publicar en el muro de Tuenti
+				//TODO FunciÃ³n para publicar en el muro de Tuenti
 				
 				function onPublishResponse(response : Object, fail : Object) : void
 				{
@@ -118,7 +117,7 @@ package
 					//else { alert('Post was not published.'); }
 				}
 			}
->>>>>>> origin/tuentichapas
+			////////////////////
 		}
 		
 		// Intento de obtener permisos y publicar. Como lo hacemos al menos en dos sitios (MatchEndDialog y SpecialTrainingCompleteDialog), 

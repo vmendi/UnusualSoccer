@@ -26,34 +26,21 @@ package
 		
 		static public function Init(dobject:DisplayObject) : void
 		{			
-<<<<<<< HEAD
 			var uid : String = AppConfig.GAMER_ID.toString();
 			//ExternalInterface.call("_kmq.push", ['identify', uid]);
-=======
-			var uid : String = AppConfig.USER_ID;
-			ExternalInterface.call("_kmq.push", ['identify', uid]);
->>>>>>> origin/tuentichapas
 		}
 		
 		static public function ReportEvent(event:String, properties:Object) : void
 		{
 			//var uid : String = SoccerClient.GetFacebookFacade().FacebookID;
 			//Santi
-<<<<<<< HEAD
 			var uid : String = AppConfig.GAMER_ID.toString();
-=======
-			var uid : String = AppConfig.GAMER_ID;
->>>>>>> origin/tuentichapas
 			
 			// Kontagent
 			//sendToURL(new URLRequest("http://api.geo.kontagent.net/api/v1/75bcc0495d1b49d8a5c8ad62d989dcf7/evt/?s="+uid+"&n="+event));
 			
 			// Kissmetrics
-<<<<<<< HEAD
 			//ExternalInterface.call("_kmq.push", ['record', event, properties]);
-=======
-			ExternalInterface.call("_kmq.push", ['record', event, properties]);
->>>>>>> origin/tuentichapas
 		}
 		
 		static public function ReportPageView(page:String) : void

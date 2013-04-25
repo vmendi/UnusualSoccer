@@ -5,15 +5,15 @@ Metadata
 --------
 Bytes         Value
 ----------    -----
-      1019    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"> <rdf:Description rdf:about="" xmlns:xmp="http://ns.adobe.com/xap/1.0/"> <xmp:CreatorTool>Adobe Flash Professional CS5</xmp:CreatorTool> <xmp:CreateDate>2010-09-22T13:12:54+02:00</xmp:CreateDate> <xmp:MetadataDate>2012-10-01T14:43:33+02:00</xmp:MetadataDate> <xmp:ModifyDate>2012-10-01T14:43:33+02:00</xmp:ModifyDate> </rdf:Description> <rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/"> <dc:format>application/x-shockwave-flash</dc:format> </rdf:Description> <rdf:Description rdf:about="" xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/" xmlns:stRef="http://ns.adobe.com/xap/1.0/sType/ResourceRef#"> <xmpMM:DerivedFrom rdf:parseType="Resource"> <stRef:instanceID>xmp.iid:0EF73C9CC50BE2118346C8790A5B79ED</stRef:instanceID> <stRef:documentID>xmp.did:990410F23AC6DF119902A701AA3C0565</stRef:documentID> <stRef:originalDocumentID>xmp.did:990410F23AC6DF119902A701AA3C0565</stRef:originalDocumentID> </xmpMM:DerivedFrom> <xmpMM:DocumentID>xmp.did:0FF73C9CC50BE2118346C8790A5B79ED</xmpMM:DocumentID> <xmpMM:InstanceID>xmp.iid:0FF73C9CC50BE2118346C8790A5B79ED</xmpMM:InstanceID> <xmpMM:OriginalDocumentID>xmp.did:990410F23AC6DF119902A701AA3C0565</xmpMM:OriginalDocumentID> </rdf:Description> </rdf:RDF> 
+      1019    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"> <rdf:Description rdf:about="" xmlns:xmp="http://ns.adobe.com/xap/1.0/"> <xmp:CreatorTool>Adobe Flash Professional CS5</xmp:CreatorTool> <xmp:CreateDate>2010-09-22T13:12:54+02:00</xmp:CreateDate> <xmp:MetadataDate>2013-04-23T12:37:34+02:00</xmp:MetadataDate> <xmp:ModifyDate>2013-04-23T12:37:34+02:00</xmp:ModifyDate> </rdf:Description> <rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/"> <dc:format>application/x-shockwave-flash</dc:format> </rdf:Description> <rdf:Description rdf:about="" xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/" xmlns:stRef="http://ns.adobe.com/xap/1.0/sType/ResourceRef#"> <xmpMM:DerivedFrom rdf:parseType="Resource"> <stRef:instanceID>xmp.iid:61606DC201ACE211AD25822AF0900B97</stRef:instanceID> <stRef:documentID>xmp.did:990410F23AC6DF119902A701AA3C0565</stRef:documentID> <stRef:originalDocumentID>xmp.did:990410F23AC6DF119902A701AA3C0565</stRef:originalDocumentID> </xmpMM:DerivedFrom> <xmpMM:DocumentID>xmp.did:62606DC201ACE211AD25822AF0900B97</xmpMM:DocumentID> <xmpMM:InstanceID>xmp.iid:62606DC201ACE211AD25822AF0900B97</xmpMM:InstanceID> <xmpMM:OriginalDocumentID>xmp.did:990410F23AC6DF119902A701AA3C0565</xmpMM:OriginalDocumentID> </rdf:Description> </rdf:RDF> 
 
 Frame #    Frame Bytes    Total Bytes    Scene
 -------    -----------    -----------    -----
-      1         995723         995723    Scene 1 (AS 3.0 Classes Export Frame)
+      1         995755         995755    Scene 1 (AS 3.0 Classes Export Frame)
 
 Scene      Shape Bytes    Text Bytes    ActionScript Bytes
 -------    -----------    ----------    ------------------
-Scene 1              0             0                 17689
+Scene 1              0             0                 17690
 
 Symbol                                     Shape Bytes    Text Bytes    ActionScript Bytes
 ---------------------------------------    -----------    ----------    ------------------
@@ -97,7 +97,7 @@ BotonSpecialSkill08_en_US                           82            57            
 BotonSpecialSkill09                                 82            57                     0
 BotonSpecialSkill09_en_US                           82            54                     0
 BotonSpecialSkill12                                214            62                     0
-BotonSpecialSkill12_en_US                          206            52                     0
+BotonSpecialSkill12_en_US                          207            52                     0
 BotonSpecialSkill13                                  0             0                     0
 BotonSpecialSkill13_en_US                          268            63                     0
 BotonSkill1                                          0             0                     0
@@ -249,12 +249,12 @@ Tweened Shapes: 5470 bytes
 
 Font Name                   Bytes         Characters
 ------------------------    ----------    ----------
-LED-BOARD-REVERSED               84876     '15ABCDEFGHIJLMNOPRSTUVWXYadeghilmnoprstv º
-HelveticaNeueLT-BoldCond         10767     !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ ¡ÁÉÍÑÓÖÚáéíñóúˆ˜–—‘’‚“”„†‡•…‰‹›€™
+LED-BOARD-REVERSED               84878     '15ABCDEFGHIJLMNOPRSTUVWXYadeghilmnoprstv º
+HelveticaNeueLT-BoldCond         10768     !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ ¡ÁÉÍÑÓÖÚáéíñóúˆ˜–—‘’‚“”„†‡•…‰‹›€™
 
 ActionScript Bytes    Location
 ------------------    --------
-             17689    Scene 1:Frame 1
+             17690    Scene 1:Frame 1
 
 Bitmap                       Compressed    Original      Compression
 -------------------------    ----------    ----------    -----------
@@ -264,7 +264,7 @@ FondoBombillas.png                  943        404320    Lossless
 Estrellas.png                      1055         87376    Lossless
 TarjetaAmarilla.png                 802          7644    JPEG Quality=80
 TarjetaRoja.png                     789          7644    JPEG Quality=80
-Field_en_US.png                   74878       1732800    JPEG Quality=80
+Field_en_US.png                   74881       1732800    JPEG Quality=80
 ChatFondo.png                       538         25376    Lossless
 BigBadgesArgentina.png             1176          4096    Lossless
 BigBadgesAustralia.png             1469          4096    Lossless
@@ -273,7 +273,7 @@ BigBadgesBelgium.png                835          4096    Lossless
 BigBadgesBrazil.png                1640          4096    Lossless
 BigBadgesCanada.png                 910          4096    Lossless
 BigBadgesChile.png                 1740          4096    Lossless
-BigBadgesChina.png                 1241          4096    Lossless
+BigBadgesChina.png                 1242          4096    Lossless
 BigBadgesCzechRep.png              1610          4096    Lossless
 BigBadgesEngland.png               1072          4096    Lossless
 BigBadgesFrance.png                1016          4096    Lossless
@@ -309,7 +309,7 @@ CapJuegoShadow.png                  971          6888    Lossless
 ArgentinaSmall.png                 1198          3136    Lossless
 AustraliaSmall.png                 1249          3136    Lossless
 AustriaSmall.png                   1092          3136    Lossless
-BelgiumSmall.png                   1049          3136    Lossless
+BelgiumSmall.png                   1050          3136    Lossless
 BrazilSmall.png                    1542          3136    Lossless
 CanadaSmall.png                    1001          3136    Lossless
 ChileSmall.png                     1214          3136    Lossless
@@ -336,7 +336,7 @@ SouthKoreaSmall.png                1212          3136    Lossless
 SpainSmall.png                     1184          3136    Lossless
 SwedenSmall.png                    1132          3136    Lossless
 UruguaySmall.png                   1275          3136    Lossless
-USASmall.png                       1226          3136    Lossless
+USASmall.png                       1227          3136    Lossless
 ArgentinaSmallAw.png               1284          3136    Lossless
 AustraliaSmallAw.png               1294          3136    Lossless
 AustriaSmallAw.png                  785          3136    Lossless
@@ -357,7 +357,7 @@ JapanSmallAw.png                   1180          3136    Lossless
 MexicoSmallAw.png                   920          3136    Lossless
 NetherlandsSmallAw.png             1019          3136    Lossless
 NorwaySmallAW.png                  1136          3136    Lossless
-PolandSmallAw.png                  1064          3136    Lossless
+PolandSmallAw.png                  1065          3136    Lossless
 PortugalSmallAw.png                1090          3136    Lossless
 RussiaSmallAw.png                   988          3136    Lossless
 ScotlandSmallAw.png                1328          3136    Lossless
@@ -368,7 +368,7 @@ SpainSmallAw.png                   1006          3136    Lossless
 SwedenSmallAw.png                  1343          3136    Lossless
 UruguaySmallAw.png                 1083          3136    Lossless
 USASmallAw.png                     1372          3136    Lossless
-CapJuegoBase.png                   2577          6888    Lossless
+CapJuegoBase.png                   2578          6888    Lossless
 CapGameAlmeria.png                 1079          3136    Lossless
 CapGameAthletic.png                1072          3136    Lossless
 CapGameAtletico.png                1154          3136    Lossless
@@ -437,7 +437,7 @@ balon0014.png                       880          1936    Lossless
 balon0015.png                       876          1936    Lossless
 balon0016.png                       884          1936    Lossless
 balon0017.png                       876          1936    Lossless
-balon0018.png                       891          1936    Lossless
+balon0018.png                       892          1936    Lossless
 balon0019.png                       875          1936    Lossless
 balon0020.png                       897          1936    Lossless
 balon0021.png                       889          1936    Lossless
@@ -449,7 +449,7 @@ balon0026.png                       893          1936    Lossless
 balon0027.png                       912          1936    Lossless
 balon0028.png                       883          1936    Lossless
 balon0029.png                       888          1936    Lossless
-balon0030.png                       891          1936    Lossless
+balon0030.png                       892          1936    Lossless
 balon0031.png                       895          1936    Lossless
 balon0032.png                       880          1936    Lossless
 balon0033.png                       890          1936    Lossless
@@ -466,7 +466,7 @@ balon0043.png                       902          1936    Lossless
 balon0044.png                       898          1936    Lossless
 balon0045.png                       881          1936    Lossless
 balon0046.png                       893          1936    Lossless
-balon0047.png                       891          1936    Lossless
+balon0047.png                       892          1936    Lossless
 balon0048.png                       893          1936    Lossless
 balon0049.png                       884          1936    Lossless
 balon0050.png                       888          1936    Lossless
@@ -482,12 +482,12 @@ balon0059.png                       871          1936    Lossless
 balon0060.png                       889          1936    Lossless
 balon0061.png                       888          1936    Lossless
 balon0062.png                       895          1936    Lossless
-balon0063.png                       891          1936    Lossless
+balon0063.png                       892          1936    Lossless
 balon0064.png                       906          1936    Lossless
 balon0065.png                       898          1936    Lossless
 balon0066.png                       883          1936    Lossless
 balon0067.png                       889          1936    Lossless
-balon0068.png                       891          1936    Lossless
+balon0068.png                       892          1936    Lossless
 balon0069.png                       880          1936    Lossless
 balon0070.png                       899          1936    Lossless
 balon0071.png                       880          1936    Lossless
@@ -521,7 +521,7 @@ balon0098.png                       881          1936    Lossless
 balon0099.png                       876          1936    Lossless
 balon0100.png                       868          1936    Lossless
 balon0101.png                       884          1936    Lossless
-balon0102.png                       891          1936    Lossless
+balon0102.png                       892          1936    Lossless
 balon0103.png                       879          1936    Lossless
 balon0104.png                       880          1936    Lossless
 balon0105.png                       878          1936    Lossless
@@ -549,7 +549,7 @@ balon0126.png                       876          1936    Lossless
 balon0127.png                       880          1936    Lossless
 balon0128.png                       873          1936    Lossless
 balon0129.png                       876          1936    Lossless
-balon0130.png                       891          1936    Lossless
+balon0130.png                       892          1936    Lossless
 balon0131.png                       881          1936    Lossless
 balon0132.png                       884          1936    Lossless
 balon0133.png                       873          1936    Lossless
@@ -561,7 +561,7 @@ balon0138.png                       910          1936    Lossless
 balon0139.png                       889          1936    Lossless
 balon0140.png                       887          1936    Lossless
 balon0141.png                       893          1936    Lossless
-balon0142.png                       906          1936    Lossless
+balon0142.png                       907          1936    Lossless
 balon0143.png                       903          1936    Lossless
 balon0144.png                       895          1936    Lossless
 balon0145.png                       892          1936    Lossless
@@ -572,7 +572,7 @@ balon0149.png                       888          1936    Lossless
 balon0150.png                       877          1936    Lossless
 balon0151.png                       896          1936    Lossless
 balon0152.png                       896          1936    Lossless
-balon0153.png                       906          1936    Lossless
+balon0153.png                       907          1936    Lossless
 balon0154.png                       900          1936    Lossless
 balon0155.png                       884          1936    Lossless
 balon0156.png                       880          1936    Lossless
@@ -666,7 +666,7 @@ balon0243.png                       892          1936    Lossless
 balon0244.png                       903          1936    Lossless
 balon0245.png                       897          1936    Lossless
 balon0246.png                       892          1936    Lossless
-balon0247.png                       891          1936    Lossless
+balon0247.png                       892          1936    Lossless
 balon0248.png                       897          1936    Lossless
 balon0249.png                       887          1936    Lossless
 balon0250.png                       892          1936    Lossless
@@ -737,7 +737,7 @@ balon0314.png                       875          1936    Lossless
 balon0315.png                       895          1936    Lossless
 balon0316.png                       876          1936    Lossless
 balon0317.png                       888          1936    Lossless
-balon0318.png                       891          1936    Lossless
+balon0318.png                       892          1936    Lossless
 balon0319.png                       879          1936    Lossless
 balon0320.png                       894          1936    Lossless
 balon0321.png                       903          1936    Lossless
@@ -761,7 +761,7 @@ balon0338.png                       894          1936    Lossless
 balon0339.png                       899          1936    Lossless
 balon0340.png                       885          1936    Lossless
 balon0341.png                       892          1936    Lossless
-balon0342.png                       891          1936    Lossless
+balon0342.png                       892          1936    Lossless
 balon0343.png                       892          1936    Lossless
 balon0344.png                       896          1936    Lossless
 balon0345.png                       900          1936    Lossless
@@ -780,7 +780,7 @@ balon0357.png                       865          1936    Lossless
 balon0358.png                       870          1936    Lossless
 balon0359.png                       860          1936    Lossless
 balon0360.png                       867          1936    Lossless
-Field-1-1.png                    141020       1732800    JPEG Quality=90
+Field-1-1.png                    141025       1732800    JPEG Quality=90
 BadgesAlmeria.png                   923          1900    Lossless
 BadgesABilbao.png                   906          1584    Lossless
 BadgesAMadrid.png                   679          1584    Lossless

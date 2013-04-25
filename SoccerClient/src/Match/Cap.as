@@ -168,25 +168,32 @@ package Match
 		
 		private function OnMouseDown(e : MouseEvent) : void
 		{
-			MatchMain.Ref.Game.TheInterface.OnClickCap(this);
+			if(MatchMain.Ref != null)
+				MatchMain.Ref.Game.TheInterface.OnClickCap(this);
 		}
 		
 		private function OnMouseOver(e : MouseEvent) : void
 		{	
-			if (TweenMax.getTweensOf(OnRealOver).length == 0)
-				TweenMax.delayedCall(0.8, OnRealOver);
+			if(MatchMain != null)
+				if (TweenMax.getTweensOf(OnRealOver).length == 0)
+					TweenMax.delayedCall(0.8, OnRealOver);
 		}
 		private function OnRealOver() : void
 		{
-			MatchMain.Ref.Game.TheInterface.OnOverCap(this);
+			if(MatchMain.Ref != null)
+				MatchMain.Ref.Game.TheInterface.OnOverCap(this);
 		}
 		private function OnMouseOut(e : MouseEvent) : void
 		{
-			// Si habia algun over pendiente, lo cancelamos
-			if (TweenMax.getTweensOf(OnRealOver).length > 0)
-				TweenMax.killDelayedCallsTo(OnRealOver);
-			
-			MatchMain.Ref.Game.TheInterface.OnOutCap(this);
+			if(MatchMain.Ref != null)
+			{
+				// Si habia algun over pendiente, lo cancelamos
+				if (TweenMax.getTweensOf(OnRealOver).length > 0)
+					TweenMax.killDelayedCallsTo(OnRealOver);
+				
+				
+					MatchMain.Ref.Game.TheInterface.OnOutCap(this);
+			}
 		}
 		
 		// Dispara con una fuerza sobre una chapa. La fueza debe especificarse entre 0, 1

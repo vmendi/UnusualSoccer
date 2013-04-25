@@ -159,11 +159,7 @@ package
 			
 			//if (SoccerClient.GetFacebookFacade() != null && SoccerClient.GetFacebookFacade().FacebookID != null)
 			//Santi
-<<<<<<< HEAD
 			if (AppConfig.GAMER_ID != null)
-=======
-			if (SoccerClient.GetFacebookFacade() != null && AppConfig.GAMER_ID != null)
->>>>>>> origin/tuentichapas
 				//facebookID = SoccerClient.GetFacebookFacade().FacebookID;
 				facebookID = AppConfig.GAMER_ID;
 			

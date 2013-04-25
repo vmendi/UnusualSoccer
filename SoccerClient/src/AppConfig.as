@@ -20,7 +20,7 @@ package
 		static public var SIGNATURE			: String = null;
 		static public var USER_NAME			: String = null;
 		static public var SESSION_KEY		: String = null;
-<<<<<<< HEAD
+
 		static public var TIME_STAMP		: Number = 0;
 		static public var USER_ID			: String = null;		
 		static public var APP_ID   			: String = null;
@@ -30,11 +30,6 @@ package
 		
 		static public var DEV_SIGNATURE		: String = 'Tuenti20kind0fr0ckZ';
 		static public var DEV_TIMESTAMP		: Number = 0;
-=======
-		static public var TIME_STAMP		: String = null;
-		static public var USER_ID			: String = null;		
-		static public var APP_ID   			: String = null;
->>>>>>> origin/tuentichapas
 						
 		static public var FAKE_SESSION_KEY 	: String = null;
 		static public var TEST 				: String = null;
@@ -49,7 +44,6 @@ package
 		{
 			if (parameters.hasOwnProperty("VersionID"))
 				VERSION_ID = parameters["VersionID"];
-<<<<<<< HEAD
 			
 			//Santi: Boolean, para saber si accedemos al juego desde fuera de tuenti... se usa para crear la fakesession
 			if (parameters.hasOwnProperty("Remote"))
@@ -61,25 +55,13 @@ package
 			if (parameters.hasOwnProperty("RealtimeServer"))
 				REALTIME_SERVER = parameters["RealtimeServer"];
 						
-			
+			/*
 			// Quitamos la / final, nos conviene para que luego quien sea concatene respecto al root (/Imgs/...)
 			if (parameters.hasOwnProperty("CanvasPage"))
 				CANVAS_PAGE = parameters["CanvasPage"];
 			
 			if (parameters.hasOwnProperty("CanvasUrl"))
-				CANVAS_URL = parameters["CanvasUrl"];
-			
-=======
-			
-			if (parameters.hasOwnProperty("Remote"))
-				REMOTE = parameters["Remote"];
-			
-			if (parameters.hasOwnProperty("RemoteServer"))
-				REMOTE_SERVER = parameters["RemoteServer"];
-			
-			if (parameters.hasOwnProperty("RealtimeServer"))
-				REALTIME_SERVER = parameters["RealtimeServer"];
-						
+				CANVAS_URL = parameters["CanvasUrl"];*/
 			
 			// Quitamos la / final, nos conviene para que luego quien sea concatene respecto al root (/Imgs/...)
 			if (parameters.hasOwnProperty("CanvasPage"))
@@ -88,7 +70,6 @@ package
 			if (parameters.hasOwnProperty("CanvasUrl"))
 				CANVAS_URL = parameters["CanvasUrl"].substr(0, parameters["CanvasUrl"].length-1);
 			
->>>>>>> origin/tuentichapas
 			
 			if (parameters.hasOwnProperty("TUENTI_locale"))
 				LOCALE = parameters["TUENTI_locale"];	
@@ -120,8 +101,6 @@ package
 			if (parameters.hasOwnProperty("TUENTI_AppId"))
 				APP_ID = parameters["TUENTI_AppId"];
 			
-			
-<<<<<<< HEAD
 			if (parameters.hasOwnProperty("FakeSessionKey"))parameters["FakeSessionKey"];
 				FAKE_SESSION_KEY = parameters["FakeSessionKey"];
 			
@@ -136,17 +115,6 @@ package
 			
 			if (parameters.hasOwnProperty("avatar"))
 				AVATAR = parameters["avatar"];
-=======
-			if (parameters.hasOwnProperty("FakeSessionKey"))
-				FAKE_SESSION_KEY = parameters["FakeSessionKey"];
-			
-			if (parameters.hasOwnProperty("Test"))
-				TEST = parameters["Test"];
-			
-			
-			if (parameters.hasOwnProperty("request_ids"))
-				REQUEST_IDS = new ArrayCollection(parameters["request_ids"].split(","));
->>>>>>> origin/tuentichapas
 		}
 		
 		/*static public function Init(parameters : Object) : void

@@ -57,7 +57,7 @@ package Match
 			
 			if (!MatchConfig.DrawBackground)
 				Visual.visible = false;
-						
+			
 			// Crea objetos físicos para gestionar el estadio
 			CreatePhysicWalls();
 		}

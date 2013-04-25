@@ -158,7 +158,11 @@ package Match
 			// - Los movieclips hijos hacen crecer al padre, en este caso la capa de GUI.
 			// - La capa de GUI sí que está mouseEnabled, como debe de ser, así q es ésta la que no deja pasar el ratón
 			//   hasta el campo.
-			ChatLayer = MatchMain.Ref.addChild(new Chat()) as Chat;
+			
+			//Santi: Quitamos el Chat del juego por petición de Fran. (19/4/2013)
+			//ChatLayer = MatchMain.Ref.addChild(new Chat()) as Chat;
+			
+
 		}
 		
 		public function Draw(elapsed:Number) : void
@@ -1095,7 +1099,8 @@ package Match
 		public function OnClientChatMsg(msg : String) : void
 		{
 			// Simplemente dejamos que lo gestione el componente de chat
-			ChatLayer.AddLine(msg);
+			//Santi: en TuentiChapas eliminamos el chat.
+			//ChatLayer.AddLine(msg);
 		}
 		
 		public function get IDString() : String 

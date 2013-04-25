@@ -10,6 +10,7 @@ package Match
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
+	import mx.controls.Image;
 	import mx.resources.ResourceManager;
 	
 	import utils.MovieClipMouseDisabler;
@@ -42,12 +43,12 @@ package Match
 			ctInput = mcChat["mcInput"]["ctInput"];
 									
 			ctInput.maxChars = MAX_CHARS;	
-						
+
 			addEventListener(Event.ADDED_TO_STAGE, OnAddedToStage);
 		}
 		
 		private function OnAddedToStage(e:Event) : void
-		{			
+		{
 			removeEventListener(Event.ADDED_TO_STAGE, OnAddedToStage);
 			addEventListener(Event.REMOVED_FROM_STAGE, OnRemovedFromStage);
 			
