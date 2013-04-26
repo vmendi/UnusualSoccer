@@ -29,26 +29,26 @@
 		public function ShowFinishPart(part:int, callback:Function) : void
 		{						
 			if (part == 1)
-				AddMessage(LedClass, "TODO - Fin de la primera parte", callback); 
+				AddMessage(LedClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeFinTiempo1"), callback); 
 			else if (part == 2)
-				AddMessage(LedClass, "TODO - Fin del partido", callback);
+				AddMessage(LedClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeFinPartido"), callback);
 			else
 				throw new Error("Unknown part");
 		}
 		
 		public function ShowMensajeSkill(idSkill:int) : void
 		{
-			AddMessage(SpecialClass, "TODOOO", ResourceManager.getInstance().getClass("match", "MensajeSkill" + idSkill));
+			AddMessage(SpecialClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeSkill" + idSkill), ResourceManager.getInstance().getClass("match", "MensajeSkill" + idSkill + "Icon"));
 		}
 		
 		public function ShowGoalScored(validity:int, callback:Function) : void
 		{						
 			if (validity == Enums.GoalValid)
-				AddMessage(LedClass, "GOOOOL", callback);
+				AddMessage(LedClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeGol"), callback);
 			else if (validity == Enums.GoalInvalidNoDeclarado)
-				AddMessage(LedClass, "TODO Gol no declarado", callback);
+				AddMessage(LedClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeGolInvalido"), callback); // No declarado
 			else if (validity == Enums.GoalInvalidPropioCampo)
-				AddMessage(LedClass, "TODO Gol propio campo", callback);
+				AddMessage(LedClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeGolInvalido"), callback); // Propio campo
 			else
 				throw new Error("Validez del gol desconocida");
 		}
@@ -127,19 +127,18 @@
 		
 		private function ShowFault(fault : Fault) : void
 		{
-			/*
 			if (fault.YellowCard && fault.RedCard)
-				item.Tarjeta.gotoAndStop("dobleamarilla");
+				AddMessage(SpecialClass, ResourceManager.getInstance().getString("matchmsgs", "FaltaTarjetaDobleAmarilla"),
+										 ResourceManager.getInstance().getClass("matchmsgs", "FaltaTarjetaDobleAmarillaIcon")); // Doble Amarilla
 			else if (fault.RedCard)
-					item.Tarjeta.gotoAndStop("roja");
+				AddMessage(SpecialClass, ResourceManager.getInstance().getString("matchmsgs", "FaltaTarjetaRoja"),
+										 ResourceManager.getInstance().getClass("matchmsgs", "FaltaTarjetaRojaIcon")); // Roja
 			else if (fault.YellowCard)
-				item.Tarjeta.gotoAndStop("amarilla");
+				AddMessage(SpecialClass, ResourceManager.getInstance().getString("matchmsgs", "FaltaTarjetaAmarilla"),
+										 ResourceManager.getInstance().getClass("matchmsgs", "FaltaTarjetaAmarillaIcon")); // Amarilla
 			else
-				item.Tarjeta.gotoAndStop(0);
-			*/
-			
-			// @Embed(source='/Assets/MatchAssets.swf', symbol='MessageSpecialDobleAmarilla')
-			AddMessage(SpecialClass, "TODO Msg Falta", ResourceManager.getInstance().getClass("match", "FaltaPropia"));
+				AddMessage(SpecialClass, ResourceManager.getInstance().getString("matchmsgs", "Falta"),
+										 ResourceManager.getInstance().getClass("matchmsgs", "MessageSpecialWhistle"));
 		}
 		
 		// Se ha producido un pase al pie. Pudo haber conflicto o no, pero se resolvio sin producirse el robo.
