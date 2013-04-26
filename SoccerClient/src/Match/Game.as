@@ -61,7 +61,7 @@ package Match
 		private var _State:int = GameState.NotInit;
 		private var _TicksInCurState:int;
 		private var _Part:int;
-		private var _RemainingShots:int;						// Nº de golpes restantes permitidos antes de perder el turno
+		private var _RemainingShots:int;					// Nº de golpes restantes permitidos antes de perder el turno
 		private var _RemainingPasesAlPie:int;				// No de pases al pie que quedan
 		private var _TimeSecs:Number;						// Tiempo en segundos que queda de la "mitad" actual del partido
 		private var _Timeout:Number;						// Tiempo en segundos que queda para que ejecutes un disparo
@@ -335,7 +335,7 @@ package Match
 					if (TheGamePhysics.IsGoal)
 					{	
 						// Equipo que ha marcado el gol
-						var scorerTeam : Team = TheGamePhysics.ScorerTeam();
+						var scorerTeam : Team = TheGamePhysics.ScorerTeam;
 						
 						// Comproba si ha metido un gol válido, para ello se debe cumplir lo siguiente:
 						//	 - El jugador debe haber declarado "Tiro a Puerta"
@@ -343,7 +343,7 @@ package Match
 						//	   que tenga la habilidad especial de "Tiroagoldesdetupropiocampo"
 						var validity : int = Enums.GoalValid;
 						
-						if (!TheGamePhysics.IsSelfGoal())	// En propia meta siempre es gol
+						if (!TheGamePhysics.IsSelfGoal)	// En propia meta siempre es gol
 						{
 							if (!scorerTeam.IsTeamPosValidToScore())
 								validity = Enums.GoalInvalidPropioCampo;				
@@ -479,7 +479,7 @@ package Match
 			VerifyStateOnServerMessage(GameState.WaitingCommandShoot, true, idPlayer, "OnClientShoot");
 			
 			var shooter : Cap = GetCap(idPlayer, capID);
-			var shootInfo : ShootInfo = new ShootInfo(new Point(dirX, dirY), impulse);
+			var shooterShot : ShootInfo = new ShootInfo(new Point(dirX, dirY), impulse);
 			
 			if (ReasonTurnChanged == Enums.TurnTiroAPuerta && MatchConfig.ParallelGoalkeeper)
 			{
@@ -498,20 +498,23 @@ package Match
 				
 				if (_ScoreBalancer.IsAutoGoalKeeper && Field.IsCapCenterInsideBigArea(enemyGoalkeeper))
 				{
-					var goalkeeperShoot : ShootInfo = TheGamePhysics.NewGoalkeeperPrediction(shooter, shootInfo);
+					var goalkeeperShot : ShootInfo = TheGamePhysics.NewGoalkeeperPrediction(shooter, shooterShot);
 					
 					// Hemos detectado gol?
-					if (goalkeeperShoot != null)
+					if (goalkeeperShot != null)
 					{
 						// Decidimos si queremos pararnosla o no
-						if (_ScoreBalancer.IsGoalGoodIdea(shooter.OwnerTeam, goalkeeperShoot))
+						if (_ScoreBalancer.IsGoalGoodIdea(shooter.OwnerTeam, goalkeeperShot))
 						{
-							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, TheGamePhysics.RecalcShotToAllowGoal(shooter, shootInfo, goalkeeperShoot));
+							OnClientChatMsg("Goal is a good idea");
+							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, shooter, shooterShot, goalkeeperShot, false);
 						}
 						else
 						{
+							OnClientChatMsg("Goal is NOT a good idea");
+							
 							// El gol no es buena idea, nos la paramos
-							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, goalkeeperShoot);
+							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, shooter, shooterShot, goalkeeperShot, true);
 							
 							// Si el portero es automatico es como cuando se anuncia el tiro a puerta, el tiro es ya el ultimo
 							_RemainingShots = 1;
@@ -534,13 +537,13 @@ package Match
 				
 				// Aplicamos habilidad especial
 				if (shooter.OwnerTeam.IsUsingSkill(Enums.Superpotencia))
-					shootInfo.Impulse *= MatchConfig.PowerMultiplier;
+					shooterShot.Impulse *= MatchConfig.PowerMultiplier;
 				
 				// Comienza la simulacion!
 				ChangeState(GameState.Simulating);
 				
 				// Ejecucion del tiro del atacante
-				TheGamePhysics.Shoot(shooter, shootInfo);
+				TheGamePhysics.Shoot(shooter, shooterShot);
 			}
 		}
 		
@@ -979,10 +982,7 @@ package Match
 			// Vemos los futbolistas que han acabado dentro del area pequeña en el turno anterior, los sacamos fuera
 			_Team1.EjectPlayersInsideSmallArea();
 			_Team2.EjectPlayersInsideSmallArea();
-			
-			// Nos aseguramos de resetear el linear damping del portero por si en el tiro anterior hemos hecho un AutoGoalkeeper
-			CurrTeam.GoalKeeper.LinearDamping = MatchConfig.CapLinearDamping;
-			
+						
 			// Reseteamos los contadores de tiros
 			_RemainingShots = MatchConfig.MaxHitsPerTurn;
 			_RemainingPasesAlPie = MatchConfig.MaxNumPasesAlPie;

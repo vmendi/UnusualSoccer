@@ -132,8 +132,8 @@ package Match
 					 allowSleep: true, 
 					 linearDamping: MatchConfig.CapLinearDamping, 
 					 angularDamping: MatchConfig.CapLinearDamping,
-					 friction: .3, 
-					 restitution: .8
+					 friction: 0.3, 
+					 restitution: 0.8
 			};	
 		}
 		
@@ -414,6 +414,14 @@ package Match
 				PhyEntity.SetMass(_PhyObject, 0);
 			else
 				PhyEntity.SetMass(_PhyObject, MatchConfig.CapMass);
+		}
+		
+		static public function AnyIsCap(ent1 : PhyEntity, ent2 : PhyEntity) : Cap
+		{
+			if (ent1 is Cap) return ent1 as Cap;
+			if (ent2 is Cap) return ent2 as Cap;
+			
+			return null;			
 		}
 	}
 }

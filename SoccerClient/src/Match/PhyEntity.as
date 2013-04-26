@@ -133,20 +133,20 @@ package Match
 			throw new Error("WTF 59o - This method must be overriden");
 		}
 		
-		public function get Mass() : Number
+		public function get LinearDamping() : Number
 		{
-			return _PhyObject.body.m_mass;
-		}		
+			return _PhyObject.body.m_linearDamping;
+		}
 		
 		public function set LinearDamping(linearDamping : Number) : void
 		{
 			_PhyObject.body.m_linearDamping = linearDamping;
 		}
 		
-		public function get LinearDamping() : Number
+		public function get Mass() : Number
 		{
-			return _PhyObject.body.m_linearDamping;
-		}
+			return _PhyObject.body.m_mass;
+		}		
 		
 		static public function SetMass(phyObject : QuickObject, newMass : Number) : void
 		{

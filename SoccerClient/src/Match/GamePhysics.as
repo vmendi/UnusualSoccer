@@ -17,40 +17,24 @@ package Match
 	{
 		public var TheBox2D:QuickBox2D;
 				
-		public function get IsSimulating() : Boolean { return _SimulatingShoot;	}
+		public function get IsSimulating() : Boolean { return _SimulatingShot;	}
 		public function get TimeStep() : Number { return _TimeStep; }
 		
 		public function get NumTouchedCaps() : int 	 	{ return _TouchedCaps.length; }
 		public function get NumFramesSimulated() : int	{ return _FramesSimulating; }
 		
-		public function get IsGoal()   : Boolean { return _SideGoal != -1; }
-		public function get SideGoal() : int	 { return _SideGoal; }					// Enums.Left_Side, Enums.Right_Side. Porteria donde entro el gol
+		public function get IsGoal()   : Boolean   { return _SideGoal != -1; }
+		public function get SideGoal() : int	   { return _SideGoal; }
+		public function get IsSelfGoal() : Boolean { return _AttackingTeamShooterCap.OwnerTeam == _Game.TeamInSide(SideGoal); }
+		public function get ScorerTeam() : Team    { return _Game.TeamInSide(Enums.AgainstSide(SideGoal)) }
 				
 		public function get IsFault()  : Boolean { return _DetectedFault != null; }
 		public function get TheFault() : Fault   { return _DetectedFault; }
 		
 		// Chapa del equipo atacante que ha ejecutado un disparo (distincion relevante en los tiros paralelos con el portero, el cual es del equipo defensor)
 		public function get AttackingTeamShooterCap() : Cap { return _AttackingTeamShooterCap; }
-				
-		
-		// Es gol en propia meta?
-		public function IsSelfGoal() : Boolean
-		{
-			if (!IsGoal)
-				throw new Error("No deberias preguntar por el IsSelfGoal cuando no ha sido Goal");
-			
-			return _AttackingTeamShooterCap.OwnerTeam == _Game.TeamInSide(SideGoal);
-		}
-		
-		// Equipo que ha marcado el gol
-		public function ScorerTeam() : Team
-		{
-			if (!IsGoal)
-				throw new Error("No deberias preguntar por el ScorerTeam cuando no ha sido Goal");
-			
-			return _Game.TeamInSide(Enums.AgainstSide(SideGoal))
-		}
-		
+
+
 		
 		public function NewGoalkeeperPrediction(shooter : Cap, shootInfo : ShootInfo) : ShootInfo
 		{
@@ -72,23 +56,52 @@ package Match
 			return null; 
 		}
 		
-		public function RecalcShotToAllowGoal(shooter : Cap, shootInfo : ShootInfo, goalKeeperPred : ShootInfo) : ShootInfo
+		private function RecalcShotToAllowGoal(shooter : Cap, shooterShot : ShootInfo, goalkeeperShot : ShootInfo) : ShootInfo
 		{
 			if (_LastGamePhysicsPrediction == null)
 				throw new Error("WTF 59f - Can't call here without a prediction");
 			
 			// TODO
-			return new ShootInfo(new Point(goalKeeperPred.Dir.x, goalKeeperPred.Dir.y) , goalKeeperPred.Impulse/3);
+			return new ShootInfo(new Point(goalkeeperShot.Dir.x, goalkeeperShot.Dir.y) , goalkeeperShot.Impulse/3);
 		}
 		
-		public function AutoGoalkeeperShoot(goalkeeper : Cap, goalkeeperShoot : ShootInfo) : void
+		public function AutoGoalkeeperShoot(goalkeeper : Cap, shooter : Cap, shooterShot : ShootInfo, goalkeeperShot : ShootInfo, wantsCatch : Boolean) : void
 		{
-			// El portero ademas estaba inamovible, tenemos que permiterle moverse. Cambiamos su damping tb para que
-			// no salga muy lejos
+			// Si no queremos pararla, tendremos que recalcular la prediccion para que sea "mala"
+			if (!wantsCatch)
+				goalkeeperShot = RecalcShotToAllowGoal(shooter, shooterShot, goalkeeperShot);
+
+			// El portero ademas estaba inamovible, tenemos que permiterle moverse
 			goalkeeper.SetImmovable(false);
-			goalkeeper.LinearDamping = MatchConfig.AutoGoalkeeperLinearDamping;
-			
-			Shoot(goalkeeper, goalkeeperShoot);
+
+			// Indica si queremos que el goalkeeper se la pare en el contacto (se levantara el flag IsGoalkeeperCatch)
+			if (wantsCatch)
+				_GoalkeeperWantsToCatch = goalkeeper;
+
+			Shoot(goalkeeper, goalkeeperShot);
+		}
+		
+		public function Shoot(cap : Cap, shootInfo : ShootInfo) : void
+		{
+			if (shootInfo != null)
+			{
+				// Tenemos memoria de todo lo que ocurrio en la ultima simulacion hasta que vuelven a disparar.
+				_DetectedFault = null;				
+				_SideGoal = -1;
+				_FramesSimulating = 0;
+				_TouchedCaps.length = 0;
+								
+				if (cap.OwnerTeam.IsCurrTeam)
+					_AttackingTeamShooterCap = cap;
+				
+				var dir : Point = shootInfo.Dir.clone();
+				dir.normalize(shootInfo.Impulse);
+				
+				// Lo aplicamos ademas en sentido contrario ya que por fuera nos viene el vector invertido, es el del disparador
+				cap.PhyObj.body.ApplyImpulse(new b2Vec2(-dir.x, -dir.y), cap.PhyObj.body.GetWorldCenter());
+				
+				_SimulatingShot = true;
+			}
 		}
 		
 		public function GamePhysics(game : Game, theTimeStep:Number)
@@ -135,29 +148,6 @@ package Match
 				_LastGamePhysicsPrediction.Shutdown();
 		}
 		
-		public function Shoot(cap : Cap, shootInfo : ShootInfo) : void
-		{
-			if (shootInfo != null)
-			{
-				// Tenemos memoria de todo lo que ocurrio en la ultima simulacion hasta que vuelven a disparar
-				_DetectedFault = null;
-				_SideGoal = -1;
-				_FramesSimulating = 0;
-				_TouchedCaps.length = 0;
-				
-				if (cap.OwnerTeam.IsCurrTeam)
-					_AttackingTeamShooterCap = cap;
-				
-				var dir : Point = shootInfo.Dir.clone();
-				dir.normalize(shootInfo.Impulse);
-				
-				// Lo aplicamos ademas en sentido contrario ya que por fuera nos viene el vector invertido, es el del disparador
-				cap.PhyObj.body.ApplyImpulse(new b2Vec2(-dir.x, -dir.y), cap.PhyObj.body.GetWorldCenter());
-				
-				_SimulatingShoot = true;
-			}
-		}
-		
 		static public function IsCurrentContact(contacts : QuickContacts, quickObject : QuickObject, userData : String) : Boolean
 		{
 			var shape1:b2Shape = contacts.currentPoint.shape1;
@@ -179,40 +169,38 @@ package Match
 		//		 - Generamos un historial de contactos entre chapas, para despues determinar pase al pie
 		private function OnContact(e:Event): void
 		{
-			// Si se ha detectado anteriormente gol o falta, ignoramos los contactos
+			// Si se ha detectado anteriormente gol o falta ignoramos mas contactos. Estamos
+			// esperando al siguiente tiro.
 			if (IsGoal || IsFault)
 				return;
+	
+			if (DetectGoal())
+				return;
 			
-			// Detectamos GOL: Para ello comprobamos si ha habido un contacto entre los sensores de las porterías y el balón
-			if (IsCurrentContact(_Contacts, _Game.TheBall.PhyObj, "GoalLeftSensor"))
-				_SideGoal = Enums.Left_Side;
-			else
-			if(IsCurrentContact(_Contacts, _Game.TheBall.PhyObj, "GoalRightSensor"))
-				_SideGoal = Enums.Right_Side;
-
-				
 			// Obtenemos las entidades que han colisionado (están dentro del userData de las shapes)
 			var ent1:PhyEntity = _Contacts.currentPoint.shape1.m_userData as PhyEntity;
 			var ent2:PhyEntity = _Contacts.currentPoint.shape2.m_userData as PhyEntity;
 			
-			var ball:Ball = null;
-			var cap:Cap = null;
-			
-			// Determinamos si una de las entidades colisionadas es el balón
-			if(ent1 is Ball) ball = ent1 as Ball;
-			if(ent2 is Ball) ball = ent2 as Ball;
-			
-			// Determinamos si una de las entidades colisionadas es una chapa
-			if(ent1 is Cap) cap = ent1 as Cap;
-			if(ent2 is Cap) cap = ent2 as Cap;
+			var ball:Ball = Ball.AnyIsBall(ent1, ent2);
+			var cap:Cap = Cap.AnyIsCap(ent1, ent2);
 			
 			// Tenemos una colisión entre una chapa y el balón?
 			if (cap != null && ball != null)
 			{
 				_TouchedCaps.push(cap);
 				_TouchedCapsLastRun.push(cap);
-									
+
 				_Game.TheAudioManager.Play("SoundCollisionCapBall");
+				
+				// La chapa tocada es el portero y nos mandaron atraparla
+				if (cap == _GoalkeeperWantsToCatch)
+				{					
+					var currBallVel : b2Vec2 = _Game.TheBall.PhyObj.body.GetLinearVelocity();
+					_Game.TheBall.PhyObj.body.SetLinearVelocity(new b2Vec2(currBallVel.x * 0.1, currBallVel.y * 0.1));
+					
+					var currGKVel : b2Vec2 = cap.PhyObj.body.GetLinearVelocity();
+					cap.PhyObj.body.SetLinearVelocity(new b2Vec2(currGKVel.x * 0.1, currGKVel.y * 0.1));
+				}
 			}
 			else
 			{
@@ -221,31 +209,44 @@ package Match
 					_Game.TheAudioManager.Play("SoundCollisionCapCap");
 				// chapa / muro 
 				else if(cap != null && (ent1 == null || ent2 == null)) 
-					_Game.TheAudioManager.Play( "SoundCollisionWall");
+					_Game.TheAudioManager.Play("SoundCollisionWall");
 				// balón / muro 
 				else if(ball != null && (ent1 == null || ent2 == null))
 					_Game.TheAudioManager.Play("SoundCollisionWall");
 			}
 			
-			// Posible falta
-			if (ent1 is Cap && ent2 is Cap)
-			{					
-				if ((_DetectedFault = DetectFault(Cap(ent1), Cap(ent2))) != null)
-				{	
-					// Mandamos a detener la simulacion en el proximo Run. Aqui no podemos pararla porque
-					// estamos procesando el contacto, en este momento si haces un PutToSleep la chapa
-					// se queda en el vacio sideral
-					_bWantToStopSimulation = true;
-				}
+			if (DetectFault(ent1 as Cap, ent2 as Cap))
+			{	
+				// Mandamos a detener la simulacion en el proximo Run. Aqui no podemos pararla porque
+				// estamos procesando el contacto, en este momento si haces un PutToSleep la chapa
+				// se queda en el vacio sideral
+				_bWantToStopSimulation = true;
 			}
+		}
+		
+		 
+		
+		// Comprobamos si ha habido contacto entre los sensores de las porterías y el balón
+		private function DetectGoal() : Boolean
+		{
+			if (IsCurrentContact(_Contacts, _Game.TheBall.PhyObj, "GoalLeftSensor"))
+				_SideGoal = Enums.Left_Side;
+			else if(IsCurrentContact(_Contacts, _Game.TheBall.PhyObj, "GoalRightSensor"))
+				_SideGoal = Enums.Right_Side;
+			
+			return _SideGoal != -1;
 		}
 		
 		//
 		// Detecta una falta entre las dos chapas y retorna un objeto de falta que describe lo ocurrido
 		//
-		private function DetectFault(cap1:Cap, cap2:Cap) : Fault		
+		private function DetectFault(cap1:Cap, cap2:Cap) : Boolean		
 		{
-			var fault:Fault = null;
+			if (cap1 == null || cap2 == null)
+				return false;
+			
+			if (_DetectedFault != null)
+				throw new Error("WTF 951 - The fault should have been reset");
 			
 			// Las 2 chapas son del mismo equipo? Entonces ignoramos, no puede haber falta. 
 			if (cap1.OwnerTeam != cap2.OwnerTeam)
@@ -279,23 +280,23 @@ package Match
 				// Al portero no se le hacen faltas.
 				if (vel >= MatchConfig.VelFaultT1 && !HasTouchedBall(attacker) && defender != defender.OwnerTeam.GoalKeeper)
 				{
-					fault = new Fault();
-					fault.Attacker = attacker;
-					fault.Defender = defender;
+					_DetectedFault = new Fault();
+					_DetectedFault.Attacker = attacker;
+					_DetectedFault.Defender = defender;
 					
 					// Si el que hace la falta es el portero, le perdonamos las tarjetas. No queremos que nos lo expulsen
 					if (attacker != attacker.OwnerTeam.GoalKeeper)
 					{
 						if (vel >= MatchConfig.VelFaultT2 && vel < MatchConfig.VelFaultT3) 
-							fault.AddYellowCard();				// Sacamos tarjeta amarilla (y roja si acumula 2)
+							_DetectedFault.AddYellowCard();				// Sacamos tarjeta amarilla (y roja si acumula 2)
 						else
 						if (vel >= MatchConfig.VelFaultT3)
-							fault.RedCard = true;				// Roja directa	(maxima fuerza)
+							_DetectedFault.RedCard = true;				// Roja directa	(maxima fuerza)
 					}
 				}
-			} 
+			}
 			
-			return fault;
+			return _DetectedFault != null
 		}
 		
 		public function StopSimulation() : void		
@@ -335,13 +336,15 @@ package Match
 		
 		public function Run(elapsed:Number) : void
 		{
-			if (_SimulatingShoot)
+			if (_SimulatingShot)
 			{
 				_FramesSimulating++;
 			
 				// Se acabo la simulacion? (es decir, esta todo parado?).
 				if (!IsPhysicSimulating)
-					_SimulatingShoot = false;
+				{
+					_SimulatingShot = false;
+				}
 				else 
 				if (_bWantToStopSimulation)
 				{
@@ -349,13 +352,19 @@ package Match
 					// el mbWantToStopSimulation) en el OnClientShootEnd
 					StopSimulation();
 					
-					_SimulatingShoot = false
+					_SimulatingShot = false
 					_bWantToStopSimulation = false;
 				}
 				
+				if (!_SimulatingShot)
+				{
+					// Simplemente lo reseteamos cada vez que acabamos la simulacion					
+					_GoalkeeperWantsToCatch = null;
+				}
+												
 				// Si nos paramos en este Run, redondeamos las posiciones
 				// HACK anti UNSYNC! qué pasa en los bordes con las colisiones?
-				if (!_SimulatingShoot)
+				if (!_SimulatingShot)
 					RoundPositions();
 			}
 		}
@@ -457,6 +466,7 @@ package Match
 			
 			var collisionInfo : CollisionInfo = new CollisionInfo;
 			collisionInfo.PhyEntity1 = fromEnt;
+			collisionInfo.UnclippedPos1 = fromEnt.GetPos().add(MathUtils.Multiply(capDirection, unclippedTravelDist));
 			
 			for each(var toEnt : PhyEntity in allPhyEntities)
 			{
@@ -488,8 +498,8 @@ package Match
 				collisionInfo.Pos2 = toEnt.GetPos();
 								
 				// Now the velocities
-				//SetFixedExitVelocities(30, collisionInfo, capDirection);
-				CalcExitVelocities(collisionInfo, capDirection, capImpulse, collisionDist);
+				SetFixedExitVelocities(30, collisionInfo, capDirection);
+				//CalcExitVelocities(collisionInfo, capDirection, capImpulse, collisionDist);
 								
 				break;
 			}
@@ -621,9 +631,11 @@ package Match
 		private var _TouchedCapsLastRun:Array = new Array();	// Lista de chapas que ha tocado la pelota solo en este Run
 		private var _SideGoal:int= -1;							// Lado que ha marcado goal
 		private var _DetectedFault:Fault = null;				// Bandera que indica Falta detectada (además objeto que describe la falta)
+		private var _DetectedGoalkeeperCatch : Boolean;			// Indica que el portero hizo un autotiro de parada y que la atrapo
 		
-		private var _SimulatingShoot : Boolean = false;
-		private var _AttackingTeamShooterCap : Cap = null;
+		private var _SimulatingShot : Boolean = false;
+		private var _GoalkeeperWantsToCatch: Cap;
+		private var _AttackingTeamShooterCap : Cap;
 		private var _FramesSimulating:int = 0;					// Contador de frames simulando
 		
 		private var _bWantToStopSimulation : Boolean = false;

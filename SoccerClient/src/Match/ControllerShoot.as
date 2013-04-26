@@ -52,7 +52,7 @@ package Match
 			_Ghost = _Game.GameLayer.addChild(new (ResourceManager.getInstance().getClass("match", "Cap") as Class));
 			_Ghost.alpha = 0.4;
 			_Ghost.visible = false;
-			Cap.PrepareVisualCap(_Ghost, cap.OwnerTeam.PredefinedTeamNameID, cap.OwnerTeam.UsingSecondUniform, true);
+			Cap.PrepareVisualCap(_Ghost, cap.OwnerTeam.PredefinedTeamNameID, cap.OwnerTeam.UsingSecondUniform, false);
 		}
 		
 		public override function Stop(reason:int):void
@@ -119,7 +119,7 @@ package Match
 			
 			_Canvas.graphics.lineStyle(Cap.CapRadius*2, 0xFFFFFF, 0.2);
 			_Canvas.graphics.moveTo(_TargetCapPos.x, _TargetCapPos.y);
-			_Canvas.graphics.lineTo(collInfo.Pos1.x, collInfo.Pos1.y);
+			_Canvas.graphics.lineTo(collInfo.UnclippedPos1.x, collInfo.UnclippedPos1.y);
 			
 			if (collInfo.PhyEntity2 != null)
 			{

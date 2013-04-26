@@ -31,6 +31,7 @@ package Match
 		public static const TurnSaquePuertaControlPortero:int = 10;
 		public static const TurnSaqueCentroGoal:int = 15;
 		public static const TurnSaqueCentroNewPart:int = 16;
+		public static const TurnGoalkeeperCatch:int = 20;
 
 		
 		public static function IsSaquePuerta(enumVal:int) : Boolean

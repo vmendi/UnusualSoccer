@@ -13,7 +13,7 @@ package Match
 				TrueSkill:awesome? 15000 : 0,
 				Formation:"2-2-3",
 				SoccerPlayers: [],
-				MatchesCount: awesome? 1 : 25
+				MatchesCount: awesome? 25 : 1
 			}
 
 			for (var c:int=0; c < 8; ++c)

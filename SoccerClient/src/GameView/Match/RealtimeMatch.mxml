@@ -22,7 +22,7 @@
 		
 		import utils.GenericEvent;
 		
-		// Como no podemos tener constructor en mxlm, necesitamos este Init publico
+		// Como en mxlm no podemos tener constructor, necesitamos este Init publico
 		public function Init(connection : NetPlug) : void
 		{
 			_Connection = connection;
