@@ -31,7 +31,7 @@ package Match
 		public static const CapLinearDamping:Number = 5;
 		public static const BallMass:Number = 3;
 		public static const BallLinearDamping:Number = 3;
-		public static const AutoGoalkeeperLinearDamping:Number = 8;
+				
 		
 		public static const ThresholdCheatRadius:Number = 80;	// Radio desde las esquinas donde miramos que no amontonen chapas
 		public static const MaxCapsInCheatThreshold:int = 2;	// Max num de chapas permitidas en ese radio (y el balon)

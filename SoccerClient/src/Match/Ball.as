@@ -30,13 +30,13 @@ package Match
 					 maskBits: 1 + 2 + 4,			// Choca con todo excepto con BackPorteria (que tiene categoryBits==8)
 					 isBullet: true,
 					 mass: MatchConfig.BallMass,
-					 fixedRotation: true,				      					 
+					 fixedRotation: false,				      					 
 					 isSleeping: true,
 					 allowSleep: true, 
 					 linearDamping: MatchConfig.BallLinearDamping, 
 					 angularDamping: MatchConfig.BallLinearDamping, 
-					 friction: .2, 
-					 restitution: .8
+					 friction: 0.2,
+					 restitution: 0.8
 			};
 		}
 		
@@ -122,6 +122,14 @@ package Match
 		public function get LastPosBallStopped() : Point 
 		{ 
 			return _LastPosBallStopped; 
+		}
+		
+		static public function AnyIsBall(ent1 : PhyEntity, ent2 : PhyEntity) : Ball
+		{
+			if (ent1 is Ball) return ent1 as Ball;
+			if (ent2 is Ball) return ent2 as Ball;
+			
+			return null;			
 		}
 						
 		private var _LastPosBallStopped:Point = null;
