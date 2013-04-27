@@ -513,9 +513,9 @@ package Match
 				collisionInfo.Pos2 = toEnt.GetPos();
 								
 				// Now the velocities
-				//SetFixedExitVelocities(30, collisionInfo, capDirection);
 				CalcExitVelocities(collisionInfo, capDirection, capImpulse, collisionDist);
-								
+				CalcAfterCollisionFixed(20, collisionInfo, capDirection);
+				
 				break;
 			}
 
@@ -581,7 +581,7 @@ package Match
 			}			
 		}
 		
-		private function SetFixedExitVelocities(dist : Number, collisionInfo : CollisionInfo, capDirection : Point) : void
+		private function CalcAfterCollisionFixed(dist : Number, collisionInfo : CollisionInfo, capDirection : Point) : void
 		{
 			var N : Point = collisionInfo.Pos2.subtract(collisionInfo.Pos1);
 			N.normalize(1);
@@ -591,20 +591,17 @@ package Match
 			
 			var a1 : Number = MathUtils.Dot(v1, N);
 			var a2 : Number = MathUtils.Dot(v2, N);
+
+			v1 = v1.subtract(N);
+			v2 = v2.add(N);
 						
-			collisionInfo.V1 = v1.subtract(N);
-			collisionInfo.V2 = v2.add(N);
+			collisionInfo.AfterCollisionFixed1 = v1;
+			collisionInfo.AfterCollisionFixed1.normalize(dist);
+			collisionInfo.AfterCollisionFixed1 = collisionInfo.AfterCollisionFixed1.add(collisionInfo.Pos1);
 			
-			collisionInfo.V1.normalize(1);
-			collisionInfo.V2.normalize(1);
-			
-			collisionInfo.AfterCollision1 = collisionInfo.V1.clone();
-			collisionInfo.AfterCollision1.normalize(dist);
-			collisionInfo.AfterCollision1 = collisionInfo.AfterCollision1.add(collisionInfo.Pos1);
-			
-			collisionInfo.AfterCollision2 = collisionInfo.V2.clone();
-			collisionInfo.AfterCollision2.normalize(dist);
-			collisionInfo.AfterCollision2 = collisionInfo.AfterCollision2.add(collisionInfo.Pos2);
+			collisionInfo.AfterCollisionFixed2 = v2;
+			collisionInfo.AfterCollisionFixed2.normalize(dist);
+			collisionInfo.AfterCollisionFixed2 = collisionInfo.AfterCollisionFixed2.add(collisionInfo.Pos2);
 		}
 		
 		private function CalcVelAfterTravellingDistance(dist : Number, impulse : Number, mass : Number, linearDamping : Number) : Number

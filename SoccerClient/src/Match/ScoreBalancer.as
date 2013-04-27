@@ -13,10 +13,7 @@ package Match
 		
 		private function get Team1() : Team { return _Team1; }
 		private function get Team2() : Team { return _Team2; }
-		
-		private const ULTRA_NOOB_THRESHOLD : int = 10;
-		private const NOOB_THRESHOLD : int = 15;
-		
+				
 		public function ScoreBalancer(team1 : Team, team2 : Team, random : Random) : void
 		{
 			_Team1 = team1;
@@ -26,7 +23,7 @@ package Match
 		
 		public function get IsAutoGoalKeeper() : Boolean
 		{
-			return _Team1.MatchesCount <= NOOB_THRESHOLD || _Team2.MatchesCount <= NOOB_THRESHOLD;
+			return _Team1.IsNoob || _Team2.IsNoob;
 		}
 		
 		public function ShotQualityApproach(gkIntercept : InterceptInfo) : Number
@@ -34,11 +31,9 @@ package Match
 			var ret : Number = 1;
 			
 			if (gkIntercept.ShotInfo.Impulse <= MatchConfig.LowCapMaxImpulse)
-				ret = 1;
+				ret = 0;
 			else if (gkIntercept.ShotInfo.Impulse <= MatchConfig.HighCapMaxImpulse)
 				ret = 1 - ((gkIntercept.ShotInfo.Impulse - MatchConfig.LowCapMaxImpulse)/(MatchConfig.HighCapMaxImpulse-MatchConfig.LowCapMaxImpulse));
-
-			trace("ShotQualityApproach: " + ret + " Impulse:" + gkIntercept.ShotInfo.Impulse);
 			
 			return ret;
 		}
@@ -62,8 +57,7 @@ package Match
 		private function NeutralGoalsMixer(allowedFactors : Array) : Number
 		{
 			var total : Number = 0;
-			for each(var num : Number in allowedFactors) 
-				total += num;
+			for each(var num : Number in allowedFactors) total += num;
 			return total / allowedFactors.length;
 		}
 		
@@ -71,36 +65,32 @@ package Match
 		{
 			var goalAllowed : Number = 0;
 			
-			if ((Team1.MatchesCount < ULTRA_NOOB_THRESHOLD && Team2.MatchesCount < ULTRA_NOOB_THRESHOLD) ||
-				(Team1.MatchesCount == Team2.MatchesCount))
+			if (Team1.IsUltraNoob && Team2.IsUltraNoob || (Team1.MatchesCount == Team2.MatchesCount))
 			{
 				// The two of them are ultra-noobs or they have played equal number of matches
 				goalAllowed = NeutralGoalsMixer([GoalBasedBalancedApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);
-				
-				trace("This is " + goalAllowed + " allowed");
 			}
 			else
 			{
-				// Are we dealing with one ultra-noob?
-				if (Team1.MatchesCount >= ULTRA_NOOB_THRESHOLD && Team2.MatchesCount >= ULTRA_NOOB_THRESHOLD)
+				if (Team1.IsUltraNoob || Team2.IsUltraNoob)
+				{
+					// A ultra-noob and someone who has played more
+					goalAllowed = NeutralGoalsMixer([GoalBasedUnfairApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);	
+				}
+				else
 				{
 					// No, both of them are at least noobs
 					
-					if (Team1.MatchesCount >= NOOB_THRESHOLD || Team2.MatchesCount >= NOOB_THRESHOLD)
+					if (Team1.IsRegular|| Team2.IsRegular)
 					{
 						// One of them is a regular player: Favor the noob
-						goalAllowed = GoalBasedUnfairApproach(scorerTeam);
+						goalAllowed = NeutralGoalsMixer([GoalBasedUnfairApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);
 					}
 					else
 					{
 						// Both of them are noobs
-						goalAllowed = GoalBasedBalancedApproach(scorerTeam) * ShotQualityApproach(goalieIntercept);
+						goalAllowed = NeutralGoalsMixer([GoalBasedBalancedApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);
 					}
-				}
-				else
-				{
-					// A ultra-noob and someone who has played more than 10 matches
-					goalAllowed = GoalBasedUnfairApproach(scorerTeam);
 				}
 			}
 						

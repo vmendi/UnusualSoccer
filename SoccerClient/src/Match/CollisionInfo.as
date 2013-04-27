@@ -22,5 +22,9 @@ package Match
 		// acabaran deteniendo)
 		public var AfterCollision1 : Point;
 		public var AfterCollision2 : Point;
+		
+		// Simplemente un punto en la direccion en la que iran despues de la colision, mucho menos predictivo
+		public var AfterCollisionFixed1 : Point;
+		public var AfterCollisionFixed2 : Point;
 	}
 }

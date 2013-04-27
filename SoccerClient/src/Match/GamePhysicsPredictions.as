@@ -111,10 +111,7 @@ package Match
 					continue;
 				
 				var vel : Number = dist * H / den;
-				
-				if (vel < 0 || vel > 100)	// 100 es totalmente empirico. En nuestros tests no hemos conseguido pasar de 66
-					continue;
-				
+								
 				if (_GamePhysics.IsPointFreeInsideField(historyPos, false, goalKeeper))
 				{	
 					var dir : Point = goalKeeper.GetPos().subtract(historyPos);	// En negativo para ser igual que el ControllerShoot 

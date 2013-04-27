@@ -94,6 +94,9 @@ package Match
 		public function get IsEndMatch() : Boolean { return _State == GameState.EndMatch; }
 		public function get MatchResult() : Object { return _MatchResultFromServer; }
 		
+		public function get RemainingShots() : int { return _RemainingShots; }
+		public function get RemainingPasesPie() : int { return _RemainingPasesAlPie; }
+		
 		public function get IDString() : String { return "MatchID: " + _MatchId + " LocalID: " + _IdLocalUser + " "; }
 		
 		public function GetTeam(teamId:int) : Team
@@ -499,10 +502,10 @@ package Match
 				if (_ScoreBalancer.IsAutoGoalKeeper && Field.IsCapCenterInsideBigArea(enemyGoalkeeper))
 				{
 					var goalieIntercept : InterceptInfo = TheGamePhysics.NewGoalkeeperPrediction(shooter, shooterShot);
-					
+										
 					// Hemos detectado gol?
 					if (goalieIntercept != null)
-					{
+					{						
 						// Decidimos si queremos pararnosla o no
 						if (_ScoreBalancer.IsGoalAllowed(shooter.OwnerTeam, goalieIntercept))
 						{
@@ -520,7 +523,7 @@ package Match
 							_RemainingShots = 1;
 							_RemainingPasesAlPie = 0;	
 						}
-					}
+					}					
 				}
 				else
 				if (ReasonTurnChanged == Enums.TurnGoalKeeperSet)

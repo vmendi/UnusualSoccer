@@ -183,5 +183,8 @@
 		private const MovieClipClass : Class = getDefinitionByName("GameView.Match.MessageMovieClip") as Class;
 
 	]]></fx:Script>
+
+	<!-- El fondo del MsgTicker -->
+	<s:BitmapImage source="@Embed(source='/Assets/General.swf', symbol='MatchTickerBg')" fillMode="clip" x="0" y="110" />
 	
 </s:Group>

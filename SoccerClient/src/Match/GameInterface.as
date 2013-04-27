@@ -233,6 +233,9 @@ package Match
 			else
 				_Gui.MarcadorTurno.gotoAndStop("TeamAway");
 			
+			_Gui.Shots.text = _Game.RemainingShots;
+			_Gui.PasesPie.text = _Game.RemainingPasesPie;
+			
 			UpdateTimeoutCounter(currTimeoutTime);
 			UpdateSpecialSkills();
 			UpdateButtonTiroPuerta();

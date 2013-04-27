@@ -19,8 +19,7 @@ package Match
 		public function get Level() : Number { return _DescTeam.Level; }
 		public function get TrueSkill() : Number { return _DescTeam.TrueSkill; }
 		public function get UsingSecondUniform() : Boolean { return _UsingSecondUniform; }
-		public function get MatchesCount() : int { return _DescTeam.MatchesCount; }
-		
+				
 		public function get CapsList() : Array { return _CapsList; }
 		public function get GoalKeeper() : Cap { return _CapsList[0]; }
 		
@@ -33,6 +32,12 @@ package Match
 		// Array con los IDs de las Skills disponibles, las que vienen desde el manager
 		public function get AvailableSkills() : Array { return _AvailableSkills; }
 		
+		public function get MatchesCount() : int { return _DescTeam.MatchesCount; }
+		public function get IsUltraNoob() : Boolean { return MatchesCount <= ULTRA_NOOB_THRESHOLD; }
+		public function get IsNoob() : Boolean { return MatchesCount > ULTRA_NOOB_THRESHOLD && MatchesCount <= NOOB_THRESHOLD; }
+		public function get IsNoobOrUltraNoob() : Boolean { return IsUltraNoob || IsNoob; }
+		public function get IsRegular() : Boolean { return MatchesCount > NOOB_THRESHOLD; }
+		
 		private var _DescTeam : Object = null;
 		private var _TeamId : int = -1;
 		private var _Side : int = -1;
@@ -43,6 +48,9 @@ package Match
 		private var _AvailableSkills : Array;					// Las mismas habilidades, puestas en forma de array
 		private var _UsingSecondUniform : Boolean;
 		private var _Game : Game;
+				
+		private const ULTRA_NOOB_THRESHOLD : int = 10;
+		private const NOOB_THRESHOLD : int = 15;
 
 		public function Team(descTeam:Object, idxTeam:int, useSecondUniform:Boolean, theGame : Game) : void
 		{
@@ -534,4 +542,3 @@ package Match
 		}
 	}
 }
-

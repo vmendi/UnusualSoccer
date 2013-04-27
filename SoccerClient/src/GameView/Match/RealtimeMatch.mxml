@@ -41,7 +41,7 @@
 				if (_Connection != null)
 					LoadMatchResources(InnerInit);
 				else
-					LoadMatchResources(OfflineInnerInit);				
+					LoadMatchResources(OfflineInnerInit);	
 			}
 			catch(e:Error) 
 			{ 
