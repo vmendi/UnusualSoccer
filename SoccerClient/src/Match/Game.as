@@ -498,23 +498,23 @@ package Match
 				
 				if (_ScoreBalancer.IsAutoGoalKeeper && Field.IsCapCenterInsideBigArea(enemyGoalkeeper))
 				{
-					var goalkeeperShot : ShootInfo = TheGamePhysics.NewGoalkeeperPrediction(shooter, shooterShot);
+					var goalieIntercept : InterceptInfo = TheGamePhysics.NewGoalkeeperPrediction(shooter, shooterShot);
 					
 					// Hemos detectado gol?
-					if (goalkeeperShot != null)
+					if (goalieIntercept != null)
 					{
 						// Decidimos si queremos pararnosla o no
-						if (_ScoreBalancer.IsGoalGoodIdea(shooter.OwnerTeam, goalkeeperShot))
+						if (_ScoreBalancer.IsGoalAllowed(shooter.OwnerTeam, goalieIntercept))
 						{
 							OnClientChatMsg("Goal is a good idea");
-							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, shooter, shooterShot, goalkeeperShot, false);
+							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, shooter, shooterShot, goalieIntercept, false);
 						}
 						else
 						{
 							OnClientChatMsg("Goal is NOT a good idea");
 							
 							// El gol no es buena idea, nos la paramos
-							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, shooter, shooterShot, goalkeeperShot, true);
+							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, shooter, shooterShot, goalieIntercept, true);
 							
 							// Si el portero es automatico es como cuando se anuncia el tiro a puerta, el tiro es ya el ultimo
 							_RemainingShots = 1;
@@ -848,6 +848,9 @@ package Match
 			_Team2.ResetToFormation();
 			
 			TheBall.SetPosInFieldCenter();
+			
+			SetDebugPos();
+			//SetTurn(1, reason);
 			
 			SetTurn(team.TeamId, reason);
 		}
@@ -1189,8 +1192,7 @@ package Match
 			GetCap(0, 1).SetPos(new Point(138, 225));
 			
 			GetCap(1, 5).SetPos(new Point(193, 290));
-			//GetCap(1, 6).SetPos(new Point(282, 345));
-			
+						
 			TheBall.SetPos(new Point(163, 300));
 		}
 	}	

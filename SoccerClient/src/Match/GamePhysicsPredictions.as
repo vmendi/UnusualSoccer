@@ -53,7 +53,7 @@ package Match
 		//
 		// Our input is the shooter and their shot, we output the parallel goalkeeper's shot needed to intercept the ball
 		//
-		public function NewGoalkeeperPrediction(shooter : Cap, shootInfo : ShootInfo) : ShootInfo
+		public function NewGoalkeeperPrediction(shooter : Cap, shotInfo : ShootInfo) : InterceptInfo
 		{
 			if (_Box2D != null)
 				throw new Error("This object is not reusable");
@@ -72,7 +72,7 @@ package Match
 			
 			// Create the clone physical objects and shoot with the cloned shooter
 			ClonePhyObjects(shooter);
-			Shoot(shootInfo);
+			Shoot(shotInfo);
 
 			// Advance the simulation till everything isSleeping or _GoalFound
 			LoopTillSleptOrGoal();
@@ -87,9 +87,9 @@ package Match
 			return CalcBestInterceptionInSegment(0, shooter.OwnerTeam.Opponent().GoalKeeper);
 		}
 		
-		private function CalcBestInterceptionInSegment(segIdx : int, goalKeeper : Cap) : ShootInfo
+		private function CalcBestInterceptionInSegment(segIdx : int, goalKeeper : Cap) : InterceptInfo
 		{
-			var ret : ShootInfo = null;
+			var ret : InterceptInfo = null;
 			var numPoints : int = _BallContactHistory[segIdx].History.length;
 			var currGoalKeeperPos : Point = goalKeeper.GetPos();
 			
@@ -121,8 +121,12 @@ package Match
 					dir.normalize(1);
 					var impulse : Number = vel * MatchConfig.CapMass;
 					
-					ret = new ShootInfo(dir, impulse);
+					ret = new InterceptInfo();
 					
+					ret.ShotInfo = new ShootInfo(dir, impulse);
+					ret.InterceptionPoint = historyPos;
+					ret.InterceptionTime = historyTime;
+										
 					DrawLineBetween(goalKeeper.GetPos(), historyPos);
 					break;
 				}

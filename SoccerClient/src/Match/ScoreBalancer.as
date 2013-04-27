@@ -1,5 +1,9 @@
 package Match
 {
+	import Box2D.Common.Math.b2Math;
+	
+	import utils.MathUtils;
+
 	public class ScoreBalancer
 	{
 		private var _Team1 : Team;
@@ -23,18 +27,57 @@ package Match
 		public function get IsAutoGoalKeeper() : Boolean
 		{
 			return _Team1.MatchesCount <= NOOB_THRESHOLD || _Team2.MatchesCount <= NOOB_THRESHOLD;
-			//return false;
 		}
 		
-		public function IsGoalGoodIdea(scorerTeam : Team, goalkeeperShoot : ShootInfo) : Boolean
+		public function ShotQualityApproach(gkIntercept : InterceptInfo) : Number
 		{
-			var goodIdea : Number = 0;
+			var ret : Number = 1;
+			
+			if (gkIntercept.ShotInfo.Impulse <= MatchConfig.LowCapMaxImpulse)
+				ret = 1;
+			else if (gkIntercept.ShotInfo.Impulse <= MatchConfig.HighCapMaxImpulse)
+				ret = 1 - ((gkIntercept.ShotInfo.Impulse - MatchConfig.LowCapMaxImpulse)/(MatchConfig.HighCapMaxImpulse-MatchConfig.LowCapMaxImpulse));
+
+			trace("ShotQualityApproach: " + ret + " Impulse:" + gkIntercept.ShotInfo.Impulse);
+			
+			return ret;
+		}
+		
+		// Funcion para combinar los factores que determinan cuanto queremos marcar un gol. Esta en concreto lo que
+		// hace es maximizar las posibilidades de gol: En cuanto un de los factores dice que quiere ser gol, es gol.
+		private function FavorGoalsMixer(allowedFactors : Array) : Number
+		{
+			var total : Number = 0;
+			for each(var num : Number in allowedFactors) total += num
+			return b2Math.b2Clamp(total, 0, 1);
+		}
+		
+		private function DisfavorGoalsMixer(allowedFactors : Array) : Number
+		{
+			var total : Number = 1;
+			for each(var num : Number in allowedFactors) total *= num;
+			return total;
+		}
+		
+		private function NeutralGoalsMixer(allowedFactors : Array) : Number
+		{
+			var total : Number = 0;
+			for each(var num : Number in allowedFactors) 
+				total += num;
+			return total / allowedFactors.length;
+		}
+		
+		public function IsGoalAllowed(scorerTeam : Team, goalieIntercept : InterceptInfo) : Boolean
+		{
+			var goalAllowed : Number = 0;
 			
 			if ((Team1.MatchesCount < ULTRA_NOOB_THRESHOLD && Team2.MatchesCount < ULTRA_NOOB_THRESHOLD) ||
 				(Team1.MatchesCount == Team2.MatchesCount))
 			{
 				// The two of them are ultra-noobs or they have played equal number of matches
-				goodIdea = GoalBasedBalancedApproach(scorerTeam);
+				goalAllowed = NeutralGoalsMixer([GoalBasedBalancedApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);
+				
+				trace("This is " + goalAllowed + " allowed");
 			}
 			else
 			{
@@ -43,19 +86,25 @@ package Match
 				{
 					// No, both of them are at least noobs
 					
-					// Is one of them a regular player? Favor the noob
 					if (Team1.MatchesCount >= NOOB_THRESHOLD || Team2.MatchesCount >= NOOB_THRESHOLD)
-						goodIdea = GoalBasedUnfairApproach(scorerTeam);
+					{
+						// One of them is a regular player: Favor the noob
+						goalAllowed = GoalBasedUnfairApproach(scorerTeam);
+					}
 					else
-					// Both of them are noobs
-						goodIdea = GoalBasedBalancedApproach(scorerTeam);
+					{
+						// Both of them are noobs
+						goalAllowed = GoalBasedBalancedApproach(scorerTeam) * ShotQualityApproach(goalieIntercept);
+					}
 				}
 				else
-				// A ultra-noob and someone who has played more than 10 matches
-					goodIdea = GoalBasedUnfairApproach(scorerTeam);
+				{
+					// A ultra-noob and someone who has played more than 10 matches
+					goalAllowed = GoalBasedUnfairApproach(scorerTeam);
+				}
 			}
 						
-			return _Random.Probability(goodIdea * 100);
+			return _Random.Probability(goalAllowed * 100);
 		}
 		
 		private function GoalBasedBalancedApproach(scorerTeam : Team) : Number

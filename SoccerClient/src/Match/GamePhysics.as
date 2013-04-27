@@ -36,7 +36,7 @@ package Match
 
 
 		
-		public function NewGoalkeeperPrediction(shooter : Cap, shootInfo : ShootInfo) : ShootInfo
+		public function NewGoalkeeperPrediction(shooter : Cap, shotInfo : ShootInfo) : InterceptInfo
 		{
 			// Las predicciones son de usar y tirar, hay que pedir una nueva cada vez (por una cuestion de las trazas de debug en realidad, nos
 			// conviene dejarlas persistiendo y que se vean hasta que se pida otra prediccion)
@@ -46,7 +46,7 @@ package Match
 			_LastGamePhysicsPrediction = new GamePhysicsPredictions(_Game, this);
 			
 			try {
-				return _LastGamePhysicsPrediction.NewGoalkeeperPrediction(shooter, shootInfo);
+				return _LastGamePhysicsPrediction.NewGoalkeeperPrediction(shooter, shotInfo);
 			}
 			catch(e:Error)
 			{
@@ -56,29 +56,44 @@ package Match
 			return null; 
 		}
 		
-		private function RecalcShotToAllowGoal(shooter : Cap, shooterShot : ShootInfo, goalkeeperShot : ShootInfo) : ShootInfo
+		private function RecalcShotToAllowGoal(goalkeeper : Cap, shooter : Cap, shooterShot : ShootInfo, goalieIntercept : InterceptInfo) : ShootInfo
 		{
 			if (_LastGamePhysicsPrediction == null)
 				throw new Error("WTF 59f - Can't call here without a prediction");
 			
-			// TODO
-			return new ShootInfo(new Point(goalkeeperShot.Dir.x, goalkeeperShot.Dir.y) , goalkeeperShot.Impulse/3);
+			var gkShot : ShootInfo = goalieIntercept.ShotInfo;
+			var newDir : Point = gkShot.Dir.clone();
+			var dist : Number = goalieIntercept.InterceptionPoint.subtract(goalkeeper.GetPos()).length;
+			var newImpulse : Number = 15;
+			
+			if (dist < Ball.BallRadius + 3*Cap.CapRadius)
+			{
+				newDir = MathUtils.Multiply(newDir, -1);
+			}
+			else
+			{
+				newImpulse = CalcImpulseRequiredForTravelingDistanceInTime(dist*0.5, goalieIntercept.InterceptionTime, goalkeeper.Mass, goalkeeper.LinearDamping);
+			}		 
+			
+			return new ShootInfo(newDir, newImpulse);
 		}
 		
-		public function AutoGoalkeeperShoot(goalkeeper : Cap, shooter : Cap, shooterShot : ShootInfo, goalkeeperShot : ShootInfo, wantsCatch : Boolean) : void
+		public function AutoGoalkeeperShoot(goalkeeper : Cap, shooter : Cap, shooterShot : ShootInfo, goalieIntercept : InterceptInfo, wantsCatch : Boolean) : void
 		{
+			// El portero esta inamovible, tenemos que permiterle moverse
+			goalkeeper.SetImmovable(false);
+			
+			var gkShot : ShootInfo = new ShootInfo(goalieIntercept.ShotInfo.Dir, goalieIntercept.ShotInfo.Impulse);
+			
 			// Si no queremos pararla, tendremos que recalcular la prediccion para que sea "mala"
 			if (!wantsCatch)
-				goalkeeperShot = RecalcShotToAllowGoal(shooter, shooterShot, goalkeeperShot);
-
-			// El portero ademas estaba inamovible, tenemos que permiterle moverse
-			goalkeeper.SetImmovable(false);
+				gkShot = RecalcShotToAllowGoal(goalkeeper, shooter, shooterShot, goalieIntercept);
 
 			// Indica si queremos que el goalkeeper se la pare en el contacto (se levantara el flag IsGoalkeeperCatch)
 			if (wantsCatch)
 				_GoalkeeperWantsToCatch = goalkeeper;
 
-			Shoot(goalkeeper, goalkeeperShot);
+			Shoot(goalkeeper, gkShot);
 		}
 		
 		public function Shoot(cap : Cap, shootInfo : ShootInfo) : void
@@ -498,8 +513,8 @@ package Match
 				collisionInfo.Pos2 = toEnt.GetPos();
 								
 				// Now the velocities
-				SetFixedExitVelocities(30, collisionInfo, capDirection);
-				//CalcExitVelocities(collisionInfo, capDirection, capImpulse, collisionDist);
+				//SetFixedExitVelocities(30, collisionInfo, capDirection);
+				CalcExitVelocities(collisionInfo, capDirection, capImpulse, collisionDist);
 								
 				break;
 			}
@@ -520,7 +535,7 @@ package Match
 			var N : Point = collisionInfo.Pos2.subtract(collisionInfo.Pos1);
 			N.normalize(1);
 			
-			var v1 : Point = MathUtils.Multiply(capDirection, CalcVelAfterDistance(collisionDist, capImpulse, 
+			var v1 : Point = MathUtils.Multiply(capDirection, CalcVelAfterTravellingDistance(collisionDist, capImpulse, 
 												collisionInfo.PhyEntity1.Mass, collisionInfo.PhyEntity1.LinearDamping));
 			var v2 : Point = new Point(0, 0);
 			
@@ -592,7 +607,7 @@ package Match
 			collisionInfo.AfterCollision2 = collisionInfo.AfterCollision2.add(collisionInfo.Pos2);
 		}
 		
-		private function CalcVelAfterDistance(dist : Number, impulse : Number, mass : Number, linearDamping : Number) : Number
+		private function CalcVelAfterTravellingDistance(dist : Number, impulse : Number, mass : Number, linearDamping : Number) : Number
 		{
 			var v0:Number = impulse / mass;			// La velocidad asi calculada esta en espacio de fisica!!
 			dist /= MatchConfig.PixelsPerMeter;		// Entra en espacio de pantalla, sale en espacio de pantalla
@@ -608,6 +623,18 @@ package Match
 
 			// And then it's easy to obtain the velocity (refer to the picture!)
 			return v0*Math.pow(R, n) * MatchConfig.PixelsPerMeter;
+		}
+		
+		private function CalcImpulseRequiredForTravelingDistanceInTime(dist : Number, time : Number, mass : Number, linearDamping : Number) : Number
+		{
+			var R : Number = 1.0 - _TimeStep * linearDamping;
+			var H : Number = (1-R) / (_TimeStep * R);
+			var den : Number = 1 - Math.pow(R, time/_TimeStep);
+			
+			if (MathUtils.ThresholdEqual(den, 0, 0.01))
+				return 0;
+			else
+				return mass * dist * H / den / MatchConfig.PixelsPerMeter;	// El impulso hay q devolverlo en espacio de fisica
 		}
 		
 		private function CalcTravelDistance(impulse : Number, mass : Number, linearDamping : Number) : Number
