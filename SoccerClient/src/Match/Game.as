@@ -507,13 +507,10 @@ package Match
 						// Decidimos si queremos pararnosla o no
 						if (_ScoreBalancer.IsGoalAllowed(shooter.OwnerTeam, goalieIntercept))
 						{
-							OnClientChatMsg("Goal is a good idea");
 							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, shooter, shooterShot, goalieIntercept, false);
 						}
 						else
 						{
-							OnClientChatMsg("Goal is NOT a good idea");
-							
 							// El gol no es buena idea, nos la paramos
 							TheGamePhysics.AutoGoalkeeperShoot(enemyGoalkeeper, shooter, shooterShot, goalieIntercept, true);
 							
@@ -849,9 +846,6 @@ package Match
 			_Team2.ResetToFormation();
 			
 			TheBall.SetPosInFieldCenter();
-			
-			SetDebugPos();
-			//SetTurn(1, reason);
 			
 			SetTurn(team.TeamId, reason);
 		}
