@@ -449,9 +449,7 @@ package Match
 					throw new Error(IDString + "No estabamos esperando en el estado adecuado cuando se llamo a " + fromServerCall);
 			}
 		}
-		
-		
-		
+				
 		private function ResetTimeout() : void
 		{
 			_Timer.ResetElapsed();
