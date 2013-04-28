@@ -138,4 +138,7 @@
 		<Competition:LookingForMatchPanel x="0" y="0" />
 				
 	</s:Panel>
+	
+	<s:Button label="{resourceManager.getString('main','TutorialOpenTutorialButton')}" minWidth="150" skinClass="GameView.Skins.ButtonDarkGreySkin" horizontalCenter="0" top="14" />
+	
 </s:Group>
