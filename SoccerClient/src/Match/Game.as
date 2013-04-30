@@ -113,7 +113,9 @@ package Match
 		{
 			_Parent = parent;
 			_MessageCenter = messageCenter;
-			_Connection = connection;			
+			_Connection = connection;
+			
+			MatchDebug.Log = new MatchDebug(this);
 		}
 
 		// Obtiene una chapa de un equipo determinado a partir de su identificador de equipo y chapa
@@ -155,7 +157,8 @@ package Match
 		}
 		
 		// Inicialización de los datos del partido. Invocado desde el servidor
-		public function InitFromServer(matchId:int, descTeam1:Object, descTeam2:Object, idLocalPlayerTeam:int, matchTimeSecs:int, turnTimeSecs:int, isFriendlyParam:Boolean, minClientVersion:int) : void
+		public function InitFromServer(matchId:int, descTeam1:Object, descTeam2:Object, 
+									   idLocalPlayerTeam:int, matchTimeSecs:int, turnTimeSecs:int, isFriendlyParam:Boolean, minClientVersion:int, randomSeed:int) : void
 		{
 			GameMetrics.ReportPageView(GameMetrics.VIEW_MATCH);
 			GameMetrics.ReportEvent(GameMetrics.PLAY_MATCH, {matchTime: matchTimeSecs, turnTime: turnTimeSecs, isFriendly:isFriendlyParam});
@@ -191,7 +194,7 @@ package Match
 			//TheAudioManager.AddClass("SoundAmbience", MatchAssets.SoundAmbience);
 			//TheAudioManager.PlayMusic("SoundAmbience", 0.3);
 
-			_Random = new Random(123);
+			_Random = new Random(randomSeed);
 			_Timer = new Match.Time();
 			
 			// - Determinamos los grupos de equipación a los que pertenece cada equipo.
@@ -219,18 +222,19 @@ package Match
 			_Team2 = new Team(descTeam2, Enums.Team2, useSecondaryEquipment2, this);
 			
 			_ScoreBalancer = new ScoreBalancer(Team1, Team2, _Random);
-			
-			// Publicacion de Achievements
-			MatchAchievements.ProcessAchievementMatchStart(LocalUserTeam);
-											
+														
 			// Inicializamos el interfaz de juego. Es necesario que todo lo demas este inicializado!
 			TheInterface = new GameInterface(this);
 			_Chat = new Chat(ChatLayer, this);
+			
+			// Publicacion de Achievements y mensajes tutorializadores del comienzo
+			MatchAchievements.ProcessAchievementMatchStart(LocalUserTeam);
+			_MessageCenter.ShowAutoGoalkeeper(_ScoreBalancer.IsAutoGoalKeeper);
 
 			// Hemos terminado de cargar/inicializar
 			ChangeState(GameState.Init);
 		}
-		
+				
 		public function CreateLayers() : void
 		{
 			PhyLayer = _Parent.addChild(new MovieClip()) as MovieClip;

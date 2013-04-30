@@ -25,39 +25,42 @@ package Match
 		{
 			return _Team1.IsNoob || _Team2.IsNoob;
 		}
-		
-		public function ShotQualityApproach(gkIntercept : InterceptInfo) : Number
-		{
-			var ret : Number = 1;
-			
-			if (gkIntercept.ShotInfo.Impulse <= MatchConfig.LowCapMaxImpulse)
-				ret = 0;
-			else if (gkIntercept.ShotInfo.Impulse <= MatchConfig.HighCapMaxImpulse)
-				ret = 1 - ((gkIntercept.ShotInfo.Impulse - MatchConfig.LowCapMaxImpulse)/(MatchConfig.HighCapMaxImpulse-MatchConfig.LowCapMaxImpulse));
-			
-			return ret;
-		}
-		
+				
 		// Funcion para combinar los factores que determinan cuanto queremos marcar un gol. Esta en concreto lo que
 		// hace es maximizar las posibilidades de gol: En cuanto un de los factores dice que quiere ser gol, es gol.
 		private function FavorGoalsMixer(allowedFactors : Array) : Number
 		{
 			var total : Number = 0;
-			for each(var num : Number in allowedFactors) total += num
+			
+			for each(var num : Number in allowedFactors) 
+				total += num;
+				
+			MatchDebug.Log.WriteLine("FavorGoalsMixer final probability: " + total);
+					
 			return b2Math.b2Clamp(total, 0, 1);
 		}
 		
 		private function DisfavorGoalsMixer(allowedFactors : Array) : Number
 		{
 			var total : Number = 1;
-			for each(var num : Number in allowedFactors) total *= num;
+			
+			for each(var num : Number in allowedFactors) 
+				total *= num;
+				
+			MatchDebug.Log.WriteLine("DisfavorGoalsMixer final probability: " + total);
+				
 			return total;
 		}
 		
 		private function NeutralGoalsMixer(allowedFactors : Array) : Number
 		{
 			var total : Number = 0;
-			for each(var num : Number in allowedFactors) total += num;
+			
+			for each(var num : Number in allowedFactors) 
+				total += num;
+			
+			MatchDebug.Log.WriteLine("NeutralGoalsMixer final probability: " + (total / allowedFactors.length));
+			
 			return total / allowedFactors.length;
 		}
 		
@@ -67,6 +70,8 @@ package Match
 			
 			if (Team1.IsUltraNoob && Team2.IsUltraNoob || (Team1.MatchesCount == Team2.MatchesCount))
 			{
+				MatchDebug.Log.WriteLine("Goal detected: ultra-noob vs ultra-noob");
+				
 				// The two of them are ultra-noobs or they have played equal number of matches
 				goalAllowed = NeutralGoalsMixer([GoalBasedBalancedApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);
 			}
@@ -74,6 +79,8 @@ package Match
 			{
 				if (Team1.IsUltraNoob || Team2.IsUltraNoob)
 				{
+					MatchDebug.Log.WriteLine("Goal detected: ultra-noob vs (noob or regular)");
+
 					// A ultra-noob and someone who has played more
 					goalAllowed = NeutralGoalsMixer([GoalBasedUnfairApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);	
 				}
@@ -83,22 +90,32 @@ package Match
 					
 					if (Team1.IsRegular|| Team2.IsRegular)
 					{
+						MatchDebug.Log.WriteLine("Goal detected: noob vs regular");
+						
 						// One of them is a regular player: Favor the noob
 						goalAllowed = NeutralGoalsMixer([GoalBasedUnfairApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);
 					}
 					else
 					{
+						MatchDebug.Log.WriteLine("Goal detected: noob vs noob");
+						
 						// Both of them are noobs
 						goalAllowed = NeutralGoalsMixer([GoalBasedBalancedApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);
 					}
 				}
 			}
-						
-			return _Random.Probability(goalAllowed * 100);
+												
+			var isAllowed : Boolean = _Random.Probability(goalAllowed * 100);
+			
+			MatchDebug.Log.WriteLine("IsGoalAllowed: " + isAllowed);
+			
+			return isAllowed;
 		}
 		
 		private function GoalBasedBalancedApproach(scorerTeam : Team) : Number
 		{
+			var allowed : Number = 0;
+			
 			if (Team1.Goals == Team2.Goals)
 			{
 				// At 0-0 => 100%
@@ -111,40 +128,63 @@ package Match
 				// ...
 				// At 10-10 => 0%!
 				if (Team1.Goals != 0)
-					return (1/Team1.Goals) - 0.1;		// At 5 goals we want it to be a 0,1 idea ((0,5-1)/5)
+					allowed = (1/Team1.Goals) - 0.1;		// At 5 goals we want it to be a 0,1 idea ((0,5-1)/5)
 				else
-					return 1;							// At 0 goals it's an excelent idea!
+					allowed = 1;							// At 0 goals it's an excelent idea!
 			}
 			else
 			{
 				var losingTeam : Team = (Team1.Goals < Team2.Goals)? Team1 : Team2;
 				
 				if (scorerTeam == losingTeam)
-					return 1;							// Let's close the gap
+					allowed = 1;							// Let's close the gap
 				else
-					return 0;							// Horrible idea (the winner is already winning, don't frustrate the loser!)
+					allowed = 0;							// Horrible idea (the winner is already winning, don't frustrate the loser!)
 			}
+			
+			MatchDebug.Log.WriteLine("GoalBasedBalancedApproach: " + allowed);
+			
+			return allowed;
 		}
 		
 		private function GoalBasedUnfairApproach(scorerTeam : Team) : Number
 		{
 			var newbier : Team = Team1.MatchesCount < Team2.MatchesCount? Team1 : Team2;
 			var other : Team =  Team1.MatchesCount < Team2.MatchesCount? Team2 : Team1;
+			var allowed : Number = 0;
 						
 			if (newbier.Goals <= other.Goals)
 			{
 				if (scorerTeam == newbier)
-					return 1;							// The newbie is losing or drawing, it's a good idea to let him score
+					allowed = 1;							// The newbie is losing or drawing, it's a good idea to let him score
 				else
-					return 0;							// The newbie is losing or drawing, the other shouldn't score at all costs!
+					allowed = 0;							// The newbie is losing or drawing, the other shouldn't score at all costs!
 			}
 			else
 			{
 				if (scorerTeam == newbier)
-					return 0.5;							// The newbie is already winning. Give him 50% chance of scoring
+					allowed = 0.5;							// The newbie is already winning. Give him 50% chance of scoring
 				else
-					return 0.75;						// The newbie is already winning. The loser has only 75% of scoring
+					allowed = 0.75;						// The newbie is already winning. The loser has only 75% of scoring
 			}
+			
+			MatchDebug.Log.WriteLine("GoalBasedUnfairApproach: " + allowed);
+			
+			return allowed;
+		}
+		
+		public function ShotQualityApproach(gkIntercept : InterceptInfo) : Number
+		{
+			var ret : Number = 1;
+			
+			if (gkIntercept.ShotInfo.Impulse <= MatchConfig.LowCapMaxImpulse)
+				ret = 0;
+			else if (gkIntercept.ShotInfo.Impulse <= MatchConfig.HighCapMaxImpulse)
+				ret = 1 - ((gkIntercept.ShotInfo.Impulse - MatchConfig.LowCapMaxImpulse)/(MatchConfig.HighCapMaxImpulse-MatchConfig.LowCapMaxImpulse));
+			
+			MatchDebug.Log.WriteLine("ShotQualityApproach: " + ret);
+			
+			return ret;
 		}
 	}
 }

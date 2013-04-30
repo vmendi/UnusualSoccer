@@ -26,6 +26,14 @@
 			new MessageMovieClip();
 		}
 		
+		public function ShowAutoGoalkeeper(auto : Boolean) : void
+		{
+			if (auto)
+				AddMessage(TutorialClass, ResourceManager.getInstance().getString("matchmsgs", "MessagePorteroAutomatico"));
+			else
+				AddMessage(TutorialClass, ResourceManager.getInstance().getString("matchmsgs", "MessagePorteroManual"));
+		}
+		
 		public function ShowFinishPart(part:int, callback:Function) : void
 		{						
 			if (part == 1)

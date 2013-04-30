@@ -8,6 +8,9 @@ package Match
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.filters.BitmapFilter;
+	import flash.filters.BitmapFilterQuality;
+	import flash.filters.DropShadowFilter;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
@@ -55,6 +58,8 @@ package Match
 			mcInput.visible = false;
 			
 			ctInput.mouseEnabled = true;
+			
+			mcOutput.filters = [GetBitmapFilter()];
 		}
 		
 		private function OnRemovedFromStage(e:Event) : void
@@ -129,6 +134,21 @@ package Match
 			mcOutput.addChild(text);
 			
 			TweenMax.to(text, TIME_BEFORE_FADEOUT, { alpha: 1, onComplete: OnBeginFadeOut, onCompleteParams: [text] });
+		}
+		
+		private function GetBitmapFilter() : BitmapFilter 
+		{
+			var color:Number = 0x000000;
+			var angle:Number = 45;
+			var alpha:Number = 0.8;
+			var blurX:Number = 0;
+			var blurY:Number = 0;
+			var distance:Number = 3;
+			var strength:Number = 1.0;
+			var inner:Boolean = false;
+			var knockout:Boolean = false;
+			var quality:Number = BitmapFilterQuality.HIGH;
+			return new DropShadowFilter(distance, angle, color, alpha, blurX, blurY, strength, quality, inner, knockout);
 		}
 		
 		private function OnBeginFadeOut(text : DisplayObject) : void

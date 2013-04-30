@@ -47,7 +47,7 @@ namespace Realtime
         public const String MATCHLOG_ERROR = "MATCH ERROR";
         public const String MATCHLOG_CHAT = "MATCH CHAT";
                 
-        public const int MinClientVersion = 206;                        // Versión mínima que exigimos a los clientes para jugar
+        public const int MinClientVersion = 208;                        // Versión mínima que exigimos a los clientes para jugar
         
         RealtimePlayer[] Players = new RealtimePlayer[2];               // Los jugadores en el manager
         RealtimePlayerData[] PlayersData = new RealtimePlayerData[2];   // Los jugadores en el manager
@@ -201,9 +201,10 @@ namespace Realtime
 
                 LogEx("Todos los jugadores estan listos para empezar el partido");
 
-                // Envía la configuración del partido al jugador a ambos jugadores
-                Players[Player1].NetPlug.Invoke("InitFromServer", MatchID, PlayersData[Player1], PlayersData[Player2], Player1, MatchLength, TurnLength, IsFriendly, MinClientVersion);
-                Players[Player2].NetPlug.Invoke("InitFromServer", MatchID, PlayersData[Player1], PlayersData[Player2], Player2, MatchLength, TurnLength, IsFriendly, MinClientVersion);
+                int randomSeed = DateTime.Now.Millisecond;
+
+                Players[Player1].NetPlug.Invoke("InitFromServer", MatchID, PlayersData[Player1], PlayersData[Player2], Player1, MatchLength, TurnLength, IsFriendly, MinClientVersion, randomSeed);
+                Players[Player2].NetPlug.Invoke("InitFromServer", MatchID, PlayersData[Player1], PlayersData[Player2], Player2, MatchLength, TurnLength, IsFriendly, MinClientVersion, randomSeed);
             }
         }
         #endregion
