@@ -18,6 +18,7 @@
 		{
 			mMsg = msg;
 			mImg = imgClass;
+			MyIcon.source = mImg;
 		}
 				
 		protected function AddedToStageHandler(event:Event):void
@@ -114,7 +115,7 @@
 		</s:Ellipse>
 	</s:Group>
 	<s:Group x="0" y="0" >
-		<s:BitmapImage id="MyIcon" source="{mImg}" fillMode="clip" alpha="0" />
+		<s:BitmapImage id="MyIcon" source="{resourceManager.getClass('matchmsgs','MessageSpecialWhistle')}" fillMode="clip" alpha="0" />
 		<s:Ellipse id="MyEllipse2" left="0" right="0" top="0" bottom="0" alpha="0" >
 			<s:fill>
 				<s:SolidColor color="#B5EEF7"/>

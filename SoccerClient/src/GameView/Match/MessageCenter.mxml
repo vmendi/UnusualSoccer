@@ -46,7 +46,7 @@
 		
 		public function ShowMensajeSkill(idSkill:int) : void
 		{
-			AddMessage(SpecialClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeSkill" + idSkill), ResourceManager.getInstance().getClass("match", "MensajeSkill" + idSkill + "Icon"));
+			AddMessage(SpecialClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeSkill" + idSkill), ResourceManager.getInstance().getClass("matchmsgs", "MensajeSkill" + idSkill + "Icon"));
 		}
 		
 		public function ShowGoalScored(validity:int, callback:Function) : void
