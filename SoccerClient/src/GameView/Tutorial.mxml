@@ -4,7 +4,8 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:GameView="GameView.*"
 		 width="760" height="650"
-		 creationComplete="Tutorial_creationCompleteHandler(event)">
+		 addedToStage="Tutorial_addedToStageHandler(event)"
+		 >
 	
 	<fx:Script><![CDATA[
 		import GameModel.InactivityModel;
@@ -29,14 +30,10 @@
 			
 			GameMetrics.ReportPageView(GameMetrics.VIEW_TUTORIAL_START);
 			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_START, null);
-		}
-		
-		protected function Tutorial_creationCompleteHandler(event:FlexEvent):void
-		{
-			//MyBasicTutorialInitSequence.play();
+			
 			MyAdvancedTutorialInitSequence.play();
 		}
-		
+				
 		private function OnLookingForMatchChanged(looking : Boolean) : void
 		{
 			if (looking)

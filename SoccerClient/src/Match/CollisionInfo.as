@@ -4,7 +4,8 @@ package Match
 
 	public final class CollisionInfo
 	{
-		// Posicion final como si no hubieran colisionado
+		// Posicion final como si no hubieran colisionado 
+		// De momento no necesitamos UnclippedPos1 pq asumimos que partimos de parado
 		public var UnclippedPos1 : Point;
 		
 		public var PhyEntity1 : PhyEntity;

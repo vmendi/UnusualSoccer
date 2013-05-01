@@ -437,8 +437,8 @@ package Match
 			
 			if (!IsUsingSkill(Enums.Tiroagoldesdetupropiocampo))
 			{
-				if ((Side == Enums.Right_Side && _Game.TheBall.LastPosBallStopped.x >= Field.CenterX) ||
-					(Side == Enums.Left_Side && _Game.TheBall.LastPosBallStopped.x <= Field.CenterX))
+				if ((Side == Enums.Right_Side && _Game.TheBall.LastPosStopped.x >= Field.CenterX) ||
+					(Side == Enums.Left_Side && _Game.TheBall.LastPosStopped.x <= Field.CenterX))
 					bValid = false;
 			}
 			
