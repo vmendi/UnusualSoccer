@@ -28,12 +28,14 @@
 			
 			mLFMChangeWatcher = BindingUtils.bindSetter(OnLookingForMatchChanged, mMainGameModel, [ "TheRealtimeModel", "LookingForMatch" ] );
 			
+			// Si lanzamos el tutorial en modo BASIC
 			GameMetrics.ReportPageView(GameMetrics.VIEW_TUTORIAL_START);
 			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_START, null);
-			
-			// Lanza el tutorial que toque
-			//MyAdvancedTutorialInitSequence.play();
 			MyBasicTutorialInitSequence.play();
+			
+			// Si lanzamos el tutorial en modo ADVANCED
+			//MyAdvancedTutorialInitSequence.play();
+			
 		}
 				
 		private function OnLookingForMatchChanged(looking : Boolean) : void
@@ -45,7 +47,8 @@
 		// Siempre hay que salir del tutorial por aqui!
 		private function CloseTutorial() : void
 		{
-			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_CLOSED, { lookingForMatch: mMainGameModel.TheRealtimeModel.LookingForMatch });
+			if (mMode == BASIC)
+				GameMetrics.ReportEvent(GameMetrics.TUTORIAL_CLOSED, { lookingForMatch: mMainGameModel.TheRealtimeModel.LookingForMatch });
 			
 			if (mLFMChangeWatcher != null)
 				mLFMChangeWatcher.unwatch();
@@ -57,15 +60,19 @@
 		
 		protected function InitTxtButtonNext_clickHandler():void
 		{
-			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_STEP1, null);
+			if (mMode == BASIC)
+				GameMetrics.ReportEvent(GameMetrics.TUTORIAL_STEP1, null);
 			MyInitTxt.visible = false;
 			ShowTutorialStep(BASIC, 0);
 		}
 		
 		protected function InitTxtButtonSkip_clickHandler():void
 		{
-			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_SKIPPED, { step: currentState });
-			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_END, null);
+			if (mMode == BASIC)
+			{
+				GameMetrics.ReportEvent(GameMetrics.TUTORIAL_SKIPPED, { step: currentState });
+				GameMetrics.ReportEvent(GameMetrics.TUTORIAL_END, null);
+			}
 			MyInitTxt.visible = false;
 			MyBasicTutorialEndSequence.play();
 		}
