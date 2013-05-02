@@ -41,12 +41,6 @@ package
 		static public const ZERO_MATCHES_REMAINING : String = "Zero Matches Remaining";
 		
 		static public const TUTORIAL_START: String = "Tutorial Start";
-		static public const TUTORIAL_STEP1: String = "Tutorial Step1";
-		static public const TUTORIAL_STEP2: String = "Tutorial Step2";
-		static public const TUTORIAL_STEP3: String = "Tutorial Step3";
-		static public const TUTORIAL_STEP4: String = "Tutorial Step4";
-		static public const TUTORIAL_STEP5: String = "Tutorial Step5";
-		static public const TUTORIAL_END: String = "Tutorial End";
 		static public const TUTORIAL_CLOSED: String = "Tutorial Closed";
 		static public const TUTORIAL_SKIPPED: String = "Tutorial Skipped";
 		

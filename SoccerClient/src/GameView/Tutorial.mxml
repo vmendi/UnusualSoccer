@@ -10,14 +10,9 @@
 	<fx:Script><![CDATA[
 		import GameModel.InactivityModel;
 		import GameModel.MainGameModel;
-		import GameModel.RealtimeModel;
-		
-		import GameView.Match.RealtimeMatch;
 		
 		import mx.binding.utils.BindingUtils;
 		import mx.binding.utils.ChangeWatcher;
-		import mx.events.EffectEvent;
-		import mx.events.FlexEvent;
 		
 		protected function Tutorial_addedToStageHandler(event:Event):void
 		{
@@ -27,21 +22,21 @@
 			mMainGameModel.TheInactivityModel.OperationMode = InactivityModel.FORCED_ACTIVITY_MODE; 
 			
 			mLFMChangeWatcher = BindingUtils.bindSetter(OnLookingForMatchChanged, mMainGameModel, [ "TheRealtimeModel", "LookingForMatch" ]);
-			
+						
 			// Si no nos han inicializado todavia, asumimos BASIC
 			if (mMode == null)
 				mMode = BASIC;
 			
+			GameMetrics.ReportPageView(GameMetrics.VIEW_TUTORIAL_START);
+			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_START, { mode: mMode });
+			
 			if (mMode == BASIC)
 			{
-				GameMetrics.ReportPageView(GameMetrics.VIEW_TUTORIAL_START);
-				GameMetrics.ReportEvent(GameMetrics.TUTORIAL_START, null);
+				ShowTutorialStep(0);
 				MyBasicTutorialInitSequence.play();
 			}
 			else
 			{
-				//GameMetrics.ReportPageView(GameMetrics.VIEW_TUTORIAL_START);
-				//GameMetrics.ReportEvent(GameMetrics.TUTORIAL_START, null);
 				MyAdvancedTutorialInitSequence.play();
 			}
 		}
@@ -57,11 +52,11 @@
 				CloseTutorial();
 		}
 		
-		// Siempre hay que salir del tutorial por aqui!
+		// Siempre hay que salir del tutorial por aqui! Los botones de cerrar pueden llamar aqui directamente
 		private function CloseTutorial() : void
 		{
-			if (mMode == BASIC)
-				GameMetrics.ReportEvent(GameMetrics.TUTORIAL_CLOSED, { lookingForMatch: mMainGameModel.TheRealtimeModel.LookingForMatch });
+			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_CLOSED, { lookingForMatch: mMainGameModel.TheRealtimeModel.LookingForMatch, 
+																   mode: mMode, step: mStep });
 			
 			if (mLFMChangeWatcher != null)
 				mLFMChangeWatcher.unwatch();
@@ -70,104 +65,73 @@
 			
 			mMainGameModel.TheInactivityModel.OperationMode = InactivityModel.NORMAL_MODE;
 		}
-		
-		protected function InitTxtButtonNext_clickHandler():void
-		{
-			if (mMode == BASIC)
-				GameMetrics.ReportEvent(GameMetrics.TUTORIAL_STEP1, null);
-			MyInitTxt.visible = false;
-			ShowTutorialStep(BASIC, 0);
-		}
-		
-		protected function InitTxtButtonSkip_clickHandler():void
-		{
-			if (mMode == BASIC)
-			{
-				GameMetrics.ReportEvent(GameMetrics.TUTORIAL_SKIPPED, { step: currentState });
-				GameMetrics.ReportEvent(GameMetrics.TUTORIAL_END, null);
-			}
-			MyInitTxt.visible = false;
-			MyBasicTutorialEndSequence.play();
-		}
-		
-		protected function NotNow_clickHandler():void
-		{
-			CloseTutorial();
-		}
-		
+				
 		protected function MenuButton_clickHandler(lesson:String):void
 		{
 			MyMenu.visible = false;
+			
 			if (lesson == "Basics")
-				ShowTutorialStep(ADVANCED,0);
+				ShowTutorialStep(1);
 			else if (lesson == "Controlling")
-				ShowTutorialStep(ADVANCED,3);
+				ShowTutorialStep(4);
 			else if (lesson == "Goalkeeper")
-				ShowTutorialStep(ADVANCED,5);
+				ShowTutorialStep(6);
 			else if (lesson == "Shooting")
-				ShowTutorialStep(ADVANCED,7);
+				ShowTutorialStep(8);
 		}
-		
-		protected function MenuCloseButton_clickHandler(event:MouseEvent):void
-		{
-			CloseTutorial();
-		}
-		
+	
 		protected function TutorialNextButton_clickHandler():void
 		{
-			var step:int;
+			var step:int = mStep;
 			
 			if (mMode == BASIC)
 			{
-				if (mStep == BASIC_SEQUENCE.length-1)
+				// Busca el siguiente step no avanzado
+				do 
 				{
-					MyBasicTutorialEndSequence.play();
+					step++;
 				}
+				while (step < TUTORIAL_SEQUENCE.length-1 && TUTORIAL_SEQUENCE[step].isAdvanced)
+
+				if (step == TUTORIAL_SEQUENCE.length-1)
+					MyBasicTutorialEndSequence.play();	// Si no lo encontramos, se acabo el tutorial BASIC
 				else
-				{
-					step = mStep+1
-					ShowTutorialStep(mMode, step);
-				}
+					ShowTutorialStep(step);
 			}
 			else
 			{
-				if (mStep == ADVANCED_SEQUENCE.length-1)
-					step = 0;
+				if (step == TUTORIAL_SEQUENCE.length-1)
+					ShowTutorialStep(1);				// El 0 nos lo saltamos pq es el de bienvenida
 				else
-					step = mStep+1
-				ShowTutorialStep(mMode, step);
+					ShowTutorialStep(step+1);				
 			}
 		}
 		
 		protected function TutorialSkipButton_clickHandler():void
 		{
+			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_SKIPPED, { mode: mMode, step: mStep });
+			
 			if (mMode == BASIC)
-			{
 				MyBasicTutorialEndSequence.play();
-			}
 			else
-			{
 				MyAdvancedTutorialOpenMenuSequence.play();
-			}
 		}
 		
-		// CONTROL DEL TUTORIAL
-		
-		private function ShowTutorialStep(mode:String, step:int):void
+		private function ShowTutorialStep(step:int):void
 		{
-			mMode = mode;
 			mStep = step;
-			
-			var anim:String = (mMode == BASIC) ? BASIC_SEQUENCE[step].anim : ADVANCED_SEQUENCE[step].anim;
-			var tit:String = (mMode == BASIC) ? BASIC_SEQUENCE[step].tit : ADVANCED_SEQUENCE[step].tit;
-			var txt:String = (mMode == BASIC) ? BASIC_SEQUENCE[step].txt : ADVANCED_SEQUENCE[step].txt;
-			
-			MyAnim.source = resourceManager.getClass('main',anim);
-			MyAnim.load();
-			MyTit.text = resourceManager.getString('main',tit);
-			MyTxt.text = resourceManager.getString('main',txt);
+						
+			if (TUTORIAL_SEQUENCE[step].anim != null)
+			{
+				MyAnim.source = resourceManager.getClass('main', TUTORIAL_SEQUENCE[step].anim);
+				MyAnim.load();
+			}
+			MyTit.text = resourceManager.getString('main', TUTORIAL_SEQUENCE[step].tit);
+			MyTxt.text = resourceManager.getString('main', TUTORIAL_SEQUENCE[step].txt);
 			
 			MyOpenMessageSequence.play();
+			
+			GameMetrics.ReportEvent("TUTORIAL_STEP" + mStep, { mode: mMode, step: mStep });
 		}
 		
 		[Bindable]
@@ -178,41 +142,40 @@
 		private var mMode : String;
 		private const BASIC:String = "Basic";
 		private const ADVANCED:String = "Advanced";
-		
-		private const ADVANCED_SEQUENCE:Array = 
+				
+		private const TUTORIAL_SEQUENCE:Array = 
 		[
-			{tit : "TutorialBasicsStep1Tit", txt : "TutorialBasicsStep1Txt", anim : "TutorialBasicsStep1Anim"},
-			{tit : "TutorialBasicsStep2Tit", txt : "TutorialBasicsStep2Txt", anim : "TutorialBasicsStep2Anim"},
-			{tit : "TutorialBasicsStep3Tit", txt : "TutorialBasicsStep3Txt", anim : "TutorialBasicsStep3Anim"},
-			{tit : "TutorialControllingStep1Tit", txt : "TutorialControllingStep1Txt", anim : "TutorialControllingStep1Anim"},
-			{tit : "TutorialControllingStep2Tit", txt : "TutorialControllingStep2Txt", anim : "TutorialControllingStep2Anim"},
-			{tit : "TutorialGoalkeeperStep1Tit", txt : "TutorialGoalkeeperStep1Txt", anim : "TutorialGoalkeeperStep1Anim"},
-			{tit : "TutorialGoalkeeperStep2Tit", txt : "TutorialGoalkeeperStep2Txt", anim : "TutorialGoalkeeperStep2Anim"},
-			{tit : "TutorialShotAtGoalStep1Tit", txt : "TutorialShotAtGoalStep1Txt", anim : "TutorialShotAtGoalStep1Anim"},
-			{tit : "TutorialShotAtGoalStep2Tit", txt : "TutorialShotAtGoalStep2Txt", anim : "TutorialShotAtGoalStep2Anim"}
+			{tit: "TutorialInitTit", txt: "TutorialInitTxt", anim : null, isAdvanced: false},
+			{tit: "TutorialBasicsStep1Tit", txt: "TutorialBasicsStep1Txt", anim: "TutorialBasicsStep1Anim", isAdvanced: false},
+			{tit: "TutorialBasicsStep2Tit", txt: "TutorialBasicsStep2Txt", anim: "TutorialBasicsStep2Anim", isAdvanced: false},
+			{tit: "TutorialBasicsStep3Tit", txt: "TutorialBasicsStep3Txt", anim: "TutorialBasicsStep3Anim", isAdvanced: true},
+			{tit: "TutorialControllingStep1Tit", txt: "TutorialControllingStep1Txt", anim: "TutorialControllingStep1Anim", isAdvanced: false},
+			{tit: "TutorialControllingStep2Tit", txt: "TutorialControllingStep2Txt", anim: "TutorialControllingStep2Anim", isAdvanced: false},
+			{tit: "TutorialGoalkeeperStep1Tit", txt: "TutorialGoalkeeperStep1Txt", anim: "TutorialGoalkeeperStep1Anim", isAdvanced: false},
+			{tit: "TutorialGoalkeeperStep2Tit", txt: "TutorialGoalkeeperStep2Txt", anim: "TutorialGoalkeeperStep2Anim", isAdvanced: true},
+			{tit: "TutorialShotAtGoalStep1Tit", txt: "TutorialShotAtGoalStep1Txt", anim: "TutorialShotAtGoalStep1Anim", isAdvanced: false},
+			{tit: "TutorialShotAtGoalStep2Tit", txt: "TutorialShotAtGoalStep2Txt", anim: "TutorialShotAtGoalStep2Anim", isAdvanced: true}
 		];
-		
-		private const BASIC_SEQUENCE:Array = [{tit : "TutorialBasicsStep1Tit", txt : "TutorialBasicsStep1Txt", anim : "TutorialBasicsStep1Anim"},
-			{tit : "TutorialBasicsStep2Tit", txt : "TutorialBasicsStep2Txt", anim : "TutorialBasicsStep2Anim"},
-			{tit : "TutorialControllingStep1Tit", txt : "TutorialControllingStep1Txt", anim : "TutorialControllingStep1Anim"},
-			{tit : "TutorialControllingStep2Tit", txt : "TutorialControllingStep2Txt", anim : "TutorialControllingStep2Anim"},
-			{tit : "TutorialGoalkeeperStep1Tit", txt : "TutorialGoalkeeperStep1Txt", anim : "TutorialGoalkeeperStep1Anim"},
-			{tit : "TutorialShotAtGoalStep1Tit", txt : "TutorialShotAtGoalStep1Txt", anim : "TutorialShotAtGoalStep1Anim"}];
 		
 	]]></fx:Script>
 	
 	<fx:Declarations>
 		<s:Sequence id="MyBasicTutorialInitSequence">
-			<s:Animate target="{MyBlackRectangle}" duration="250">
-				<s:SimpleMotionPath property="alpha" valueTo="0" />
-			</s:Animate>
+			<s:Parallel>
+				<s:SetAction target="{MyMessage}" property="visible" value="false" />
+				<s:Animate target="{MyBlackRectangle}" duration="250">
+					<s:SimpleMotionPath property="alpha" valueTo="0" />
+				</s:Animate>	
+			</s:Parallel>			
 			<s:SetAction target="{MyBlackRectangle}" property="visible" value="false"/>
-			<s:Animate target="{MyInitTxt}" duration="250">
+			<s:SetAction target="{MyMessage}" property="top" value="238" />
+			<s:SetAction target="{MyMessage}" property="visible" value="true" />
+			<s:Animate target="{MyMessage}" duration="250">
 				<s:SimpleMotionPath property="top" valueTo="228" />
 				<s:SimpleMotionPath property="alpha" valueTo="1" />
 			</s:Animate>
 		</s:Sequence>
-		
+
 		<s:Sequence id="MyBasicTutorialEndSequence">
 			<s:SetAction target="{MyMessage}" property="visible" value="false" />
 			<s:Parallel duration="250">
@@ -294,7 +257,7 @@
 	<!-- FONDOS -->
 	
 	<s:SWFLoader top="80" id="MyTutorialField" source="@Embed(source='/Assets/General.swf', symbol='TutorialField')" />
-	<s:SWFLoader id="MyAnim" y="80" source="{resourceManager.getClass('main','TutorialBasicsStep1Anim')}" visible="false" />
+	<s:SWFLoader id="MyAnim" y="80" source="" visible="false" />
 	<s:SWFLoader id="EndCortina" source="@Embed(source='/Assets/General.swf', symbol='TutorialCortinaPlay')" visible="false" alpha="0" />
 	<s:Rect id="MyBlackRectangle" left="0" right="0" top="0" bottom="0">
 		<s:fill>
@@ -302,7 +265,7 @@
 		</s:fill>
 	</s:Rect>
 	
-	<!-- MENSAJES -->
+	<!-- MENSAJE -->
 	
 	<s:Group id="MyMessage" horizontalCenter="0" top="10" visible="false">
 		<s:Group width="600" bottom="8">
@@ -328,31 +291,7 @@
 		<s:BitmapImage left="-10" source="@Embed(source='/Assets/General.swf', symbol='TutorialHost')" fillMode="clip" />
 	</s:Group>
 	
-	<!-- MENSAJES INICIAL Y FINAL -->
-	
-	<s:Group id="MyInitTxt" horizontalCenter="0" top="238" visible="true" alpha="0" >
-		<s:Group width="600" bottom="8">
-			<GameView:PopupBackground left="-10" right="-10" top="-10" bottom="-10" />
-			<s:Group width="415" right="10">
-				<s:layout>
-					<s:VerticalLayout gap="10" horizontalAlign="center" />
-				</s:layout>
-				<s:Label text="{resourceManager.getString('main','TutorialInitTit')}" width="415" styleName="yellowBoldHuge" textAlign="center" />
-				<s:Label text="{resourceManager.getString('main','TutorialInitTxt')}" width="415" styleName="whiteBoldVeryBig" textAlign="center" />
-				<s:Group>
-					<s:layout>
-						<s:HorizontalLayout gap="10" verticalAlign="middle" />
-					</s:layout>
-					<s:Button label="{resourceManager.getString('main','TutorialSkip')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonDarkGreySkin" click="InitTxtButtonSkip_clickHandler()" />
-					<s:Button label="{resourceManager.getString('main','TutorialNext')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonGreySkin" click="InitTxtButtonNext_clickHandler()" />
-				</s:Group>
-			</s:Group>
-			<s:filters>
-				<s:DropShadowFilter angle="90" distance="0" blurX="20" blurY="20" strength="2" color="0x000000" alpha="0.5" />
-			</s:filters>
-		</s:Group>	
-		<s:BitmapImage left="-10" source="@Embed(source='/Assets/General.swf', symbol='TutorialHost')" fillMode="clip" />
-	</s:Group>
+	<!-- MENSAJE FINAL DEL BASIC -->
 	
 	<s:Group id="MyEndTxt" horizontalCenter="0" top="345" visible="false" >
 		<s:Group width="600" bottom="8">
@@ -363,7 +302,7 @@
 				</s:layout>
 				<s:Label text="{resourceManager.getString('main','TutorialEndTit')}" width="415" styleName="yellowBoldHuge" textAlign="center" />
 				<s:Label text="{resourceManager.getString('main','TutorialEndTxt')}" width="415" styleName="whiteBoldVeryBig" textAlign="center" />
-				<s:Button label="{resourceManager.getString('main','TutorialNotNow')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonDarkGreySkin" click="NotNow_clickHandler()" />
+				<s:Button label="{resourceManager.getString('main','TutorialNotNow')}" minWidth="80" horizontalCenter="0" verticalCenter="0" skinClass="GameView.Skins.ButtonDarkGreySkin" click="CloseTutorial()" />
 			</s:Group>
 			<s:filters>
 				<s:DropShadowFilter angle="90" distance="0" blurX="20" blurY="20" strength="2" color="0x000000" alpha="0.5" />
@@ -408,10 +347,10 @@
 				<s:Button label="{resourceManager.getString('main','TutorialMenuControlling')}" width="100%" height="25" skinClass="GameView.Skins.ButtonGreySkin" click="MenuButton_clickHandler('Controlling')" />
 				<s:Button label="{resourceManager.getString('main','TutorialMenuGoalkeeper')}" width="100%" height="25" skinClass="GameView.Skins.ButtonGreySkin" click="MenuButton_clickHandler('Goalkeeper')" />
 				<s:Button label="{resourceManager.getString('main','TutorialMenuShooting')}" width="100%" height="25" skinClass="GameView.Skins.ButtonGreySkin" click="MenuButton_clickHandler('Shooting')" />
-				<s:Button label="{resourceManager.getString('main','TutorialClose')}" width="100%" height="25" skinClass="GameView.Skins.ButtonDarkGreySkin" click="MenuCloseButton_clickHandler(event)" />
+				<s:Button label="{resourceManager.getString('main','TutorialClose')}" width="100%" height="25" skinClass="GameView.Skins.ButtonDarkGreySkin" click="CloseTutorial()" />
 			</s:Group>
 		</s:Group>
-		<s:Button label="X" minHeight="23" minWidth="23" top="-20" right="-10" skinClass="GameView.Skins.ButtonGreySkin" click="MenuCloseButton_clickHandler(event)" />
+		<s:Button label="X" minHeight="23" minWidth="23" top="-20" right="-10" skinClass="GameView.Skins.ButtonGreySkin" click="CloseTutorial()" />
 	</s:Group>
 	
 </s:Group>

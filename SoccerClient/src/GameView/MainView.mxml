@@ -141,7 +141,10 @@
 		// La pantalla de login nos llama aqui en cuanto esta el equipo creado
 		public function StartFirstGameAfterLogin() : void
 		{
-			currentState = "Competition";
+			// Se llega a ver un frame antes del tutorial => callLater
+			callLater(function() : void {
+				currentState = "Competition";
+			});
 			
 			// Nosotros lo creamos y el mismo se encargara de destruirse
 			addElement(new Tutorial());
