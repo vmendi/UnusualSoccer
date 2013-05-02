@@ -26,16 +26,29 @@
 			// Durante todo el tutorial nos aseguramos de que no entramos en inactividad
 			mMainGameModel.TheInactivityModel.OperationMode = InactivityModel.FORCED_ACTIVITY_MODE; 
 			
-			mLFMChangeWatcher = BindingUtils.bindSetter(OnLookingForMatchChanged, mMainGameModel, [ "TheRealtimeModel", "LookingForMatch" ] );
+			mLFMChangeWatcher = BindingUtils.bindSetter(OnLookingForMatchChanged, mMainGameModel, [ "TheRealtimeModel", "LookingForMatch" ]);
 			
-			// Si lanzamos el tutorial en modo BASIC
-			GameMetrics.ReportPageView(GameMetrics.VIEW_TUTORIAL_START);
-			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_START, null);
-			MyBasicTutorialInitSequence.play();
+			// Si no nos han inicializado todavia, asumimos BASIC
+			if (mMode == null)
+				mMode = BASIC;
 			
-			// Si lanzamos el tutorial en modo ADVANCED
-			//MyAdvancedTutorialInitSequence.play();
-			
+			if (mMode == BASIC)
+			{
+				GameMetrics.ReportPageView(GameMetrics.VIEW_TUTORIAL_START);
+				GameMetrics.ReportEvent(GameMetrics.TUTORIAL_START, null);
+				MyBasicTutorialInitSequence.play();
+			}
+			else
+			{
+				//GameMetrics.ReportPageView(GameMetrics.VIEW_TUTORIAL_START);
+				//GameMetrics.ReportEvent(GameMetrics.TUTORIAL_START, null);
+				MyAdvancedTutorialInitSequence.play();
+			}
+		}
+		
+		public function SetAdvancedMode() : void
+		{
+			mMode = ADVANCED;
 		}
 				
 		private function OnLookingForMatchChanged(looking : Boolean) : void
@@ -78,7 +91,7 @@
 		}
 		
 		protected function NotNow_clickHandler():void
-		{			
+		{
 			CloseTutorial();
 		}
 		
@@ -166,7 +179,9 @@
 		private const BASIC:String = "Basic";
 		private const ADVANCED:String = "Advanced";
 		
-		private const ADVANCED_SEQUENCE:Array = [{tit : "TutorialBasicsStep1Tit", txt : "TutorialBasicsStep1Txt", anim : "TutorialBasicsStep1Anim"},
+		private const ADVANCED_SEQUENCE:Array = 
+		[
+			{tit : "TutorialBasicsStep1Tit", txt : "TutorialBasicsStep1Txt", anim : "TutorialBasicsStep1Anim"},
 			{tit : "TutorialBasicsStep2Tit", txt : "TutorialBasicsStep2Txt", anim : "TutorialBasicsStep2Anim"},
 			{tit : "TutorialBasicsStep3Tit", txt : "TutorialBasicsStep3Txt", anim : "TutorialBasicsStep3Anim"},
 			{tit : "TutorialControllingStep1Tit", txt : "TutorialControllingStep1Txt", anim : "TutorialControllingStep1Anim"},
@@ -174,7 +189,8 @@
 			{tit : "TutorialGoalkeeperStep1Tit", txt : "TutorialGoalkeeperStep1Txt", anim : "TutorialGoalkeeperStep1Anim"},
 			{tit : "TutorialGoalkeeperStep2Tit", txt : "TutorialGoalkeeperStep2Txt", anim : "TutorialGoalkeeperStep2Anim"},
 			{tit : "TutorialShotAtGoalStep1Tit", txt : "TutorialShotAtGoalStep1Txt", anim : "TutorialShotAtGoalStep1Anim"},
-			{tit : "TutorialShotAtGoalStep2Tit", txt : "TutorialShotAtGoalStep2Txt", anim : "TutorialShotAtGoalStep2Anim"}];
+			{tit : "TutorialShotAtGoalStep2Tit", txt : "TutorialShotAtGoalStep2Txt", anim : "TutorialShotAtGoalStep2Anim"}
+		];
 		
 		private const BASIC_SEQUENCE:Array = [{tit : "TutorialBasicsStep1Tit", txt : "TutorialBasicsStep1Txt", anim : "TutorialBasicsStep1Anim"},
 			{tit : "TutorialBasicsStep2Tit", txt : "TutorialBasicsStep2Txt", anim : "TutorialBasicsStep2Anim"},
@@ -295,8 +311,8 @@
 				<s:layout>
 					<s:VerticalLayout gap="10" horizontalAlign="center" />
 				</s:layout>
-				<s:Label id="MyTit" text="{resourceManager.getString('main','TutorialBasicsStep1Tit')}" width="415" styleName="yellowBoldVeryBig" textAlign="center" />
-				<s:Label id="MyTxt" text="{resourceManager.getString('main','TutorialBasicsStep1Txt')}" width="415" styleName="whiteBoldBig" textAlign="left" />
+				<s:Label id="MyTit" text="" width="415" styleName="yellowBoldVeryBig" textAlign="center" />
+				<s:Label id="MyTxt" text="" width="415" styleName="whiteBoldBig" textAlign="left" />
 				<s:Group>
 					<s:layout>
 						<s:HorizontalLayout gap="10" verticalAlign="middle" />

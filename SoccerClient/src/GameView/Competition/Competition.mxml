@@ -84,6 +84,11 @@
 			} catch(e:Error) {}
 		}
 		
+		protected function OpenTutorialClickHandler(event:MouseEvent):void
+		{
+			(HierarchyUtils.FindParentOfType(this, getQualifiedClassName(MainView)) as MainView).OpenAdvancedTutorial();
+		}
+		
 		[Bindable]
 		private var mCompetitionModel : CompetitionModel;
 		private var mGameModel : MainGameModel;
@@ -139,6 +144,7 @@
 				
 	</s:Panel>
 	
-	<s:Button label="{resourceManager.getString('main','TutorialOpenTutorialButton')}" minWidth="150" skinClass="GameView.Skins.ButtonDarkGreySkin" horizontalCenter="0" top="14" />
+	<s:Button label="{resourceManager.getString('main','TutorialOpenTutorialButton')}" skinClass="GameView.Skins.ButtonDarkGreySkin" horizontalCenter="0" top="14" minWidth="150"
+			  click="OpenTutorialClickHandler(event)"/>
 	
 </s:Group>

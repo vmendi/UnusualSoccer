@@ -143,9 +143,16 @@
 		{
 			currentState = "Competition";
 			
-			// Nosotros lo creamos y el mismo se encargara de destruirse. Esta asi sin ser un Dialog (PopupManager) porque
-			// hace falta que al final se pueda clickar "A traves"
+			// Nosotros lo creamos y el mismo se encargara de destruirse
 			addElement(new Tutorial());
+		}
+		
+		// Called under demand when clicking a button that can be anywhere
+		public function OpenAdvancedTutorial() : void
+		{
+			var theTutorial : Tutorial = new Tutorial();
+			theTutorial.SetAdvancedMode();
+			addElement(theTutorial);
 		}
 		
 		private var mMainGameModel : MainGameModel;
