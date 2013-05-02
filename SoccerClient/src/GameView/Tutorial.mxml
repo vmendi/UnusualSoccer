@@ -31,7 +31,9 @@
 			GameMetrics.ReportPageView(GameMetrics.VIEW_TUTORIAL_START);
 			GameMetrics.ReportEvent(GameMetrics.TUTORIAL_START, null);
 			
-			MyAdvancedTutorialInitSequence.play();
+			// Lanza el tutorial que toque
+			//MyAdvancedTutorialInitSequence.play();
+			MyBasicTutorialInitSequence.play();
 		}
 				
 		private function OnLookingForMatchChanged(looking : Boolean) : void
@@ -79,11 +81,11 @@
 			if (lesson == "Basics")
 				ShowTutorialStep(ADVANCED,0);
 			else if (lesson == "Controlling")
-				ShowTutorialStep(ADVANCED,2);
+				ShowTutorialStep(ADVANCED,3);
 			else if (lesson == "Goalkeeper")
-				ShowTutorialStep(ADVANCED,4);
+				ShowTutorialStep(ADVANCED,5);
 			else if (lesson == "Shooting")
-				ShowTutorialStep(ADVANCED,6);
+				ShowTutorialStep(ADVANCED,7);
 		}
 		
 		protected function MenuCloseButton_clickHandler(event:MouseEvent):void
@@ -159,6 +161,7 @@
 		
 		private const ADVANCED_SEQUENCE:Array = [{tit : "TutorialBasicsStep1Tit", txt : "TutorialBasicsStep1Txt", anim : "TutorialBasicsStep1Anim"},
 			{tit : "TutorialBasicsStep2Tit", txt : "TutorialBasicsStep2Txt", anim : "TutorialBasicsStep2Anim"},
+			{tit : "TutorialBasicsStep3Tit", txt : "TutorialBasicsStep3Txt", anim : "TutorialBasicsStep3Anim"},
 			{tit : "TutorialControllingStep1Tit", txt : "TutorialControllingStep1Txt", anim : "TutorialControllingStep1Anim"},
 			{tit : "TutorialControllingStep2Tit", txt : "TutorialControllingStep2Txt", anim : "TutorialControllingStep2Anim"},
 			{tit : "TutorialGoalkeeperStep1Tit", txt : "TutorialGoalkeeperStep1Txt", anim : "TutorialGoalkeeperStep1Anim"},
@@ -350,16 +353,40 @@
 	
 	<s:Group id="MyMenu" horizontalCenter="0" verticalCenter="0" visible="false">
 		<GameView:PopupBackground left="-15" right="-15" bottom="-15" top="-25" />
+		
 		<s:Group>
 			<s:layout>
-				<s:VerticalLayout gap="10" horizontalAlign="center" />
+				<s:VerticalLayout gap="20" horizontalAlign="center" />
 			</s:layout>
-			<s:Label id="myTit" top="15" text="{resourceManager.getString('main','TutorialMenuLessons')}" styleName="whiteBoldHuge" /> 
-			<s:Button label="{resourceManager.getString('main','TutorialMenuBasic')}" width="100%" height="25" skinClass="GameView.Skins.ButtonGreySkin" click="MenuButton_clickHandler('Basics')" />
-			<s:Button label="{resourceManager.getString('main','TutorialMenuControlling')}" width="100%" height="25" skinClass="GameView.Skins.ButtonGreySkin" click="MenuButton_clickHandler('Controlling')" />
-			<s:Button label="{resourceManager.getString('main','TutorialMenuGoalkeeper')}" width="100%" height="25" skinClass="GameView.Skins.ButtonGreySkin" click="MenuButton_clickHandler('Goalkeeper')" />
-			<s:Button label="{resourceManager.getString('main','TutorialMenuShooting')}" width="100%" height="25" skinClass="GameView.Skins.ButtonGreySkin" click="MenuButton_clickHandler('Shooting')" />
-			<s:Button label="{resourceManager.getString('main','TutorialClose')}" width="100%" height="25" skinClass="GameView.Skins.ButtonDarkGreySkin" click="MenuCloseButton_clickHandler(event)" />
+			<s:Group>
+				<s:layout>
+					<s:VerticalLayout gap="0" />
+				</s:layout>
+				<s:Group id="MyMenuCabecera">
+					<s:layout>
+						<s:HorizontalLayout gap="20" verticalAlign="middle" />
+					</s:layout>
+					<s:BitmapImage id="MyHost" source="@Embed(source='/Assets/General.swf', symbol='MessageTutorialHost')" fillMode="clip" />
+					<s:Label id="myTit" top="15" text="{resourceManager.getString('main','TutorialMenuLessons')}" styleName="whiteBoldHuge" />
+				</s:Group>
+				<s:Graphic>
+					<s:Line xFrom="0" xTo="{MyMenuCabecera.width}" yFrom="0" yTo="0">
+						<s:stroke>
+							<s:SolidColorStroke color="0xFFFFFF" weight="1"/>
+						</s:stroke>
+					</s:Line>
+				</s:Graphic>
+			</s:Group>
+			<s:Group>
+				<s:layout>
+					<s:VerticalLayout gap="10" />
+				</s:layout>
+				<s:Button label="{resourceManager.getString('main','TutorialMenuBasic')}" width="100%" height="25" skinClass="GameView.Skins.ButtonGreySkin" click="MenuButton_clickHandler('Basics')" />
+				<s:Button label="{resourceManager.getString('main','TutorialMenuControlling')}" width="100%" height="25" skinClass="GameView.Skins.ButtonGreySkin" click="MenuButton_clickHandler('Controlling')" />
+				<s:Button label="{resourceManager.getString('main','TutorialMenuGoalkeeper')}" width="100%" height="25" skinClass="GameView.Skins.ButtonGreySkin" click="MenuButton_clickHandler('Goalkeeper')" />
+				<s:Button label="{resourceManager.getString('main','TutorialMenuShooting')}" width="100%" height="25" skinClass="GameView.Skins.ButtonGreySkin" click="MenuButton_clickHandler('Shooting')" />
+				<s:Button label="{resourceManager.getString('main','TutorialClose')}" width="100%" height="25" skinClass="GameView.Skins.ButtonDarkGreySkin" click="MenuCloseButton_clickHandler(event)" />
+			</s:Group>
 		</s:Group>
 		<s:Button label="X" minHeight="23" minWidth="23" top="-20" right="-10" skinClass="GameView.Skins.ButtonGreySkin" click="MenuCloseButton_clickHandler(event)" />
 	</s:Group>
