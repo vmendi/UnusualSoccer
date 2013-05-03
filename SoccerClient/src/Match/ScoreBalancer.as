@@ -23,7 +23,7 @@ package Match
 		
 		public function get IsAutoGoalKeeper() : Boolean
 		{
-			return _Team1.IsNoob || _Team2.IsNoob;
+			return _Team1.IsNoobOrUltraNoob || _Team2.IsNoobOrUltraNoob;
 		}
 				
 		// Funcion para combinar los factores que determinan cuanto queremos marcar un gol. Esta en concreto lo que

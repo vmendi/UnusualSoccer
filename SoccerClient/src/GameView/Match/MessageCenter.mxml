@@ -114,7 +114,7 @@
 				else if(reason == Enums.TurnSaquePuertaInvalidGoal)
 					AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeTurnoPropioSaquePuerta"));
 				else if (reason == Enums.TurnTiroAPuerta)
-					AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaRecepcion"));
+					AddMessage(TutorialClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaRecepcion"));
 				else if (reason == Enums.TurnGoalKeeperSet)
 					AddMessage(TickerClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeTiroPuertaConfirmacion"));
 				else if(reason == Enums.TurnFault || reason == Enums.TurnSaquePuertaFalta)
