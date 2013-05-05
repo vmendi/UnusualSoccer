@@ -59,6 +59,8 @@
 		</s:Sequence>	
 	</fx:Declarations>
 	
+	<fx:Style source="../styles.css" />
+	
 	<s:BitmapImage x="10" y="11" id="MyBg" source="@Embed(source='/Assets/General.swf', symbol='MessageTutorialBg')" fillMode="clip" alpha="0" />
 	<s:Rect id="MyRectangle" x="40" y="17" width="0" height="63" alpha="0">
 		<s:stroke>
