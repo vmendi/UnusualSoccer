@@ -120,11 +120,12 @@
 			<s:Parallel duration="200" >				
 				<s:Fade targets="{[MyLedBanner]}" alphaTo="1" />
 				<s:Scale targets="{[MyLedBanner]}" scaleXFrom="1.4" scaleXTo="1" scaleYFrom="1.4" scaleYTo="1" >
-					<s:easer>
+					<s:easer> 
 						<s:Elastic/>
 					</s:easer>
 				</s:Scale>
 			</s:Parallel>
+			<s:Fade target="{MyMask}" alphaTo="0.5" duration="0" />
 			<s:Fade target="{this}" alphaFrom="1" alphaTo="1" duration="2000"/>
 			<s:Fade target="{this}" alphaFrom="1" alphaTo="0" duration="250"/>
 		</s:Sequence>			
