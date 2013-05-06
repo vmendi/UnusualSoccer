@@ -66,34 +66,13 @@ package GameView.Match
 					break;
 				
 				case "typed":
-					/*
-					var s1 : SimpleMotionPath = new SimpleMotionPath();
-					s1.property = "verticalCenter";
-					s1.valueFrom = 0;
-					s1.valueTo = -30;
-					
-					var s2 : SimpleMotionPath = new SimpleMotionPath();
-					s2.property = "verticalCenter";
-					s2.valueFrom = -30;
-					s2.valueTo = 0;
-					
-					var v:Vector .<MotionPath> = new Vector.<MotionPath>();
-					v.push(s1);
-					v.push(s2);
-					
-					var anim:Animate = new  spark.effects.Animate();
-					anim.target = this;					
-					anim.duration = 300;
-					anim.motionPaths = v;
-					
-					mSequence.addChild(anim);	
-					*/
 					mParallel.addChild(f);
 					mParallel.addChild(mSequence);
 					break;
 				
 				case "bounce":
 					// Definir animación Rebote pelota
+					
 					break;
 				
 				default:

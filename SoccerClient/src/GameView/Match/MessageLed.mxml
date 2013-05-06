@@ -51,7 +51,7 @@
 				cadena.regenerateStyleCache(true);
 				cadena.filters = [glowNormal];
 				
-				LedBanner.addElement(cadena);
+				MyLedBanner.addElement(cadena);
 				
 			}
 			else
@@ -77,21 +77,21 @@
 
 		protected function AnimateLeds(evt:TimerEvent):void
 		{
-			if (idx < mMsg.length)
+			if (mCurrentCharIdx < mMsg.length)
 			{
 				var letter:LedLabel = new LedLabel();
-				var txt : String = mMsg.charAt(idx);
+				var txt : String = mMsg.charAt(mCurrentCharIdx);
 				
 				letter.text = txt;
 				letter.verticalCenter = 0;
 				letter.regenerateStyleCache(true);
-				letter.x = ( (LedBanner.width - letter.GetStringWidth(mMsg).width) * 0.5 ) + letter.GetStringWidth(mMsg.substr(0,idx)).width ;
+				letter.x = ( (MyLedBanner.width - letter.GetStringWidth(mMsg).width) * 0.5 ) + letter.GetStringWidth(mMsg.substr(0,mCurrentCharIdx)).width ;
 				letter.filters = [glowNormal];
 				
-				LedBanner.addElement(letter);
+				MyLedBanner.addElement(letter);
 				letter.Animate(mAnimationEffect);
 				
-				idx++;
+				mCurrentCharIdx++;
 			}
 			else
 			{   // Si ya no quedan mas letras en la cadena -> Eliminamos este timer
@@ -108,7 +108,7 @@
 
 		///// Nueva Ola con Zoom /////
 		private var mClock:Timer;
-		private var idx:int;
+		private var mCurrentCharIdx:int;
 		
 	]]></fx:Script>
 	
@@ -139,8 +139,8 @@
 				<s:Fade target="{MyRectangle}" alphaTo="0" />
 			</s:Parallel>
 			<s:Parallel duration="200" >				
-				<s:Fade targets="{[LedBanner]}" alphaTo="1" />
-				<s:Scale targets="{[LedBanner]}" scaleXFrom="1.4" scaleXTo="1" scaleYFrom="1.4" scaleYTo="1" >
+				<s:Fade targets="{[MyLedBanner]}" alphaTo="1" />
+				<s:Scale targets="{[MyLedBanner]}" scaleXFrom="1.4" scaleXTo="1" scaleYFrom="1.4" scaleYTo="1" >
 					<s:easer>
 						<s:Elastic/>
 					</s:easer>
@@ -176,18 +176,7 @@
 			<s:BlurFilter blurX="8" blurY="8" quality="2"/>
 		</s:filters>
 	</s:Ellipse>
-
-	<!--<s:Label id="myMsg"
-			 alpha="0"
-			 maxWidth="760"
-			 textAlign="center"
-			 verticalAlign="middle"
-			 horizontalCenter="0" verticalCenter="0"
-			 styleName="whiteBoldLed"
-			 filters="{glowNormal}"
-			 text="{mMsg}">
-	</s:Label>-->
-	<s:Group id="LedBanner" width="760" maxWidth="760" horizontalCenter="0" textAlign="center" verticalCenter="0" alpha="0" />
+	<s:Group id="MyLedBanner" width="760" maxWidth="760" horizontalCenter="0" textAlign="center" verticalCenter="0" alpha="0" />
 	<s:BitmapImage id="MyMask" source="@Embed(source='/Assets/General.swf', symbol='MessageLedMaskLeds')" fillMode="clip" x="0" y="15" alpha="0" />
 	
 </s:Group>
