@@ -591,10 +591,12 @@ package Match
 			
 			var a1 : Number = MathUtils.Dot(v1, N);
 			var a2 : Number = MathUtils.Dot(v2, N);
+			
+			var optimizedP : Number = 2*(a1-a2) / (collisionInfo.PhyEntity1.Mass + collisionInfo.PhyEntity2.Mass);
 
-			v1 = v1.subtract(N);
-			v2 = v2.add(N);
-						
+			v1 = v1.subtract(MathUtils.Multiply(N, optimizedP * collisionInfo.PhyEntity2.Mass));
+			v2 = v2.add(MathUtils.Multiply(N, optimizedP * collisionInfo.PhyEntity1.Mass));
+
 			collisionInfo.AfterCollisionFixed1 = v1;
 			collisionInfo.AfterCollisionFixed1.normalize(dist);
 			collisionInfo.AfterCollisionFixed1 = collisionInfo.AfterCollisionFixed1.add(collisionInfo.Pos1);
