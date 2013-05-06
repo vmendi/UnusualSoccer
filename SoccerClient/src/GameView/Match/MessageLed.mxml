@@ -31,7 +31,6 @@
 				cadena.filters = [glowNormal];
 				
 				MyLedBanner.addElement(cadena);
-				
 			}
 			else
 			{

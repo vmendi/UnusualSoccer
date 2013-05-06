@@ -37,9 +37,9 @@
 		public function ShowFinishPart(part:int, callback:Function) : void
 		{						
 			if (part == 1)
-				AddMessage(LedClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeFinTiempo1"), callback); 
+				AddMessage(LedClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeFinTiempo1"), "", callback); 
 			else if (part == 2)
-				AddMessage(LedClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeFinPartido"), callback);
+				AddMessage(LedClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeFinPartido"), "", callback);
 			else
 				throw new Error("Unknown part");
 		}
