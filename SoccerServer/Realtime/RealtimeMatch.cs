@@ -47,7 +47,7 @@ namespace Realtime
         public const String MATCHLOG_ERROR = "MATCH ERROR";
         public const String MATCHLOG_CHAT = "MATCH CHAT";
                 
-        public const int MinClientVersion = 208;                        // Versión mínima que exigimos a los clientes para jugar
+        public const int MinClientVersion = 209;                        // Versión mínima que exigimos a los clientes para jugar
         
         RealtimePlayer[] Players = new RealtimePlayer[2];               // Los jugadores en el manager
         RealtimePlayerData[] PlayersData = new RealtimePlayerData[2];   // Los jugadores en el manager

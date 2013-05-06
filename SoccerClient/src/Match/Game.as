@@ -196,7 +196,7 @@ package Match
 
 			_Random = new Random(randomSeed);
 			_Timer = new Match.Time();
-			
+
 			// - Determinamos los grupos de equipación a los que pertenece cada equipo.
 			// - Si son del mismo grupo: El jugador que NO es el LocalPlayer utiliza la equipación secundaria			
 			var useSecondaryEquipment1:Boolean = false;
@@ -229,7 +229,9 @@ package Match
 			
 			// Publicacion de Achievements y mensajes tutorializadores del comienzo
 			MatchAchievements.ProcessAchievementMatchStart(LocalUserTeam);
-			_MessageCenter.ShowAutoGoalkeeper(_ScoreBalancer.IsAutoGoalKeeper);
+			
+			if (LocalUserTeam.IsRegular)
+				_MessageCenter.ShowAutoGoalkeeper(_ScoreBalancer.IsAutoGoalKeeper);
 
 			// Hemos terminado de cargar/inicializar
 			ChangeState(GameState.Init);
