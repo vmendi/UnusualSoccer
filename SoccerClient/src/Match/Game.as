@@ -849,7 +849,9 @@ package Match
 			
 			TheBall.SetPosInFieldCenter();
 			
-			SetTurn(team.TeamId, reason);
+			SetDebugPos();
+			SetTurn(1, reason);
+			//SetTurn(team.TeamId, reason);
 		}
 		
 		private function OponenteControlaPie(cap : Cap, reason : int) : void
