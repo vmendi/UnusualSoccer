@@ -52,11 +52,11 @@
 		public function ShowGoalScored(validity:int, callback:Function) : void
 		{						
 			if (validity == Enums.GoalValid)
-				AddMessage(LedClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeGol"), callback);
+				AddMessage(LedClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeGol"), "zoomWave", callback);
 			else if (validity == Enums.GoalInvalidNoDeclarado)
-				AddMessage(LedClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeGolInvalido"), callback); // No declarado
+				AddMessage(LedClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeGolInvalido"),"", callback); // No declarado
 			else if (validity == Enums.GoalInvalidPropioCampo)
-				AddMessage(LedClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeGolInvalido"), callback); // Propio campo
+				AddMessage(LedClass, ResourceManager.getInstance().getString("matchmsgs", "MensajeGolInvalido"), "", callback); // Propio campo
 			else
 				throw new Error("Validez del gol desconocida");
 		}

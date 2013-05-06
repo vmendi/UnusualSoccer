@@ -80,6 +80,8 @@
 				// En modo TEST, fuera la loading screen
 				removeElement(mLoadingScreen);
 				
+				ConfigureLocale();
+				
 				mFacebookFacade = new FacebookFacade();
 				mMainGameModel = new MainGameModel();
 				
