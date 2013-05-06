@@ -45,10 +45,10 @@
 		{
 			mMode = ADVANCED;
 		}
-				
+
 		private function OnLookingForMatchChanged(looking : Boolean) : void
 		{
-			if (looking)
+			if (looking && mMode == BASIC)
 				CloseTutorial();
 		}
 		

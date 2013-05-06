@@ -13,8 +13,10 @@ package Match
 		
 		public function WriteLine(str : String, ...args) : void
 		{
+			/*
 			args.unshift(str);
 			_Game.OnClientChatMsg(StringUtil.substitute.apply(null, args));
+			*/
 		}
 		
 		private var _Game : Game;
