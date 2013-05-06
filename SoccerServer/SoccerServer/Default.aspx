@@ -57,70 +57,71 @@
 		        swfobject.createCSS("#flashContent", "display:block;text-align:left;");
         }
 
-        //*********************************************************
-        //Estas funciones son con las que interactuamos con tuenti
-        //*********************************************************
+        //*******************************************************************************************
+        // Estas funciones son con las que interactuamos con tuenti
+        //
+        // (las funciones que recuperan datos de amigos dentro del juego en tuenti, están comentadas).
+        //********************************************************************************************
         // Función que se ejecuta cuando la JS API TUENTI está cargada
         var onApiReady = function () {
             //Pedimos los IDs de amigos. (Tuenti solo nos da los amigos que juegan a este juego)
             //tuenti.api.users.getFriendIds(this.onSuccessFriendIDs, this.onErrorFriendIDs);        
+            
             //Pedimos el ID de Usuario
             tuenti.api.users.getUserId(this.onGetUserIdSuccess, this.onGetUserIdError);     
         };
-       /* 
+       /*
         //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getFriendIds' se realiza con éxito
        var onSuccessFriendIDs = function (friendIds) {
-            //Ya tenemos los IDs de los amigos de Tuenti, que tb juegan a Tuenti Liga Chapas... Pedimos sus datos
+           // Ya tenemos los IDs de los amigos de Tuenti, que tb juegan a Tuenti Liga Chapas... Pedimos sus datos
            // tuenti.api.users.getUsersData(friendIds, onSuccessFriendsData, onErrorFriendsData);
         };
+        //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getFriendIds' no se ejecuta correctamente
+        var onErrorFriendIDs = function (data) {
+            //console.log("onError:" + data);
+            //console.log(data);
+            return;
+        };
 
-                // Recibimos los datos de los amigos.
-                var onSuccessFriendsData = function (usersData) {
-                    for (var i in usersData) {
-                        friendsData[i] = usersData[i];
-                    }
-                };    
+        // Recibimos los datos de los amigos.
+        var onSuccessFriendsData = function (usersData) {
+            for (var i in usersData) {
+                friendsData[i] = usersData[i];
+            }
+        };    
 
-                // Error al recibir los datos de los amigos.
-                var onErrorFriendsData = function (data) {
-                    //console.log(data);
-                    return;
-                };
-        
-                //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getFriendIds' no se ejecuta correctamente
-                var onErrorFriendIDs = function (data) {
-                    //console.log("onError:" + data);
-                    //console.log(data);
-                    return;
-                };
+        // Error al recibir los datos de los amigos.
+        var onErrorFriendsData = function (data) {
+            //console.log(data);
+            return;
+        };
         */
         //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getUserId' se realiza con éxito
         var onGetUserIdSuccess = function (userId) {
-            //console.log("My user id is: " + userId);
+            alert("My user id is: " + userId);
+            console.log("My user id is: " + userId);
             tuenti.api.users.getUsersData([userId], onSuccessMyData, onErrorMyData);
         };
-
-                // Recibo mis datos.
-                var onSuccessMyData = function (data) {
-                    //console.log("The users data:");
-                    //console.log(data);
-                    myData = data;
-                    showFlash();
-                };
-
-
-                // Error al recibir mis datos.
-                var onErrorMyData = function (data) {
-                    console.log("getMyDataError:");
-                    console.log(data);
-                    //return new Object;
-                    // alert("(ERROR) The users data:" + usersData);
-                };
-
         //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.users.getUserId' NO se ejecuta correctamente
         var onGetUserIdError = function (data)  {
             //console.log("onUserIDError: " + data);
             return;
+        };
+
+        // Respuesta "onSuccess" de la llamada a getUsersData
+        var onSuccessMyData = function (data) {
+            console.log("The users data:");
+            console.log(data);
+                    
+            myData = data;
+            showFlash();
+        };
+        // Respuesta "onError" de la llamada a getUsersData
+        var onErrorMyData = function (data) {
+            console.log("getMyDataError:");
+            console.log(data);
+            //return new Object;
+            // alert("(ERROR) The users data:" + usersData);
         };
 
         //Publico el mensaje con los parametros que me pasa flash
@@ -129,7 +130,7 @@
         };
                 //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.apps.postToWall' se realiza con éxito
                 var onSuccesPublish = function (data) {
-                    //console.log('post publicado' + data);
+                //console.log('post publicado' + data);
                 };
 
                 //Respuesta que recibimos de tuenti, si la llamada a 'tuenti.api.apps.postToWall' NO se ejecuta correctamente
