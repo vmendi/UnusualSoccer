@@ -6,8 +6,6 @@ package GameModel
 	import HttpService.MainService;
 	import HttpService.TransferModel.vo.Team;
 	
-	import Match.MatchConfig;
-	
 	import NetEngine.InvokeResponse;
 	import NetEngine.NetPlug;
 	
@@ -205,18 +203,17 @@ package GameModel
 			TheRoomModel = new RoomModel(mServerConnection, mMainService, mMainModel);
 						
 			mServerConnection.Invoke("LogInToDefaultRoom", new InvokeResponse(this, Delegate.create(OnLoginPlayerResponded, onSuccess)), 
-									 SoccerClient.GetFacebookFacade().SessionKey);
+									 SoccerClient.GetFacebookFacade().SessionKey, MainGameModel.CLIENT_VERSION);
 		}
 		
-		private function OnLoginPlayerResponded(logged : Boolean, onSuccess : Function) : void
+		private function OnLoginPlayerResponded(errorCode : int, onSuccess : Function) : void
 		{
-			if (!logged)
+			if (errorCode == -2)
 				ErrorMessages.RealtimeLoginFailed();
-			else 
-			{
-				if (onSuccess != null)
-					onSuccess();
-			}
+			else if (errorCode == -1)
+				ErrorMessages.IncorrectClientVersion();
+			else if (onSuccess != null)
+				onSuccess();
 		}
 		
 		private function OnTeamRefreshed(v:Team) : void
@@ -310,7 +307,8 @@ package GameModel
 
 		public function PushedMatchUnsync() : void
 		{
-			ErrorMessages.LogToServer("Additional Info, ClientVersion: " + MatchConfig.ClientVersion + "  Team name: " + mMainModel.TheTeamModel.TheTeam.Name +
+			ErrorMessages.LogToServer("Additional Info, ClientVersion: " + MainGameModel.CLIENT_VERSION + 
+									  "  Team name: " + mMainModel.TheTeamModel.TheTeam.Name +
 									  " FacebookID: " + SoccerClient.GetFacebookFacade().FacebookID);
 		}
 		

@@ -158,17 +158,11 @@ package Match
 		
 		// Inicialización de los datos del partido. Invocado desde el servidor
 		public function InitFromServer(matchId:int, descTeam1:Object, descTeam2:Object, 
-									   idLocalPlayerTeam:int, matchTimeSecs:int, turnTimeSecs:int, isFriendlyParam:Boolean, minClientVersion:int, randomSeed:int) : void
+									   idLocalPlayerTeam:int, matchTimeSecs:int, turnTimeSecs:int, isFriendlyParam:Boolean, randomSeed:int) : void
 		{
 			GameMetrics.ReportPageView(GameMetrics.VIEW_MATCH);
 			GameMetrics.ReportEvent(GameMetrics.PLAY_MATCH, {matchTime: matchTimeSecs, turnTime: turnTimeSecs, isFriendly:isFriendlyParam});
 			GameMetrics.Increment(GameMetrics.PEOPLE_NUM_MATCHES, 1);
-			
-			if (MatchConfig.ClientVersion < minClientVersion)
-			{
-				ErrorMessages.IncorrectMatchVersion();
-				return;
-			}
 			
 			_IdLocalUser = idLocalPlayerTeam;
 			_MatchId = matchId;

@@ -25,14 +25,14 @@ package
 		// Se lanza para indicar que se ha producido cualquier error, y que cualquiera que tenga por ejemplo un timer, debe desengancharse
 		static public var OnCleaningShutdownSignal : Signal = new Signal();
 		
-		static public function IncorrectMatchVersion() : void
+		static public function IncorrectClientVersion() : void
 		{
 			OnCleaningShutdownSignal.dispatch();
 			
-			ErrorMessages.LogToServer("Incorrect Match Version");
+			ErrorMessages.LogToServer("Incorrect Client Version");
 			
-			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorIncorrectMatchVersionMsg"),
-							 ResourceManager.getInstance().getString("main", "ErrorIncorrectMatchVersionTit"), "center");
+			ErrorDialog.Show(ResourceManager.getInstance().getString("main", "ErrorIncorrectClientVersionMsg"),
+							 ResourceManager.getInstance().getString("main", "ErrorIncorrectClientVersionTit"), "center");
 		}
 		
 		static public function FacebookConnectionError() : void

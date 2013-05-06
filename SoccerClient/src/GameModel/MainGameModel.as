@@ -19,6 +19,8 @@ package GameModel
 		
 		static public const HEAL_INJURY_COST : int = 200;
 		
+		static public const CLIENT_VERSION : int = 212;
+		
 		public function MainGameModel()
 		{
 			mMainService = new MainServiceSoccer();

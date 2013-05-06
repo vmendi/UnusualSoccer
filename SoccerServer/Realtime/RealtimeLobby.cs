@@ -21,6 +21,8 @@ namespace Realtime
 
         public static readonly int MAX_ACTORS_PER_ROOM = 50;
 
+        public static readonly int MIN_CLIENT_VERSION = 212;   // Versión mínima que exigimos a los clientes para jugar
+
         public override void OnLobbyStart(NetServer netServer)
         {             
             Log.Info("************************* Realtime Starting *************************");
@@ -67,12 +69,18 @@ namespace Realtime
             }
         }
        
-        public bool LogInToDefaultRoom(NetPlug myConnection, string facebookSession)
+        public int LogInToDefaultRoom(NetPlug myConnection, string facebookSession, int version)
         {
+            if (version < MIN_CLIENT_VERSION)
+            {
+                Log.Info("LogInToDefaultRoom: Incorrect version client tried to login");
+                return -1;
+            }
+
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            bool bRet = true;
+            int ret = 0;
 
             // Preferimos asegurar que recreamos el RealtimePlayer para estar preparados para cuando el servidor de partidos este en otra maquina
             myConnection.Actor = null;
@@ -87,14 +95,13 @@ namespace Realtime
             }
             catch (Exception e)
             {
-                bRet = false;
+                ret = -2;
                 Log.Error("Exception in LogInToDefaultRoom: " + e.ToString());
             }
 
-
             LogPerf.Info("LogInToDefaultRoom: " + ProfileUtils.ElapsedMicroseconds(stopwatch));
            
-            return bRet;
+            return ret;
         }
 
         public void JoinActorToBestRoom(NetActor actor)
