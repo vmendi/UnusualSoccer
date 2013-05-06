@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
-		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 width="760" height="169"
 		 cacheAsBitmap="true" mouseChildren="false" mouseEnabled="false"
@@ -26,56 +26,40 @@
 		import mx.managers.PopUpManager;
 		import mx.resources.ResourceManager;
 		
+		import org.osmf.elements.DurationElement;
 		import org.osmf.events.TimeEvent;
 		
 		import spark.components.Label;
+		import spark.effects.Move;
+		import spark.effects.animation.Animation;
 		import spark.effects.animation.MotionPath;
 		
 		
-		public function Init(msg : String, callback : Function) : void
+		public function Init(msg : String, effect:String, callback : Function) : void
 		{
-			var posX : Number;
-			
 			mMsg = msg;
-			mCallback = callback;
-			visibleTime = 0;
-			_letters = [];
-			
-			// separamos el mensaje en labels individuales y configuramos su animación
-			for (var a:int = 0, x:int = 0; a < mMsg.length; a++)
+			mCallback = callback;			
+			mAnimationEffect = effect;
+			// Si no hay animación definida (Caso de Gol Inválido), 
+			if (mAnimationEffect == "")
 			{
-				// Configuramos el label temporal que mostrara ua letra del mensaje
-				var tmpLabel:Label 		= new Label();
-				var txt : String = mMsg.charAt(a);
-				tmpLabel.determineTextFormatFromStyles().antiAliasType = "advanced";
-				tmpLabel.determineTextFormatFromStyles().gridFitType = "none";
-				tmpLabel.styleName 		= "whiteBoldLed";
-				tmpLabel.text 			= txt;
-				tmpLabel.verticalCenter = 0;		
-				tmpLabel.regenerateStyleCache(true);
-				tmpLabel.x = ((LedBanner.width - measureString(mMsg).width) * 0.5 ) + measureString(mMsg.substr(0,a)).width;
-				tmpLabel.filters		= [glowNormal];
-				//$txt.x = $a * $txt.measureText(mMsg.charAt($a)).width;				
-				_letters.push(tmpLabel);
-
-				LedBanner.addElement(_letters[a]);
+				//Sólo mostramos la cadena de texto sin animación
+				var cadena:LedLabel = new LedLabel();
+				cadena.text = mMsg;
+				cadena.verticalCenter = 0;
+				cadena.horizontalCenter = 0;
+				cadena.regenerateStyleCache(true);
+				cadena.filters = [glowNormal];
+				
+				LedBanner.addElement(cadena);
+				
 			}
-			
-			addEventListener(Event.ENTER_FRAME, AnimateWavingText, false, 0, true);
-		}
-		
-		protected function measureString(str:String):Rectangle {
-			var textField:TextField = new TextField();
-			var format:TextFormat = new TextFormat();
-			format.font = "MyFontHelveticaNeue97Bold";
-			format.size = 90;
-			format.bold = true;
-			format.color = 0xFFFFFF;
-			
-			textField.defaultTextFormat = format;
-			textField.text = str;
-			
-			return new Rectangle(0, 0, textField.textWidth, textField.textHeight);
+			else
+			{
+				mClock = new Timer(100);
+				mClock.addEventListener(TimerEvent.TIMER, AnimateLeds);
+				mClock.start();
+			}
 		}
 		
 		protected function AddedToStageHandler(event:Event):void
@@ -90,46 +74,47 @@
 			if (mCallback != null)
 				mCallback();
 		}
-		
-		protected function AnimateWavingText(evt:Event):void
+
+		protected function AnimateLeds(evt:TimerEvent):void
 		{
-			if(visibleTime < 2000)
+			if (idx < mMsg.length)
 			{
-				for (var $a:int = 0; $a<_letters.length; $a++) 
-				{
-					_letters[$a].verticalCenter = Math.sin(_angle+$a)*_radius;
-				}
+				var letter:LedLabel = new LedLabel();
+				var txt : String = mMsg.charAt(idx);
 				
-				_angle += _speed;
-				visibleTime++;
+				letter.text = txt;
+				letter.verticalCenter = 0;
+				letter.regenerateStyleCache(true);
+				letter.x = ( (LedBanner.width - letter.GetStringWidth(mMsg).width) * 0.5 ) + letter.GetStringWidth(mMsg.substr(0,idx)).width ;
+				letter.filters = [glowNormal];
+				
+				LedBanner.addElement(letter);
+				letter.Animate(mAnimationEffect);
+				
+				idx++;
+			}
+			else
+			{   // Si ya no quedan mas letras en la cadena -> Eliminamos este timer
+				mClock.stop();
+				mClock.removeEventListener(TimerEvent.TIMER, AnimateLeds);
 			}
 		}
 		
-		protected function SetEndEffectIfNeeded(ev:Event):void
-		{
-			if( mMsg == ResourceManager.getInstance().getString("matchmsgs", "MensajeGol") )
-			{
-				AnimateWavingText(new Event(Event.ENTER_FRAME));
-				LedBanner.visible = true;
-				myMsg.text = "";
-			}
-		}	
-		
-		
 		private var mCallback : Function;
-				
+		
 		[Bindable] private var mMsg : String;
-				   private var _radius : int = 5;
-				   private var _speed : Number = Math.PI/15;
-				   private var _angle : Number = 0;
-				   private var _letters : Array;
-				   private var visibleTime : int;
+		           private var mAnimationEffect : String;
+				   private var mLetters : Array;
+
+		///// Nueva Ola con Zoom /////
+		private var mClock:Timer;
+		private var idx:int;
 		
 	]]></fx:Script>
 	
 	<fx:Declarations>
 		<s:GlowFilter id="glowNormal" strength="2" alpha="0.7" blurX="12" blurY="12" color="#FFFFFF" quality="3"/>
-
+				
 		<s:Sequence id="MySequence" effectEnd="MySequence_effectEndHandler(event)"> 
 			<s:Animate target="{MyEllipse}" duration="200">
 				<s:SimpleMotionPath property="alpha" valueTo="0.8" />
@@ -153,15 +138,14 @@
 				</s:Animate>
 				<s:Fade target="{MyRectangle}" alphaTo="0" />
 			</s:Parallel>
-			<s:Parallel duration="200" effectStart="{SetEndEffectIfNeeded(event)}" >				
-				<s:Fade target="{myMsg}" alphaTo="1" />
-				<s:Scale target="{myMsg}" scaleXFrom="1.4" scaleXTo="1" scaleYFrom="1.4" scaleYTo="1" >
-				<s:easer>
-				<s:Elastic/>
-				</s:easer>
+			<s:Parallel duration="200" >				
+				<s:Fade targets="{[LedBanner]}" alphaTo="1" />
+				<s:Scale targets="{[LedBanner]}" scaleXFrom="1.4" scaleXTo="1" scaleYFrom="1.4" scaleYTo="1" >
+					<s:easer>
+						<s:Elastic/>
+					</s:easer>
 				</s:Scale>
 			</s:Parallel>
-			<s:Fade target="{MyMask}" alphaTo="0.8" duration="0" />
 			<s:Fade target="{this}" alphaFrom="1" alphaTo="1" duration="2000"/>
 			<s:Fade target="{this}" alphaFrom="1" alphaTo="0" duration="250"/>
 		</s:Sequence>			
@@ -192,7 +176,8 @@
 			<s:BlurFilter blurX="8" blurY="8" quality="2"/>
 		</s:filters>
 	</s:Ellipse>
-	<s:Label id="myMsg"
+
+	<!--<s:Label id="myMsg"
 			 alpha="0"
 			 maxWidth="760"
 			 textAlign="center"
@@ -201,8 +186,8 @@
 			 styleName="whiteBoldLed"
 			 filters="{glowNormal}"
 			 text="{mMsg}">
-	</s:Label>
-	<s:Group id="LedBanner" width="760" maxWidth="760" horizontalCenter="0" textAlign="center" verticalCenter="0" visible="false"/>
+	</s:Label>-->
+	<s:Group id="LedBanner" width="760" maxWidth="760" horizontalCenter="0" textAlign="center" verticalCenter="0" alpha="0" />
 	<s:BitmapImage id="MyMask" source="@Embed(source='/Assets/General.swf', symbol='MessageLedMaskLeds')" fillMode="clip" x="0" y="15" alpha="0" />
 	
 </s:Group>
