@@ -11,28 +11,7 @@
 	<fx:Style source="../styles.css" />
 
 	<fx:Script><![CDATA[
-		import Match.Time;
-		
-		import com.greensock.TweenLite;
-		import com.greensock.easing.Elastic;
-		import com.greensock.easing.Strong;
-		
-		import mx.collections.ArrayCollection;
-		import mx.core.FlexGlobals;
-		import mx.core.IFlexModule;
-		import mx.effects.Tween;
 		import mx.events.EffectEvent;
-		import mx.events.FlexEvent;
-		import mx.managers.PopUpManager;
-		import mx.resources.ResourceManager;
-		
-		import org.osmf.elements.DurationElement;
-		import org.osmf.events.TimeEvent;
-		
-		import spark.components.Label;
-		import spark.effects.Move;
-		import spark.effects.animation.Animation;
-		import spark.effects.animation.MotionPath;
 		
 		
 		public function Init(msg : String, effect:String, callback : Function) : void

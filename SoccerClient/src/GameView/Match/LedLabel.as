@@ -8,13 +8,7 @@ package GameView.Match
 	import mx.effects.Zoom;
 	
 	import spark.components.Label;
-	import spark.effects.Animate;
 	import spark.effects.Fade;
-	import spark.effects.Move;
-	import spark.effects.Scale;
-	import spark.effects.animation.MotionPath;
-	import spark.effects.animation.SimpleMotionPath;
-	import spark.effects.easing.Bounce;
 	
 	public class LedLabel extends Label
 	{
