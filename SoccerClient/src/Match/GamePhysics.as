@@ -50,7 +50,7 @@ package Match
 			}
 			catch(e:Error)
 			{
-				ErrorMessages.LogToServer("WTF 243 - Failed prediction");
+				ErrorMessages.LogToServer("WTF 243 - Failed prediction " + e.toString());
 			}
 			
 			return null; 
@@ -88,10 +88,8 @@ package Match
 			// Si no queremos pararla, tendremos que recalcular la prediccion para que sea "mala"
 			if (!wantsCatch)
 				gkShot = RecalcShotToAllowGoal(goalkeeper, shooter, shooterShot, goalieIntercept);
-
-			// Indica si queremos que el goalkeeper se la pare en el contacto (se levantara el flag IsGoalkeeperCatch)
-			if (wantsCatch)
-				_GoalkeeperWantsToCatch = goalkeeper;
+			else
+				_GoalkeeperWantsToCatch = goalkeeper; // Indica si queremos que el goalkeeper se la pare en el contacto
 
 			Shoot(goalkeeper, gkShot);
 		}
@@ -311,7 +309,7 @@ package Match
 				}
 			}
 			
-			return _DetectedFault != null
+			return _DetectedFault != null;
 		}
 		
 		public function StopSimulation() : void		
@@ -371,16 +369,15 @@ package Match
 					_bWantToStopSimulation = false;
 				}
 				
+				// Nos paramos en este Run?
 				if (!_SimulatingShot)
 				{
 					// Simplemente lo reseteamos cada vez que acabamos la simulacion					
 					_GoalkeeperWantsToCatch = null;
-				}
-												
-				// Si nos paramos en este Run, redondeamos las posiciones
-				// HACK anti UNSYNC! qué pasa en los bordes con las colisiones?
-				if (!_SimulatingShot)
+										
+					// HACK anti-unsync
 					RoundPositions();
+				}
 			}
 		}
 		
@@ -554,7 +551,7 @@ package Match
 			{			
 				collisionInfo.AfterCollision1 = collisionInfo.V1.clone();
 				collisionInfo.AfterCollision1.normalize(distV1);
-				collisionInfo.AfterCollision1 = collisionInfo.AfterCollision1.add(collisionInfo.Pos1);				
+				collisionInfo.AfterCollision1 = collisionInfo.AfterCollision1.add(collisionInfo.Pos1);
 			}
 			else
 			{
