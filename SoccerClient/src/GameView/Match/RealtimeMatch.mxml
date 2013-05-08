@@ -130,7 +130,7 @@
 		{
 			_Game = new Match.Game(MyMatchLayer, MyMessageCenter, null);
 			_Game.InitFromServer(-1, InitOfflineData.GetDescTeam("ARGENTINA", false), InitOfflineData.GetDescTeam("USA", true),
-								 Enums.Team1, 30, 15, true, 123);
+								 Enums.Team1, 60, 15, true, 123);
 		}
 		
 		private function OnFrame(event:Event):void

@@ -204,7 +204,7 @@ package Match
 				_TouchedCapsLastRun.push(cap);
 
 				_Game.TheAudioManager.Play("SoundCollisionCapBall");
-				
+								
 				// La chapa tocada es el portero y nos mandaron atraparla
 				if (cap == _GoalkeeperWantsToCatch)
 				{					

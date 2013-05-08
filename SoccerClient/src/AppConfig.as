@@ -26,6 +26,7 @@ package
 		static public var TUTORIAL : String = null;
 		static public var COUNTRY: String = null;
 		static public var MATCH_COUNT: String = null;
+		static public var DEBUG : Boolean = false;
 		
 		// Una pregunta que nos hacemos en varios sitios, por tenerla centralizada
 		static public function get IsMahouLigaChapas() : Boolean { return VERSION_ID=='MahouLigaChapas'; }
@@ -93,6 +94,9 @@ package
 			
 			if (parameters.hasOwnProperty("MatchCount"))
 				MATCH_COUNT = parameters["MatchCount"];
+			
+			if (parameters.hasOwnProperty("debug"))	// Lowercase because it's added automatically by flash builder
+				DEBUG = parameters["debug"] == "true";
 		}
 		
 		static private function ProcessQueryString(theQueryString : String) : Object
