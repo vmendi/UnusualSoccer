@@ -24,6 +24,8 @@ namespace SoccerServer.Admin
                                     AppId = "100203833418013", AppSecret = "bec70c821551670c027317de43a5ceae" },
                 new Environment() { Description = "US Amazon REAL", ConnectionString = "Data Source=sql01.unusualsoccer.com;Initial Catalog=SoccerV2;User ID=sa;Password=Rinoplastia123&.", 
                                     AppId = "220969501322423", AppSecret = "faac007605f5f32476638c496185a780" },
+                new Environment() { Description = "US Canvas REAL", ConnectionString = "Data Source=canvas.unusualsoccer.com;Initial Catalog=SoccerV2;User ID=sa;Password=Rinoplastia123&.", 
+                                    AppId = "220969501322423", AppSecret = "faac007605f5f32476638c496185a780" }
             };
         }
     }

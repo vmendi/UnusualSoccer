@@ -198,7 +198,7 @@ def look_for_recent_log
 end
 
 def is_log_file dirEntry
-  !File.directory?(dirEntry) && (File.extname(dirEntry) == '.log' || File.extname(dirEntry).match(/\d+/))
+  !File.directory?(dirEntry) && (File.extname(dirEntry) == '.log' || File.extname(dirEntry) == '.txt' || File.extname(dirEntry).match(/\d+/))
 end
 
 def prepare_output_path input_file
