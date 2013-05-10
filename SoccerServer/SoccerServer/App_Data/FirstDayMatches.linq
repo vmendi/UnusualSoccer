@@ -27,22 +27,22 @@ void Main()
 		
 		NumMatchesPlayedThatDay(firstTimeThatDay, thatDay, 0);
 		NumMatchesPlayedThatDay(firstTimeThatDay, thatDay, 1);
-		NumMatchesPlayedThatDay(firstTimeThatDay, thatDay, 2, 4);
-		NumMatchesPlayedThatDay(firstTimeThatDay, thatDay, 5, 1000);
+		NumMatchesPlayedThatDay(firstTimeThatDay, thatDay, 2, 5);
+		NumMatchesPlayedThatDay(firstTimeThatDay, thatDay, 6, 1000);
 	}
 }
 
 void NumMatchesPlayedThatDay(IQueryable<Teams> firstTimeThatDay, DateTime thatDay, int minMatches, int maxMatches=-1)
 {	
 	int theRealMax = maxMatches == -1? minMatches : maxMatches;
-		
-	var zeroMatchesPlayedThatDay = (from p in firstTimeThatDay
-		 								let m = p.MatchParticipations.Where(matchPart => matchPart.Match.DateStarted.DayOfYear == thatDay.DayOfYear)
-		 								where m.Count() >= minMatches && m.Count() <= theRealMax
-		 								select p);
+
+	var matchesPlayedThatDay = (from p in firstTimeThatDay
+		 						let m = p.MatchParticipations.Where(matchPart => matchPart.Match.DateStarted.DayOfYear == thatDay.DayOfYear)
+		 						where m.Count() >= minMatches && m.Count() <= theRealMax
+		 						select p);
 
 	if (maxMatches == -1)
-		String.Format("\t{0} played {1} matches that day ({2}%)", zeroMatchesPlayedThatDay.Count(), minMatches, 100*zeroMatchesPlayedThatDay.Count()/firstTimeThatDay.Count()).Dump();	
+		String.Format("\t{0} played {1} matches that day ({2}%)", matchesPlayedThatDay.Count(), minMatches, 100*matchesPlayedThatDay.Count()/firstTimeThatDay.Count()).Dump();	
 	else
-		String.Format("\t{0} played between {1} and {2} matches that day ({3}%)", zeroMatchesPlayedThatDay.Count(), minMatches, theRealMax, 100*zeroMatchesPlayedThatDay.Count()/firstTimeThatDay.Count()).Dump();	
+		String.Format("\t{0} played between {1} and {2} matches that day ({3}%)", matchesPlayedThatDay.Count(), minMatches, theRealMax, 100*matchesPlayedThatDay.Count()/firstTimeThatDay.Count()).Dump();	
 }
