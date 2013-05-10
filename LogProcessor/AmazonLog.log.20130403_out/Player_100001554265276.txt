@@ -1,5 +1,0 @@
-IP-0AF0065B 01:39:26.975 [ERROR] [16] [HttpService.MainService] CLIENT_ERROR:100001554265276 - Disconnect sin haber cerrado el partido?! false
-IP-0AF0065B 01:43:16.373 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100001554265276 - Chat.OnStageKeyDown
-IP-0AF0065B 01:43:18.619 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100001554265276 - Chat.OnStageKeyDown
-IP-0AF0065B 01:43:18.806 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100001554265276 - Chat.OnStageKeyDown
-IP-0AF0065B 01:43:18.884 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100001554265276 - Chat.OnStageKeyDown

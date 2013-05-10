@@ -176,7 +176,7 @@ package Match
 			}
 			catch(e:Error) 
 			{ 
-				ErrorMessages.LogToServer("WTF 198"); 
+				MatchDebug.LogToServer("WTF 198"); 
 			}
 		}
 		
@@ -188,7 +188,7 @@ package Match
 			}
 			catch(e:Error) 
 			{ 
-				ErrorMessages.LogToServer("WTF 98"); 
+				MatchDebug.LogToServer("WTF 98"); 
 			}
 		}
 		
@@ -201,7 +201,7 @@ package Match
 			}
 			catch(e:Error) 
 			{ 
-				ErrorMessages.LogToServer("WTF 88"); 
+				MatchDebug.LogToServer("WTF 88"); 
 			}
 		}
 		private function OnRealOver() : void
@@ -212,7 +212,7 @@ package Match
 			}
 			catch(e:Error)
 			{
-				ErrorMessages.LogToServer("WTF 38");
+				MatchDebug.LogToServer("WTF 38");
 			}
 		}
 		private function OnMouseOut(e : MouseEvent) : void
@@ -227,7 +227,7 @@ package Match
 			}
 			catch(e:Error) 
 			{ 
-				ErrorMessages.LogToServer("WTF 78"); 
+				MatchDebug.LogToServer("WTF 78"); 
 			}
 		}
 				

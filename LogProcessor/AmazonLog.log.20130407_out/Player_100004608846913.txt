@@ -1,1 +1,0 @@
-IP-0AF0065B 13:06:32.586 [ERROR] [10] [HttpService.MainService] CLIENT_ERROR:100004608846913 - NetPlug.ProcessNetInvoke: PushedPlayerLeftTheRoom - RangeError: Index '-1' specified is out of bounds.

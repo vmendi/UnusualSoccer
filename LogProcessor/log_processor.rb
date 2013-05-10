@@ -79,58 +79,66 @@ class Match_Error_Extractor
 
   def run all_lines, output_path
 
-    # Matches with any error
-    matches = []
+    # A hash with the match_id as key and an array of lines as value
+    matches = {}
 
     # A good regular expression tester: http://www.rubular.com/
     all_lines.each { |line|
-      # Exceptions in the server
-      match_data = line.match(/TargetInvocationException:.*MatchID: (\d+)/)
+      
+      match_data = line.match(/MatchID.? (\d+)/)
+      
+      if match_data != nil
+        # We always have the matchID in the first group
+        match_id = match_data[1]
+        
+        if matches[match_id] == nil
+          matches[match_id] = []
+        end
+
+        matches[match_id].push line
+      end
+    }
+
+    puts matches.keys.length.to_s + ' matches detected'
+    dumped_matches_count = 0
+
+    # We generate a file for each match with error
+    matches.keys.each { |match_id|
+      if has_any_match_error matches[match_id]
+        dumped_matches_count = dumped_matches_count + 1
+        File.open(output_path + "Match_#{match_id}.txt", 'w') { |io|
+          matches[match_id].each { |line| io.puts line }
+        }
+      end
+    }
+
+    puts 'Dumped ' + dumped_matches_count.to_s + ' matches'
+  end
+
+  def has_any_match_error(the_match)
+    the_match.each { |line|
+       # Exceptions in the server
+      if line.match(/TargetInvocationException:/)
+        return true
+      end
 
       # Exceptions in the server, alternate method
-      if match_data == nil
-        match_data = line.match(/ServerException:.*MatchID: (\d+)/)
+      if line.match(/ServerException:/)
+        return true
       end
 
       # UNSYNCS
-      if match_data == nil
-        match_data = line.match(/>{6} (\d+)/)
+      if line.match(/>{6}/)
+        return true
       end
 
       # Exceptions in the client
-      if match_data == nil
-        match_data = line.match(/CLIENT_ERROR.*MatchID: (\d+)/)
-      end
-
-      if match_data != nil
-        # We always have the matchID in the first group
-        matchID = match_data[1]
-        matches.push matchID
+      if line.match(/CLIENT_ERROR/)
+        return true
       end
     }
-
-    matches.uniq!
-
-    puts 'Dumping ' + matches.length.to_s + ' matches'
-
-    # We generate a file for each match with error
-    matches.each { |num_match|
-      File.open(output_path + "Match_#{num_match}.txt", 'w') { |io|
-        get_lines_for_match(all_lines, num_match).each { |line| io.puts line }
-      }
-    }
-  end
-
-  # Returns only the lines for 'num_match'
-  def get_lines_for_match (global_lines, num_match)
-    ret = []
-    global_lines.each { |line|
-      unless line.index(num_match) == nil
-        ret.push line
-      end
-    }
-    ret
-  end
+    return false
+  end  
 
 end
 
@@ -175,7 +183,8 @@ def look_for_recent_log
   newest_time = nil
   newest_file = nil
 
-  Dir.foreach('./') { |dirEntry|
+  Dir.foreach('./logs/') { |dirEntry|
+    dirEntry = "./logs/" + dirEntry
     if is_log_file dirEntry
       if (newest_time == nil ||
           (File.mtime(dirEntry) <=> newest_time) > 0)
@@ -194,7 +203,7 @@ end
 
 def prepare_output_path input_file
 
-  output_path = input_file
+  output_path = File.basename(input_file)
 
   unless ARGV[1] == nil
     output_path = ARGV[1]

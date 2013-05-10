@@ -16,5 +16,5 @@
 	<setParameter name="realtimeServer" value="realtime01.unusualsoccer.com" />
 	<setParameter name="cdn" value="//d3gkkiro3subwc.cloudfront.net/" />
 	
-	<setParameter name="networkLog" value="udp4://log.unusualsoccer.com:1003" />
+	<setParameter name="networkLog" value="udp4://logger.unusualsoccer.com:15370" />
 </parameters>

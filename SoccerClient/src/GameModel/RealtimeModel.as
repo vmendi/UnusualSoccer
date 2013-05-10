@@ -83,8 +83,6 @@ package GameModel
 				// Por estos dos motivos, lo controlamos aqui
 				if (TheMatch == null)
 					Disconnect();
-				else
-					ErrorMessages.LogToServer("Desconexion por: " + mMainModel.TheTeamPurchaseModel.HasCredit + " " +  mMainModel.TheInactivityModel.IsActive);
 			}
 			else
 			if (!IsConnected)
@@ -307,9 +305,6 @@ package GameModel
 
 		public function PushedMatchUnsync() : void
 		{
-			ErrorMessages.LogToServer("Additional Info, ClientVersion: " + MainGameModel.CLIENT_VERSION + 
-									  "  Team name: " + mMainModel.TheTeamModel.TheTeam.Name +
-									  " FacebookID: " + SoccerClient.GetFacebookFacade().FacebookID);
 		}
 		
 		// Partido abandonado, por nosotros o por nuestro enemigo. Lo controlamos desde aqui y no desde el partido porque el 

@@ -14,5 +14,5 @@
 	<setParameter name="sameIPChecked" value="false" />
 	<setParameter name="tooManyTimesChecked" value="false" />
 
-	<setParameter name="networkLog" value="udp4://log.unusualsoccer.com:1001" />
+	<setParameter name="networkLog" value="udp4://logger.unusualsoccer.com:15371" />
 </parameters>

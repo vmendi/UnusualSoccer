@@ -106,7 +106,7 @@ package Match
 			if (teamId == Enums.Team2) 
 				return _Team2;
 			
-			throw new Error("WTF 567 - Unknown teamId");
+			throw new Error(IDString + "WTF 567 - Unknown teamId");
 		}
 
 		public function Game(parent:DisplayObjectContainer, messageCenter:MessageCenter, connection:NetPlug) : void
@@ -115,7 +115,7 @@ package Match
 			_MessageCenter = messageCenter;
 			_Connection = connection;
 			
-			MatchDebug.Log = new MatchDebug(this);
+			MatchDebug.Init(this);
 		}
 
 		// Obtiene una chapa de un equipo determinado a partir de su identificador de equipo y chapa
@@ -311,7 +311,16 @@ package Match
 				case GameState.Playing:
 				{
 					if (TheGamePhysics.IsSimulating)
-						throw new Error(IDString + "La fisica no puede estar simulando en estado GameState.Playing");
+					{
+						MatchDebug.LogToServer("La fisica no puede estar simulando en estado GameState.Playing - Continuamos");
+						
+						TheGamePhysics.StopSimulation();
+						
+						if (TheGamePhysics.IsSimulating)
+							MatchDebug.LogToServer("Pero sigue!!!!");
+						else
+							MatchDebug.LogToServer("Y no sigue...");
+					}
 					
 					// Para actualizar nuestros relojes, calculamos el tiempo "real" que ha pasado, independiente del frame-rate
 					var realElapsed:Number = _Timer.GetElapsed() / 1000;
@@ -403,7 +412,7 @@ package Match
 		public function InvokeServer(serverCommand : String, waitState : int, ...args) : void
 		{
 			if (_State == GameState.NotInit)
-				throw new Error("WTF 974 - InvokeServer after shutting down the game " + serverCommand);
+				throw new Error(IDString + "WTF 974 - InvokeServer after shutting down the game " + serverCommand);
 			
 			if (!OfflineMode)
 				_Connection.Invoke.apply(_Connection, [serverCommand, null].concat(args));

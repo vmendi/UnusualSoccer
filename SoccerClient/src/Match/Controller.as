@@ -72,7 +72,7 @@ package Match
 			}
 			catch(er:Error)
 			{
-				ErrorMessages.LogToServer("WTF 123355");				
+				MatchDebug.LogToServer("WTF 123355");				
 			}
 		}
 		
@@ -85,7 +85,7 @@ package Match
 			}
 			catch(e:Error)
 			{
-				ErrorMessages.LogToServer("WTF 123131");				
+				MatchDebug.LogToServer("WTF 123131");				
 			}
 		}	
 		

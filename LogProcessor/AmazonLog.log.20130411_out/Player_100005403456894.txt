@@ -1,1 +1,0 @@
-IP-0AF0065B 22:14:34.181 [ERROR] [19] [HttpService.MainService] CLIENT_ERROR:100005403456894 - Desconexion por: false true

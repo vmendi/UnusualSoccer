@@ -1,4 +1,0 @@
-IP-0AF0065B 11:21:16.110 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100001491147134 - UncaughtError: Error: Error #2063
-IP-0AF0065B 11:21:16.110 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100001491147134 - Error while capturing
-IP-0AF0065B 11:21:29.791 [ERROR] [8] [HttpService.MainService] CLIENT_ERROR:100001491147134 - UncaughtError: Error: Error #2063
-IP-0AF0065B 11:21:30.727 [ERROR] [8] [HttpService.MainService] CLIENT_ERROR:100001491147134 - UncaughtError: Error: Error #2063

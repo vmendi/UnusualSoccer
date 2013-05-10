@@ -48,7 +48,7 @@ package Match
 			}
 			catch (e:Error)
 			{
-				ErrorMessages.LogToServer("WTF 8765b");
+				MatchDebug.LogToServer("WTF 8765b");
 			}
 		}
 		
@@ -75,7 +75,7 @@ package Match
 			}
 			catch (e:Error)
 			{
-				ErrorMessages.LogToServer("WTF 8765b");
+				MatchDebug.LogToServer("WTF 8765b");
 			}
 		}
 		

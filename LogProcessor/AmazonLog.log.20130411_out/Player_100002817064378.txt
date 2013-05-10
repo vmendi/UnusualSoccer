@@ -1,1 +1,0 @@
-IP-0AF0065B 16:31:53.743 [ERROR] [16] [HttpService.MainService] CLIENT_ERROR:100002817064378 - Desconexion por: false true

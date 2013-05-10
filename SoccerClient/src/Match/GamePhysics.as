@@ -50,7 +50,7 @@ package Match
 			}
 			catch(e:Error)
 			{
-				ErrorMessages.LogToServer("WTF 243 - Failed prediction " + e.toString());
+				MatchDebug.LogToServer("WTF 243 - Failed prediction " + e.toString());
 			}
 			
 			return null; 

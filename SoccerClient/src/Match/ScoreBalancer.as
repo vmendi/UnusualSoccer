@@ -35,7 +35,7 @@ package Match
 			for each(var num : Number in allowedFactors) 
 				total += num;
 				
-			MatchDebug.Log.WriteLine("FavorGoalsMixer final probability: " + total);
+			MatchDebug.WriteLine("FavorGoalsMixer final probability: " + total);
 					
 			return b2Math.b2Clamp(total, 0, 1);
 		}
@@ -47,7 +47,7 @@ package Match
 			for each(var num : Number in allowedFactors) 
 				total *= num;
 				
-			MatchDebug.Log.WriteLine("DisfavorGoalsMixer final probability: " + total);
+			MatchDebug.WriteLine("DisfavorGoalsMixer final probability: " + total);
 				
 			return total;
 		}
@@ -59,7 +59,7 @@ package Match
 			for each(var num : Number in allowedFactors) 
 				total += num;
 			
-			MatchDebug.Log.WriteLine("NeutralGoalsMixer final probability: " + (total / allowedFactors.length));
+			MatchDebug.WriteLine("NeutralGoalsMixer final probability: " + (total / allowedFactors.length));
 			
 			return total / allowedFactors.length;
 		}
@@ -70,7 +70,7 @@ package Match
 			
 			if (Team1.IsUltraNoob && Team2.IsUltraNoob || (Team1.MatchesCount == Team2.MatchesCount))
 			{
-				MatchDebug.Log.WriteLine("Goal detected: ultra-noob vs ultra-noob");
+				MatchDebug.WriteLine("Goal detected: ultra-noob vs ultra-noob");
 				
 				// The two of them are ultra-noobs or they have played equal number of matches
 				goalAllowed = NeutralGoalsMixer([GoalBasedBalancedApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);
@@ -79,7 +79,7 @@ package Match
 			{
 				if (Team1.IsUltraNoob || Team2.IsUltraNoob)
 				{
-					MatchDebug.Log.WriteLine("Goal detected: ultra-noob vs (noob or regular)");
+					MatchDebug.WriteLine("Goal detected: ultra-noob vs (noob or regular)");
 
 					// A ultra-noob and someone who has played more
 					goalAllowed = NeutralGoalsMixer([GoalBasedUnfairApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);	
@@ -90,14 +90,14 @@ package Match
 					
 					if (Team1.IsRegular|| Team2.IsRegular)
 					{
-						MatchDebug.Log.WriteLine("Goal detected: noob vs regular");
+						MatchDebug.WriteLine("Goal detected: noob vs regular");
 						
 						// One of them is a regular player: Favor the noob
 						goalAllowed = NeutralGoalsMixer([GoalBasedUnfairApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);
 					}
 					else
 					{
-						MatchDebug.Log.WriteLine("Goal detected: noob vs noob");
+						MatchDebug.WriteLine("Goal detected: noob vs noob");
 						
 						// Both of them are noobs
 						goalAllowed = NeutralGoalsMixer([GoalBasedBalancedApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);
@@ -107,7 +107,7 @@ package Match
 												
 			var isAllowed : Boolean = _Random.Probability(goalAllowed * 100);
 			
-			MatchDebug.Log.WriteLine("IsGoalAllowed: " + isAllowed);
+			MatchDebug.WriteLine("IsGoalAllowed: " + isAllowed);
 			
 			return isAllowed;
 		}
@@ -142,7 +142,7 @@ package Match
 					allowed = 0;							// Horrible idea (the winner is already winning, don't frustrate the loser!)
 			}
 			
-			MatchDebug.Log.WriteLine("GoalBasedBalancedApproach: " + allowed);
+			MatchDebug.WriteLine("GoalBasedBalancedApproach: " + allowed);
 			
 			return allowed;
 		}
@@ -168,7 +168,7 @@ package Match
 					allowed = 0.75;						// The newbie is already winning. The loser has only 75% of scoring
 			}
 			
-			MatchDebug.Log.WriteLine("GoalBasedUnfairApproach: " + allowed);
+			MatchDebug.WriteLine("GoalBasedUnfairApproach: " + allowed);
 			
 			return allowed;
 		}
@@ -182,7 +182,7 @@ package Match
 			else if (gkIntercept.ShotInfo.Impulse <= MatchConfig.HighCapMaxImpulse)
 				ret = 1 - ((gkIntercept.ShotInfo.Impulse - MatchConfig.LowCapMaxImpulse)/(MatchConfig.HighCapMaxImpulse-MatchConfig.LowCapMaxImpulse));
 			
-			MatchDebug.Log.WriteLine("ShotQualityApproach: " + ret);
+			MatchDebug.WriteLine("ShotQualityApproach: " + ret);
 			
 			return ret;
 		}

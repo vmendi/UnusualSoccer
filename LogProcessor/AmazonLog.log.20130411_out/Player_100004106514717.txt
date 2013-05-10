@@ -1,4 +1,0 @@
-IP-0AF0065B 00:57:03.870 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004106514717 - UncaughtError: Error #2048
-IP-0AF0065B 00:57:43.806 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100004106514717 - UncaughtError: TypeError: Error #1009
-IP-0AF0065B 15:02:49.906 [ERROR] [5] [HttpService.MainService] CLIENT_ERROR:100004106514717 - UncaughtError: Error #2048
-IP-0AF0065B 15:03:07.456 [ERROR] [18] [HttpService.MainService] CLIENT_ERROR:100004106514717 - UncaughtError: TypeError: Error #1009

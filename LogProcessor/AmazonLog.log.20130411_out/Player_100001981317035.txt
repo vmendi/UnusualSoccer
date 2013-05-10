@@ -1,2 +1,0 @@
-IP-0AF0065B 23:41:14.451 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100001981317035 - Intento de SwitchLookingForMatchResponded con el partido corriendo
-IP-0AF0065B 02:53:19.618 [ERROR] [20] [HttpService.MainService] CLIENT_ERROR:100001981317035 - Intento de SwitchLookingForMatchResponded con el partido corriendo

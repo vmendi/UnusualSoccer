@@ -73,7 +73,7 @@ package Match
 					
 				mLines = null;
 			}
-			catch (e:Error) { ErrorMessages.LogToServer("Chat.OnRemovedFromStage"); }
+			catch (e:Error) { MatchDebug.LogToServer("Chat.OnRemovedFromStage"); }
 		}
 		
 		private function OnStageKeyDown(e:KeyboardEvent) : void
@@ -103,7 +103,7 @@ package Match
 					}
 				}
 			}
-			catch (e:Error) { ErrorMessages.LogToServer("Chat.OnStageKeyDown"); }
+			catch (e:Error) { MatchDebug.LogToServer("Chat.OnStageKeyDown"); }
 		}
 		
 		public function AddLine(msg:String) : void
@@ -156,7 +156,7 @@ package Match
 			try {
 				TweenMax.to(text, TIME_FADEOUT, { alpha: 0, onComplete: OnFadeOutCompleted, onCompleteParams: [text] });
 			}
-			catch (e:Error) { ErrorMessages.LogToServer("Chat.OnBeginFadeOut"); }
+			catch (e:Error) { MatchDebug.LogToServer("Chat.OnBeginFadeOut"); }
 		}
 		
 		private function OnFadeOutCompleted(text : DisplayObject) : void
@@ -173,7 +173,7 @@ package Match
 					}
 				}
 			}
-			catch (e:Error) { ErrorMessages.LogToServer("Chat.OnFadeOutCompleted"); }
+			catch (e:Error) { MatchDebug.LogToServer("Chat.OnFadeOutCompleted"); }
 		}
 	}
 }
