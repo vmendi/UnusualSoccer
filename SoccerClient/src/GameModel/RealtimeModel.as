@@ -243,11 +243,8 @@ package GameModel
 		{
 			// Se puede cruzar en el cable un mServerConnection.Invoke("SwitchLookingForMatch") y un PushedStartMatch...
 			if (mMatch != null)
-			{
-				ErrorMessages.LogToServer("Intento de SwitchLookingForMatchResponded con el partido corriendo. Vamos a asumir false");
 				lookingForMatch = false;
-			}
-			
+						
 			if (lookingForMatch != mLookingForMatch)
 			{
 				mLookingForMatch = lookingForMatch;

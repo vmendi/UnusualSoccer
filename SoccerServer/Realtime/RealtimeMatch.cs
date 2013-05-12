@@ -541,6 +541,11 @@ namespace Realtime
             opp.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
             self.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
         }
+
+        public void OnErrorMessage(NetPlug plug, string msg)
+        {
+            LogEx("OnErrorMessage: Player: " + GetIdPlayer(plug.Actor as RealtimePlayer) + " " + msg, true);
+        }
         
         
         public void LogEx(string message, bool isError = false)

@@ -38,7 +38,8 @@ package Match
 			}
 			
 			args.unshift(str);
-			ErrorMessages.LogToServer(_Log._Game.IDString + StringUtil.substitute.apply(null, args));
+			//ErrorMessages.LogToServer(_Log._Game.IDString + StringUtil.substitute.apply(null, args));
+			_Log._Game.InvokeOnErrorMessage(StringUtil.substitute.apply(null, args));
 		}
 		
 		private var _Game : Game;

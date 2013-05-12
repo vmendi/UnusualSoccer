@@ -134,7 +134,7 @@ namespace NetEngine
         private void ReceiveSAEA_Completed(object sender, SocketAsyncEventArgs e)
         {
             if (mRandomDelay != null)
-                System.Threading.Thread.Sleep(mRandomDelay.Next(500));
+                System.Threading.Thread.Sleep(mRandomDelay.Next(200));
 
             try
             {
@@ -337,7 +337,7 @@ namespace NetEngine
         private void StartSending(byte[] msg)
         {
             if (mRandomDelay != null)
-                System.Threading.Thread.Sleep(mRandomDelay.Next(500));
+                System.Threading.Thread.Sleep(mRandomDelay.Next(200));
 
             var helper = new MessageHelper(msg);
 
@@ -483,7 +483,7 @@ namespace NetEngine
             }
         }
 
-        static private Random mRandomDelay = null;
+        static private Random mRandomDelay = null; // new Random(123);
         
         readonly int mID;
         readonly NetServer mNetServer;

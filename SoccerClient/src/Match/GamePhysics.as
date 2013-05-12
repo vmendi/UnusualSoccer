@@ -38,22 +38,24 @@ package Match
 		
 		public function NewGoalkeeperPrediction(shooter : Cap, shotInfo : ShootInfo) : InterceptInfo
 		{
+			var ret : InterceptInfo = null;
+			
 			// Las predicciones son de usar y tirar, hay que pedir una nueva cada vez (por una cuestion de las trazas de debug en realidad, nos
 			// conviene dejarlas persistiendo y que se vean hasta que se pida otra prediccion)
 			if (_LastGamePhysicsPrediction != null)
 				_LastGamePhysicsPrediction.Shutdown();
 			
 			_LastGamePhysicsPrediction = new GamePhysicsPredictions(_Game, this);
-			
+						
 			try {
-				return _LastGamePhysicsPrediction.NewGoalkeeperPrediction(shooter, shotInfo);
+				ret = _LastGamePhysicsPrediction.NewGoalkeeperPrediction(shooter, shotInfo);
 			}
 			catch(e:Error)
 			{
 				MatchDebug.LogToServer("WTF 243 - Failed prediction " + e.toString());
 			}
 			
-			return null; 
+			return ret; 
 		}
 		
 		private function RecalcShotToAllowGoal(goalkeeper : Cap, shooter : Cap, shooterShot : ShootInfo, goalieIntercept : InterceptInfo) : ShootInfo
@@ -357,6 +359,9 @@ package Match
 				if (!IsPhysicSimulating)
 				{
 					_SimulatingShot = false;
+					
+					if (_bWantToStopSimulation)
+						MatchDebug.LogToServer("WTF 987a - Fault but the simulation is stopped?");
 				}
 				else 
 				if (_bWantToStopSimulation)
@@ -365,7 +370,7 @@ package Match
 					// el mbWantToStopSimulation) en el OnClientShootEnd
 					StopSimulation();
 					
-					_SimulatingShot = false
+					_SimulatingShot = false;
 					_bWantToStopSimulation = false;
 				}
 				

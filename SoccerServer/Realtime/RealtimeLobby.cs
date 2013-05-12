@@ -234,19 +234,21 @@ namespace Realtime
             bool bRet = false;
 
             // Es posible que nos llegue cuando ya se ha comenzado un partido (nuestro PushedMatchStarted todavia está volando, no ha llegado al cliente)
-            if ((from.Actor as RealtimePlayer).Room is RealtimeMatch)
-                return bRet;
-
-            if (!mLookingForMatch.Remove(from.Actor as RealtimePlayer))
+            // 5/11//2013 It's also possible that the client sends it when it's still not Logged In to the Room, that's why we need to check from.Actor.
+            // https://app.asana.com/0/1650247067545/5404139831122
+            if (from.Actor != null && !((from.Actor as RealtimePlayer).Room is RealtimeMatch))
             {
-                // Si no lo hemos removido, veamos si podemos añadirlo
-                using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
+                if (!mLookingForMatch.Remove(from.Actor as RealtimePlayer))
                 {
-                    // Podemos negarnos a hacer el Switch debido a que no sea valido el ticket. El ActorID es siempre el PlayerID de la DB.
-                    if (CheckTicketValidity(theContext, from.Actor.ActorID))
+                    // Si no lo hemos removido, veamos si podemos añadirlo
+                    using (SoccerDataModelDataContext theContext = new SoccerDataModelDataContext())
                     {
-                        mLookingForMatch.Add(from.Actor as RealtimePlayer);
-                        bRet = true;
+                        // Podemos negarnos a hacer el Switch debido a que no sea valido el ticket. El ActorID es siempre el PlayerID de la DB.
+                        if (CheckTicketValidity(theContext, from.Actor.ActorID))
+                        {
+                            mLookingForMatch.Add(from.Actor as RealtimePlayer);
+                            bRet = true;
+                        }
                     }
                 }
             }
@@ -339,7 +341,7 @@ namespace Realtime
             }
                 
             // Cada X segundos evaluamos los matcheos automaticos
-            if (((int)totalSeconds) % 5 == 0)
+            if (((int)totalSeconds) % 10 == 0)
             {
                 ProcessMatchMaking();
             }

@@ -34,7 +34,7 @@ class General_Error_Extractor
       end
 
       # Server errors. Any line with an [ERROR] tag and not CLIENT_ERROR in it
-      server_match = line.match(/\[ERROR\](?!.*CLIENT_ERROR).*/)
+      server_match = line.match(/\[ERROR\](?!.*CLIENT_ERROR)(?!.*MatchID).*/)
 
       if server_match != nil
         server.push line

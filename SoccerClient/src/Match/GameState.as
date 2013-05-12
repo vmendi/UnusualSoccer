@@ -13,8 +13,9 @@ package Match
 		public static const WaitingClientsToEndShoot:int = 6;			// Nuestro disparo se ha simulado, esperando a que el otro jugador tb termine.	
 		public static const WaitingGoal:int = 10;						// Hemos detectado gol. Estamos esperando a que llegue la confirmación desde el servidor & cutscene end
 		public static const WaitingPlayersAllReadyForSetTurn:int = 11;  //
+		public static const WaitingControlPortero:int = 13;				// Se ha producido un control de portero, esperando a que acabe cutscene para continuar
 		public static const WaitingEndPart:int = 14;					// El servidor nos ha mandado un fin de parte, esperando a que acabe cutscene para continuar
-		public static const WaitingControlPortero:int = 14;				// Se ha producido un control de portero, esperando a que acabe cutscene para continuar
+		
 		
 		
 		// Comandos: Se desencadena unicamente en un cliente y estamos esperando a que el servidor lo propage

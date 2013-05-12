@@ -103,6 +103,7 @@
     <Content Include="Admin\Realtime.aspx" />
     <Content Include="App_Data\Backup.sql" />
     <Content Include="App_Data\DeleteAll.sql" />
+    <Content Include="App_Data\LiveSQLDailyBackup.sql" />
     <Content Include="Cancelled.aspx" />
     <Content Include="channel.html" />
     <Content Include="console\AC_OETags.js" />
@@ -395,6 +396,7 @@
     <Content Include="NLog.config">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="App_Data\LiveSQLDailyBackup.bat" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

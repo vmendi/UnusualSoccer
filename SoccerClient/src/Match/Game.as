@@ -415,18 +415,22 @@ package Match
 				throw new Error(IDString + "WTF 974 - InvokeServer after shutting down the game " + serverCommand);
 			
 			if (!OfflineMode)
-				_Connection.Invoke.apply(_Connection, [serverCommand, null].concat(args));
-			
-			// Generacion del delegate para la emulacion de la llamada desde el servidor en modo offline
-			var clientFunc : Function = this[serverCommand.replace("Server", "Client")];
-			var idTeamArray : Array = [CurrTeam.TeamId];
-			var gameThis : Game = this;
-			
-			function myInnerFunc() : void
 			{
-				clientFunc.apply(gameThis, idTeamArray.concat(args));
+				_Connection.Invoke.apply(_Connection, [serverCommand, null].concat(args));
 			}
-			_OfflineWaitCall = myInnerFunc;
+			else
+			{
+				// Generacion del delegate para la emulacion de la llamada desde el servidor en modo offline
+				var clientFunc : Function = this[serverCommand.replace("Server", "Client")];
+				var idTeamArray : Array = [CurrTeam.TeamId];
+				var gameThis : Game = this;
+				
+				function myInnerFunc() : void
+				{
+					clientFunc.apply(gameThis, idTeamArray.concat(args));
+				}
+				_OfflineWaitCall = myInnerFunc;
+			}
 			
 			// And finally, we wait for the server response
 			ChangeState(waitState);
@@ -1183,9 +1187,13 @@ package Match
 		public function InvokeOnServerChatMsg(msg : String) : void
 		{
 			if (msg != "" && !OfflineMode)
-			{
 				_Connection.Invoke("OnServerChatMsg", null, LocalUserTeam.Name + ": " + msg);
-			}
+		}
+		
+		public function InvokeOnErrorMessage(msg : String) : void
+		{
+			if (!OfflineMode)
+				_Connection.Invoke("OnErrorMessage", null, msg);
 		}
 		
 		private function SetDebugPos() : void
