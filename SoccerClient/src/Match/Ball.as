@@ -46,7 +46,7 @@ package Match
 					 maskBits: 1 + 2 + 4,			// Choca con todo excepto con BackPorteria (que tiene categoryBits==8)
 					 isBullet: true,
 					 mass: MatchConfig.BallMass,
-					 fixedRotation: false,				      					 
+					 fixedRotation: true,				      					 
 					 isSleeping: true,
 					 allowSleep: true, 
 					 linearDamping: MatchConfig.BallLinearDamping, 

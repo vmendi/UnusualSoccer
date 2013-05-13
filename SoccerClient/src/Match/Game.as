@@ -315,6 +315,7 @@ package Match
 						MatchDebug.LogToServer("La fisica no puede estar simulando en estado GameState.Playing - Continuamos");
 						
 						TheGamePhysics.StopSimulation();
+						TheGamePhysics.Run(elapsed);
 						
 						if (TheGamePhysics.IsSimulating)
 							MatchDebug.LogToServer("Pero sigue!!!!");
