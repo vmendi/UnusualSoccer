@@ -136,6 +136,11 @@ class Match_Error_Extractor
       if line.match(/CLIENT_ERROR/)
         return true
       end
+
+      # Errors in the client (Send through the socket using OnErrorMessage)
+      if line.match(/OnErrorMessage/)
+        return true
+      end
     }
     return false
   end  

@@ -134,20 +134,11 @@ package Match
 			
 			_Contacts = TheBox2D.addContactListener();
 			_Contacts.addEventListener(QuickContacts.ADD, OnContact);
-
-			// Para poder hacer proceso (olvidar contactos) antes que el onRender del QuickObject2D, que es donde se calcula la simulacion
-			TheBox2D.main.addEventListener(Event.ENTER_FRAME, OnPhysicsEnterFrame);
 			
 			// El campo crea todos los muros y sensores
 			Field.CreateFieldPhysics(TheBox2D);
 		}
-		
-		private function OnPhysicsEnterFrame(e:Event) : void
-		{
-			// Olvidamos los contactos del Run anterior 
-			_TouchedCapsLastRun.length = 0;
-		}
-		
+
 		public function Start() : void
 		{
 			// Empieza a escuchar el evento ENTER_FRAME
@@ -203,7 +194,6 @@ package Match
 			if (cap != null && ball != null)
 			{
 				_TouchedCaps.push(cap);
-				_TouchedCapsLastRun.push(cap);
 
 				_Game.TheAudioManager.Play("SoundCollisionCapBall");
 								
@@ -423,10 +413,8 @@ package Match
 		//   0 		-> No conseguimos situar chapa (se queda en la posición que está)
 		//  '+n'	-> El nº de intento en el que hemos conseguido situar la chapa
 		//
-		public function MoveCapInDir(cap:Cap, dir:Point, amount:Number, checkAgainstBall:Boolean, stepsToTry:int = 1) : int		
+		public function MoveCapInDir(cap:Cap, dir:Point, amount:Number, checkAgainstBall:Boolean, stepsToTry:int = 1) : void		
 		{
-			var trySuccess:int = 0;		// por defecto no hemos conseguido situar la chapa 
-			
 			dir.normalize(1.0);
 			
 			// Intentaremos posicionar la chapa en la posición indicada, si no es válida vamos probando
@@ -444,15 +432,9 @@ package Match
 				{
 					// Movemos la chapa a la posición y terminamos
 					cap.SetPos(endPos);
-					trySuccess = i+1;
 					break;
 				}
 			}
-			
-			// Devolvemos el 'intento' que fué existoso
-			//   0 		-> No conseguimos situar chapa
-			//  '+n'	-> El nº de intento en el que hemos conseguido situar la chapa
-			return trySuccess;
 		}
 		
 		private function GetAllPhyEntitiesSortedByDistance(toPoint : Point) : Array
@@ -656,7 +638,6 @@ package Match
 		private var _TimeStep : Number;
 		private var _Contacts : QuickContacts;
 		private var _TouchedCaps:Array = new Array();			// Lista de chapas en las que ha rebotado la pelota antes de detenerse
-		private var _TouchedCapsLastRun:Array = new Array();	// Lista de chapas que ha tocado la pelota solo en este Run
 		private var _SideGoal:int= -1;							// Lado que ha marcado goal
 		private var _DetectedFault:Fault = null;				// Bandera que indica Falta detectada (además objeto que describe la falta)
 		private var _DetectedGoalkeeperCatch : Boolean;			// Indica que el portero hizo un autotiro de parada y que la atrapo

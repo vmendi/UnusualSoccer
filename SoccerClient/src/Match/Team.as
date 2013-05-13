@@ -66,11 +66,11 @@ package Match
 			// Inicializamos cada una de las chapas 
 			for (var i:int = 0; i < CAPS_BY_TEAM; i++ )
 			{
-				CapsList.push(new Cap(this, i, descTeam.SoccerPlayers[i], useSecondUniform, _Game));
+				_CapsList.push(new Cap(this, i, descTeam.SoccerPlayers[i], useSecondUniform, _Game));
 			}
 			
 			// Echamos a las que esten lesionadas, excepto al portero!
-			for each(var cap : Cap in CapsList)
+			for each(var cap : Cap in _CapsList)
 			{
 				if (cap.IsInjured && cap != GoalKeeper)
 					FireCap(cap, false);
