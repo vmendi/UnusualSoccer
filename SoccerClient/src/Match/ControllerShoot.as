@@ -104,7 +104,7 @@ package Match
 			}
 			catch (e:Error)
 			{
-				MatchDebug.LogToServer("WTF 43123ba");
+				MatchDebug.LogToServer("WTF 43123ba", true);
 			}
 		}
 		

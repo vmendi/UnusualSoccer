@@ -97,7 +97,7 @@ package Match
 			}
 			catch (e:Error)
 			{
-				MatchDebug.LogToServer("WTF 123hg");
+				MatchDebug.LogToServer("WTF 123hg", true);
 			}
 		}
 		

@@ -17,7 +17,7 @@ package Match
 	{
 		public var TheBox2D:QuickBox2D;
 				
-		public function get IsSimulating() : Boolean { return _SimulatingShot;	}
+		public function get IsSimulatingShot() : Boolean { return _SimulatingShot;	}
 		public function get TimeStep() : Number { return _TimeStep; }
 		
 		public function get NumTouchedCaps() : int 	 	{ return _TouchedCaps.length; }
@@ -52,7 +52,7 @@ package Match
 			}
 			catch(e:Error)
 			{
-				MatchDebug.LogToServer("WTF 243 - Failed prediction " + e.toString());
+				MatchDebug.LogToServer("WTF 243 - Failed prediction " + e.toString(), true);
 			}
 			
 			return ret; 
@@ -142,7 +142,7 @@ package Match
 		public function Start() : void
 		{
 			// Empieza a escuchar el evento ENTER_FRAME
-			TheBox2D.start();
+			// TheBox2D.start();
 		}
 		
 		public function Shutdown() : void
@@ -304,16 +304,19 @@ package Match
 			return _DetectedFault != null;
 		}
 		
-		public function StopSimulation() : void		
+		public function StopMovement() : void
 		{
 			for each (var phyEntity:PhyEntity in _Game.GetAllPhyEntities())
 			{
 				phyEntity.StopMovement();
 			}
+			
+			if (IsMoving)
+				MatchDebug.LogToServer("WTF 35 - The physics is still simulating after StopSimulation", true);
 		}
 
 		// Retorna true si hay algo todavia moviendose
-		private function get IsPhysicSimulating() : Boolean
+		private function get IsMoving() : Boolean
 		{
 			for each (var phyEntity:PhyEntity in _Game.GetAllPhyEntities())
 			{
@@ -340,25 +343,23 @@ package Match
 		}
 		
 		public function Run(elapsed:Number) : void
-		{
+		{			
 			if (_SimulatingShot)
 			{
-				_FramesSimulating++;
-			
 				// Se acabo la simulacion? (es decir, esta todo parado?).
-				if (!IsPhysicSimulating)
+				if (!IsMoving)
 				{
 					_SimulatingShot = false;
 					
 					if (_bWantToStopSimulation)
-						MatchDebug.LogToServer("WTF 987a - Fault but the simulation is stopped?");
+						MatchDebug.LogToServer("WTF 987a - Fault but the simulation is stopped?", true);
 				}
 				else 
 				if (_bWantToStopSimulation)
 				{
 					// Paramos la simulacion para que Game vea el fin y se procese la falta (o el motivo que sea por el que se ha producido
 					// el mbWantToStopSimulation) en el OnClientShootEnd
-					StopSimulation();
+					StopMovement();
 					
 					_SimulatingShot = false;
 					_bWantToStopSimulation = false;
@@ -373,7 +374,33 @@ package Match
 					// HACK anti-unsync
 					RoundPositions();
 				}
+				else
+				{
+					// 5/13/2013 Tomamos control de la simulacion. Comentamos las funciones start/stop de Quickbox2D, empezamos a llamar desde aqui
+					TheBox2D.onRender(null);
+					_FramesSimulating++;
+				}
 			}
+		}
+		
+		public function QuickHack() : void
+		{
+			if (IsMoving)
+			{
+				MatchDebug.LogToServer("Moving", true);
+				
+				StopMovement();
+				
+				if (IsMoving)
+					MatchDebug.LogToServer("Moving again", true);
+			}
+			else
+				MatchDebug.LogToServer("Not Moving", true);
+			
+			_SimulatingShot = false;
+			_GoalkeeperWantsToCatch = null;
+			_bWantToStopSimulation = false;
+			RoundPositions();			
 		}
 		
 		private function RoundPositions() : void

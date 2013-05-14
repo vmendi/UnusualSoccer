@@ -176,7 +176,7 @@ package Match
 			}
 			catch(e:Error) 
 			{ 
-				MatchDebug.LogToServer("WTF 198"); 
+				MatchDebug.LogToServer("WTF 198", true); 
 			}
 		}
 		
@@ -188,7 +188,7 @@ package Match
 			}
 			catch(e:Error) 
 			{ 
-				MatchDebug.LogToServer("WTF 98"); 
+				MatchDebug.LogToServer("WTF 98", true); 
 			}
 		}
 		
@@ -201,7 +201,7 @@ package Match
 			}
 			catch(e:Error) 
 			{ 
-				MatchDebug.LogToServer("WTF 88"); 
+				MatchDebug.LogToServer("WTF 88", true); 
 			}
 		}
 		private function OnRealOver() : void
@@ -212,7 +212,7 @@ package Match
 			}
 			catch(e:Error)
 			{
-				MatchDebug.LogToServer("WTF 38");
+				MatchDebug.LogToServer("WTF 38", true);
 			}
 		}
 		private function OnMouseOut(e : MouseEvent) : void
@@ -227,7 +227,7 @@ package Match
 			}
 			catch(e:Error) 
 			{ 
-				MatchDebug.LogToServer("WTF 78"); 
+				MatchDebug.LogToServer("WTF 78", true); 
 			}
 		}
 				
@@ -249,15 +249,15 @@ package Match
 			var x:Number = GetPos().x;
 			var centerX:Number = Field.CenterX;
 			
-			if( OwnerTeam.Side == Enums.Left_Side )
+			if (OwnerTeam.Side == Enums.Left_Side)
 			{
-				if( x < centerX )
+				if (x < centerX)
 					return false;
 				return true;
 			}
 			else
 			{
-				if( x > centerX )
+				if (x > centerX)
 					return false;
 				return true;
 			}
@@ -329,6 +329,10 @@ package Match
 				if (_TimeShowingInfluence > 2.0)
 					ShowInfluence = false;
 			}
+			
+			// 5/13/2013: Desconectamos la actualizacion de la rotacion en QuickBox2D.as, linea 417.
+			// 			  Vamos a actualizar nosotros nuestro Visual.
+			(_Visual as Sprite).rotation = _PhyObject.angle * (180 / Math.PI);
 		}
 		
 		private function LoadFacebookPicture(facebookID : Number) : void

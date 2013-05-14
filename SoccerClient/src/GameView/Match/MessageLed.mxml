@@ -47,10 +47,16 @@
 		
 		protected function MySequence_effectEndHandler(evt:EffectEvent):void
 		{
-			(parent as Group).removeElement(this);
-			
-			if (mCallback != null)
-				mCallback();
+			try {
+				(parent as Group).removeElement(this);
+				
+				if (mCallback != null)
+					mCallback();
+			}
+			catch (e:Error)
+			{
+				ErrorMessages.LogToServer("WTF 958a - " + e.toString());
+			}
 		}
 
 		protected function AnimateLeds(evt:TimerEvent):void

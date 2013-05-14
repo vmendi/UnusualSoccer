@@ -53,7 +53,7 @@
 			}
 			catch(e:Error)
 			{
-				ErrorMessages.LogToServer("WTF 193");
+				ErrorMessages.LogToServer("WTF 193 " + e.toString());
 			}
 			
 			return mc;
@@ -70,7 +70,7 @@
 			}
 			catch(e:Error)
 			{
-				ErrorMessages.LogToServer("WTF 1293");
+				ErrorMessages.LogToServer("WTF 1293 " + e.toString());
 			}
 		}
 			

@@ -29,7 +29,7 @@ package Match
 			}
 		}
 		
-		static public function LogToServer(str : String, ...args) : void
+		static public function LogToServer(str : String, isError : Boolean) : void
 		{
 			if (_Log == null || _Log._Game == null)
 			{
@@ -37,9 +37,8 @@ package Match
 				return;
 			}
 			
-			args.unshift(str);
-			//ErrorMessages.LogToServer(_Log._Game.IDString + StringUtil.substitute.apply(null, args));
-			_Log._Game.InvokeOnErrorMessage(StringUtil.substitute.apply(null, args));
+			//args.unshift(str);
+			_Log._Game.InvokeOnLogMessage(str, isError);
 		}
 		
 		private var _Game : Game;

@@ -288,9 +288,6 @@ namespace Realtime
             int idPlayer = GetIdPlayer(plug.Actor as RealtimePlayer);
 
             string finalStr = " Result: " + result + " PaseToID: " + paseToCapId + " CountTouchedCaps: " + countTouchedCaps + " FramesSimulating: " + framesSimulating + " ReasonTurnChanged: "+ reasonTurnChanged + " " + capListStr;
-
-            if (TheClientState == null)
-                LogEx("ServerException: Pasamos por OnResultShoot sin haber creado el ClientState, cutucrush en la siguiente?!", true);
             
             TheClientState.ClientString[idPlayer] = finalStr;
 
@@ -542,9 +539,14 @@ namespace Realtime
             self.NetPlug.Invoke("PushedMatchAbandoned", matchResult);
         }
 
-        public void OnErrorMessage(NetPlug plug, string msg)
+        public void OnLogMessage(NetPlug plug, string msg, bool isError)
         {
-            LogEx("OnErrorMessage: Player: " + GetIdPlayer(plug.Actor as RealtimePlayer) + " " + msg, true);
+            var idPlayer = GetIdPlayer(plug.Actor as RealtimePlayer);
+            
+            if (isError)
+                LogEx("OnLogMessage: CLIENT_ERROR Player: " + idPlayer + " " + msg, true);
+            else
+                LogEx("OnLogMessage: Player: " + idPlayer + " " + msg, false);                
         }
         
         

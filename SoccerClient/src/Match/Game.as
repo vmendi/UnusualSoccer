@@ -310,17 +310,9 @@ package Match
 
 				case GameState.Playing:
 				{
-					if (TheGamePhysics.IsSimulating)
+					if (TheGamePhysics.IsSimulatingShot)
 					{
-						MatchDebug.LogToServer("La fisica no puede estar simulando en estado GameState.Playing - Continuamos");
-						
-						TheGamePhysics.StopSimulation();
-						TheGamePhysics.Run(elapsed);
-						
-						if (TheGamePhysics.IsSimulating)
-							MatchDebug.LogToServer("Pero sigue!!!!");
-						else
-							MatchDebug.LogToServer("Y no sigue...");
+						MatchDebug.LogToServer("La fisica no puede estar simulando en estado GameState.Playing - Continuamos", true);
 					}
 					
 					// Para actualizar nuestros relojes, calculamos el tiempo "real" que ha pasado, independiente del frame-rate
@@ -370,7 +362,7 @@ package Match
 						InvokeServer("OnServerGoalScored", GameState.WaitingGoal, scorerTeam.TeamId, validity);
 					}
 					else
-					if (!TheGamePhysics.IsSimulating)
+					if (!TheGamePhysics.IsSimulatingShot)
 					{
 						// Si la física ha terminado de simular quiere decir que en nuestro cliente hemos terminado la simulación del disparo.
 						// Se lo notificamos al servidor y nos quedamos a la espera de la confirmación de ambos jugadores
@@ -841,11 +833,11 @@ package Match
 			if (!Enums.IsSaquePuerta(reason))
 				throw new Error(IDString + "En el saque de puerta siempre hay que dar una razon adecuada");
 			
-			TheGamePhysics.StopSimulation();
+			TheGamePhysics.StopMovement();
 
 			team.ResetToSaquePuerta();
 			team.Opponent().ResetToFormation();
-						
+
 			TheBall.SetPosInFrontOf(team.GoalKeeper);
 
 			// Asignamos el turno al equipo que debe sacar de puerta
@@ -854,7 +846,7 @@ package Match
 		
 		private function SaqueCentro(team:Team, reason:int) : void
 		{
-			TheGamePhysics.StopSimulation();
+			TheGamePhysics.StopMovement();
 			
 			_Team1.ResetToFormation();
 			_Team2.ResetToFormation();
@@ -973,6 +965,13 @@ package Match
 		
 		private function SetTurnAllReady(idTeam:int, reason:int, callback : Function) : void
 		{
+			if (TheGamePhysics.IsSimulatingShot)
+			{
+				MatchDebug.LogToServer("WTF 47l - Game physics simulating", true);
+								
+				TheGamePhysics.QuickHack();
+			}
+			
 			// A paseo...
 			if (CurrTeam.IsLocalUser && CurrTeam.IsCornerCheat())
 			{
@@ -1055,7 +1054,7 @@ package Match
 				callback();
 			
 			// De aqui siempre se sale por GameState.Playing
-			ChangeState(GameState.Playing);			
+			ChangeState(GameState.Playing);
 		}
 		
 		//
@@ -1191,10 +1190,10 @@ package Match
 				_Connection.Invoke("OnServerChatMsg", null, LocalUserTeam.Name + ": " + msg);
 		}
 		
-		public function InvokeOnErrorMessage(msg : String) : void
+		public function InvokeOnLogMessage(msg : String, isError : Boolean) : void
 		{
 			if (!OfflineMode)
-				_Connection.Invoke("OnErrorMessage", null, msg);
+				_Connection.Invoke("OnLogMessage", null, msg, isError);
 		}
 		
 		private function SetDebugPos() : void

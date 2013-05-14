@@ -132,13 +132,8 @@ class Match_Error_Extractor
         return true
       end
 
-      # Exceptions in the client
+      # Exceptions (ErrorMessages.LogToServer) or errors (send through the socket using OnErrorMessage with isError=true) in the client
       if line.match(/CLIENT_ERROR/)
-        return true
-      end
-
-      # Errors in the client (Send through the socket using OnErrorMessage)
-      if line.match(/OnErrorMessage/)
         return true
       end
     }

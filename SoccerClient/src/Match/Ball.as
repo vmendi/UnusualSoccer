@@ -5,6 +5,7 @@ package Match
 	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.filters.BitmapFilter;
 	import flash.filters.BitmapFilterQuality;
 	import flash.filters.DropShadowFilter;
@@ -46,7 +47,7 @@ package Match
 					 maskBits: 1 + 2 + 4,			// Choca con todo excepto con BackPorteria (que tiene categoryBits==8)
 					 isBullet: true,
 					 mass: MatchConfig.BallMass,
-					 fixedRotation: true,				      					 
+					 fixedRotation: false,				      					 
 					 isSleeping: true,
 					 allowSleep: true, 
 					 linearDamping: MatchConfig.BallLinearDamping, 
@@ -93,7 +94,8 @@ package Match
 				if (vel.y < 0)
 					angle = -angle;
 
-				_PhyObject.angle = angle;
+				// Tenemos desconectada la actualizacion del angulo en la fisica (no queremos tocar _PhyObject.angle en un Draw)
+				(_Visual as Sprite).rotation = angle * (180 / Math.PI);
 			}
 		}
 

@@ -396,7 +396,7 @@
     <Content Include="NLog.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="App_Data\LiveSQLDailyBackup.bat" />
+    <Content Include="App_Data\LiveSQLDailyBackup.bat" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
