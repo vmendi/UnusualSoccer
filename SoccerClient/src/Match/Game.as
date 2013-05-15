@@ -310,11 +310,9 @@ package Match
 
 				case GameState.Playing:
 				{
-					if (TheGamePhysics.IsSimulatingShot)
-					{
-						MatchDebug.LogToServer("La fisica no puede estar simulando en estado GameState.Playing - Continuamos", true);
-					}
-					
+					if (TheGamePhysics.IsSimulatingShot || TheGamePhysics.IsMoving)
+						MatchDebug.LogToServer("WTF 659p -" + TheGamePhysics.IsSimulatingShot + " " + TheGamePhysics.IsMoving, true);
+
 					// Para actualizar nuestros relojes, calculamos el tiempo "real" que ha pasado, independiente del frame-rate
 					var realElapsed:Number = _Timer.GetElapsed() / 1000;
 					
@@ -484,6 +482,9 @@ package Match
 		public function OnClientShoot(idPlayer:int, capID:int, dirX:Number, dirY:Number, impulse:Number) : void
 		{
 			VerifyStateOnServerMessage(GameState.WaitingCommandShoot, true, idPlayer, "OnClientShoot");
+			
+			if (TheGamePhysics.IsMoving)
+				MatchDebug.LogToServer("OnClientShoot: Moving", true);
 			
 			var shooter : Cap = GetCap(idPlayer, capID);
 			var shooterShot : ShootInfo = new ShootInfo(new Point(dirX, dirY), impulse);
@@ -669,7 +670,7 @@ package Match
 					ConsumeSubTurn();
 				}
 			}
-			
+						
 			// Informamos al servidor para que compare entre los dos clientes
 			var capListStr:String = "T0: " + Team1.GetCapString() + " T1: " + Team2.GetCapString() + " B:" + TheBall.GetPos().toString(); 
 			
@@ -783,7 +784,7 @@ package Match
 			
 			if (CurrTeam.IsLocalUser)
 				GetCap(idPlayer, capId).SetPos(new Point(posX, posY));
-			
+						
 			ChangeState(GameState.Playing);
 		}
 		
@@ -833,8 +834,8 @@ package Match
 			if (!Enums.IsSaquePuerta(reason))
 				throw new Error(IDString + "En el saque de puerta siempre hay que dar una razon adecuada");
 			
-			TheGamePhysics.StopMovement();
-
+			TheGamePhysics.StopSimulatingShot();
+			
 			team.ResetToSaquePuerta();
 			team.Opponent().ResetToFormation();
 
@@ -845,8 +846,8 @@ package Match
 		}
 		
 		private function SaqueCentro(team:Team, reason:int) : void
-		{
-			TheGamePhysics.StopMovement();
+		{	
+			TheGamePhysics.StopSimulatingShot();
 			
 			_Team1.ResetToFormation();
 			_Team2.ResetToFormation();
@@ -966,12 +967,8 @@ package Match
 		private function SetTurnAllReady(idTeam:int, reason:int, callback : Function) : void
 		{
 			if (TheGamePhysics.IsSimulatingShot)
-			{
 				MatchDebug.LogToServer("WTF 47l - Game physics simulating", true);
-								
-				TheGamePhysics.QuickHack();
-			}
-			
+						
 			// A paseo...
 			if (CurrTeam.IsLocalUser && CurrTeam.IsCornerCheat())
 			{

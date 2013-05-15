@@ -73,6 +73,23 @@ package Match
 			_Visual.y = pos.y;
 			
 			_PhyObject.setLoc(MatchConfig.Screen2Physic(pos.x), MatchConfig.Screen2Physic(pos.y));
+			
+			// Siempre que nos mueven, paramos cualquier movimiento anterior y nos ponemos a dormir
+			_PhyObject.body.PutToSleep();
+		}
+		
+		public function StopMovement() : void
+		{
+			_PhyObject.body.PutToSleep();
+		}
+		
+		public function get IsMoving() : Boolean
+		{
+			// No podemos devolver IsSleeping porque SetPos puede despertar a los objetos pertenecientes
+			// a un contacto
+			return _PhyObject.body.m_angularVelocity != 0.0 ||
+				   _PhyObject.body.m_linearVelocity.x != 0.0 ||
+				   _PhyObject.body.m_linearVelocity.y != 0.0;
 		}
 		
 		public function GetPos() : Point
@@ -88,21 +105,8 @@ package Match
 		public function get PhyObj() : QuickObject
 		{
 			return _PhyObject;
-		}
+		}		
 
-		// Detiene cualquier tipo de movimiento físico que esté realizando la entidad
-		public function StopMovement() : void
-		{
-			// Dormimos el objeto inmediatamente, para que deje de simular!
-			_PhyObject.body.PutToSleep();
-		}
-		
-		// Devuelve si la entidad está o no en movimiento (simulando)
-		public function get IsMoving() : Boolean
-		{
-			return !_PhyObject.body.IsSleeping();
-		}
-		
 		public function IsCenterInsideCircle(center:Point, radius:Number) : Boolean
 		{
 			return center.subtract(GetPos()).length <= radius;

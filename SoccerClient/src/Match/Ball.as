@@ -114,21 +114,17 @@ package Match
 		
 		override public function SetPos(pos:Point) : void
 		{
-			// Aseguramos que cuando nos fijan la posicion estamos parados => tenemos bien anotada nuestra LastPosStopped
-			super.StopMovement();
+			// Aseguramos que cuando nos fijan la posicion tenemos bien anotada nuestra LastPosStopped
 			super.SetPos(pos);
-			
 			_LastPosStopped = GetPos();
 		}
 		
-		public override function StopMovement() : void
+		override public function StopMovement() : void
 		{
 			super.StopMovement();
-			
-			// Aseguramos que si nos sacan del Sleep entre esta llamada y el siguiente Run la LastPosStopped esta bien
 			_LastPosStopped = GetPos();
 		}
-		
+				
 		// Resetea al estado inicial el balón (en el centro)
 		public function SetPosInFieldCenter() : void
 		{

@@ -304,29 +304,6 @@ package Match
 			return _DetectedFault != null;
 		}
 		
-		public function StopMovement() : void
-		{
-			for each (var phyEntity:PhyEntity in _Game.GetAllPhyEntities())
-			{
-				phyEntity.StopMovement();
-			}
-			
-			if (IsMoving)
-				MatchDebug.LogToServer("WTF 35 - The physics is still simulating after StopSimulation", true);
-		}
-
-		// Retorna true si hay algo todavia moviendose
-		private function get IsMoving() : Boolean
-		{
-			for each (var phyEntity:PhyEntity in _Game.GetAllPhyEntities())
-			{
-				if (phyEntity.IsMoving)
-					return true;
-			}
-			
-			return false;
-		}
-		
 		public function HasTouchedBall(cap:Cap) : Boolean
 		{			
 			return _TouchedCaps.indexOf(cap) != -1;
@@ -343,66 +320,29 @@ package Match
 		}
 		
 		public function Run(elapsed:Number) : void
-		{			
+		{				
 			if (_SimulatingShot)
 			{
-				// Se acabo la simulacion? (es decir, esta todo parado?).
-				if (!IsMoving)
-				{
-					_SimulatingShot = false;
-					
-					if (_bWantToStopSimulation)
-						MatchDebug.LogToServer("WTF 987a - Fault but the simulation is stopped?", true);
-				}
-				else 
-				if (_bWantToStopSimulation)
-				{
-					// Paramos la simulacion para que Game vea el fin y se procese la falta (o el motivo que sea por el que se ha producido
-					// el mbWantToStopSimulation) en el OnClientShootEnd
-					StopMovement();
-					
-					_SimulatingShot = false;
-					_bWantToStopSimulation = false;
-				}
+				// 5/13/2013 Tomamos control de la simulacion. Comentamos las funciones start/stop de Quickbox2D, empezamos a llamar desde aqui
+				TheBox2D.onRender(null);
+				_FramesSimulating++;
 				
-				// Nos paramos en este Run?
-				if (!_SimulatingShot)
+				// Se acabo la simulacion? (es decir, esta todo parado?)
+				// Or paramos la simulacion para que Game vea el fin y se procese la falta (o el motivo que sea por el que se ha producido
+				// el mbWantToStopSimulation) en el OnClientShootEnd
+				if (!IsMovingWithThreshold() || _bWantToStopSimulation)
 				{
-					// Simplemente lo reseteamos cada vez que acabamos la simulacion					
-					_GoalkeeperWantsToCatch = null;
-										
-					// HACK anti-unsync
-					RoundPositions();
-				}
-				else
-				{
-					// 5/13/2013 Tomamos control de la simulacion. Comentamos las funciones start/stop de Quickbox2D, empezamos a llamar desde aqui
-					TheBox2D.onRender(null);
-					_FramesSimulating++;
+					StopSimulatingShot();
 				}
 			}
-		}
-		
-		public function QuickHack() : void
-		{
-			if (IsMoving)
-			{
-				MatchDebug.LogToServer("Moving", true);
-				
-				StopMovement();
-				
-				if (IsMoving)
-					MatchDebug.LogToServer("Moving again", true);
-			}
-			else
-				MatchDebug.LogToServer("Not Moving", true);
 			
-			_SimulatingShot = false;
-			_GoalkeeperWantsToCatch = null;
-			_bWantToStopSimulation = false;
-			RoundPositions();			
+			// Si la simulacion no esta corriendo, aseguramos que este todo parado a la salida del Run. SetPos despierta a los objetos cuando 
+			// estan en contacto, por ejemplo en el RoundPositions. Tambien es posible que se haya ejecutado alguna orden (OnClientPlaceBall)
+			// y que haya despertado a algun objeto.
+			if (!_SimulatingShot)
+				StopMovement();
 		}
-		
+
 		private function RoundPositions() : void
 		{
 			for each (var phyEntity:PhyEntity in _Game.GetAllPhyEntities())
@@ -411,6 +351,57 @@ package Match
 				phyEntity.SetPos(new Point(Math.round(currPos.x), Math.round(currPos.y)));
 			}
 		}
+		
+		public function StopSimulatingShot() : void
+		{
+			StopMovement();
+			
+			// HACK anti-unsync
+			RoundPositions();
+			
+			if (IsMoving)
+				MatchDebug.LogToServer("WTF 564 - I really hope this doesn't happen", true);
+			
+			_SimulatingShot = false;
+			_bWantToStopSimulation = false;
+			
+			// Simplemente lo reseteamos cada vez que acabamos la simulacion
+			_GoalkeeperWantsToCatch = null;
+		}
+		
+		// Retorna true si alguno de los objetos no se ha puesto a dormir.
+		public function get IsMoving() : Boolean
+		{
+			// Lo hacemos asi para evitar retornar true cuando los objetos se despiertan
+			// debido a un SetPos en el que hay contactos involucrados
+			for each (var phyEntity:PhyEntity in _Game.GetAllPhyEntities())
+			{
+				if (phyEntity.IsMoving)
+					return true;
+			}			
+			return false;
+		}
+		
+		private function StopMovement() : void
+		{
+			for each (var phyEntity:PhyEntity in _Game.GetAllPhyEntities())
+			{
+				phyEntity.StopMovement();
+			}
+		}
+		
+		private function IsMovingWithThreshold() : Boolean
+		{
+			for each (var phyEntity:PhyEntity in _Game.GetAllPhyEntities())
+			{
+				if (MathUtils.ThresholdNotEqual(phyEntity.PhyObj.body.m_angularVelocity, 0.0, 0.01) ||
+					MathUtils.ThresholdNotEqual(phyEntity.PhyObj.body.m_linearVelocity.x, 0.0, 0.01) ||
+					MathUtils.ThresholdNotEqual(phyEntity.PhyObj.body.m_linearVelocity.y, 0.0, 0.01))
+					return true;
+			}
+			return false;
+		}
+			
 		
 		// Una posicion para ser libre debe:
 		//		- Estar contenida dentro de la zona de juego del campo
