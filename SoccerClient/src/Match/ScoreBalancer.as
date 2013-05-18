@@ -11,6 +11,8 @@ package Match
 		
 		private var _Random : Random;
 		
+		private var _LastDebugString : String;
+		
 		private function get Team1() : Team { return _Team1; }
 		private function get Team2() : Team { return _Team2; }
 				
@@ -35,7 +37,7 @@ package Match
 			for each(var num : Number in allowedFactors) 
 				total += num;
 				
-			MatchDebug.WriteLine("FavorGoalsMixer final probability: " + total);
+			_LastDebugString += "FavorGoalsMixer: " + total + " ";
 					
 			return b2Math.b2Clamp(total, 0, 1);
 		}
@@ -47,7 +49,7 @@ package Match
 			for each(var num : Number in allowedFactors) 
 				total *= num;
 				
-			MatchDebug.WriteLine("DisfavorGoalsMixer final probability: " + total);
+			_LastDebugString += "DisfavorGoalsMixer: " + total + " ";
 				
 			return total;
 		}
@@ -59,7 +61,7 @@ package Match
 			for each(var num : Number in allowedFactors) 
 				total += num;
 			
-			MatchDebug.WriteLine("NeutralGoalsMixer final probability: " + (total / allowedFactors.length));
+			_LastDebugString += "NeutralGoalsMixer: " + (total / allowedFactors.length) + " ";
 			
 			return total / allowedFactors.length;
 		}
@@ -68,21 +70,23 @@ package Match
 		{
 			var goalAllowed : Number = 0;
 			
+			_LastDebugString = "IsGoalAllowed: ";
+			
 			if (Team1.IsUltraNoob && Team2.IsUltraNoob || (Team1.MatchesCount == Team2.MatchesCount))
 			{
-				MatchDebug.WriteLine("Goal detected: ultra-noob vs ultra-noob");
+				_LastDebugString += "ultra-noob vs ultra-noob ";
 				
 				// The two of them are ultra-noobs or they have played equal number of matches
-				goalAllowed = NeutralGoalsMixer([GoalBasedBalancedApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);
+				goalAllowed = NeutralGoalsMixer([GoalBasedBalancedApproach(scorerTeam), ShotQualityApproach(goalieIntercept), NumTurnsApproach(scorerTeam)]);
 			}
 			else
 			{
 				if (Team1.IsUltraNoob || Team2.IsUltraNoob)
 				{
-					MatchDebug.WriteLine("Goal detected: ultra-noob vs (noob or regular)");
+					_LastDebugString += "ultra-noob vs (noob or regular) ";
 
 					// A ultra-noob and someone who has played more
-					goalAllowed = NeutralGoalsMixer([GoalBasedUnfairApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);	
+					goalAllowed = NeutralGoalsMixer([GoalBasedUnfairApproach(scorerTeam), ShotQualityApproach(goalieIntercept), NumTurnsApproach(scorerTeam)]);	
 				}
 				else
 				{
@@ -90,24 +94,25 @@ package Match
 					
 					if (Team1.IsRegular|| Team2.IsRegular)
 					{
-						MatchDebug.WriteLine("Goal detected: noob vs regular");
+						_LastDebugString += "noob vs regular ";
 						
 						// One of them is a regular player: Favor the noob
-						goalAllowed = NeutralGoalsMixer([GoalBasedUnfairApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);
+						goalAllowed = NeutralGoalsMixer([GoalBasedUnfairApproach(scorerTeam), ShotQualityApproach(goalieIntercept), NumTurnsApproach(scorerTeam)]);
 					}
 					else
 					{
-						MatchDebug.WriteLine("Goal detected: noob vs noob");
+						_LastDebugString += "noob vs noob ";
 						
 						// Both of them are noobs
-						goalAllowed = NeutralGoalsMixer([GoalBasedBalancedApproach(scorerTeam), ShotQualityApproach(goalieIntercept)]);
+						goalAllowed = NeutralGoalsMixer([GoalBasedBalancedApproach(scorerTeam), ShotQualityApproach(goalieIntercept), NumTurnsApproach(scorerTeam)]);
 					}
 				}
 			}
 												
 			var isAllowed : Boolean = _Random.Probability(goalAllowed * 100);
 			
-			MatchDebug.WriteLine("IsGoalAllowed: " + isAllowed);
+			_LastDebugString += "IsAllowed: " + isAllowed;			
+			MatchDebug.LogToServer(_LastDebugString, false);
 			
 			return isAllowed;
 		}
@@ -142,7 +147,7 @@ package Match
 					allowed = 0;							// Horrible idea (the winner is already winning, don't frustrate the loser!)
 			}
 			
-			MatchDebug.WriteLine("GoalBasedBalancedApproach: " + allowed);
+			_LastDebugString += "GoalBasedBalancedApproach: " + allowed + " ";
 			
 			return allowed;
 		}
@@ -168,7 +173,7 @@ package Match
 					allowed = 0.75;						// The newbie is already winning. The loser has only 75% of scoring
 			}
 			
-			MatchDebug.WriteLine("GoalBasedUnfairApproach: " + allowed);
+			_LastDebugString += "GoalBasedUnfairApproach: " + allowed + " ";
 			
 			return allowed;
 		}
@@ -182,14 +187,24 @@ package Match
 			else if (gkIntercept.ShotInfo.Impulse <= MatchConfig.HighCapMaxImpulse)
 				ret = 1 - ((gkIntercept.ShotInfo.Impulse - MatchConfig.LowCapMaxImpulse)/(MatchConfig.HighCapMaxImpulse-MatchConfig.LowCapMaxImpulse));
 			
-			MatchDebug.WriteLine("ShotQualityApproach: " + ret);
+			_LastDebugString += "ShotQualityApproach: " + ret + " ";
 			
 			return ret;
 		}
 		
-		public function NumTurnsApproach(scorerTeam : Team) : void
+		public function NumTurnsApproach(scorerTeam : Team) : Number
 		{
+			var ret : Number = 1;
 			
+			if (scorerTeam.ShotsCountSinceFormation <= 3)
+				ret = 0;
+			else
+			if (scorerTeam.ShotsCountSinceFormation <= 6)
+				ret = 0.5;
+			
+			_LastDebugString += "NumTurnsApproach: " + ret + " ";
+
+			return ret;
 		}
 	}
 }

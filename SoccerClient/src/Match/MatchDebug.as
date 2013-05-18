@@ -25,7 +25,9 @@ package Match
 			if (AppConfig.DEBUG)
 			{
 				args.unshift(str);
-				_Log._Game.OnClientChatMsg(StringUtil.substitute.apply(null, args));
+				var finalMsg : String = StringUtil.substitute.apply(null, args);
+				_Log._Game.OnClientChatMsg(finalMsg);
+				LogToServer(finalMsg, false);
 			}
 		}
 		

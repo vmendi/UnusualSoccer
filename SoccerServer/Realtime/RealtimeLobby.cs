@@ -21,7 +21,7 @@ namespace Realtime
 
         public static readonly int MAX_ACTORS_PER_ROOM = 50;
 
-        public static readonly int MIN_CLIENT_VERSION = 221;   // Versión mínima que exigimos a los clientes para jugar
+        public static readonly int MIN_CLIENT_VERSION = 222;   // Versión mínima que exigimos a los clientes para jugar
 
         public override void OnLobbyStart(NetServer netServer)
         {             

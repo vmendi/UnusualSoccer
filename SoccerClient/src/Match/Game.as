@@ -227,7 +227,7 @@ package Match
 			
 			if (LocalUserTeam.IsRegular)
 				_MessageCenter.ShowAutoGoalkeeper(_ScoreBalancer.IsAutoGoalKeeper);
-
+						
 			// Hemos terminado de cargar/inicializar
 			ChangeState(GameState.Init);
 		}
@@ -490,6 +490,8 @@ package Match
 			var shooter : Cap = GetCap(idPlayer, capID);
 			var shooterShot : ShootInfo = new ShootInfo(new Point(dirX, dirY), impulse);
 			
+			shooter.OwnerTeam.NewShot();
+			
 			if (ReasonTurnChanged == Enums.TurnTiroAPuerta && MatchConfig.ParallelGoalkeeper)
 			{
 				if (capID != 0)
@@ -559,9 +561,9 @@ package Match
 		public function OnClientEndShoot(idPlayer:int) : void
 		{
 			VerifyStateOnServerMessage(GameState.WaitingClientsToEndShoot, false, idPlayer, "OnClientEndShoot");
-						
+
 			var result:int = 0;
-			
+						
 			// Al acabar el tiro movemos el portero a su posición de formación en caso de la ultima accion fuera un saque de puerta
 			if (Enums.IsSaquePuerta(ReasonTurnChanged))
 				CurrTeam.ResetToFormationOnlyGoalKeeper();
@@ -804,7 +806,7 @@ package Match
 			
 			// Contabilizamos el gol
 			if (validity == Enums.GoalValid)
-				GetTeam(idScorer).Goals++;
+				GetTeam(idScorer).AddGoal();
 
 			_MessageCenter.ShowGoalScored(validity, Delegate.create(ShowGoalScoredCutsceneEnd, idScorer, validity));
 		}

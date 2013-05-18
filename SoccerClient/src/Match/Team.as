@@ -26,9 +26,8 @@ package Match
 		public function get IsLocalUser() : Boolean	{ return this == _Game.LocalUserTeam; }
 		public function get IsCurrTeam() : Boolean { return this == _Game.CurrTeam; }
 		
-		public function get Goals() : Number {	return _Goals; }
-		public function set Goals(value:Number) : void { _Goals = value; }
-		
+		public function get Goals() : Number { return _Goals; }
+				
 		// Array con los IDs de las Skills disponibles, las que vienen desde el manager
 		public function get AvailableSkills() : Array { return _AvailableSkills; }
 		
@@ -38,17 +37,22 @@ package Match
 		public function get IsNoobOrUltraNoob() : Boolean { return IsUltraNoob || IsNoob; }
 		public function get IsRegular() : Boolean { return MatchesCount > NOOB_THRESHOLD; }
 		
+		// Tiros que este equipo ha hecho desde el ultimo reseteo a formacion
+		public function get ShotsCountSinceFormation() : int { return _ShotsCountSinceFormation; }
+		
+		
 		private var _DescTeam : Object = null;
 		private var _TeamId : int = -1;
 		private var _Side : int = -1;
 		private var _CapsList : Array = new Array();
 		private var _Goals : int = 0;
+		private var _ShotsCountSinceFormation : int;
 		private var _FormationName : String = "3-3-2";
 		private var _Skills : Object;							// Hash de habilidades. Key:ID / Value:Skill
 		private var _AvailableSkills : Array;					// Las mismas habilidades, puestas en forma de array
 		private var _UsingSecondUniform : Boolean;
 		private var _Game : Game;
-				
+						
 		private const ULTRA_NOOB_THRESHOLD : int = 10;
 		private const NOOB_THRESHOLD : int = 15;
 
@@ -112,6 +116,8 @@ package Match
 		// Posicionamos todas las chapas del equipo según la alineación y el lado del campo en el que están
 		public function ResetToFormation() : void
 		{
+			_ShotsCountSinceFormation = 0;
+			
 			SetFormationPos(_FormationName, Side);
 			
 			// Olvidamos las posiciones de teletransporte
@@ -539,6 +545,16 @@ package Match
 			}
 			
 			return capListStr;
+		}
+		
+		public function AddGoal() : void
+		{
+			_Goals++;
+		}
+		
+		public function NewShot() : void
+		{
+			_ShotsCountSinceFormation++;
 		}
 	}
 }
