@@ -186,5 +186,10 @@ package Match
 			
 			return ret;
 		}
+		
+		public function NumTurnsApproach(scorerTeam : Team) : void
+		{
+			
+		}
 	}
 }

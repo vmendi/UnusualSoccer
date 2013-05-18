@@ -400,7 +400,7 @@ namespace Realtime
                 {
                     // Descongelamos en caso de estarlo
                     CurState = State.Playing;
-                    Broadcast("OnClientAllPlayersReadyForSetTurn");
+                    Broadcast("OnClientAllPlayersReadyForSetTurn", idPlayerReceivingTurn, reason);
                 }
             }
         }

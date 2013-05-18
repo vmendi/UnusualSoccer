@@ -68,6 +68,7 @@ package Match
 		private var _PartTime:Number;						// Tiempo que dura una parte, tal y como viene del servidor
 		private var _TurnTime:Number;						// Tiempo que dura el sub-turno
 		private var _ScoreBalancer:ScoreBalancer;
+		private var _CapControlaPie:Cap;
 				
 		public var ReasonTurnChanged:int = -1;
 		public var FireCount:int;							// Contador de jugadores expulsados durante el partido
@@ -523,7 +524,7 @@ package Match
 							
 							// Si el portero es automatico es como cuando se anuncia el tiro a puerta, el tiro es ya el ultimo
 							_RemainingShots = 1;
-							_RemainingPasesAlPie = 0;	
+							_RemainingPasesAlPie = 0;
 						}
 					}					
 				}
@@ -862,16 +863,11 @@ package Match
 			if (cap.OwnerTeam != CurrTeam.Opponent())
 				throw new Error(IDString + "La chapa parametro debe ser la que controla, es decir, de mi oponente");
 			
-			// Cambiamos el turno al oponente, al propietario de la chapa que controla. Como es un control con el pie,
-			// al volver del SetTurn tenemos que mostrar el controlador.
-			// Es el unico punto donde usamos este mecanismo de callback, y lo odio.
-			SetTurn(cap.OwnerTeam.TeamId, reason, onTurnCallback);
+			_CapControlaPie = cap;
 			
-			function onTurnCallback() : void
-			{
-				if (cap.OwnerTeam.IsLocalUser)
-					TheInterface.ShowControllerBall(cap);
-			}
+			// Cambiamos el turno al oponente, al propietario de la chapa que controla. Como es un control con el pie,
+			// al final del SetTurn mostraremos el controlador.
+			SetTurn(cap.OwnerTeam.TeamId, reason);			
 		}	
 		
 		//-----------------------------------------------------------------------------------------
@@ -930,42 +926,29 @@ package Match
 				SetTurn(Enums.Team1, reason);
 		}
 		
-		private function SetTurn(idTeam:int, reason:int, callback : Function = null) : void
+		private function SetTurn(idTeamReceivingTurn:int, reason:int) : void
 		{
 			ChangeState(GameState.WaitingPlayersAllReadyForSetTurn);
 			
 			if (!OfflineMode)
 			{
-				// Función a llamar cuando todos los players estén listos
-				_CallbackOnAllPlayersReady = Delegate.create(SetTurnAllReady, idTeam, reason, callback);
-				
 				// Mandamos nuestro 'estamos listos'
-				_Connection.Invoke("OnServerPlayerReadyForSetTurn", null, idTeam, reason);
+				_Connection.Invoke("OnServerPlayerReadyForSetTurn", null, idTeamReceivingTurn, reason);
 			}
 			else
 			{
 				if (_TimeSecs <= 0)
 					OnClientFinishPart(_Part, null);	// Tenemos que simular que hemos alcanzado el fin de la parte
 				else
-					SetTurnAllReady(idTeam, reason, callback);
+					OnClientAllPlayersReadyForSetTurn(idTeamReceivingTurn, reason);
 			}
 		}
 
-		public function OnClientAllPlayersReadyForSetTurn() : void
+		public function OnClientAllPlayersReadyForSetTurn(idTeamReceivingTurn:int, reason:int) : void
 		{
 			if (_State != GameState.WaitingPlayersAllReadyForSetTurn)
 				throw new Error(IDString + "OnClientAllPlayersReadyForSetTurn en estado: " + _State);
 			
-			if (_CallbackOnAllPlayersReady != null)
-			{
-				var callback:Function = _CallbackOnAllPlayersReady;
-				_CallbackOnAllPlayersReady = null;
-				callback();
-			}
-		}
-		
-		private function SetTurnAllReady(idTeam:int, reason:int, callback : Function) : void
-		{
 			if (TheGamePhysics.IsSimulatingShot)
 				MatchDebug.LogToServer("WTF 47l - Game physics simulating", true);
 						
@@ -979,10 +962,10 @@ package Match
 
 			// En modo offline nos convertimos en jugador que coge el turno, para poder testear!
 			if (OfflineMode)
-				_IdLocalUser = idTeam;
+				_IdLocalUser = idTeamReceivingTurn;
 			
 			// Cambio de turno!
-			_CurrTeamId = idTeam;
+			_CurrTeamId = idTeamReceivingTurn;
 			
 			// Guardamos la razón por la que hemos cambiado de turno
 			ReasonTurnChanged = reason;
@@ -1032,7 +1015,7 @@ package Match
 				CurrTeam.GoalKeeper.GotoTeletransportAndResetPos();
 						
 			// Mostramos un mensaje animado de cambio de turno
-			_MessageCenter.ShowTurn(reason, idTeam == _IdLocalUser, TheGamePhysics.TheFault);
+			_MessageCenter.ShowTurn(reason, idTeamReceivingTurn == _IdLocalUser, TheGamePhysics.TheFault);
 			
 			// Y pintamos el halo alrededor de las chapas!
 			CurrTeam.ShowMyTurnVisualCue(reason);
@@ -1046,9 +1029,12 @@ package Match
 			else
 				CurrTeam.Opponent().GoalKeeper.SetImmovable(false);
 			
-			// Damos una oportunidad al codigo que ha querido cambiar el turno de hacer mas cosas una vez que ya se lo hemos dado
-			if (callback != null)
-				callback();
+			// Mostramos el controlador de pase al pie (esto ocurre en caso de robo, OponenteControlaPie)
+			if (_CapControlaPie != null && _CapControlaPie.OwnerTeam.IsLocalUser)
+			{
+				TheInterface.ShowControllerBall(_CapControlaPie);
+				_CapControlaPie = null;
+			}
 			
 			// De aqui siempre se sale por GameState.Playing
 			ChangeState(GameState.Playing);
@@ -1130,6 +1116,9 @@ package Match
 		{
 			if (_State != GameState.WaitingPlayersAllReadyForSetTurn)
 				throw new Error(IDString + "Se ha producido un OnClientFinishPart sin estar esperando el SetTurn");
+			
+			// Si habia un robo pendiente, ya no
+			_CapControlaPie = null;
 			
 			// Nos quedamos esperando a que acabe la cut-scene. Esto congela el tiempo, que es lo mismo que hace el servidor
 			ChangeState(GameState.WaitingEndPart);
