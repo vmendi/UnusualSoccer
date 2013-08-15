@@ -369,7 +369,7 @@
 
 </div>
 
-<!-- User Voice widget --> 
+<!-- User Voice widget 
 <script type="text/javascript">
     var uvOptions = {};
     (function () {
@@ -378,6 +378,7 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
     })();
 </script>
+-->
 
 </body>
 

@@ -96,6 +96,9 @@ package
 			// Mixpanel. MahouLigaChapas lo eliminamos puesto que no nos molestamos ni siquiera en inicializarlo en default.aspx.
 			// Para tener stats en MahouLigaChapas habria que crear un nuevo proyecto en Mixpanel y cambiar la forma
 			// de inicializar para que al mixpanel.init se le pasara el ID correcto
+			/*
+			 * 8/15/2013 Shutdown
+			 *
 			if (!AppConfig.IsMahouLigaChapas)
 			{
 				mEventQueue.push({ Event:event, Properties: properties });
@@ -103,31 +106,38 @@ package
 				if (mEventQueue.length == 1)
 					setTimeout(DelayedExternalInterface, 1000);
 			}
+			*/
 		}
 		
 		static public function Increment(propertyName:String, val:int) : void
 		{
+			/*
 			if (!AppConfig.IsMahouLigaChapas)
 			{
 				ExternalInterface.call("mixpanel.people.increment", propertyName, val);
 			}
+			*/
 		}
 		
 		static public function Set(propertyName:String, val:Object) : void
 		{
+			/*
 			if (!AppConfig.IsMahouLigaChapas)
 			{
 				ExternalInterface.call("mixpanel.people.set", propertyName, val);
 			}
+			*/
 		}
 		
 		static public function TrackMoney(money:Number) : void
 		{
+			/*
 			if (!AppConfig.IsMahouLigaChapas)
 			{
 				// money is Facebook Credits, 1 FB credit = $0.01
 				ExternalInterface.call("mixpanel.people.track_charge", money/10);
 			}
+			*/
 		}
 		
 		static private function DelayedExternalInterface() : void
