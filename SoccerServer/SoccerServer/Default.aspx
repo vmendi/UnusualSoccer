@@ -63,6 +63,9 @@
 
     <!-- start Mixpanel -->
     <script type="text/javascript">
+        /* 
+            8/18/2013 Shutdown
+
         (function(c,a){window.mixpanel=a;var b,d,h,e;b=c.createElement("script");
         b.type="text/javascript";b.async=!0;b.src=("https:"===c.location.protocol?"https:":"http:")+
         '//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';d=c.getElementsByTagName("script")[0];
@@ -87,9 +90,8 @@
         mixpanel.register(extractUTMParams(playerParams));
 
         // Is the user an invitee, meaning, acquired through viral channels?
-        if (playerParams['utm_source'] == "wall_post" ||
-            playerParams['fb_action_types'] == 'og.likes' ||
-            typeof playerParams['request_ids'] !== 'undefined') 
+        
+        if (playerParams['utm_source'] == "wall_post" || playerParams['fb_action_types'] == 'og.likes' || typeof playerParams['request_ids'] !== 'undefined') 
         {
             mixpanel.register({ 'invitee': true });
         }
@@ -100,7 +102,7 @@
 
         // Initial load event
         mixpanel.track("Default.aspx loaded", { firstTime: <%= IsPlayerJustCreated().ToString().ToLower() %> });
-
+        
         function processQueryString(theQueryString) {
             var ret = {};
             var allKeyValues = theQueryString.split('&');
@@ -129,6 +131,7 @@
             }
             return ret;
         }
+        */
     </script>
     <!-- end Mixpanel -->
 
@@ -137,7 +140,8 @@
         window.fbAsyncInit = function () {
             
             if (!swfobject.hasFlashPlayerVersion('<%= SWF_SETTINGS["version_string"] %>')) {
-                mixpanel.track('Flash Player not present');
+                // 8/18/2013 Shutdown
+                // mixpanel.track('Flash Player not present');
             }
             
             var flashVars = <%= GetFlashVars() %>
@@ -171,12 +175,16 @@
                 var theSWF = document.getElementById('<%= SWF_SETTINGS["application"] %>');
 
                 if (response && !response.error)
-                {                                                    
+                {   
+                    /*
+                     * 8/18/2013 Shutdown
+                                                        
                     mixpanel.name_tag(response.name + " (" + response.id + ")");
 
                     mixpanel.people.set("name", response.name);
                     mixpanel.people.set("Gender", response.gender);
                     mixpanel.people.set("Age range", response.age_range.min + ((typeof response.age_range.max !== "undefined")? "-" + response.age_range.max : "+"));
+                    */
 
                     // setupPromotionBars(response.third_party_id);
                     setupTrialPay(response.third_party_id);
